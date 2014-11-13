@@ -1,0 +1,250 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CompositionContainerBuilderTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Tests for <see cref="CompositionContainerBuilder" />
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Composition.Mef
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Composition;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading.Tasks;
+
+    using Kephas.Configuration;
+    using Kephas.Logging;
+    using Kephas.Logging.Composition;
+    using Kephas.Runtime;
+    using Kephas.Services;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Telerik.JustMock;
+
+    /// <summary>
+    /// Tests for <see cref="CompositionContainerBuilder"/>
+    /// </summary>
+    [TestClass]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    public class CompositionContainerBuilderTest : CompositionTestBase
+    {
+        [TestMethod]
+        public async Task CreateContainerAsync_simple_ambient_services_exported()
+        {
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IPlatformManager>();
+
+            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync())
+                .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(CompositionContainer).Assembly }));
+
+            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var container = await factory
+                .CreateContainerAsync();
+
+            var loggerManager = container.GetExport<ILogManager>();
+            Assert.AreEqual(mockLoggerManager, loggerManager);
+
+            var configurationManager = container.GetExport<IConfigurationManager>();
+            Assert.AreEqual(mockConfigurationManager, configurationManager);
+
+            var platformManager = container.GetExport<IPlatformManager>();
+            Assert.AreEqual(mockPlatformManager, platformManager);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CreateContainer_assemblies_not_set()
+        {
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IPlatformManager>();
+
+            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var container = factory.CreateContainer();
+        }
+
+        [TestMethod]
+        public void CreateContainer_simple_ambient_services_exported()
+        {
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IPlatformManager>();
+
+            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var container = factory
+                .WithAssemblies(new Assembly[0])
+                .CreateContainer();
+
+            var loggerManager = container.GetExport<ILogManager>();
+            Assert.AreEqual(mockLoggerManager, loggerManager);
+
+            var configurationManager = container.GetExport<IConfigurationManager>();
+            Assert.AreEqual(mockConfigurationManager, configurationManager);
+
+            var platformManager = container.GetExport<IPlatformManager>();
+            Assert.AreEqual(mockPlatformManager, platformManager);
+        }
+
+        [TestMethod]
+        public void CreateContainer_composed_loggers_exported()
+        {
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IPlatformManager>();
+
+            Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
+                .Returns(Mock.Create<ILogger>);
+
+            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var container = factory
+                .WithAssembly(typeof(LogConventionsRegistrar).Assembly)
+                .WithPart(typeof(ComposedTestLogConsumer))
+                .CreateContainer();
+
+            var consumer = container.GetExport<ComposedTestLogConsumer>();
+            Assert.IsNotNull(consumer.Logger);
+        }
+
+        [TestMethod]
+        public void CreateContainer_non_composed_loggers_exported()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(LogConventionsRegistrar).Assembly)
+                .CreateContainer();
+
+            var consumer = new NonComposedTestLogConsumer();
+            container.SatisfyImports(consumer);
+
+            Assert.IsNotNull(consumer.Logger);
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_Shared()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
+                .CreateContainer();
+
+            var exported = container.GetExport<ITestAppService>();
+            var secondExported = container.GetExport<ITestAppService>();
+
+            Assert.AreSame(exported, secondExported);
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_Single_Success()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
+                .CreateContainer();
+
+            var exported = container.GetExport<ITestAppService>();
+
+            Assert.IsInstanceOfType(exported, typeof(TestAppService));
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_Single_Override_Success()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
+                .CreateContainer();
+
+            var exported = container.GetExport<ITestAppService>();
+
+            Assert.IsInstanceOfType(exported, typeof(TestOverrideAppService));
+        }
+
+        [TestMethod]
+        public void GetExports_AppService_Multiple_Shared()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
+                .CreateContainer();
+
+            var exports = container.GetExports<ITestMultiAppService>().ToList();
+            var exports2 = container.GetExports<ITestMultiAppService>().ToList();
+
+            Assert.AreSame(exports[0], exports2[0]);
+            Assert.AreSame(exports[1], exports2[1]);
+        }
+
+        [TestMethod]
+        public void GetExports_AppService_Multiple_Success()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
+                .CreateContainer();
+
+            var exports = container.GetExports<ITestMultiAppService>().ToList();
+
+            Assert.AreEqual(2, exports.Count);
+        }
+
+        private CompositionContainerBuilder CreateCompositionContainerBuilder()
+        {
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IPlatformManager>();
+
+            Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
+                .Returns(Mock.Create<ILogger>);
+
+            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            return factory;
+        }
+
+        [Export]
+        public class ComposedTestLogConsumer : ILogConsumer
+        {
+            public ILogger Logger { get; set; }
+        }
+
+        public class NonComposedTestLogConsumer
+        {
+            [Import]
+            public ILogManager LogManager { get; set; }
+
+            public ILogger Logger
+            {
+                get
+                {
+                    return this.LogManager.GetLogger(this.GetType());
+                }
+            }
+        }
+
+        [AppServiceContract]
+        public interface ITestAppService { }
+
+        [AppServiceContract(AllowMultiple = true)]
+        public interface ITestMultiAppService { }
+
+        public class TestAppService : ITestAppService { }
+
+        [OverridePriority(Priority.High)]
+        public class TestOverrideAppService : ITestAppService { }
+
+        public class TestMultiAppService1 : ITestMultiAppService { }
+
+        public class TestMultiAppService2 : ITestMultiAppService { }
+    }
+}

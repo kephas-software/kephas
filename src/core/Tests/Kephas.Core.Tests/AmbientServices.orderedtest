@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OrderedTest name="ambientservices" storage="d:\quartz\kephas-vsonline\kephas\dev\src\core\tests\kephas.core.tests\ambientservices.orderedtest" id="3a136b3e-b618-47a4-9aaf-1834a7338cca" continueAfterFailure="true" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestLinks>
+    <TestLink id="fbadf5c4-f19b-d83c-8c7c-7c72cb9e9ecc" name="CompositionContainer_cannot_set_null" storage="bin\debug\kephas.core.tests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <TestLink id="ab83ddd9-fd10-52d6-608b-009eddafbbd6" name="CompositionContainer_works_fine_when_explicitely_set" storage="bin\debug\kephas.core.tests.dll" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestLinks>
+</OrderedTest>
