@@ -110,5 +110,38 @@ namespace Kephas.Reflection
 
             return string.Concat(type.FullName, ", ", type.GetTypeInfo().Assembly.GetName().Name);
         }
+
+        /// <summary>
+        /// Gets the full name of the non generic type with the same base name as the provided type.
+        /// </summary>
+        /// <param name="typeInfo">The type information.</param>
+        /// <returns>The full name of the non generic type.</returns>
+        public static string GetNonGenericFullName(this TypeInfo typeInfo)
+        {
+            Contract.Requires(typeInfo != null);
+
+            var fullName = typeInfo.FullName;
+            if (!typeInfo.IsGenericType)
+            {
+                return fullName;
+            }
+
+            fullName = fullName.Substring(0, fullName.IndexOf('`'));
+            return fullName;
+        }
+
+        /// <summary>
+        /// Gets the full name of the non generic type with the same base name as the provided type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// The full name of the non generic type.
+        /// </returns>
+        public static string GetNonGenericFullName(this Type type)
+        {
+            Contract.Requires(type != null);
+
+            return GetNonGenericFullName(type.GetTypeInfo());
+        }
     }
 }

@@ -12,13 +12,10 @@ namespace Kephas.Configuration
     using System;
     using System.Diagnostics.Contracts;
 
-    using Kephas.Services;
-
     /// <summary>
     /// Manager for application configuration.
     /// </summary>
     [ContractClass(typeof(ConfigurationManagerContractClass))]
-    [AppServiceContract]
     public interface IConfigurationManager
     {
         /// <summary>

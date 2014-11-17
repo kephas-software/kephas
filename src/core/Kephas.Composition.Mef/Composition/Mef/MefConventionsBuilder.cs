@@ -54,6 +54,18 @@ namespace Kephas.Composition.Mef
         }
 
         /// <summary>
+        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
+        /// </summary>
+        /// <param name="typePredicate">The type predicate.</param>
+        /// <returns>
+        /// A <see cref="IPartConventionsBuilder" /> that must be used to specify the rule.
+        /// </returns>
+        public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
+        {
+            return new MefPartConventionsBuilder(this.innerConventionBuilder.ForTypesMatching(typePredicate));
+        }
+
+        /// <summary>
         /// Define a rule that will apply to the specified type.
         /// </summary>
         /// <param name="type">The type from which matching types derive.</param>

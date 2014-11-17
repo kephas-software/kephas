@@ -199,6 +199,57 @@ namespace Kephas.Composition.Mef
             Assert.AreEqual(2, exports.Count);
         }
 
+        [TestMethod]
+        public void GetExport_AppService_metadata()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
+                .CreateContainer();
+
+            var importer = new TestMetadataConsumer();
+            container.SatisfyImports(importer);
+
+            Assert.IsNotNull(importer.TestServices);
+            var metadata = importer.TestServices.First().Metadata;
+            Assert.AreEqual(Priority.High, metadata.OverridePriority);
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_metadata_complex()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(IConverter), typeof(IConverter<,>), typeof(StringToIntConverter), typeof(SecondStringToIntConverter) })
+                .CreateContainer();
+
+            var importer = new TestConverterConsumer();
+            container.SatisfyImports(importer);
+
+            Assert.IsNotNull(importer.Converters);
+            var orderedConverters = importer.Converters.ToList();
+            orderedConverters.Sort((f1, f2) => f1.Metadata.ProcessingPriority - f2.Metadata.ProcessingPriority);
+
+            Assert.AreEqual(2, orderedConverters.Count);
+            Assert.AreEqual(0, orderedConverters[0].Metadata.ProcessingPriority);
+            Assert.AreEqual(100, orderedConverters[1].Metadata.ProcessingPriority);
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_generic_export()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport<>) })
+                .CreateContainer();
+
+            var export = container.GetExport<ITestGenericExport<string>>();
+            Assert.IsInstanceOfType(export, typeof(TestGenericExport<string>));
+        }
+
         private CompositionContainerBuilder CreateCompositionContainerBuilder()
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
@@ -232,7 +283,7 @@ namespace Kephas.Composition.Mef
             }
         }
 
-        [AppServiceContract]
+        [AppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
         public interface ITestAppService { }
 
         [AppServiceContract(AllowMultiple = true)]
@@ -246,5 +297,32 @@ namespace Kephas.Composition.Mef
         public class TestMultiAppService1 : ITestMultiAppService { }
 
         public class TestMultiAppService2 : ITestMultiAppService { }
+
+        public class TestMetadataConsumer
+        {
+            [ImportMany]
+            public ICollection<ExportFactory<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
+        }
+
+        public interface IConverter { }
+
+        [AppServiceContract(MetadataAttributes = new [] { typeof(ProcessingPriorityAttribute) })]
+        public interface IConverter<TSource, TTarget> : IConverter { }
+
+        [ProcessingPriority(100)]
+        public class StringToIntConverter : IConverter<string, int> { }
+
+        public class SecondStringToIntConverter : IConverter<string, int> { }
+
+        public class TestConverterConsumer
+        {
+            [ImportMany]
+            public ICollection<ExportFactory<IConverter, AppServiceMetadata>> Converters { get; set; }
+        }
+
+        [AppServiceContract]
+        public interface ITestGenericExport<T> { }
+
+        public class TestGenericExport<T> : ITestGenericExport<T> { }
     }
 }

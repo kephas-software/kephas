@@ -24,7 +24,6 @@ namespace Kephas.Composition
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     /// <summary>
     /// Base class for composition container builders.
@@ -314,7 +313,7 @@ namespace Kephas.Composition
                         throw new InvalidOperationException(Strings.CreateContainerRequiresCompositionAssembliesSet);
                     }
 
-                    container = this.CreateContainerWithAppServices(assemblies);
+                    container = this.CreateContainerWithConventions(assemblies);
                 });
 
             this.Logger.SafeInfo(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
@@ -337,89 +336,12 @@ namespace Kephas.Composition
                     {
                         var assemblies = await this.GetCompositionAssembliesAsync();
 
-                        container = this.CreateContainerWithAppServices(assemblies);
+                        container = this.CreateContainerWithConventions(assemblies);
                     });
 
             this.Logger.SafeInfo(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
 
             return container;
-        }
-
-        /// <summary>
-        /// Registers the application services based on the declared contracts.
-        /// </summary>
-        /// <param name="conventions">The conventions.</param>
-        /// <param name="typeInfos">The type infos that contain the app services.</param>
-        protected virtual void RegisterAppServices(IConventionsBuilder conventions, IEnumerable<TypeInfo> typeInfos)
-        {
-            // get all type infos from the composition assemblies
-            var appServiceContractsInfos =
-                typeInfos.ToDictionary(ti => ti, ti => ti.GetCustomAttribute<AppServiceContractAttribute>())
-                    .Where(ta => ta.Value != null)
-                    .ToList();
-
-            foreach (var appServiceContractInfo in appServiceContractsInfos)
-            {
-                var serviceContract = appServiceContractInfo.Key;
-                var serviceContractMetadata = appServiceContractInfo.Value;
-                IPartConventionsBuilder partBuilder = null;
-                if (serviceContractMetadata.AllowMultiple)
-                {
-                    // if the service contract metadata allows multiple service registrations
-                    // then add just the conventions for the derived types.
-                    partBuilder = conventions.ForTypesDerivedFrom(serviceContract.AsType());
-                }
-                else
-                {
-                    // if the service contract metadata does not allows multiple service registrations
-                    // then ensure that only one service is registerd. If an export provider is provided
-                    // for the service, then do nothing, otherwise try to identify the service to export 
-                    // based on the OverridePriority attribute.
-                    if (this.ExportProviders.ContainsKey(serviceContract.AsType()))
-                    {
-                        continue;
-                    }
-
-                    var parts =
-                        typeInfos.Where(
-                            ti =>
-                            serviceContract.IsAssignableFrom(ti)
-                            && ti.IsClass
-                            && !ti.IsAbstract
-                            && ti.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null).ToList();
-                    if (parts.Count == 1)
-                    {
-                        partBuilder = conventions.ForType(parts[0].AsType());
-                    }
-                    else if (parts.Count > 1)
-                    {
-                        var overrideChain = parts.ToDictionary(
-                            ti => ti,
-                            ti =>
-                            ti.GetCustomAttribute<OverridePriorityAttribute>()
-                            ?? new OverridePriorityAttribute(Priority.Normal)).OrderBy(item => item.Value.Value).ToList();
-
-                        var selectedPart = overrideChain[0].Key;
-                        if (overrideChain[0].Value.Value == overrideChain[1].Value.Value)
-                        {
-                            throw new InvalidOperationException(string.Format(Strings.AmbiguousOverrideForAppServiceContract, serviceContract, selectedPart, string.Join(", ", overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
-                        }
-
-                        partBuilder = conventions.ForType(selectedPart.AsType());
-                    }
-                }
-
-                if (partBuilder != null)
-                {
-                    // TODO add support for metadata
-                    partBuilder.Export(b => b.AsContractType(serviceContract.AsType()));
-
-                    if (serviceContractMetadata.IsShared)
-                    {
-                        partBuilder.Shared();
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -443,11 +365,11 @@ namespace Kephas.Composition
         /// Creates a new composition container based on the provided conventions and assembly parts.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
-        /// <param name="assemblies">The composition assemblies.</param>
+        /// <param name="parts">The parts candidating for composition.</param>
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected abstract ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Assembly> assemblies);
+        protected abstract ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
         /// <summary>
         /// Gets the composition assemblies.
@@ -472,10 +394,11 @@ namespace Kephas.Composition
         /// Gets the convention builder.
         /// </summary>
         /// <param name="assemblies">The assemblies containing the conventions.</param>
+        /// <param name="parts">The parts.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        protected virtual IConventionsBuilder GetConventions(IEnumerable<Assembly> assemblies)
+        protected virtual IConventionsBuilder GetConventions(IEnumerable<Assembly> assemblies, IList<Type> parts)
         {
             var conventions = this.ConventionsBuilder ?? this.CreateConventionsBuilder();
 
@@ -489,7 +412,7 @@ namespace Kephas.Composition
             var elapsed = Profiler.WithStopwatch(
                 () =>
                 {
-                    conventions.WithConventionsFrom(assemblies);
+                    conventions.RegisterConventionsFrom(assemblies, parts);
                 });
 
             this.Logger.SafeDebug(string.Format("composition-container:get-conventions:end. Elapsed {0:c}.", elapsed));
@@ -532,24 +455,34 @@ namespace Kephas.Composition
         }
 
         /// <summary>
-        /// Creates the container with application services.
+        /// Creates the container with the registered conventions.
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns>The composition container.</returns>
-        private ICompositionContainer CreateContainerWithAppServices(IEnumerable<Assembly> assemblies)
+        private ICompositionContainer CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
         {
+            var parts = this.GetCompositionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);
-            var conventions = this.GetConventions(conventionAssemblies);
+            var conventions = this.GetConventions(conventionAssemblies, parts);
 
-            var typeInfos = assemblies.SelectMany(a => a.DefinedTypes).ToList();
+            var container = this.CreateContainerCore(conventions, parts);
+            return container;
+        }
+
+        /// <summary>
+        /// Gets the composition parts.
+        /// </summary>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns>The composition parts.</returns>
+        private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
+        {
+            var parts = assemblies.SelectMany(a => a.ExportedTypes).ToList();
             if (this.CompositionParts != null)
             {
-                typeInfos.AddRange(this.CompositionParts.Select(t => t.GetTypeInfo()));
+                parts.AddRange(this.CompositionParts);
             }
 
-            this.RegisterAppServices(conventions, typeInfos);
-            var container = this.CreateContainerCore(conventions, assemblies);
-            return container;
+            return parts;
         }
     }
 }

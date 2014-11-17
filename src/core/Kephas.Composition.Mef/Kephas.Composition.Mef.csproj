@@ -124,7 +124,6 @@
     <Compile Include="Logging\Composition\LogConventionsRegistrar.cs" />
     <Compile Include="Composition\Mef\CompositionContainerBuilder.cs" />
     <Compile Include="Composition\Mef\CompositionContainer.cs" />
-    <Compile Include="Composition\Mef\CompositionExtensions.cs" />
     <Compile Include="Composition\Mef\MefAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

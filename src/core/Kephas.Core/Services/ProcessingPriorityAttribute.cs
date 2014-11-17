@@ -35,5 +35,16 @@ namespace Kephas.Services
         /// The priority value.
         /// </value>
         public int Value { get; private set; }
+
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
+        object IMetadataValue.Value
+        {
+            get { return this.Value; }
+        }
     }
 }

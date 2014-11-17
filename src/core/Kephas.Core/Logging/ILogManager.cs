@@ -10,15 +10,13 @@
 namespace Kephas.Logging
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
-
-    using Kephas.Services;
 
     /// <summary>
     /// Manager service for loggers.
     /// </summary>
     [ContractClass(typeof(LogManagerContractClass))]
-    [AppServiceContract]
     public interface ILogManager
     {
         /// <summary>
@@ -54,6 +52,7 @@ namespace Kephas.Logging
     /// <summary>
     /// Contract class for <see cref="ILogManager"/>.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK for contract classes.")]
     [ContractClassFor(typeof(ILogManager))]
     internal abstract class LogManagerContractClass : ILogManager
     {

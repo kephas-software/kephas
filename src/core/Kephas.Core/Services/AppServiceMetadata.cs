@@ -11,7 +11,6 @@ namespace Kephas.Services
 {
     using System.Collections.Generic;
 
-    using Kephas.Composition;
     using Kephas.Composition.Metadata;
     using Kephas.Reflection;
 
@@ -45,7 +44,7 @@ namespace Kephas.Services
             object value;
             if (metadata.TryGetValue(ProcessingPriorityKey, out value))
             {
-                this.ProcessingPriority = (int)value;
+                this.ProcessingPriority = value == null ? 0 : (int)value;
             }
 
             if (metadata.TryGetValue(OverridePriorityKey, out value))

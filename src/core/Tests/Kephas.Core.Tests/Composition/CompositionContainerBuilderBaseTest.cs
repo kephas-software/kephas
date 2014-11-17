@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Composition
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
@@ -20,7 +19,6 @@ namespace Kephas.Core.Tests.Composition
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -58,105 +56,6 @@ namespace Kephas.Core.Tests.Composition
                 .WithConventions(conventions);
             
             Assert.AreSame(conventions, builder.InternalConventionsBuilder);
-        }
-
-        [TestMethod]
-        public void RegisterApplicationServices_Multiple()
-        {
-            var conventions = new TestConventionsBuilder();
-            var builder = new TestCompositionContainerBuilder()
-                .WithConventions(conventions);
-
-            builder.InternalRegisterAppServices(
-                conventions,
-                new[]
-                    {
-                        typeof(IMultipleTestAppService).GetTypeInfo(), 
-                        typeof(MultipleTestService).GetTypeInfo(),
-                        typeof(NewMultipleTestService).GetTypeInfo(),
-                    });
-
-            Assert.AreEqual(1, conventions.DerivedConventionsBuilders.Count);
-            Assert.IsTrue(conventions.DerivedConventionsBuilders.ContainsKey(typeof(IMultipleTestAppService)));
-        }
-
-        [TestMethod]
-        public void RegisterApplicationServices_Single_FactoryProviderOverride()
-        {
-            var conventions = new TestConventionsBuilder();
-            var builder = new TestCompositionContainerBuilder()
-                .WithConventions(conventions)
-                .WithFactoryProvider<ISingleTestAppService>(() => new SingleTestService());
-
-            builder.InternalRegisterAppServices(
-                conventions,
-                new[]
-                    {
-                        typeof(ISingleTestAppService).GetTypeInfo(), 
-                        typeof(SingleTestService).GetTypeInfo()
-                    });
-
-            Assert.AreEqual(0, conventions.TypeConventionsBuilders.Count);
-        }
-
-        [TestMethod]
-        public void RegisterApplicationServices_Single_one_service()
-        {
-            var conventions = new TestConventionsBuilder();
-            var builder = new TestCompositionContainerBuilder()
-                .WithConventions(conventions);
-
-            builder.InternalRegisterAppServices(
-                conventions,
-                new []
-                    {
-                        typeof(ISingleTestAppService).GetTypeInfo(), 
-                        typeof(SingleTestService).GetTypeInfo()
-                    });
-
-            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
-            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleTestService)));
-        }
-
-        [TestMethod]
-        public void RegisterApplicationServices_Single_override_service_success()
-        {
-            var conventions = new TestConventionsBuilder();
-            var builder = new TestCompositionContainerBuilder()
-                .WithConventions(conventions);
-
-            builder.InternalRegisterAppServices(
-                conventions,
-                new []
-                    {
-                        typeof(ISingleTestAppService).GetTypeInfo(), 
-                        typeof(SingleTestService).GetTypeInfo(),
-                        typeof(SingleOverrideTestService).GetTypeInfo(),
-                    });
-
-            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
-            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void RegisterApplicationServices_Single_override_service_failure()
-        {
-            var conventions = new TestConventionsBuilder();
-            var builder = new TestCompositionContainerBuilder()
-                .WithConventions(conventions);
-
-            builder.InternalRegisterAppServices(
-                conventions,
-                new[]
-                    {
-                        typeof(ISingleTestAppService).GetTypeInfo(), 
-                        typeof(SingleTestService).GetTypeInfo(),
-                        typeof(SingleSameOverrideTestService).GetTypeInfo(),
-                    });
-
-            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
-            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
         }
 
         [TestMethod]
@@ -201,11 +100,6 @@ namespace Kephas.Core.Tests.Composition
                 get { return this.ExportProviders; }
             }
 
-            public void InternalRegisterAppServices(IConventionsBuilder conventions, IEnumerable<TypeInfo> typeInfos)
-            {
-                this.RegisterAppServices(conventions, typeInfos);
-            }
-
             protected override IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
             {
                 return Mock.Create<IExportProvider>();
@@ -216,7 +110,7 @@ namespace Kephas.Core.Tests.Composition
                 return Mock.Create<IConventionsBuilder>();
             }
 
-            protected override ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Assembly> assemblies)
+            protected override ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
                 return Mock.Create<ICompositionContainer>();
             }
@@ -228,16 +122,26 @@ namespace Kephas.Core.Tests.Composition
             {
                 this.DerivedConventionsBuilders = new Dictionary<Type, IPartConventionsBuilder>();
                 this.TypeConventionsBuilders = new Dictionary<Type, IPartConventionsBuilder>();
+                this.MatchingConventionsBuilders = new Dictionary<Predicate<Type>, IPartConventionsBuilder>();
             }
 
             public IDictionary<Type, IPartConventionsBuilder> DerivedConventionsBuilders { get; private set; }
 
             public IDictionary<Type, IPartConventionsBuilder> TypeConventionsBuilders { get; private set; }
 
+            public IDictionary<Predicate<Type>, IPartConventionsBuilder> MatchingConventionsBuilders { get; private set; }
+
             public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
             {
                 var partBuilder = this.CreateBuilder(type);
                 this.DerivedConventionsBuilders.Add(type, partBuilder);
+                return partBuilder;
+            }
+
+            public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
+            {
+                var partBuilder = this.CreateBuilder(typePredicate);
+                this.MatchingConventionsBuilders.Add(typePredicate, partBuilder);
                 return partBuilder;
             }
 
@@ -250,25 +154,82 @@ namespace Kephas.Core.Tests.Composition
 
             private IPartConventionsBuilder CreateBuilder(Type type)
             {
-                return Mock.Create<IPartConventionsBuilder>();
+                return new TestPartConventionsBuilder(type);
+            }
+
+            private IPartConventionsBuilder CreateBuilder(Predicate<Type> typePredicate)
+            {
+                return new TestPartConventionsBuilder(typePredicate);
             }
         }
 
-        [AppServiceContract(AllowMultiple = false)]
-        public interface ISingleTestAppService { }
+        public class TestPartConventionsBuilder : IPartConventionsBuilder
+        {
+            public TestPartConventionsBuilder(Type type)
+            {
+                this.Type = type;
+                this.ExportBuilder = new TestExportConventionsBuilder();
+            }
 
-        [AppServiceContract(AllowMultiple = true)]
-        public interface IMultipleTestAppService { }
+            public TestPartConventionsBuilder(Predicate<Type> typePredicate)
+            {
+                this.TypePredicate = typePredicate;
+                this.ExportBuilder = new TestExportConventionsBuilder();
+            }
 
-        public class SingleTestService : ISingleTestAppService { }
+            public TestExportConventionsBuilder ExportBuilder { get; set; }
 
-        [OverridePriority(Priority.High)]
-        public class SingleOverrideTestService : ISingleTestAppService { }
+            public Type Type { get; set; }
 
-        public class SingleSameOverrideTestService : ISingleTestAppService { }
+            public Predicate<Type> TypePredicate { get; set; }
 
-        public class MultipleTestService : IMultipleTestAppService { }
+            public bool IsShared { get; set; }
 
-        public class NewMultipleTestService : IMultipleTestAppService { }
+            public IPartConventionsBuilder Shared()
+            {
+                this.IsShared = true;
+                return this;
+            }
+
+            public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+            {
+                if (conventionsBuilder != null)
+                {
+                    conventionsBuilder(this.ExportBuilder);
+                }
+
+                return this;
+            }
+        }
+
+        public class TestExportConventionsBuilder : IExportConventionsBuilder
+        {
+            public TestExportConventionsBuilder()
+            {
+                this.Metadata = new Dictionary<string, object>();
+            }
+
+            public Type ContractType { get; set; }
+
+            public IDictionary<string, object> Metadata { get; set; }
+
+            public IExportConventionsBuilder AsContractType(Type contractType)
+            {
+                this.ContractType = contractType;
+                return this;
+            }
+
+            public IExportConventionsBuilder AddMetadata(string name, object value)
+            {
+                this.Metadata.Add(name, value);
+                return this;
+            }
+
+            public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+            {
+                this.Metadata.Add(name, getValueFromPartType);
+                return this;
+            }
+        }
     }
 }

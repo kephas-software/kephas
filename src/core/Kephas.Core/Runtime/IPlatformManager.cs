@@ -14,13 +14,10 @@ namespace Kephas.Runtime
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Kephas.Services;
-
     /// <summary>
     /// Provides platform specific functionality.
     /// </summary>
     [ContractClass(typeof(PlatformManagerContractClass))]
-    [AppServiceContract]
     public interface IPlatformManager
     {
         /// <summary>

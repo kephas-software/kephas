@@ -46,5 +46,35 @@ namespace Kephas.Composition.Mef
 
             return this;
         }
+
+        /// <summary>
+        /// Add export metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// An export builder allowing further configuration.
+        /// </returns>
+        public IExportConventionsBuilder AddMetadata(string name, object value)
+        {
+            this.innerExportConventionBuilder.AddMetadata(name, value);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add export metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="getValueFromPartType">A function that calculates the metadata value based on the type.</param>
+        /// <returns>
+        /// An export builder allowing further configuration.
+        /// </returns>
+        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+        {
+            this.innerExportConventionBuilder.AddMetadata(name, getValueFromPartType);
+
+            return this;
+        }
     }
 }

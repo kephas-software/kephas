@@ -55,6 +55,15 @@ namespace Kephas.Services
         public bool AllowMultiple { get; set; }
 
         /// <summary>
+        /// Gets or sets the supported metadata attributes.
+        /// </summary>
+        /// <value>
+        /// The metadata attributes.
+        /// </value>
+        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
+        public Type[] MetadataAttributes { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether the application service <see cref="AppServiceContractAttribute"/> is shared.
         /// </summary>
         /// <value>

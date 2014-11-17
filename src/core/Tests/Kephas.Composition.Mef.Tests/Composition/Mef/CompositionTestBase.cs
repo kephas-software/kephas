@@ -47,15 +47,6 @@ namespace Kephas.Composition.Mef
             return new ContainerConfiguration();
         }
 
-        public virtual ContainerConfiguration WithDefaultConfiguration()
-        {
-            var conventions = new MefConventionsBuilder();
-            conventions.WithConventionsFrom(this.GetDefaultConventionAssemblies());
-            return this.WithEmptyConfiguration()
-              .WithDefaultConventions(conventions.GetConventionBuilder())
-              .WithParts(this.GetDefaultParts());
-        }
-
         public virtual ContainerConfiguration WithDefaultLogger(ContainerConfiguration configuration)
         {
             configuration.WithProvider(new TypeAffineExportDescriptorProvider<ILogger>(this.GetLogger));

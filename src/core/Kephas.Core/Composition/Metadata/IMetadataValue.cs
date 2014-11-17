@@ -10,10 +10,9 @@
 namespace Kephas.Composition.Metadata
 {
     /// <summary>
-    /// Contract for metadata values.
+    /// Non-typed contract for metadata values.
     /// </summary>
-    /// <typeparam name="TValue">The type of the value.</typeparam>
-    public interface IMetadataValue<out TValue>
+    public interface IMetadataValue
     {
         /// <summary>
         /// Gets the metadata value.
@@ -21,6 +20,21 @@ namespace Kephas.Composition.Metadata
         /// <value>
         /// The metadata value.
         /// </value>
-        TValue Value { get; }
+        object Value { get; }
+    }
+
+    /// <summary>
+    /// Contract for metadata values.
+    /// </summary>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
+    public interface IMetadataValue<out TValue> : IMetadataValue
+    {
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
+        new TValue Value { get; }
     }
 }

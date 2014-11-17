@@ -21,67 +21,38 @@ namespace Kephas.Composition.Conventions
     public static class ConventionsBuilderExtensions
     {
         /// <summary>
-        /// Adds the conventions from the provided types implementing <see cref="IConventionsRegistrar"/>.
+        /// Adds the conventions from the provided types implementing <see cref="IConventionsRegistrar" />.
         /// </summary>
         /// <param name="builder">The builder.</param>
+        /// <param name="conventionTypes">The convention types.</param>
         /// <param name="parts">The parts.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder WithConventions(this IConventionsBuilder builder, IEnumerable<Type> parts)
+        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> conventionTypes, IEnumerable<Type> parts)
         {
             Contract.Requires(builder != null);
-            Contract.Requires(parts != null);
+            Contract.Requires(conventionTypes != null);
 
-            return WithConventionsCore(builder, () => parts.Where(IsConventionRegistrar));
+            return RegisterConventionsCore(builder, () => conventionTypes.Where(IsConventionRegistrar), parts);
         }
 
         /// <summary>
-        /// Adds the conventions from the provided types implementing <see cref="IConventionsRegistrar"/>.
+        /// Adds the conventions from types implementing <see cref="IConventionsRegistrar" /> found in the provided assemblies.
         /// </summary>
         /// <param name="builder">The builder.</param>
+        /// <param name="assemblies">The assemblies.</param>
         /// <param name="parts">The parts.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder WithConventions(this IConventionsBuilder builder, params Type[] parts)
+        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts)
         {
             Contract.Requires(builder != null);
+            Contract.Requires(assemblies != null);
             Contract.Requires(parts != null);
 
-            return WithConventionsCore(builder, () => parts.Where(IsConventionRegistrar));
-        }
-
-        /// <summary>
-        /// Adds the conventions from types implementing <see cref="IConventionsRegistrar"/> found in the provided assemblies.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <returns>
-        /// The convention builder.
-        /// </returns>
-        public static IConventionsBuilder WithConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies)
-        {
-            Contract.Requires(builder != null);
-            Contract.Requires(assemblies != null);
-
-            return WithConventionsCore(builder, () => assemblies.SelectMany(a => a.ExportedTypes.Where(IsConventionRegistrar)));
-        }
-
-        /// <summary>
-        /// Adds the conventions from types implementing <see cref="IConventionsRegistrar"/> found in the provided assemblies.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <returns>
-        /// The convention builder.
-        /// </returns>
-        public static IConventionsBuilder WithConventionsFrom(this IConventionsBuilder builder, params Assembly[] assemblies)
-        {
-            Contract.Requires(builder != null);
-            Contract.Requires(assemblies != null);
-
-            return WithConventionsCore(builder, () => assemblies.SelectMany(a => a.ExportedTypes.Where(IsConventionRegistrar)));
+            return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar), parts);
         }
 
         /// <summary>
@@ -89,20 +60,22 @@ namespace Kephas.Composition.Conventions
         /// </summary>
         /// <param name="builder">The builder.</param>
         /// <param name="registrarTypesProvider">The registrar types provider.</param>
+        /// <param name="parts">The conventionTypes.</param>
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder WithConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<Type>> registrarTypesProvider)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<Type>> registrarTypesProvider, IEnumerable<Type> parts)
         {
             Contract.Requires(builder != null);
 
+            var partInfos = parts.Select(p => p.GetTypeInfo()).ToList();
             var registrarTypes = registrarTypesProvider();
             var registrars = registrarTypes.Select(t => (IConventionsRegistrar)Activator.CreateInstance(t)).ToList();
 
             // apply the convention builders
             foreach (var registrar in registrars)
             {
-                registrar.RegisterConventions(builder);
+                registrar.RegisterConventions(builder, partInfos);
             }
 
             return builder;

@@ -136,6 +136,10 @@
     <Compile Include="Model\Dimensions\ScopeDimension.cs" />
     <Compile Include="Model\IAppDimension.cs" />
     <Compile Include="Model\IModelElement.cs" />
+    <Compile Include="RequestProcessing\IRequestFilter.cs" />
+    <Compile Include="RequestProcessing\IRequestHandler.cs" />
+    <Compile Include="RequestProcessing\IRequestProcessor.cs" />
+    <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />
     <Compile Include="Services\Priority.cs" />
