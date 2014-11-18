@@ -136,9 +136,13 @@
     <Compile Include="Model\Dimensions\ScopeDimension.cs" />
     <Compile Include="Model\IAppDimension.cs" />
     <Compile Include="Model\IModelElement.cs" />
+    <Compile Include="RequestProcessing\IAsyncRequestProcessor.cs" />
+    <Compile Include="RequestProcessing\IClientRequestProcessor.cs" />
+    <Compile Include="RequestProcessing\IRequest.cs" />
     <Compile Include="RequestProcessing\IRequestFilter.cs" />
     <Compile Include="RequestProcessing\IRequestHandler.cs" />
     <Compile Include="RequestProcessing\IRequestProcessor.cs" />
+    <Compile Include="RequestProcessing\IResponse.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />
@@ -168,6 +172,7 @@
     <Compile Include="Runtime\NullPlatformManager.cs" />
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
+    <Compile Include="Undefined.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Collections.Concurrent">

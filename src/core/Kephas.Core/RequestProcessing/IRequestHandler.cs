@@ -9,12 +9,14 @@
 
 namespace Kephas.RequestProcessing
 {
+    using System;
+
     using Kephas.Services;
 
     /// <summary>
     /// Application service for handling requests.
     /// </summary>
-    public interface IRequestHandler
+    public interface IRequestHandler : IDisposable
     {
     }
 
@@ -25,6 +27,8 @@ namespace Kephas.RequestProcessing
     /// <typeparam name="TResponse">The type of the response.</typeparam>
     [AppServiceContract(AppServiceLifetime.Instance)]
     public interface IRequestHandler<TRequest, TResponse> : IRequestHandler
+        where TRequest : IRequest
+        where TResponse : IResponse
     {
     }
 }

@@ -1,30 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRequestProcessor.cs" company="Quartz Software SRL">
+// <copyright file="IAsyncRequestProcessor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Application service for processing requests.
+//   Contract for asynchronous request processors.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.RequestProcessing
 {
-    using Kephas.Services;
+    using System.Threading.Tasks;
 
     /// <summary>
-    /// Application service for processing requests.
+    /// Contract for asynchronous request processors.
     /// </summary>
-    /// <remarks>
-    /// The request processor is defined as a shared service.
-    /// </remarks>
-    [AppServiceContract]
-    public interface IRequestProcessor : IAsyncRequestProcessor
+    public interface IAsyncRequestProcessor
     {
         /// <summary>
-        /// Processes the specified request.
+        /// Processes the specified request asynchronously.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>The response.</returns>
-        IResponse Process(IRequest request);
+        /// <returns>The response promise.</returns>
+        Task<IResponse> ProcessAsync(IRequest request);
     }
 }

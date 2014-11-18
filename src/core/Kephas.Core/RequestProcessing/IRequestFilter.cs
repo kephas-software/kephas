@@ -22,8 +22,11 @@ namespace Kephas.RequestProcessing
     /// Application service for request processing interception.
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
+    /// <typeparam name="TResponse">The type of the response.</typeparam>
     [AppServiceContract(AppServiceLifetime.Instance, AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
-    public interface IRequestFilter<TRequest> : IRequestFilter
+    public interface IRequestFilter<TRequest, TResponse> : IRequestFilter
+        where TRequest : IRequest
+        where TResponse : IResponse
     {
     }
 }
