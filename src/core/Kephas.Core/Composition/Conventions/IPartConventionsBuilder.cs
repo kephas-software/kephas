@@ -34,6 +34,16 @@ namespace Kephas.Composition.Conventions
         IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null);
 
         /// <summary>
+        /// Select the interfaces on the part type that will be exported.
+        /// </summary>
+        /// <param name="interfaceFilter">The interface filter.</param>
+        /// <param name="exportConfiguration">The export configuration.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter = null, Action<Type, IExportConventionsBuilder> exportConfiguration = null);
+
+        /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
         /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
@@ -65,6 +75,20 @@ namespace Kephas.Composition.Conventions
         /// <param name="conventionsBuilder">The conventions builder.</param>
         /// <returns>A part builder allowing further configuration of the part.</returns>
         public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        {
+            Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Select the interfaces on the part type that will be exported.
+        /// </summary>
+        /// <param name="interfaceFilter">The interface filter.</param>
+        /// <param name="exportConfiguration">The export configuration.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
         {
             Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
             throw new NotSupportedException();

@@ -68,6 +68,39 @@ namespace Kephas.Composition.Mef.Conventions
         }
 
         /// <summary>
+        /// Select the interfaces on the part type that will be exported.
+        /// </summary>
+        /// <param name="interfaceFilter">The interface filter.</param>
+        /// <param name="exportConfiguration">The export configuration.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter = null, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+        {
+            if (interfaceFilter == null && exportConfiguration != null)
+            {
+                throw new ArgumentException("If an export configuration is specified, then you must also specify an interface filter.");
+            }
+
+            if (interfaceFilter == null)
+            {
+                this.innerConventionBuilder.ExportInterfaces();
+            }
+            else if (exportConfiguration == null)
+            {
+                this.innerConventionBuilder.ExportInterfaces(interfaceFilter);
+            }
+            else
+            {
+                this.innerConventionBuilder.ExportInterfaces(
+                    interfaceFilter,
+                    (t, builder) => exportConfiguration(t, new MefExportConventionsBuilder(builder)));
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
         /// </summary>
         /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>

@@ -45,24 +45,25 @@ namespace Kephas.RequestProcessing
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>The response promise.</returns>
-        public Task<IResponse> ProcessAsync(IRequest request)
+        public async Task<IResponse> ProcessAsync(IRequest request)
         {
-            return Task.Factory.StartNew(() => this.Process(request));
+            using (var requestHandler = this.CreateRequestHandler(request))
+            {
+                var response = await requestHandler.ProcessAsync(request);
+                return response;
+            }
         }
 
         /// <summary>
-        /// Processes the specified request.
+        /// Creates the request handler.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>The response.</returns>
-        public IResponse Process(IRequest request)
+        /// <returns>The newly created request handler.</returns>
+        protected virtual IRequestHandler CreateRequestHandler(IRequest request)
         {
             var requestHandlerType = typeof(IRequestHandler<>).MakeGenericType(request.GetType());
-            using (var requestHandler = (IRequestHandler)this.CompositionContainer.GetExport(requestHandlerType))
-            {
-                var response = requestHandler.Process(request);
-                return response;
-            }
+            var requestHandler = (IRequestHandler)this.CompositionContainer.GetExport(requestHandlerType);
+            return requestHandler;
         }
     }
 }

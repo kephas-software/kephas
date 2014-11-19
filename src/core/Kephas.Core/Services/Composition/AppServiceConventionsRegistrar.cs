@@ -53,20 +53,22 @@ namespace Kephas.Services.Composition
                     continue;
                 }
 
-                var exportedContract = serviceContractMetadata.ContractType ?? serviceContractType;
-                if (!exportedContract.GetTypeInfo().IsAssignableFrom(serviceContract))
-                {
-                    throw new CompositionException(string.Format(Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract, exportedContract, serviceContractType));
-                }
+                var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
+                var exportedContract = exportedContractType.GetTypeInfo();
+                this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType);
 
                 var metadataAttributes = appServiceContractInfo.Value.MetadataAttributes;
-                partBuilder.Export(
-                    b =>
-                        {
-                            b.AsContractType(exportedContract);
-                            this.AddCompositionMetadata(b, metadataAttributes);
-                            this.AddCompositionMetadataForGenerics(b, serviceContract);
-                        });
+                if (exportedContract.IsGenericTypeDefinition)
+                {
+                    partBuilder.ExportInterfaces(
+                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                        (t, b) => this.ConfigureExport(serviceContract, b, t, metadataAttributes));
+                }
+                else
+                {
+                    partBuilder.Export(
+                        b => this.ConfigureExport(serviceContract, b, exportedContractType, metadataAttributes));
+                }
 
                 partBuilder.SelectConstructor(this.SelectAppServiceConstructor);
 
@@ -74,6 +76,57 @@ namespace Kephas.Services.Composition
                 {
                     partBuilder.Shared();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Configures the export.
+        /// </summary>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="exportBuilder">The export builder.</param>
+        /// <param name="exportedContractType">Type of the exported contract.</param>
+        /// <param name="metadataAttributes">The metadata attributes.</param>
+        private void ConfigureExport(TypeInfo serviceContract, IExportConventionsBuilder exportBuilder, Type exportedContractType, Type[] metadataAttributes)
+        {
+            exportBuilder.AsContractType(exportedContractType);
+            this.AddCompositionMetadata(exportBuilder, metadataAttributes);
+            this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract);
+        }
+
+        /// <summary>
+        /// Determines whether the provided interface is a closed generic of the specified open generic contract.
+        /// </summary>
+        /// <param name="openGenericContract">The open generic contract.</param>
+        /// <param name="exportInterface">The export interface.</param>
+        /// <returns><c>true</c> if the provided interface is a closed generic of the specified open generic contract, otherwise <c>false</c>.</returns>
+        private bool IsClosedGenericOf(TypeInfo openGenericContract, TypeInfo exportInterface)
+        {
+            return exportInterface.IsGenericType && exportInterface.GetGenericTypeDefinition() == openGenericContract.AsType();
+        }
+
+        /// <summary>
+        /// Checks the type of the exported contract.
+        /// </summary>
+        /// <param name="exportedContractType">Type of the exported contract.</param>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="serviceContractType">Type of the service contract.</param>
+        private void CheckExportedContractType(
+            Type exportedContractType,
+            TypeInfo serviceContract,
+            Type serviceContractType)
+        {
+            var exportedContract = exportedContractType.GetTypeInfo();
+            if (exportedContract.IsGenericTypeDefinition)
+            {
+                // TODO check to see if any of the interfaces have as generic definition the exported contract.
+            }
+            else if (!exportedContract.IsAssignableFrom(serviceContract))
+            {
+                throw new CompositionException(
+                    string.Format(
+                        Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract,
+                        exportedContractType,
+                        serviceContractType));
             }
         }
 
@@ -94,12 +147,12 @@ namespace Kephas.Services.Composition
             var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
             if (eligibleConstructors.Count == 0)
             {
-                throw new CompositionException(string.Format("There are no constructors marked with {0} for service {1}.", typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             if (eligibleConstructors.Count > 1)
             {
-                throw new CompositionException(string.Format("Multiple constructors marked with {0} are declared for service {1}.", typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             return eligibleConstructors[1];

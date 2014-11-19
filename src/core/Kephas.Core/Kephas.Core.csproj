@@ -147,6 +147,10 @@
     <Compile Include="RequestProcessing\IRequestHandler.cs" />
     <Compile Include="RequestProcessing\IRequestProcessor.cs" />
     <Compile Include="RequestProcessing\IResponse.cs" />
+    <Compile Include="RequestProcessing\Ping\PingRequest.cs" />
+    <Compile Include="RequestProcessing\Ping\PingRequestHandler.cs" />
+    <Compile Include="RequestProcessing\Ping\PongResponse.cs" />
+    <Compile Include="RequestProcessing\RequestHandlerBase.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />

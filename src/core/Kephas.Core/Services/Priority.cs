@@ -17,22 +17,22 @@ namespace Kephas.Services
     public enum Priority
     {
         /// <summary>
-        /// The lowest priority.
+        /// The lowest priority. Used by the null services.
         /// </summary>
         Lowest = int.MaxValue,
 
         /// <summary>
-        /// The low priority.
+        /// The low priority. Used by the default services provided by Kephas.
         /// </summary>
         Low = 1000000,
 
         /// <summary>
-        /// The below normal priority.
+        /// The below normal priority. Used by the default services provided by the applications built on Kephas.
         /// </summary>
         BelowNormal = 1000,
 
         /// <summary>
-        /// The normal priority.
+        /// The normal priority. Used by the services provided by the applications built on Kephas.
         /// </summary>
         Normal = 0,
 

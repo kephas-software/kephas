@@ -10,6 +10,7 @@
 namespace Kephas.RequestProcessing
 {
     using System;
+    using System.Threading.Tasks;
 
     using Kephas.Services;
 
@@ -19,11 +20,11 @@ namespace Kephas.RequestProcessing
     public interface IRequestHandler : IDisposable
     {
         /// <summary>
-        /// Processes the provided request and returns the response.
+        /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
-        /// <returns>The response.</returns>
-        IResponse Process(IRequest request);
+        /// <returns>The response promise.</returns>
+        Task<IResponse> ProcessAsync(IRequest request);
     }
 
     /// <summary>
@@ -35,10 +36,10 @@ namespace Kephas.RequestProcessing
         where TRequest : IRequest
     {
         /// <summary>
-        /// Processes the provided request and returns the response.
+        /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
-        /// <returns>The response.</returns>
-        IResponse Process(TRequest request);
+        /// <returns>The response promise.</returns>
+        Task<IResponse> ProcessAsync(TRequest request);
     }
 }

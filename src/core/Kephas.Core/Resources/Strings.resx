@@ -132,10 +132,19 @@
   <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
     <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
   </data>
+  <data name="AppServiceMissingCompositionConstructor" xml:space="preserve">
+    <value>There are no constructors marked with {0} for service {1}.</value>
+  </data>
+  <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
+    <value>Multiple constructors marked with {0} are declared for service {1}.</value>
+  </data>
   <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
     <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
   </data>
   <data name="NullServiceExceptionMessage" xml:space="preserve">
     <value>{0} is intended to be replaced by a proper implementation.</value>
+  </data>
+  <data name="RequestHandlerBadRequestType" xml:space="preserve">
+    <value>The request to process must be of type '{0}'.</value>
   </data>
 </root>

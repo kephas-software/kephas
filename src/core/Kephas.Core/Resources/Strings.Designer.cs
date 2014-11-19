@@ -107,6 +107,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no constructors marked with {0} for service {1}..
+        /// </summary>
+        internal static string AppServiceMissingCompositionConstructor {
+            get {
+                return ResourceManager.GetString("AppServiceMissingCompositionConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service {1}..
+        /// </summary>
+        internal static string AppServiceMultipleCompositionConstructors {
+            get {
+                return ResourceManager.GetString("AppServiceMultipleCompositionConstructors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead..
         /// </summary>
         internal static string CreateContainerRequiresCompositionAssembliesSet {
@@ -121,6 +139,15 @@ namespace Kephas.Resources {
         internal static string NullServiceExceptionMessage {
             get {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The request to process must be of type &apos;{0}&apos;..
+        /// </summary>
+        internal static string RequestHandlerBadRequestType {
+            get {
+                return ResourceManager.GetString("RequestHandlerBadRequestType", resourceCulture);
             }
         }
     }

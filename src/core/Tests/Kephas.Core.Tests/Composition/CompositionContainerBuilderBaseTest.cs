@@ -202,6 +202,11 @@ namespace Kephas.Core.Tests.Composition
                 return this;
             }
 
+            public IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter = null, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+            {
+                return this;
+            }
+
             public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
             {
                 return this;
