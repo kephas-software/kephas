@@ -12,6 +12,7 @@ namespace Kephas.Core.Tests.Composition
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
@@ -198,6 +199,11 @@ namespace Kephas.Core.Tests.Composition
                     conventionsBuilder(this.ExportBuilder);
                 }
 
+                return this;
+            }
+
+            public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+            {
                 return this;
             }
         }

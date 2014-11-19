@@ -17,6 +17,7 @@ namespace Kephas.Composition.Mef
     using System.Reflection;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Configuration;

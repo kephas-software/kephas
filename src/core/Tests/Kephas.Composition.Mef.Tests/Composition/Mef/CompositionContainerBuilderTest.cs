@@ -200,7 +200,7 @@ namespace Kephas.Composition.Mef
         }
 
         [TestMethod]
-        public void GetExport_AppService_metadata()
+        public void SatisfyImports_AppService_metadata()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
@@ -217,7 +217,7 @@ namespace Kephas.Composition.Mef
         }
 
         [TestMethod]
-        public void GetExport_AppService_metadata_complex()
+        public void SatisfyImports_AppService_metadata_complex()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
@@ -248,6 +248,60 @@ namespace Kephas.Composition.Mef
 
             var export = container.GetExport<ITestGenericExport<string>>();
             Assert.IsInstanceOfType(export, typeof(TestGenericExport<string>));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CompositionException))]
+        public void GetExport_AppService_no_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
+                .CreateContainer();
+
+            var export = container.GetExport<IConstructorAppService>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CompositionException))]
+        public void GetExport_AppService_multiple_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
+                .CreateContainer();
+
+            var export = container.GetExport<IConstructorAppService>();
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_default_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
+                .CreateContainer();
+
+            var export = container.GetExport<IConstructorAppService>();
+
+            Assert.IsInstanceOfType(export, typeof(DefaultConstructorAppService));
+        }
+
+        [TestMethod]
+        public void GetExport_AppService_single_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
+                .CreateContainer();
+
+            var export = container.GetExport<IConstructorAppService>();
+
+            Assert.IsInstanceOfType(export, typeof(SingleConstructorAppService));
         }
 
         private CompositionContainerBuilder CreateCompositionContainerBuilder()
@@ -306,7 +360,8 @@ namespace Kephas.Composition.Mef
 
         public interface IConverter { }
 
-        [AppServiceContract(MetadataAttributes = new [] { typeof(ProcessingPriorityAttribute) })]
+        [AppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) },
+            ContractType = typeof(IConverter))]
         public interface IConverter<TSource, TTarget> : IConverter { }
 
         [ProcessingPriority(100)]
@@ -324,5 +379,44 @@ namespace Kephas.Composition.Mef
         public interface ITestGenericExport<T> { }
 
         public class TestGenericExport<T> : ITestGenericExport<T> { }
+
+        [AppServiceContract]
+        public interface IConstructorAppService { }
+
+        public class DefaultConstructorAppService : IConstructorAppService
+        {
+
+        }
+
+        public class SingleConstructorAppService : IConstructorAppService
+        {
+            public SingleConstructorAppService(ICompositionContainer compositionContainer)
+            {
+            }
+        }
+
+        public class NoCompositionConstructorAppService : IConstructorAppService
+        {
+            public NoCompositionConstructorAppService()
+            {
+            }
+
+            public NoCompositionConstructorAppService(ICompositionContainer compositionContainer)
+            {
+            }
+        }
+
+        public class MultipleCompositionConstructorAppService : IConstructorAppService
+        {
+            [CompositionConstructor]
+            public MultipleCompositionConstructorAppService()
+            {
+            }
+
+            [CompositionConstructor]
+            public MultipleCompositionConstructorAppService(ICompositionContainer compositionContainer)
+            {
+            }
+        }
     }
 }

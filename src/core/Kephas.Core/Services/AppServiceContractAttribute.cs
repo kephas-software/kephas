@@ -84,5 +84,13 @@ namespace Kephas.Services
         {
             get { return this.Lifetime == AppServiceLifetime.Instance; }
         }
+
+        /// <summary>
+        /// Gets or sets the contract type of the export.
+        /// </summary>
+        /// <value>
+        /// The contract type of the export.
+        /// </value>
+        public Type ContractType { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Composition;
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -214,6 +215,22 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsNull(valueGetter(typeof(NullMetadataAppService)));
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(CompositionException))]
+        public void RegisterConventions_bad_contract_type()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AppServiceConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(IBadAppService).GetTypeInfo(), 
+                        typeof(BadAppService).GetTypeInfo(), 
+                    });
+        }
+
         [AppServiceContract(AllowMultiple = false)]
         public interface ISingleTestAppService { }
 
@@ -246,12 +263,12 @@ namespace Kephas.Core.Tests.Services.Composition
 
         public interface IOneGenericAppService { }
 
-        [AppServiceContract]
+        [AppServiceContract(ContractType = typeof(IOneGenericAppService))]
         public interface IOneGenericAppService<T> : IOneGenericAppService { }
 
         public interface ITwoGenericAppService { }
 
-        [AppServiceContract]
+        [AppServiceContract(ContractType = typeof(ITwoGenericAppService))]
         public interface ITwoGenericAppService<TFrom, ToType> : ITwoGenericAppService { }
 
         public class GenericAppService<T> : IGenericAppService<T> { }
@@ -259,5 +276,10 @@ namespace Kephas.Core.Tests.Services.Composition
         public class OneGenericAppServiceString : IOneGenericAppService<string> { }
 
         public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool> { }
+
+        [AppServiceContract(ContractType = typeof(IDisposable))]
+        public interface IBadAppService { }
+
+        public class BadAppService : IBadAppService { }
     }
 }

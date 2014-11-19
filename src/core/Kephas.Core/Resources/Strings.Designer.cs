@@ -98,6 +98,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
+        /// </summary>
+        internal static string AppServiceCompositionContractTypeDoesNotMatchServiceContract {
+            get {
+                return ResourceManager.GetString("AppServiceCompositionContractTypeDoesNotMatchServiceContract", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead..
         /// </summary>
         internal static string CreateContainerRequiresCompositionAssembliesSet {

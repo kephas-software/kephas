@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef
+namespace Kephas.Composition.Mef.Conventions
 {
     using System;
     using System.Composition.Convention;

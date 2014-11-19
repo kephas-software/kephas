@@ -10,10 +10,14 @@
 namespace Kephas.Composition.Conventions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Reflection;
 
     /// <summary>
     /// Contract for part conventions builders.
     /// </summary>
+    [ContractClass(typeof(PartConventionsBuilderContractClass))]
     public interface IPartConventionsBuilder
     {
         /// <summary>
@@ -28,5 +32,56 @@ namespace Kephas.Composition.Conventions
         /// <param name="conventionsBuilder">The conventions builder.</param>
         /// <returns>A part builder allowing further configuration of the part.</returns>
         IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null);
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null);
+    }
+
+    /// <summary>
+    /// Contract class for <see cref="IPartConventionsBuilder"/>.
+    /// </summary>
+    [ContractClassFor(typeof(IPartConventionsBuilder))]
+    internal abstract class PartConventionsBuilderContractClass : IPartConventionsBuilder
+    {
+        /// <summary>
+        /// Mark the part as being shared within the entire composition.
+        /// </summary>
+        /// <returns>A part builder allowing further configuration of the part.</returns>
+        public IPartConventionsBuilder Shared()
+        {
+            Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Exports the part using the specified conventions builder.
+        /// </summary>
+        /// <param name="conventionsBuilder">The conventions builder.</param>
+        /// <returns>A part builder allowing further configuration of the part.</returns>
+        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        {
+            Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+        {
+            Contract.Requires(constructorSelector != null);
+            Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
+            throw new NotSupportedException();
+        }
     }
 }

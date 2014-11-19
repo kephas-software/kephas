@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AmbientServicesBuilderTest.cs" />
     <Compile Include="Reflection\ReflectionHelperTest.cs" />
+    <Compile Include="RequestProcessing\DefaultRequestProcessorTest.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
   </ItemGroup>
   <ItemGroup>

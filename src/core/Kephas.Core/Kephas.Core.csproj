@@ -116,9 +116,12 @@
   <ItemGroup>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
+    <Compile Include="Composition\CompositionConstructorAttribute.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBase.cs" />
+    <Compile Include="Composition\CompositionException.cs" />
     <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
     <Compile Include="Composition\Conventions\IExportConventionsBuilder.cs" />
+    <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
     <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
     <Compile Include="Composition\ExcludeFromCompositionAttribute.cs" />
     <Compile Include="Composition\IExportProvider.cs" />
@@ -136,10 +139,11 @@
     <Compile Include="Model\Dimensions\ScopeDimension.cs" />
     <Compile Include="Model\IAppDimension.cs" />
     <Compile Include="Model\IModelElement.cs" />
+    <Compile Include="RequestProcessing\DefaultRequestProcessor.cs" />
     <Compile Include="RequestProcessing\IAsyncRequestProcessor.cs" />
     <Compile Include="RequestProcessing\IClientRequestProcessor.cs" />
     <Compile Include="RequestProcessing\IRequest.cs" />
-    <Compile Include="RequestProcessing\IRequestFilter.cs" />
+    <Compile Include="RequestProcessing\IRequestProcessingFilter.cs" />
     <Compile Include="RequestProcessing\IRequestHandler.cs" />
     <Compile Include="RequestProcessing\IRequestProcessor.cs" />
     <Compile Include="RequestProcessing\IResponse.cs" />

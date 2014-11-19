@@ -18,17 +18,27 @@ namespace Kephas.RequestProcessing
     /// </summary>
     public interface IRequestHandler : IDisposable
     {
+        /// <summary>
+        /// Processes the provided request and returns the response.
+        /// </summary>
+        /// <param name="request">The request to be handled.</param>
+        /// <returns>The response.</returns>
+        IResponse Process(IRequest request);
     }
 
     /// <summary>
     /// Application service for handling requests.
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
-    /// <typeparam name="TResponse">The type of the response.</typeparam>
     [AppServiceContract(AppServiceLifetime.Instance)]
-    public interface IRequestHandler<TRequest, TResponse> : IRequestHandler
+    public interface IRequestHandler<in TRequest> : IRequestHandler
         where TRequest : IRequest
-        where TResponse : IResponse
     {
+        /// <summary>
+        /// Processes the provided request and returns the response.
+        /// </summary>
+        /// <param name="request">The request to be handled.</param>
+        /// <returns>The response.</returns>
+        IResponse Process(TRequest request);
     }
 }

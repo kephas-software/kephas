@@ -17,7 +17,6 @@ namespace Kephas.Services.Composition
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Metadata;
-    using Kephas.Reflection;
     using Kephas.Resources;
 
     /// <summary>
@@ -44,14 +43,20 @@ namespace Kephas.Services.Composition
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
                 var serviceContract = appServiceContractInfo.Key;
+                var serviceContractType = serviceContract.AsType();
                 var serviceContractMetadata = appServiceContractInfo.Value;
 
-                Type exportedContract;
-                var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos, out exportedContract);
+                var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos);
 
                 if (partBuilder == null)
                 {
                     continue;
+                }
+
+                var exportedContract = serviceContractMetadata.ContractType ?? serviceContractType;
+                if (!exportedContract.GetTypeInfo().IsAssignableFrom(serviceContract))
+                {
+                    throw new CompositionException(string.Format(Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract, exportedContract, serviceContractType));
                 }
 
                 var metadataAttributes = appServiceContractInfo.Value.MetadataAttributes;
@@ -63,11 +68,41 @@ namespace Kephas.Services.Composition
                             this.AddCompositionMetadataForGenerics(b, serviceContract);
                         });
 
+                partBuilder.SelectConstructor(this.SelectAppServiceConstructor);
+
                 if (serviceContractMetadata.IsShared)
                 {
                     partBuilder.Shared();
                 }
             }
+        }
+
+        /// <summary>
+        /// Selects the application service constructor.
+        /// </summary>
+        /// <param name="constructors">The constructors.</param>
+        /// <returns>The application service constructor.</returns>
+        private ConstructorInfo SelectAppServiceConstructor(IEnumerable<ConstructorInfo> constructors)
+        {
+            var constructorsList = constructors.ToList();
+
+            if (constructorsList.Count == 1)
+            {
+                return constructorsList[0];
+            }
+
+            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
+            if (eligibleConstructors.Count == 0)
+            {
+                throw new CompositionException(string.Format("There are no constructors marked with {0} for service {1}.", typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+            }
+
+            if (eligibleConstructors.Count > 1)
+            {
+                throw new CompositionException(string.Format("Multiple constructors marked with {0} are declared for service {1}.", typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+            }
+
+            return eligibleConstructors[1];
         }
 
         /// <summary>
@@ -197,7 +232,6 @@ namespace Kephas.Services.Composition
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="conventions">The conventions.</param>
         /// <param name="typeInfos">The type infos.</param>
-        /// <param name="exportedContract">The exported contract.</param>
         /// <returns>
         /// The part builder or <c>null</c>.
         /// </returns>
@@ -205,19 +239,14 @@ namespace Kephas.Services.Composition
             AppServiceContractAttribute serviceContractMetadata,
             TypeInfo serviceContract,
             IConventionsBuilder conventions,
-            IEnumerable<TypeInfo> typeInfos,
-            out Type exportedContract)
+            IEnumerable<TypeInfo> typeInfos)
         {
             var serviceContractType = serviceContract.AsType();
 
             if (serviceContract.IsGenericTypeDefinition)
             {
-                var nonGenericFullName = serviceContract.GetNonGenericFullName();
-                var nonGenericServiceContract = serviceContract.ImplementedInterfaces.FirstOrDefault(i => i.FullName == nonGenericFullName && i != serviceContractType);
-
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
-                exportedContract = nonGenericServiceContract ?? serviceContractType;
                 return conventions.ForTypesMatching(t => t.GetTypeInfo().ImplementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType));
             }
 
@@ -225,7 +254,6 @@ namespace Kephas.Services.Composition
             {
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
-                exportedContract = serviceContractType;
                 return conventions.ForTypesDerivedFrom(serviceContractType);
             }
 
@@ -236,7 +264,6 @@ namespace Kephas.Services.Composition
                     && ti.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null).ToList();
             if (parts.Count == 1)
             {
-                exportedContract = serviceContractType;
                 return conventions.ForType(parts[0].AsType());
             }
             
@@ -261,11 +288,9 @@ namespace Kephas.Services.Composition
                             string.Join(", ", overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
                 }
 
-                exportedContract = serviceContractType;
                 return conventions.ForType(selectedPart.AsType());
             }
 
-            exportedContract = null;
             return null;
         }
     }

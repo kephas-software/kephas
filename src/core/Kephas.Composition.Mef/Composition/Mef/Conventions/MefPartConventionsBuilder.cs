@@ -7,11 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef
+namespace Kephas.Composition.Mef.Conventions
 {
     using System;
+    using System.Collections.Generic;
     using System.Composition.Convention;
     using System.Diagnostics.Contracts;
+    using System.Reflection;
 
     using Kephas.Composition.Conventions;
 
@@ -60,6 +62,29 @@ namespace Kephas.Composition.Mef
             else
             {
                 this.innerConventionBuilder.Export(b => conventionsBuilder(new MefExportConventionsBuilder(b)));
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Select which of the available constructors will be used to instantiate the part.
+        /// </summary>
+        /// <param name="constructorSelector">Filter that selects a single constructor.</param><param name="importConfiguration">Action configuring the parameters of the selected constructor.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+        {
+            if (importConfiguration == null)
+            {
+                this.innerConventionBuilder.SelectConstructor(constructorSelector);
+            }
+            else
+            {
+                this.innerConventionBuilder.SelectConstructor(
+                    constructorSelector,
+                    (pi, config) => importConfiguration(pi, new MefImportConventionsBuilder(config)));
             }
 
             return this;

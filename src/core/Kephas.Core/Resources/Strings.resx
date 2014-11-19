@@ -129,6 +129,9 @@
   <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
     <value>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}.</value>
   </data>
+  <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+  </data>
   <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
     <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
   </data>
