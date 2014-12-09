@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E60205F0-BFF6-4A5E-814B-28CFEB629C2C}</ProjectGuid>
+    <ProjectGuid>{F148B21B-D58B-485C-9276-960511EA87CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Core.Tests</RootNamespace>
-    <AssemblyName>Kephas.Core.Tests</AssemblyName>
+    <RootNamespace>Kephas.Model.Tests</RootNamespace>
+    <AssemblyName>Kephas.Model.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,12 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,10 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Telerik.JustMock, Version=2014.3.1021.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\JustMock.2014.3.1021.2\lib\Net35\Telerik.JustMock.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -60,27 +50,19 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AmbientServicesTest.cs" />
-    <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
+    <Compile Include="Dimensions\AppDimensionBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AmbientServicesBuilderTest.cs" />
-    <Compile Include="Reflection\ReflectionHelperTest.cs" />
-    <Compile Include="RequestProcessing\DefaultRequestProcessorTest.cs" />
-    <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{84122862-c5dd-4460-a9f5-925d623b22d7}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj">
+      <Project>{74eb78fc-c8a4-4e6b-9329-1c5060a0fa2a}</Project>
+      <Name>Kephas.Model</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="AmbientServices.orderedtest">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -101,13 +83,6 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Model.Dimensions
+using System.Diagnostics.CodeAnalysis;
+using Kephas.Model.Dimensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Kephas.Model.Tests.Dimensions
 {
-    using System.Diagnostics.CodeAnalysis;
-
-    using Kephas.Model.Dimensions;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     [TestClass]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AppDimensionBaseTest

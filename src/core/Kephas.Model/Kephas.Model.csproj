@@ -5,20 +5,16 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{84122862-C5DD-4460-A9F5-925D623B22D7}</ProjectGuid>
+    <ProjectGuid>{74EB78FC-C8A4-4E6B-9329-1C5060A0FA2A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas</RootNamespace>
-    <AssemblyName>Kephas.Core</AssemblyName>
+    <RootNamespace>Kephas.Model</RootNamespace>
+    <AssemblyName>Kephas.Model</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,16 +33,23 @@
     <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
     <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
     <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
     <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
     <CodeContractsInferRequires>True</CodeContractsInferRequires>
     <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
     <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
     <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
     <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
@@ -59,7 +62,9 @@
     <CodeContractsSQLServerOption />
     <CodeContractsBaseLineFile />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
@@ -79,16 +84,23 @@
     <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
     <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
     <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
     <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
     <CodeContractsInferRequires>True</CodeContractsInferRequires>
     <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
     <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
     <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
     <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
@@ -101,84 +113,29 @@
     <CodeContractsSQLServerOption />
     <CodeContractsBaseLineFile />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
+      <Project>{84122862-c5dd-4460-a9f5-925d623b22d7}</Project>
+      <Name>Kephas.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmbientServices.cs" />
-    <Compile Include="AmbientServicesBuilder.cs" />
-    <Compile Include="Composition\CompositionConstructorAttribute.cs" />
-    <Compile Include="Composition\CompositionContainerBuilderBase.cs" />
-    <Compile Include="Composition\CompositionException.cs" />
-    <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
-    <Compile Include="Composition\Conventions\IExportConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
-    <Compile Include="Composition\ExcludeFromCompositionAttribute.cs" />
-    <Compile Include="Composition\IExportProvider.cs" />
-    <Compile Include="Composition\Metadata\ExportMetadataBase.cs" />
-    <Compile Include="Composition\ICompositionContainer.cs" />
-    <Compile Include="Composition\Conventions\IConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IConventionsRegistrar.cs" />
-    <Compile Include="Composition\Metadata\IMetadataValue.cs" />
-    <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
-    <Compile Include="Configuration\IConfigurationProvider.cs" />
-    <Compile Include="RequestProcessing\DefaultRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IAsyncRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IClientRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IRequest.cs" />
-    <Compile Include="RequestProcessing\IRequestProcessingFilter.cs" />
-    <Compile Include="RequestProcessing\IRequestHandler.cs" />
-    <Compile Include="RequestProcessing\IRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IResponse.cs" />
-    <Compile Include="RequestProcessing\Ping\PingRequest.cs" />
-    <Compile Include="RequestProcessing\Ping\PingRequestHandler.cs" />
-    <Compile Include="RequestProcessing\Ping\PongResponse.cs" />
-    <Compile Include="RequestProcessing\RequestHandlerBase.cs" />
-    <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
-    <Compile Include="Services\NullServiceException.cs" />
-    <Compile Include="Services\OverridePriorityAttribute.cs" />
-    <Compile Include="Services\Priority.cs" />
-    <Compile Include="Services\ProcessingPriorityAttribute.cs" />
-    <Compile Include="Services\AppServiceMetadata.cs" />
-    <Compile Include="Composition\NullCompositionContainer.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
-    <Compile Include="Configuration\NullConfigurationManager.cs" />
-    <Compile Include="Diagnostics\Logging\DebugConfigurationManager.cs" />
-    <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Diagnostics\Profiler.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
-    <Compile Include="Logging\ILogConsumer.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\ILogManager.cs" />
-    <Compile Include="Logging\NullLogManager.cs" />
+    <Compile Include="Dimensions\AppDimensionBase.cs" />
+    <Compile Include="Dimensions\AppLayerDimension.cs" />
+    <Compile Include="Dimensions\AspectDimension.cs" />
+    <Compile Include="Dimensions\ModuleDimension.cs" />
+    <Compile Include="Dimensions\ScopeDimension.cs" />
+    <Compile Include="IAppDimension.cs" />
+    <Compile Include="IModelElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\ReflectionHelper.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Runtime\IPlatformManager.cs" />
-    <Compile Include="Runtime\NullPlatformManager.cs" />
-    <Compile Include="Services\AppServiceContractAttribute.cs" />
-    <Compile Include="Services\AppServiceLifetime.cs" />
-    <Compile Include="Undefined.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Collections.Concurrent">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\System.Collections.Concurrent.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
