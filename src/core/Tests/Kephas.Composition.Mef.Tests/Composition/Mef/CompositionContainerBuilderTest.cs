@@ -337,10 +337,10 @@ namespace Kephas.Composition.Mef
             }
         }
 
-        [AppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
+        [SharedAppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
         public interface ITestAppService { }
 
-        [AppServiceContract(AllowMultiple = true)]
+        [SharedAppServiceContract(AllowMultiple = true)]
         public interface ITestMultiAppService { }
 
         public class TestAppService : ITestAppService { }
@@ -360,7 +360,7 @@ namespace Kephas.Composition.Mef
 
         public interface IConverter { }
 
-        [AppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) },
+        [SharedAppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) },
             ContractType = typeof(IConverter))]
         public interface IConverter<TSource, TTarget> : IConverter { }
 
@@ -375,12 +375,12 @@ namespace Kephas.Composition.Mef
             public ICollection<ExportFactory<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
 
-        [AppServiceContract]
+        [SharedAppServiceContract]
         public interface ITestGenericExport<T> { }
 
         public class TestGenericExport<T> : ITestGenericExport<T> { }
 
-        [AppServiceContract]
+        [SharedAppServiceContract]
         public interface IConstructorAppService { }
 
         public class DefaultConstructorAppService : IConstructorAppService

@@ -31,7 +31,7 @@ namespace Kephas.RequestProcessing
     /// Application service for handling requests.
     /// </summary>
     /// <typeparam name="TRequest">The type of the request.</typeparam>
-    [AppServiceContract(AppServiceLifetime.Instance)]
+    [AppServiceContract]
     public interface IRequestHandler<in TRequest> : IRequestHandler
         where TRequest : IRequest
     {

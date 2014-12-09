@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScopeDimension.cs" company="Quartz Software SRL">
+// <copyright file="IScopeDimension.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -13,20 +13,11 @@ namespace Kephas.Model.Dimensions
     /// Dimension identifying an application scope. Application scopes may be domain models, client models, 
     /// application services and so on.
     /// </summary>
-    public class ScopeDimension : AppDimensionBase
+    /// <remarks>
+    /// The scope dimension is not aggregatable because the scope provides an orthogonal view over the application.
+    /// </remarks>
+    [ModelDimension(2)]
+    public interface IScopeDimension
     {
-        /// <summary>
-        /// Gets a value indicating whether this dimension is aggregatable.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this dimension is aggregatable; otherwise, <c>false</c>.
-        /// </value>
-        /// <remarks>
-        /// The scope dimension is not aggregatable because the scope provides an orthogonal view over the application.
-        /// </remarks>
-        public override bool IsAggregatable
-        {
-            get { return false; }
-        }
     }
 }

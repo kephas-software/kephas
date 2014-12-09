@@ -173,6 +173,7 @@
     <Compile Include="Runtime\NullPlatformManager.cs" />
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
+    <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
     <Compile Include="Undefined.cs" />
   </ItemGroup>
   <ItemGroup>

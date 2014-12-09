@@ -17,7 +17,7 @@ namespace Kephas.RequestProcessing
     /// <remarks>
     /// The client request processor is defined as a shared service.
     /// </remarks>
-    [AppServiceContract]
+    [SharedAppServiceContract]
     public interface IClientRequestProcessor : IAsyncRequestProcessor
     {
     }

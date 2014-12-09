@@ -16,15 +16,15 @@ namespace Kephas.Model
     /// Contract providing base information about a model element.
     /// </summary>
     [ContractClass(typeof(ModelElementContractClass))]
-    public interface IModelElement
+    public interface IModelElement : INamedElement
     {
         /// <summary>
-        /// Gets the name of the model element.
+        /// Gets the projection where the model element is defined.
         /// </summary>
         /// <value>
-        /// The model element name.
+        /// The projection.
         /// </value>
-        string Name { get; }
+        IModelProjection Projection { get; }
 
         /// <summary>
         /// Gets the members of this model element.
@@ -33,6 +33,14 @@ namespace Kephas.Model
         /// The model element members.
         /// </value>
         IEnumerable<IModelElement> Members { get; }
+
+        /// <summary>
+        /// Gets the attributes of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element attributes.
+        /// </value>
+        IEnumerable<IAttribute> Attributes { get; }
     }
 
     /// <summary>
@@ -42,18 +50,14 @@ namespace Kephas.Model
     internal abstract class ModelElementContractClass : IModelElement
     {
         /// <summary>
-        /// Gets the name of the model element.
+        /// Gets the projection where the model element is defined.
         /// </summary>
         /// <value>
-        /// The model element name.
+        /// The projection.
         /// </value>
-        public string Name
+        public IModelProjection Projection
         {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrWhiteSpace(Contract.Result<string>()));
-                return "Name";
-            }
+            get { return Contract.Result<IModelProjection>(); }
         }
 
         /// <summary>
@@ -67,8 +71,31 @@ namespace Kephas.Model
             get
             {
                 Contract.Ensures(Contract.Result<IEnumerable<IModelElement>>() != null);
-                return new List<IModelElement>();
+                return Contract.Result<IEnumerable<IModelElement>>();
             }
         }
+
+        /// <summary>
+        /// Gets the attributes of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element attributes.
+        /// </value>
+        public IEnumerable<IAttribute> Attributes
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IAttribute>>() != null);
+                return Contract.Result<IEnumerable<IAttribute>>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the model element.
+        /// </summary>
+        /// <value>
+        /// The model element name.
+        /// </value>
+        public abstract string Name { get; }
     }
 }

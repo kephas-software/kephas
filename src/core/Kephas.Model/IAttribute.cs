@@ -1,24 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRequestProcessor.cs" company="Quartz Software SRL">
+// <copyright file="IAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Application service for processing requests.
+//   Contract for model attributes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.RequestProcessing
+namespace Kephas.Model
 {
-    using Kephas.Services;
-
     /// <summary>
-    /// Application service for processing requests.
+    /// Contract for model attributes.
     /// </summary>
     /// <remarks>
-    /// The request processor is defined as a shared service.
+    /// Attributes have names starting with @ (the at sign).
     /// </remarks>
-    [SharedAppServiceContract]
-    public interface IRequestProcessor : IAsyncRequestProcessor
+    public interface IAttribute : IModelElement
     {
     }
 }

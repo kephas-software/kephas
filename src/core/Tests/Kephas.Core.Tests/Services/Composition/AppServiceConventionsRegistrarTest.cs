@@ -231,10 +231,10 @@ namespace Kephas.Core.Tests.Services.Composition
                     });
         }
 
-        [AppServiceContract(AllowMultiple = false)]
+        [SharedAppServiceContract(AllowMultiple = false)]
         public interface ISingleTestAppService { }
 
-        [AppServiceContract(AllowMultiple = true)]
+        [SharedAppServiceContract(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
         public class SingleTestService : ISingleTestAppService { }
@@ -249,7 +249,7 @@ namespace Kephas.Core.Tests.Services.Composition
         public class NewMultipleTestService : IMultipleTestAppService { }
 
 
-        [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
         public interface IMetadataAppService { }
 
         [ProcessingPriority(100)]
@@ -258,17 +258,17 @@ namespace Kephas.Core.Tests.Services.Composition
         public class NullMetadataAppService : IMetadataAppService { }
 
 
-        [AppServiceContract]
+        [SharedAppServiceContract]
         public interface IGenericAppService<T> { }
 
         public interface IOneGenericAppService { }
 
-        [AppServiceContract(ContractType = typeof(IOneGenericAppService))]
+        [SharedAppServiceContract(ContractType = typeof(IOneGenericAppService))]
         public interface IOneGenericAppService<T> : IOneGenericAppService { }
 
         public interface ITwoGenericAppService { }
 
-        [AppServiceContract(ContractType = typeof(ITwoGenericAppService))]
+        [SharedAppServiceContract(ContractType = typeof(ITwoGenericAppService))]
         public interface ITwoGenericAppService<TFrom, ToType> : ITwoGenericAppService { }
 
         public class GenericAppService<T> : IGenericAppService<T> { }
@@ -277,7 +277,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
         public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool> { }
 
-        [AppServiceContract(ContractType = typeof(IDisposable))]
+        [SharedAppServiceContract(ContractType = typeof(IDisposable))]
         public interface IBadAppService { }
 
         public class BadAppService : IBadAppService { }

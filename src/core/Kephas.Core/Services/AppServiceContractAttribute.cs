@@ -25,7 +25,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         public AppServiceContractAttribute()
-            : this(AppServiceLifetime.Shared)
+            : this(AppServiceLifetime.Instance)
         {
         }
 
@@ -33,7 +33,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         /// <param name="lifetime">The lifetime.</param>
-        public AppServiceContractAttribute(AppServiceLifetime lifetime)
+        protected AppServiceContractAttribute(AppServiceLifetime lifetime)
         {
             this.Lifetime = lifetime;
         }
@@ -64,7 +64,7 @@ namespace Kephas.Services
         public Type[] MetadataAttributes { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the application service <see cref="AppServiceContractAttribute"/> is shared.
+        /// Gets a value indicating whether the application service is shared.
         /// </summary>
         /// <value>
         ///   <c>true</c> if shared; otherwise, <c>false</c>.
@@ -75,7 +75,7 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Gets a value indicating whether the application service <see cref="AppServiceContractAttribute"/> is instanced per request.
+        /// Gets a value indicating whether the application service is instanced per request.
         /// </summary>
         /// <value>
         ///   <c>true</c> if instanced per request; otherwise, <c>false</c>.

@@ -36,7 +36,7 @@ namespace Kephas.Services.Composition
 
             // get all type infos from the composition assemblies
             var appServiceContractsInfos =
-                typeInfos.ToDictionary(ti => ti, ti => ti.GetCustomAttribute<AppServiceContractAttribute>())
+                typeInfos.ToDictionary(ti => ti, ti => ti.GetCustomAttribute<SharedAppServiceContractAttribute>())
                     .Where(ta => ta.Value != null)
                     .ToList();
 
@@ -289,7 +289,7 @@ namespace Kephas.Services.Composition
         /// The part builder or <c>null</c>.
         /// </returns>
         private IPartConventionsBuilder TryGetPartBuilder(
-            AppServiceContractAttribute serviceContractMetadata,
+            SharedAppServiceContractAttribute serviceContractMetadata,
             TypeInfo serviceContract,
             IConventionsBuilder conventions,
             IEnumerable<TypeInfo> typeInfos)

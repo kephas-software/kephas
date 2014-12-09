@@ -15,7 +15,7 @@ namespace Kephas.Configuration
     /// Defines a contract for providing component configuration.
     /// </summary>
     /// <typeparam name="TConfiguration">The type of the configuration.</typeparam>
-    [AppServiceContract]
+    [SharedAppServiceContract]
     public interface IConfigurationProvider<out TConfiguration>
     {
         /// <summary>

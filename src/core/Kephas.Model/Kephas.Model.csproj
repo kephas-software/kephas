@@ -128,13 +128,32 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dimensions\AppDimensionBase.cs" />
-    <Compile Include="Dimensions\AppLayerDimension.cs" />
-    <Compile Include="Dimensions\AspectDimension.cs" />
-    <Compile Include="Dimensions\ModuleDimension.cs" />
-    <Compile Include="Dimensions\ScopeDimension.cs" />
-    <Compile Include="IAppDimension.cs" />
+    <Compile Include="Configuration\IElementConfigurator.cs" />
+    <Compile Include="Elements\ModelDimension.cs" />
+    <Compile Include="Elements\NamedElementBase.cs" />
+    <Compile Include="Factory\ElementConstructorInfo.cs" />
+    <Compile Include="Factory\ElementFactoryBase.cs" />
+    <Compile Include="Factory\ModelDimensionConstructorInfo.cs" />
+    <Compile Include="Factory\ModelDimensionFactory.cs" />
+    <Compile Include="ModelDimensionAttribute.cs" />
+    <Compile Include="AggregatableModelDimensionAttribute.cs" />
+    <Compile Include="Dimensions\IAppLayerDimension.cs" />
+    <Compile Include="Dimensions\IAspectDimension.cs" />
+    <Compile Include="Dimensions\IModuleDimension.cs" />
+    <Compile Include="Dimensions\IScopeDimension.cs" />
+    <Compile Include="Configuration\IConfigurableElement.cs" />
+    <Compile Include="Factory\IElementFactory.cs" />
+    <Compile Include="Factory\IModelSpaceProvider.cs" />
+    <Compile Include="IClassifier.cs" />
+    <Compile Include="IModelDimension.cs" />
+    <Compile Include="IAttribute.cs" />
+    <Compile Include="IModelDimensionElement.cs" />
     <Compile Include="IModelElement.cs" />
+    <Compile Include="IModelProjection.cs" />
+    <Compile Include="IModelSpace.cs" />
+    <Compile Include="INamedElement.cs" />
+    <Compile Include="IProperty.cs" />
+    <Compile Include="Elements\ModelElementBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

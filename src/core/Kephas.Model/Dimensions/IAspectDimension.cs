@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspectDimension.cs" company="Quartz Software SRL">
+// <copyright file="IAspectDimension.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -14,21 +14,12 @@ namespace Kephas.Model.Dimensions
     /// By default, Kephas provide a default dimension element named 'Main',
     /// identifying the main concern of a model element.
     /// </summary>
-    public class AspectDimension : AppDimensionBase
+    /// <remarks>
+    /// The aspect dimension is aggregatable because it may provide logical aspects
+    /// of the same element, which, after aggregation, are weaved into one integral element.
+    /// </remarks>
+    [AggregatableModelDimension(3)]
+    public interface IAspectDimension
     {
-        /// <summary>
-        /// Gets a value indicating whether this dimension is aggregatable.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this dimension is aggregatable; otherwise, <c>false</c>.
-        /// </value>
-        /// <remarks>
-        /// The aspect dimension is aggregatable because it may provide logical aspects
-        /// of the same element, which, after aggregation, are weaved into one integral element.
-        /// </remarks>
-        public override bool IsAggregatable
-        {
-            get { return true; }
-        }
     }
 }
