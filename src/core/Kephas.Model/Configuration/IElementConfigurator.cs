@@ -10,9 +10,9 @@ namespace Kephas.Model.Configuration
         /// <summary>
         /// Provides the model element to be configured.
         /// </summary>
-        /// <param name="modelElement">The model element.</param>
+        /// <param name="element">The model element.</param>
         /// <returns>A configurator for the provided model element.</returns>
-        IElementConfigurator With(IModelElement modelElement);
+        IElementConfigurator With(INamedElement element);
 
         /// <summary>
         /// Configures the model element provided with the.
