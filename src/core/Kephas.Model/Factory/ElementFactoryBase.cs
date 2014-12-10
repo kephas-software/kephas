@@ -5,9 +5,9 @@ namespace Kephas.Model.Factory
     /// <summary>
     /// Base implementation of an element factory.
     /// </summary>
-    /// <typeparam name="TElement">The type of the element.</typeparam>
+    /// <typeparam name="TElement">The type of the element being created.</typeparam>
     /// <typeparam name="TElementConstructorInfo">The type of the element constructor information.</typeparam>
-    public abstract class ElementFactoryBase<TElement, TElementConstructorInfo> : IElementFactory
+    public abstract class ElementFactoryBase<TElement, TElementConstructorInfo> : IElementFactory<TElement>
         where TElement : INamedElement
         where TElementConstructorInfo : ElementConstructorInfo
     {

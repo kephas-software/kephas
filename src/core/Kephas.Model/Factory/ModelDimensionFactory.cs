@@ -6,7 +6,7 @@ namespace Kephas.Model.Factory
     /// <summary>
     /// Factory for model dimensions.
     /// </summary>
-    public class ModelDimensionFactory : ElementFactoryBase<ModelDimension, ModelDimensionConstructorInfo>
+    public class ModelDimensionFactory : ElementFactoryBase<IModelDimension, ModelDimensionConstructorInfo>
     {
         /// <summary>
         /// Tries to get the element constructor information.
@@ -42,7 +42,7 @@ namespace Kephas.Model.Factory
         /// </summary>
         /// <param name="elementConstructorInfo">The element constructor information.</param>
         /// <returns>The newly created element.</returns>
-        protected override ModelDimension CreateElement(ModelDimensionConstructorInfo elementConstructorInfo)
+        protected override IModelDimension CreateElement(ModelDimensionConstructorInfo elementConstructorInfo)
         {
             var attr = elementConstructorInfo.ModelDimensionAttribute;
             return new ModelDimension(this.GetName(elementConstructorInfo), attr.Index, attr.IsAggregatable);

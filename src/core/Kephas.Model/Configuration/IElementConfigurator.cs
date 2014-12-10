@@ -24,10 +24,9 @@ namespace Kephas.Model.Configuration
     /// Contract for model element configurators for a specific native type.
     /// </summary>
     /// <typeparam name="TNativeElement">The type of the native element.</typeparam>
-    /// <typeparam name="TRealConfigurator">The type of the real configurator.</typeparam>
     [SharedAppServiceContract(AllowMultiple = true, ContractType = typeof(IElementConfigurator),
         MetadataAttributes = new []{ typeof(ProcessingPriorityAttribute) })]
-    public interface IElementConfigurator<TNativeElement, TRealConfigurator>
+    public interface IElementConfigurator<TNativeElement> : IElementConfigurator
     {
     }
 }

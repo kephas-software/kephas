@@ -128,11 +128,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ElementConfiguratorBase.cs" />
+    <Compile Include="Configuration\ElementConfiguratorMetadata.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
+    <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
     <Compile Include="Factory\ElementConstructorInfo.cs" />
     <Compile Include="Factory\ElementFactoryBase.cs" />
+    <Compile Include="Factory\ElementFactoryMetadata.cs" />
     <Compile Include="Factory\ModelDimensionConstructorInfo.cs" />
     <Compile Include="Factory\ModelDimensionFactory.cs" />
     <Compile Include="ModelDimensionAttribute.cs" />

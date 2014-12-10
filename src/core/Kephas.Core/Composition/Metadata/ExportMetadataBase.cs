@@ -22,6 +22,15 @@ namespace Kephas.Composition.Metadata
         /// <param name="metadata">The metadata.</param>
         protected ExportMetadataBase(IDictionary<string, object> metadata)
         {
+            this.Metadata = metadata;
         }
+
+        /// <summary>
+        /// Gets the metadata.
+        /// </summary>
+        /// <value>
+        /// The metadata.
+        /// </value>
+        public IDictionary<string, object> Metadata { get; private set; }
     }
 }
