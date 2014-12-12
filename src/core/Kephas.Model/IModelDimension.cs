@@ -7,15 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Defines a model dimension.
     /// </summary>
-    [ContractClass(typeof (ModelDimensionContractClass))]
+    [ContractClass(typeof(ModelDimensionContractClass))]
     public interface IModelDimension : INamedElement
     {
         /// <summary>

@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IClassifier.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Contract for classifiers.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Contract for classifiers.
     /// </summary>
-    [ContractClass(typeof (ClassifierContractClass))]
+    [ContractClass(typeof(ClassifierContractClass))]
     public interface IClassifier : IModelElement
     {
         /// <summary>
