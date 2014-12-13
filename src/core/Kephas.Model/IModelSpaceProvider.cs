@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Factory
+namespace Kephas.Model
 {
     using Kephas.Services;
 

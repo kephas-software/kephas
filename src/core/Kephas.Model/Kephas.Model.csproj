@@ -159,7 +159,7 @@
     <Compile Include="Dimensions\IScopeDimension.cs" />
     <Compile Include="Configuration\IConfigurableElement.cs" />
     <Compile Include="Factory\IElementFactory.cs" />
-    <Compile Include="Factory\IModelSpaceProvider.cs" />
+    <Compile Include="IModelSpaceProvider.cs" />
     <Compile Include="IClassifier.cs" />
     <Compile Include="IModelDimension.cs" />
     <Compile Include="IModelAttribute.cs" />

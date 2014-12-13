@@ -55,6 +55,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Elements\ModelDimensionTest.cs" />
+    <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Factory\ModelDimensionFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
