@@ -62,33 +62,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ambient configuration manager must not be a dummy service..
-        /// </summary>
-        internal static string AmbientConfigurationManagerMustNotBeDummy {
-            get {
-                return ResourceManager.GetString("AmbientConfigurationManagerMustNotBeDummy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The ambient log manager must not be a dummy service..
-        /// </summary>
-        internal static string AmbientLogManagerMustNotBeDummy {
-            get {
-                return ResourceManager.GetString("AmbientLogManagerMustNotBeDummy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The ambient platform manager must not be a dummy service..
-        /// </summary>
-        internal static string AmbientPlatformManagerMustNotBeDummy {
-            get {
-                return ResourceManager.GetString("AmbientPlatformManagerMustNotBeDummy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}..
         /// </summary>
         internal static string AmbiguousOverrideForAppServiceContract {

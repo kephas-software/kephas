@@ -9,6 +9,8 @@
 
 namespace Kephas.Model.Dimensions
 {
+    using Kephas.Model.AttributedModel;
+
     /// <summary>
     /// Dimension identifying abstraction layers within the application. The application layers are specializations at application level
     /// comprising for each layer specializations of their elements. For example, Kephas is the bottom-most layer providing 
@@ -27,7 +29,7 @@ namespace Kephas.Model.Dimensions
     /// control quickly. A number of maximum three (3) layers, including Kephas, is the recommended one.
     /// </para>
     /// </remarks>
-    [AggregatableModelDimension(0)]
+    [AggregatableModelDimension(1)]
     public interface IAppLayerDimension
     {
     }

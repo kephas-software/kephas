@@ -1,7 +1,16 @@
-﻿using Kephas.Services;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IModelSpaceProvider.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Contract for providing a model space.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Factory
 {
+    using Kephas.Services;
+
     /// <summary>
     /// Contract for providing a model space.
     /// </summary>

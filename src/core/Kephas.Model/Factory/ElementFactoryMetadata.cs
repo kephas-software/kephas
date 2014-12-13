@@ -1,10 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Kephas.Reflection;
-using Kephas.Services;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ElementFactoryMetadata.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Metadata for element factories.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Factory
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Reflection;
+    using Kephas.Services;
+
     /// <summary>
     /// Metadata for element factories.
     /// </summary>

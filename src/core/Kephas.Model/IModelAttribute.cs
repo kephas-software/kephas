@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IModelDimensionElement.cs" company="Quartz Software SRL">
+// <copyright file="IModelAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract for model dimension elements.
+//   Contract for model attributes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,20 +14,46 @@ namespace Kephas.Model
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// Contract for model dimension elements.
+    /// Contract for model attributes.
     /// </summary>
-    [MemberNameDiscriminator(":")]
-    [ContractClass(typeof(ModelDimensionElementContractClass))]
-    public interface IModelDimensionElement : INamedElement
+    /// <remarks>
+    /// Attributes have names starting with @ (the at sign).
+    /// </remarks>
+    [MemberNameDiscriminator("@")]
+    [ContractClass(typeof(ModelAttributeContractClass))]
+    public interface IModelAttribute : INamedElement
     {
+        /// <summary>
+        /// Gets a value indicating whether multiple attributes of the same kind are allowed to annotate the same model element.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if multiple attributes of the same kind are allowed; otherwise, <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// If multiple attributes of the same kind are allowed, the qualified name will have a generated suffix 
+        /// to allow the attribute to be unique within the members collection.
+        /// </remarks>
+        bool AllowMultiple { get; }
     }
 
     /// <summary>
-    /// Contract class for <see cref="IModelDimensionElement"/>.
+    /// Contract class for <see cref="IModelAttribute"/>.
     /// </summary>
-    [ContractClassFor(typeof(IModelDimensionElement))]
-    internal abstract class ModelDimensionElementContractClass : IModelDimensionElement
+    [ContractClassFor(typeof(IModelAttribute))]
+    internal abstract class ModelAttributeContractClass : IModelAttribute
     {
+        /// <summary>
+        /// Gets a value indicating whether multiple attributes of the same kind are allowed to annotate the same model element.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if multiple attributes of the same kind are allowed; otherwise, <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// If multiple attributes of the same kind are allowed, the qualified name will have a generated suffix
+        /// to allow the attribute to be unique within the members collection.
+        /// </remarks>
+        public bool AllowMultiple { get; private set; }
+
         /// <summary>
         /// Gets the friendly name of the element.
         /// </summary>

@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Kephas.Model
+﻿namespace Kephas.Model.AttributedModel
 {
+    using System;
+
     /// <summary>
     /// Attribute for identifying aggregatable dimensions.
     /// </summary>

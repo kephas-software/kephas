@@ -1,9 +1,18 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelDimensionAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Attribute marking dimensions.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model
+namespace Kephas.Model.AttributedModel
 {
+    using System;
+
     /// <summary>
-    /// Attribute for identifying dimensions.
+    /// Attribute marking dimensions.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     public class ModelDimensionAttribute : Attribute
@@ -25,7 +34,7 @@ namespace Kephas.Model
         protected ModelDimensionAttribute(bool isAggregatable, int index)
         {
             this.IsAggregatable = isAggregatable;
-            Index = index;
+            this.Index = index;
         }
 
         /// <summary>
@@ -43,5 +52,13 @@ namespace Kephas.Model
         /// The dimension index.
         /// </value>
         public int Index { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the default dimension element.
+        /// </summary>
+        /// <value>
+        /// The default dimension element.
+        /// </value>
+        public Type DefaultDimensionElement { get; set; }
     }
 }

@@ -1,21 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelDimension.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implementation of model dimensions.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Elements
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Implementation of model dimensions.
     /// </summary>
-    public class ModelDimension : NamedElementBase, IModelDimension
+    public class ModelDimension : ModelElementBase<IModelDimension>, IModelDimension
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelDimension" /> class.
         /// </summary>
+        /// <param name="modelSpace">The model space.</param>
         /// <param name="name">The element name.</param>
         /// <param name="index">The dimension index.</param>
         /// <param name="isAggregatable">If set to <c>true</c>, the model dimension is aggregatable.</param>
-        public ModelDimension(string name, int index, bool isAggregatable)
-            : base(name)
+        public ModelDimension(IModelSpace modelSpace, string name, int index, bool isAggregatable)
+            : base(modelSpace, name)
         {
             this.Index = index;
             this.IsAggregatable = isAggregatable;
@@ -50,7 +60,7 @@ namespace Kephas.Model.Elements
         /// </value>
         public IEnumerable<IModelDimensionElement> Elements
         {
-            get { throw new NotImplementedException(); }
+            get { return this.Members.OfType<IModelDimensionElement>(); }
         }
     }
 }

@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IModelSpace.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   The model space is the root model element.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// The model space is the root model element.
     /// </summary>
     [ContractClass(typeof(ModelSpaceContractClass))]
-    public interface IModelSpace : INamedElement
+    public interface IModelSpace : IModelElement
     {
         /// <summary>
         /// Gets the dimensions.
@@ -24,14 +33,6 @@ namespace Kephas.Model
         /// The projections.
         /// </value>
         IEnumerable<IModelProjection> Projections { get; }
-
-        /// <summary>
-        /// Gets the members of the model space.
-        /// </summary>
-        /// <value>
-        /// The model space members.
-        /// </value>
-        IEnumerable<IModelElement> Members { get; }
 
         /// <summary>
         /// Gets the classifiers.
@@ -79,21 +80,6 @@ namespace Kephas.Model
         }
 
         /// <summary>
-        /// Gets the members of this model element.
-        /// </summary>
-        /// <value>
-        /// The model element members.
-        /// </value>
-        public IEnumerable<IModelElement> Members
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IEnumerable<IModelElement>>() != null);
-                return Contract.Result<IEnumerable<IModelElement>>();
-            }
-        }
-
-        /// <summary>
         /// Gets the classifiers.
         /// </summary>
         /// <value>
@@ -115,5 +101,97 @@ namespace Kephas.Model
         /// The model element name.
         /// </value>
         public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the qualified name of the element.
+        /// </summary>
+        /// <value>
+        /// The qualified name of the element.
+        /// </value>
+        /// <remarks>
+        /// The qualified name is unique within the container's members.
+        /// Some elements have the qualified name the same as their name,
+        /// but others will use a discriminator prefix to avoid name collisions.
+        /// For example, attributes use the "@" discriminator, dimensions use "^", and projections use ":".
+        /// </remarks>
+        public abstract string QualifiedName { get; }
+
+        /// <summary>
+        /// Gets the fully qualified name, starting from the root model space.
+        /// </summary>
+        /// <value>
+        /// The fully qualified name.
+        /// </value>
+        /// <remarks>
+        /// The fully qualified name is built up of qualified names separated by "/".
+        /// </remarks>
+        /// <example>
+        ///   <para>
+        /// /: identifies the root model space.
+        /// </para>
+        ///   <para>
+        /// /^AppLayer: identifies the AppLayer dimension.
+        /// </para>
+        ///   <para>
+        /// /:Primitives:Kephas:Core:Main:Global/String: identifies the String classifier within the :Primitives:Kephas:Core:Main:Global projection.
+        /// </para>
+        ///   <para>
+        /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name: identifies the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
+        /// </para>
+        ///   <para>
+        /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
+        /// </para>
+        /// </example>
+        public abstract string FullQualifiedName { get; }
+
+        /// <summary>
+        /// Gets the container element.
+        /// </summary>
+        /// <value>
+        /// The container element.
+        /// </value>
+        public abstract IModelElement Container { get; }
+
+        /// <summary>
+        /// Gets the model space.
+        /// </summary>
+        /// <value>
+        /// The model space.
+        /// </value>
+        public abstract IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the members of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element members.
+        /// </value>
+        public abstract IEnumerable<INamedElement> Members { get; }
+
+        /// <summary>
+        /// Gets the attributes of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element attributes.
+        /// </value>
+        public abstract IEnumerable<IModelAttribute> Attributes { get; }
+
+        /// <summary>
+        /// Gets the base model element.
+        /// </summary>
+        /// <value>
+        /// The base model element.
+        /// </value>
+        public abstract IModelElement Base { get; }
+
+        /// <summary>
+        /// Gets the member with the specified qualified name.
+        /// </summary>
+        /// <param name="qualifiedName">The qualified name of the member.</param>
+        /// <param name="throwOnNotFound">If set to <c>true</c> and the member is not found, an exception occurs; otherwise <c>null</c> is returned if the member is not found.</param>
+        /// <returns>
+        /// The member with the provided qualified name or <c>null</c>.
+        /// </returns>
+        public abstract INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true);
     }
 }

@@ -1,13 +1,33 @@
-﻿using System.Reflection;
-using Kephas.Model.Elements;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelDimensionFactory.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Factory for model dimensions.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Factory
 {
+    using System.Reflection;
+
+    using Kephas.Model.AttributedModel;
+    using Kephas.Model.Elements;
+
     /// <summary>
     /// Factory for model dimensions.
     /// </summary>
     public class ModelDimensionFactory : ElementFactoryBase<IModelDimension, ModelDimensionConstructorInfo>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelDimensionFactory"/> class.
+        /// </summary>
+        /// <param name="modelSpaceProvider">The model space provider.</param>
+        public ModelDimensionFactory(IModelSpaceProvider modelSpaceProvider)
+            : base(modelSpaceProvider)
+        {
+        }
+
         /// <summary>
         /// Tries to get the element constructor information.
         /// </summary>
@@ -29,7 +49,7 @@ namespace Kephas.Model.Factory
                 return null;
             }
 
-            var constructorInfo = new ModelDimensionConstructorInfo(nativeElement)
+            var constructorInfo = new ModelDimensionConstructorInfo(ModelSpaceProvider.GetModelSpace(), nativeElement)
                                     {
                                         ModelDimensionAttribute = modelDimensionAttribute,
                                     };
@@ -45,7 +65,7 @@ namespace Kephas.Model.Factory
         protected override IModelDimension CreateElement(ModelDimensionConstructorInfo elementConstructorInfo)
         {
             var attr = elementConstructorInfo.ModelDimensionAttribute;
-            return new ModelDimension(this.GetName(elementConstructorInfo), attr.Index, attr.IsAggregatable);
+            return new ModelDimension(ModelSpaceProvider.GetModelSpace(), this.GetName(elementConstructorInfo), attr.Index, attr.IsAggregatable);
         }
 
         /// <summary>
@@ -61,10 +81,10 @@ namespace Kephas.Model.Factory
         /// </remarks>
         protected virtual string GetName(ModelDimensionConstructorInfo elementConstructorInfo)
         {
-            const string suffix = "Dimension";
+            const string Suffix = "Dimension";
             var dimName = elementConstructorInfo.NativeTypeInfo.Name;
-            dimName = dimName.EndsWith(suffix) 
-                ? dimName.Substring(0, dimName.Length - suffix.Length)
+            dimName = dimName.EndsWith(Suffix) 
+                ? dimName.Substring(0, dimName.Length - Suffix.Length)
                 : dimName;
 
             if (dimName.StartsWith("I"))

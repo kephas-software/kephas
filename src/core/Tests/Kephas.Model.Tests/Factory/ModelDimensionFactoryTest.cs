@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppDimensionBaseTest.cs" company="Quartz Software SRL">
+// <copyright file="ModelDimensionFactoryTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,14 +7,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using Kephas.Model.Elements;
-using Kephas.Model.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Kephas.Model.Tests.Factory
 {
+    using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
+
+    using Kephas.Model.AttributedModel;
+    using Kephas.Model.Elements;
+    using Kephas.Model.Factory;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using Telerik.JustMock;
+
     [TestClass]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class ModelDimensionFactoryTest
@@ -22,7 +27,8 @@ namespace Kephas.Model.Tests.Factory
         [TestMethod]
         public void TryCreateElement_ReturnType()
         {
-            var factory = new ModelDimensionFactory();
+            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
+            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
             var element = factory.TryCreateElement(typeof(ITestDimension).GetTypeInfo());
             Assert.IsInstanceOfType(element, typeof(ModelDimension));
         }
@@ -30,7 +36,8 @@ namespace Kephas.Model.Tests.Factory
         [TestMethod]
         public void TryCreateElement_DimensionSuffix()
         {
-            var factory = new ModelDimensionFactory();
+            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
+            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
             var element = factory.TryCreateElement(typeof(ITestDimension).GetTypeInfo());
             Assert.AreEqual("Test", element.Name);
         }
@@ -38,7 +45,8 @@ namespace Kephas.Model.Tests.Factory
         [TestMethod]
         public void TryCreateElement_DimensionWithoutSuffix()
         {
-            var factory = new ModelDimensionFactory();
+            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
+            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
             var element = factory.TryCreateElement(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual("TestDimensionWithoutSuffix", element.Name);
         }
@@ -46,7 +54,8 @@ namespace Kephas.Model.Tests.Factory
         [TestMethod]
         public void TryCreateElement_Index()
         {
-            var factory = new ModelDimensionFactory();
+            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
+            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
             var element = (IModelDimension)factory.TryCreateElement(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual(1, element.Index);
         }
