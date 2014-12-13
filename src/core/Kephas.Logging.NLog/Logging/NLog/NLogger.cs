@@ -33,123 +33,71 @@ namespace Kephas.Logging.NLog
         }
 
         /// <summary>
-        /// Logs fatal exceptions.
+        /// Logs the information at the provided level.
         /// </summary>
+        /// <param name="level">The logging level.</param>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public void Fatal(object message, Exception exception = null)
+        public void Log(Logging.LogLevel level, object message, Exception exception = null)
         {
-            this.LogWithException(message, exception, this.logger.Fatal, this.logger.Fatal);
+            switch (level)
+            {
+                case Logging.LogLevel.Fatal:
+                    this.LogWithException(message, exception, this.logger.Fatal, this.logger.Fatal);
+                    break;
+                case Logging.LogLevel.Error:
+                    this.LogWithException(message, exception, this.logger.Error, this.logger.Error);
+                    break;
+                case Logging.LogLevel.Warning:
+                    this.LogWithException(message, exception, this.logger.Warn, this.logger.Warn);
+                    break;
+                case Logging.LogLevel.Info:
+                    this.LogWithException(message, exception, this.logger.Info, this.logger.Info);
+                    break;
+                case Logging.LogLevel.Debug:
+                    this.LogWithException(message, exception, this.logger.Debug, this.logger.Debug);
+                    break;
+                case Logging.LogLevel.Trace:
+                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
+                    break;
+                default:
+                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
+                    break;
+            }
         }
 
         /// <summary>
-        /// Logs the fatal format.
+        /// Logs the information at the provided level.
         /// </summary>
+        /// <param name="level">The logging level.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public void FatalFormat(string messageFormat, params object[] args)
+        public void Log(Logging.LogLevel level, string messageFormat, params object[] args)
         {
-            this.logger.Fatal(messageFormat, args);
-        }
-
-        /// <summary>
-        /// Logs the error.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Error(object message, Exception exception = null)
-        {
-            this.LogWithException(message, exception, this.logger.Error, this.logger.Error);
-        }
-
-        /// <summary>
-        /// Logs the error format.
-        /// </summary>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void ErrorFormat(string messageFormat, params object[] args)
-        {
-            this.logger.Error(messageFormat, args);
-        }
-
-        /// <summary>
-        /// Logs the warning.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Warn(object message, Exception exception = null)
-        {
-            this.LogWithException(message, exception, this.logger.Warn, this.logger.Warn);
-        }
-
-        /// <summary>
-        /// Logs the warn format.
-        /// </summary>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void WarnFormat(string messageFormat, params object[] args)
-        {
-            this.logger.Warn(messageFormat, args);
-        }
-
-        /// <summary>
-        /// Logs the information.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Info(object message, Exception exception = null)
-        {
-            this.LogWithException(message, exception, this.logger.Info, this.logger.Info);
-        }
-
-        /// <summary>
-        /// Logs the information format.
-        /// </summary>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void InfoFormat(string messageFormat, params object[] args)
-        {
-            this.logger.Info(messageFormat, args);
-        }
-
-        /// <summary>
-        /// Logs the debug.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Debug(object message, Exception exception = null)
-        {
-            this.LogWithException(message, exception, this.logger.Debug, this.logger.Debug);
-        }
-
-        /// <summary>
-        /// Logs the debug format.
-        /// </summary>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void DebugFormat(string messageFormat, params object[] args)
-        {
-            this.logger.Debug(messageFormat, args);
-        }
-
-        /// <summary>
-        /// Logs the trace.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Trace(object message, Exception exception = null)
-        {
-            this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
-        }
-
-        /// <summary>
-        /// Logs the trace format.
-        /// </summary>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void TraceFormat(string messageFormat, params object[] args)
-        {
-            this.logger.Trace(messageFormat, args);
+            switch (level)
+            {
+                case Logging.LogLevel.Fatal:
+                    this.logger.Fatal(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Error:
+                    this.logger.Error(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Warning:
+                    this.logger.Warn(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Info:
+                    this.logger.Info(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Debug:
+                    this.logger.Debug(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Trace:
+                    this.logger.Trace(messageFormat, args);
+                    break;
+                default:
+                    this.logger.Trace(messageFormat, args);
+                    break;
+            }
         }
 
         /// <summary>

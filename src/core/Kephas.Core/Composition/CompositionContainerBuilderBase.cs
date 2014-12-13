@@ -303,7 +303,7 @@ namespace Kephas.Composition
             Contract.Ensures(Contract.Result<ICompositionContainer>() != null);
 
             ICompositionContainer container = null;
-            this.Logger.SafeInfo("composition-container:create-container:begin");
+            this.Logger.Info("composition-container:create-container:begin");
             var elapsed = Profiler.WithStopwatch(
                 () =>
                 {
@@ -316,7 +316,7 @@ namespace Kephas.Composition
                     container = this.CreateContainerWithConventions(assemblies);
                 });
 
-            this.Logger.SafeInfo(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Info(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
 
             return container;
         }
@@ -330,7 +330,7 @@ namespace Kephas.Composition
             Contract.Ensures(Contract.Result<Task<ICompositionContainer>>() != null);
 
             ICompositionContainer container = null;
-            this.Logger.SafeInfo("composition-container:create-container:begin");
+            this.Logger.Info("composition-container:create-container:begin");
             var elapsed = await Profiler.WithStopwatchAsync(
                 async () =>
                     {
@@ -339,7 +339,7 @@ namespace Kephas.Composition
                         container = this.CreateContainerWithConventions(assemblies);
                     });
 
-            this.Logger.SafeInfo(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Info(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
 
             return container;
         }
@@ -407,7 +407,7 @@ namespace Kephas.Composition
                 return conventions;
             }
 
-            this.Logger.SafeDebugFormat("composition-container:get-conventions:begin. Convention assemblies:\n'{0}'", string.Join(Environment.NewLine, assemblies.Select(a => a.GetName().Name)));
+            this.Logger.DebugFormat("composition-container:get-conventions:begin. Convention assemblies:\n'{0}'", string.Join(Environment.NewLine, assemblies.Select(a => a.GetName().Name)));
 
             var elapsed = Profiler.WithStopwatch(
                 () =>
@@ -415,7 +415,7 @@ namespace Kephas.Composition
                     conventions.RegisterConventionsFrom(assemblies, parts);
                 });
 
-            this.Logger.SafeDebug(string.Format("composition-container:get-conventions:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Debug(string.Format("composition-container:get-conventions:end. Elapsed {0:c}.", elapsed));
 
             return conventions;
         }
@@ -429,7 +429,7 @@ namespace Kephas.Composition
         {
             searchPattern = searchPattern ?? this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
 
-            this.Logger.SafeDebugFormat("composition-container:get-assemblies:begin. Assemblies matching '{0}'.", searchPattern);
+            this.Logger.DebugFormat("composition-container:get-assemblies:begin. Assemblies matching '{0}'.", searchPattern);
 
             IList<Assembly> assemblies = null;
 
@@ -449,7 +449,7 @@ namespace Kephas.Composition
                     }
                 });
 
-            this.Logger.SafeDebug(string.Format("composition-container:get-assemblies:end. Elapsed: {0:c}.", elapsed));
+            this.Logger.Debug(string.Format("composition-container:get-assemblies:end. Elapsed: {0:c}.", elapsed));
 
             return assemblies;
         }

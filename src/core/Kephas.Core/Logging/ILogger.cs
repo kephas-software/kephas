@@ -12,258 +12,226 @@ namespace Kephas.Logging
     using System;
 
     /// <summary>
-  /// Logger abstract interface.
-  /// </summary>
-  public interface ILogger
-  {
-    /// <summary>
-    /// Logs fatal exceptions.
+    /// Enumerates the logging levels.
     /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Fatal(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the fatal format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void FatalFormat(string messageFormat, params object[] args);
-
-    /// <summary>
-    /// Logs the error.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Error(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the error format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void ErrorFormat(string messageFormat, params object[] args);
-
-    /// <summary>
-    /// Logs the warning.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Warn(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the warn format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void WarnFormat(string messageFormat, params object[] args);
-
-    /// <summary>
-    /// Logs the information.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Info(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the information format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void InfoFormat(string messageFormat, params object[] args);
-
-    /// <summary>
-    /// Logs the debug.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Debug(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the debug format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void DebugFormat(string messageFormat, params object[] args);
-
-    /// <summary>
-    /// Logs the trace.
-    /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    void Trace(object message, Exception exception = null);
-
-    /// <summary>
-    /// Logs the trace format.
-    /// </summary>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    void TraceFormat(string messageFormat, params object[] args);
-  }
-
-  /// <summary>
-  /// Extension methods for <see cref="ILogger"/>.
-  /// </summary>
-  public static class LoggerExtensions
-  {
-    /// <summary>
-    /// Logs fatal exceptions.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    public static void SafeFatal(this ILogger logger, object message, Exception exception = null)
+    public enum LogLevel
     {
-      if (logger == null)
-      {
-        return;
-      }
+        /// <summary>
+        /// Fatal errors.
+        /// </summary>
+        Fatal,
 
-      logger.Fatal(message, exception);
+        /// <summary>
+        /// Common errors.
+        /// </summary>
+        Error,
+
+        /// <summary>
+        /// Warning information.
+        /// </summary>
+        Warning,
+
+        /// <summary>
+        /// Common information.
+        /// </summary>
+        Info,
+
+        /// <summary>
+        /// Debugging information.
+        /// </summary>
+        Debug,
+
+        /// <summary>
+        /// Tracing information.
+        /// </summary>
+        Trace,
     }
 
     /// <summary>
-    /// Logs the fatal format.
+    /// Logger abstract interface.
     /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    public static void SafeFatalFormat(this ILogger logger, string messageFormat, params object[] args)
+    public interface ILogger
     {
-      if (logger == null)
-      {
-        return;
-      }
+        /// <summary>
+        /// Logs the information at the provided level.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        void Log(LogLevel level, object message, Exception exception = null);
 
-      logger.FatalFormat(messageFormat, args);
+        /// <summary>
+        /// Logs the information at the provided level.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        void Log(LogLevel level, string messageFormat, params object[] args);
     }
 
     /// <summary>
-    /// Logs the error.
+    /// Extension methods for <see cref="ILogger"/>.
     /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    public static void SafeError(this ILogger logger, object message, Exception exception = null)
+    public static class LoggerExtensions
     {
-      if (logger == null)
-      {
-        return;
-      }
+        /// <summary>
+        /// Logs fatal exceptions.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Fatal(this ILogger logger, object message, Exception exception = null)
+        {
+            if (logger == null)
+            {
+                return;
+            }
 
-      logger.Error(message, exception);
+            logger.Log(LogLevel.Fatal, message, exception);
+        }
+
+        /// <summary>
+        /// Logs the fatal format.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void FatalFormat(this ILogger logger, string messageFormat, params object[] args)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Fatal, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Logs the error.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Error(this ILogger logger, object message, Exception exception = null)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Error, message, exception);
+        }
+
+        /// <summary>
+        /// Loes the error format.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void ErrorFormat(this ILogger logger, string messageFormat, params object[] args)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Error, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Logs the warn.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Warn(this ILogger logger, object message, Exception exception = null)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Warning, message, exception);
+        }
+
+        /// <summary>
+        /// Logs the warn format.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void WarnFormat(this ILogger logger, string messageFormat, params object[] args)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Warning, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Logs the information.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Info(this ILogger logger, object message, Exception exception = null)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Info, message, exception);
+        }
+
+        /// <summary>
+        /// Logs the information format.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void InfoFormat(this ILogger logger, string messageFormat, params object[] args)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Info, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Logs the debug.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Debug(this ILogger logger, object message, Exception exception = null)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Debug, message, exception);
+        }
+
+        /// <summary>
+        /// Logs the debug format.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void DebugFormat(this ILogger logger, string messageFormat, params object[] args)
+        {
+            if (logger == null)
+            {
+                return;
+            }
+
+            logger.Log(LogLevel.Debug, messageFormat, args);
+        }
     }
-
-    /// <summary>
-    /// Loes the error format.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    public static void SafeErrorFormat(this ILogger logger, string messageFormat, params object[] args)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.ErrorFormat(messageFormat, args);
-    }
-
-    /// <summary>
-    /// Logs the warn.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    public static void SafeWarn(this ILogger logger, object message, Exception exception = null)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.Warn(message, exception);
-    }
-
-    /// <summary>
-    /// Logs the warn format.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    public static void SafeWarnFormat(this ILogger logger, string messageFormat, params object[] args)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.WarnFormat(messageFormat, args);
-    }
-
-    /// <summary>
-    /// Logs the information.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    public static void SafeInfo(this ILogger logger, object message, Exception exception = null)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.Info(message, exception);
-    }
-
-    /// <summary>
-    /// Logs the information format.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    public static void SafeInfoFormat(this ILogger logger, string messageFormat, params object[] args)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.InfoFormat(messageFormat, args);
-    }
-
-    /// <summary>
-    /// Logs the debug.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="message">The message.</param>
-    /// <param name="exception">The exception.</param>
-    public static void SafeDebug(this ILogger logger, object message, Exception exception = null)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.Debug(message, exception);
-    }
-
-    /// <summary>
-    /// Logs the debug format.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    /// <param name="messageFormat">The message format.</param>
-    /// <param name="args">The arguments.</param>
-    public static void SafeDebugFormat(this ILogger logger, string messageFormat, params object[] args)
-    {
-      if (logger == null)
-      {
-        return;
-      }
-
-      logger.DebugFormat(messageFormat, args);
-    }
-  }
 }

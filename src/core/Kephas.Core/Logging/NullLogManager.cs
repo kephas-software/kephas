@@ -42,110 +42,22 @@ namespace Kephas.Logging
         private class NullLogger : ILogger
         {
             /// <summary>
-            /// Logs fatal exceptions.
+            /// Logs the information at the provided level.
             /// </summary>
+            /// <param name="level">The logging level.</param>
             /// <param name="message">The message.</param>
             /// <param name="exception">The exception.</param>
-            public void Fatal(object message, Exception exception = null)
+            public void Log(LogLevel level, object message, Exception exception = null)
             {
             }
 
             /// <summary>
-            /// Logs the fatal format.
+            /// Logs the information at the provided level.
             /// </summary>
+            /// <param name="level">The logging level.</param>
             /// <param name="messageFormat">The message format.</param>
             /// <param name="args">The arguments.</param>
-            public void FatalFormat(string messageFormat, params object[] args)
-            {
-            }
-
-            /// <summary>
-            /// Logs the error.
-            /// </summary>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            public void Error(object message, Exception exception = null)
-            {
-            }
-
-            /// <summary>
-            /// Logs the error format.
-            /// </summary>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void ErrorFormat(string messageFormat, params object[] args)
-            {
-            }
-
-            /// <summary>
-            /// Logs the warning.
-            /// </summary>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            public void Warn(object message, Exception exception = null)
-            {
-            }
-
-            /// <summary>
-            /// Logs the warn format.
-            /// </summary>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void WarnFormat(string messageFormat, params object[] args)
-            {
-            }
-
-            /// <summary>
-            /// Logs the information.
-            /// </summary>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            public void Info(object message, Exception exception = null)
-            {
-            }
-
-            /// <summary>
-            /// Logs the information format.
-            /// </summary>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void InfoFormat(string messageFormat, params object[] args)
-            {
-            }
-
-            /// <summary>
-            /// Logs the debug.
-            /// </summary>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            public void Debug(object message, Exception exception = null)
-            {
-            }
-
-            /// <summary>
-            /// Logs the debug format.
-            /// </summary>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void DebugFormat(string messageFormat, params object[] args)
-            {
-            }
-
-            /// <summary>
-            /// Logs the trace.
-            /// </summary>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            public void Trace(object message, Exception exception = null)
-            {
-            }
-
-            /// <summary>
-            /// Logs the trace format.
-            /// </summary>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void TraceFormat(string messageFormat, params object[] args)
+            public void Log(LogLevel level, string messageFormat, params object[] args)
             {
             }
         }
