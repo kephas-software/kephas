@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ElementFactoryMetadata.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeElementInfoProviderMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Factory
+namespace Kephas.Model.Runtime.Factory
 {
     using System;
     using System.Collections.Generic;
@@ -18,24 +18,34 @@ namespace Kephas.Model.Factory
     /// <summary>
     /// Metadata for element factories.
     /// </summary>
-    public class ElementFactoryMetadata : AppServiceMetadata
+    public class RuntimeElementInfoProviderMetadata : AppServiceMetadata
     {
         /// <summary>
         /// The element type metadata key.
         /// </summary>
-        public static readonly string ElementTypeKey = ReflectionHelper.GetPropertyName<ElementFactoryMetadata>(m => m.ElementType);
+        public static readonly string ElementTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.ElementType);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ElementFactoryMetadata"/> class.
+        /// The element info type metadata key.
+        /// </summary>
+        public static readonly string ElementInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.ElementInfoType);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeElementInfoProviderMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ElementFactoryMetadata(IDictionary<string, object> metadata) 
+        public RuntimeElementInfoProviderMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
             object value;
             if (metadata.TryGetValue(ElementTypeKey, out value))
             {
                 this.ElementType = (Type)value;
+            }
+
+            if (metadata.TryGetValue(ElementInfoTypeKey, out value))
+            {
+                this.ElementInfoType = (Type)value;
             }
         }
 
@@ -46,5 +56,13 @@ namespace Kephas.Model.Factory
         /// The type of the element.
         /// </value>
         public Type ElementType { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the element information.
+        /// </summary>
+        /// <value>
+        /// The type of the element information.
+        /// </value>
+        public Type ElementInfoType { get; private set; }
     }
 }

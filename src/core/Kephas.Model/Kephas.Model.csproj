@@ -142,15 +142,21 @@
     <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
+    <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
+    <Compile Include="Elements\Construction\IModelElementInfo.cs" />
+    <Compile Include="Elements\Construction\INamedElementInfo.cs" />
+    <Compile Include="Factory\IModelProvider.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeNamedElementInfo.cs" />
     <Compile Include="Elements\ElementNotFoundException.cs" />
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
-    <Compile Include="Factory\ElementConstructorInfo.cs" />
-    <Compile Include="Factory\ElementFactoryBase.cs" />
-    <Compile Include="Factory\ElementFactoryMetadata.cs" />
-    <Compile Include="Factory\ModelDimensionConstructorInfo.cs" />
-    <Compile Include="Factory\ModelDimensionFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoProvider.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelElementInfoProviderBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeNamedElementInfoProviderBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeElementInfoProviderMetadata.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
     <Compile Include="Dimensions\IAppLayerDimension.cs" />
@@ -158,7 +164,7 @@
     <Compile Include="Dimensions\IModuleDimension.cs" />
     <Compile Include="Dimensions\IScopeDimension.cs" />
     <Compile Include="Configuration\IConfigurableElement.cs" />
-    <Compile Include="Factory\IElementFactory.cs" />
+    <Compile Include="Runtime\Factory\IRuntimeElementInfoProvider.cs" />
     <Compile Include="IModelSpaceProvider.cs" />
     <Compile Include="IClassifier.cs" />
     <Compile Include="IModelDimension.cs" />
@@ -176,6 +182,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\Factory\RuntimeModelProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelContracts.cd" />
@@ -195,6 +202,7 @@
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

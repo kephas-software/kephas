@@ -12,11 +12,15 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Model.Elements.Construction;
+
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
-    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement
+    /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
+    public abstract class ModelElementBase<TModelContract, TElementInfo> : NamedElementBase<TModelContract, TElementInfo>, IModelElement
+        where TElementInfo : class, IModelElementInfo
     {
         /// <summary>
         /// The members.
@@ -24,12 +28,12 @@ namespace Kephas.Model.Elements
         private readonly IDictionary<string, INamedElement> members = new Dictionary<string, INamedElement>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelElementBase{TModelContract}"/> class.
+        /// Initializes a new instance of the <see cref="ModelElementBase{TModelContract, TElementInfo}" /> class.
         /// </summary>
+        /// <param name="elementInfo">The element information.</param>
         /// <param name="modelSpace">The model space.</param>
-        /// <param name="name">The name.</param>
-        protected ModelElementBase(IModelSpace modelSpace, string name)
-            : base(modelSpace, name)
+        protected ModelElementBase(TElementInfo elementInfo, IModelSpace modelSpace)
+            : base(elementInfo, modelSpace)
         {
         }
 

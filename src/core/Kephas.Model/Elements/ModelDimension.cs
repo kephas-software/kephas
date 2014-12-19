@@ -12,23 +12,23 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Model.Elements.Construction;
+
     /// <summary>
     /// Implementation of model dimensions.
     /// </summary>
-    public class ModelDimension : ModelElementBase<IModelDimension>, IModelDimension
+    public class ModelDimension : ModelElementBase<IModelDimension, IModelDimensionInfo>, IModelDimension
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelDimension" /> class.
         /// </summary>
+        /// <param name="elementInfo">The element information.</param>
         /// <param name="modelSpace">The model space.</param>
-        /// <param name="name">The element name.</param>
-        /// <param name="index">The dimension index.</param>
-        /// <param name="isAggregatable">If set to <c>true</c>, the model dimension is aggregatable.</param>
-        public ModelDimension(IModelSpace modelSpace, string name, int index, bool isAggregatable)
-            : base(modelSpace, name)
+        public ModelDimension(IModelDimensionInfo elementInfo, IModelSpace modelSpace)
+            : base(elementInfo, modelSpace)
         {
-            this.Index = index;
-            this.IsAggregatable = isAggregatable;
+            this.Index = elementInfo.Index;
+            this.IsAggregatable = elementInfo.IsAggregatable;
         }
 
         /// <summary>

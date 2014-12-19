@@ -14,6 +14,7 @@ namespace Kephas.Model.Tests.Elements
 
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Construction;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -72,18 +73,18 @@ namespace Kephas.Model.Tests.Elements
         {
         }
 
-        private class TestNamedElement : NamedElementBase<ITestElement>
+        private class TestNamedElement : NamedElementBase<ITestElement, INamedElementInfo>
         {
-            public TestNamedElement(IModelSpace modelSpace, string name)
-                : base(modelSpace, name)
+            public TestNamedElement(INamedElementInfo elementInfo, IModelSpace modelSpace)
+                : base(elementInfo, modelSpace)
             {
             }
         }
 
-        private class TestNamedElementWithDiscriminator : NamedElementBase<ITestElementWithDiscriminator>
+        private class TestNamedElementWithDiscriminator : NamedElementBase<ITestElementWithDiscriminator, INamedElementInfo>
         {
-            public TestNamedElementWithDiscriminator(IModelSpace modelSpace, string name)
-                : base(modelSpace, name)
+            public TestNamedElementWithDiscriminator(INamedElementInfo elementInfo, IModelSpace modelSpace)
+                : base(elementInfo, modelSpace)
             {
             }
         }

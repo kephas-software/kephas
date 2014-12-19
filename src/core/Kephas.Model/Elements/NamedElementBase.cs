@@ -12,26 +12,30 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
 
     using Kephas.Model.Configuration;
+    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
-    public abstract class NamedElementBase<TModelContract> : INamedElement, IConfigurableElement
+    /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
+    public abstract class NamedElementBase<TModelContract, TElementInfo> : INamedElement, IConfigurableElement
+        where TElementInfo : class, INamedElementInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract}"/> class.
+        /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract, TElementInfo}" /> class.
         /// </summary>
+        /// <param name="elementInfo">The element information.</param>
         /// <param name="modelSpace">The model space.</param>
-        /// <param name="name">The name.</param>
-        protected NamedElementBase(IModelSpace modelSpace, string name)
+        protected NamedElementBase(TElementInfo elementInfo, IModelSpace modelSpace)
         {
-            Contract.Requires(name != null);
+            Contract.Requires(elementInfo != null);
+            Contract.Requires(elementInfo.Name != null);
             Contract.Requires(modelSpace != null);
 
-            this.Name = name;
+            this.Name = elementInfo.Name;
             this.ModelSpace = modelSpace;
-            this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
+            this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + elementInfo.Name;
         }
 
         /// <summary>
