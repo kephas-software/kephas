@@ -243,11 +243,11 @@ namespace Kephas.Composition.Mef
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
                 .WithAssembly(typeof(ICompositionContainer).Assembly)
-                .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport<>) })
+                .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateContainer();
 
             var export = container.GetExport<ITestGenericExport<string>>();
-            Assert.IsInstanceOfType(export, typeof(TestGenericExport<string>));
+            Assert.IsInstanceOfType(export, typeof(TestGenericExport));
         }
 
         [TestMethod]
@@ -378,7 +378,7 @@ namespace Kephas.Composition.Mef
         [SharedAppServiceContract]
         public interface ITestGenericExport<T> { }
 
-        public class TestGenericExport<T> : ITestGenericExport<T> { }
+        public class TestGenericExport : ITestGenericExport<string> { }
 
         [SharedAppServiceContract]
         public interface IConstructorAppService { }
