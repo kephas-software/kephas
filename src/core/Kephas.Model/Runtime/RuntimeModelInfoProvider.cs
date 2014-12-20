@@ -9,17 +9,24 @@
 
 namespace Kephas.Model.Runtime
 {
+    using System;
     using System.Collections.Generic;
     using System.Composition;
     using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Reflection;
 
+    using Kephas.Extensions;
+    using Kephas.Logging;
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Factory;
+    using Kephas.Model.Resources;
+    using Kephas.Model.Runtime.Factory;
 
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
-    public class RuntimeModelInfoProvider : IModelInfoProvider
+    public class RuntimeModelInfoProvider : IModelInfoProvider, ILogConsumer
     {
         /// <summary>
         /// The model registrars.
@@ -27,15 +34,33 @@ namespace Kephas.Model.Runtime
         private readonly ICollection<IRuntimeModelRegistrar> modelRegistrars;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeModelInfoProvider"/> class.
+        /// The element information factories.
+        /// </summary>
+        private readonly IDictionary<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> elementInfoFactories;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeModelInfoProvider" /> class.
         /// </summary>
         /// <param name="modelRegistrars">The model registrars.</param>
-        public RuntimeModelInfoProvider([ImportMany] ICollection<IRuntimeModelRegistrar> modelRegistrars)
+        /// <param name="elementInfoExportFactories">The element information export factories.</param>
+        public RuntimeModelInfoProvider(
+            [ImportMany] ICollection<IRuntimeModelRegistrar> modelRegistrars,
+            [ImportMany] ICollection<ExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
         {
             Contract.Requires(modelRegistrars != null);
+            Contract.Requires(elementInfoExportFactories != null);
 
             this.modelRegistrars = modelRegistrars;
+            this.elementInfoFactories = elementInfoExportFactories.ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger Logger { get; set; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.
@@ -45,11 +70,55 @@ namespace Kephas.Model.Runtime
         /// </returns>
         public IEnumerable<INamedElementInfo> GetElementInfos()
         {
-            var runtimeObjects = new List<object>();
+            var runtimeElements = new HashSet<object>();
             foreach (var registrar in this.modelRegistrars)
             {
-                runtimeObjects.AddRange(registrar.GetRuntimeElements());
+                runtimeElements.AddRange(registrar.GetRuntimeElements().Select(this.NormalizeRuntimeElement));
             }
+
+            var elementInfos = new List<INamedElementInfo>();
+
+            foreach (var runtimeElement in runtimeElements)
+            {
+                if (runtimeElement == null)
+                {
+                    continue;
+                }
+
+                var elementInfo = this.TryGetModelElementInfo(runtimeElement);
+                if (elementInfo == null)
+                {
+                    this.Logger.WarnFormat(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
+                    continue;
+                }
+
+                elementInfos.Add(elementInfo);
+            }
+
+            return elementInfos;
+        }
+
+        /// <summary>
+        /// Normalizes the runtime element by returing the associated <see cref="TypeInfo"/> instead.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>The normalized runtime type.</returns>
+        private object NormalizeRuntimeElement(object runtimeElement)
+        {
+            var runtimeType = runtimeElement as Type;
+            return runtimeType != null ? runtimeType.GetTypeInfo() : runtimeElement;
+        }
+
+        /// <summary>
+        /// Tries to get the named element information.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>A named element information or <c>null</c>.</returns>
+        private INamedElementInfo TryGetModelElementInfo(object runtimeElement)
+        {
+            return this.elementInfoFactories
+                    .Select(factoryPair => factoryPair.Key.TryGetElementInfo(runtimeElement))
+                    .FirstOrDefault(elementInfo => elementInfo != null);
         }
     }
 }

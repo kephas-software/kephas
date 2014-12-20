@@ -62,6 +62,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot provide an element information for the runtime element &apos;{0}&apos;..
+        /// </summary>
+        internal static string CannotProvideElementInfoForRuntimeElement {
+            get {
+                return ResourceManager.GetString("CannotProvideElementInfoForRuntimeElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The element &apos;{0}&apos; is not a member of &apos;{1}&apos;..
         /// </summary>
         internal static string ElementNotFoundInMembers {

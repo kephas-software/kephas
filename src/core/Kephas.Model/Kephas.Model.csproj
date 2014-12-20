@@ -160,7 +160,7 @@
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeNamedElementInfoFactoryBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeElementInfoProviderMetadata.cs" />
+    <Compile Include="Runtime\Factory\RuntimeElementInfoFactoryMetadata.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
     <Compile Include="Dimensions\IAppLayerDimension.cs" />

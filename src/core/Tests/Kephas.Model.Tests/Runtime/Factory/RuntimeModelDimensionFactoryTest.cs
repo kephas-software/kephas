@@ -3,24 +3,25 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the AppDimensionBaseTest type.
+//   Tests for <see cref="RuntimeModelDimensionInfoFactory" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Tests.Factory
+namespace Kephas.Model.Tests.Runtime.Factory
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Telerik.JustMock;
-
+    /// <summary>
+    /// Tests for <see cref="RuntimeModelDimensionInfoFactory"/>.
+    /// </summary>
     [TestClass]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelDimensionFactoryTest
@@ -28,37 +29,34 @@ namespace Kephas.Model.Tests.Factory
         [TestMethod]
         public void TryCreateElement_ReturnType()
         {
-            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
-            var factory = new RuntimeModelDimensionInfoFactory(mockModelSpaceProvider);
-            var element = factory.TryCreateElement(typeof(ITestDimension).GetTypeInfo());
-            Assert.IsInstanceOfType(element, typeof(ModelDimension));
+            var factory = new RuntimeModelDimensionInfoFactory();
+            var elementInfo = factory.TryGetElementInfo(typeof(ITestDimension).GetTypeInfo());
+            Assert.IsNotNull(elementInfo);
+            Assert.IsInstanceOfType(elementInfo, typeof(RuntimeModelDimensionInfo));
         }
 
         [TestMethod]
         public void TryCreateElement_DimensionSuffix()
         {
-            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
-            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
-            var element = factory.TryCreateElement(typeof(ITestDimension).GetTypeInfo());
-            Assert.AreEqual("Test", element.Name);
+            var factory = new RuntimeModelDimensionInfoFactory();
+            var elementInfo = factory.TryGetElementInfo(typeof(ITestDimension).GetTypeInfo());
+            Assert.AreEqual("Test", elementInfo.Name);
         }
 
         [TestMethod]
         public void TryCreateElement_DimensionWithoutSuffix()
         {
-            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
-            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
-            var element = factory.TryCreateElement(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
-            Assert.AreEqual("TestDimensionWithoutSuffix", element.Name);
+            var factory = new RuntimeModelDimensionInfoFactory();
+            var elementInfo = factory.TryGetElementInfo(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            Assert.AreEqual("TestDimensionWithoutSuffix", elementInfo.Name);
         }
 
         [TestMethod]
         public void TryCreateElement_Index()
         {
-            var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
-            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
-            var element = (IModelDimension)factory.TryCreateElement(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
-            Assert.AreEqual(1, element.Index);
+            var factory = new RuntimeModelDimensionInfoFactory();
+            var elementInfo = (IModelDimensionInfo)factory.TryGetElementInfo(typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            Assert.AreEqual(1, elementInfo.Index);
         }
 
         [AggregatableModelDimension(0)]

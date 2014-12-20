@@ -23,24 +23,24 @@ namespace Kephas.Model.Runtime.Factory
         /// <summary>
         /// Tries to get the model dimension information.
         /// </summary>
-        /// <param name="runtimeElementInfo">The runtime element information.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
-        protected override IModelDimensionInfo TryGetElementInfoCore(TypeInfo runtimeElementInfo)
+        protected override IModelDimensionInfo TryGetElementInfoCore(TypeInfo runtimeElement)
         {
-            if (!runtimeElementInfo.IsInterface)
+            if (!runtimeElement.IsInterface)
             {
                 return null;
             }
 
-            var dimensionAttribute = runtimeElementInfo.GetCustomAttribute<ModelDimensionAttribute>();
+            var dimensionAttribute = runtimeElement.GetCustomAttribute<ModelDimensionAttribute>();
             if (dimensionAttribute == null)
             {
                 return null;
             }
 
-            return new RuntimeModelDimensionInfo(runtimeElementInfo);
+            return new RuntimeModelDimensionInfo(runtimeElement);
         }
     }
 }

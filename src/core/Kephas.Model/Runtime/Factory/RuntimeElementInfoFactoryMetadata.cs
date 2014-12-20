@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeElementInfoProviderMetadata.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeElementInfoFactoryMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -18,23 +18,23 @@ namespace Kephas.Model.Runtime.Factory
     /// <summary>
     /// Metadata for element factories.
     /// </summary>
-    public class RuntimeElementInfoProviderMetadata : AppServiceMetadata
+    public class RuntimeElementInfoFactoryMetadata : AppServiceMetadata
     {
         /// <summary>
         /// The element info type metadata key.
         /// </summary>
-        public static readonly string ElementInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.ElementInfoType);
+        public static readonly string ElementInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoFactoryMetadata>(m => m.ElementInfoType);
 
         /// <summary>
         /// The runtime info type metadata key.
         /// </summary>
-        public static readonly string RuntimeInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.RuntimeInfoType);
+        public static readonly string RuntimeInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoFactoryMetadata>(m => m.RuntimeInfoType);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeElementInfoProviderMetadata"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeElementInfoFactoryMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public RuntimeElementInfoProviderMetadata(IDictionary<string, object> metadata) 
+        public RuntimeElementInfoFactoryMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
             object value;

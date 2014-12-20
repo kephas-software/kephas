@@ -23,13 +23,13 @@ namespace Kephas.Model.Runtime.Factory
         /// <summary>
         /// Tries to create an element information structure based on the provided runtime element information.
         /// </summary>
-        /// <param name="runtimeElementInfo">The runtime element information.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
-        public INamedElementInfo TryGetElementInfo(object runtimeElementInfo)
+        public INamedElementInfo TryGetElementInfo(object runtimeElement)
         {
-            var typedRuntimeInfo = runtimeElementInfo as TRuntimeInfo;
+            var typedRuntimeInfo = runtimeElement as TRuntimeInfo;
             if (typedRuntimeInfo == null)
             {
                 return null;
@@ -41,10 +41,10 @@ namespace Kephas.Model.Runtime.Factory
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
-        /// <param name="runtimeElementInfo">The runtime element information.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
-        protected abstract TElementInfo TryGetElementInfoCore(TRuntimeInfo runtimeElementInfo);
+        protected abstract TElementInfo TryGetElementInfoCore(TRuntimeInfo runtimeElement);
     }
 }
