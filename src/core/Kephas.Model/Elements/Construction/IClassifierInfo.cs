@@ -1,20 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelProvider.cs" company="Quartz Software SRL">
+// <copyright file="IClassifierInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Model provider based on the .NET runtime and the type system.
+//   Information for constructing classifiers.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Elements.Construction
 {
-    using Kephas.Model.Factory;
-
     /// <summary>
-    /// Model provider based on the .NET runtime and the type system.
+    /// Information for constructing classifiers.
     /// </summary>
-    public class RuntimeModelProvider : IModelProvider
+    public interface IClassifierInfo : IModelElementInfo
     {
     }
 }

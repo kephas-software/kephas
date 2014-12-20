@@ -27,12 +27,12 @@ namespace Kephas.Model
         IClassifier PropertyType { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the property is writeable.
+        /// Gets a value indicating whether the property can be written to.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the property is writeable; otherwise, <c>false</c>.
+        /// <c>true</c> if the property can be written to; otherwise, <c>false</c>.
         /// </value>
-        bool IsWriteable { get; }
+        bool CanWrite { get; }
     }
 
     /// <summary>
@@ -57,12 +57,12 @@ namespace Kephas.Model
         }
 
         /// <summary>
-        /// Gets a value indicating whether the property is writeable.
+        /// Gets a value indicating whether the property can be written to.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the property is writeable; otherwise, <c>false</c>.
+        /// <c>true</c> if the property can be written to; otherwise, <c>false</c>.
         /// </value>
-        public bool IsWriteable
+        public bool CanWrite
         {
             get
             {

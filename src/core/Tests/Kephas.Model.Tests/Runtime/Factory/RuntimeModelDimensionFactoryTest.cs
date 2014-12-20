@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelDimensionFactoryTest.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeModelDimensionFactoryTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -15,6 +15,7 @@ namespace Kephas.Model.Tests.Factory
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements;
     using Kephas.Model.Factory;
+    using Kephas.Model.Runtime.Factory;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -22,13 +23,13 @@ namespace Kephas.Model.Tests.Factory
 
     [TestClass]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ModelDimensionFactoryTest
+    public class RuntimeModelDimensionFactoryTest
     {
         [TestMethod]
         public void TryCreateElement_ReturnType()
         {
             var mockModelSpaceProvider = Mock.Create<IModelSpaceProvider>();
-            var factory = new ModelDimensionFactory(mockModelSpaceProvider);
+            var factory = new RuntimeModelDimensionInfoFactory(mockModelSpaceProvider);
             var element = factory.TryCreateElement(typeof(ITestDimension).GetTypeInfo());
             Assert.IsInstanceOfType(element, typeof(ModelDimension));
         }

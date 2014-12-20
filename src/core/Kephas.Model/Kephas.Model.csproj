@@ -142,10 +142,12 @@
     <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
+    <Compile Include="Elements\Construction\IClassifierInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
     <Compile Include="Elements\Construction\IModelElementInfo.cs" />
     <Compile Include="Elements\Construction\INamedElementInfo.cs" />
-    <Compile Include="Factory\IModelProvider.cs" />
+    <Compile Include="Factory\IModelInfoProvider.cs" />
+    <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeNamedElementInfo.cs" />
@@ -153,9 +155,11 @@
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoProvider.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelElementInfoProviderBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeNamedElementInfoProviderBase.cs" />
+    <Compile Include="Runtime\IRuntimeModelRegistrar.cs" />
+    <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeNamedElementInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeElementInfoProviderMetadata.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
@@ -164,7 +168,7 @@
     <Compile Include="Dimensions\IModuleDimension.cs" />
     <Compile Include="Dimensions\IScopeDimension.cs" />
     <Compile Include="Configuration\IConfigurableElement.cs" />
-    <Compile Include="Runtime\Factory\IRuntimeElementInfoProvider.cs" />
+    <Compile Include="Runtime\Factory\IRuntimeElementInfoFactory.cs" />
     <Compile Include="IModelSpaceProvider.cs" />
     <Compile Include="IClassifier.cs" />
     <Compile Include="IModelDimension.cs" />
@@ -182,7 +186,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\Factory\RuntimeModelProvider.cs" />
+    <Compile Include="Runtime\RuntimeModelInfoProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelContracts.cd" />
@@ -194,6 +198,21 @@
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

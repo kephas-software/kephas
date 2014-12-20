@@ -14,12 +14,11 @@ namespace Kephas.Model.Runtime.Factory
     /// <summary>
     /// Base runtime provider for model element information.
     /// </summary>
-    /// <typeparam name="TElement">The type of the element.</typeparam>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class RuntimeModelElementInfoProviderBase<TElement, TElementInfo> : RuntimeNamedElementInfoProviderBase<TElement, TElementInfo>
-        where TElement : IModelElement
+    /// <typeparam name="TRuntimeInfo">The type of the runtime information.</typeparam>
+    public abstract class RuntimeModelElementInfoFactoryBase<TElementInfo, TRuntimeInfo> : RuntimeNamedElementInfoFactoryBase<TElementInfo, TRuntimeInfo>
         where TElementInfo : IModelElementInfo
+        where TRuntimeInfo : class
     {
-         
     }
 }

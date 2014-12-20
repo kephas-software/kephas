@@ -21,14 +21,14 @@ namespace Kephas.Model.Runtime.Factory
     public class RuntimeElementInfoProviderMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// The element type metadata key.
-        /// </summary>
-        public static readonly string ElementTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.ElementType);
-
-        /// <summary>
         /// The element info type metadata key.
         /// </summary>
         public static readonly string ElementInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.ElementInfoType);
+
+        /// <summary>
+        /// The runtime info type metadata key.
+        /// </summary>
+        public static readonly string RuntimeInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoProviderMetadata>(m => m.RuntimeInfoType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeElementInfoProviderMetadata"/> class.
@@ -38,24 +38,16 @@ namespace Kephas.Model.Runtime.Factory
             : base(metadata)
         {
             object value;
-            if (metadata.TryGetValue(ElementTypeKey, out value))
-            {
-                this.ElementType = (Type)value;
-            }
-
             if (metadata.TryGetValue(ElementInfoTypeKey, out value))
             {
                 this.ElementInfoType = (Type)value;
             }
-        }
 
-        /// <summary>
-        /// Gets the type of the element.
-        /// </summary>
-        /// <value>
-        /// The type of the element.
-        /// </value>
-        public Type ElementType { get; private set; }
+            if (metadata.TryGetValue(RuntimeInfoTypeKey, out value))
+            {
+                this.RuntimeInfoType = (Type)value;
+            }
+        }
 
         /// <summary>
         /// Gets the type of the element information.
@@ -64,5 +56,13 @@ namespace Kephas.Model.Runtime.Factory
         /// The type of the element information.
         /// </value>
         public Type ElementInfoType { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the runtime information.
+        /// </summary>
+        /// <value>
+        /// The type of the runtime information.
+        /// </value>
+        public Type RuntimeInfoType { get; private set; }
     }
 }

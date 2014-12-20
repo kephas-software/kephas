@@ -12,10 +12,12 @@ namespace Kephas.Model.Tests.Elements
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Construction;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Test class for <see cref="ModelDimension"/>.
@@ -28,7 +30,14 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var element = new ModelDimension(modelSpace, "Hello", 12, true);
+
+            var elementInfo = Mock.Create<IModelDimensionInfo>();
+            elementInfo.Arrange(e => e.Index).Returns(12);
+            elementInfo.Arrange(e => e.Name).Returns("Hello");
+            elementInfo.Arrange(e => e.IsAggregatable).Returns(true);
+
+            var element = new ModelDimension(elementInfo, modelSpace);
+
             Assert.AreEqual("Hello", element.Name);
             Assert.AreEqual("^Hello", element.QualifiedName);
             Assert.AreEqual(12, element.Index);

@@ -19,6 +19,7 @@ namespace Kephas.Model.Tests.Elements
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Test class for <see cref="NamedElementBase{TModelContract}"/>.
@@ -31,7 +32,10 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var element = new TestNamedElement(modelSpace, "name");
+            var elementInfo = Mock.Create<INamedElementInfo>();
+            elementInfo.Arrange(e => e.Name).Returns("name");
+
+            var element = new TestNamedElement(elementInfo, modelSpace);
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
@@ -42,7 +46,10 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var element = new TestNamedElementWithDiscriminator(modelSpace, "name");
+            var elementInfo = Mock.Create<INamedElementInfo>();
+            elementInfo.Arrange(e => e.Name).Returns("name");
+
+            var element = new TestNamedElementWithDiscriminator(elementInfo, modelSpace);
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
@@ -53,7 +60,8 @@ namespace Kephas.Model.Tests.Elements
         [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var element = new TestNamedElement(null, "name");
+            var elementInfo = Mock.Create<INamedElementInfo>();
+            var element = new TestNamedElement(elementInfo, null);
         }
 
         [TestMethod]
@@ -61,7 +69,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var element = new TestNamedElement(modelSpace, null);
+            var element = new TestNamedElement(null, modelSpace);
         }
 
         private interface ITestElement
