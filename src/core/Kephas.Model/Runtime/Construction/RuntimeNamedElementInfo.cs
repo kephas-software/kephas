@@ -17,19 +17,20 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Runtime based constructor information for named elements.
     /// </summary>
-    /// <typeparam name="TRuntimeInfo">The type of the runtime information.</typeparam>
-    public abstract class RuntimeNamedElementInfo<TRuntimeInfo> : INamedElementInfo
-        where TRuntimeInfo : MemberInfo
+    /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
+    public abstract class RuntimeNamedElementInfo<TRuntimeElement> : INamedElementInfo
+        where TRuntimeElement : MemberInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeNamedElementInfo{TRuntimeInfo}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeNamedElementInfo{TRuntimeElement}"/> class.
         /// </summary>
-        /// <param name="runtimeMemberInfo">The runtime member information.</param>
-        protected RuntimeNamedElementInfo(TRuntimeInfo runtimeMemberInfo)
+        /// <param name="runtimeElement">The runtime member information.</param>
+        protected RuntimeNamedElementInfo(TRuntimeElement runtimeElement)
         {
-            Contract.Requires(runtimeMemberInfo != null);
+            Contract.Requires(runtimeElement != null);
 
-            this.RuntimeMemberInfo = runtimeMemberInfo;
+            this.RuntimeElement = runtimeElement;
+            this.Name = this.ComputeName(runtimeElement);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The runtime member information.
         /// </value>
-        public TRuntimeInfo RuntimeMemberInfo { get; private set; }
+        public TRuntimeElement RuntimeElement { get; private set; }
 
         /// <summary>
         /// Gets the name.
@@ -47,5 +48,27 @@ namespace Kephas.Model.Runtime.Construction
         /// The name.
         /// </value>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Computes the model element name based on the runtime element.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
+        protected virtual string ComputeName(TRuntimeElement runtimeElement)
+        {
+            var memberInfo = this.RuntimeElement as MemberInfo;
+            if (memberInfo == null)
+            {
+                return null;
+            }
+
+            var typeInfo = this.RuntimeElement as TypeInfo;
+            if (typeInfo != null && typeInfo.IsInterface && typeInfo.Name.StartsWith("I"))
+            {
+                return typeInfo.Name.Substring(1);
+            }
+
+            return memberInfo.Name;
+        }
     }
 }

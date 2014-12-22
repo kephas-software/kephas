@@ -19,9 +19,9 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeClassifierInfo"/> class.
         /// </summary>
-        /// <param name="runtimeMemberInfo">The runtime member information.</param>
-        protected RuntimeClassifierInfo(TypeInfo runtimeMemberInfo)
-            : base(runtimeMemberInfo)
+        /// <param name="runtimeElement">The runtime member information.</param>
+        protected RuntimeClassifierInfo(TypeInfo runtimeElement)
+            : base(runtimeElement)
         {
         }
     }

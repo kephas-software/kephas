@@ -17,16 +17,16 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Runtime based constructor information for model elements.
     /// </summary>
-    /// <typeparam name="TRuntimeInfo">The type of the runtime information.</typeparam>
-    public abstract class RuntimeModelElementInfo<TRuntimeInfo> : RuntimeNamedElementInfo<TRuntimeInfo>, IModelElementInfo
-        where TRuntimeInfo : MemberInfo
+    /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
+    public abstract class RuntimeModelElementInfo<TRuntimeElement> : RuntimeNamedElementInfo<TRuntimeElement>, IModelElementInfo
+        where TRuntimeElement : MemberInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeModelElementInfo{TRuntimeInfo}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelElementInfo{TRuntimeElement}"/> class.
         /// </summary>
-        /// <param name="runtimeMemberInfo">The runtime member information.</param>
-        protected RuntimeModelElementInfo(TRuntimeInfo runtimeMemberInfo)
-            : base(runtimeMemberInfo)
+        /// <param name="runtimeElement">The runtime member information.</param>
+        protected RuntimeModelElementInfo(TRuntimeElement runtimeElement)
+            : base(runtimeElement)
         {
         }
 

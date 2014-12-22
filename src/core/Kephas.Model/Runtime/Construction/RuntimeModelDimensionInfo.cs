@@ -22,11 +22,11 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeModelDimensionInfo"/> class.
         /// </summary>
-        /// <param name="runtimeMemberInfo">The runtime member information.</param>
-        public RuntimeModelDimensionInfo(TypeInfo runtimeMemberInfo)
-            : base(runtimeMemberInfo)
+        /// <param name="runtimeElement">The runtime member information.</param>
+        public RuntimeModelDimensionInfo(TypeInfo runtimeElement)
+            : base(runtimeElement)
         {
-            var modelDimensionAttribute = runtimeMemberInfo.GetCustomAttribute<ModelDimensionAttribute>();
+            var modelDimensionAttribute = runtimeElement.GetCustomAttribute<ModelDimensionAttribute>();
             if (modelDimensionAttribute != null)
             {
                 this.Index = modelDimensionAttribute.Index;
