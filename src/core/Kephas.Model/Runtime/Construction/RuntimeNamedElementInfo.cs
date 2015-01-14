@@ -11,6 +11,7 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Diagnostics.Contracts;
     using System.Reflection;
+    using System.Text;
 
     using Kephas.Model.Elements.Construction;
 
@@ -50,6 +51,20 @@ namespace Kephas.Model.Runtime.Construction
         public string Name { get; private set; }
 
         /// <summary>
+        /// Gets the element name discriminator.
+        /// </summary>
+        /// <value>
+        /// The element name discriminator.
+        /// </value>
+        /// <remarks>
+        /// This dicriminator can be used as a suffix in the name to identify the element type.
+        /// </remarks>
+        protected virtual string ElementNameDiscriminator
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
@@ -62,13 +77,24 @@ namespace Kephas.Model.Runtime.Construction
                 return null;
             }
 
+            var nameBuilder = new StringBuilder(memberInfo.Name);
+
             var typeInfo = this.RuntimeElement as TypeInfo;
-            if (typeInfo != null && typeInfo.IsInterface && typeInfo.Name.StartsWith("I"))
+            if (typeInfo != null && typeInfo.IsInterface && nameBuilder[0] == 'I')
             {
-                return typeInfo.Name.Substring(1);
+                nameBuilder.Remove(0, 1);
             }
 
-            return memberInfo.Name;
+            var discriminator = this.ElementNameDiscriminator;
+            if (!string.IsNullOrEmpty(discriminator))
+            {
+                if (memberInfo.Name.EndsWith(discriminator))
+                {
+                    nameBuilder.Remove(nameBuilder.Length - discriminator.Length, discriminator.Length);
+                }
+            }
+
+            return nameBuilder.ToString();
         }
     }
 }

@@ -144,15 +144,15 @@ namespace Kephas.Services.Composition
                 return constructorsList[0];
             }
 
-            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
+            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<ComposableConstructorAttribute>() != null).ToList();
             if (eligibleConstructors.Count == 0)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(ComposableConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             if (eligibleConstructors.Count > 1)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(ComposableConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             return eligibleConstructors[1];

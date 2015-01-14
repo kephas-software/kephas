@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PongResponse.cs" company="Quartz Software SRL">
+// <copyright file="PingBackResponse.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -12,9 +12,9 @@ namespace Kephas.RequestProcessing.Ping
     using System;
 
     /// <summary>
-    /// The "pong" response.
+    /// The "ping back" response.
     /// </summary>
-    public class PongResponse : IResponse
+    public class PingBackResponse : IResponse
     {
         /// <summary>
         /// Gets or sets the server time.

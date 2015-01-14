@@ -12,7 +12,7 @@ namespace Kephas.RequestProcessing
     using System;
     using System.Threading.Tasks;
 
-    using Kephas.Resources;
+    using Kephas.RequestProcessing.Resources;
 
     /// <summary>
     /// Provides a base implementation of a request handler.

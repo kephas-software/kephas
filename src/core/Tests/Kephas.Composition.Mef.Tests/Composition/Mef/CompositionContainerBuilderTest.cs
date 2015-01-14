@@ -408,12 +408,12 @@ namespace Kephas.Composition.Mef
 
         public class MultipleCompositionConstructorAppService : IConstructorAppService
         {
-            [CompositionConstructor]
+            [ComposableConstructor]
             public MultipleCompositionConstructorAppService()
             {
             }
 
-            [CompositionConstructor]
+            [ComposableConstructor]
             public MultipleCompositionConstructorAppService(ICompositionContainer compositionContainer)
             {
             }

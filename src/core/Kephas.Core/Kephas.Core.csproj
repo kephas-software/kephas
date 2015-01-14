@@ -118,7 +118,7 @@
   <ItemGroup>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
-    <Compile Include="Composition\CompositionConstructorAttribute.cs" />
+    <Compile Include="Composition\ComposableConstructorAttribute.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBase.cs" />
     <Compile Include="Composition\CompositionException.cs" />
     <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
@@ -134,18 +134,6 @@
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />
     <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
-    <Compile Include="RequestProcessing\DefaultRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IAsyncRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IClientRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IRequest.cs" />
-    <Compile Include="RequestProcessing\IRequestProcessingFilter.cs" />
-    <Compile Include="RequestProcessing\IRequestHandler.cs" />
-    <Compile Include="RequestProcessing\IRequestProcessor.cs" />
-    <Compile Include="RequestProcessing\IResponse.cs" />
-    <Compile Include="RequestProcessing\Ping\PingRequest.cs" />
-    <Compile Include="RequestProcessing\Ping\PingRequestHandler.cs" />
-    <Compile Include="RequestProcessing\Ping\PongResponse.cs" />
-    <Compile Include="RequestProcessing\RequestHandlerBase.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />

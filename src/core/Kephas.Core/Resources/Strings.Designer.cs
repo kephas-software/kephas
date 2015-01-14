@@ -114,14 +114,5 @@ namespace Kephas.Resources {
                 return ResourceManager.GetString("NullServiceExceptionMessage", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The request to process must be of type &apos;{0}&apos;..
-        /// </summary>
-        internal static string RequestHandlerBadRequestType {
-            get {
-                return ResourceManager.GetString("RequestHandlerBadRequestType", resourceCulture);
-            }
-        }
     }
 }

@@ -15,16 +15,16 @@ namespace Kephas.RequestProcessing.Ping
     /// <summary>
     /// Request handler for the <see cref="PingRequest"/>.
     /// </summary>
-    public class PingRequestHandler : RequestHandlerBase<PingRequest, PongResponse>
+    public class PingRequestHandler : RequestHandlerBase<PingRequest, PingBackResponse>
     {
         /// <summary>
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
         /// <returns>The response promise.</returns>
-        public override Task<PongResponse> ProcessAsync(PingRequest request)
+        public override Task<PingBackResponse> ProcessAsync(PingRequest request)
         {
-            return Task.Factory.StartNew(() => new PongResponse { ServerTime = DateTimeOffset.Now});
+            return Task.Factory.StartNew(() => new PingBackResponse { ServerTime = DateTimeOffset.Now});
         }
     }
 }
