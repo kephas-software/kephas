@@ -11,6 +11,7 @@ namespace Kephas.RequestProcessing.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
@@ -35,12 +36,12 @@ namespace Kephas.RequestProcessing.Tests
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>()))
+            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>(), Arg.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(expectedResponse));
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
             var processor = new DefaultRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Mock.Create<IRequest>());
+            var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreSame(expectedResponse, result);
         }
@@ -52,14 +53,14 @@ namespace Kephas.RequestProcessing.Tests
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>()))
+            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>(), Arg.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(expectedResponse));
             handler.Arrange(h => h.Dispose()).MustBeCalled();
 
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
             var processor = new DefaultRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Mock.Create<IRequest>());
+            var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Mock.Assert(handler);
         }

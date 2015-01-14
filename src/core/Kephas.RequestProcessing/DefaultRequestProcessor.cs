@@ -10,6 +10,7 @@
 namespace Kephas.RequestProcessing
 {
     using System.Diagnostics.Contracts;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
@@ -44,12 +45,15 @@ namespace Kephas.RequestProcessing
         /// Processes the specified request asynchronously.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>The response promise.</returns>
-        public async Task<IResponse> ProcessAsync(IRequest request)
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public async Task<IResponse> ProcessAsync(IRequest request, CancellationToken token)
         {
             using (var requestHandler = this.CreateRequestHandler(request))
             {
-                var response = await requestHandler.ProcessAsync(request);
+                var response = await requestHandler.ProcessAsync(request, token);
                 return response;
             }
         }

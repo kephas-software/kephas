@@ -10,6 +10,7 @@
 namespace Kephas.RequestProcessing
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.RequestProcessing.Resources;
@@ -27,17 +28,23 @@ namespace Kephas.RequestProcessing
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
-        /// <returns>The response promise.</returns>
-        public abstract Task<TResponse> ProcessAsync(TRequest request);
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public abstract Task<TResponse> ProcessAsync(TRequest request, CancellationToken token);
 
         /// <summary>
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
-        /// <returns>The response promise.</returns>
-        async Task<IResponse> IRequestHandler<TRequest>.ProcessAsync(TRequest request)
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        async Task<IResponse> IRequestHandler<TRequest>.ProcessAsync(TRequest request, CancellationToken token)
         {
-            var response = await this.ProcessAsync(request);
+            var response = await this.ProcessAsync(request, token);
             return response;
         }
 
@@ -45,8 +52,11 @@ namespace Kephas.RequestProcessing
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
-        /// <returns>The response promise.</returns>
-        async Task<IResponse> IRequestHandler.ProcessAsync(IRequest request)
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        async Task<IResponse> IRequestHandler.ProcessAsync(IRequest request, CancellationToken token)
         {
             var typedRequest = request as TRequest;
             if (typedRequest == null)
@@ -54,7 +64,7 @@ namespace Kephas.RequestProcessing
                 throw new ArgumentException(string.Format(Strings.RequestHandlerBadRequestType, typeof(TRequest)), "request");
             }
 
-            var response = await this.ProcessAsync(typedRequest);
+            var response = await this.ProcessAsync(typedRequest, token);
             return response;
         }
 

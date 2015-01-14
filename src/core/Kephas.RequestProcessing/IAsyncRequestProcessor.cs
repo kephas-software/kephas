@@ -9,8 +9,8 @@
 
 namespace Kephas.RequestProcessing
 {
-    using System;
     using System.Diagnostics.Contracts;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -23,8 +23,11 @@ namespace Kephas.RequestProcessing
         /// Processes the specified request asynchronously.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>The response promise.</returns>
-        Task<IResponse> ProcessAsync(IRequest request);
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        Task<IResponse> ProcessAsync(IRequest request, CancellationToken token);
     }
 
     /// <summary>
@@ -37,13 +40,16 @@ namespace Kephas.RequestProcessing
         /// Processes the specified request asynchronously.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>The response promise.</returns>
-        public Task<IResponse> ProcessAsync(IRequest request)
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public Task<IResponse> ProcessAsync(IRequest request, CancellationToken token)
         {
             Contract.Requires(request != null);
             Contract.Ensures(Contract.Result<Task<IResponse>>() != null);
 
-            throw new NotSupportedException();
+            return Contract.Result<Task<IResponse>>();
         }
     }
 }
