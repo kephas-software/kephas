@@ -29,7 +29,7 @@ namespace Kephas.Model.Dimensions
     /// control quickly. A number of maximum three (3) layers, including Kephas, is the recommended one.
     /// </para>
     /// </remarks>
-    [AggregatableModelDimension(1)]
+    [AggregatableModelDimension(0)]
     public interface IAppLayerDimension
     {
     }

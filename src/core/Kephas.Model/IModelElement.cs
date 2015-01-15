@@ -14,6 +14,8 @@ namespace Kephas.Model
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Model.Elements.Construction;
+
     /// <summary>
     /// Contract providing base information about a model element.
     /// </summary>
@@ -168,6 +170,14 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
 
         /// <summary>
         /// Gets the member with the specified qualified name.

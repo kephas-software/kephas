@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ComposableConstructorAttribute.cs" company="Quartz Software SRL">
+// <copyright file="ComposingConstructorAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -20,7 +20,7 @@ namespace Kephas.Composition
     ///                 should be used.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false, Inherited = false)]
-    public sealed class ComposableConstructorAttribute : Attribute
+    public sealed class ComposingConstructorAttribute : Attribute
     {
     }
 }

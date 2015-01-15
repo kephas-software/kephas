@@ -1,7 +1,16 @@
-﻿using Kephas.Services;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IElementConfigurator.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Contract for model element configurators.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Configuration
 {
+    using Kephas.Services;
+
     /// <summary>
     /// Contract for model element configurators.
     /// </summary>

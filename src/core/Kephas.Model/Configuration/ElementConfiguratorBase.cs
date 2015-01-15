@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.Configuration
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ElementConfiguratorBase.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Base configurator for model elements.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Configuration
 {
     /// <summary>
     /// Base configurator for model elements.

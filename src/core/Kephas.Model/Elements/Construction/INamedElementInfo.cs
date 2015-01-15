@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Elements.Construction
 {
+    using System;
     using System.Diagnostics.Contracts;
 
     /// <summary>
@@ -24,6 +25,17 @@ namespace Kephas.Model.Elements.Construction
         /// The name.
         /// </value>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the function used to select the container.
+        /// </summary>
+        /// <value>
+        /// The function used to select the container.
+        /// </value>
+        /// <remarks>
+        /// This function returns <c>true</c> if the current element is member of the provided container.
+        /// </remarks>
+        Func<IModelElement, bool> IsMemberOf { get; }
     }
 
     /// <summary>
@@ -46,5 +58,16 @@ namespace Kephas.Model.Elements.Construction
                 return Contract.Result<string>();
             }
         }
+
+        /// <summary>
+        /// Gets or sets the function used to select the container.
+        /// </summary>
+        /// <value>
+        /// The function used to select the container.
+        /// </value>
+        /// <remarks>
+        /// This function returns <c>true</c> if the current element is member of the provided container.
+        /// </remarks>
+        public Func<IModelElement, bool> IsMemberOf { get; set; }
     }
 }

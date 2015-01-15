@@ -20,9 +20,9 @@ namespace Kephas.Model.Runtime.Construction
     public class RuntimeModelDimensionInfo : RuntimeModelElementInfo<TypeInfo>, IModelDimensionInfo
     {
         /// <summary>
-        /// The dimension element name discriminator.
+        /// The dimension name discriminator.
         /// </summary>
-        public const string DimensionElementNameDiscriminator = "Dimension";
+        public const string DimensionNameDiscriminator = "Dimension";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeModelDimensionInfo"/> class.
@@ -55,9 +55,18 @@ namespace Kephas.Model.Runtime.Construction
         /// </value>
         public bool IsAggregatable { get; private set; }
 
+        /// <summary>
+        /// Gets the element name discriminator.
+        /// </summary>
+        /// <value>
+        /// The element name discriminator.
+        /// </value>
+        /// <remarks>
+        /// This dicriminator can be used as a suffix in the name to identify the element type.
+        /// </remarks>
         protected override string ElementNameDiscriminator
         {
-            get { return DimensionElementNameDiscriminator; }
+            get { return DimensionNameDiscriminator; }
         }
     }
 }

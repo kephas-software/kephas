@@ -9,9 +9,11 @@
 
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Contract for model attributes.
@@ -37,7 +39,7 @@ namespace Kephas.Model
     }
 
     /// <summary>
-    /// Contract class for <see cref="IModelAttribute"/>.
+    /// Contract class for <see cref="IModelAttribute" />.
     /// </summary>
     [ContractClassFor(typeof(IModelAttribute))]
     internal abstract class ModelAttributeContractClass : IModelAttribute
@@ -119,5 +121,13 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
     }
 }

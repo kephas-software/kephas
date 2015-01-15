@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelDimensionFactoryTest.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeModelDimensionInfoFactoryTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
     /// </summary>
     [TestClass]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class RuntimeModelDimensionFactoryTest
+    public class RuntimeModelDimensionInfoFactoryTest
     {
         [TestMethod]
         public void TryCreateElement_ReturnType()

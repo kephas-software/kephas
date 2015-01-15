@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Runtime.Construction
 {
+    using System;
     using System.Diagnostics.Contracts;
     using System.Reflection;
     using System.Text;
@@ -31,6 +32,7 @@ namespace Kephas.Model.Runtime.Construction
             Contract.Requires(runtimeElement != null);
 
             this.RuntimeElement = runtimeElement;
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.Name = this.ComputeName(runtimeElement);
         }
 
@@ -49,6 +51,17 @@ namespace Kephas.Model.Runtime.Construction
         /// The name.
         /// </value>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the function used to select the container.
+        /// </summary>
+        /// <value>
+        /// The function used to select the container.
+        /// </value>
+        /// <remarks>
+        /// This function returns <c>true</c> if the current element is member of the provided container.
+        /// </remarks>
+        public Func<IModelElement, bool> IsMemberOf { get; protected set; }
 
         /// <summary>
         /// Gets the element name discriminator.

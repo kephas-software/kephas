@@ -143,11 +143,16 @@
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
     <Compile Include="Elements\Construction\IClassifierInfo.cs" />
+    <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
     <Compile Include="Elements\Construction\IModelElementInfo.cs" />
     <Compile Include="Elements\Construction\INamedElementInfo.cs" />
+    <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
+    <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
+    <Compile Include="Elements\ModelDimensionElement.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeNamedElementInfo.cs" />
@@ -155,6 +160,7 @@
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
     <Compile Include="Runtime\IRuntimeModelRegistrar.cs" />
     <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
@@ -167,7 +173,6 @@
     <Compile Include="Dimensions\IAspectDimension.cs" />
     <Compile Include="Dimensions\IModuleDimension.cs" />
     <Compile Include="Dimensions\IScopeDimension.cs" />
-    <Compile Include="Configuration\IConfigurableElement.cs" />
     <Compile Include="Runtime\Factory\IRuntimeElementInfoFactory.cs" />
     <Compile Include="IModelSpaceProvider.cs" />
     <Compile Include="IClassifier.cs" />

@@ -13,6 +13,7 @@ namespace Kephas.Model
     using System.Diagnostics.Contracts;
 
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Defines a model dimension.
@@ -168,6 +169,14 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
 
         /// <summary>
         /// Gets the members of this model element.

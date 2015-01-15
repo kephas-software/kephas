@@ -20,7 +20,7 @@ namespace Kephas.Model.Dimensions
     /// <remarks>
     /// By default, Kephas provides an "Primitives" model which can be used to provide primitives to all the other models.
     /// </remarks>
-    [ModelDimension(0, DefaultDimensionElement = typeof(IPrimitivesModelDimensionElement))]
+    [ModelDimension(1, DefaultDimensionElement = typeof(IPrimitivesModelDimensionElement))]
     public interface IModelDimension
     {
     }

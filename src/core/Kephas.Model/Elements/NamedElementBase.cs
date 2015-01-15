@@ -9,19 +9,25 @@
 
 namespace Kephas.Model.Elements
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
-    using Kephas.Model.Configuration;
     using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Elements.Construction.Internal;
 
     /// <summary>
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class NamedElementBase<TModelContract, TElementInfo> : INamedElement, IConfigurableElement
+    public abstract class NamedElementBase<TModelContract, TElementInfo> : INamedElement, INamedElementConstructor
         where TElementInfo : class, INamedElementInfo
     {
+        /// <summary>
+        /// The underlying element infos.
+        /// </summary>
+        private readonly IList<INamedElementInfo> underlyingElementInfos;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract, TElementInfo}" /> class.
         /// </summary>
@@ -36,6 +42,8 @@ namespace Kephas.Model.Elements
             this.Name = elementInfo.Name;
             this.ModelSpace = modelSpace;
             this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + elementInfo.Name;
+
+            this.underlyingElementInfos = new List<INamedElementInfo> { elementInfo };
         }
 
         /// <summary>
@@ -86,7 +94,7 @@ namespace Kephas.Model.Elements
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
         /// </para>
         /// </example>
-        public string FullQualifiedName { get; internal set; }
+        public string FullQualifiedName { get; private set; }
 
         /// <summary>
         /// Gets the container element.
@@ -94,7 +102,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The container element.
         /// </value>
-        public IModelElement Container { get; internal set; }
+        public IModelElement Container { get; private set; }
 
         /// <summary>
         /// Gets the model space.
@@ -105,17 +113,46 @@ namespace Kephas.Model.Elements
         public IModelSpace ModelSpace { get; private set; }
 
         /// <summary>
-        /// Completes the configuration.
+        /// Gets the element infos which constructed this element.
         /// </summary>
-        public void CompleteConfiguration()
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public IEnumerable<INamedElementInfo> UnderlyingElementInfos
         {
-            this.OnConfigurationComplete();
+            get { return this.underlyingElementInfos; }
         }
 
         /// <summary>
-        /// Called when the configuration is complete.
+        /// Sets the element container.
         /// </summary>
-        protected virtual void OnConfigurationComplete()
+        /// <param name="container">The element container.</param>
+        void INamedElementConstructor.SetContainer(IModelElement container)
+        {
+            this.Container = container;
+        }
+
+        /// <summary>
+        /// Sets the full qualified name.
+        /// </summary>
+        /// <param name="fullQualifiedName">The full qualified name.</param>
+        void INamedElementConstructor.SetFullQualifiedName(string fullQualifiedName)
+        {
+            this.FullQualifiedName = fullQualifiedName;
+        }
+
+        /// <summary>
+        /// Completes the construction of the element.
+        /// </summary>
+        void INamedElementConstructor.CompleteConstruction()
+        {
+            this.OnCompleteConstruction();
+        }
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        protected virtual void OnCompleteConstruction()
         {
         }
     }

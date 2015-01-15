@@ -28,6 +28,7 @@ namespace Kephas.Model.Runtime.Construction
         protected RuntimeModelElementInfo(TRuntimeElement runtimeElement)
             : base(runtimeElement)
         {
+            this.Members = new List<INamedElementInfo>();
         }
 
         /// <summary>

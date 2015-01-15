@@ -13,13 +13,14 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Elements.Construction.Internal;
 
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class ModelElementBase<TModelContract, TElementInfo> : NamedElementBase<TModelContract, TElementInfo>, IModelElement
+    public abstract class ModelElementBase<TModelContract, TElementInfo> : NamedElementBase<TModelContract, TElementInfo>, IModelElement, IModelElementConstructor
         where TElementInfo : class, IModelElementInfo
     {
         /// <summary>
@@ -92,6 +93,21 @@ namespace Kephas.Model.Elements
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds the member to the members list.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        void IModelElementConstructor.AddMember(INamedElement member)
+        {
+            var memberBuilder = member as INamedElementConstructor;
+            if (memberBuilder != null)
+            {
+                memberBuilder.SetContainer(this);
+            }
+
+            this.members.Add(member.Name, member);
         }
     }
 }

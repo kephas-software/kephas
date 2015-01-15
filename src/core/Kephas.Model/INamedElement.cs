@@ -9,7 +9,10 @@
 
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+
+    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Contract for named elements.
@@ -82,6 +85,14 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
     }
 
     /// <summary>
@@ -164,6 +175,21 @@ namespace Kephas.Model
             {
                 Contract.Ensures(Contract.Result<IModelSpace>() != null);
                 return Contract.Result<IModelSpace>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public IEnumerable<INamedElementInfo> UnderlyingElementInfos
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<INamedElementInfo>>() != null);
+                return Contract.Result<IEnumerable<INamedElementInfo>>();
             }
         }
     }

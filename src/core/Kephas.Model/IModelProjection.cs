@@ -9,7 +9,10 @@
 
 namespace Kephas.Model
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+
+    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Contract for model projections.
@@ -128,5 +131,13 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets the element infos which constructed this element.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
     }
 }

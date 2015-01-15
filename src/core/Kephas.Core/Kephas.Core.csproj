@@ -118,7 +118,7 @@
   <ItemGroup>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
-    <Compile Include="Composition\ComposableConstructorAttribute.cs" />
+    <Compile Include="Composition\ComposingConstructorAttribute.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBase.cs" />
     <Compile Include="Composition\CompositionException.cs" />
     <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
