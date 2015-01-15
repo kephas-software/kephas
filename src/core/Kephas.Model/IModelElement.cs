@@ -31,12 +31,12 @@ namespace Kephas.Model
         IEnumerable<INamedElement> Members { get; }
 
         /// <summary>
-        /// Gets the attributes of this model element.
+        /// Gets the annotations of this model element.
         /// </summary>
         /// <value>
-        /// The model element attributes.
+        /// The model element annotations.
         /// </value>
-        IEnumerable<IModelAttribute> Attributes { get; }
+        IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
         /// Gets the base model element.
@@ -77,17 +77,17 @@ namespace Kephas.Model
         }
 
         /// <summary>
-        /// Gets the attributes of this model element.
+        /// Gets the annotations of this model element.
         /// </summary>
         /// <value>
-        /// The model element attributes.
+        /// The model element annotations.
         /// </value>
-        public IEnumerable<IModelAttribute> Attributes
+        public IEnumerable<IAnnotation> Annotations
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<IModelAttribute>>() != null);
-                return Contract.Result<IEnumerable<IModelAttribute>>();
+                Contract.Ensures(Contract.Result<IEnumerable<IAnnotation>>() != null);
+                return Contract.Result<IEnumerable<IAnnotation>>();
             }
         }
 
@@ -123,7 +123,7 @@ namespace Kephas.Model
         /// The qualified name is unique within the container's members.
         /// Some elements have the qualified name the same as their name,
         /// but others will use a discriminator prefix to avoid name collisions.
-        /// For example, attributes use the "@" discriminator, dimensions use "^", and projections use ":".
+        /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
         public abstract string QualifiedName { get; }
 

@@ -28,7 +28,7 @@ namespace Kephas.RequestProcessing.Ping
         /// </returns>
         public override Task<PingBackResponse> ProcessAsync(PingRequest request, CancellationToken token)
         {
-            return Task.Factory.StartNew(() => new PingBackResponse { ServerTime = DateTimeOffset.Now });
+            return Task.Factory.StartNew(() => new PingBackResponse { ServerTime = DateTimeOffset.Now }, token);
         }
     }
 }

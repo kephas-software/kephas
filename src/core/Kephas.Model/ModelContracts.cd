@@ -2,17 +2,13 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Kephas.Model.INamedElement">
     <Position X="6.25" Y="0.5" Width="2" />
-    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement" FixedToPoint="true">
-      <Path>
-        <Point X="6.625" Y="2.18" />
-        <Point X="6.625" Y="3.25" />
-      </Path>
+    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.048" Y="0.248" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAAAAAAAAQYAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAASYAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>INamedElement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -30,31 +26,15 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAEAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACAEAAAAQAA=</HashCode>
       <FileName>IModelElement.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Members" />
-      <Property Name="Attributes" />
     </ShowAsCollectionAssociation>
-  </Interface>
-  <Interface Name="Kephas.Model.IModelAttribute">
-    <Position X="9.25" Y="3.25" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
-      <FileName>IModelAttribute.cs</FileName>
-    </TypeIdentifier>
   </Interface>
   <Interface Name="Kephas.Model.IClassifier">
     <Position X="3.25" Y="6" Width="2" />
-    <InheritanceLine Type="Kephas.Model.IModelElement" ManuallyRouted="true">
-      <Path>
-        <Point X="7.25" Y="4.935" />
-        <Point X="7.25" Y="5.198" />
-        <Point X="4.25" Y="5.198" />
-        <Point X="4.25" Y="6" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAA=</HashCode>
       <FileName>IClassifier.cs</FileName>
@@ -110,12 +90,19 @@
   <Interface Name="Kephas.Model.IProperty">
     <Position X="0.5" Y="6.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>IProperty.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="PropertyType" />
     </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Kephas.Model.IAnnotation">
+    <Position X="9.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>IAnnotation.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

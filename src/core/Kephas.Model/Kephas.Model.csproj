@@ -177,7 +177,7 @@
     <Compile Include="IModelSpaceProvider.cs" />
     <Compile Include="IClassifier.cs" />
     <Compile Include="IModelDimension.cs" />
-    <Compile Include="IModelAttribute.cs" />
+    <Compile Include="IAnnotation.cs" />
     <Compile Include="IModelDimensionElement.cs" />
     <Compile Include="IModelElement.cs" />
     <Compile Include="IModelProjection.cs" />

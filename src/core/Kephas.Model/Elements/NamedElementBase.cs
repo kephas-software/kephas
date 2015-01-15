@@ -64,7 +64,7 @@ namespace Kephas.Model.Elements
         /// The qualified name is unique within the container's members.
         /// Some elements have the qualified name the same as their name,
         /// but others will use a discriminator prefix to avoid name collisions.
-        /// For example, attributes use the "@" discriminator, dimensions use "^", and projections use ":".
+        /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
         public string QualifiedName { get; protected set; }
 

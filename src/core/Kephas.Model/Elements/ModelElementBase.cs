@@ -53,14 +53,14 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Gets the attributes of this model element.
+        /// Gets the annotations of this model element.
         /// </summary>
         /// <value>
-        /// The model element attributes.
+        /// The model element annotations.
         /// </value>
-        public IEnumerable<IModelAttribute> Attributes
+        public IEnumerable<IAnnotation> Annotations
         {
-            get { return this.members.OfType<IModelAttribute>(); }
+            get { return this.members.OfType<IAnnotation>(); }
         }
 
         /// <summary>

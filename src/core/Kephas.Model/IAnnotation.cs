@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IModelAttribute.cs" company="Quartz Software SRL">
+// <copyright file="IAnnotation.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract for model attributes.
+//   Contract for model annotations.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,43 +16,43 @@ namespace Kephas.Model
     using Kephas.Model.Elements.Construction;
 
     /// <summary>
-    /// Contract for model attributes.
+    /// Contract for model annotations.
     /// </summary>
     /// <remarks>
-    /// Attributes have names starting with @ (the at sign).
+    /// Annotations have names starting with @ (the at sign).
     /// </remarks>
     [MemberNameDiscriminator("@")]
-    [ContractClass(typeof(ModelAttributeContractClass))]
-    public interface IModelAttribute : INamedElement
+    [ContractClass(typeof(AnnotationContractClass))]
+    public interface IAnnotation : INamedElement
     {
         /// <summary>
-        /// Gets a value indicating whether multiple attributes of the same kind are allowed to annotate the same model element.
+        /// Gets a value indicating whether multiple annotations of the same kind are allowed to be placed the same model element.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if multiple attributes of the same kind are allowed; otherwise, <c>false</c>.
+        ///   <c>true</c> if multiple annotations of the same kind are allowed; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// If multiple attributes of the same kind are allowed, the qualified name will have a generated suffix 
-        /// to allow the attribute to be unique within the members collection.
+        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
+        /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         bool AllowMultiple { get; }
     }
 
     /// <summary>
-    /// Contract class for <see cref="IModelAttribute" />.
+    /// Contract class for <see cref="IAnnotation" />.
     /// </summary>
-    [ContractClassFor(typeof(IModelAttribute))]
-    internal abstract class ModelAttributeContractClass : IModelAttribute
+    [ContractClassFor(typeof(IAnnotation))]
+    internal abstract class AnnotationContractClass : IAnnotation
     {
         /// <summary>
-        /// Gets a value indicating whether multiple attributes of the same kind are allowed to annotate the same model element.
+        /// Gets a value indicating whether multiple annotations of the same kind are allowed to be placed the same model element.
         /// </summary>
         /// <value>
-        /// <c>true</c> if multiple attributes of the same kind are allowed; otherwise, <c>false</c>.
+        ///   <c>true</c> if multiple annotations of the same kind are allowed; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// If multiple attributes of the same kind are allowed, the qualified name will have a generated suffix
-        /// to allow the attribute to be unique within the members collection.
+        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
+        /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         public bool AllowMultiple { get; private set; }
 
@@ -74,7 +74,7 @@ namespace Kephas.Model
         /// The qualified name is unique within the container's members.
         /// Some elements have the qualified name the same as their name,
         /// but others will use a discriminator prefix to avoid name collisions.
-        /// For example, attributes use the "@" discriminator, dimensions use "^", and projections use ":".
+        /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
         public abstract string QualifiedName { get; }
 
