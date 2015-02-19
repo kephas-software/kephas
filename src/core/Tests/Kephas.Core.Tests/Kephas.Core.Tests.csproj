@@ -42,8 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Telerik.JustMock">
-      <HintPath>..\..\packages\JustMock.2014.3.1204.3\lib\Net35\Telerik.JustMock.dll</HintPath>
+    <Reference Include="Telerik.JustMock, Version=2015.1.205.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\JustMock.2015.1.205.2\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
