@@ -13,6 +13,8 @@ namespace Kephas.RequestProcessing.Ping
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.RequestProcessing.Server;
+
     /// <summary>
     /// Request handler for the <see cref="PingRequest"/>.
     /// </summary>
@@ -22,11 +24,12 @@ namespace Kephas.RequestProcessing.Ping
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<PingBackResponse> ProcessAsync(PingRequest request, CancellationToken token)
+        public override Task<PingBackResponse> ProcessAsync(PingRequest request, IProcessingContext context, CancellationToken token)
         {
             return Task.Factory.StartNew(() => new PingBackResponse { ServerTime = DateTimeOffset.Now }, token);
         }

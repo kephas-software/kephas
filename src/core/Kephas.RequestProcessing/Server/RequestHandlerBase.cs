@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.RequestProcessing
+namespace Kephas.RequestProcessing.Server
 {
     using System;
     using System.Threading;
@@ -28,23 +28,25 @@ namespace Kephas.RequestProcessing
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// The response promise.
         /// </returns>
-        public abstract Task<TResponse> ProcessAsync(TRequest request, CancellationToken token);
+        public abstract Task<TResponse> ProcessAsync(TRequest request, IProcessingContext context, CancellationToken token);
 
         /// <summary>
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<IResponse> IRequestHandler<TRequest>.ProcessAsync(TRequest request, CancellationToken token)
+        async Task<IResponse> IRequestHandler<TRequest>.ProcessAsync(TRequest request, IProcessingContext context, CancellationToken token)
         {
-            var response = await this.ProcessAsync(request, token);
+            var response = await this.ProcessAsync(request, context, token);
             return response;
         }
 
@@ -52,11 +54,12 @@ namespace Kephas.RequestProcessing
         /// Processes the provided request asynchronously and returns a response promise.
         /// </summary>
         /// <param name="request">The request to be handled.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<IResponse> IRequestHandler.ProcessAsync(IRequest request, CancellationToken token)
+        async Task<IResponse> IRequestHandler.ProcessAsync(IRequest request, IProcessingContext context, CancellationToken token)
         {
             var typedRequest = request as TRequest;
             if (typedRequest == null)
@@ -64,7 +67,7 @@ namespace Kephas.RequestProcessing
                 throw new ArgumentException(string.Format(Strings.RequestHandlerBadRequestType, typeof(TRequest)), "request");
             }
 
-            var response = await this.ProcessAsync(typedRequest, token);
+            var response = await this.ProcessAsync(typedRequest, context, token);
             return response;
         }
 

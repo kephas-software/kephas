@@ -134,6 +134,8 @@
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />
     <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Services\ContextBase.cs" />
+    <Compile Include="Services\IContext.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
     <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
+    <Compile Include="Threading\Tasks\Empty.cs" />
     <Compile Include="Undefined.cs" />
   </ItemGroup>
   <ItemGroup>

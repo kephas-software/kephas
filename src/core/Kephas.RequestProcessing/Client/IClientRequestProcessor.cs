@@ -1,23 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAsyncRequestProcessor.cs" company="Quartz Software SRL">
+// <copyright file="IClientRequestProcessor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract for asynchronous request processors.
+//   Application service for clients of request processors.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.RequestProcessing
+namespace Kephas.RequestProcessing.Client
 {
     using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
+
     /// <summary>
-    /// Contract for asynchronous request processors.
+    /// Application service for clients of request processors.
     /// </summary>
-    [ContractClass(typeof(AsyncRequestProcessorContractClass))]
-    public interface IAsyncRequestProcessor
+    /// <remarks>
+    /// The client request processor is defined as a shared service.
+    /// </remarks>
+    [SharedAppServiceContract]
+    [ContractClass(typeof(ClientRequestProcessorContractClass))]
+    public interface IClientRequestProcessor
     {
         /// <summary>
         /// Processes the specified request asynchronously.
@@ -31,10 +37,10 @@ namespace Kephas.RequestProcessing
     }
 
     /// <summary>
-    /// Contract class for <see cref="IRequestProcessor"/>.
+    /// Contract class for <see cref="IClientRequestProcessor"/>.
     /// </summary>
-    [ContractClassFor(typeof(IAsyncRequestProcessor))]
-    internal abstract class AsyncRequestProcessorContractClass : IAsyncRequestProcessor
+    [ContractClassFor(typeof(IClientRequestProcessor))]
+    internal abstract class ClientRequestProcessorContractClass : IClientRequestProcessor
     {
         /// <summary>
         /// Processes the specified request asynchronously.

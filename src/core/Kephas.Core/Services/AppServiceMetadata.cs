@@ -58,13 +58,15 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceMetadata" /> class.
         /// </summary>
         /// <param name="processingPriority">The processing priority.</param>
-        public AppServiceMetadata(int processingPriority = 0)
+        /// <param name="overridePriority">The override priority.</param>
+        public AppServiceMetadata(int processingPriority = 0, Priority overridePriority = Priority.Normal)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
+            this.OverridePriority = overridePriority;
         }
 
         /// <summary>
