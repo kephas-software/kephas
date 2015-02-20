@@ -9,19 +9,42 @@
 
 namespace Kephas.Services
 {
+    using System.Diagnostics.Contracts;
+
     /// <summary>
     /// Provides an indexer for getting and setting custom values.
     /// </summary>
+    [ContractClass(typeof(ContextContractClass))]
     public interface IContext
     {
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified key.
+        /// Gets the custom values.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        /// The custom values.
         /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The <see cref="System.Object"/> with the specified key.</returns>
-        object this[string key] { get; set; }
+        dynamic Data { get; }
+    }
+
+    /// <summary>
+    /// Contract class for <see cref="IContext"/>.
+    /// </summary>
+    [ContractClassFor(typeof(IContext))]
+    internal abstract class ContextContractClass : IContext
+    {
+        /// <summary>
+        /// Gets the custom values.
+        /// </summary>
+        /// <value>
+        /// The custom values.
+        /// </value>
+        public dynamic Data
+        {
+            get
+            {
+                Contract.Ensures((object)Contract.Result<dynamic>() != null);
+                return Contract.Result<dynamic>();
+            }
+        }
     }
 }

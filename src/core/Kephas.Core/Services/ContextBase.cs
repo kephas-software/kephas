@@ -9,7 +9,7 @@
 
 namespace Kephas.Services
 {
-    using System.Collections.Generic;
+    using System.Dynamic;
 
     /// <summary>
     /// A base implementtion for contexts.
@@ -19,33 +19,17 @@ namespace Kephas.Services
         /// <summary>
         /// The custom values.
         /// </summary>
-        private readonly IDictionary<string, object> customValues = new Dictionary<string, object>();
+        private readonly dynamic data = new ExpandoObject();
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified key.
+        /// Gets the custom values.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        /// The custom values.
         /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The <see cref="System.Object"/> with the specified key.</returns>
-        public virtual object this[string key]
+        public dynamic Data
         {
-            get
-            {
-                object value;
-                if (this.customValues.TryGetValue(key, out value))
-                {
-                    return value;
-                }
-
-                return null;
-            }
-
-            set
-            {
-                this.customValues[key] = value;
-            }
+            get { return this.data; }
         }
     }
 }

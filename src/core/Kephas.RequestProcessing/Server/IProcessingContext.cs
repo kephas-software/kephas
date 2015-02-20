@@ -105,13 +105,11 @@ namespace Kephas.RequestProcessing.Server
         public Exception Exception { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified key.
+        /// Gets the custom values.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        /// The custom values.
         /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The <see cref="System.Object"/> with the specified key.</returns>
-        public abstract object this[string key] { get; set; }
+        public abstract dynamic Data { get; }
     }
 }
