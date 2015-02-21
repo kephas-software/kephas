@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef
+namespace Kephas.Composition.Mef.ExportProviders
 {
     using System;
     using System.Collections.Generic;

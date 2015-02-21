@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef
     using System.Diagnostics.Contracts;
 
     using Kephas.Composition;
+    using Kephas.Composition.Mef.ExportProviders;
 
     /// <summary>
     /// The MEF composition container.

@@ -110,8 +110,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Composition\Mef\Conventions\MefConventionsRegistrarBase.cs" />
+    <Compile Include="Composition\Mef\Export.cs" />
+    <Compile Include="Composition\Mef\ExportFactory.cs" />
+    <Compile Include="Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\TypeAffineExportDescriptorProvider.cs" />
-    <Compile Include="Composition\Mef\FactoryExportDescriptorProvider.cs" />
+    <Compile Include="Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\Conventions\IMefConventionBuilderProvider.cs" />
     <Compile Include="Composition\Mef\Conventions\MefConventionsBuilder.cs" />
     <Compile Include="Composition\Mef\Conventions\MefExportConventionsBuilder.cs" />
