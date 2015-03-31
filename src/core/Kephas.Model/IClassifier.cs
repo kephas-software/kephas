@@ -89,12 +89,12 @@ namespace Kephas.Model
         public abstract string QualifiedName { get; }
 
         /// <summary>
-        /// Gets the full name, starting from the root model space.
+        /// Gets the fully qualified name, starting from the root model space.
         /// </summary>
         /// <value>
         /// The full name.
         /// </value>
-        public abstract string FullQualifiedName { get; }
+        public abstract string FullyQualifiedName { get; }
 
         /// <summary>
         /// Gets the container element.

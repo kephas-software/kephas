@@ -21,10 +21,10 @@ namespace Kephas.Model.Elements.Construction.Internal
         void SetContainer(IModelElement container);
 
         /// <summary>
-        /// Sets the full qualified name.
+        /// Sets the fully qualified name.
         /// </summary>
-        /// <param name="fullQualifiedName">The full qualified name.</param>
-        void SetFullQualifiedName(string fullQualifiedName);
+        /// <param name="fullyQualifiedName">The fully qualified name.</param>
+        void SetFullyQualifiedName(string fullyQualifiedName);
 
         /// <summary>
         /// Completes the construction of the element.

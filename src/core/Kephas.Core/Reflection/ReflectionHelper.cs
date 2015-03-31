@@ -143,5 +143,18 @@ namespace Kephas.Reflection
 
             return GetNonGenericFullName(type.GetTypeInfo());
         }
+
+        /// <summary>
+        /// Creates the static delegate for the provided static method.
+        /// </summary>
+        /// <typeparam name="T">The delegate type.</typeparam>
+        /// <param name="methodInfo">The method information.</param>
+        /// <returns>A static delegate for the provided static method.</returns>
+        public static T CreateStaticDelegate<T>(this MethodInfo methodInfo)
+        {
+            Contract.Requires(methodInfo != null);
+
+            return (T)(object)methodInfo.CreateDelegate(typeof(T));
+        }
     }
 }

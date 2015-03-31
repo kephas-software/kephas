@@ -2,27 +2,38 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Kephas.Model.INamedElement">
     <Position X="6.25" Y="0.5" Width="2" />
-    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement">
+    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="2.18" />
+        <Point X="6.5" Y="3.25" />
+      </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.048" Y="0.248" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="ModelSpace" Type="Kephas.Model.IModelSpace" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="1.312" />
+        <Point X="5.875" Y="1.312" />
+        <Point X="5.875" Y="5.938" />
+        <Point X="6.25" Y="5.938" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAAAAAAAASYAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAESIAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>INamedElement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Container" />
+      <Property Name="ModelSpace" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Kephas.Model.IModelElement">
     <Position X="6.25" Y="3.25" Width="2" />
-    <AssociationLine Name="Members" Type="Kephas.Model.INamedElement" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="Members" Type="Kephas.Model.INamedElement" FixedToPoint="true">
       <Path>
-        <Point X="6.25" Y="3.762" />
-        <Point X="5.875" Y="3.762" />
-        <Point X="5.875" Y="1.34" />
-        <Point X="6.25" Y="1.34" />
+        <Point X="6.875" Y="3.25" />
+        <Point X="6.875" Y="2.18" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -78,6 +89,14 @@
   </Interface>
   <Interface Name="Kephas.Model.IModelSpace">
     <Position X="6.25" Y="5.75" Width="2" />
+    <AssociationLine Name="Projections" Type="Kephas.Model.IModelProjection" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.938" Y="6.747" />
+        <Point X="7.938" Y="7.618" />
+        <Point X="16.5" Y="7.618" />
+        <Point X="16.5" Y="4.483" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAIAAAA=</HashCode>
       <FileName>IModelSpace.cs</FileName>
@@ -85,6 +104,7 @@
     <ShowAsCollectionAssociation>
       <Property Name="Dimensions" />
       <Property Name="Classifiers" />
+      <Property Name="Projections" />
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Kephas.Model.IProperty">

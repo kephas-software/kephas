@@ -68,7 +68,7 @@ namespace Kephas.Model
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection. 
         /// </para>
         /// </example>
-        string FullQualifiedName { get; }
+        string FullyQualifiedName { get; }
 
         /// <summary>
         /// Gets the container element.
@@ -140,7 +140,7 @@ namespace Kephas.Model
         /// <value>
         /// The fully qualified name.
         /// </value>
-        public string FullQualifiedName
+        public string FullyQualifiedName
         {
             get
             {
