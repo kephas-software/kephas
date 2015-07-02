@@ -129,8 +129,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Composition\Mef\CompositionContainerBuilder.cs" />
-    <Compile Include="Composition\Mef\CompositionContainer.cs" />
+    <Compile Include="Composition\Mef\Hosting\CompositionContainerBuilder.cs" />
+    <Compile Include="Composition\Mef\Hosting\CompositionContainer.cs" />
     <Compile Include="Composition\Mef\MefAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

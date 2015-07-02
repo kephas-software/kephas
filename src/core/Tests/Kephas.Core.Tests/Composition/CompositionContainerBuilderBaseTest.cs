@@ -17,6 +17,7 @@ namespace Kephas.Core.Tests.Composition
 
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Runtime;

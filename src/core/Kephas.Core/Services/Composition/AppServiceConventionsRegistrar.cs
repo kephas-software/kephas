@@ -15,6 +15,7 @@ namespace Kephas.Services.Composition
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Metadata;
     using Kephas.Resources;
@@ -144,15 +145,15 @@ namespace Kephas.Services.Composition
                 return constructorsList[0];
             }
 
-            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<ComposingConstructorAttribute>() != null).ToList();
+            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
             if (eligibleConstructors.Count == 0)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(ComposingConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             if (eligibleConstructors.Count > 1)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(ComposingConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
             return eligibleConstructors[1];

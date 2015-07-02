@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition
+namespace Kephas.Composition.AttributedModel
 {
     using System;
 

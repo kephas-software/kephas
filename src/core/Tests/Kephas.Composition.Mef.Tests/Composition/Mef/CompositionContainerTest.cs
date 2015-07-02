@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using Kephas.Composition.Mef.Hosting;
     using Kephas.Services;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

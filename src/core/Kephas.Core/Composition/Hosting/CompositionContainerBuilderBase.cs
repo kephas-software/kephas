@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition
+namespace Kephas.Composition.Hosting
 {
     using System;
     using System.Collections.Generic;

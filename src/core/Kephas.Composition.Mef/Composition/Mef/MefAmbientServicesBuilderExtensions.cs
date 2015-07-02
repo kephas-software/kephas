@@ -13,6 +13,8 @@ namespace Kephas.Composition.Mef
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
+    using Kephas.Composition.Mef.Hosting;
+
     /// <summary>
     /// MEF extensions for the ambient services builder.
     /// </summary>

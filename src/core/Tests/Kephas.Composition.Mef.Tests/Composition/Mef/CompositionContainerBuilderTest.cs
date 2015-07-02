@@ -17,7 +17,9 @@ namespace Kephas.Composition.Mef
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Mef.Conventions;
+    using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Runtime;
@@ -345,7 +347,7 @@ namespace Kephas.Composition.Mef
 
         public class TestMetadataConsumer
         {
-            [ImportMany]
+            [System.Composition.ImportMany]
             public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
         }
 
@@ -362,7 +364,7 @@ namespace Kephas.Composition.Mef
 
         public class TestConverterConsumer
         {
-            [ImportMany]
+            [System.Composition.ImportMany]
             public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
 
@@ -399,12 +401,12 @@ namespace Kephas.Composition.Mef
 
         public class MultipleCompositionConstructorAppService : IConstructorAppService
         {
-            [ComposingConstructor]
+            [CompositionConstructor]
             public MultipleCompositionConstructorAppService()
             {
             }
 
-            [ComposingConstructor]
+            [CompositionConstructor]
             public MultipleCompositionConstructorAppService(ICompositionContainer compositionContainer)
             {
             }
