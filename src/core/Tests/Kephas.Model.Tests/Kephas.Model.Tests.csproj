@@ -58,9 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.JustMock, Version=2015.1.205.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2015.2.616.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\JustMock.2015.1.205.2\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <HintPath>..\..\packages\JustMock.2015.2.616.2\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -87,6 +87,10 @@
     <Compile Include="Runtime\RuntimeModelInfoProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
+      <Project>{ddf3a0cc-87ba-4fb6-a416-8c26513dc930}</Project>
+      <Name>Kephas.Composition.Mef</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{84122862-c5dd-4460-a9f5-925d623b22d7}</Project>
       <Name>Kephas.Core</Name>

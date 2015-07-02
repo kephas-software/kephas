@@ -11,6 +11,8 @@ namespace Kephas.Logging
 {
     using System;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Enumerates the logging levels.
     /// </summary>
@@ -67,6 +69,15 @@ namespace Kephas.Logging
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
         void Log(LogLevel level, string messageFormat, params object[] args);
+    }
+
+    /// <summary>
+    /// Defines a service contract for a logger associated to a specific service.
+    /// </summary>
+    /// <typeparam name="TService">The type of the service.</typeparam>
+    [SharedAppServiceContract(ContractType = typeof(ILogger<>))]
+    public interface ILogger<TService> : ILogger
+    {
     }
 
     /// <summary>

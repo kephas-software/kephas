@@ -17,6 +17,7 @@ namespace Kephas.RequestProcessing.Tests.Server
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Composition.Mef;
     using Kephas.RequestProcessing;
     using Kephas.RequestProcessing.Ping;
     using Kephas.RequestProcessing.Server;
@@ -191,7 +192,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             Assert.IsInstanceOfType(afterlist[0], typeof(InvalidOperationException));
         }
 
-        private ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata> CreateFilterFactory(
+        private IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata> CreateFilterFactory(
             Func<IProcessingContext, CancellationToken, Task> beforeFunc = null,
             Func<IProcessingContext, CancellationToken, Task> afterFunc = null,
             Type requestType = null, 
@@ -207,16 +208,16 @@ namespace Kephas.RequestProcessing.Tests.Server
             filter.Arrange(f => f.AfterProcessAsync(Arg.IsAny<IProcessingContext>(), Arg.IsAny<CancellationToken>()))
                 .Returns(afterFunc);
             var factory =
-                new ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>(
+                new ExportFactoryAdapter<IRequestProcessingFilter, RequestProcessingFilterMetadata>(
                     () => Tuple.Create(filter, (Action)(() => { })),
                     new RequestProcessingFilterMetadata(requestType, processingPriority, overridePriority));
             return factory;
         } 
 
-        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IList<ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
+        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
         {
             filterFactories = filterFactories
-                              ?? new List<ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>>();
+                              ?? new List<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>>();
             return new RequestProcessor(compositionContainer, filterFactories);
         }
     }

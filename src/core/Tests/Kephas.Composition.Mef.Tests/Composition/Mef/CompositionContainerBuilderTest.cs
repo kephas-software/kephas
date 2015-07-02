@@ -17,9 +17,9 @@ namespace Kephas.Composition.Mef
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Composition.Mef.Conventions;
     using Kephas.Configuration;
     using Kephas.Logging;
-    using Kephas.Logging.Composition;
     using Kephas.Runtime;
     using Kephas.Services;
 
@@ -104,7 +104,7 @@ namespace Kephas.Composition.Mef
 
             var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory
-                .WithAssembly(typeof(LogConventionsRegistrar).Assembly)
+                .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .WithPart(typeof(ComposedTestLogConsumer))
                 .CreateContainer();
 
@@ -117,7 +117,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(LogConventionsRegistrar).Assembly)
+                .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .CreateContainer();
 
             var consumer = new NonComposedTestLogConsumer();
@@ -318,23 +318,14 @@ namespace Kephas.Composition.Mef
         }
 
         [Export]
-        public class ComposedTestLogConsumer : ILogConsumer
+        public class ComposedTestLogConsumer
         {
-            public ILogger Logger { get; set; }
+            public ILogger<ComposedTestLogConsumer> Logger { get; set; }
         }
 
         public class NonComposedTestLogConsumer
         {
-            [Import]
-            public ILogManager LogManager { get; set; }
-
-            public ILogger Logger
-            {
-                get
-                {
-                    return this.LogManager.GetLogger(this.GetType());
-                }
-            }
+            public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 
         [SharedAppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
@@ -355,7 +346,7 @@ namespace Kephas.Composition.Mef
         public class TestMetadataConsumer
         {
             [ImportMany]
-            public ICollection<ExportFactory<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
+            public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
         }
 
         public interface IConverter { }
@@ -372,7 +363,7 @@ namespace Kephas.Composition.Mef
         public class TestConverterConsumer
         {
             [ImportMany]
-            public ICollection<ExportFactory<IConverter, AppServiceMetadata>> Converters { get; set; }
+            public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
 
         [SharedAppServiceContract]

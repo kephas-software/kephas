@@ -14,7 +14,6 @@ namespace Kephas.Composition.Mef
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
     using System.Diagnostics.Contracts;
-    using System.Reflection;
 
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Mef.Conventions;

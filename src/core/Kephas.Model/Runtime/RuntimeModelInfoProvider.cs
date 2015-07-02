@@ -11,11 +11,11 @@ namespace Kephas.Model.Runtime
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Composition;
     using Kephas.Extensions;
     using Kephas.Logging;
     using Kephas.Model.Elements.Construction;
@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
-    public class RuntimeModelInfoProvider : IModelInfoProvider, ILogConsumer
+    public class RuntimeModelInfoProvider : IModelInfoProvider
     {
         /// <summary>
         /// The model registrars.
@@ -44,8 +44,8 @@ namespace Kephas.Model.Runtime
         /// <param name="modelRegistrars">The model registrars.</param>
         /// <param name="elementInfoExportFactories">The element information export factories.</param>
         public RuntimeModelInfoProvider(
-            [ImportMany] ICollection<IRuntimeModelRegistrar> modelRegistrars,
-            [ImportMany] ICollection<ExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
+            ICollection<IRuntimeModelRegistrar> modelRegistrars,
+            ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
         {
             Contract.Requires(modelRegistrars != null);
             Contract.Requires(elementInfoExportFactories != null);
@@ -60,7 +60,7 @@ namespace Kephas.Model.Runtime
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger Logger { get; set; }
+        public ILogger<RuntimeModelInfoProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.

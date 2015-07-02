@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Export.cs" company="Quartz Software SRL">
+// <copyright file="ExportAdapter.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -10,14 +10,12 @@
 
 namespace Kephas.Composition.Mef
 {
-    using System;
-
     /// <summary>
     /// A handle allowing the graph of parts associated with an exported instance
     /// to be released.
     /// </summary>
     /// <typeparam name="T">The export type.</typeparam>
-    public sealed class Export<T> : IExport<T>
+    public sealed class ExportAdapter<T> : IExport<T>
     {
         /// <summary>
         /// The inner export.
@@ -25,10 +23,10 @@ namespace Kephas.Composition.Mef
         private readonly System.Composition.Export<T> innerExport;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Export{T}" /> class.
+        /// Initializes a new instance of the <see cref="ExportAdapter{T}" /> class.
         /// </summary>
         /// <param name="innerExport">The inner export.</param>
-        internal Export(System.Composition.Export<T> innerExport)
+        internal ExportAdapter(System.Composition.Export<T> innerExport)
         {
             this.innerExport = innerExport;
         }

@@ -138,6 +138,7 @@
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />
     <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="Services\ContextBase.cs" />
     <Compile Include="Services\IContext.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />

@@ -11,16 +11,13 @@ namespace Kephas.Composition.Mef
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Kephas.Composition;
-    using Kephas.Composition.Conventions;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Logging;
-    using Kephas.Logging.Composition;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -45,6 +42,13 @@ namespace Kephas.Composition.Mef
         public virtual ContainerConfiguration WithEmptyConfiguration()
         {
             return new ContainerConfiguration();
+        }
+
+        public virtual ContainerConfiguration WithExportProviders(ContainerConfiguration configuration)
+        {
+            configuration.WithProvider(new ExportFactoryExportDescriptorProvider());
+            configuration.WithProvider(new ExportFactoryWithMetadataExportDescriptorProvider());
+            return configuration;
         }
 
         public virtual ContainerConfiguration WithDefaultLogger(ContainerConfiguration configuration)

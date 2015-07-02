@@ -1,35 +1,37 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NLogger.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   NLog logger.
+//   NLog logger for the <typeparamref name="TService" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Logging.NLog
 {
     using System;
-
-    using global::NLog;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// NLog logger.
+    /// NLog logger for the <typeparamref name="TService"/>.
     /// </summary>
-    internal class NLogger : ILogger
+    /// <typeparam name="TService">The type of the service.</typeparam>
+    public class NLogger<TService> : ILogger<TService>
     {
         /// <summary>
-        /// The NLog logger.
+        /// The inner logger.
         /// </summary>
-        private readonly Logger logger;
+        private readonly Logging.ILogger innerLogger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NLogger"/> class.
+        /// Initializes a new instance of the <see cref="NLogger{TService}"/> class.
         /// </summary>
-        /// <param name="logger">The NLog logger.</param>
-        public NLogger(Logger logger)
+        /// <param name="logManager">The log manager.</param>
+        public NLogger(ILogManager logManager)
         {
-            this.logger = logger;
+            Contract.Requires(logManager != null);
+
+            this.innerLogger = logManager.GetLogger(typeof(TService));
         }
 
         /// <summary>
@@ -40,30 +42,7 @@ namespace Kephas.Logging.NLog
         /// <param name="exception">The exception.</param>
         public void Log(Logging.LogLevel level, object message, Exception exception = null)
         {
-            switch (level)
-            {
-                case Logging.LogLevel.Fatal:
-                    this.LogWithException(message, exception, this.logger.Fatal, this.logger.Fatal);
-                    break;
-                case Logging.LogLevel.Error:
-                    this.LogWithException(message, exception, this.logger.Error, this.logger.Error);
-                    break;
-                case Logging.LogLevel.Warning:
-                    this.LogWithException(message, exception, this.logger.Warn, this.logger.Warn);
-                    break;
-                case Logging.LogLevel.Info:
-                    this.LogWithException(message, exception, this.logger.Info, this.logger.Info);
-                    break;
-                case Logging.LogLevel.Debug:
-                    this.LogWithException(message, exception, this.logger.Debug, this.logger.Debug);
-                    break;
-                case Logging.LogLevel.Trace:
-                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
-                    break;
-                default:
-                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
-                    break;
-            }
+            this.innerLogger.Log(level, message, exception);
         }
 
         /// <summary>
@@ -74,53 +53,7 @@ namespace Kephas.Logging.NLog
         /// <param name="args">The arguments.</param>
         public void Log(Logging.LogLevel level, string messageFormat, params object[] args)
         {
-            switch (level)
-            {
-                case Logging.LogLevel.Fatal:
-                    this.logger.Fatal(messageFormat, args);
-                    break;
-                case Logging.LogLevel.Error:
-                    this.logger.Error(messageFormat, args);
-                    break;
-                case Logging.LogLevel.Warning:
-                    this.logger.Warn(messageFormat, args);
-                    break;
-                case Logging.LogLevel.Info:
-                    this.logger.Info(messageFormat, args);
-                    break;
-                case Logging.LogLevel.Debug:
-                    this.logger.Debug(messageFormat, args);
-                    break;
-                case Logging.LogLevel.Trace:
-                    this.logger.Trace(messageFormat, args);
-                    break;
-                default:
-                    this.logger.Trace(messageFormat, args);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Logs the message with exception.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="exceptionLogger">The exception logger.</param>
-        /// <param name="messageLogger">The message logger.</param>
-        private void LogWithException(
-            object message,
-            Exception exception,
-            Action<string, Exception> exceptionLogger,
-            Action<object> messageLogger)
-        {
-            if (exception != null)
-            {
-                exceptionLogger(message.ToString(), exception);
-            }
-            else
-            {
-                messageLogger(message);
-            }
+            this.innerLogger.Log(level, messageFormat, args);
         }
     }
 }

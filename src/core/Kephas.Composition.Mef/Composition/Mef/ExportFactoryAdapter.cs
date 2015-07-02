@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportFactory.cs" company="Quartz Software SRL">
+// <copyright file="ExportFactoryAdapter.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -16,7 +16,7 @@ namespace Kephas.Composition.Mef
     /// Component used to import parts that wish to dynamically create instances of other parts.
     /// </summary>
     /// <typeparam name="T">The contract type of the created parts.</typeparam>
-    public class ExportFactory<T> : IExportFactory<T>
+    public class ExportFactoryAdapter<T> : IExportFactory<T>
     {
         /// <summary>
         /// The inner export factory.
@@ -24,10 +24,10 @@ namespace Kephas.Composition.Mef
         private readonly System.Composition.ExportFactory<T> innerExportFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactory{T}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactoryAdapter{T}"/> class.
         /// </summary>
         /// <param name="exportCreator">The export creator.</param>
-        public ExportFactory(Func<Tuple<T, Action>> exportCreator)
+        public ExportFactoryAdapter(Func<Tuple<T, Action>> exportCreator)
         {
             this.innerExportFactory = new System.Composition.ExportFactory<T>(exportCreator);
         }
@@ -38,7 +38,7 @@ namespace Kephas.Composition.Mef
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
         public IExport<T> CreateExport()
         {
-            return new Export<T>(this.innerExportFactory.CreateExport());
+            return new ExportAdapter<T>(this.innerExportFactory.CreateExport());
         }
     }
 
@@ -48,14 +48,14 @@ namespace Kephas.Composition.Mef
     /// <typeparam name="T">The contract type being created.</typeparam>
     /// <typeparam name="TMetadata">The metadata required from the export.</typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class ExportFactory<T, TMetadata> : ExportFactory<T>, IExportFactory<T, TMetadata>
+    public class ExportFactoryAdapter<T, TMetadata> : ExportFactoryAdapter<T>, IExportFactory<T, TMetadata>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExportFactory{T, TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactoryAdapter{T,TMetadata}"/> class.
         /// </summary>
         /// <param name="exportCreator">The export creator.</param>
         /// <param name="metadata">The metadata.</param>
-        public ExportFactory(Func<Tuple<T, Action>> exportCreator, TMetadata metadata)
+        public ExportFactoryAdapter(Func<Tuple<T, Action>> exportCreator, TMetadata metadata)
             : base(exportCreator)
         {
             this.Metadata = metadata;

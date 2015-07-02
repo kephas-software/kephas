@@ -21,6 +21,9 @@ namespace Kephas.Services
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
     public class SharedAppServiceContractAttribute : AppServiceContractAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SharedAppServiceContractAttribute"/> class.
+        /// </summary>
         public SharedAppServiceContractAttribute()
             : base(AppServiceLifetime.Shared)
         {

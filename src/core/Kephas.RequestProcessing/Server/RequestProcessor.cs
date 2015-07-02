@@ -11,7 +11,6 @@ namespace Kephas.RequestProcessing.Server
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -30,14 +29,14 @@ namespace Kephas.RequestProcessing.Server
         /// <summary>
         /// The filter factories.
         /// </summary>
-        private readonly IList<ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories;
+        private readonly IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestProcessor" /> class.
         /// </summary>
         /// <param name="compositionContainer">The composition container.</param>
         /// <param name="filterFactories">The filter factories.</param>
-        public RequestProcessor(ICompositionContainer compositionContainer, IList<ExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
+        public RequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
         {
             Contract.Requires(compositionContainer != null);
             Contract.Requires(filterFactories != null);

@@ -1,13 +1,22 @@
-﻿namespace Kephas.Model.Tests.Runtime
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RuntimeModelInfoProviderTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Tests for <see cref="RuntimeModelInfoProvider" />.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Tests.Runtime
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Model.AttributedModel;
+    using Kephas.Composition;
+    using Kephas.Composition.Mef;
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Factory;
@@ -35,7 +44,7 @@
             var factory = Mock.Create<IRuntimeElementInfoFactory>();
             factory.Arrange(f => f.TryGetElementInfo(Arg.Is(typeof(string).GetTypeInfo()))).Returns(stringInfoMock);
 
-            var exportFactory = this.CreateElementinfoFactory(factory);
+            var exportFactory = this.CreateElementInfoFactory(factory);
 
             var provider = new RuntimeModelInfoProvider(new[] { registrar }, new[] { exportFactory });
 
@@ -45,7 +54,7 @@
             Assert.AreSame(stringInfoMock, elementInfos[0]);
         }
 
-        private ExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> CreateElementinfoFactory(
+        private IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> CreateElementInfoFactory(
             IRuntimeElementInfoFactory factory)
         {
             var metadata =
@@ -62,7 +71,7 @@
                             }
                         });
             var exportFactory =
-                new ExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>(
+                new ExportFactoryAdapter<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>(
                     () => Tuple.Create(factory, (Action)null),
                     metadata);
             return exportFactory;
