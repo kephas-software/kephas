@@ -65,6 +65,30 @@ namespace Kephas.RequestProcessing.Tests.Server
         }
 
         [TestMethod]
+        public async Task ProcessAsync_Composition_success()
+        {
+            var logManager = Mock.Create<ILogManager>();
+            var configManager = Mock.Create<IConfigurationManager>();
+            var platformManager = Mock.Create<IPlatformManager>();
+
+            var containerBuilder = new CompositionContainerBuilder(logManager, configManager, platformManager);
+            containerBuilder.WithAssemblies(
+                new[]
+                    {
+                        typeof(ILogger).Assembly,                           /* Kephas.Core */
+                        typeof(IMefConventionBuilderProvider).Assembly,     /* Kephas.Composition.Mef */
+                        typeof(IRequestProcessor).Assembly,                 /* Kephas.RequestProcessing */
+                    });
+
+            var container = containerBuilder.CreateContainer();
+            var requestProcessor = container.GetExport<IRequestProcessor>();
+            Assert.IsInstanceOfType(requestProcessor, typeof(RequestProcessor));
+
+            var result = await requestProcessor.ProcessAsync(new PingRequest(), CancellationToken.None);
+            Assert.IsInstanceOfType(result, typeof(PingBackResponse));
+        }
+
+        [TestMethod]
         public async Task ProcessAsync_result()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -75,7 +99,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 .Returns(Task.FromResult(expectedResponse));
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
-            var processor = this.CreateRequestProcessor(compositionContainer, handler);
+            var processor = this.CreateRequestProcessor(compositionContainer);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreSame(expectedResponse, result);
@@ -92,7 +116,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 .Throws(new InvalidOperationException());
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
-            var processor = this.CreateRequestProcessor(compositionContainer, handler);
+            var processor = this.CreateRequestProcessor(compositionContainer);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
         }
 
@@ -110,7 +134,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
 
-            var processor = this.CreateRequestProcessor(compositionContainer, handler);
+            var processor = this.CreateRequestProcessor(compositionContainer);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Mock.Assert(handler);
@@ -139,7 +163,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { afterlist.Add(2); return Empty<bool>.Task; },
                 processingPriority: 1);
 
-            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1, f2 });
+            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreEqual(2, beforelist.Count);
@@ -173,7 +197,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { beforelist.Add(2); return Empty<bool>.Task; },
                 (c, t) => { afterlist.Add(2); return Empty<bool>.Task; });
 
-            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1, f2 });
+            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreEqual(1, beforelist.Count);
@@ -200,7 +224,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { beforelist.Add(c.Exception); return Empty<bool>.Task; },
                 (c, t) => { afterlist.Add(c.Exception); return Empty<bool>.Task; });
 
-            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1 });
+            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1 });
             InvalidOperationException thrownException = null;
             try
             {
@@ -242,16 +266,11 @@ namespace Kephas.RequestProcessing.Tests.Server
             return factory;
         } 
 
-        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IRequestHandler handler, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
+        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>>();
-            var requestType = Mock.Create<IRequest>().GetType();
-            var handlerFactories = new List<IExportFactory<IRequestHandler, RequestHandlerMetadata>>
-                                       {
-                                           new ExportFactoryAdapter<IRequestHandler, RequestHandlerMetadata>(() => Tuple.Create(handler, (Action)(() => {})), new RequestHandlerMetadata(requestType))
-                                       };
-            return new RequestProcessor(compositionContainer, handlerFactories, filterFactories);
+            return new RequestProcessor(compositionContainer, filterFactories);
         }
     }
 }
