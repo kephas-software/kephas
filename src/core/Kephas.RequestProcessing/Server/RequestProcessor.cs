@@ -10,6 +10,7 @@
 namespace Kephas.RequestProcessing.Server
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -18,6 +19,7 @@ namespace Kephas.RequestProcessing.Server
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
@@ -27,6 +29,16 @@ namespace Kephas.RequestProcessing.Server
     public class RequestProcessor : IRequestProcessor
     {
         /// <summary>
+        /// The handler factories.
+        /// </summary>
+        private readonly ConcurrentDictionary<Type, IExportFactory<IRequestHandler, RequestHandlerMetadata>> handlerFactories = new ConcurrentDictionary<Type, IExportFactory<IRequestHandler, RequestHandlerMetadata>>();
+
+        /// <summary>
+        /// The handler factories.
+        /// </summary>
+        private readonly IList<IExportFactory<IRequestHandler, RequestHandlerMetadata>> allHandlerFactories;
+
+        /// <summary>
         /// The filter factories.
         /// </summary>
         private readonly IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories;
@@ -35,13 +47,15 @@ namespace Kephas.RequestProcessing.Server
         /// Initializes a new instance of the <see cref="RequestProcessor" /> class.
         /// </summary>
         /// <param name="compositionContainer">The composition container.</param>
+        /// <param name="handlerFactories">The handler factories.</param>
         /// <param name="filterFactories">The filter factories.</param>
-        public RequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
+        public RequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestHandler, RequestHandlerMetadata>> handlerFactories, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
         {
             Contract.Requires(compositionContainer != null);
             Contract.Requires(filterFactories != null);
 
             this.CompositionContainer = compositionContainer;
+            this.allHandlerFactories = handlerFactories;
             this.filterFactories = filterFactories;
         }
 
@@ -52,6 +66,14 @@ namespace Kephas.RequestProcessing.Server
         /// The composition container.
         /// </value>
         public ICompositionContainer CompositionContainer { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<RequestProcessor> Logger { get; set; } 
 
         /// <summary>
         /// Processes the specified request asynchronously.
@@ -104,9 +126,19 @@ namespace Kephas.RequestProcessing.Server
         /// <returns>The newly created request handler.</returns>
         protected virtual IRequestHandler CreateRequestHandler(IRequest request)
         {
-            var requestHandlerType = typeof(IRequestHandler<>).MakeGenericType(request.GetType());
-            var requestHandler = (IRequestHandler)this.CompositionContainer.GetExport(requestHandlerType);
-            return requestHandler;
+            var requestType = request.GetType();
+            var handlerFactory = this.handlerFactories.GetOrAdd(
+                requestType,
+                _ =>
+                    {
+                        var selectedHandlerFactories = this.allHandlerFactories.Where(f => f.Metadata.RequestType == requestType).ToList();
+                        var highestOverridePriority = selectedHandlerFactories.Min(f => f.Metadata.OverridePriority);
+
+                        // TODO handle in a gentle manner the errors with Single
+                        var factory = selectedHandlerFactories.Single(f => f.Metadata.OverridePriority == highestOverridePriority);
+                        return factory;
+                    });
+            return handlerFactory.CreateExport().Value;
         }
 
         /// <summary>

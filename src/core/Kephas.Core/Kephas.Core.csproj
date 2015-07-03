@@ -129,8 +129,6 @@
     <Compile Include="Composition\IExport.cs" />
     <Compile Include="Composition\IExportFactory.cs" />
     <Compile Include="Composition\IExportProvider.cs" />
-    <Compile Include="Composition\AttributedModel\ImportAttribute.cs" />
-    <Compile Include="Composition\AttributedModel\ImportManyAttribute.cs" />
     <Compile Include="Composition\Metadata\ExportMetadataBase.cs" />
     <Compile Include="Composition\ICompositionContainer.cs" />
     <Compile Include="Composition\Conventions\IConventionsBuilder.cs" />

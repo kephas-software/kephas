@@ -26,7 +26,9 @@ namespace Kephas.Composition.Mef.Conventions
         /// <summary>
         /// Initializes a new instance of the <see cref="MefImportConventionsBuilder"/> class.
         /// </summary>
-        /// <param name="innerBuilder">The inner builder.</param>
+        /// <param name="innerBuilder">
+        /// The inner builder.
+        /// </param>
         internal MefImportConventionsBuilder(ImportConventionBuilder innerBuilder)
         {
             this.innerBuilder = innerBuilder;

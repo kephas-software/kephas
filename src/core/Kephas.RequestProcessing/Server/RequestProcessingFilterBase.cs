@@ -18,7 +18,7 @@ namespace Kephas.RequestProcessing.Server
     /// Base implementation of a request processing filter.
     /// </summary>
     /// <typeparam name="TRequest">The request type.</typeparam>
-    public class RequestProcessingFilterBase<TRequest> : IRequestProcessingFilter<TRequest>
+    public abstract class RequestProcessingFilterBase<TRequest> : IRequestProcessingFilter<TRequest>
         where TRequest : IRequest
     {
         /// <summary>

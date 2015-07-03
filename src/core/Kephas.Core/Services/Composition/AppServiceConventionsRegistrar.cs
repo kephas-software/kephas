@@ -61,9 +61,18 @@ namespace Kephas.Services.Composition
                 var metadataAttributes = appServiceContractInfo.Value.MetadataAttributes;
                 if (exportedContract.IsGenericTypeDefinition)
                 {
-                    partBuilder.ExportInterfaces(
-                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
-                        (t, b) => this.ConfigureExport(serviceContract, b, t, metadataAttributes));
+                    if (serviceContractMetadata.AsOpenGeneric)
+                    {
+                        partBuilder.ExportInterfaces(
+                            t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                            (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, metadataAttributes));
+                    }
+                    else
+                    {
+                        partBuilder.ExportInterfaces(
+                            t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                            (t, b) => this.ConfigureExport(serviceContract, b, t, metadataAttributes));
+                    }
                 }
                 else
                 {
@@ -73,11 +82,79 @@ namespace Kephas.Services.Composition
 
                 partBuilder.SelectConstructor(this.SelectAppServiceConstructor);
 
+                partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
+
                 if (serviceContractMetadata.IsShared)
                 {
                     partBuilder.Shared();
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified property imports an application service.
+        /// </summary>
+        /// <param name="pi">The pi.</param>
+        /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
+        /// <returns><c>true</c> if the specified property imports an application service, otherwise <c>false</c>.</returns>
+        private bool IsAppServiceImport(PropertyInfo pi, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos)
+        {
+            if (!pi.CanWrite || !pi.SetMethod.IsPublic)
+            {
+                return false;
+            }
+
+            var propertyType = pi.PropertyType;
+            Type serviceContractType;
+            if (propertyType.IsArray)
+            {
+                serviceContractType = propertyType.GetElementType();
+                serviceContractType = this.TryGetServiceContractTypeFromExportFactory(serviceContractType)
+                                      ?? serviceContractType;
+            }
+            else if (propertyType.IsConstructedGenericType)
+            {
+                var genericTypeDefinition = propertyType.GetGenericTypeDefinition();
+                if (genericTypeDefinition == typeof(IList<>) || genericTypeDefinition == typeof(ICollection<>)
+                    || genericTypeDefinition == typeof(IEnumerable<>))
+                {
+                    serviceContractType = propertyType.GetTypeInfo().GenericTypeArguments[0];
+                    serviceContractType = this.TryGetServiceContractTypeFromExportFactory(serviceContractType)
+                                          ?? serviceContractType;
+                }
+                else
+                {
+                    serviceContractType = genericTypeDefinition;
+                }
+            }
+            else
+            {
+                serviceContractType = propertyType;
+            }
+
+            var serviceContractTypeInfo = serviceContractType.GetTypeInfo();
+            var isImport = appServiceContractsInfos.Any(kv => kv.Key.Equals(serviceContractTypeInfo));
+            return isImport;
+        }
+
+        /// <summary>
+        /// Tries to get the service contract type from export factory.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The service type referenced by the export factory, or <c>null</c> if the type is not an export factory.</returns>
+        private Type TryGetServiceContractTypeFromExportFactory(Type type)
+        {
+            if (type.IsConstructedGenericType)
+            {
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+                if (genericTypeDefinition == typeof(IExportFactory<>)
+                    || genericTypeDefinition == typeof(IExportFactory<,>))
+                {
+                    return type.GetTypeInfo().GenericTypeArguments[0];
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -301,7 +378,7 @@ namespace Kephas.Services.Composition
             {
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => t.GetTypeInfo().ImplementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType));
+                return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType));
             }
 
             if (serviceContractMetadata.AllowMultiple)
@@ -320,7 +397,7 @@ namespace Kephas.Services.Composition
             {
                 return conventions.ForType(parts[0].AsType());
             }
-            
+
             if (parts.Count > 1)
             {
                 var overrideChain =
@@ -346,6 +423,18 @@ namespace Kephas.Services.Composition
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Checks whether the part type matches the type of the open generic contract.
+        /// </summary>
+        /// <param name="partType">Type of the part.</param>
+        /// <param name="serviceContractType">Type of the service contract.</param>
+        /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
+        private bool MatchOpenGenericContractType(Type partType, Type serviceContractType)
+        {
+            var implementedInterfaces = partType.GetTypeInfo().ImplementedInterfaces;
+            return implementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType);
         }
     }
 }

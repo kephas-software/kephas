@@ -24,6 +24,7 @@ namespace Kephas.Composition.Mef
     using Kephas.Logging;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Services.Composition;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -104,10 +105,22 @@ namespace Kephas.Composition.Mef
             Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
                 .Returns(Mock.Create<ILogger>);
 
+            var registrar = new AppServiceConventionsRegistrar();
+            var conventionsBuilder = new MefConventionsBuilder();
+            registrar.RegisterConventions(
+                conventionsBuilder,
+                new[]
+                    {
+                        typeof(ILogger<>).GetTypeInfo(),
+                        typeof(NullLogger<>).GetTypeInfo(),
+                        typeof(ComposedTestLogConsumer).GetTypeInfo(),
+                    });
             var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
-                .WithPart(typeof(ComposedTestLogConsumer))
+                .WithConventions(conventionsBuilder)
+                .WithParts(new[] { typeof(ComposedTestLogConsumer), typeof(NullLogger<>) })
                 .CreateContainer();
 
             var consumer = container.GetExport<ComposedTestLogConsumer>();
@@ -327,6 +340,7 @@ namespace Kephas.Composition.Mef
 
         public class NonComposedTestLogConsumer
         {
+            [System.Composition.Import]
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 

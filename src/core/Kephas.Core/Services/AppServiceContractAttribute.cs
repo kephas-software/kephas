@@ -55,6 +55,14 @@ namespace Kephas.Services
         public bool AllowMultiple { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the contract should be exported as an open generic.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
+        /// </value>
+        public bool AsOpenGeneric { get; set; }
+
+        /// <summary>
         /// Gets or sets the supported metadata attributes.
         /// </summary>
         /// <value>

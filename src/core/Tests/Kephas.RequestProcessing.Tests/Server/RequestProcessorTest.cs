@@ -11,16 +11,20 @@ namespace Kephas.RequestProcessing.Tests.Server
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
     using Kephas.Composition.Mef;
+    using Kephas.Composition.Mef.Conventions;
+    using Kephas.Composition.Mef.Hosting;
+    using Kephas.Configuration;
+    using Kephas.Logging;
     using Kephas.RequestProcessing;
     using Kephas.RequestProcessing.Ping;
     using Kephas.RequestProcessing.Server;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -37,6 +41,30 @@ namespace Kephas.RequestProcessing.Tests.Server
     public class RequestProcessorTest
     {
         [TestMethod]
+        public void Composition_success()
+        {
+            var logManager = Mock.Create<ILogManager>();
+            var configManager = Mock.Create<IConfigurationManager>();
+            var platformManager = Mock.Create<IPlatformManager>();
+
+            var containerBuilder = new CompositionContainerBuilder(logManager, configManager, platformManager);
+            containerBuilder.WithAssemblies(
+                new[]
+                    {
+                        typeof(ILogger).Assembly,                           /* Kephas.Core */
+                        typeof(IMefConventionBuilderProvider).Assembly,     /* Kephas.Composition.Mef */
+                        typeof(IRequestProcessor).Assembly,                 /* Kephas.RequestProcessing */
+                    });
+
+            var container = containerBuilder.CreateContainer();
+            var requestProcessor = container.GetExport<IRequestProcessor>();
+            Assert.IsInstanceOfType(requestProcessor, typeof(RequestProcessor));
+
+            var typedRequestprocessor = (RequestProcessor)requestProcessor;
+            Assert.IsNotNull(typedRequestprocessor.Logger);
+        }
+
+        [TestMethod]
         public async Task ProcessAsync_result()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -47,7 +75,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 .Returns(Task.FromResult(expectedResponse));
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
-            var processor = this.CreateRequestProcessor(compositionContainer);
+            var processor = this.CreateRequestProcessor(compositionContainer, handler);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreSame(expectedResponse, result);
@@ -64,7 +92,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 .Throws(new InvalidOperationException());
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
-            var processor = this.CreateRequestProcessor(compositionContainer);
+            var processor = this.CreateRequestProcessor(compositionContainer, handler);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
         }
 
@@ -82,7 +110,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
 
-            var processor = this.CreateRequestProcessor(compositionContainer);
+            var processor = this.CreateRequestProcessor(compositionContainer, handler);
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Mock.Assert(handler);
@@ -111,7 +139,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { afterlist.Add(2); return Empty<bool>.Task; },
                 processingPriority: 1);
 
-            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
+            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreEqual(2, beforelist.Count);
@@ -145,7 +173,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { beforelist.Add(2); return Empty<bool>.Task; },
                 (c, t) => { afterlist.Add(2); return Empty<bool>.Task; });
 
-            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
+            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
 
             Assert.AreEqual(1, beforelist.Count);
@@ -172,7 +200,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 (c, t) => { beforelist.Add(c.Exception); return Empty<bool>.Task; },
                 (c, t) => { afterlist.Add(c.Exception); return Empty<bool>.Task; });
 
-            var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1 });
+            var processor = this.CreateRequestProcessor(compositionContainer, handler, new[] { f1 });
             InvalidOperationException thrownException = null;
             try
             {
@@ -214,11 +242,16 @@ namespace Kephas.RequestProcessing.Tests.Server
             return factory;
         } 
 
-        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
+        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IRequestHandler handler, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>>();
-            return new RequestProcessor(compositionContainer, filterFactories);
+            var requestType = Mock.Create<IRequest>().GetType();
+            var handlerFactories = new List<IExportFactory<IRequestHandler, RequestHandlerMetadata>>
+                                       {
+                                           new ExportFactoryAdapter<IRequestHandler, RequestHandlerMetadata>(() => Tuple.Create(handler, (Action)(() => {})), new RequestHandlerMetadata(requestType))
+                                       };
+            return new RequestProcessor(compositionContainer, handlerFactories, filterFactories);
         }
     }
 }

@@ -51,6 +51,14 @@ namespace Kephas.Composition.Conventions
         /// A part builder allowing further configuration of the part.
         /// </returns>
         IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null);
+
+        /// <summary>
+        /// Select properties to import into the part.
+        /// </summary>
+        /// <param name="propertyFilter">Filter to select matching properties.</param>
+        /// <param name="importConfiguration">Action to configure selected properties.</param>
+        /// <returns>A part builder allowing further configuration of the part.</returns>
+        IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null);
     }
 
     /// <summary>
@@ -104,6 +112,19 @@ namespace Kephas.Composition.Conventions
         public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
         {
             Contract.Requires(constructorSelector != null);
+            Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Select properties to import into the part.
+        /// </summary>
+        /// <param name="propertyFilter">Filter to select matching properties.</param>
+        /// <param name="importConfiguration">Action to configure selected properties.</param>
+        /// <returns>A part builder allowing further configuration of the part.</returns>
+        public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
+        {
+            Contract.Requires(propertyFilter != null);
             Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
             throw new NotSupportedException();
         }

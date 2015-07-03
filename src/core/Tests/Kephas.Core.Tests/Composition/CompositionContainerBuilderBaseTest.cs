@@ -212,6 +212,11 @@ namespace Kephas.Core.Tests.Composition
             {
                 return this;
             }
+
+            public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
+            {
+                return this;
+            }
         }
 
         public class TestExportConventionsBuilder : IExportConventionsBuilder
