@@ -9,42 +9,20 @@
 
 namespace Kephas.Services
 {
-    using System.Diagnostics.Contracts;
+    using System.Dynamic;
+    using System.Security.Principal;
 
     /// <summary>
-    /// Provides an indexer for getting and setting custom values.
+    /// Defines a base contract for context-dependent operations.
     /// </summary>
-    [ContractClass(typeof(ContextContractClass))]
-    public interface IContext
+    public interface IContext : IDynamicMetaObjectProvider
     {
         /// <summary>
-        /// Gets the custom values.
+        /// Gets or sets the authenticated user.
         /// </summary>
         /// <value>
-        /// The custom values.
+        /// The authenticated user.
         /// </value>
-        dynamic Data { get; }
-    }
-
-    /// <summary>
-    /// Contract class for <see cref="IContext"/>.
-    /// </summary>
-    [ContractClassFor(typeof(IContext))]
-    internal abstract class ContextContractClass : IContext
-    {
-        /// <summary>
-        /// Gets the custom values.
-        /// </summary>
-        /// <value>
-        /// The custom values.
-        /// </value>
-        public dynamic Data
-        {
-            get
-            {
-                Contract.Ensures((object)Contract.Result<dynamic>() != null);
-                return Contract.Result<dynamic>();
-            }
-        }
+        IIdentity AuthenticatedUser { get; set; }
     }
 }

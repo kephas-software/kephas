@@ -11,6 +11,9 @@ namespace Kephas.RequestProcessing.Server
 {
     using System;
     using System.Diagnostics.Contracts;
+    using System.Dynamic;
+    using System.Linq.Expressions;
+    using System.Security.Principal;
 
     using Kephas.Services;
 
@@ -105,11 +108,20 @@ namespace Kephas.RequestProcessing.Server
         public Exception Exception { get; set; }
 
         /// <summary>
-        /// Gets the custom values.
+        /// Gets or sets the authenticated user.
         /// </summary>
         /// <value>
-        /// The custom values.
+        /// The authenticated user.
         /// </value>
-        public abstract dynamic Data { get; }
+        public IIdentity AuthenticatedUser { get; set; }
+
+        /// <summary>
+        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="T:System.Dynamic.DynamicMetaObject"/> to bind this object.
+        /// </returns>
+        /// <param name="parameter">The expression tree representation of the runtime value.</param>
+        public abstract DynamicMetaObject GetMetaObject(Expression parameter);
     }
 }
