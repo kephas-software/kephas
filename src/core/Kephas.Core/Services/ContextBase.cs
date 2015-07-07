@@ -10,13 +10,14 @@
 namespace Kephas.Services
 {
     using System.Dynamic;
-    using System.Linq.Expressions;
     using System.Security.Principal;
+
+    using Kephas.Dynamic;
 
     /// <summary>
     /// A base implementtion for contexts.
     /// </summary>
-    public abstract class ContextBase : IContext
+    public abstract class ContextBase : Expando, IContext
     {
         /// <summary>
         /// The custom values.
@@ -42,16 +43,5 @@ namespace Kephas.Services
         /// </value>
         public IIdentity AuthenticatedUser { get; set; }
 
-        /// <summary>
-        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Dynamic.DynamicMetaObject"/> to bind this object.
-        /// </returns>
-        /// <param name="parameter">The expression tree representation of the runtime value.</param>
-        public DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return ((IDynamicMetaObjectProvider)this.Data).GetMetaObject(parameter);
-        }
     }
 }

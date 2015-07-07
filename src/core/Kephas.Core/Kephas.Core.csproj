@@ -136,6 +136,15 @@
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />
     <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Dynamic\Expando.cs" />
+    <Compile Include="Dynamic\IDynamicMethod.cs" />
+    <Compile Include="Dynamic\IDynamicProperty.cs" />
+    <Compile Include="Dynamic\IDynamicType.cs" />
+    <Compile Include="Dynamic\RuntimeDynamicMethod.cs" />
+    <Compile Include="Dynamic\RuntimeDynamicProperty.cs" />
+    <Compile Include="Dynamic\RuntimeDynamicType.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="Services\ContextBase.cs" />
     <Compile Include="Services\IContext.cs" />
