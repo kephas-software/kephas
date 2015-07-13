@@ -9,6 +9,10 @@
 
 namespace Kephas.Extensions
 {
+    using System.Dynamic;
+
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Extension methods for objects.
     /// </summary>
@@ -28,7 +32,7 @@ namespace Kephas.Extensions
             }
 
             var objectTypeAccessor = obj.GetType().GetDynamicType();
-            objectTypeAccessor.Set(obj, propertyName, value);
+            objectTypeAccessor.SetValue(obj, propertyName, value);
         }
 
         /// <summary>
@@ -46,7 +50,7 @@ namespace Kephas.Extensions
             }
 
             var objectTypeAccessor = obj.GetType().GetDynamicType();
-            return objectTypeAccessor.TrySet(obj, propertyName, value);
+            return objectTypeAccessor.TrySetValue(obj, propertyName, value);
         }
 
         /// <summary>
@@ -62,8 +66,8 @@ namespace Kephas.Extensions
                 return null;
             }
 
-            var objectTypeAccessor = obj.GetType().GetDynamicType();
-            return objectTypeAccessor.Get(obj, propertyName);
+            var dynamicType = obj.GetType().GetDynamicType();
+            return dynamicType.GetValue(obj, propertyName);
         }
 
         /// <summary>
@@ -79,8 +83,23 @@ namespace Kephas.Extensions
                 return Undefined.Value;
             }
 
-            var objectTypeAccessor = obj.GetType().GetDynamicType();
-            return objectTypeAccessor.TryGet(obj, propertyName);
+            var dynamicType = obj.GetType().GetDynamicType();
+            return dynamicType.TryGetValue(obj, propertyName);
+        }
+
+        /// <summary>
+        /// Gets a dynamic object out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>A dynamic object wrapping the provided object.</returns>
+        public static dynamic ToDynamic(this object obj)
+        {
+            if (obj == null || obj is IDynamicMetaObjectProvider)
+            {
+                return obj;
+            }
+
+            return new Expando(obj);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// The dynamic methods.
         /// </summary>
-        private readonly IDictionary<string, IDynamicMethod> dynamicMethods;
+        private readonly IDictionary<string, IList<IDynamicMethod>> dynamicMethods;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeDynamicType"/> class.
@@ -79,9 +79,9 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        public IEnumerable<KeyValuePair<string, IDynamicMethod>> DynamicMethods
+        public IDictionary<string, IEnumerable<IDynamicMethod>> DynamicMethods
         {
-            get { return this.dynamicMethods; }
+            get { return this.dynamicMethods.ToDictionary(kv => kv.Key, kv => (IEnumerable<IDynamicMethod>)kv.Value); }
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        public object Get(object instance, string propertyName)
+        public object GetValue(object instance, string propertyName)
         {
             if (instance == null)
             {
@@ -103,7 +103,7 @@ namespace Kephas.Dynamic
             }
 
             var dynamicProperty = this.GetDynamicProperty(propertyName);
-            return dynamicProperty.Get(instance);
+            return dynamicProperty.GetValue(instance);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, the <see cref="Undefined.Value" /> is returned.
         /// </remarks>
-        public object TryGet(object instance, string propertyName)
+        public object TryGetValue(object instance, string propertyName)
         {
             if (instance == null)
             {
@@ -125,7 +125,7 @@ namespace Kephas.Dynamic
             }
 
             var dynamicProperty = this.GetDynamicProperty(propertyName, throwOnNotFound: false);
-            return dynamicProperty == null ? Undefined.Value : dynamicProperty.Get(instance);
+            return dynamicProperty == null ? Undefined.Value : dynamicProperty.GetValue(instance);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        public void Set(object instance, string propertyName, object value)
+        public void SetValue(object instance, string propertyName, object value)
         {
             if (instance == null)
             {
@@ -145,7 +145,7 @@ namespace Kephas.Dynamic
             }
 
             var dynamicProperty = this.GetDynamicProperty(propertyName);
-            dynamicProperty.Set(instance, value);
+            dynamicProperty.SetValue(instance, value);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, the method just returns.
         /// </remarks>
-        public bool TrySet(object instance, string propertyName, object value)
+        public bool TrySetValue(object instance, string propertyName, object value)
         {
             if (instance == null)
             {
@@ -170,7 +170,7 @@ namespace Kephas.Dynamic
             var dynamicProperty = this.GetDynamicProperty(propertyName, throwOnNotFound: false);
             if (dynamicProperty != null)
             {
-                dynamicProperty.Set(instance, value);
+                dynamicProperty.SetValue(instance, value);
                 return true;
             }
 
@@ -193,8 +193,8 @@ namespace Kephas.Dynamic
                 return null;
             }
 
-            var dynamicMethod = this.GetDynamicMethod(methodName);
-            return dynamicMethod.Invoke(instance, args);
+            var matchingMethod = this.GetMatchingMethod(methodName, args);
+            return matchingMethod.Invoke(instance, args);
         }
 
         /// <summary>
@@ -213,10 +213,10 @@ namespace Kephas.Dynamic
                 return Undefined.Value;
             }
 
-            var dynamicMethod = this.GetDynamicMethod(methodName, throwOnNotFound: false);
-            if (dynamicMethod != null)
+            var matchingMethod = this.GetMatchingMethod(methodName, args, throwOnNotFound: false);
+            if (matchingMethod != null)
             {
-                return dynamicMethod.TryInvoke(instance, args);
+                return matchingMethod.TryInvoke(instance, args);
             }
 
             return Undefined.Value;
@@ -239,10 +239,10 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A dictionary of runtime dynamic methods.</returns>
-        private static IDictionary<string, IDynamicMethod> CreateDynamicMethods(Type type)
+        private static IDictionary<string, IList<IDynamicMethod>> CreateDynamicMethods(Type type)
         {
-            var methodInfos = type.GetRuntimeMethods();
-            return methodInfos.ToDictionary(mi => mi.Name, mi => (IDynamicMethod)new RuntimeDynamicMethod(mi));
+            var methodInfos = type.GetRuntimeMethods().GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethod>>(name, methods.Select(mi => (IDynamicMethod)new RuntimeDynamicMethod(mi)).ToList()));
+            return methodInfos.ToDictionary(g => g.Key, g => g.Value);
         }
 
         /// <summary>
@@ -300,16 +300,16 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the dynamic method for the provided property name.
+        /// Gets the dynamic methods for the provided method name.
         /// </summary>
         /// <param name="methodName">Name of the property.</param>
-        /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the property is not found.</param>
+        /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the method is not found.</param>
         /// <returns>
         /// The dynamic method.
         /// </returns>
-        private IDynamicMethod GetDynamicMethod(string methodName, bool throwOnNotFound = true)
+        private IList<IDynamicMethod> GetDynamicMethods(string methodName, bool throwOnNotFound = true)
         {
-            IDynamicMethod dynamicMethod;
+            IList<IDynamicMethod> dynamicMethod;
             if (!this.dynamicMethods.TryGetValue(methodName, out dynamicMethod))
             {
                 if (throwOnNotFound)
@@ -321,6 +321,51 @@ namespace Kephas.Dynamic
             }
 
             return dynamicMethod;
+        }
+
+        /// <summary>
+        /// Gets the matching method.
+        /// </summary>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="args">The arguments.</param>
+        /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the method is not found.</param>
+        /// <returns>
+        /// A mathing method for the provided name and arguments.
+        /// </returns>
+        private IDynamicMethod GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
+        {
+            var methods = this.GetDynamicMethods(methodName, throwOnNotFound);
+            if (methods == null)
+            {
+                return null;
+            }
+
+            if (methods.Count == 1)
+            {
+                return methods[0];
+            }
+
+            var argsCount = args.Count();
+            var matchingMethods = methods.Where(mi => mi.MethodInfo.GetParameters().Length == argsCount)
+                                        .Take(2)
+                                        .ToList();
+
+            if (matchingMethods.Count > 1)
+            {
+                throw new AmbiguousMatchException(string.Format("Multiple methods found with name {0} and {1} arguments in {2}.", methodName, argsCount, this.Type));
+            }
+
+            if (matchingMethods.Count == 0)
+            {
+                if (throwOnNotFound)
+                {
+                    throw new MemberAccessException(string.Format("Method {0} with {1} arguments not found or is not accessible in {2}.", methodName, argsCount, this.Type));
+                }
+
+                return null;
+            }
+
+            return matchingMethods[0];
         }
     }
 }

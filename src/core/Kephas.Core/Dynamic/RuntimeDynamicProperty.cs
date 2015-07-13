@@ -57,7 +57,7 @@ namespace Kephas.Dynamic
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public void Set(object obj, object value)
+        public void SetValue(object obj, object value)
         {
             if (this.setter == null)
             {
@@ -75,7 +75,7 @@ namespace Kephas.Dynamic
         /// The value.
         /// </returns>
         /// <exception cref="System.MemberAccessException">Property value cannot be get.</exception>
-        public object Get(object obj)
+        public object GetValue(object obj)
         {
             if (this.getter == null)
             {

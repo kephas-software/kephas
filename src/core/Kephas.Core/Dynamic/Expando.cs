@@ -21,7 +21,6 @@ namespace Kephas.Dynamic
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Dynamic;
-    using System.Linq;
 
     using Kephas.Extensions;
 
@@ -76,7 +75,7 @@ namespace Kephas.Dynamic
         public Expando()
         {
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.Initialize(this);
+            this.Initialize(null);
         }
 
         /// <summary>
@@ -108,7 +107,7 @@ namespace Kephas.Dynamic
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        /// The <see cref="System.Object" />.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>
@@ -131,14 +130,8 @@ namespace Kephas.Dynamic
                 }
 
                 // try reflection on instanceType
-                object result;
-                if (this.GetProperty(this.wrappedInstance, key, out result))
-                {
-                    return result;
-                }
-
-                // nope doesn't exist
-                throw new KeyNotFoundException(string.Format("Property with name '{0}' not found!", key));
+                var instance = this.wrappedInstance ?? this;
+                return this.dynamicType.TryGetValue(instance, key);
             }
 
             set
@@ -150,7 +143,8 @@ namespace Kephas.Dynamic
                 }
 
                 // check instance for existance of type first
-                if (!this.SetProperty(this.wrappedInstance, key, value))
+                var instance = this.wrappedInstance ?? this;
+                if (!this.dynamicType.TrySetValue(instance, key, value))
                 {
                     this.properties[key] = value;
                 }
@@ -175,17 +169,10 @@ namespace Kephas.Dynamic
             }
 
             // Next check for Public properties via Reflection
-            try
-            {
-                return this.GetProperty(this.wrappedInstance, binder.Name, out result);
-            }
-            catch
-            {
-            }
+            var instance = this.wrappedInstance ?? this;
+            result = this.dynamicType.TryGetValue(instance, binder.Name);
 
-            // failed to retrieve a property
-            result = null;
-            return false;
+            return result != Undefined.Value;
         }
 
         /// <summary>
@@ -200,16 +187,10 @@ namespace Kephas.Dynamic
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             // first check to see if there's a native property to set
-            try
+            var instance = this.wrappedInstance ?? this;
+            if (this.dynamicType.TrySetValue(instance, binder.Name, value))
             {
-                var result = this.SetProperty(this.wrappedInstance, binder.Name, value);
-                if (result)
-                {
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
+                return true;
             }
 
             // no match - set or add to dictionary
@@ -229,23 +210,17 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            if (this.wrappedInstance != null)
+            object method;
+            if (this.properties.TryGetValue(binder.Name, out method))
             {
-                try
-                {
-                    // check instance passed in for methods to invoke
-                    if (this.InvokeMethod(this.wrappedInstance, binder.Name, args, out result))
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                }
+                var delegateProperty = (Delegate)method;
+                result = delegateProperty.DynamicInvoke(args);
+                return true;
             }
 
-            result = null;
-            return false;
+            var instance = this.wrappedInstance ?? this;
+            result = this.dynamicType.TryInvoke(instance, binder.Name, args);
+            return result != Undefined.Value;
         }
 
         /// <summary>
@@ -257,81 +232,7 @@ namespace Kephas.Dynamic
         protected virtual void Initialize(object instance)
         {
             this.wrappedInstance = instance;
-            this.dynamicType = instance.GetType().GetDynamicType();
-        }
-
-        /// <summary>
-        /// Reflection Helper method to retrieve a property.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>
-        /// The <see cref="bool" />.
-        /// </returns>
-        protected bool GetProperty(object instance, string name, out object result)
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-
-            result = instance.TryGetPropertyValue(name);
-            if (result == Undefined.Value)
-            {
-                result = null;
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Reflection helper method to set a property value.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// The <see cref="bool" />.
-        /// </returns>
-        protected bool SetProperty(object instance, string name, object value)
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-
-            var result = instance.TrySetPropertyValue(name, value);
-            return result;
-        }
-
-        /// <summary>
-        /// Reflection helper method to invoke a method.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="args">The arguments.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>
-        /// The <see cref="bool" />.
-        /// </returns>
-        protected bool InvokeMethod(object instance, string name, object[] args, out object result)
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-
-            // Look at the instanceType
-            result = this.dynamicType.TryInvoke(instance, name, args);
-            if (result != Undefined.Value)
-            {
-                return true;
-            }
-
-            result = null;
-            return false;
+            this.dynamicType = (instance ?? this).GetType().GetDynamicType();
         }
 
         /// <summary>
@@ -349,7 +250,7 @@ namespace Kephas.Dynamic
             {
                 foreach (var prop in this.dynamicType.DynamicProperties)
                 {
-                    yield return new KeyValuePair<string, object>(prop.Key, prop.Value.Get(this.wrappedInstance));
+                    yield return new KeyValuePair<string, object>(prop.Key, prop.Value.GetValue(this.wrappedInstance));
                 }
             }
 
@@ -357,31 +258,6 @@ namespace Kephas.Dynamic
             {
                 yield return new KeyValuePair<string, object>(key, this.properties[key]);
             }
-        }
-
-        /// <summary>
-        /// Checks whether a property exists in the Property collection
-        /// or as a property on the instance.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="includeInstanceProperties">The include Instance Properties.</param>
-        /// <returns>
-        /// The <see cref="bool" />.
-        /// </returns>
-        protected bool Contains(KeyValuePair<string, object> item, bool includeInstanceProperties = false)
-        {
-            var res = this.properties.ContainsKey(item.Key);
-            if (res)
-            {
-                return true;
-            }
-
-            if (includeInstanceProperties)
-            {
-                return this.dynamicType.DynamicProperties.Any(p => p.Key == item.Key);
-            }
-
-            return false;
         }
     }
 }

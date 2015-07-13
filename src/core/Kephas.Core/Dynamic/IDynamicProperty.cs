@@ -29,7 +29,7 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        void Set(object obj, object value);
+        void SetValue(object obj, object value);
 
         /// <summary>
         /// Gets the value from the specified object.
@@ -38,6 +38,6 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The value.
         /// </returns>
-        object Get(object obj);
+        object GetValue(object obj);
     }
 }

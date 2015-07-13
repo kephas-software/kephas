@@ -39,7 +39,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        IEnumerable<KeyValuePair<string, IDynamicMethod>> DynamicMethods { get; }
+        IDictionary<string, IEnumerable<IDynamicMethod>> DynamicMethods { get; }
         
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -52,7 +52,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        object Get(object instance, string propertyName);
+        object GetValue(object instance, string propertyName);
 
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -65,7 +65,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, the <see cref="Undefined.Value"/> is returned.
         /// </remarks>
-        object TryGet(object instance, string propertyName);
+        object TryGetValue(object instance, string propertyName);
 
         /// <summary>
         /// Sets the value of the property with the specified name.
@@ -76,7 +76,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        void Set(object instance, string propertyName, object value);
+        void SetValue(object instance, string propertyName, object value);
 
         /// <summary>
         /// Tries to set the value of the property with the specified name.
@@ -88,7 +88,7 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// If a property with the provided name is not found, the method just returns.
         /// </remarks>
-        bool TrySet(object instance, string propertyName, object value);
+        bool TrySetValue(object instance, string propertyName, object value);
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
