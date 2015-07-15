@@ -94,29 +94,11 @@ namespace Kephas.Composition.Mef
         [Test]
         public void CreateContainer_composed_loggers_exported()
         {
-            var mockLoggerManager = Mock.Create<ILogManager>();
-            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IPlatformManager>();
-
-            Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
-                .Returns(Mock.Create<ILogger>);
-
-            var registrar = new AppServiceConventionsRegistrar();
-            var conventionsBuilder = new MefConventionsBuilder();
-            registrar.RegisterConventions(
-                conventionsBuilder, 
-                new[]
-                    {
-                        typeof(ILogger<>).GetTypeInfo(), 
-                        typeof(NullLogger<>).GetTypeInfo(), 
-                        typeof(ComposedTestLogConsumer).GetTypeInfo(), 
-                    });
-            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
-            var container = factory
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
                 .WithAssembly(typeof(ICompositionContainer).Assembly)
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
-                .WithConventions(conventionsBuilder)
-                .WithParts(new[] { typeof(ComposedTestLogConsumer), typeof(NullLogger<>) })
+                .WithParts(new[] { typeof(ComposedTestLogConsumer) })
                 .CreateContainer();
 
             var consumer = container.GetExport<ComposedTestLogConsumer>();
@@ -128,6 +110,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
+                .WithAssembly(typeof(ICompositionContainer).Assembly)
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .CreateContainer();
 
