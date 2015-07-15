@@ -14,7 +14,7 @@ namespace Kephas.Model.Tests.Elements
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Construction;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -22,11 +22,11 @@ namespace Kephas.Model.Tests.Elements
     /// <summary>
     /// Test class for <see cref="ModelDimensionElement"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class ModelDimensionElementTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();

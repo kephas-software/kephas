@@ -14,13 +14,14 @@ namespace Kephas.Model.Runtime.Construction
     using System.Reflection;
     using System.Text;
 
+    using Kephas.Dynamic;
     using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Runtime based constructor information for named elements.
     /// </summary>
     /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
-    public abstract class RuntimeNamedElementInfo<TRuntimeElement> : INamedElementInfo
+    public abstract class RuntimeNamedElementInfo<TRuntimeElement> : Expando, INamedElementInfo
         where TRuntimeElement : MemberInfo
     {
         /// <summary>

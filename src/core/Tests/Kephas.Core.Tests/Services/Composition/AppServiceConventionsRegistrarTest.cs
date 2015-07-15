@@ -18,15 +18,15 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Services;
     using Kephas.Services.Composition;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="AppServiceConventionsRegistrar"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AppServiceConventionsRegistrarTest
     {
-        [TestMethod]
+        [Test]
         public void RegisterConventions_Multiple()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -45,7 +45,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(conventions.DerivedConventionsBuilders.ContainsKey(typeof(IMultipleTestAppService)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_Single_one_service()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -63,7 +63,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleTestService)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_Single_override_service_success()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -82,7 +82,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public void RegisterConventions_Single_override_service_failure()
         {
@@ -102,7 +102,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_generic()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -121,7 +121,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsFalse(match(typeof(TwoGenericAppServiceIntBool)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_generic_with_nongeneric_base()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -139,7 +139,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.AreEqual(typeof(IOneGenericAppService), testBuilder.ExportBuilder.ContractType);
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_generic_with_nongeneric_metadata()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -162,7 +162,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.AreEqual(typeof(string), valueGetter(typeof(OneGenericAppServiceString)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_generic_with_nongeneric_metadata_two()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -189,7 +189,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.AreEqual(typeof(bool), valueGetter(typeof(TwoGenericAppServiceIntBool)));
         }
 
-        [TestMethod]
+        [Test]
         public void RegisterConventions_metadata()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -215,7 +215,7 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsNull(valueGetter(typeof(NullMetadataAppService)));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(CompositionException))]
         public void RegisterConventions_bad_contract_type()
         {

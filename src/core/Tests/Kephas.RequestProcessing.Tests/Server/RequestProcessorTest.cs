@@ -28,7 +28,7 @@ namespace Kephas.RequestProcessing.Tests.Server
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -36,11 +36,11 @@ namespace Kephas.RequestProcessing.Tests.Server
     /// <summary>
     /// Test class for <see cref="RequestProcessor"/>
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RequestProcessorTest
     {
-        [TestMethod]
+        [Test]
         public void Composition_success()
         {
             var logManager = Mock.Create<ILogManager>();
@@ -58,13 +58,13 @@ namespace Kephas.RequestProcessing.Tests.Server
 
             var container = containerBuilder.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
-            Assert.IsInstanceOfType(requestProcessor, typeof(RequestProcessor));
+            Assert.IsInstanceOf<RequestProcessor>(requestProcessor);
 
             var typedRequestprocessor = (RequestProcessor)requestProcessor;
             Assert.IsNotNull(typedRequestprocessor.Logger);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_Composition_success()
         {
             var logManager = Mock.Create<ILogManager>();
@@ -82,13 +82,13 @@ namespace Kephas.RequestProcessing.Tests.Server
 
             var container = containerBuilder.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
-            Assert.IsInstanceOfType(requestProcessor, typeof(RequestProcessor));
+            Assert.IsInstanceOf<RequestProcessor>(requestProcessor);
 
             var result = await requestProcessor.ProcessAsync(new PingRequest(), CancellationToken.None);
-            Assert.IsInstanceOfType(result, typeof(PingBackResponse));
+            Assert.IsInstanceOf<PingBackResponse>(result);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_result()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -105,7 +105,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             Assert.AreSame(expectedResponse, result);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ProcessAsync_exception()
         {
@@ -120,7 +120,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_disposed_handler()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -140,7 +140,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             Mock.Assert(handler);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_ordered_filter()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -175,7 +175,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             Assert.AreEqual(2, afterlist[1]);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_matching_filter()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -207,7 +207,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             Assert.AreEqual(2, afterlist[0]);
         }
 
-        [TestMethod]
+        [Test]
         public async Task ProcessAsync_exception_with_filter()
         {
             var compositionContainer = Mock.Create<ICompositionContainer>();
@@ -235,13 +235,13 @@ namespace Kephas.RequestProcessing.Tests.Server
                 thrownException = ex;
             }
 
-            Assert.IsInstanceOfType(thrownException, typeof(InvalidOperationException));
+            Assert.IsInstanceOf<InvalidOperationException>(thrownException);
 
             Assert.AreEqual(1, beforelist.Count);
             Assert.IsNull(beforelist[0]);
 
             Assert.AreEqual(1, afterlist.Count);
-            Assert.IsInstanceOfType(afterlist[0], typeof(InvalidOperationException));
+            Assert.IsInstanceOf<InvalidOperationException>(afterlist[0]);
         }
 
         private IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata> CreateFilterFactory(

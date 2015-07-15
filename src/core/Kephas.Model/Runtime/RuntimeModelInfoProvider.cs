@@ -31,7 +31,7 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// The model registrars.
         /// </summary>
-        private readonly ICollection<IRuntimeModelRegistrar> modelRegistrars;
+        private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
 
         /// <summary>
         /// The element information factories.
@@ -41,16 +41,16 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeModelInfoProvider" /> class.
         /// </summary>
-        /// <param name="modelRegistrars">The model registrars.</param>
+        /// <param name="modelRegistries">The model registries.</param>
         /// <param name="elementInfoExportFactories">The element information export factories.</param>
         public RuntimeModelInfoProvider(
-            ICollection<IRuntimeModelRegistrar> modelRegistrars,
+            ICollection<IRuntimeModelRegistry> modelRegistries,
             ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
         {
-            Contract.Requires(modelRegistrars != null);
+            Contract.Requires(modelRegistries != null);
             Contract.Requires(elementInfoExportFactories != null);
 
-            this.modelRegistrars = modelRegistrars;
+            this.modelRegistries = modelRegistries;
             this.elementInfoFactories = elementInfoExportFactories.ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
         }
 
@@ -71,7 +71,7 @@ namespace Kephas.Model.Runtime
         public IEnumerable<INamedElementInfo> GetElementInfos()
         {
             var runtimeElements = new HashSet<object>();
-            foreach (var registrar in this.modelRegistrars)
+            foreach (var registrar in this.modelRegistries)
             {
                 runtimeElements.AddRange(registrar.GetRuntimeElements().Select(this.NormalizeRuntimeElement));
             }

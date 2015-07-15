@@ -9,20 +9,21 @@
 
 namespace Kephas.Services
 {
-    using System.Dynamic;
     using System.Security.Principal;
+
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IDynamicMetaObjectProvider
+    public interface IContext : IExpando
     {
         /// <summary>
-        /// Gets or sets the authenticated user.
+        /// Gets or sets the authenticated identity.
         /// </summary>
         /// <value>
-        /// The authenticated user.
+        /// The authenticated identity.
         /// </value>
-        IIdentity AuthenticatedUser { get; set; }
+        IIdentity AuthenticatedIdentity { get; set; }
     }
 }

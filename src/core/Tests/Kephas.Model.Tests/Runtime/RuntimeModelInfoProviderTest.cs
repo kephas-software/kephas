@@ -21,7 +21,7 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Factory;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -29,14 +29,14 @@ namespace Kephas.Model.Tests.Runtime
     /// <summary>
     /// Tests for <see cref="RuntimeModelInfoProvider"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelInfoProviderTest
     {
-        [TestMethod]
+        [Test]
         public void GetElementInfos()
         {
-            var registrar = Mock.Create<IRuntimeModelRegistrar>();
+            var registrar = Mock.Create<IRuntimeModelRegistry>();
             registrar.Arrange(r => r.GetRuntimeElements()).Returns(new object[] { typeof(string) });
 
             var stringInfoMock = Mock.Create<INamedElementInfo>();

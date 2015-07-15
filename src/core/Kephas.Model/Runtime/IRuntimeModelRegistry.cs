@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRuntimeModelRegistrar.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeModelRegistry.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -14,10 +14,10 @@ namespace Kephas.Model.Runtime
     using Kephas.Services;
 
     /// <summary>
-    /// Registrar application service for providing runtime elements used in building the model space.
+    /// Application service for providing runtime elements used in building the model space.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IRuntimeModelRegistrar
+    public interface IRuntimeModelRegistry
     {
         /// <summary>
         /// Gets the runtime elements.

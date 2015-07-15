@@ -140,6 +140,7 @@
     <Compile Include="Dynamic\IDynamicMethod.cs" />
     <Compile Include="Dynamic\IDynamicProperty.cs" />
     <Compile Include="Dynamic\IDynamicType.cs" />
+    <Compile Include="Dynamic\IExpando.cs" />
     <Compile Include="Dynamic\RuntimeDynamicMethod.cs" />
     <Compile Include="Dynamic\RuntimeDynamicProperty.cs" />
     <Compile Include="Dynamic\RuntimeDynamicType.cs" />

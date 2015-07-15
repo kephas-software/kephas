@@ -16,7 +16,7 @@ namespace Kephas.Model.Tests.Elements
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Construction;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -24,11 +24,11 @@ namespace Kephas.Model.Tests.Elements
     /// <summary>
     /// Test class for <see cref="NamedElementBase{TModelContract}"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class NamedElementBaseTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();
@@ -42,7 +42,7 @@ namespace Kephas.Model.Tests.Elements
             Assert.AreEqual("name", element.QualifiedName);
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Mock.Create<IModelSpace>();
@@ -56,16 +56,16 @@ namespace Kephas.Model.Tests.Elements
             Assert.AreEqual("##name", element.QualifiedName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+        [Test]
+        [ExpectedException]
         public void Constructor_Failure_ModelSpace_not_set()
         {
             var elementInfo = Mock.Create<INamedElementInfo>();
             var element = new TestNamedElement(elementInfo, null);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception), AllowDerivedTypes = true)]
+        [Test]
+        [ExpectedException]
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Mock.Create<IModelSpace>();

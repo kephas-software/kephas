@@ -13,22 +13,22 @@ namespace Kephas.Core.Tests.Reflection
 
     using Kephas.Reflection;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="ReflectionHelper"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ReflectionHelperTest
     {
-        [TestMethod]
+        [Test]
         public void GetNonGenericName_non_generic()
         {
             var name = ReflectionHelper.GetNonGenericFullName(typeof(string));
             Assert.AreEqual("System.String", name);
         }
 
-        [TestMethod]
+        [Test]
         public void GetNonGenericName_generic()
         {
             var name = ReflectionHelper.GetNonGenericFullName(typeof(IEnumerable<>));

@@ -14,18 +14,18 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     using Kephas.Model.Runtime.Construction;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using TestModel.TestDim;
 
     /// <summary>
     /// Test class for <see cref="RuntimeModelDimensionInfo"/>
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelDimensionInfoTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_Success_Dimension_ending()
         {
             var info = new RuntimeModelDimensionInfo(typeof(IDim1Dimension).GetTypeInfo());
@@ -35,7 +35,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.AreEqual(false, info.IsAggregatable);
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_Success_no_ending()
         {
             var info = new RuntimeModelDimensionInfo(typeof(IDim2).GetTypeInfo());

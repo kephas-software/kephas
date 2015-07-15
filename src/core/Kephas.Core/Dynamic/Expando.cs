@@ -50,7 +50,7 @@ namespace Kephas.Dynamic
     /// </list> 
     /// </para>
     /// </summary>
-    public class Expando : DynamicObject
+    public class Expando : DynamicObject, IExpando
     {
         /// <summary>
         /// The properties.
@@ -107,7 +107,7 @@ namespace Kephas.Dynamic
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="System.Object"/>.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>

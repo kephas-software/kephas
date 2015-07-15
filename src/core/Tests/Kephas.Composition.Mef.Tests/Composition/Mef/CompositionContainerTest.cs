@@ -19,12 +19,12 @@ namespace Kephas.Composition.Mef
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Services;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="CompositionContainer"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionContainerTest : CompositionTestBase
     {
@@ -39,7 +39,7 @@ namespace Kephas.Composition.Mef
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();
         }
 
-        [TestMethod]
+        [Test]
         public void Container_exports_composition_services()
         {
             var container = this.CreateContainer();
@@ -49,7 +49,7 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer.CompositionContainer);
         }
 
-        [TestMethod]
+        [Test]
         public void SatisfyImports_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
@@ -59,7 +59,7 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer.ExportedClass);
         }
 
-        [TestMethod]
+        [Test]
         public void SatisfyImports_implicits_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass), typeof(ExportedClassImplicitImporter));
@@ -70,17 +70,17 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer.ImplicitImporter.ExportedClass);
         }
 
-        [TestMethod]
+        [Test]
         public void GetExport_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
             var exported = container.GetExport(typeof(ExportedClass));
 
             Assert.IsNotNull(exported);
-            Assert.IsInstanceOfType(exported, typeof(ExportedClass));
+            Assert.IsInstanceOf<ExportedClass>(exported);
         }
 
-        [TestMethod]
+        [Test]
         public void GetExport_with_exportfactory_success()
         {
             var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryImporter));
@@ -89,10 +89,10 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer);
             Assert.IsNotNull(importer.ExportedClassFactory);
             var exportedService = importer.ExportedClassFactory.CreateExport().Value;
-            Assert.IsInstanceOfType(exportedService, typeof(ExportedClass));
+            Assert.IsInstanceOf<ExportedClass>(exportedService);
         }
 
-        [TestMethod]
+        [Test]
         public void GetExport_with_importmany_exportfactory_success()
         {
             var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryImporter));
@@ -101,10 +101,10 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer);
             Assert.IsNotNull(importer.ExportedClassFactory);
             var exportedService = importer.ExportedClassFactory.CreateExport().Value;
-            Assert.IsInstanceOfType(exportedService, typeof(ExportedClass));
+            Assert.IsInstanceOf<ExportedClass>(exportedService);
         }
 
-        [TestMethod]
+        [Test]
         public void GetExport_with_exportfactory_metadata_success()
         {
             var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryMetadataImporter));
@@ -114,11 +114,11 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(importer.ExportedClassMetadataFactory);
             var exportedService = importer.ExportedClassMetadataFactory.CreateExport().Value;
             var metadata = importer.ExportedClassMetadataFactory.Metadata;
-            Assert.IsInstanceOfType(exportedService, typeof(ExportedClass));
+            Assert.IsInstanceOf<ExportedClass>(exportedService);
             Assert.IsNotNull(metadata);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(CompositionFailedException))]
         public void GetExport_failure()
         {
@@ -126,7 +126,7 @@ namespace Kephas.Composition.Mef
             var exported = container.GetExport(typeof(ExportedClass));
         }
 
-        [TestMethod]
+        [Test]
         public void GetExports_success()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
@@ -135,10 +135,10 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(exported);
             var exportedList = exported.ToList();
             Assert.AreEqual(1, exportedList.Count);
-            Assert.IsInstanceOfType(exportedList[0], typeof(ExportedClass));
+            Assert.IsInstanceOf<ExportedClass>(exportedList[0]);
         }
 
-        [TestMethod]
+        [Test]
         public void GetExports_empty()
         {
             var container = this.CreateContainer(typeof(ExportedClass));

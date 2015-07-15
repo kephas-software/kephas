@@ -13,28 +13,28 @@ namespace Kephas.Core.Tests.Dynamic
 
     using Kephas.Dynamic;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="Expando"/>
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ExpandoTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_default()
         {
             dynamic expando = new Expando();
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_instance()
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
         }
 
-        [TestMethod]
+        [Test]
         public void PublicProperty_default()
         {
             dynamic expando = new Expando();
@@ -43,7 +43,7 @@ namespace Kephas.Core.Tests.Dynamic
             Assert.AreEqual("value", expando.Property);
         }
 
-        [TestMethod]
+        [Test]
         public void PublicProperty_instance()
         {
             var instance = new TestClass();
@@ -54,7 +54,7 @@ namespace Kephas.Core.Tests.Dynamic
             Assert.AreEqual("John", instance.Name);
         }
 
-        [TestMethod]
+        [Test]
         public void PublicProperty_derived_expando()
         {
             dynamic derived = new DerivedExpando();
@@ -66,7 +66,7 @@ namespace Kephas.Core.Tests.Dynamic
             Assert.AreEqual(23, typedDerived.Age);
         }
 
-        [TestMethod]
+        [Test]
         public void ReadOnlyProperty_instance_getter()
         {
             var instance = new TestClass();
@@ -78,7 +78,7 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(MemberAccessException))]
         public void ReadOnlyProperty_instance_setter()
         {
@@ -88,7 +88,7 @@ namespace Kephas.Core.Tests.Dynamic
             expando.ReadOnlyFullName = "John Doe";
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(MemberAccessException))]
         public void PrivateProperty_instance_getter()
         {
@@ -98,7 +98,7 @@ namespace Kephas.Core.Tests.Dynamic
             var age = expando.PrivateAge;
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(MemberAccessException))]
         public void PrivateProperty_instance_setter()
         {

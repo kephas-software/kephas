@@ -11,6 +11,8 @@ namespace Kephas.Model
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Dynamic;
+    using System.Linq.Expressions;
 
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements.Construction;
@@ -54,7 +56,7 @@ namespace Kephas.Model
         /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
-        public bool AllowMultiple { get; private set; }
+        public abstract bool AllowMultiple { get; }
 
         /// <summary>
         /// Gets the friendly name of the element.
@@ -129,5 +131,30 @@ namespace Kephas.Model
         /// The element infos.
         /// </value>
         public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
+
+        /// <summary>
+        /// Convenience method that provides a string Indexer
+        /// to the Properties collection AND the strongly typed
+        /// properties of the object by name.
+        /// // dynamic
+        /// exp["Address"] = "112 nowhere lane";
+        /// // strong
+        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// </summary>
+        /// <value>
+        /// The <see cref="System.Object" />.
+        /// </value>
+        /// <param name="key">The key.</param>
+        /// <returns>The requested property value.</returns>
+        public abstract object this[string key] { get; set; }
+
+        /// <summary>
+        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject" /> responsible for binding operations performed on this object.
+        /// </summary>
+        /// <param name="parameter">The expression tree representation of the runtime value.</param>
+        /// <returns>
+        /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
+        /// </returns>
+        public abstract DynamicMetaObject GetMetaObject(Expression parameter);
     }
 }

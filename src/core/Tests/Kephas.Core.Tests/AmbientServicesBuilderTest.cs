@@ -13,16 +13,16 @@ namespace Kephas.Core.Tests
 
     using Kephas.Diagnostics.Logging;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AmbientServicesBuilderTest
     {
-        [TestMethod]
+        [Test]
         public void WithLogManager_success()
         {
             var ambientServices = new AmbientServices();

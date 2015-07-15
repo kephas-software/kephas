@@ -14,15 +14,15 @@ namespace Kephas.Core.Tests.Extensions
 
     using Kephas.Extensions;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="ObjectExtensions"/>
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ObjectExtensionsTest
     {
-        [TestMethod]
+        [Test]
         public void ToDynamic_dynamic()
         {
             var obj = new ExpandoObject();
@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Extensions
             Assert.AreSame(obj, dyn);
         }
 
-        [TestMethod]
+        [Test]
         public void ToDynamic_non_dynamic()
         {
             var obj = new List<string>();
@@ -42,7 +42,7 @@ namespace Kephas.Core.Tests.Extensions
             Assert.IsTrue(obj.Contains("John"));
         }
 
-        [TestMethod]
+        [Test]
         public void ToDynamic_null()
         {
             var dyn = ((object)null).ToDynamic();

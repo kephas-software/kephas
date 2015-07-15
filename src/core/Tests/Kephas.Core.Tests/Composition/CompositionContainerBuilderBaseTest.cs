@@ -22,18 +22,18 @@ namespace Kephas.Core.Tests.Composition
     using Kephas.Logging;
     using Kephas.Runtime;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
 
     /// <summary>
     /// Test class for <see cref="CompositionContainerBuilderBase{TBuilder}"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionContainerBuilderBaseTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_success()
         {
             var logManager = Mock.Create<ILogManager>();
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Composition
             Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IPlatformManager)));
         }
 
-        [TestMethod]
+        [Test]
         public void WithConventionsBuilder()
         {
             var conventions = Mock.Create<IConventionsBuilder>();
@@ -60,7 +60,7 @@ namespace Kephas.Core.Tests.Composition
             Assert.AreSame(conventions, builder.InternalConventionsBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateContainer()
         {
             var builder = new TestCompositionContainerBuilder()
@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Composition
             Assert.IsNotNull(container);
         }
 
-        [TestMethod]
+        [Test]
         public async Task CreateContainerAsync()
         {
             var builder = new TestCompositionContainerBuilder()

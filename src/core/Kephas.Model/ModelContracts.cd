@@ -4,7 +4,7 @@
     <Position X="6.25" Y="0.5" Width="2" />
     <AssociationLine Name="Container" Type="Kephas.Model.IModelElement" FixedToPoint="true">
       <Path>
-        <Point X="6.5" Y="2.18" />
+        <Point X="6.5" Y="2.31" />
         <Point X="6.5" Y="3.25" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -13,8 +13,8 @@
     </AssociationLine>
     <AssociationLine Name="ModelSpace" Type="Kephas.Model.IModelSpace" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="6.25" Y="1.312" />
-        <Point X="5.875" Y="1.312" />
+        <Point X="6.25" Y="1.375" />
+        <Point X="5.875" Y="1.375" />
         <Point X="5.875" Y="5.938" />
         <Point X="6.25" Y="5.938" />
       </Path>
@@ -33,7 +33,7 @@
     <AssociationLine Name="Members" Type="Kephas.Model.INamedElement" FixedToPoint="true">
       <Path>
         <Point X="6.875" Y="3.25" />
-        <Point X="6.875" Y="2.18" />
+        <Point X="6.875" Y="2.309" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -103,8 +103,8 @@
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Dimensions" />
-      <Property Name="Classifiers" />
       <Property Name="Projections" />
+      <Property Name="Classifiers" />
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Kephas.Model.IProperty">

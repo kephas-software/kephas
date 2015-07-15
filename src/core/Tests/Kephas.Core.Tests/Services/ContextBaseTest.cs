@@ -13,17 +13,17 @@ namespace Kephas.Core.Tests.Services
 
     using Kephas.Services;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
 
     /// <summary>
     /// Test class for <see cref="ContextBase"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ContextBaseTest
     {
-        [TestMethod]
+        [Test]
         public void Dynamic_Context()
         {
             dynamic context = new TestContext();
@@ -31,13 +31,13 @@ namespace Kephas.Core.Tests.Services
             Assert.AreEqual(12, context.Value);
 
             var mockUser = Mock.Create<IIdentity>();
-            context.AuthenticatedUser = mockUser;
-            Assert.AreEqual(mockUser, context.AuthenticatedUser);
+            context.AuthenticatedIdentity = mockUser;
+            Assert.AreEqual(mockUser, context.AuthenticatedIdentity);
 
             var contextBase = (ContextBase)context;
-            Assert.AreEqual(mockUser, contextBase.AuthenticatedUser);
+            Assert.AreEqual(mockUser, contextBase.AuthenticatedIdentity);
 
-            Assert.AreEqual(mockUser, contextBase["AuthenticatedUser"]);
+            Assert.AreEqual(mockUser, contextBase["AuthenticatedIdentity"]);
             Assert.AreEqual(12, contextBase["Value"]);
         }
 

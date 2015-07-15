@@ -19,7 +19,7 @@ namespace Kephas.Composition.Mef
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Logging;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
 
@@ -29,7 +29,7 @@ namespace Kephas.Composition.Mef
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionTestBase
     {
-        [TestInitialize]
+        [TestFixtureSetUp]
         public void TestSetup()
         {
             this.OnTestSetup();

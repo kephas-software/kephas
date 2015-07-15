@@ -14,7 +14,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     using Kephas.Model.Runtime.Construction;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -24,11 +24,11 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// <summary>
     /// Test class for <see cref="RuntimeModelDimensionElementInfo"/>
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelDimensionElementInfoTest
     {
-        [TestMethod]
+        [Test]
         public void Constructor_Success_DimensionElement_ending()
         {
             var info = new RuntimeModelDimensionElementInfo(typeof(IFirstTestDimDimensionElement).GetTypeInfo());
@@ -44,7 +44,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsFalse(info.IsMemberOf(Mock.Create<IModelElement>()));
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_Success_no_ending()
         {
             var info = new RuntimeModelDimensionElementInfo(typeof(ISecondTestDim).GetTypeInfo());

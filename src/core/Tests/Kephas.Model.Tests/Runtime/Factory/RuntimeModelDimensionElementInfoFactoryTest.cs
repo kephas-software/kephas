@@ -16,22 +16,22 @@ namespace Kephas.Model.Tests.Runtime.Factory
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="RuntimeModelDimensionElementInfoFactory"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelDimensionElementInfoFactoryTest
     {
-        [TestMethod]
+        [Test]
         public void TryCreateElement_ReturnType()
         {
             var factory = new RuntimeModelDimensionElementInfoFactory();
             var elementInfo = factory.TryGetElementInfo(typeof(IFirstTestDimDimensionElement).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
-            Assert.IsInstanceOfType(elementInfo, typeof(RuntimeModelDimensionElementInfo));
+            Assert.IsInstanceOf<RuntimeModelDimensionElementInfo>(elementInfo);
         }
 
         [ModelDimensionElement]

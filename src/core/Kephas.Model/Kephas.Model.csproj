@@ -163,7 +163,7 @@
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
-    <Compile Include="Runtime\IRuntimeModelRegistrar.cs" />
+    <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
     <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />

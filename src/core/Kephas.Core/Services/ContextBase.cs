@@ -41,7 +41,7 @@ namespace Kephas.Services
         /// <value>
         /// The authenticated user.
         /// </value>
-        public IIdentity AuthenticatedUser { get; set; }
+        public IIdentity AuthenticatedIdentity { get; set; }
 
     }
 }

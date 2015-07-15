@@ -17,25 +17,25 @@ namespace Kephas.Model.Tests.Runtime.Factory
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="RuntimeModelDimensionInfoFactory"/>.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeModelDimensionInfoFactoryTest
     {
-        [TestMethod]
+        [Test]
         public void TryCreateElement_ReturnType()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
             var elementInfo = factory.TryGetElementInfo(typeof(ITestDimension).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
-            Assert.IsInstanceOfType(elementInfo, typeof(RuntimeModelDimensionInfo));
+            Assert.IsInstanceOf<RuntimeModelDimensionInfo>(elementInfo);
         }
 
-        [TestMethod]
+        [Test]
         public void TryCreateElement_DimensionSuffix()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
@@ -43,7 +43,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
             Assert.AreEqual("Test", elementInfo.Name);
         }
 
-        [TestMethod]
+        [Test]
         public void TryCreateElement_DimensionWithoutSuffix()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
@@ -51,7 +51,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
             Assert.AreEqual("TestDimensionWithoutSuffix", elementInfo.Name);
         }
 
-        [TestMethod]
+        [Test]
         public void TryCreateElement_Index()
         {
             var factory = new RuntimeModelDimensionInfoFactory();

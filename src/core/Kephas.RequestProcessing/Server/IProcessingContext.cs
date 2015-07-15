@@ -108,12 +108,28 @@ namespace Kephas.RequestProcessing.Server
         public Exception Exception { get; set; }
 
         /// <summary>
-        /// Gets or sets the authenticated user.
+        /// Gets or sets the authenticated identity.
         /// </summary>
         /// <value>
-        /// The authenticated user.
+        /// The authenticated identity.
         /// </value>
-        public IIdentity AuthenticatedUser { get; set; }
+        public IIdentity AuthenticatedIdentity { get; set; }
+
+        /// <summary>
+        /// Convenience method that provides a string Indexer
+        /// to the Properties collection AND the strongly typed
+        /// properties of the object by name.
+        /// // dynamic
+        /// exp["Address"] = "112 nowhere lane";
+        /// // strong
+        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// </summary>
+        /// <value>
+        /// The <see cref="System.Object" />.
+        /// </value>
+        /// <param name="key">The key.</param>
+        /// <returns>The requested property value.</returns>
+        public abstract object this[string key] { get; set; }
 
         /// <summary>
         /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
