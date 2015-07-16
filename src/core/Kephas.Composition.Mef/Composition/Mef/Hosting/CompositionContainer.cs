@@ -11,7 +11,6 @@ namespace Kephas.Composition.Mef.Hosting
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Composition.Hosting;
     using System.Diagnostics.Contracts;
 
@@ -21,7 +20,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class CompositionContainer : ICompositionContainer, IDisposable
+    public class CompositionContainer : ICompositionContext, IDisposable
     {
         /// <summary>
         /// The inner container.
@@ -36,26 +35,9 @@ namespace Kephas.Composition.Mef.Hosting
         {
             Contract.Requires(configuration != null);
 
-            configuration.WithProvider(new FactoryExportDescriptorProvider<ICompositionContainer>(() => this, isShared: true));
+            configuration.WithProvider(new FactoryExportDescriptorProvider<ICompositionContext>(() => this, isShared: true));
 
             this.innerContainer = configuration.CreateContainer();
-        }
-
-        /// <summary>
-        /// Composes the parts without registering them for recomposition.
-        /// </summary>
-        /// <param name="parts">The parts to be composed.</param>
-        public void SatisfyImports(params object[] parts)
-        {
-            if (parts == null || parts.Length == 0)
-            {
-                return;
-            }
-
-            foreach (var part in parts)
-            {
-                this.innerContainer.SatisfyImports(part);
-            }
         }
 
         /// <summary>
@@ -116,6 +98,40 @@ namespace Kephas.Composition.Mef.Hosting
                               ? this.innerContainer.GetExports<T>()
                               : this.innerContainer.GetExports<T>(contractName);
             return components;
+        }
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>
+        /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
+        /// </returns>
+        public object TryGetExport(Type contractType, string contractName = null)
+        {
+            object component;
+            var successful = string.IsNullOrEmpty(contractName)
+                              ? this.innerContainer.TryGetExport(contractType, out component)
+                              : this.innerContainer.TryGetExport(contractType, contractName, out component);
+            return successful ? component : null;
+        }
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>
+        /// An object implementing <typeparamref name="{T}" />, or <c>null</c> if a service with the provided contract was not found.
+        /// </returns>
+        public T TryGetExport<T>(string contractName = null)
+        {
+            T component;
+            var successful = string.IsNullOrEmpty(contractName)
+                              ? this.innerContainer.TryGetExport(out component)
+                              : this.innerContainer.TryGetExport(contractName, out component);
+            return component;
         }
 
         /// <summary>

@@ -111,7 +111,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected override ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+        protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var containerConfiguration = this.configuration ?? new ContainerConfiguration();
             containerConfiguration

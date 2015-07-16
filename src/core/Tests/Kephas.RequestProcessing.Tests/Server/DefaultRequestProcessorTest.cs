@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequestProcessorTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRequestProcessorTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Test class for <see cref="RequestProcessor" />
+//   Test class for <see cref="DefaultRequestProcessor" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,11 +34,11 @@ namespace Kephas.RequestProcessing.Tests.Server
     using Telerik.JustMock.Helpers;
 
     /// <summary>
-    /// Test class for <see cref="RequestProcessor"/>
+    /// Test class for <see cref="DefaultRequestProcessor"/>
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class RequestProcessorTest
+    public class DefaultRequestProcessorTest
     {
         [Test]
         public void Composition_success()
@@ -58,9 +58,9 @@ namespace Kephas.RequestProcessing.Tests.Server
 
             var container = containerBuilder.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
-            Assert.IsInstanceOf<RequestProcessor>(requestProcessor);
+            Assert.IsInstanceOf<DefaultRequestProcessor>(requestProcessor);
 
-            var typedRequestprocessor = (RequestProcessor)requestProcessor;
+            var typedRequestprocessor = (DefaultRequestProcessor)requestProcessor;
             Assert.IsNotNull(typedRequestprocessor.Logger);
         }
 
@@ -82,7 +82,7 @@ namespace Kephas.RequestProcessing.Tests.Server
 
             var container = containerBuilder.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
-            Assert.IsInstanceOf<RequestProcessor>(requestProcessor);
+            Assert.IsInstanceOf<DefaultRequestProcessor>(requestProcessor);
 
             var result = await requestProcessor.ProcessAsync(new PingRequest(), CancellationToken.None);
             Assert.IsInstanceOf<PingBackResponse>(result);
@@ -91,7 +91,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_result()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
@@ -109,7 +109,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ProcessAsync_exception()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
 
             handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>(), Arg.IsAny<IProcessingContext>(), Arg.IsAny<CancellationToken>()))
@@ -123,7 +123,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_disposed_handler()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
@@ -143,7 +143,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_ordered_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
@@ -178,7 +178,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_matching_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
             var expectedResponse = Mock.Create<IResponse>();
 
@@ -210,7 +210,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_exception_with_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContainer>();
+            var compositionContainer = Mock.Create<ICompositionContext>();
             var handler = Mock.Create<IRequestHandler>();
 
             handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IRequest>(), Arg.IsAny<IProcessingContext>(), Arg.IsAny<CancellationToken>()))
@@ -266,11 +266,11 @@ namespace Kephas.RequestProcessing.Tests.Server
             return factory;
         } 
 
-        private RequestProcessor CreateRequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
+        private DefaultRequestProcessor CreateRequestProcessor(ICompositionContext compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories = null)
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>>();
-            return new RequestProcessor(compositionContainer, filterFactories);
+            return new DefaultRequestProcessor(compositionContainer, filterFactories);
         }
     }
 }

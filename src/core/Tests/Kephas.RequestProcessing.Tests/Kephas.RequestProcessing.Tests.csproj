@@ -70,7 +70,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Server\RequestProcessorTest.cs" />
+    <Compile Include="Server\DefaultRequestProcessorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

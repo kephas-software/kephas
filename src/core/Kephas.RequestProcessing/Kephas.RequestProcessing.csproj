@@ -47,7 +47,7 @@
     <Compile Include="Server\RequestHandlerMetadata.cs" />
     <Compile Include="Server\RequestProcessingFilterBase.cs" />
     <Compile Include="Server\RequestProcessingFilterMetadata.cs" />
-    <Compile Include="Server\RequestProcessor.cs" />
+    <Compile Include="Server\DefaultRequestProcessor.cs" />
     <Compile Include="Client\IClientRequestProcessor.cs" />
     <Compile Include="Server\IProcessingContext.cs" />
     <Compile Include="IRequest.cs" />

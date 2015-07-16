@@ -130,7 +130,7 @@
     <Compile Include="Composition\IExportFactory.cs" />
     <Compile Include="Composition\IExportProvider.cs" />
     <Compile Include="Composition\Metadata\ExportMetadataBase.cs" />
-    <Compile Include="Composition\ICompositionContainer.cs" />
+    <Compile Include="Composition\ICompositionContext.cs" />
     <Compile Include="Composition\Conventions\IConventionsBuilder.cs" />
     <Compile Include="Composition\Conventions\IConventionsRegistrar.cs" />
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />

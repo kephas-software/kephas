@@ -59,7 +59,7 @@ namespace Kephas.Composition.Mef
 
         public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
-            return new List<Assembly> { typeof(ICompositionContainer).Assembly };
+            return new List<Assembly> { typeof(ICompositionContext).Assembly };
         }
 
         public virtual IEnumerable<Type> GetDefaultParts()

@@ -34,7 +34,7 @@ namespace Kephas
         /// <summary>
         /// The composition container.
         /// </summary>
-        private ICompositionContainer compositionContainer;
+        private ICompositionContext compositionContainer;
 
         /// <summary>
         /// The logger factory.
@@ -84,7 +84,7 @@ namespace Kephas
         /// <value>
         /// The composition container.
         /// </value>
-        public ICompositionContainer CompositionContainer
+        public ICompositionContext CompositionContainer
         {
             get
             {

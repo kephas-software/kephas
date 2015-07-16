@@ -103,7 +103,7 @@ namespace Kephas
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithCompositionContainer(ICompositionContainer compositionContainer)
+        public AmbientServicesBuilder WithCompositionContainer(ICompositionContext compositionContainer)
         {
             Contract.Requires(compositionContainer != null);
 

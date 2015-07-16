@@ -298,11 +298,11 @@ namespace Kephas.Composition.Hosting
         /// Creates the container with the provided configuration asynchronously.
         /// </summary>
         /// <returns>A new container with the provided configuration.</returns>
-        public virtual ICompositionContainer CreateContainer()
+        public virtual ICompositionContext CreateContainer()
         {
-            Contract.Ensures(Contract.Result<ICompositionContainer>() != null);
+            Contract.Ensures(Contract.Result<ICompositionContext>() != null);
 
-            ICompositionContainer container = null;
+            ICompositionContext container = null;
             this.Logger.Info("composition-container:create-container:begin");
             var elapsed = Profiler.WithStopwatch(
                 () =>
@@ -325,11 +325,11 @@ namespace Kephas.Composition.Hosting
         /// Creates the container with the provided configuration asynchronously.
         /// </summary>
         /// <returns>A new container with the provided configuration.</returns>
-        public virtual async Task<ICompositionContainer> CreateContainerAsync()
+        public virtual async Task<ICompositionContext> CreateContainerAsync()
         {
-            Contract.Ensures(Contract.Result<Task<ICompositionContainer>>() != null);
+            Contract.Ensures(Contract.Result<Task<ICompositionContext>>() != null);
 
-            ICompositionContainer container = null;
+            ICompositionContext container = null;
             this.Logger.Info("composition-container:create-container:begin");
             var elapsed = await Profiler.WithStopwatchAsync(
                 async () =>
@@ -369,7 +369,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>
         /// A new composition container.
         /// </returns>
-        protected abstract ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
+        protected abstract ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts);
 
         /// <summary>
         /// Gets the composition assemblies.
@@ -459,7 +459,7 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="assemblies">The assemblies.</param>
         /// <returns>The composition container.</returns>
-        private ICompositionContainer CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
+        private ICompositionContext CreateContainerWithConventions(IEnumerable<Assembly> assemblies)
         {
             var parts = this.GetCompositionParts(assemblies);
             var conventionAssemblies = this.GetConventionAssemblies(assemblies);

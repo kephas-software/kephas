@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RequestProcessor.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRequestProcessor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -25,7 +25,7 @@ namespace Kephas.RequestProcessing.Server
     /// Provides the default implementation of the <see cref="IRequestProcessor"/> application service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class RequestProcessor : IRequestProcessor
+    public class DefaultRequestProcessor : IRequestProcessor
     {
         /// <summary>
         /// The filter factories.
@@ -33,26 +33,26 @@ namespace Kephas.RequestProcessing.Server
         private readonly IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RequestProcessor" /> class.
+        /// Initializes a new instance of the <see cref="DefaultRequestProcessor" /> class.
         /// </summary>
-        /// <param name="compositionContainer">The composition container.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="filterFactories">The filter factories.</param>
-        public RequestProcessor(ICompositionContainer compositionContainer, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
+        public DefaultRequestProcessor(ICompositionContext compositionContext, IList<IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata>> filterFactories)
         {
-            Contract.Requires(compositionContainer != null);
+            Contract.Requires(compositionContext != null);
             Contract.Requires(filterFactories != null);
 
-            this.CompositionContainer = compositionContainer;
+            this.CompositionContext = compositionContext;
             this.filterFactories = filterFactories;
         }
 
         /// <summary>
-        /// Gets the composition container.
+        /// Gets the composition context.
         /// </summary>
         /// <value>
-        /// The composition container.
+        /// The composition context.
         /// </value>
-        public ICompositionContainer CompositionContainer { get; private set; }
+        public ICompositionContext CompositionContext { get; private set; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -60,7 +60,7 @@ namespace Kephas.RequestProcessing.Server
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<RequestProcessor> Logger { get; set; } 
+        public ILogger<DefaultRequestProcessor> Logger { get; set; } 
 
         /// <summary>
         /// Processes the specified request asynchronously.
@@ -114,7 +114,7 @@ namespace Kephas.RequestProcessing.Server
         protected virtual IRequestHandler CreateRequestHandler(IRequest request)
         {
             var requestHandlerType = typeof(IRequestHandler<>).MakeGenericType(request.GetType());
-            var requestHandler = (IRequestHandler)this.CompositionContainer.GetExport(requestHandlerType);
+            var requestHandler = (IRequestHandler)this.CompositionContext.GetExport(requestHandlerType);
             return requestHandler;
         }
 

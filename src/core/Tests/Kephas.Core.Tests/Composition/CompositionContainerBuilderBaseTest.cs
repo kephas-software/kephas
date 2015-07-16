@@ -112,9 +112,9 @@ namespace Kephas.Core.Tests.Composition
                 return Mock.Create<IConventionsBuilder>();
             }
 
-            protected override ICompositionContainer CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
+            protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Mock.Create<ICompositionContainer>();
+                return Mock.Create<ICompositionContext>();
             }
         }
 

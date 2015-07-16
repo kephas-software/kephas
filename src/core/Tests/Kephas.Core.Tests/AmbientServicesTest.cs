@@ -19,6 +19,7 @@ namespace Kephas.Core.Tests
     using NUnit.Framework;
 
     using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Test class for <see cref="AmbientServices"/>.
@@ -39,10 +40,11 @@ namespace Kephas.Core.Tests
         public void CompositionContainer_works_fine_when_explicitely_set()
         {
             var ambientServices = new AmbientServices();
-            var mockContainer = Mock.Create<ICompositionContainer>();
+            var mockContainer = Mock.Create<ICompositionContext>();
+            mockContainer.Arrange(c => c.TryGetExport<ICompositionContext>(null)).Returns((ICompositionContext)null);
             ambientServices.CompositionContainer = mockContainer;
-            var part = new List<object>();
-            ambientServices.CompositionContainer.SatisfyImports(part);
+            var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
+            Assert.IsNull(noService);
         }
     }
 }

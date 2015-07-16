@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICompositionContainer.cs" company="Quartz Software SRL">
+// <copyright file="ICompositionContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Public interface for the composition container.
+//   Public interface for the composition context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,16 +13,10 @@ namespace Kephas.Composition
     using System.Collections.Generic;
 
     /// <summary>
-    /// Public interface for the composition container.
+    /// Public interface for the composition context.
     /// </summary>
-    public interface ICompositionContainer
+    public interface ICompositionContext
     {
-        /// <summary>
-        /// Composes the parts without registering them for recomposition.
-        /// </summary>
-        /// <param name="parts">The parts to be composed.</param>
-        void SatisfyImports(params object[] parts);
-
         /// <summary>
         /// Resolves the specified contract type.
         /// </summary>
@@ -58,5 +52,23 @@ namespace Kephas.Composition
         /// An enumeration of objects implementing <paramref name="{T}" />.
         /// </returns>
         IEnumerable<T> GetExports<T>(string contractName = null);
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
+        object TryGetExport(Type contractType, string contractName = null);
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>
+        /// An object implementing <typeparamref name="{T}" />, or <c>null</c> if a service with the provided contract was not found.
+        /// </returns>
+        T TryGetExport<T>(string contractName = null);
     }
 }

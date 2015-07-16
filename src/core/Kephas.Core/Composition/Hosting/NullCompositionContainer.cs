@@ -17,16 +17,8 @@ namespace Kephas.Composition.Hosting
     /// <summary>
     /// A composition container doing nothing.
     /// </summary>
-    public class NullCompositionContainer : ICompositionContainer
+    public class NullCompositionContainer : ICompositionContext
     {
-        /// <summary>
-        /// Composes the parts without registering them for recomposition.
-        /// </summary>
-        /// <param name="parts">The parts to be composed.</param>
-        public void SatisfyImports(params object[] parts)
-        {
-        }
-
         /// <summary>
         /// Resolves the specified contract type.
         /// </summary>
@@ -73,6 +65,32 @@ namespace Kephas.Composition.Hosting
         public IEnumerable<T> GetExports<T>(string contractName = null)
         {
             return new T[0];
+        }
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>
+        /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
+        /// </returns>
+        public object TryGetExport(Type contractType, string contractName = null)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to resolve the specified contract type.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <param name="contractName">The contract name.</param>
+        /// <returns>
+        /// An object implementing <typeparamref name="{T}" />, or <c>null</c> if a service with the provided contract was not found.
+        /// </returns>
+        public T TryGetExport<T>(string contractName = null)
+        {
+            return default(T);
         }
     }
 }

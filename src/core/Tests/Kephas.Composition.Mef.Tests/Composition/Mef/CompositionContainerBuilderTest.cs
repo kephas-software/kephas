@@ -96,28 +96,12 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
-                .WithAssembly(typeof(MefConventionsBuilder).Assembly)
-                .WithParts(new[] { typeof(ComposedTestLogConsumer) })
-                .CreateContainer();
-
-            var consumer = container.GetExport<ComposedTestLogConsumer>();
-            Assert.IsNotNull(consumer.Logger);
-        }
-
-        [Test]
-        public void CreateContainer_non_composed_loggers_exported()
-        {
-            var builder = this.CreateCompositionContainerBuilder();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .CreateContainer();
 
-            var consumer = new NonComposedTestLogConsumer();
-            container.SatisfyImports(consumer);
-
-            Assert.IsNotNull(consumer.Logger);
+            var logger = container.GetExport<ILogger<CompositionContainerTest.ExportedClass>>();
+            Assert.IsInstanceOf<NullLogger<CompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
@@ -125,7 +109,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -140,7 +124,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -154,7 +138,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateContainer();
 
@@ -168,7 +152,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -184,7 +168,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -194,49 +178,11 @@ namespace Kephas.Composition.Mef
         }
 
         [Test]
-        public void SatisfyImports_AppService_metadata()
-        {
-            var builder = this.CreateCompositionContainerBuilder();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
-                .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
-                .CreateContainer();
-
-            var importer = new TestMetadataConsumer();
-            container.SatisfyImports(importer);
-
-            Assert.IsNotNull(importer.TestServices);
-            var metadata = importer.TestServices.First().Metadata;
-            Assert.AreEqual(Priority.High, metadata.OverridePriority);
-        }
-
-        [Test]
-        public void SatisfyImports_AppService_metadata_complex()
-        {
-            var builder = this.CreateCompositionContainerBuilder();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
-                .WithParts(new[] { typeof(IConverter), typeof(IConverter<,>), typeof(StringToIntConverter), typeof(SecondStringToIntConverter) })
-                .CreateContainer();
-
-            var importer = new TestConverterConsumer();
-            container.SatisfyImports(importer);
-
-            Assert.IsNotNull(importer.Converters);
-            var orderedConverters = importer.Converters.ToList();
-            orderedConverters.Sort((f1, f2) => f1.Metadata.ProcessingPriority - f2.Metadata.ProcessingPriority);
-
-            Assert.AreEqual(2, orderedConverters.Count);
-            Assert.AreEqual(0, orderedConverters[0].Metadata.ProcessingPriority);
-            Assert.AreEqual(100, orderedConverters[1].Metadata.ProcessingPriority);
-        }
-
-        [Test]
         public void GetExport_AppService_generic_export()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateContainer();
 
@@ -250,7 +196,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
                 .CreateContainer();
 
@@ -263,7 +209,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
                 .CreateContainer();
 
@@ -275,7 +221,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
                 .CreateContainer();
 
@@ -289,7 +235,7 @@ namespace Kephas.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
-                .WithAssembly(typeof(ICompositionContainer).Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
                 .CreateContainer();
 
@@ -314,10 +260,15 @@ namespace Kephas.Composition.Mef
         [Export]
         public class ComposedTestLogConsumer
         {
+            public ComposedTestLogConsumer(ILogger<ComposedTestLogConsumer> logger)
+            {
+                this.Logger = logger;
+            }
+
             /// <summary>
             /// Gets or sets the logger.
             /// </summary>
-            public ILogger<ComposedTestLogConsumer> Logger { get; set; }
+            public ILogger<ComposedTestLogConsumer> Logger { get; private set; }
         }
 
         public class NonComposedTestLogConsumer
@@ -394,7 +345,7 @@ namespace Kephas.Composition.Mef
             /// <param name="compositionContainer">
             /// The composition container.
             /// </param>
-            public SingleConstructorAppService(ICompositionContainer compositionContainer)
+            public SingleConstructorAppService(ICompositionContext compositionContainer)
             {
             }
         }
@@ -414,7 +365,7 @@ namespace Kephas.Composition.Mef
             /// <param name="compositionContainer">
             /// The composition container.
             /// </param>
-            public NoCompositionConstructorAppService(ICompositionContainer compositionContainer)
+            public NoCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
         }
@@ -436,7 +387,7 @@ namespace Kephas.Composition.Mef
             /// The composition container.
             /// </param>
             [CompositionConstructor]
-            public MultipleCompositionConstructorAppService(ICompositionContainer compositionContainer)
+            public MultipleCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
         }
