@@ -5,19 +5,17 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{74EB78FC-C8A4-4E6B-9329-1C5060A0FA2A}</ProjectGuid>
+    <ProjectGuid>{87C40E7F-A56B-4A80-A2FF-53C15C947726}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Model</RootNamespace>
-    <AssemblyName>Kephas.Model</AssemblyName>
+    <RootNamespace>Kephas.Data</RootNamespace>
+    <AssemblyName>Kephas.Data</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,7 +53,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
     <CodeContractsCustomRewriterAssembly />
     <CodeContractsCustomRewriterClass />
     <CodeContractsLibPaths />
@@ -68,7 +66,7 @@
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -106,7 +104,7 @@
     <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
     <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
     <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
     <CodeContractsCustomRewriterAssembly />
     <CodeContractsCustomRewriterClass />
     <CodeContractsLibPaths />
@@ -119,114 +117,16 @@
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
-      <Project>{84122862-c5dd-4460-a9f5-925d623b22d7}</Project>
-      <Name>Kephas.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
-    <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
-    <Compile Include="Configuration\ElementConfiguratorBase.cs" />
-    <Compile Include="Configuration\ElementConfiguratorMetadata.cs" />
-    <Compile Include="Configuration\IElementConfigurator.cs" />
-    <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
-    <Compile Include="Dimensions\AppLayer\IKephasAppLayerDimensionElement.cs" />
-    <Compile Include="Dimensions\Aspect\IMainAspectDimensionElement.cs" />
-    <Compile Include="Dimensions\IModelDimension.cs" />
-    <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
-    <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
-    <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
-    <Compile Include="Elements\Construction\IClassifierInfo.cs" />
-    <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
-    <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
-    <Compile Include="Elements\Construction\IModelElementInfo.cs" />
-    <Compile Include="Elements\Construction\INamedElementInfo.cs" />
-    <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
-    <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
-    <Compile Include="Elements\ModelDimensionElement.cs" />
-    <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
-    <Compile Include="Factory\IModelInfoProvider.cs" />
-    <Compile Include="IComplexType.cs" />
-    <Compile Include="ISimpleType.cs" />
-    <Compile Include="Runtime\AttributedModel\AspectOfAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
-    <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeModelElementInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeNamedElementInfo.cs" />
-    <Compile Include="Elements\ElementNotFoundException.cs" />
-    <Compile Include="Elements\ModelDimension.cs" />
-    <Compile Include="Elements\ModelHelper.cs" />
-    <Compile Include="Elements\NamedElementBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
-    <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
-    <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeNamedElementInfoFactoryBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeElementInfoFactoryMetadata.cs" />
-    <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
-    <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
-    <Compile Include="Dimensions\IAppLayerDimension.cs" />
-    <Compile Include="Dimensions\IAspectDimension.cs" />
-    <Compile Include="Dimensions\IModuleDimension.cs" />
-    <Compile Include="Dimensions\IScopeDimension.cs" />
-    <Compile Include="Runtime\Factory\IRuntimeElementInfoFactory.cs" />
-    <Compile Include="IModelSpaceProvider.cs" />
-    <Compile Include="IClassifier.cs" />
-    <Compile Include="IModelDimension.cs" />
-    <Compile Include="IAnnotation.cs" />
-    <Compile Include="IModelDimensionElement.cs" />
-    <Compile Include="IModelElement.cs" />
-    <Compile Include="IModelProjection.cs" />
-    <Compile Include="IModelSpace.cs" />
-    <Compile Include="INamedElement.cs" />
-    <Compile Include="IProperty.cs" />
-    <Compile Include="Elements\ModelElementBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Runtime\RuntimeModelInfoProvider.cs" />
-    <Compile Include="Services\DefaultModelSpaceProvider.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ModelContracts.cd" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Collections.Concurrent">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\System.Collections.Concurrent.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

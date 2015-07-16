@@ -40,8 +40,12 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACAEAAAAQAA=</HashCode>
       <FileName>IModelElement.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Base" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Members" />
+      <Property Name="Annotations" />
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Kephas.Model.IClassifier">
@@ -122,6 +126,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
       <FileName>IAnnotation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.IComplexType" Collapsed="true">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IComplexType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.ISimpleType" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISimpleType.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

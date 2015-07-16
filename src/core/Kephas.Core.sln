@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.RequestProcessing", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.RequestProcessing.Tests", "Tests\Kephas.RequestProcessing.Tests\Kephas.RequestProcessing.Tests.csproj", "{0582623E-347F-4C2A-9547-F7E3DF218232}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data", "Kephas.Data\Kephas.Data.csproj", "{87C40E7F-A56B-4A80-A2FF-53C15C947726}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,16 @@ Global
 		{0582623E-347F-4C2A-9547-F7E3DF218232}.Release|ARM.ActiveCfg = Release|Any CPU
 		{0582623E-347F-4C2A-9547-F7E3DF218232}.Release|x64.ActiveCfg = Release|Any CPU
 		{0582623E-347F-4C2A-9547-F7E3DF218232}.Release|x86.ActiveCfg = Release|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Release|ARM.ActiveCfg = Release|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Release|x64.ActiveCfg = Release|Any CPU
+		{87C40E7F-A56B-4A80-A2FF-53C15C947726}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
