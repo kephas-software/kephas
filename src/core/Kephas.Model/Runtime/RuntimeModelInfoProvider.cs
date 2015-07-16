@@ -14,6 +14,8 @@ namespace Kephas.Model.Runtime
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Composition;
     using Kephas.Extensions;
@@ -65,15 +67,20 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An enumeration of element information.
+        /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public IEnumerable<INamedElementInfo> GetElementInfos()
+        public Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var runtimeElements = new HashSet<object>();
-            foreach (var registrar in this.modelRegistries)
+            foreach (var modelRegistry in this.modelRegistries)
             {
-                runtimeElements.AddRange(registrar.GetRuntimeElements().Select(this.NormalizeRuntimeElement));
+                runtimeElements.AddRange(modelRegistry.GetRuntimeElements().Select(this.NormalizeRuntimeElement));
+
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
             var elementInfos = new List<INamedElementInfo>();
@@ -95,7 +102,9 @@ namespace Kephas.Model.Runtime
                 elementInfos.Add(elementInfo);
             }
 
-            return elementInfos;
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);
         }
 
         /// <summary>

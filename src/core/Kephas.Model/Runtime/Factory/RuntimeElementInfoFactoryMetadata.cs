@@ -50,6 +50,20 @@ namespace Kephas.Model.Runtime.Factory
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeElementInfoFactoryMetadata"/> class.
+        /// </summary>
+        /// <param name="elementInfoType">Type of the element information.</param>
+        /// <param name="runtimeInfoType">Type of the runtime information.</param>
+        /// <param name="processingPriority">The processing priority.</param>
+        /// <param name="overridePriority">The override priority.</param>
+        public RuntimeElementInfoFactoryMetadata(Type elementInfoType, Type runtimeInfoType, int processingPriority = 0, Priority overridePriority = Priority.Normal)
+            : base(processingPriority, overridePriority)
+        {
+            this.ElementInfoType = elementInfoType;
+            this.RuntimeInfoType = runtimeInfoType;
+        }
+
+        /// <summary>
         /// Gets the type of the element information.
         /// </summary>
         /// <value>

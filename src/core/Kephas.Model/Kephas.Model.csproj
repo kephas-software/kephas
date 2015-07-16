@@ -150,6 +150,7 @@
     <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
     <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
     <Compile Include="Elements\ModelDimensionElement.cs" />
+    <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
     <Compile Include="Runtime\AttributedModel\AspectOfAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
@@ -194,6 +195,7 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Runtime\RuntimeModelInfoProvider.cs" />
+    <Compile Include="Services\DefaultModelSpaceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelContracts.cd" />

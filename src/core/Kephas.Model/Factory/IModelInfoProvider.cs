@@ -11,6 +11,8 @@ namespace Kephas.Model.Factory
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Model.Elements.Construction;
     using Kephas.Services;
@@ -25,8 +27,11 @@ namespace Kephas.Model.Factory
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
-        /// <returns>An enumeration of element information.</returns>
-        IEnumerable<INamedElementInfo> GetElementInfos();
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task promising an enumeration of element information.
+        /// </returns>
+        Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>
@@ -38,13 +43,14 @@ namespace Kephas.Model.Factory
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An enumeration of element information.
+        /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public IEnumerable<INamedElementInfo> GetElementInfos()
+        public Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Ensures(Contract.Result<IEnumerable<INamedElementInfo>>() != null);
-            return Contract.Result<IEnumerable<INamedElementInfo>>();
+            return Contract.Result<Task<IEnumerable<INamedElementInfo>>>();
         }
     }
 }

@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExcludeFromCompositionAttribute.cs" company="Quartz Software SRL">
+// <copyright file="ExcludeFromModelAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Indicates that a specific service should be excluded from composition.
+//   Marks a type or a member being excluded from the model.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.AttributedModel
+namespace Kephas.Model.AttributedModel
 {
     using System;
 
     /// <summary>
-    /// Marks a class eligible as an application service implementation to be excluded from composition.
+    /// Marks a type or a member being excluded from the model.
     /// </summary>
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
-    public sealed class ExcludeFromCompositionAttribute : Attribute
+    public sealed class ExcludeFromModelAttribute : Attribute
     {
     }
 }
