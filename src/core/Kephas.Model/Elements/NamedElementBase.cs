@@ -103,7 +103,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The container element.
         /// </value>
-        public IModelElement Container { get; private set; }
+        public virtual IModelElement Container { get; private set; }
 
         /// <summary>
         /// Gets the model space.
@@ -111,7 +111,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model space.
         /// </value>
-        public IModelSpace ModelSpace { get; private set; }
+        public virtual IModelSpace ModelSpace { get; private set; }
 
         /// <summary>
         /// Gets the element infos which constructed this element.

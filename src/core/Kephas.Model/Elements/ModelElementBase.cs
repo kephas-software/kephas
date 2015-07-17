@@ -44,7 +44,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model element members.
         /// </value>
-        public IEnumerable<INamedElement> Members
+        public virtual IEnumerable<INamedElement> Members
         {
             get
             {
@@ -58,7 +58,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model element annotations.
         /// </value>
-        public IEnumerable<IAnnotation> Annotations
+        public virtual IEnumerable<IAnnotation> Annotations
         {
             get { return this.members.OfType<IAnnotation>(); }
         }
@@ -69,7 +69,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The base model element.
         /// </value>
-        public IModelElement Base { get; internal set; }
+        public virtual IModelElement Base { get; internal set; }
 
         /// <summary>
         /// Gets the member with the specified qualified name.
@@ -79,7 +79,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The member with the provided qualified name or <c>null</c>.
         /// </returns>
-        public INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true)
+        public virtual INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true)
         {
             INamedElement element;
             if (this.members.TryGetValue(qualifiedName, out element))

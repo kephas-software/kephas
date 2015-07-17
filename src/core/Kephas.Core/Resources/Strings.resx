@@ -135,4 +135,16 @@
   <data name="NullServiceExceptionMessage" xml:space="preserve">
     <value>{0} is intended to be replaced by a proper implementation.</value>
   </data>
+  <data name="TransitionMonitor_AssertIsCompletedSuccessfully_Exception" xml:space="preserve">
+    <value>The {0} of '{1}' is not completed successfully.</value>
+  </data>
+  <data name="TransitionMonitor_AssertIsCompleted_Exception" xml:space="preserve">
+    <value>The {0} of '{1}' is not completed.</value>
+  </data>
+  <data name="TransitionMonitor_AssertIsInProgress_Exception" xml:space="preserve">
+    <value>The {0} of '{1}' is not in progress.</value>
+  </data>
+  <data name="TransitionMonitor_AssertIsNotStarted_Exception" xml:space="preserve">
+    <value>The {0} of '{1}' is already started.</value>
+  </data>
 </root>

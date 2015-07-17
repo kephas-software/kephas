@@ -85,6 +85,7 @@
     <Compile Include="Reflection\ReflectionHelperTest.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
     <Compile Include="Services\ContextBaseTest.cs" />
+    <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">

@@ -146,11 +146,14 @@
     <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
     <Compile Include="Elements\Construction\IModelElementInfo.cs" />
+    <Compile Include="Elements\Construction\IModelSpaceInfo.cs" />
     <Compile Include="Elements\Construction\INamedElementInfo.cs" />
     <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
+    <Compile Include="Elements\Construction\Internal\IModelSpaceConstructor.cs" />
     <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
     <Compile Include="Elements\ModelDimensionElement.cs" />
     <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
+    <Compile Include="Elements\DefaultModelSpace.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
     <Compile Include="IComplexType.cs" />
     <Compile Include="ISimpleType.cs" />

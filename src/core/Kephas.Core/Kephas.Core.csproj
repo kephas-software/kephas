@@ -151,6 +151,9 @@
     <Compile Include="Services\IAsyncInitializable.cs" />
     <Compile Include="Services\IContext.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
+    <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
+    <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
+    <Compile Include="Services\Transitioning\TransitionMonitor.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />
     <Compile Include="Services\Priority.cs" />

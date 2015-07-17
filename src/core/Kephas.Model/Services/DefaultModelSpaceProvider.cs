@@ -11,12 +11,14 @@ namespace Kephas.Model.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
     using Kephas.Model.Factory;
     using Kephas.Services;
+    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// The default implementation of a model space provider.
@@ -24,6 +26,16 @@ namespace Kephas.Model.Services
     [OverridePriority(Priority.Low)]
     public class DefaultModelSpaceProvider : IModelSpaceProvider
     {
+        /// <summary>
+        /// Monitors the initialization state.
+        /// </summary>
+        private readonly InitializationMonitor<IModelSpaceProvider, DefaultModelSpaceProvider> initialization = new InitializationMonitor<IModelSpaceProvider, DefaultModelSpaceProvider>();
+
+        /// <summary>
+        /// The model space.
+        /// </summary>
+        private IModelSpace modelSpace;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
@@ -59,7 +71,9 @@ namespace Kephas.Model.Services
         /// </returns>
         public IModelSpace GetModelSpace()
         {
-            throw new NotImplementedException();
+            this.initialization.AssertIsCompletedSuccessfully();
+
+            return this.modelSpace;
         }
 
         /// <summary>
@@ -70,9 +84,24 @@ namespace Kephas.Model.Services
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            this.initialization.Start();
+
+            try
+            {
+                var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(cancellationToken)));
+                var elementInfos = (await elementInfosCollectorTask.ConfigureAwait(false)).SelectMany(e => e);
+
+                throw new NotImplementedException();
+
+                this.initialization.Complete();
+            }
+            catch
+            {
+                this.initialization.Fault();
+                throw;
+            }
         }
     }
 }
