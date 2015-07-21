@@ -1,18 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISimpleType.cs" company="Quartz Software SRL">
+// <copyright file="IRepository.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   A simple type is a classifier which has as instances simple values.
+//   Provides methods to persist and query entities in a storage.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model
+namespace Kephas.Data.Repository
 {
+    using System;
+
     /// <summary>
-    /// A simple type is a classifier which has as instances simple values.
+    /// Provides methods to persist and query entities in a storage.
     /// </summary>
-    public interface ISimpleType : IClassifier
+    public interface IRepository : IDisposable
     {
     }
 }

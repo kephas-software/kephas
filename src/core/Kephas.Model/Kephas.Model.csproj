@@ -155,11 +155,14 @@
     <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
     <Compile Include="Elements\DefaultModelSpace.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
-    <Compile Include="IComplexType.cs" />
-    <Compile Include="ISimpleType.cs" />
-    <Compile Include="Runtime\AttributedModel\AspectOfAttribute.cs" />
+    <Compile Include="IReferenceType.cs" />
+    <Compile Include="IValueType.cs" />
+    <Compile Include="Properties\Model.AssemblyInfo.cs" />
+    <Compile Include="Runtime\AttributedModel\AspectAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
+    <Compile Include="Runtime\Construction\IRuntimeNamedElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />

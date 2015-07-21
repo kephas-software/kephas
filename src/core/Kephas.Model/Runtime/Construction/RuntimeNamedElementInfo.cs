@@ -15,13 +15,12 @@ namespace Kephas.Model.Runtime.Construction
     using System.Text;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Elements.Construction;
 
     /// <summary>
     /// Runtime based constructor information for named elements.
     /// </summary>
     /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
-    public abstract class RuntimeNamedElementInfo<TRuntimeElement> : Expando, INamedElementInfo
+    public abstract class RuntimeNamedElementInfo<TRuntimeElement> : Expando, IRuntimeNamedElementInfo
         where TRuntimeElement : MemberInfo
     {
         /// <summary>
@@ -43,7 +42,15 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The runtime member information.
         /// </value>
-        public TRuntimeElement RuntimeElement { get; private set; }
+        public TRuntimeElement RuntimeElement { get; }
+
+        /// <summary>
+        /// Gets the runtime member information.
+        /// </summary>
+        /// <value>
+        /// The runtime member information.
+        /// </value>
+        MemberInfo IRuntimeNamedElementInfo.RuntimeElement => this.RuntimeElement;
 
         /// <summary>
         /// Gets the name.
@@ -51,7 +58,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The name.
         /// </value>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets or sets the function used to select the container.

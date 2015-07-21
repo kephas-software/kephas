@@ -128,18 +128,18 @@
       <FileName>IAnnotation.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Kephas.Model.IComplexType" Collapsed="true">
-    <Position X="3.5" Y="8.75" Width="1.5" />
+  <Interface Name="Kephas.Model.IValueType">
+    <Position X="0.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IComplexType.cs</FileName>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IValueType.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Kephas.Model.ISimpleType" Collapsed="true">
-    <Position X="0.75" Y="8.75" Width="1.5" />
+  <Interface Name="Kephas.Model.IReferenceType" Collapsed="true">
+    <Position X="3.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ISimpleType.cs</FileName>
+      <FileName>IReferenceType.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
