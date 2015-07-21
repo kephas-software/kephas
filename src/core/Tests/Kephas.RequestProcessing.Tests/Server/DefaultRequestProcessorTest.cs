@@ -155,12 +155,12 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return Empty<bool>.Task; },
-                (c, t) => { afterlist.Add(1); return Empty<bool>.Task; },
+                (c, t) => { beforelist.Add(1); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { afterlist.Add(1); return TaskHelper.EmptyTask<bool>(); },
                 processingPriority: 2);
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return Empty<bool>.Task; },
-                (c, t) => { afterlist.Add(2); return Empty<bool>.Task; },
+                (c, t) => { beforelist.Add(2); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { afterlist.Add(2); return TaskHelper.EmptyTask<bool>(); },
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
@@ -190,12 +190,12 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return Empty<bool>.Task; },
-                (c, t) => { afterlist.Add(1); return Empty<bool>.Task; },
+                (c, t) => { beforelist.Add(1); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { afterlist.Add(1); return TaskHelper.EmptyTask<bool>(); },
                 requestType: typeof(PingRequest));
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return Empty<bool>.Task; },
-                (c, t) => { afterlist.Add(2); return Empty<bool>.Task; });
+                (c, t) => { beforelist.Add(2); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { afterlist.Add(2); return TaskHelper.EmptyTask<bool>(); });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
@@ -221,8 +221,8 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(c.Exception); return Empty<bool>.Task; },
-                (c, t) => { afterlist.Add(c.Exception); return Empty<bool>.Task; });
+                (c, t) => { beforelist.Add(c.Exception); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { afterlist.Add(c.Exception); return TaskHelper.EmptyTask<bool>(); });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1 });
             InvalidOperationException thrownException = null;
@@ -252,8 +252,8 @@ namespace Kephas.RequestProcessing.Tests.Server
             Priority overridePriority = Priority.Normal)
         {
             requestType = requestType ?? typeof(IRequest);
-            beforeFunc = beforeFunc ?? ((c, t) => Empty<bool>.Task);
-            afterFunc = afterFunc ?? ((c, t) => Empty<bool>.Task);
+            beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.EmptyTask<bool>());
+            afterFunc = afterFunc ?? ((c, t) => TaskHelper.EmptyTask<bool>());
             var filter = Mock.Create<IRequestProcessingFilter>();
             filter.Arrange(f => f.BeforeProcessAsync(Arg.IsAny<IProcessingContext>(), Arg.IsAny<CancellationToken>()))
                 .Returns(beforeFunc);

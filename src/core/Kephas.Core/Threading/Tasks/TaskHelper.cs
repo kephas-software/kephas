@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Empty.cs" company="Quartz Software SRL">
+// <copyright file="TaskHelper.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Static class providing empty tasks.
+//   Helper class for tasks.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,14 +12,14 @@ namespace Kephas.Threading.Tasks
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Static class providing empty tasks.
+    /// Helper class for tasks.
     /// </summary>
-    /// <typeparam name="T">The result type.</typeparam>
-    public static class Empty<T>
+    public static class TaskHelper
     {
         /// <summary>
-        /// The empty task.
+        /// Gets a resolved task returning the default value of <typeparamref name="T"/>.
         /// </summary>
-        public static readonly Task<T> Task = System.Threading.Tasks.Task.FromResult(default(T));
+        /// <typeparam name="T">The result type.</typeparam>
+        public static Task<T> EmptyTask<T>() => Task.FromResult(default(T));
     }
 }

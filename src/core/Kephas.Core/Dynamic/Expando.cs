@@ -239,7 +239,7 @@ namespace Kephas.Dynamic
         /// Returns and the properties of. 
         /// </summary>
         /// <param name="includeInstanceProperties">
-        /// The include Instance Properties.
+        /// If set to <c>true</c> the instance properties are also returned.
         /// </param>
         /// <returns>
         /// An enumeration of property (name, value) pairs.
