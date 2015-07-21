@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Dynamic;
+
 namespace Kephas
 {
     using System;
@@ -29,7 +31,7 @@ namespace Kephas
     /// (like in the case of the entities instatiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
-    public class AmbientServices
+    public class AmbientServices : Expando
     {
         /// <summary>
         /// The composition container.

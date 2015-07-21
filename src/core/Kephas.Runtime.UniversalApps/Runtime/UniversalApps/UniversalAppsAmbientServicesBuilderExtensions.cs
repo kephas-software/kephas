@@ -17,7 +17,7 @@ namespace Kephas.Runtime.UniversalApps
     public static class UniversalAppsAmbientServicesBuilderExtensions
     {
         /// <summary>
-        /// Sets the unioversal apps platform manager to the ambient services.
+        /// Sets the universal apps platform manager to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <returns>
