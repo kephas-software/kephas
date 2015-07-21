@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Dynamic;
-
 namespace Kephas
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Runtime;
 
