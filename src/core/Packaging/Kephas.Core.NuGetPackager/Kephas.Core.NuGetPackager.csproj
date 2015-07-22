@@ -48,6 +48,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\AssemblyInfo.Core-Packaging.cs">
+      <Link>Properties\AssemblyInfo.Core-Packaging.cs</Link>
+    </Compile>
     <Compile Include="PackagerMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

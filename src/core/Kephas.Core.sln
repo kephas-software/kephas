@@ -40,6 +40,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.NuGetPackager", "Packaging\Kephas.Core.NuGetPackager\Kephas.Core.NuGetPackager.csproj", "{2215FFDC-82CD-43A0-8726-ACD8C04F2F74}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2F3117DF-523E-43EC-8F1F-CD98AAB5CF13}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\AssemblyInfo.Core-Packaging.cs = Shared\AssemblyInfo.Core-Packaging.cs
+		Shared\AssemblyInfo.Core.cs = Shared\AssemblyInfo.Core.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

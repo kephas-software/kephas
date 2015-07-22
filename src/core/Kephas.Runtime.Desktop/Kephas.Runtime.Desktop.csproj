@@ -85,6 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Desktop\DesktopAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Runtime\Desktop\DesktopPlatformManager.cs" />

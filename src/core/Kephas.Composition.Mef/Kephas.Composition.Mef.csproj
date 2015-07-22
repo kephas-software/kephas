@@ -109,6 +109,9 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Composition\Mef\Conventions\MefConventionsRegistrarBase.cs" />
     <Compile Include="Composition\Mef\ExportAdapter.cs" />
     <Compile Include="Composition\Mef\ExportFactoryAdapter.cs" />

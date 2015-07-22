@@ -1,16 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Quartz Software SRL">
+// <copyright file="AssemblyInfo.Core.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   AssemblyInfo.Core.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Core.NuGetPackager")]
-[assembly: AssemblyDescription("Core artifacts for Kephas Framework (see http://kephas-framework.com for more information).")]
+[assembly: AssemblyCompany("Quartz Software SRL")]
+[assembly: AssemblyProduct("Kephas Framework")]
+[assembly: AssemblyCopyright("Copyright © Quartz Software SRL 2010-2015")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en")]
+
+[assembly: AssemblyVersion("3.0.*")]
+[assembly: AssemblyFileVersion("3.0.*")]
+[assembly: AssemblyInformationalVersion("3.0.*")]

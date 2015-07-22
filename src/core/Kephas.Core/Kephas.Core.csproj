@@ -116,6 +116,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="Composition\AttributedModel\CompositionConstructorAttribute.cs" />

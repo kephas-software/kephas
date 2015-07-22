@@ -132,6 +132,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Id.cs" />
     <Compile Include="Model\IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

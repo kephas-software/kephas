@@ -43,6 +43,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Server\ProcessingContext.cs" />
     <Compile Include="Server\RequestHandlerMetadata.cs" />
     <Compile Include="Server\RequestProcessingFilterBase.cs" />

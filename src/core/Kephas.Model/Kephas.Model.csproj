@@ -130,6 +130,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
     <Compile Include="Configuration\ElementConfiguratorBase.cs" />

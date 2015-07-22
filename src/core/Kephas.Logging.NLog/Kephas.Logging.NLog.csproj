@@ -114,6 +114,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Logging\NLog\NLogAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Logging\NLog\InternalLogger.cs" />
     <Compile Include="Logging\NLog\NLogger.cs" />
