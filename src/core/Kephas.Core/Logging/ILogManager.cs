@@ -47,6 +47,21 @@ namespace Kephas.Logging
 
             return logManager.GetLogger(type.FullName);
         }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <typeparam name="TTarget">The type for which the logger should be created.</typeparam>
+        /// <param name="logManager">The logger factory.</param>
+        /// <returns>
+        /// A logger for the provided type.
+        /// </returns>
+        public static ILogger GetLogger<TTarget>(this ILogManager logManager)
+        {
+            Contract.Requires(logManager != null);
+
+            return logManager.GetLogger(typeof(TTarget));
+        }
     }
 
     /// <summary>

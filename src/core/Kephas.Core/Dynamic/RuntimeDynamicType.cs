@@ -241,7 +241,7 @@ namespace Kephas.Dynamic
         /// <returns>A dictionary of runtime dynamic methods.</returns>
         private static IDictionary<string, IList<IDynamicMethod>> CreateDynamicMethods(Type type)
         {
-            var methodInfos = type.GetRuntimeMethods().GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethod>>(name, methods.Select(mi => (IDynamicMethod)new RuntimeDynamicMethod(mi)).ToList()));
+            var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethod>>(name, methods.Select(mi => (IDynamicMethod)new RuntimeDynamicMethod(mi)).ToList()));
             return methodInfos.ToDictionary(g => g.Key, g => g.Value);
         }
 
@@ -255,7 +255,7 @@ namespace Kephas.Dynamic
         private static IDictionary<string, IDynamicProperty> CreateDynamicProperties(Type type)
         {
             var dynamicProperties = new Dictionary<string, IDynamicProperty>();
-            var propertyInfos = type.GetRuntimeProperties();
+            var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic);
             foreach (var propertyInfo in propertyInfos)
             {
                 var propertyName = propertyInfo.Name;

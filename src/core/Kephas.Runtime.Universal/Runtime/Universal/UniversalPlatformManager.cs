@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UniversalAppsPlatformManager.cs" company="Quartz Software SRL">
+// <copyright file="UniversalPlatformManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,21 +7,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime.UniversalApps
+namespace Kephas.Runtime.Universal
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
-    using Kephas.Services;
 
     /// <summary>
-    /// Platform manager for Windows Store.
+    /// Platform manager for Universal Windows Platform.
     /// </summary>
-    public class UniversalAppsPlatformManager : IPlatformManager
+    public class UniversalPlatformManager : IPlatformManager
     {
         /// <summary>
         /// The logger.
@@ -29,14 +29,14 @@ namespace Kephas.Runtime.UniversalApps
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UniversalAppsPlatformManager"/> class.
+        /// Initializes a new instance of the <see cref="UniversalPlatformManager"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public UniversalAppsPlatformManager(ILogManager logManager)
+        public UniversalPlatformManager(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger(typeof(UniversalAppsPlatformManager));
+            this.logger = logManager.GetLogger<UniversalPlatformManager>();
         }
 
         /// <summary>
@@ -49,18 +49,11 @@ namespace Kephas.Runtime.UniversalApps
         {
             var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
-            var assemblies = new List<Assembly>();
-            foreach (var file in await folder.GetFilesAsync())
-            {
-                if (file.FileType == ".dll" || file.FileType == ".exe")
-                {
-                    var name = new AssemblyName { Name = file.Name };
-                    var asm = Assembly.Load(name);
-                    assemblies.Add(asm);
-                }
-            }
-
-            return assemblies;
+            return (from file in await folder.GetFilesAsync()
+                    where file.FileType == ".dll" || file.FileType == ".exe"
+                    select new AssemblyName { Name = file.Name }
+                    into name
+                    select Assembly.Load(name)).ToList();
         }
     }
 }

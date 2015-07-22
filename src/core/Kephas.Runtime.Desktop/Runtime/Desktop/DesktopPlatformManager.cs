@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DesktopAppsPlatformManager.cs" company="Quartz Software SRL">
+// <copyright file="DesktopPlatformManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The platform manager for .NET 4.5 or higher.
+//   The platform manager for desktop applications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime.DesktopApps
+namespace Kephas.Runtime.Desktop
 {
     using System;
     using System.Collections.Generic;
@@ -16,12 +16,11 @@ namespace Kephas.Runtime.DesktopApps
     using System.Threading.Tasks;
 
     using Kephas.Logging;
-    using Kephas.Services;
 
     /// <summary>
-    /// The .NET 4.5 or higher platform.
+    /// The platform manager for desktop applications.
     /// </summary>
-    public class DesktopAppsPlatformManager : IPlatformManager
+    public class DesktopPlatformManager : IPlatformManager
     {
         /// <summary>
         /// The logger.
@@ -29,14 +28,14 @@ namespace Kephas.Runtime.DesktopApps
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopAppsPlatformManager" /> class.
+        /// Initializes a new instance of the <see cref="DesktopPlatformManager" /> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public DesktopAppsPlatformManager(ILogManager logManager)
+        public DesktopPlatformManager(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger(typeof(DesktopAppsPlatformManager));
+            this.logger = logManager.GetLogger<DesktopPlatformManager>();
         }
 
         /// <summary>

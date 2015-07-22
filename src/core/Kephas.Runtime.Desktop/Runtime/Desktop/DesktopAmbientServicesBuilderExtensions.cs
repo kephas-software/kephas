@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DesktopAppsAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+// <copyright file="DesktopAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime.DesktopApps
+namespace Kephas.Runtime.Desktop
 {
     using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    public static class DesktopAppsAmbientServicesBuilderExtensions
+    public static class DesktopAmbientServicesBuilderExtensions
     {
         /// <summary>
         /// Sets the desktop apps platform manager to the ambient services.
@@ -23,11 +23,11 @@ namespace Kephas.Runtime.DesktopApps
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithDesktopAppsPlatform(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithDesktopPlatform(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithPlatformManager(new DesktopAppsPlatformManager(ambientServicesBuilder.AmbientServices.LogManager));
+            return ambientServicesBuilder.WithPlatformManager(new DesktopPlatformManager(ambientServicesBuilder.AmbientServices.LogManager));
         }
     }
 }
