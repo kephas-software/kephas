@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerTest.cs" company="Quartz Software SRL">
+// <copyright file="MefCompositionContainerTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="CompositionContainer" />.
+//   Tests for <see cref="MefCompositionContainer" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,23 +17,22 @@ namespace Kephas.Composition.Mef
     using System.Linq;
 
     using Kephas.Composition.Mef.Hosting;
-    using Kephas.Services;
 
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="CompositionContainer"/>.
+    /// Tests for <see cref="MefCompositionContainer"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionContainerTest : CompositionTestBase
+    public class MefCompositionContainerTest : CompositionTestBase
     {
-        public CompositionContainer CreateContainer(params Type[] types)
+        public MefCompositionContainer CreateContainer(params Type[] types)
         {
             return this.WithEmptyConfiguration().WithParts(types).CreateCompositionContainer();
         }
 
-        public CompositionContainer CreateExportProvidersContainer(params Type[] types)
+        public MefCompositionContainer CreateExportProvidersContainer(params Type[] types)
         {
             var config = this.WithEmptyConfiguration();
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();
@@ -164,6 +163,23 @@ namespace Kephas.Composition.Mef
             Assert.IsNotNull(exported);
             var exportedList = exported.ToList();
             Assert.AreEqual(0, exportedList.Count);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void Dispose()
+        {
+            var container = this.CreateContainer();
+            container.Dispose();
+            var export = container.TryGetExport<IList<string>>();
+        }
+
+        [Test]
+        public void Dispose_multiple()
+        {
+            var container = this.CreateContainer();
+            container.Dispose();
+            container.Dispose();
         }
 
         private class ContainerServicesImporter

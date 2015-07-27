@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerBuilderTest.cs" company="Quartz Software SRL">
+// <copyright file="MefCompositionContainerBuilderTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,6 +11,7 @@ namespace Kephas.Composition.Mef
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition.AttributedModel;
@@ -27,11 +28,11 @@ namespace Kephas.Composition.Mef
     using Telerik.JustMock;
 
     /// <summary>
-    /// Tests for <see cref="CompositionContainerBuilder"/>.
+    /// Tests for <see cref="MefCompositionContainerBuilder"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionContainerBuilderTest : CompositionTestBase
+    public class MefCompositionContainerBuilderTest : CompositionTestBase
     {
         [Test]
         public async Task CreateContainerAsync_simple_ambient_services_exported()
@@ -40,10 +41,10 @@ namespace Kephas.Composition.Mef
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
             var mockPlatformManager = Mock.Create<IPlatformManager>();
 
-            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync())
-                .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(CompositionContainer).Assembly }));
+            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(CancellationToken.None))
+                .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(MefCompositionContainer).Assembly }));
 
-            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = await factory
                 .CreateContainerAsync();
 
@@ -65,7 +66,7 @@ namespace Kephas.Composition.Mef
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
             var mockPlatformManager = Mock.Create<IPlatformManager>();
 
-            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory.CreateContainer();
         }
 
@@ -76,7 +77,7 @@ namespace Kephas.Composition.Mef
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
             var mockPlatformManager = Mock.Create<IPlatformManager>();
 
-            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory
                 .WithAssemblies(new Assembly[0])
                 .CreateContainer();
@@ -100,8 +101,8 @@ namespace Kephas.Composition.Mef
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .CreateContainer();
 
-            var logger = container.GetExport<ILogger<CompositionContainerTest.ExportedClass>>();
-            Assert.IsInstanceOf<NullLogger<CompositionContainerTest.ExportedClass>>(logger);
+            var logger = container.GetExport<ILogger<MefCompositionContainerTest.ExportedClass>>();
+            Assert.IsInstanceOf<NullLogger<MefCompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
@@ -244,7 +245,7 @@ namespace Kephas.Composition.Mef
             Assert.IsInstanceOf<SingleConstructorAppService>(export);
         }
 
-        private CompositionContainerBuilder CreateCompositionContainerBuilder()
+        private MefCompositionContainerBuilder CreateCompositionContainerBuilder()
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
@@ -253,7 +254,7 @@ namespace Kephas.Composition.Mef
             Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
                 .Returns(Mock.Create<ILogger>);
 
-            var factory = new CompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             return factory;
         }
 

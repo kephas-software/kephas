@@ -26,12 +26,12 @@ namespace Kephas.Composition.Mef
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<CompositionContainerBuilder> containerBuilderConfig)
+        public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig)
         {
             Contract.Requires(ambientServicesBuilder != null);
             Contract.Requires(containerBuilderConfig != null);
 
-            var containerBuilder = new CompositionContainerBuilder(
+            var containerBuilder = new MefCompositionContainerBuilder(
                 ambientServicesBuilder.AmbientServices.LogManager,
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
                 ambientServicesBuilder.AmbientServices.PlatformManager);
@@ -47,11 +47,11 @@ namespace Kephas.Composition.Mef
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static async Task<AmbientServicesBuilder> WithMefCompositionContainerAsync(this AmbientServicesBuilder ambientServicesBuilder, Action<CompositionContainerBuilder> containerBuilderConfig = null)
+        public static async Task<AmbientServicesBuilder> WithMefCompositionContainerAsync(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            var containerBuilder = new CompositionContainerBuilder(
+            var containerBuilder = new MefCompositionContainerBuilder(
                 ambientServicesBuilder.AmbientServices.LogManager,
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
                 ambientServicesBuilder.AmbientServices.PlatformManager);

@@ -13,6 +13,7 @@ namespace Kephas.Runtime.Desktop
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
@@ -41,10 +42,11 @@ namespace Kephas.Runtime.Desktop
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An enumeration of application assemblies.
+        /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync()
+        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult((IEnumerable<Assembly>)AppDomain.CurrentDomain.GetAssemblies());
         }

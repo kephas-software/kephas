@@ -40,6 +40,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -79,10 +85,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Composition\Mef\CompositionContainerTest.cs" />
+    <Compile Include="Composition\Mef\MefCompositionContainerTest.cs" />
     <Compile Include="Composition\Mef\CompositionTestBase.cs" />
     <Compile Include="Composition\Mef\TestCompositionExtensions.cs" />
-    <Compile Include="Composition\Mef\CompositionContainerBuilderTest.cs" />
+    <Compile Include="Composition\Mef\MefCompositionContainerBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

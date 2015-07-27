@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainer.cs" company="Quartz Software SRL">
+// <copyright file="MefCompositionContainer.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -16,11 +16,12 @@ namespace Kephas.Composition.Mef.Hosting
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.ExportProviders;
+    using Kephas.Composition.Mef.Resources;
 
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class CompositionContainer : ICompositionContext, IDisposable
+    public class MefCompositionContainer : ICompositionContext, IDisposable
     {
         /// <summary>
         /// The inner container.
@@ -28,10 +29,10 @@ namespace Kephas.Composition.Mef.Hosting
         private CompositionHost innerContainer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContainer" /> class.
+        /// Initializes a new instance of the <see cref="MefCompositionContainer" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        internal CompositionContainer(ContainerConfiguration configuration)
+        internal MefCompositionContainer(ContainerConfiguration configuration)
         {
             Contract.Requires(configuration != null);
 
@@ -48,6 +49,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
         public object GetExport(Type contractType, string contractName = null)
         {
+            this.AssertNotDisposed();
+
             var component = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.GetExport(contractType)
                               : this.innerContainer.GetExport(contractType, contractName);
@@ -62,6 +65,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
         public IEnumerable<object> GetExports(Type contractType, string contractName = null)
         {
+            this.AssertNotDisposed();
+
             var components = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.GetExports(contractType)
                               : this.innerContainer.GetExports(contractType, contractName);
@@ -78,6 +83,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         public T GetExport<T>(string contractName = null)
         {
+            this.AssertNotDisposed();
+
             var component = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.GetExport<T>()
                               : this.innerContainer.GetExport<T>(contractName);
@@ -94,6 +101,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         public IEnumerable<T> GetExports<T>(string contractName = null)
         {
+            this.AssertNotDisposed();
+
             var components = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.GetExports<T>()
                               : this.innerContainer.GetExports<T>(contractName);
@@ -110,6 +119,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         public object TryGetExport(Type contractType, string contractName = null)
         {
+            this.AssertNotDisposed();
+
             object component;
             var successful = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.TryGetExport(contractType, out component)
@@ -127,6 +138,8 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         public T TryGetExport<T>(string contractName = null)
         {
+            this.AssertNotDisposed();
+
             T component;
             var successful = string.IsNullOrEmpty(contractName)
                               ? this.innerContainer.TryGetExport(out component)
@@ -152,6 +165,17 @@ namespace Kephas.Composition.Mef.Hosting
             {
                 this.innerContainer.Dispose();
                 this.innerContainer = null;
+            }
+        }
+
+        /// <summary>
+        /// Asserts that the container is not disposed.
+        /// </summary>
+        private void AssertNotDisposed()
+        {
+            if (this.innerContainer == null)
+            {
+                throw new ObjectDisposedException(Strings.MefCompositionContainer_Disposed_Exception);
             }
         }
     }

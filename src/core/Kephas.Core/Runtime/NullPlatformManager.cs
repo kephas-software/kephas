@@ -11,6 +11,7 @@ namespace Kephas.Runtime
 {
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Services;
@@ -24,10 +25,11 @@ namespace Kephas.Runtime
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An enumeration of application assemblies.
+        /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync()
+        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult((IEnumerable<Assembly>)new Assembly[0]);
         }

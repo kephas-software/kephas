@@ -12,6 +12,7 @@ namespace Kephas.RequestProcessing.Tests.Server
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -38,25 +39,19 @@ namespace Kephas.RequestProcessing.Tests.Server
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultRequestProcessorTest
+    public class DefaultRequestProcessorTest : CompositionTestBase
     {
-        [Test]
-        public void Composition_success()
+        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
         {
-            var logManager = Mock.Create<ILogManager>();
-            var configManager = Mock.Create<IConfigurationManager>();
-            var platformManager = Mock.Create<IPlatformManager>();
+            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
+            assemblyList.Add(typeof(IRequestProcessor).Assembly); /* Kephas.RequestProcessing */
+            return base.CreateContainer(assemblyList);
+        }
 
-            var containerBuilder = new CompositionContainerBuilder(logManager, configManager, platformManager);
-            containerBuilder.WithAssemblies(
-                new[]
-                    {
-                        typeof(ILogger).Assembly,                           /* Kephas.Core */
-                        typeof(IMefConventionBuilderProvider).Assembly,     /* Kephas.Composition.Mef */
-                        typeof(IRequestProcessor).Assembly,                 /* Kephas.RequestProcessing */
-                    });
-
-            var container = containerBuilder.CreateContainer();
+        [Test]
+        public void DefaultRequestProcessor_Composition_success()
+        {
+            var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
             Assert.IsInstanceOf<DefaultRequestProcessor>(requestProcessor);
 
@@ -67,20 +62,7 @@ namespace Kephas.RequestProcessing.Tests.Server
         [Test]
         public async Task ProcessAsync_Composition_success()
         {
-            var logManager = Mock.Create<ILogManager>();
-            var configManager = Mock.Create<IConfigurationManager>();
-            var platformManager = Mock.Create<IPlatformManager>();
-
-            var containerBuilder = new CompositionContainerBuilder(logManager, configManager, platformManager);
-            containerBuilder.WithAssemblies(
-                new[]
-                    {
-                        typeof(ILogger).Assembly,                           /* Kephas.Core */
-                        typeof(IMefConventionBuilderProvider).Assembly,     /* Kephas.Composition.Mef */
-                        typeof(IRequestProcessor).Assembly,                 /* Kephas.RequestProcessing */
-                    });
-
-            var container = containerBuilder.CreateContainer();
+            var container = this.CreateContainer();
             var requestProcessor = container.GetExport<IRequestProcessor>();
             Assert.IsInstanceOf<DefaultRequestProcessor>(requestProcessor);
 

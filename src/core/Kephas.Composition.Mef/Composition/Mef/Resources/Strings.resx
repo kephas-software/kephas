@@ -120,6 +120,9 @@
   <data name="InvalidConventions" xml:space="preserve">
     <value>The provided conventions must implement {0}.</value>
   </data>
+  <data name="MefCompositionContainer_Disposed_Exception" xml:space="preserve">
+    <value>The composition container is disposed!</value>
+  </data>
   <data name="MetadataViewProvider_InvalidViewImplementation" xml:space="preserve">
     <value>The type '{0}' cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor.</value>
   </data>

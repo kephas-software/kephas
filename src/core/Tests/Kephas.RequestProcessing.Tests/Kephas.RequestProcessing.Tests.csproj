@@ -36,6 +36,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
@@ -85,6 +91,10 @@
     <ProjectReference Include="..\..\Kephas.RequestProcessing\Kephas.RequestProcessing.csproj">
       <Project>{1a22cb6e-d749-4c8e-b327-09c67d6ab27d}</Project>
       <Name>Kephas.RequestProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj">
+      <Project>{00aa79cc-8f5f-46e3-917f-2c2340a00bfb}</Project>
+      <Name>Kephas.Composition.Mef.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

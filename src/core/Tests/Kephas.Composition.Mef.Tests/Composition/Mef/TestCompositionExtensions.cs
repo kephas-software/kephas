@@ -18,11 +18,11 @@ namespace Kephas.Composition.Mef
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class TestCompositionExtensions
     {
-        public static CompositionContainer CreateCompositionContainer(this ContainerConfiguration configuration)
+        public static MefCompositionContainer CreateCompositionContainer(this ContainerConfiguration configuration)
         {
             Contract.Requires(configuration != null);
 
-            return new CompositionContainer(configuration);
+            return new MefCompositionContainer(configuration);
         }
     }
 }

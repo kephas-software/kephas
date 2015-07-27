@@ -14,6 +14,7 @@ namespace Kephas.Runtime.Universal
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Logging;
@@ -42,10 +43,11 @@ namespace Kephas.Runtime.Universal
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An enumeration of application assemblies.
+        /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public async Task<IEnumerable<Assembly>> GetAppAssembliesAsync()
+        public async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 

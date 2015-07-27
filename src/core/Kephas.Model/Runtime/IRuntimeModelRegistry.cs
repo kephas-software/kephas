@@ -10,6 +10,8 @@
 namespace Kephas.Model.Runtime
 {
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Services;
 
@@ -22,7 +24,10 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Gets the runtime elements.
         /// </summary>
-        /// <returns>An enumeration of runtime elements.</returns>
-        IEnumerable<object> GetRuntimeElements();
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of an enumeration of runtime elements.
+        /// </returns>
+        Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

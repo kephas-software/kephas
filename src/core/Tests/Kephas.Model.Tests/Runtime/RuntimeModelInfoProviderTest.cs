@@ -10,9 +10,11 @@
 namespace Kephas.Model.Tests.Runtime
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
@@ -37,7 +39,7 @@ namespace Kephas.Model.Tests.Runtime
         public async Task GetElementInfosAsync()
         {
             var registrar = Mock.Create<IRuntimeModelRegistry>();
-            registrar.Arrange(r => r.GetRuntimeElements()).Returns(new object[] { typeof(string) });
+            registrar.Arrange(r => r.GetRuntimeElementsAsync(CancellationToken.None)).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string) }));
 
             var stringInfoMock = Mock.Create<INamedElementInfo>();
 

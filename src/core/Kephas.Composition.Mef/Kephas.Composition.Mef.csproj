@@ -108,6 +108,12 @@
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Core.cs">
       <Link>Properties\AssemblyInfo.Core.cs</Link>
@@ -119,7 +125,6 @@
     <Compile Include="Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\Metadata\MetadataViewProvider.cs" />
-    <Compile Include="Composition\Mef\ExportProviders\TypeAffineExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\Conventions\IMefConventionBuilderProvider.cs" />
     <Compile Include="Composition\Mef\Conventions\MefConventionsBuilder.cs" />
@@ -132,8 +137,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Composition\Mef\Hosting\CompositionContainerBuilder.cs" />
-    <Compile Include="Composition\Mef\Hosting\CompositionContainer.cs" />
+    <Compile Include="Composition\Mef\Hosting\MefCompositionContainerBuilder.cs" />
+    <Compile Include="Composition\Mef\Hosting\MefCompositionContainer.cs" />
     <Compile Include="Composition\Mef\MefAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerBuilder.cs" company="Quartz Software SRL">
+// <copyright file="MefCompositionContainerBuilder.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -30,7 +30,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <remarks>
     /// This class is not thread safe.
     /// </remarks>
-    public class CompositionContainerBuilder : CompositionContainerBuilderBase<CompositionContainerBuilder>
+    public class MefCompositionContainerBuilder : CompositionContainerBuilderBase<MefCompositionContainerBuilder>
     {
         /// <summary>
         /// The container configuration.
@@ -38,12 +38,12 @@ namespace Kephas.Composition.Mef.Hosting
         private ContainerConfiguration configuration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContainerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
         /// <param name="platformManager">The platform manager.</param>
-        public CompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IPlatformManager platformManager)
+        public MefCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IPlatformManager platformManager)
             : base(logManager, configurationManager, platformManager)
         {
         }
@@ -53,7 +53,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="conventions">The conventions.</param>
         /// <returns>This builder.</returns>
-        public override CompositionContainerBuilder WithConventions(IConventionsBuilder conventions)
+        public override MefCompositionContainerBuilder WithConventions(IConventionsBuilder conventions)
         {
             // ReSharper disable once SuspiciousTypeConversion.Global
             var mefConventions = conventions as IMefConventionBuilderProvider;
@@ -70,7 +70,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="containerConfiguration">The container configuration.</param>
         /// <returns>This builder.</returns>
-        public CompositionContainerBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
+        public MefCompositionContainerBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
         {
             Contract.Requires(containerConfiguration != null);
 
@@ -123,10 +123,7 @@ namespace Kephas.Composition.Mef.Hosting
                 containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
             }
 
-            containerConfiguration
-                .WithProvider(new TypeAffineExportDescriptorProvider<ILogger>(this.LogManager.GetLogger));
-
-            return new CompositionContainer(containerConfiguration);
+            return new MefCompositionContainer(containerConfiguration);
         }
     }
 }

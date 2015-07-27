@@ -71,14 +71,15 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var runtimeElements = new HashSet<object>();
             foreach (var modelRegistry in this.modelRegistries)
             {
-                runtimeElements.AddRange(modelRegistry.GetRuntimeElements().Select(this.NormalizeRuntimeElement));
+                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).ConfigureAwait(false);
+                runtimeElements.AddRange(registryElements.Select(this.NormalizeRuntimeElement));
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
@@ -104,7 +105,7 @@ namespace Kephas.Model.Runtime
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);
+            return elementInfos;
         }
 
         /// <summary>
