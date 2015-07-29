@@ -49,7 +49,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The property information.
         /// </value>
-        public PropertyInfo PropertyInfo { get; private set; }
+        public PropertyInfo PropertyInfo { get; }
 
         /// <summary>
         /// Sets the specified value.
@@ -61,7 +61,7 @@ namespace Kephas.Dynamic
         {
             if (this.setter == null)
             {
-                throw new MemberAccessException(string.Format("Value of property {0} in {1} cannot be set.", this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be set.");
             }
 
             this.setter((T)obj, (TMember)value);
@@ -79,7 +79,7 @@ namespace Kephas.Dynamic
         {
             if (this.getter == null)
             {
-                throw new MemberAccessException(string.Format("Value of property {0} in {1} cannot be get.", this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be get.");
             }
 
             return this.getter((T)obj);

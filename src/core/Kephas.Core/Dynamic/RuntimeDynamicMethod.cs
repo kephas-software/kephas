@@ -36,7 +36,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets the method info.
         /// </summary>
-        public MethodInfo MethodInfo { get; private set; }
+        public MethodInfo MethodInfo { get; }
 
         /// <summary>
         /// The invoke.
