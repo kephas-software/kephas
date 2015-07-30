@@ -159,20 +159,11 @@ namespace Kephas.Core.Tests.Dynamic
         {
             public string Name { get; set; }
 
-            public string ReadOnlyFullName
-            {
-                get
-                {
-                    return this.ComputeFullName(string.Empty);
-                }
-            }
+            public string ReadOnlyFullName => this.ComputeFullName(string.Empty);
 
             private int PrivateAge { get; set; }
 
-            public virtual string ComputeFullName(string parentsInitials)
-            {
-                return parentsInitials + " " + this.Name;
-            }
+            public virtual string ComputeFullName(string parentsInitials) => $"{parentsInitials} {this.Name}";
         }
 
         public class DerivedTestClass : TestClass

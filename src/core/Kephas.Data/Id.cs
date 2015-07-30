@@ -157,9 +157,6 @@ namespace Kephas.Data
         /// <returns>
         /// A hash code for the current object.
         /// </returns>
-        public override int GetHashCode()
-        {
-            return this.value?.GetHashCode() ?? 0;
-        }
+        public override int GetHashCode() => this.value?.GetHashCode() ?? 0;
     }
 }

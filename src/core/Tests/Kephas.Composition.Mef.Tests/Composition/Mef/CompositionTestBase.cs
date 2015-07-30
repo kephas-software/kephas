@@ -67,6 +67,7 @@ namespace Kephas.Composition.Mef
         {
             return this.CreateContainer((IEnumerable<Assembly>)assemblies);
         }
+
         public virtual ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
         {
             return
