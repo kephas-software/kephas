@@ -51,11 +51,11 @@ namespace Kephas.Runtime.Universal
         {
             var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
-            return (from file in await folder.GetFilesAsync()
+            return from file in await folder.GetFilesAsync()
                     where file.FileType == ".dll" || file.FileType == ".exe"
                     select new AssemblyName { Name = file.Name }
                     into name
-                    select Assembly.Load(name)).ToList();
+                    select Assembly.Load(name);
         }
     }
 }

@@ -2,6 +2,9 @@
 // <copyright file="AssemblyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
+// <summary>
+//   AssemblyInfo.cs
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
