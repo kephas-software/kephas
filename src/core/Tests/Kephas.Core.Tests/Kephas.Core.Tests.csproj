@@ -48,6 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.dll</HintPath>
       <Private>False</Private>
@@ -85,6 +88,7 @@
     <Compile Include="AmbientServicesTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
+    <Compile Include="Dynamic\RuntimeDynamicTypeTest.cs" />
     <Compile Include="Extensions\ObjectExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AmbientServicesBuilderTest.cs" />
