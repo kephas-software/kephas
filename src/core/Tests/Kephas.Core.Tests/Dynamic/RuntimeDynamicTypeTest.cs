@@ -33,7 +33,8 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void GetValue_test_instance_null()
+        [ExpectedException]
+        public void GetValue_instance_null_throws()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var result = runtimeDynamicType.GetValue(null, string.Empty);
@@ -41,24 +42,24 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void GetValue_test_instance_not_null()
+        public void GetValue_instance_not_null()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var instance = new TestClass {Name = "noName"};
+            var instance = new TestClass { Name = "noName" };
             var result = runtimeDynamicType.GetValue(instance, "Name");
             Assert.AreEqual(instance.Name, result);
         }
 
         [Test]
-        public void TryGetValue_test_instance_null()
+        public void TryGetValue_instance_null_returns_undefined()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var result = runtimeDynamicType.TryGetValue(null, string.Empty);
             Assert.AreEqual(Undefined.Value, result);
         }
-        
+
         [Test]
-        public void TryGetValue_test_instance_not_null_valid_property()
+        public void TryGetValue_instance_not_null_valid_property()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
@@ -67,7 +68,7 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void TryGetValue_test_instance_not_null_invalid_property()
+        public void TryGetValue_instance_not_null_invalid_property()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
@@ -76,14 +77,15 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void SetValue_test_instance_null()
+        [ExpectedException]
+        public void SetValue_instance_null_throws()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             runtimeDynamicType.SetValue(null, string.Empty, null);
         }
 
         [Test]
-        public void SetValue_test_valid_instance()
+        public void SetValue_valid_instance()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var instance = new TestClass();
@@ -93,26 +95,27 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void TrySetValue_test_instance_null()
+        public void TrySetValue_instance_null_returns_false()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var result = runtimeDynamicType.TrySetValue(null, string.Empty, null);
             Assert.AreEqual(false, result);
         }
-        
+
         [Test]
-        public void Invoke_test_valid_instance()
+        public void Invoke_valid_instance()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var instance = new TestClass {Name = "someName"};
-            var list = new List<string> {"IC"};
-            var ienum = (IEnumerable<object>) list;
+            var instance = new TestClass { Name = "someName" };
+            var list = new List<string> { "IC" };
+            var ienum = (IEnumerable<object>)list;
             var result = runtimeDynamicType.Invoke(instance, "ComputeFullName", ienum);
             Assert.AreEqual(instance.ComputeFullName("IC"), result);
         }
 
         [Test]
-        public void Invoke_test_instance_null()
+        [ExpectedException]
+        public void Invoke_instance_null_throws()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var list = new List<string>();
@@ -122,7 +125,7 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void TryInvoke_test_instance_null()
+        public void TryInvoke_instance_null_returns_undefined()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             var list = new List<string>();
@@ -132,42 +135,42 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void TryInvoke_test_instance()
+        public void TryInvoke_instance_non_existing_method_returns_undefined()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var list = new List<string> ();
+            var list = new List<string>();
             object instance = new TestClass();
             var ienum = (IEnumerable<object>)list;
-            var result = runtimeDynamicType.TryInvoke(instance, string.Empty, ienum);
+            var result = runtimeDynamicType.TryInvoke(instance, "blah-blah", ienum);
             Assert.AreEqual(Undefined.Value, result);
         }
 
         [Test]
         [ExpectedException(typeof(MemberAccessException))]
-        public void GetDynamicProperty_test_throwOnNotFound()
+        public void GetDynamicProperty_throwOnNotFound()
         {
             var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
             object instance = new TestClass();
             runtimeDynamicType.GetValue(instance, string.Empty);
         }
-    }
 
-    public class TestClass
-    {
-        public string Name { get; set; }
-
-        public string ReadOnlyFullName => this.ComputeFullName(string.Empty);
-
-        private int PrivateAge { get; set; }
-
-        public virtual string ComputeFullName(string parentsInitials)
+        public class TestClass
         {
-            return parentsInitials + " " + this.Name;
-        }
+            public string Name { get; set; }
 
-        public static explicit operator Func<object, object, object>(TestClass v)
-        {
-            throw new NotImplementedException();
+            public string ReadOnlyFullName => this.ComputeFullName(string.Empty);
+
+            private int PrivateAge { get; set; }
+
+            public virtual string ComputeFullName(string parentsInitials)
+            {
+                return parentsInitials + " " + this.Name;
+            }
+
+            public static explicit operator Func<object, object, object>(TestClass v)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

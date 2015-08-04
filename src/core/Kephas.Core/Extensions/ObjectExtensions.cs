@@ -9,6 +9,7 @@
 
 namespace Kephas.Extensions
 {
+    using System.Diagnostics.Contracts;
     using System.Dynamic;
 
     using Kephas.Dynamic;
@@ -26,10 +27,7 @@ namespace Kephas.Extensions
         /// <param name="value">The value.</param>
         public static void SetPropertyValue(this object obj, string propertyName, object value)
         {
-            if (obj == null)
-            {
-                return;
-            }
+            Contract.Requires(obj != null);
 
             var objectTypeAccessor = obj.GetType().GetDynamicType();
             objectTypeAccessor.SetValue(obj, propertyName, value);
@@ -42,6 +40,7 @@ namespace Kephas.Extensions
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the value could be set; otherwise <c>false</c>.</returns>
+        /// <remarks>If the object passed is <c>null</c>, then <c>false</c> is returned.</remarks>
         public static bool TrySetPropertyValue(this object obj, string propertyName, object value)
         {
             if (obj == null)
@@ -61,10 +60,7 @@ namespace Kephas.Extensions
         /// <returns>The property value.</returns>
         public static object GetPropertyValue(this object obj, string propertyName)
         {
-            if (obj == null)
-            {
-                return null;
-            }
+            Contract.Requires(obj != null);
 
             var dynamicType = obj.GetType().GetDynamicType();
             return dynamicType.GetValue(obj, propertyName);
@@ -76,6 +72,7 @@ namespace Kephas.Extensions
         /// <param name="obj">The object.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The property value.</returns>
+        /// <remarks>If the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
         public static object TryGetPropertyValue(this object obj, string propertyName)
         {
             if (obj == null)

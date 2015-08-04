@@ -39,7 +39,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// The dynamic methods.
         /// </summary>
-        private readonly IDictionary<string, IList<IDynamicMethod>> dynamicMethods;
+        private readonly IDictionary<string, IEnumerable<IDynamicMethod>> dynamicMethods;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeDynamicType"/> class.
@@ -76,10 +76,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        public IDictionary<string, IEnumerable<IDynamicMethod>> DynamicMethods
-        {
-            get { return this.dynamicMethods.ToDictionary(kv => kv.Key, kv => (IEnumerable<IDynamicMethod>)kv.Value); }
-        }
+        public IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethod>>> DynamicMethods => this.dynamicMethods;
 
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -94,11 +91,6 @@ namespace Kephas.Dynamic
         /// </remarks>
         public object GetValue(object instance, string propertyName)
         {
-            if (instance == null)
-            {
-                return Undefined.Value;
-            }
-
             var dynamicProperty = this.GetDynamicProperty(propertyName);
             return dynamicProperty.GetValue(instance);
         }
@@ -136,11 +128,6 @@ namespace Kephas.Dynamic
         /// </remarks>
         public void SetValue(object instance, string propertyName, object value)
         {
-            if (instance == null)
-            {
-                return;
-            }
-
             var dynamicProperty = this.GetDynamicProperty(propertyName);
             dynamicProperty.SetValue(instance, value);
         }
@@ -185,11 +172,6 @@ namespace Kephas.Dynamic
         /// </returns>
         public object Invoke(object instance, string methodName, IEnumerable<object> args)
         {
-            if (instance == null)
-            {
-                return null;
-            }
-
             var matchingMethod = this.GetMatchingMethod(methodName, args);
             return matchingMethod.Invoke(instance, args);
         }
@@ -236,10 +218,10 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A dictionary of runtime dynamic methods.</returns>
-        private static IDictionary<string, IList<IDynamicMethod>> CreateDynamicMethods(Type type)
+        private static IDictionary<string, IEnumerable<IDynamicMethod>> CreateDynamicMethods(Type type)
         {
             var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethod>>(name, methods.Select(mi => (IDynamicMethod)new RuntimeDynamicMethod(mi)).ToList()));
-            return methodInfos.ToDictionary(g => g.Key, g => g.Value);
+            return methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IDynamicMethod>)g.Value);
         }
 
         /// <summary>
@@ -306,7 +288,7 @@ namespace Kephas.Dynamic
         /// </returns>
         private IList<IDynamicMethod> GetDynamicMethods(string methodName, bool throwOnNotFound = true)
         {
-            IList<IDynamicMethod> dynamicMethod;
+            IEnumerable<IDynamicMethod> dynamicMethod;
             if (!this.dynamicMethods.TryGetValue(methodName, out dynamicMethod))
             {
                 if (throwOnNotFound)
@@ -317,7 +299,7 @@ namespace Kephas.Dynamic
                 return null;
             }
 
-            return dynamicMethod;
+            return (IList<IDynamicMethod>)dynamicMethod;
         }
 
         /// <summary>
