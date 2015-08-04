@@ -184,3 +184,4 @@ FakesAssemblies/
 /src/core/Packaging/Kephas.Core.NuGetPackager/lib/CodeContracts
 /src/core/Packaging/Kephas.Core.NuGetPackager/lib
 /src/Kephas.snk.PublicKey
+*.bak
