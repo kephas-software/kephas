@@ -31,6 +31,7 @@
     <CMAddAccessMethods value="false" />
     <CMImplementMethod value="false" />
     <CMOpenSourceOrHeader value="false" />
+    <EditXmlInNotepad />
   </Misc>
   <Doxygen>
     <CommandPrefix value="\" />
@@ -60,8 +61,8 @@
     <DateCulture value="" />
     <WordWrapColumn value="100" />
     <AutoDocReplacements value="true" />
-    <SuppressAuthor value="false" />
-    <SuppressDate value="false" />
+    <SuppressAuthor value="true" />
+    <SuppressDate value="true" />
     <ThisObjectName value="object" />
     <DuplicateBaseDocs value="true" />
     <AddSeeForBases value="false" />
@@ -101,7 +102,7 @@
     <SingleBody value="Nothing" />
   </Format>
   <Variables>
-    <StyleCop value="false" />
+    <StyleCop value="true" />
   </Variables>
   <OutlineDocComment>
     <OnOpenDoc value="false" />

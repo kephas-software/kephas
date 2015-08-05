@@ -80,10 +80,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <remarks>
         /// This dicriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
-        protected virtual string ElementNameDiscriminator
-        {
-            get { return null; }
-        }
+        protected virtual string ElementNameDiscriminator => null;
 
         /// <summary>
         /// Computes the model element name based on the runtime element.
@@ -116,6 +113,17 @@ namespace Kephas.Model.Runtime.Construction
             }
 
             return nameBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Convert this object into a string representation.
+        /// </summary>
+        /// <returns>
+        /// A string that represents this object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.Name} ({this.RuntimeElement})";
         }
     }
 }

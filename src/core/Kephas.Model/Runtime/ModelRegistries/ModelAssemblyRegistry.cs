@@ -43,7 +43,7 @@
         /// </returns>
         public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var assemblies = await this.platformManager.GetAppAssembliesAsync().ConfigureAwait(false);
+            var assemblies = await this.platformManager.GetAppAssembliesAsync(cancellationToken).ConfigureAwait(false);
             var eligibleAssemblyPairs =
                 (from kv in 
                     (from a in assemblies

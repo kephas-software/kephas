@@ -12,7 +12,7 @@ namespace Kephas.Data
     using System;
 
     /// <summary>
-    /// Simple value type storing the ID of an entity.
+    /// Primitive value type storing the ID of an entity.
     /// </summary>
     /// <remarks>
     /// <para>

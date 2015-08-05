@@ -151,6 +151,7 @@
     <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
+    <Compile Include="Elements\ClassifierBase.cs" />
     <Compile Include="Elements\Construction\IClassifierInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
@@ -160,9 +161,13 @@
     <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
     <Compile Include="Elements\Construction\Internal\IModelSpaceConstructor.cs" />
     <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
+    <Compile Include="Elements\Construction\IPropertyInfo.cs" />
+    <Compile Include="Elements\Construction\IValueTypeInfo.cs" />
     <Compile Include="Elements\ModelDimensionElement.cs" />
     <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
     <Compile Include="Elements\DefaultModelSpace.cs" />
+    <Compile Include="Elements\Property.cs" />
+    <Compile Include="Elements\ValueType.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
     <Compile Include="IReferenceType.cs" />
     <Compile Include="IValueType.cs" />
@@ -171,6 +176,10 @@
     <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeClassifierInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeModelElementInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeNamedElementInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\ValueTypeInfoBuilder.cs" />
     <Compile Include="Runtime\Construction\IRuntimeNamedElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
@@ -181,6 +190,7 @@
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
+    <Compile Include="Runtime\Construction\RuntimeValueTypeInfo.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
     <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
     <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
@@ -214,6 +224,7 @@
     </Compile>
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
     <Compile Include="Runtime\RuntimeModelInfoProvider.cs" />
+    <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
     <Compile Include="Services\DefaultModelSpaceProvider.cs" />
   </ItemGroup>
   <ItemGroup>

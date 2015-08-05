@@ -86,6 +86,7 @@
     <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
+    <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
