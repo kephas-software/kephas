@@ -14,7 +14,7 @@
         {
             var elementInfo = new DefaultRuntimeAnnotationInfo(new NotMultipleAttribute());
             Assert.IsNotNull(elementInfo);
-            Assert.AreEqual("NotMultiple", elementInfo.Name);
+            Assert.AreEqual("@NotMultiple", elementInfo.Name);
         }
 
         [Test]
@@ -22,7 +22,7 @@
         {
             var elementInfo = new DefaultRuntimeAnnotationInfo(new NotMultipleImplicitAttribute());
             Assert.IsNotNull(elementInfo);
-            Assert.AreEqual("NotMultipleImplicit", elementInfo.Name);
+            Assert.AreEqual("@NotMultipleImplicit", elementInfo.Name);
         }
 
         [Test]
@@ -30,7 +30,7 @@
         {
             var elementInfo = new DefaultRuntimeAnnotationInfo(new MultipleAttribute());
             Assert.IsNotNull(elementInfo);
-            Assert.AreEqual("Multiple_" + elementInfo.RuntimeElement.GetHashCode(), elementInfo.Name);
+            Assert.AreEqual("@Multiple_" + elementInfo.RuntimeElement.GetHashCode(), elementInfo.Name);
         }
 
         [Test]
@@ -38,7 +38,7 @@
         {
             var elementInfo = new DefaultRuntimeAnnotationInfo(new NonCannonical());
             Assert.IsNotNull(elementInfo);
-            Assert.AreEqual("NonCannonical", elementInfo.Name);
+            Assert.AreEqual("@NonCannonical", elementInfo.Name);
         }
 
         [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]

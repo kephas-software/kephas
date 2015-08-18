@@ -52,7 +52,13 @@ namespace Kephas.Model.Runtime.Construction
         {
             var attrTypeInfo = runtimeElement.GetType().GetTypeInfo();
             var usage = attrTypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
-            var name = base.ComputeName(attrTypeInfo);
+            // NOTE: The speciality of the runtime is to prepend the @ sign to the
+            // attribute name, because the member name conventions imply it.
+            // Other annotation info classes must provide the same convention.
+            // This simplifies the member aggregation in the final classifier
+            // because the name is already prepared by the info classes and the 
+            // classifier must simply create the corresponding members.
+            var name = "@" + base.ComputeName(attrTypeInfo);
             if (usage == null || usage.AllowMultiple)
             {
                 name = name + "_" + runtimeElement.GetHashCode();
