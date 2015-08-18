@@ -51,10 +51,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The name of the parent dimension.
         /// </value>
-        public string DimensionName
-        {
-            get { return this.dimensionName ?? (this.dimensionName = this.ComputeDimensionName(this.RuntimeElement.Namespace)); }
-        }
+        public string DimensionName => this.dimensionName ?? (this.dimensionName = this.ComputeDimensionName(this.RuntimeElement.Namespace));
 
         /// <summary>
         /// Gets the element name discriminator.
@@ -65,17 +62,14 @@ namespace Kephas.Model.Runtime.Construction
         /// <remarks>
         /// This dicriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
-        protected override string ElementNameDiscriminator
-        {
-            get { return DimensionElementNameDiscriminator; }
-        }
+        protected override string ElementNameDiscriminator => DimensionElementNameDiscriminator;
 
         /// <summary>
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string ComputeName(TypeInfo runtimeElement)
+        protected override string ComputeName(object runtimeElement)
         {
             var baseName = base.ComputeName(runtimeElement);
             if (baseName.EndsWith(this.DimensionName))

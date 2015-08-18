@@ -52,7 +52,7 @@ namespace Kephas.RequestProcessing.Server
         /// <value>
         /// The composition context.
         /// </value>
-        public ICompositionContext CompositionContext { get; private set; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the logger.

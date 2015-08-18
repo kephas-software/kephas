@@ -9,7 +9,9 @@
 
 namespace Kephas.Model.Runtime.Factory
 {
-    using Kephas.Model.Elements.Construction;
+    using System.Reflection;
+
+    using Kephas.Model.Runtime.Construction;
 
     /// <summary>
     /// Base runtime provider for model element information.
@@ -17,8 +19,8 @@ namespace Kephas.Model.Runtime.Factory
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
     /// <typeparam name="TRuntimeInfo">The type of the runtime information.</typeparam>
     public abstract class RuntimeModelElementInfoFactoryBase<TElementInfo, TRuntimeInfo> : RuntimeNamedElementInfoFactoryBase<TElementInfo, TRuntimeInfo>
-        where TElementInfo : IModelElementInfo
-        where TRuntimeInfo : class
+        where TElementInfo : RuntimeModelElementInfo<TRuntimeInfo>
+        where TRuntimeInfo : MemberInfo
     {
     }
 }

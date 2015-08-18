@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelInfoProvider.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRuntimeModelInfoProvider.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -21,14 +21,13 @@ namespace Kephas.Model.Runtime
     using Kephas.Extensions;
     using Kephas.Logging;
     using Kephas.Model.Elements.Construction;
-    using Kephas.Model.Factory;
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Factory;
 
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
-    public class RuntimeModelInfoProvider : IModelInfoProvider
+    public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase
     {
         /// <summary>
         /// The model registrars.
@@ -36,24 +35,19 @@ namespace Kephas.Model.Runtime
         private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
 
         /// <summary>
-        /// The element information factories.
-        /// </summary>
-        private readonly IDictionary<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> elementInfoFactories;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeModelInfoProvider" /> class.
+        /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
         /// <param name="modelRegistries">The model registries.</param>
         /// <param name="elementInfoExportFactories">The element information export factories.</param>
-        public RuntimeModelInfoProvider(
+        public DefaultRuntimeModelInfoProvider(
             ICollection<IRuntimeModelRegistry> modelRegistries,
             ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
+            : base(elementInfoExportFactories)
         {
             Contract.Requires(modelRegistries != null);
             Contract.Requires(elementInfoExportFactories != null);
 
             this.modelRegistries = modelRegistries;
-            this.elementInfoFactories = elementInfoExportFactories.ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
         }
 
         /// <summary>
@@ -62,7 +56,7 @@ namespace Kephas.Model.Runtime
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<RuntimeModelInfoProvider> Logger { get; set; }
+        public ILogger<DefaultRuntimeModelInfoProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.
@@ -71,7 +65,7 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public async Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -117,18 +111,6 @@ namespace Kephas.Model.Runtime
         {
             var runtimeType = runtimeElement as Type;
             return runtimeType != null ? runtimeType.GetTypeInfo() : runtimeElement;
-        }
-
-        /// <summary>
-        /// Tries to get the named element information.
-        /// </summary>
-        /// <param name="runtimeElement">The runtime element.</param>
-        /// <returns>A named element information or <c>null</c>.</returns>
-        private INamedElementInfo TryGetModelElementInfo(object runtimeElement)
-        {
-            return this.elementInfoFactories
-                    .Select(factoryPair => factoryPair.Key.TryGetElementInfo(runtimeElement))
-                    .FirstOrDefault(elementInfo => elementInfo != null);
         }
     }
 }

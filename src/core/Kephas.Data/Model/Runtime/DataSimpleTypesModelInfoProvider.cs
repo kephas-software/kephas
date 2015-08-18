@@ -1,18 +1,38 @@
-﻿namespace Kephas.Data.Model.Runtime
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataSimpleTypesModelInfoProvider.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   A model information provider for data simple types.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Model.Runtime
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Model.Elements.Construction;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction.Builders;
+    using Kephas.Model.Runtime.Factory;
 
     /// <summary>
-    /// A model information provider for simple types.
+    /// A model information provider for data simple types.
     /// </summary>
-    public class DataSimpleTypesModelInfoProvider : IModelInfoProvider
+    public class DataSimpleTypesModelInfoProvider : RuntimeModelInfoProviderBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSimpleTypesModelInfoProvider"/> class.
+        /// </summary>
+        /// <param name="elementInfoExportFactories">The element information export factories.</param>
+        public DataSimpleTypesModelInfoProvider(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
+            : base(elementInfoExportFactories)
+        {
+        }
+
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
@@ -20,11 +40,11 @@
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var elementInfos = new List<INamedElementInfo>
                        {
-                           new ValueTypeInfoBuilder(typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
                        };
 
             return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);

@@ -1,18 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelDimensionElementInfoFactoryTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRuntimeAnnotationInfoFactoryTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="RuntimeModelDimensionElementInfoFactory" />.
+//   A runtime annotation information factory test.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Tests.Runtime.Factory
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
 
-    using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
@@ -22,22 +21,22 @@ namespace Kephas.Model.Tests.Runtime.Factory
     using Telerik.JustMock;
 
     /// <summary>
-    /// Tests for <see cref="RuntimeModelDimensionElementInfoFactory"/>.
+    /// A runtime annotation information factory test.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class RuntimeModelDimensionElementInfoFactoryTest
+    public class DefaultRuntimeAnnotationInfoFactoryTest
     {
         [Test]
         public void TryCreateElement_ReturnType()
         {
-            var factory = new RuntimeModelDimensionElementInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoProvider>(), typeof(IFirstTestDimDimensionElement).GetTypeInfo());
+            var factory = new DefaultRuntimeAnnotationInfoFactory();
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoProvider>(), new NotMultipleAttribute());
             Assert.IsNotNull(elementInfo);
-            Assert.IsInstanceOf<RuntimeModelDimensionElementInfo>(elementInfo);
+            Assert.IsInstanceOf<DefaultRuntimeAnnotationInfo>(elementInfo);
         }
 
-        [ModelDimensionElement]
-        public interface IFirstTestDimDimensionElement { }
+        [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+        public class NotMultipleAttribute : Attribute { }
     }
 }

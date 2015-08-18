@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelInfoProviderTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRuntimeModelInfoProviderTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="RuntimeModelInfoProvider" />.
+//   Tests for <see cref="DefaultRuntimeModelInfoProvider" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -29,11 +29,11 @@ namespace Kephas.Model.Tests.Runtime
     using Telerik.JustMock.Helpers;
 
     /// <summary>
-    /// Tests for <see cref="RuntimeModelInfoProvider"/>.
+    /// Tests for <see cref="DefaultRuntimeModelInfoProvider"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class RuntimeModelInfoProviderTest
+    public class DefaultRuntimeModelInfoProviderTest
     {
         [Test]
         public async Task GetElementInfosAsync()
@@ -44,11 +44,11 @@ namespace Kephas.Model.Tests.Runtime
             var stringInfoMock = Mock.Create<INamedElementInfo>();
 
             var factory = Mock.Create<IRuntimeElementInfoFactory>();
-            factory.Arrange(f => f.TryGetElementInfo(Arg.Is(typeof(string).GetTypeInfo()))).Returns(stringInfoMock);
+            factory.Arrange(f => f.TryGetElementInfo(Arg.IsAny<IRuntimeModelInfoProvider>(), Arg.Is(typeof(string).GetTypeInfo()))).Returns(stringInfoMock);
 
             var exportFactory = this.CreateElementInfoFactory(factory);
 
-            var provider = new RuntimeModelInfoProvider(new[] { registrar }, new[] { exportFactory });
+            var provider = new DefaultRuntimeModelInfoProvider(new[] { registrar }, new[] { exportFactory });
 
             var elementInfos = (await provider.GetElementInfosAsync()).ToList();
 

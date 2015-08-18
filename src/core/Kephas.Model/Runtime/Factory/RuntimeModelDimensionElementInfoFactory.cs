@@ -12,22 +12,25 @@ namespace Kephas.Model.Runtime.Factory
     using System.Reflection;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Services;
 
     /// <summary>
     /// Runtime provider for model dimension element information.
     /// </summary>
-    public class RuntimeModelDimensionElementInfoFactory : RuntimeModelElementInfoFactoryBase<IModelDimensionElementInfo, TypeInfo>
+    [ProcessingPriority(int.MinValue)]
+    public class RuntimeModelDimensionElementInfoFactory : RuntimeModelElementInfoFactoryBase<RuntimeModelDimensionElementInfo, TypeInfo>
     {
         /// <summary>
         /// Tries to get the model dimension element information.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
-        /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
+        /// A new element information based on the provided runtime element information, or <c>null</c>
+        /// if the runtime element information is not supported.
         /// </returns>
-        protected override IModelDimensionElementInfo TryGetElementInfoCore(TypeInfo runtimeElement)
+        protected override RuntimeModelDimensionElementInfo TryGetElementInfoCore(IRuntimeModelInfoProvider runtimeModelInfoProvider, TypeInfo runtimeElement)
         {
             if (!runtimeElement.IsInterface)
             {

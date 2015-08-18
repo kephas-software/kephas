@@ -31,9 +31,10 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// Initializes a new instance of the
         /// <see cref="RuntimeClassifierInfoBuilderBase{TClassifierInfo,TBuilder}"/> class.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        protected RuntimeClassifierInfoBuilderBase(TypeInfo runtimeElement)
-            : base(runtimeElement)
+        protected RuntimeClassifierInfoBuilderBase(IRuntimeModelInfoProvider runtimeModelInfoProvider, TypeInfo runtimeElement)
+            : base(runtimeModelInfoProvider, runtimeElement)
         {
             this.ElementInfo.Projection = new List<object>();
         }

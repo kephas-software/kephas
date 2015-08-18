@@ -119,10 +119,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The element infos.
         /// </value>
-        public IEnumerable<INamedElementInfo> UnderlyingElementInfos
-        {
-            get { return this.underlyingElementInfos; }
-        }
+        public IEnumerable<INamedElementInfo> UnderlyingElementInfos => this.underlyingElementInfos;
 
         /// <summary>
         /// Sets the element container.

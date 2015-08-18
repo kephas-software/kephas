@@ -19,7 +19,7 @@ namespace Kephas.Model.Factory
     /// <summary>
     /// Contract for providers of element infos.
     /// </summary>
-    [SharedAppServiceContract]
+    [SharedAppServiceContract(AllowMultiple = true)]
     public interface IModelInfoProvider
     {
         /// <summary>

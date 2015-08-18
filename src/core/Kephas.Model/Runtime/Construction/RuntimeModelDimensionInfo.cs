@@ -64,9 +64,6 @@ namespace Kephas.Model.Runtime.Construction
         /// <remarks>
         /// This dicriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
-        protected override string ElementNameDiscriminator
-        {
-            get { return DimensionNameDiscriminator; }
-        }
+        protected override string ElementNameDiscriminator => DimensionNameDiscriminator;
     }
 }

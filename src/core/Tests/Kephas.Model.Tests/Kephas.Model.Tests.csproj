@@ -84,14 +84,16 @@
     <Compile Include="Elements\ModelDimensionElementTest.cs" />
     <Compile Include="Elements\ModelDimensionTest.cs" />
     <Compile Include="Elements\NamedElementBaseTest.cs" />
+    <Compile Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
     <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactoryTest.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
-    <Compile Include="Runtime\RuntimeModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">

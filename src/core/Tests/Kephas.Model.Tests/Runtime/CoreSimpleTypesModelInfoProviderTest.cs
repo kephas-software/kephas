@@ -10,12 +10,15 @@
 namespace Kephas.Model.Tests.Runtime
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Factory;
 
     using NUnit.Framework;
 
@@ -29,7 +32,7 @@ namespace Kephas.Model.Tests.Runtime
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new CoreSimpleTypesModelInfoProvider();
+            var provider = new CoreSimpleTypesModelInfoProvider(new List<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>>());
             var elementInfos = (await provider.GetElementInfosAsync()).Cast<RuntimeValueTypeInfo>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(bool) && info.IsPrimitive));

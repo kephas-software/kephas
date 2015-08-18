@@ -23,12 +23,13 @@ namespace Kephas.Model.Runtime.Construction.Builders
         where TBuilder : RuntimeModelElementInfoBuilderBase<TModelElementInfo, TRuntimeElement, TBuilder>
     {
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="RuntimeModelElementInfoBuilderBase{TModelElementInfo,TRuntimeElement,TBuilder}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelElementInfoBuilderBase{TModelElementInfo,TRuntimeElement,TBuilder}"/>
+        /// class.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        protected RuntimeModelElementInfoBuilderBase(TRuntimeElement runtimeElement)
-            : base(runtimeElement)
+        protected RuntimeModelElementInfoBuilderBase(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeElement runtimeElement)
+            : base(runtimeModelInfoProvider, runtimeElement)
         {
         }
     }

@@ -44,13 +44,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model element members.
         /// </value>
-        public virtual IEnumerable<INamedElement> Members
-        {
-            get
-            {
-                return this.members.Values;
-            }
-        }
+        public virtual IEnumerable<INamedElement> Members => this.members.Values;
 
         /// <summary>
         /// Gets the annotations of this model element.
@@ -58,10 +52,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model element annotations.
         /// </value>
-        public virtual IEnumerable<IAnnotation> Annotations
-        {
-            get { return this.members.OfType<IAnnotation>(); }
-        }
+        public virtual IEnumerable<IAnnotation> Annotations => this.members.OfType<IAnnotation>();
 
         /// <summary>
         /// Gets the base model element.

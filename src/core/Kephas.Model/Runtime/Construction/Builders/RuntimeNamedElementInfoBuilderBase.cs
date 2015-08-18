@@ -25,15 +25,18 @@ namespace Kephas.Model.Runtime.Construction.Builders
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="RuntimeNamedElementInfoBuilderBase{TNamedElementInfo,TRuntimeElement,TBuilder}"/> class.
+        /// <see cref="RuntimeNamedElementInfoBuilderBase{TNamedElementInfo,TRuntimeElement,TBuilder}"/>
+        /// class.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        protected RuntimeNamedElementInfoBuilderBase(TRuntimeElement runtimeElement)
+        protected RuntimeNamedElementInfoBuilderBase(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeElement runtimeElement)
         {
             Contract.Requires(runtimeElement != null);
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.ElementInfo = this.CreateElementInfo(runtimeElement);
+            this.ElementInfo?.ConstructInfo(runtimeModelInfoProvider);
         }
 
         /// <summary>

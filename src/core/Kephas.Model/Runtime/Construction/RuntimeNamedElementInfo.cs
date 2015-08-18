@@ -21,7 +21,6 @@ namespace Kephas.Model.Runtime.Construction
     /// </summary>
     /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
     public abstract class RuntimeNamedElementInfo<TRuntimeElement> : Expando, IRuntimeNamedElementInfo
-        where TRuntimeElement : MemberInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeNamedElementInfo{TRuntimeElement}"/> class.
@@ -50,7 +49,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The runtime member information.
         /// </value>
-        MemberInfo IRuntimeNamedElementInfo.RuntimeElement => this.RuntimeElement;
+        object IRuntimeNamedElementInfo.RuntimeElement => this.RuntimeElement;
 
         /// <summary>
         /// Gets the name.
@@ -83,13 +82,21 @@ namespace Kephas.Model.Runtime.Construction
         protected virtual string ElementNameDiscriminator => null;
 
         /// <summary>
+        /// Constructs the information.
+        /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        internal protected virtual void ConstructInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider)
+        {
+        }
+
+        /// <summary>
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected virtual string ComputeName(TRuntimeElement runtimeElement)
+        protected virtual string ComputeName(object runtimeElement)
         {
-            var memberInfo = this.RuntimeElement as MemberInfo;
+            var memberInfo = runtimeElement as MemberInfo;
             if (memberInfo == null)
             {
                 return null;
@@ -97,7 +104,7 @@ namespace Kephas.Model.Runtime.Construction
 
             var nameBuilder = new StringBuilder(memberInfo.Name);
 
-            var typeInfo = this.RuntimeElement as TypeInfo;
+            var typeInfo = runtimeElement as TypeInfo;
             if (typeInfo != null && typeInfo.IsInterface && nameBuilder[0] == 'I')
             {
                 nameBuilder.Remove(0, 1);

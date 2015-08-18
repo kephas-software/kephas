@@ -24,6 +24,6 @@ namespace Kephas.Model.Runtime.Construction
         /// <value>
         /// The runtime member information.
         /// </value>
-        MemberInfo RuntimeElement { get; }
+        object RuntimeElement { get; }
     }
 }

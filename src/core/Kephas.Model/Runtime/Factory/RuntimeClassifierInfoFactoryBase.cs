@@ -11,16 +11,14 @@ namespace Kephas.Model.Runtime.Factory
 {
     using System.Reflection;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Runtime.Construction;
 
     /// <summary>
     /// Base runtime provider for classifier information.
     /// </summary>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    /// <typeparam name="TRuntimeInfo">The type of the runtime information.</typeparam>
-    public abstract class RuntimeClassifierInfoFactoryBase<TElementInfo, TRuntimeInfo> : RuntimeModelElementInfoFactoryBase<TElementInfo, TRuntimeInfo>
-        where TElementInfo : IClassifierInfo
-        where TRuntimeInfo : TypeInfo
+    public abstract class RuntimeClassifierInfoFactoryBase<TElementInfo> : RuntimeModelElementInfoFactoryBase<TElementInfo, TypeInfo>
+        where TElementInfo : RuntimeClassifierInfo
     {
     }
 }

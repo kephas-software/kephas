@@ -58,9 +58,6 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The dimension elements.
         /// </value>
-        public IEnumerable<IModelDimensionElement> Elements
-        {
-            get { return this.Members.OfType<IModelDimensionElement>(); }
-        }
+        public IEnumerable<IModelDimensionElement> Elements => this.Members.OfType<IModelDimensionElement>();
     }
 }

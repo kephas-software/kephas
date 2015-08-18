@@ -20,18 +20,20 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueTypeInfoBuilder"/> class.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeInfoBuilder(Type runtimeElement)
-            : this(runtimeElement.GetTypeInfo())
+        public ValueTypeInfoBuilder(IRuntimeModelInfoProvider runtimeModelInfoProvider, Type runtimeElement)
+            : this(runtimeModelInfoProvider, runtimeElement.GetTypeInfo())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueTypeInfoBuilder"/> class.
         /// </summary>
+        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeInfoBuilder(TypeInfo runtimeElement)
-            : base(runtimeElement)
+        public ValueTypeInfoBuilder(IRuntimeModelInfoProvider runtimeModelInfoProvider, TypeInfo runtimeElement)
+            : base(runtimeModelInfoProvider, runtimeElement)
         {
         }
 

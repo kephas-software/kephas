@@ -180,7 +180,9 @@
     <Compile Include="Runtime\Construction\Builders\RuntimeModelElementInfoBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\RuntimeNamedElementInfoBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\ValueTypeInfoBuilder.cs" />
+    <Compile Include="Runtime\Construction\DefaultRuntimeAnnotationInfo.cs" />
     <Compile Include="Runtime\Construction\IRuntimeNamedElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeAnnotationInfoBase.cs" />
     <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
@@ -190,8 +192,13 @@
     <Compile Include="Elements\ModelDimension.cs" />
     <Compile Include="Elements\ModelHelper.cs" />
     <Compile Include="Elements\NamedElementBase.cs" />
+    <Compile Include="Runtime\Construction\RuntimePropertyInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeValueTypeInfo.cs" />
+    <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimeAnnotationInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimePropertyInfoFactory.cs" />
+    <Compile Include="Runtime\IRuntimeModelInfoProvider.cs" />
     <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
     <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
@@ -223,8 +230,9 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
-    <Compile Include="Runtime\RuntimeModelInfoProvider.cs" />
+    <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />
     <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
+    <Compile Include="Runtime\RuntimeModelInfoProviderBase.cs" />
     <Compile Include="Services\DefaultModelSpaceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
