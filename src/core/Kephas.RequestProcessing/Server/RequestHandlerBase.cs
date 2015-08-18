@@ -64,7 +64,7 @@ namespace Kephas.RequestProcessing.Server
             var typedRequest = request as TRequest;
             if (typedRequest == null)
             {
-                throw new ArgumentException(string.Format(Strings.RequestHandlerBadRequestType, typeof(TRequest)), "request");
+                throw new ArgumentException(string.Format(Strings.RequestHandlerBadRequestType, typeof(TRequest)), nameof(request));
             }
 
             var response = await this.ProcessAsync(typedRequest, context, token);
