@@ -26,9 +26,9 @@ namespace Kephas.Data.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSimpleTypesModelInfoProvider"/> class.
         /// </summary>
-        /// <param name="runtimeModelInfoFactory">  The runtime model information factory. </param>
-        public DataSimpleTypesModelInfoProvider(IRuntimeModelInfoFactory runtimeModelInfoFactory)
-            : base(runtimeModelInfoFactory)
+        /// <param name="runtimeElementInfoFactoryDispatcher">  The runtime model information factory. </param>
+        public DataSimpleTypesModelInfoProvider(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
+            : base(runtimeElementInfoFactoryDispatcher)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Kephas.Data.Model.Runtime
         {
             var elementInfos = new List<INamedElementInfo>
                        {
-                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeElementInfoFactoryDispatcher, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
                        };
 
             return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);

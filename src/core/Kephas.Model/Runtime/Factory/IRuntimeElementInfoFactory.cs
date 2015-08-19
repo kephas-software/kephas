@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Runtime.Factory
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
 
     using Kephas.Model.Elements.Construction;
@@ -24,13 +25,13 @@ namespace Kephas.Model.Runtime.Factory
         /// Tries to create an element information structure based on the provided runtime element
         /// information.
         /// </summary>
-        /// <param name="runtimeModelInfoFactory">The runtime model info provider.</param>
+        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime element info factory dispatcher.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        INamedElementInfo TryGetElementInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory, object runtimeElement);
+        INamedElementInfo TryGetElementInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher, object runtimeElement);
     }
 
     /// <summary>
@@ -52,19 +53,10 @@ namespace Kephas.Model.Runtime.Factory
     [ContractClassFor(typeof(IRuntimeElementInfoFactory))]
     internal abstract class RuntimeElementInfoFactoryContractClass : IRuntimeElementInfoFactory
     {
-        /// <summary>
-        /// Tries to create an element information structure based on the provided runtime element
-        /// information.
-        /// </summary>
-        /// <param name="runtimeModelInfoFactory">The runtime model info provider.</param>
-        /// <param name="runtimeElement">The runtime element.</param>
-        /// <returns>
-        /// A new element information based on the provided runtime element information, or <c>null</c>
-        /// if the runtime element information is not supported.
-        /// </returns>
-        public INamedElementInfo TryGetElementInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory, object runtimeElement)
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+        public INamedElementInfo TryGetElementInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher, object runtimeElement)
         {
-            Contract.Requires(runtimeModelInfoFactory != null);
+            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
             Contract.Requires(runtimeElement != null);
 
             return Contract.Result<INamedElementInfo>();

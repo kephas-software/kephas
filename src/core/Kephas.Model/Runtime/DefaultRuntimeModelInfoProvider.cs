@@ -36,12 +36,12 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
-        /// <param name="runtimeModelInfoFactory">The runtime model info factory.</param>
+        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
         public DefaultRuntimeModelInfoProvider(
-            IRuntimeModelInfoFactory runtimeModelInfoFactory,
+            IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher,
             ICollection<IRuntimeModelRegistry> modelRegistries)
-            : base(runtimeModelInfoFactory)
+            : base(runtimeElementInfoFactoryDispatcher)
         {
             Contract.Requires(modelRegistries != null);
 
@@ -85,7 +85,7 @@ namespace Kephas.Model.Runtime
                     continue;
                 }
 
-                var elementInfo = this.RuntimeModelInfoFactory.TryGetModelElementInfo(runtimeElement);
+                var elementInfo = this.RuntimeElementInfoFactoryDispatcher.TryGetModelElementInfo(runtimeElement);
                 if (elementInfo == null)
                 {
                     this.Logger.WarnFormat(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());

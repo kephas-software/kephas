@@ -43,7 +43,7 @@ namespace Kephas.Model.Tests.Runtime
 
             var stringInfoMock = Mock.Create<INamedElementInfo>();
 
-            var factory = Mock.Create<IRuntimeModelInfoFactory>();
+            var factory = Mock.Create<IRuntimeElementInfoFactoryDispatcher>();
             factory.Arrange(f => f.TryGetModelElementInfo(Arg.Is(typeof(string).GetTypeInfo()))).Returns(stringInfoMock);
 
             var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar });

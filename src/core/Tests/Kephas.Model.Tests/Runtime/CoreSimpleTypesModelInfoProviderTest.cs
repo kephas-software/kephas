@@ -34,7 +34,7 @@ namespace Kephas.Model.Tests.Runtime
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelInfoFactory>());
+            var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeElementInfoFactoryDispatcher>());
             var elementInfos = (await provider.GetElementInfosAsync()).Cast<RuntimeValueTypeInfo>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(bool) && info.IsPrimitive));

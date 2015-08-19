@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRuntimeModelInfoFactory.cs" company="Quartz Software SRL">
+// <copyright file="DefaultRuntimeElementInfoFactoryDispatcher.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -19,7 +19,7 @@ namespace Kephas.Model.Runtime.Factory
     /// <summary>
     /// The default runtime model information factory.
     /// </summary>
-    public class DefaultRuntimeModelInfoFactory : IRuntimeModelInfoFactory
+    public class DefaultRuntimeElementInfoFactoryDispatcher : IRuntimeElementInfoFactoryDispatcher
     {
         /// <summary>
         /// The element information factories.
@@ -27,10 +27,10 @@ namespace Kephas.Model.Runtime.Factory
         private readonly IDictionary<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> elementInfoFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoFactory" /> class.
+        /// Initializes a new instance of the <see cref="DefaultRuntimeElementInfoFactoryDispatcher" /> class.
         /// </summary>
         /// <param name="elementInfoExportFactories">The element information export factories.</param>
-        protected DefaultRuntimeModelInfoFactory(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
+        protected DefaultRuntimeElementInfoFactoryDispatcher(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
         {
             Contract.Requires(elementInfoExportFactories != null);
 
@@ -46,6 +46,11 @@ namespace Kephas.Model.Runtime.Factory
         /// <returns>A named element information or <c>null</c>.</returns>
         public INamedElementInfo TryGetModelElementInfo(object runtimeElement)
         {
+            if (runtimeElement == null)
+            {
+                return null;
+            }
+
             // TODO optimize querying the factories by selecting first
             // those ones matching the runtime type
             // keep some dictionary indexed by type for this purpose.

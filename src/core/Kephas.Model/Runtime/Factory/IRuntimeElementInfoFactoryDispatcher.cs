@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRuntimeModelInfoFactory.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeElementInfoFactoryDispatcher.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -13,13 +13,13 @@ namespace Kephas.Model.Runtime.Factory
     using Kephas.Services;
 
     /// <summary>
-    /// Contract for runtime model information factory.
+    /// Contract for dispatching the creation of runtime model information to the appropriate factory.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IRuntimeModelInfoFactory
+    public interface IRuntimeElementInfoFactoryDispatcher
     {
         /// <summary>
-        /// Tries to get the named element information.
+        /// Tries to get the named element information from the provided runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>A named element information or <c>null</c>.</returns>

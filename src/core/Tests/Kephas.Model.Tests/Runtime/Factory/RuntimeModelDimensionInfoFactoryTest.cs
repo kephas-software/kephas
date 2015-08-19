@@ -33,7 +33,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_ReturnType()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), typeof(ITestDimension).GetTypeInfo());
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimension).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<RuntimeModelDimensionInfo>(elementInfo);
         }
@@ -42,7 +42,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_DimensionSuffix()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), typeof(ITestDimension).GetTypeInfo());
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimension).GetTypeInfo());
             Assert.AreEqual("Test", elementInfo.Name);
         }
 
@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_DimensionWithoutSuffix()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual("TestDimensionWithoutSuffix", elementInfo.Name);
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_Index()
         {
             var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = (IModelDimensionInfo)factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            var elementInfo = (IModelDimensionInfo)factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual(1, elementInfo.Index);
         }
 

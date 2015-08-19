@@ -19,7 +19,7 @@
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new DataSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelInfoFactory>());
+            var provider = new DataSimpleTypesModelInfoProvider(Mock.Create<IRuntimeElementInfoFactoryDispatcher>());
             var elementInfos = (await provider.GetElementInfosAsync()).Cast<RuntimeValueTypeInfo>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Id) && info.IsPrimitive));

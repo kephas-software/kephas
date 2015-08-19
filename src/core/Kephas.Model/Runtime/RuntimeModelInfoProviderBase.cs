@@ -26,19 +26,19 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="Kephas.Model.Runtime.RuntimeModelInfoProviderBase"/> class.
         /// </summary>
-        /// <param name="runtimeModelInfoFactory">  The runtime model information factory. </param>
-        protected RuntimeModelInfoProviderBase(IRuntimeModelInfoFactory runtimeModelInfoFactory)
+        /// <param name="runtimeElementInfoFactoryDispatcher">  The runtime model information factory. </param>
+        protected RuntimeModelInfoProviderBase(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
         {
-            Contract.Requires(runtimeModelInfoFactory != null);
+            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
 
-            this.RuntimeModelInfoFactory = runtimeModelInfoFactory;
+            this.RuntimeElementInfoFactoryDispatcher = runtimeElementInfoFactoryDispatcher;
         }
 
         /// <summary>
         /// Gets the runtime model information factory. 
         /// </summary>
         /// <value> The runtime model information factory. </value>
-        public IRuntimeModelInfoFactory RuntimeModelInfoFactory { get; }
+        public IRuntimeElementInfoFactoryDispatcher RuntimeElementInfoFactoryDispatcher { get; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.

@@ -195,11 +195,11 @@
     <Compile Include="Runtime\Construction\RuntimePropertyInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeValueTypeInfo.cs" />
     <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactory.cs" />
-    <Compile Include="Runtime\Factory\DefaultRuntimeModelInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\DefaultRuntimeElementInfoFactoryDispatcher.cs" />
     <Compile Include="Runtime\Factory\RuntimeAnnotationInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
     <Compile Include="Runtime\Factory\RuntimePropertyInfoFactory.cs" />
-    <Compile Include="Runtime\Factory\IRuntimeModelInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\IRuntimeElementInfoFactoryDispatcher.cs" />
     <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
     <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
