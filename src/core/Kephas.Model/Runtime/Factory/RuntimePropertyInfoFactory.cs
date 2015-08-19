@@ -21,13 +21,13 @@ namespace Kephas.Model.Runtime.Factory
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
         protected override RuntimePropertyInfo TryGetElementInfoCore(
-            IRuntimeModelInfoProvider runtimeModelInfoProvider,
+            IRuntimeModelInfoFactory runtimeModelInfoFactory,
             PropertyInfo runtimeElement)
         {
             return new RuntimePropertyInfo(runtimeElement);

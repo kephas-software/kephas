@@ -31,7 +31,6 @@
     <CMAddAccessMethods value="false" />
     <CMImplementMethod value="false" />
     <CMOpenSourceOrHeader value="false" />
-    <EditXmlInNotepad />
   </Misc>
   <Doxygen>
     <CommandPrefix value="\" />
@@ -46,8 +45,8 @@
     <LineHeader2 value="/// " />
     <SeparatorB value="(No last line separator)" />
     <SeparatorClipCol value="-1" />
-    <BlanksAbove value="1" />
-    <BlanksAfterRegion value="1" />
+    <BlanksAbove value="0" />
+    <BlanksAfterRegion value="0" />
     <BlanksAfterScope value="0" />
     <BlanksBelow value="0" />
     <BlanksBetweenEntries value="false" />
@@ -88,7 +87,7 @@
   <Format>
     <EntrySuppressNewlines value="false" />
     <GroupSuppressNewlines value="true" />
-    <AlignBlockStartColumns value="false" />
+    <AlignBlockStartColumns value="true" />
     <AccessLevelsToComment value="all" />
     <AccessLevelsApplyToAllCmds value="false" />
     <DeleteIllegalBlock value="true" />

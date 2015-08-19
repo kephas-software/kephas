@@ -25,13 +25,13 @@ namespace Kephas.Model.Runtime.Factory
         /// Tries to create an element information structure based on the provided runtime element
         /// information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        public virtual INamedElementInfo TryGetElementInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider, object runtimeElement)
+        public virtual INamedElementInfo TryGetElementInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory, object runtimeElement)
         {
             var typedRuntimeInfo = runtimeElement as TRuntimeInfo;
             if (typedRuntimeInfo == null)
@@ -39,19 +39,19 @@ namespace Kephas.Model.Runtime.Factory
                 return null;
             }
 
-            var elementInfo = this.TryGetElementInfoCore(runtimeModelInfoProvider, typedRuntimeInfo);
-            elementInfo?.ConstructInfo(runtimeModelInfoProvider);
+            var elementInfo = this.TryGetElementInfoCore(runtimeModelInfoFactory, typedRuntimeInfo);
+            elementInfo?.ConstructInfo(runtimeModelInfoFactory);
             return elementInfo;
         }
 
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
-        protected abstract TElementInfo TryGetElementInfoCore(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeInfo runtimeElement);
+        protected abstract TElementInfo TryGetElementInfoCore(IRuntimeModelInfoFactory runtimeModelInfoFactory, TRuntimeInfo runtimeElement);
     }
 }

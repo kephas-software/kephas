@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime.Construction
     using System.Text;
 
     using Kephas.Dynamic;
+    using Kephas.Model.Runtime.Factory;
 
     /// <summary>
     /// Runtime based constructor information for named elements.
@@ -84,8 +85,8 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Constructs the information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
-        internal protected virtual void ConstructInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider)
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
+        internal protected virtual void ConstructInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory)
         {
         }
 

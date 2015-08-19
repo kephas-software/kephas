@@ -17,7 +17,6 @@ namespace Kephas.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Extensions;
     using Kephas.Logging;
     using Kephas.Model.Elements.Construction;
@@ -37,15 +36,14 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
+        /// <param name="runtimeModelInfoFactory">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
-        /// <param name="elementInfoExportFactories">The element information export factories.</param>
         public DefaultRuntimeModelInfoProvider(
-            ICollection<IRuntimeModelRegistry> modelRegistries,
-            ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
-            : base(elementInfoExportFactories)
+            IRuntimeModelInfoFactory runtimeModelInfoFactory,
+            ICollection<IRuntimeModelRegistry> modelRegistries)
+            : base(runtimeModelInfoFactory)
         {
             Contract.Requires(modelRegistries != null);
-            Contract.Requires(elementInfoExportFactories != null);
 
             this.modelRegistries = modelRegistries;
         }
@@ -87,7 +85,7 @@ namespace Kephas.Model.Runtime
                     continue;
                 }
 
-                var elementInfo = this.TryGetModelElementInfo(runtimeElement);
+                var elementInfo = this.RuntimeModelInfoFactory.TryGetModelElementInfo(runtimeElement);
                 if (elementInfo == null)
                 {
                     this.Logger.WarnFormat(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());

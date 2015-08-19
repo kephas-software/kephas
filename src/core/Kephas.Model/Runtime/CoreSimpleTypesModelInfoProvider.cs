@@ -27,9 +27,9 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreSimpleTypesModelInfoProvider"/> class.
         /// </summary>
-        /// <param name="elementInfoExportFactories">The element information export factories.</param>
-        public CoreSimpleTypesModelInfoProvider(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
-            : base(elementInfoExportFactories)
+        /// <param name="runtimeModelInfoFactory">  The runtime model information factory. </param>
+        public CoreSimpleTypesModelInfoProvider(IRuntimeModelInfoFactory runtimeModelInfoFactory)
+            : base(runtimeModelInfoFactory)
         {
         }
 
@@ -45,29 +45,29 @@ namespace Kephas.Model.Runtime
         {
             var elementInfos = new List<INamedElementInfo>
                         {
-                           new ValueTypeInfoBuilder(this, typeof(System.Boolean)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Boolean)).AsPrimitive().InCoreProjection().ElementInfo,
 
-                           new ValueTypeInfoBuilder(this, typeof(System.Byte)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.SByte)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Int16)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.UInt16)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Int32)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.UInt32)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Int64)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.UInt64)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Byte)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.SByte)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Int16)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.UInt16)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Int32)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.UInt32)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Int64)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.UInt64)).AsPrimitive().InCoreProjection().ElementInfo,
 
-                           new ValueTypeInfoBuilder(this, typeof(System.Decimal)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Double)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Single)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Decimal)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Double)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Single)).AsPrimitive().InCoreProjection().ElementInfo,
 
-                           new ValueTypeInfoBuilder(this, typeof(System.DateTime)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.DateTimeOffset)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.TimeSpan)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.DateTime)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.DateTimeOffset)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.TimeSpan)).AsPrimitive().InCoreProjection().ElementInfo,
 
-                           new ValueTypeInfoBuilder(this, typeof(System.Uri)).AsPrimitive().InCoreProjection().ElementInfo,
-                           new ValueTypeInfoBuilder(this, typeof(System.Guid)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Uri)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.Guid)).AsPrimitive().InCoreProjection().ElementInfo,
 
-                           new ValueTypeInfoBuilder(this, typeof(System.String)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(System.String)).AsPrimitive().InCoreProjection().ElementInfo,
                         };
 
             return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);

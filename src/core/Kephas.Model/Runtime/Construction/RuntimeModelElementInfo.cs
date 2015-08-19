@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime.Construction
 
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Runtime.Factory;
 
     /// <summary>
     /// Runtime based constructor information for model elements.
@@ -43,31 +44,31 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Constructs the information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
-        internal protected override void ConstructInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider)
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
+        internal protected override void ConstructInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory)
         {
-            this.Members = this.ComputeMembers(runtimeModelInfoProvider, this.RuntimeElement);
+            this.Members = this.ComputeMembers(runtimeModelInfoFactory, this.RuntimeElement);
         }
 
         /// <summary>
         /// Computes the members from the runtime element.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime member information.</param>
         /// <returns>
         /// An enumeration of <see cref="INamedElementInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<INamedElementInfo> ComputeMembers(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeElement runtimeElement)
+        protected virtual IEnumerable<INamedElementInfo> ComputeMembers(IRuntimeModelInfoFactory runtimeModelInfoFactory, TRuntimeElement runtimeElement)
         {
             var members = new List<INamedElementInfo>();
 
-            var annotations = this.ComputeMemberAnnotations(runtimeModelInfoProvider, runtimeElement);
+            var annotations = this.ComputeMemberAnnotations(runtimeModelInfoFactory, runtimeElement);
             if (annotations != null)
             {
                 members.AddRange(annotations);
             }
 
-            var properties = this.ComputeMemberProperties(runtimeModelInfoProvider, runtimeElement);
+            var properties = this.ComputeMemberProperties(runtimeModelInfoFactory, runtimeElement);
             if (properties != null)
             {
                 members.AddRange(properties);
@@ -79,30 +80,30 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Computes the member annotations from the runtime element.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime member information.</param>
         /// <returns>
         /// An enumeration of <see cref="INamedElementInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<INamedElementInfo> ComputeMemberAnnotations(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeElement runtimeElement)
+        protected virtual IEnumerable<INamedElementInfo> ComputeMemberAnnotations(IRuntimeModelInfoFactory runtimeModelInfoFactory, TRuntimeElement runtimeElement)
         {
             var attributes = runtimeElement.GetCustomAttributes(inherit: false);
-            return attributes.Select(runtimeModelInfoProvider.TryGetModelElementInfo)
+            return attributes.Select(runtimeModelInfoFactory.TryGetModelElementInfo)
                              .Where(annotationInfo => annotationInfo != null);
         }
 
         /// <summary>
         /// Computes the member properties from the runtime element.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model information provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime member information.</param>
         /// <returns>
         /// An enumeration of <see cref="INamedElementInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<INamedElementInfo> ComputeMemberProperties(IRuntimeModelInfoProvider runtimeModelInfoProvider, TRuntimeElement runtimeElement)
+        protected virtual IEnumerable<INamedElementInfo> ComputeMemberProperties(IRuntimeModelInfoFactory runtimeModelInfoFactory, TRuntimeElement runtimeElement)
         {
             var properties = (runtimeElement as TypeInfo)?.DeclaredProperties.Where(pi => pi.GetCustomAttribute<ExcludeFromModelAttribute>() == null);
-            return properties?.Select(runtimeModelInfoProvider.TryGetModelElementInfo)
+            return properties?.Select(runtimeModelInfoFactory.TryGetModelElementInfo)
                               .Where(propertyInfo => propertyInfo != null);
         }
     }

@@ -22,6 +22,8 @@ namespace Kephas.Model.Tests.Runtime
 
     using NUnit.Framework;
 
+    using Telerik.JustMock;
+
     /// <summary>
     /// Tests for <see cref="CoreSimpleTypesModelInfoProvider"/>
     /// </summary>
@@ -32,7 +34,7 @@ namespace Kephas.Model.Tests.Runtime
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new CoreSimpleTypesModelInfoProvider(new List<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>>());
+            var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelInfoFactory>());
             var elementInfos = (await provider.GetElementInfosAsync()).Cast<RuntimeValueTypeInfo>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(bool) && info.IsPrimitive));

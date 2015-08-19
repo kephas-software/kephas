@@ -11,15 +11,15 @@
 
     using NUnit.Framework;
 
+    using Telerik.JustMock;
+
     [TestFixture]
     public class DataSimpleTypesModelInfoProviderTest
     {
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider =
-                new DataSimpleTypesModelInfoProvider(
-                    new List<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>>());
+            var provider = new DataSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelInfoFactory>());
             var elementInfos = (await provider.GetElementInfosAsync()).Cast<RuntimeValueTypeInfo>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Id) && info.IsPrimitive));

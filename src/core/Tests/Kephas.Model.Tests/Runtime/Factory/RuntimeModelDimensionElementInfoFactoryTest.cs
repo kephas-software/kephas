@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_ReturnType()
         {
             var factory = new RuntimeModelDimensionElementInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoProvider>(), typeof(IFirstTestDimDimensionElement).GetTypeInfo());
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), typeof(IFirstTestDimDimensionElement).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<RuntimeModelDimensionElementInfo>(elementInfo);
         }

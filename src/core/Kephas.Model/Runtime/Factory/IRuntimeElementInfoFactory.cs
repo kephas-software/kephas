@@ -24,13 +24,13 @@ namespace Kephas.Model.Runtime.Factory
         /// Tries to create an element information structure based on the provided runtime element
         /// information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model info provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model info provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        INamedElementInfo TryGetElementInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider, object runtimeElement);
+        INamedElementInfo TryGetElementInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory, object runtimeElement);
     }
 
     /// <summary>
@@ -56,15 +56,15 @@ namespace Kephas.Model.Runtime.Factory
         /// Tries to create an element information structure based on the provided runtime element
         /// information.
         /// </summary>
-        /// <param name="runtimeModelInfoProvider">The runtime model info provider.</param>
+        /// <param name="runtimeModelInfoFactory">The runtime model info provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        public INamedElementInfo TryGetElementInfo(IRuntimeModelInfoProvider runtimeModelInfoProvider, object runtimeElement)
+        public INamedElementInfo TryGetElementInfo(IRuntimeModelInfoFactory runtimeModelInfoFactory, object runtimeElement)
         {
-            Contract.Requires(runtimeModelInfoProvider != null);
+            Contract.Requires(runtimeModelInfoFactory != null);
             Contract.Requires(runtimeElement != null);
 
             return Contract.Result<INamedElementInfo>();

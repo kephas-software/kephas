@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
         public void TryCreateElement_ReturnType()
         {
             var factory = new DefaultRuntimeAnnotationInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoProvider>(), new NotMultipleAttribute());
+            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeModelInfoFactory>(), new NotMultipleAttribute());
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<DefaultRuntimeAnnotationInfo>(elementInfo);
         }

@@ -11,51 +11,34 @@ namespace Kephas.Model.Runtime
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Factory;
 
     /// <summary>
     /// Base class for runtime model info providers.
     /// </summary>
-    public abstract class RuntimeModelInfoProviderBase : IRuntimeModelInfoProvider
+    public abstract class RuntimeModelInfoProviderBase : IModelInfoProvider
     {
         /// <summary>
-        /// The element information factories.
+        /// Initializes a new instance of the <see cref="Kephas.Model.Runtime.RuntimeModelInfoProviderBase"/> class.
         /// </summary>
-        private readonly IDictionary<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata> elementInfoFactories;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeModelInfoProviderBase" /> class.
-        /// </summary>
-        /// <param name="elementInfoExportFactories">The element information export factories.</param>
-        protected RuntimeModelInfoProviderBase(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
+        /// <param name="runtimeModelInfoFactory">  The runtime model information factory. </param>
+        protected RuntimeModelInfoProviderBase(IRuntimeModelInfoFactory runtimeModelInfoFactory)
         {
-            Contract.Requires(elementInfoExportFactories != null);
+            Contract.Requires(runtimeModelInfoFactory != null);
 
-            this.elementInfoFactories = elementInfoExportFactories
-                    .OrderBy(e => e.Metadata.ProcessingPriority)
-                    .ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
+            this.RuntimeModelInfoFactory = runtimeModelInfoFactory;
         }
 
         /// <summary>
-        /// Tries to get the named element information.
+        /// Gets the runtime model information factory. 
         /// </summary>
-        /// <param name="runtimeElement">The runtime element.</param>
-        /// <returns>A named element information or <c>null</c>.</returns>
-        public INamedElementInfo TryGetModelElementInfo(object runtimeElement)
-        {
-            // TODO optimize querying the factories by selecting first
-            // those ones matching the runtime type
-            // keep some dictionary indexed by type for this purpose.
-            return this.elementInfoFactories
-                    .Select(factoryPair => factoryPair.Key.TryGetElementInfo(this, runtimeElement))
-                    .FirstOrDefault(elementInfo => elementInfo != null);
-        }
+        /// <value> The runtime model information factory. </value>
+        public IRuntimeModelInfoFactory RuntimeModelInfoFactory { get; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.

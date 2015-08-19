@@ -13,7 +13,6 @@ namespace Kephas.Data.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction.Builders;
@@ -27,9 +26,9 @@ namespace Kephas.Data.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSimpleTypesModelInfoProvider"/> class.
         /// </summary>
-        /// <param name="elementInfoExportFactories">The element information export factories.</param>
-        public DataSimpleTypesModelInfoProvider(ICollection<IExportFactory<IRuntimeElementInfoFactory, RuntimeElementInfoFactoryMetadata>> elementInfoExportFactories)
-            : base(elementInfoExportFactories)
+        /// <param name="runtimeModelInfoFactory">  The runtime model information factory. </param>
+        public DataSimpleTypesModelInfoProvider(IRuntimeModelInfoFactory runtimeModelInfoFactory)
+            : base(runtimeModelInfoFactory)
         {
         }
 
@@ -44,7 +43,7 @@ namespace Kephas.Data.Model.Runtime
         {
             var elementInfos = new List<INamedElementInfo>
                        {
-                           new ValueTypeInfoBuilder(this, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
+                           new ValueTypeInfoBuilder(this.RuntimeModelInfoFactory, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
                        };
 
             return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);
