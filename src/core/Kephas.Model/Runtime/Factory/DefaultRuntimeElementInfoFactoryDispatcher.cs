@@ -15,10 +15,12 @@ namespace Kephas.Model.Runtime.Factory
 
     using Kephas.Composition;
     using Kephas.Model.Elements.Construction;
+    using Kephas.Services;
 
     /// <summary>
     /// The default runtime model information factory.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class DefaultRuntimeElementInfoFactoryDispatcher : IRuntimeElementInfoFactoryDispatcher
     {
         /// <summary>

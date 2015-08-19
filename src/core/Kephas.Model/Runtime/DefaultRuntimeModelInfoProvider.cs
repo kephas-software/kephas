@@ -22,10 +22,12 @@ namespace Kephas.Model.Runtime
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Factory;
+    using Kephas.Services;
 
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase
     {
         /// <summary>
@@ -43,6 +45,7 @@ namespace Kephas.Model.Runtime
             ICollection<IRuntimeModelRegistry> modelRegistries)
             : base(runtimeElementInfoFactoryDispatcher)
         {
+            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
             Contract.Requires(modelRegistries != null);
 
             this.modelRegistries = modelRegistries;

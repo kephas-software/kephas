@@ -10,6 +10,7 @@
 namespace Kephas.Data.Model.Runtime
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace Kephas.Data.Model.Runtime
         public DataSimpleTypesModelInfoProvider(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
             : base(runtimeElementInfoFactoryDispatcher)
         {
+            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
         }
 
         /// <summary>

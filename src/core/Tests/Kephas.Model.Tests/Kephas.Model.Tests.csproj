@@ -92,6 +92,7 @@
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\Factory\RuntimePropertyInfoFactoryTest.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
   </ItemGroup>
