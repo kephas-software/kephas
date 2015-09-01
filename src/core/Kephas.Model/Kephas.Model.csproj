@@ -139,19 +139,30 @@
     <Compile Include="..\Shared\AssemblyInfo.Core.cs">
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
+    <Compile Include="AttributedModel\Behaviors\RequiredAttribute.cs" />
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
+    <Compile Include="Behaviors\IBehaviorValueRule.cs" />
+    <Compile Include="Behaviors\IDefaultValueBehavior.cs" />
+    <Compile Include="Behaviors\IRequiredBehavior.cs" />
+    <Compile Include="Behaviors\IRequiredBehaviorValueRule.cs" />
+    <Compile Include="Behaviors\IValidBehavior.cs" />
     <Compile Include="Configuration\ElementConfiguratorBase.cs" />
     <Compile Include="Configuration\ElementConfiguratorMetadata.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
+    <Compile Include="Data\IInstanceContext.cs" />
+    <Compile Include="Data\InstanceContext.cs" />
     <Compile Include="Dimensions\AppLayer\IKephasAppLayerDimensionElement.cs" />
     <Compile Include="Dimensions\Aspect\IMainAspectDimensionElement.cs" />
     <Compile Include="Dimensions\IModelDimension.cs" />
     <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
+    <Compile Include="Elements\Annotation.cs" />
+    <Compile Include="Elements\Annotations\RequiredAnnotation.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
+    <Compile Include="Elements\Construction\IAnnotationInfo.cs" />
     <Compile Include="Elements\Construction\IClassifierInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
@@ -169,6 +180,8 @@
     <Compile Include="Elements\Property.cs" />
     <Compile Include="Elements\ValueType.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
+    <Compile Include="Behaviors\IBehavior.cs" />
+    <Compile Include="Data\IInstance.cs" />
     <Compile Include="IReferenceType.cs" />
     <Compile Include="IValueType.cs" />
     <Compile Include="Properties\Model.AssemblyInfo.cs" />
@@ -176,13 +189,14 @@
     <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
+    <Compile Include="Runtime\Construction\Annotations\RuntimeRequiredAnnotationInfo.cs" />
     <Compile Include="Runtime\Construction\Builders\RuntimeClassifierInfoBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\RuntimeModelElementInfoBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\RuntimeNamedElementInfoBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\ValueTypeInfoBuilder.cs" />
-    <Compile Include="Runtime\Construction\DefaultRuntimeAnnotationInfo.cs" />
+    <Compile Include="Runtime\Construction\Annotations\DefaultRuntimeAnnotationInfo.cs" />
     <Compile Include="Runtime\Construction\IRuntimeNamedElementInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeAnnotationInfoBase.cs" />
+    <Compile Include="Runtime\Construction\Annotations\RuntimeAnnotationInfoBase.cs" />
     <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
@@ -194,9 +208,10 @@
     <Compile Include="Elements\NamedElementBase.cs" />
     <Compile Include="Runtime\Construction\RuntimePropertyInfo.cs" />
     <Compile Include="Runtime\Construction\RuntimeValueTypeInfo.cs" />
-    <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\Annotations\DefaultRuntimeAnnotationInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\Annotations\RuntimeRequiredAnnotationInfoFactory.cs" />
     <Compile Include="Runtime\Factory\DefaultRuntimeElementInfoFactoryDispatcher.cs" />
-    <Compile Include="Runtime\Factory\RuntimeAnnotationInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\Annotations\RuntimeAnnotationInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
     <Compile Include="Runtime\Factory\RuntimePropertyInfoFactory.cs" />
     <Compile Include="Runtime\Factory\IRuntimeElementInfoFactoryDispatcher.cs" />
@@ -237,6 +252,7 @@
     <Compile Include="Services\DefaultModelSpaceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Behaviors\Behaviors.cd" />
     <None Include="ModelContracts.cd" />
     <None Include="packages.config" />
   </ItemGroup>

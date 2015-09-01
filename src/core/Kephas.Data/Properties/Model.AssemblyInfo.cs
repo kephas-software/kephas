@@ -10,4 +10,6 @@
 using Kephas.Data;
 using Kephas.Model.Runtime.AttributedModel;
 
-[assembly: ModelAssembly(typeof(Id))]
+[assembly: ModelAssembly(
+    typeof(Id),
+    typeof(IIdentifiable))]

@@ -7,11 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Factory.Annotations
 {
     using System;
 
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Annotations;
 
     /// <summary>
     /// Base class for runtime annotation information factories.

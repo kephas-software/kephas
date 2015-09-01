@@ -3,6 +3,7 @@
     using System;
 
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Annotations;
 
     using NUnit.Framework;
 

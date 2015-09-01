@@ -14,7 +14,9 @@ namespace Kephas.Model.Tests.Runtime.Factory
 
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Factory;
+    using Kephas.Model.Runtime.Factory.Annotations;
 
     using NUnit.Framework;
 

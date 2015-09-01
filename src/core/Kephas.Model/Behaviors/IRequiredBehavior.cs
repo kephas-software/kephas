@@ -1,20 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRepository.cs" company="Quartz Software SRL">
+// <copyright file="IRequiredBehavior.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Provides methods to persist and query entities in a storage.
+//   Contract for behaviors handling required values.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Repository
+namespace Kephas.Model.Behaviors
 {
-    using System;
-
     /// <summary>
-    /// Provides methods to persist and query entities in a storage.
+    /// Contract for behaviors handling required values.
     /// </summary>
-    public interface IRepository : IDisposable
+    public interface IRequiredBehavior : IBehavior<bool>
     {
     }
 }

@@ -24,6 +24,7 @@ namespace Kephas.Model.Elements
         public ValueType(IValueTypeInfo elementInfo, IModelSpace modelSpace)
             : base(elementInfo, modelSpace)
         {
+            this.IsPrimitive = elementInfo.IsPrimitive;
         }
 
         /// <summary>
@@ -39,6 +40,6 @@ namespace Kephas.Model.Elements
         /// <remarks>
         /// If a value type is not a simple type, then it is a complex type.
         /// </remarks>
-        public bool IsComplex { get; }
+        public bool IsComplex => !this.IsPrimitive;
     }
 }

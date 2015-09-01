@@ -1,22 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRuntimeAnnotationInfoFactory.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeRequiredAnnotationInfoFactory.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   A runtime factory for annotation information.
+//   A runtime factory for the required annotation information.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Factory.Annotations
 {
-    using System;
-
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.AttributedModel.Behaviors;
+    using Kephas.Model.Runtime.Construction.Annotations;
+    using Kephas.Services;
 
     /// <summary>
-    /// A default runtime factory for annotation information.
+    /// A runtime factory for the required annotation information.
     /// </summary>
-    public class DefaultRuntimeAnnotationInfoFactory : RuntimeAnnotationInfoFactoryBase<DefaultRuntimeAnnotationInfo, Attribute>
+    [ProcessingPriority((int)Priority.AboveNormal)]
+    public class RuntimeRequiredAnnotationInfoFactory : RuntimeAnnotationInfoFactoryBase<RuntimeRequiredAnnotationInfo, RequiredAttribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -26,11 +27,11 @@ namespace Kephas.Model.Runtime.Factory
         /// <returns>
         /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
         /// </returns>
-        protected override DefaultRuntimeAnnotationInfo TryGetElementInfoCore(
+        protected override RuntimeRequiredAnnotationInfo TryGetElementInfoCore(
             IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher,
-            Attribute runtimeElement)
+            RequiredAttribute runtimeElement)
         {
-            return new DefaultRuntimeAnnotationInfo(runtimeElement);
+            return new RuntimeRequiredAnnotationInfo(runtimeElement);
         }
     }
 }
