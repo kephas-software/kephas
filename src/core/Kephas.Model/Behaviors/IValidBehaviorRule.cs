@@ -1,18 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRequiredBehavior.cs" company="Quartz Software SRL">
+// <copyright file="IValidBehaviorRule.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract for behaviors handling required values.
+//   Value rule contract for the valid behavior.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Behaviors
 {
     /// <summary>
-    /// Contract for behaviors handling required values.
+    /// Value rule contract for the valid behavior.
     /// </summary>
-    public interface IRequiredBehavior : IBehavior<bool>
+    public interface IValidBehaviorRule : IBehaviorRule<bool>
     {
     }
 }

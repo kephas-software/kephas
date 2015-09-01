@@ -18,12 +18,17 @@ namespace Kephas.Data
     public interface IInstanceContext : IContext
     {
         /// <summary>
-        /// Gets or sets the classifier.
+        /// Gets or sets the model element.
         /// </summary>
+        /// <remarks>
+        /// The model element could be the instance's classifier or one of its properties. 
+        /// For example, when evaluating the behaviors of a property, the model element contains the property definition,
+        /// and when evaluating the behaviors of an instance, the model element contains the instance's classifier.
+        /// </remarks>
         /// <value>
-        /// The classifier.
+        /// The model element.
         /// </value>
-        IClassifier Classifier { get; set; }
+        IModelElement ModelElement { get; set; }
 
         /// <summary>
         /// Gets or sets the instance.

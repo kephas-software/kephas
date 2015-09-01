@@ -18,12 +18,12 @@ namespace Kephas.Data
     public class InstanceContext : ContextBase, IInstanceContext
     {
         /// <summary>
-        /// Gets or sets the classifier.
+        /// Gets or sets the model element.
         /// </summary>
         /// <value>
-        /// The classifier.
+        /// The model element.
         /// </value>
-        public IClassifier Classifier { get; set; }
+        public IModelElement ModelElement { get; set; }
 
         /// <summary>
         /// Gets or sets the instance.

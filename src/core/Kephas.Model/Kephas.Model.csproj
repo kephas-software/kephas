@@ -142,11 +142,10 @@
     <Compile Include="AttributedModel\Behaviors\RequiredAttribute.cs" />
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
-    <Compile Include="Behaviors\IBehaviorValueRule.cs" />
-    <Compile Include="Behaviors\IDefaultValueBehavior.cs" />
-    <Compile Include="Behaviors\IRequiredBehavior.cs" />
-    <Compile Include="Behaviors\IRequiredBehaviorValueRule.cs" />
-    <Compile Include="Behaviors\IValidBehavior.cs" />
+    <Compile Include="Behaviors\IBehaviorRule.cs" />
+    <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
+    <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
+    <Compile Include="Behaviors\IValidBehaviorRule.cs" />
     <Compile Include="Configuration\ElementConfiguratorBase.cs" />
     <Compile Include="Configuration\ElementConfiguratorMetadata.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="Elements\Property.cs" />
     <Compile Include="Elements\ValueType.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
-    <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Data\IInstance.cs" />
     <Compile Include="IReferenceType.cs" />
     <Compile Include="IValueType.cs" />

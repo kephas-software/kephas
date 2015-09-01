@@ -10,7 +10,7 @@
     /// <summary>
     /// A required annotation.
     /// </summary>
-    public class RequiredAnnotation : Annotation, IRequiredBehaviorValueRule
+    public class RequiredAnnotation : Annotation, IRequiredBehaviorRule
     {
         /// <summary>
         /// Initializes a new instance of the
@@ -73,7 +73,7 @@
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        Task<object> IBehaviorValueRule.GetValueAsync(IInstanceContext context, CancellationToken cancellationToken)
+        Task<object> IBehaviorRule.GetValueAsync(IInstanceContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult((object)true);
         }

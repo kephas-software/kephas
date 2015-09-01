@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IBehaviorValueRule.cs" company="Quartz Software SRL">
+// <copyright file="IBehaviorRule.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -15,9 +15,9 @@ namespace Kephas.Model.Behaviors
     using Kephas.Data;
 
     /// <summary>
-    /// Non-generic contract for defining a rule for behavior values.
+    /// Non-generic contract for defining a behavior rule.
     /// </summary>
-    public interface IBehaviorValueRule
+    public interface IBehaviorRule
     {
         /// <summary>
         /// Gets the processing priority.
@@ -57,10 +57,10 @@ namespace Kephas.Model.Behaviors
     }
 
     /// <summary>
-    /// Contract for defining a rule for behavior values.
+    /// Contract for defining a behavior rule.
     /// </summary>
-    /// <typeparam name="TValue">Type of the value.</typeparam>
-    public interface IBehaviorValueRule<TValue> : IBehaviorValueRule
+    /// <typeparam name="TValue">The type of the behavior value.</typeparam>
+    public interface IBehaviorRule<TValue> : IBehaviorRule
     {
         /// <summary>
         /// Gets the behavior value asynchronously.
