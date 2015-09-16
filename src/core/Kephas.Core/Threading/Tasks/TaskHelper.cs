@@ -17,6 +17,11 @@ namespace Kephas.Threading.Tasks
     public static class TaskHelper
     {
         /// <summary>
+        /// The default value of milliseconds to wait when simulating synchronous calls.
+        /// </summary>
+        public const int DefaultWaitMilliseconds = 20;
+
+        /// <summary>
         /// Gets a resolved task returning the default value of <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The result type.</typeparam>
