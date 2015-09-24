@@ -18,7 +18,7 @@ namespace Kephas.Model.Runtime.Factory
     /// <summary>
     /// Runtime factory for model dimension information.
     /// </summary>
-    [ProcessingPriority(int.MinValue)]
+    [ProcessingPriority(Priority.Highest)]
     public class RuntimeModelDimensionInfoFactory : RuntimeModelElementInfoFactoryBase<RuntimeModelDimensionInfo, TypeInfo>
     {
         /// <summary>

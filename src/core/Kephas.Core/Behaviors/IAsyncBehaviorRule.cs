@@ -1,36 +1,30 @@
-﻿namespace Kephas.Model.Elements.Annotations
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IAsyncBehaviorRule.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Contracts for defining asynchronous rules for behavior values.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Behaviors
 {
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Behaviors;
-    using Kephas.Data;
-    using Kephas.Model.Behaviors;
-    using Kephas.Model.Elements.Construction;
-
     /// <summary>
-    /// A required annotation.
+    /// Value agnostic contract for defining an asynchronous behavior rule.
     /// </summary>
-    public class RequiredAnnotation : Annotation, IRequiredBehaviorRule
+    /// <typeparam name="TContext">The context type.</typeparam>
+    public interface IAsyncBehaviorRule<in TContext>
     {
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="Kephas.Model.Elements.Annotations.RequiredAnnotation"/> class.
-        /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace"> The model space.</param>
-        public RequiredAnnotation(IAnnotationInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
-        {
-        }
-
         /// <summary>
         /// Gets the processing priority.
         /// </summary>
         /// <value>
         /// The processing priority.
         /// </value>
-        public int ProcessingPriority { get; } = int.MinValue;
+        int ProcessingPriority { get; }
 
         /// <summary>
         /// Gets a value indicating whether this rule ends the processing flow.
@@ -38,7 +32,7 @@
         /// <value>
         /// <c>true</c> if this rule ends the processing flow, <c>false</c> if not.
         /// </value>
-        public bool IsEndRule { get; } = true;
+        bool IsEndRule { get; }
 
         /// <summary>
         /// Gets a value asynchronously indicating whether the rule may be applied or not.
@@ -48,10 +42,7 @@
         /// <returns>
         /// A promise of a value indicating whether the rule may be applied or not.
         /// </returns>
-        public Task<bool> CanApplyAsync(IInstanceContext context, CancellationToken cancellationToken = new CancellationToken())
-        {
-            return Task.FromResult(true);
-        }
+        Task<bool> CanApplyAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the behavior value asynchronously.
@@ -61,11 +52,16 @@
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        public Task<IBehaviorValue<bool>> GetValueAsync(IInstanceContext context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult((IBehaviorValue<bool>)BehaviorValue.True);
-        }
+        Task<IBehaviorValue> GetValueAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+    }
 
+    /// <summary>
+    /// Contract for defining an asynchronous behavior rule.
+    /// </summary>
+    /// <typeparam name="TContext">The context type.</typeparam>
+    /// <typeparam name="TValue">  The type of the behavior value.</typeparam>
+    public interface IAsyncBehaviorRule<in TContext, TValue> : IAsyncBehaviorRule<TContext>
+    {
         /// <summary>
         /// Gets the behavior value asynchronously.
         /// </summary>
@@ -74,9 +70,6 @@
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        Task<IBehaviorValue> IAsyncBehaviorRule<IInstanceContext>.GetValueAsync(IInstanceContext context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult((IBehaviorValue)BehaviorValue.True);
-        }
+        new Task<IBehaviorValue<TValue>> GetValueAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

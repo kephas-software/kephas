@@ -127,6 +127,10 @@
     </Compile>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
+    <Compile Include="Behaviors\BehaviorValue.cs" />
+    <Compile Include="Behaviors\IBehaviorRule.cs" />
+    <Compile Include="Behaviors\IAsyncBehaviorRule.cs" />
+    <Compile Include="Behaviors\IBehaviorValue.cs" />
     <Compile Include="Composition\AttributedModel\CompositionConstructorAttribute.cs" />
     <Compile Include="Composition\Hosting\CompositionContainerBuilderBase.cs" />
     <Compile Include="Composition\CompositionException.cs" />

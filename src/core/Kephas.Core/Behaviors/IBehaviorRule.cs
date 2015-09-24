@@ -7,17 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Behaviors
+namespace Kephas.Behaviors
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using Kephas.Data;
-
     /// <summary>
     /// Non-generic contract for defining a behavior rule.
     /// </summary>
-    public interface IBehaviorRule
+    /// <typeparam name="TContext">The context type.</typeparam>
+    public interface IBehaviorRule<in TContext>
     {
         /// <summary>
         /// Gets the processing priority.
@@ -36,40 +32,38 @@ namespace Kephas.Model.Behaviors
         bool IsEndRule { get; }
 
         /// <summary>
-        /// Gets a value asynchronously indicating whether the rule may be applied or not.
+        /// Gets a value indicating whether the rule may be applied or not.
         /// </summary>
-        /// <param name="context">          The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
-        /// A promise of a value indicating whether the rule may be applied or not.
+        /// A value indicating whether the rule may be applied or not.
         /// </returns>
-        Task<bool> CanApplyAsync(IInstanceContext context, CancellationToken cancellationToken = default(CancellationToken));
+        bool CanApply(TContext context);
 
         /// <summary>
-        /// Gets the behavior value asynchronously.
+        /// Gets the behavior value.
         /// </summary>
-        /// <param name="context">          The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
-        /// A promise of the behavior value.
+        /// The behavior value.
         /// </returns>
-        Task<object> GetValueAsync(IInstanceContext context, CancellationToken cancellationToken = default(CancellationToken));
+        IBehaviorValue GetValue(TContext context);
     }
 
     /// <summary>
     /// Contract for defining a behavior rule.
     /// </summary>
-    /// <typeparam name="TValue">The type of the behavior value.</typeparam>
-    public interface IBehaviorRule<TValue> : IBehaviorRule
+    /// <typeparam name="TContext">The context type.</typeparam>
+    /// <typeparam name="TValue">  The type of the behavior value.</typeparam>
+    public interface IBehaviorRule<in TContext, out TValue> : IBehaviorRule<TContext>
     {
         /// <summary>
         /// Gets the behavior value asynchronously.
         /// </summary>
-        /// <param name="context">          The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        new Task<TValue> GetValueAsync(IInstanceContext context, CancellationToken cancellationToken = default(CancellationToken));
+        new IBehaviorValue<TValue> GetValue(TContext context);
     }
 }

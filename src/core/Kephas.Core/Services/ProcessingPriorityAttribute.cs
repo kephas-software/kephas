@@ -22,10 +22,19 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingPriorityAttribute" /> class.
         /// </summary>
-        /// <param name="priority">The override priority.</param>
+        /// <param name="priority">The processing priority.</param>
         public ProcessingPriorityAttribute(int priority)
         {
             this.Value = priority;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessingPriorityAttribute" /> class.
+        /// </summary>
+        /// <param name="priority">The processing priority.</param>
+        public ProcessingPriorityAttribute(Priority priority)
+        {
+            this.Value = (int)priority;
         }
 
         /// <summary>
@@ -34,7 +43,7 @@ namespace Kephas.Services
         /// <value>
         /// The priority value.
         /// </value>
-        public int Value { get; private set; }
+        public int Value { get; }
 
         /// <summary>
         /// Gets the metadata value.
@@ -42,9 +51,6 @@ namespace Kephas.Services
         /// <value>
         /// The metadata value.
         /// </value>
-        object IMetadataValue.Value
-        {
-            get { return this.Value; }
-        }
+        object IMetadataValue.Value => this.Value;
     }
 }

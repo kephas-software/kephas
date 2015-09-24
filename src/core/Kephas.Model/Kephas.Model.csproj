@@ -142,7 +142,7 @@
     <Compile Include="AttributedModel\Behaviors\RequiredAttribute.cs" />
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
-    <Compile Include="Behaviors\IBehaviorRule.cs" />
+    <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
     <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
     <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
     <Compile Include="Behaviors\IValidBehaviorRule.cs" />

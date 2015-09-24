@@ -33,9 +33,9 @@
     <CMOpenSourceOrHeader value="false" />
   </Misc>
   <Doxygen>
-    <CommandPrefix value="\" />
-    <SuppressBriefTags value="false" />
-    <SuppressPrototypes value="false" />
+    <CommandPrefix value="@" />
+    <SuppressBriefTags value="true" />
+    <SuppressPrototypes value="true" />
     <FullClassDecl value="false" />
   </Doxygen>
   <DocComment>
@@ -45,7 +45,7 @@
     <LineHeader2 value="/// " />
     <SeparatorB value="(No last line separator)" />
     <SeparatorClipCol value="-1" />
-    <BlanksAbove value="0" />
+    <BlanksAbove value="1" />
     <BlanksAfterRegion value="0" />
     <BlanksAfterScope value="0" />
     <BlanksBelow value="0" />
@@ -130,4 +130,72 @@
   <Columnise>
     <MinimiseWhitespace value="true" />
   </Columnise>
+  <PrefSet name="TypeScript" filetypes=".ts">
+    <DocComment>
+      <CommentStyle value="Doxygen" />
+      <Separator value="/**" />
+      <LineHeader2 value=" * " />
+      <SeparatorB value=" */" />
+      <BlanksAbove value="1" />
+      <BlanksAfterRegion value="0" />
+      <BlanksAfterScope value="0" />
+      <BlanksBelow value="0" />
+      <BlanksBetweenEntries value="false" />
+      <SimpleFormatForOneLiners value="false" />
+      <LineCommentOnSameLine value="false" />
+      <SingleLinePrefix value="///&lt; " />
+      <SingleLineSuffix value="(None)" />
+      <SingleLineMinColumn value="0" />
+      <WordWrapColumn value="100" />
+      <WordWrapRelative value="true" />
+      <LineHeader />
+    </DocComment>
+    <Format>
+      <EntrySuppressNewlines value="false" />
+      <GroupSuppressNewlines value="true" />
+      <AlignBlockStartColumns value="true" />
+      <EntryTag value="Space" />
+      <EntryNewline value="Nothing" />
+      <EntryBody value="Nothing" />
+      <GroupTag value="Space" />
+      <GroupNewline value="Align" />
+      <GroupBody value="Nothing" />
+      <SingleTag value="Space" />
+      <SingleBody value="Space" />
+    </Format>
+  </PrefSet>
+  <PrefSet name="JavaScript" filetypes=".js.jsp.jscript.es.jse.wsf.wsc.as">
+    <DocComment>
+      <CommentStyle value="Doxygen" />
+      <Separator value="/**" />
+      <LineHeader2 value=" * " />
+      <SeparatorB value=" */" />
+      <BlanksAbove value="1" />
+      <BlanksAfterRegion value="0" />
+      <BlanksAfterScope value="0" />
+      <BlanksBelow value="0" />
+      <BlanksBetweenEntries value="false" />
+      <SimpleFormatForOneLiners value="false" />
+      <LineCommentOnSameLine value="false" />
+      <SingleLinePrefix value="///&lt; " />
+      <SingleLineSuffix value="(None)" />
+      <SingleLineMinColumn value="0" />
+      <WordWrapColumn value="100" />
+      <WordWrapRelative value="true" />
+      <LineHeader />
+    </DocComment>
+    <Format>
+      <EntrySuppressNewlines value="false" />
+      <GroupSuppressNewlines value="true" />
+      <AlignBlockStartColumns value="true" />
+      <EntryTag value="Space" />
+      <EntryNewline value="Nothing" />
+      <EntryBody value="Nothing" />
+      <GroupTag value="Space" />
+      <GroupNewline value="Align" />
+      <GroupBody value="Nothing" />
+      <SingleTag value="Space" />
+      <SingleBody value="Space" />
+    </Format>
+  </PrefSet>
 </Prefs>

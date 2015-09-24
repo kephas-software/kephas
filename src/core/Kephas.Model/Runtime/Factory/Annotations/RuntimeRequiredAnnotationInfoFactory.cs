@@ -16,7 +16,7 @@ namespace Kephas.Model.Runtime.Factory.Annotations
     /// <summary>
     /// A runtime factory for the required annotation information.
     /// </summary>
-    [ProcessingPriority((int)Priority.AboveNormal)]
+    [ProcessingPriority(Priority.AboveNormal)]
     public class RuntimeRequiredAnnotationInfoFactory : RuntimeAnnotationInfoFactoryBase<RuntimeRequiredAnnotationInfo, RequiredAttribute>
     {
         /// <summary>

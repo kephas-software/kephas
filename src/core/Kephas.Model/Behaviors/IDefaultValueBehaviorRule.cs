@@ -12,7 +12,7 @@ namespace Kephas.Model.Behaviors
     /// <summary>
     /// Non-generic value rule contract for the behavior providing the default value.
     /// </summary>
-    public interface IDefaultValueBehaviorRule : IBehaviorRule
+    public interface IDefaultValueBehaviorRule : IAsyncModelBehaviorRule
     {
     }
 
@@ -20,7 +20,7 @@ namespace Kephas.Model.Behaviors
     /// Value rule contract for the behavior providing the default value.
     /// </summary>
     /// <typeparam name="TValue">The type of the default value.</typeparam>
-    public interface IDefaultValueBehaviorRule<TValue> : IDefaultValueBehaviorRule, IBehaviorRule<TValue>
+    public interface IDefaultValueBehaviorRule<TValue> : IDefaultValueBehaviorRule, IAsyncModelBehaviorRule<TValue>
     {
     }
 }

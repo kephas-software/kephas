@@ -9,10 +9,12 @@
 
 namespace Kephas.Model.Behaviors
 {
+    using Kephas.Behaviors;
+
     /// <summary>
     /// Value rule contract for the valid behavior.
     /// </summary>
-    public interface IValidBehaviorRule : IBehaviorRule<bool>
+    public interface IValidBehaviorRule : IAsyncModelBehaviorRule<bool>
     {
     }
 }

@@ -14,20 +14,6 @@
       <FileName>Behaviors\IRequiredBehaviorRule.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Kephas.Model.Behaviors.IBehaviorRule" Collapsed="true">
-    <Position X="4.5" Y="1.75" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AgAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAQAAAAAA=</HashCode>
-      <FileName>Behaviors\IBehaviorRule.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Kephas.Model.Behaviors.IBehaviorRule&lt;TValue&gt;" Collapsed="true">
-    <Position X="4.5" Y="3" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Behaviors\IBehaviorRule.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Kephas.Model.Behaviors.IDefaultValueBehaviorRule" Collapsed="true">
     <Position X="7.25" Y="3" Width="2.75" />
     <TypeIdentifier>
