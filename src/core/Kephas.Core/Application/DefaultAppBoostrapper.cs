@@ -10,6 +10,7 @@
     using Kephas.Composition;
     using Kephas.Logging;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A default application boostrapper.
@@ -60,13 +61,13 @@
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await this.BeforeStartAsync(appContext, cancellationToken).ConfigureAwait(false);
+                await this.BeforeStartAsync(appContext, cancellationToken).WithServerContext();
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await this.RunInitializersAsync(appContext, cancellationToken).ConfigureAwait(false);
+                await this.RunInitializersAsync(appContext, cancellationToken).WithServerContext();
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await this.AfterStartAsync(appContext, cancellationToken).ConfigureAwait(false);
+                await this.AfterStartAsync(appContext, cancellationToken).WithServerContext();
                 cancellationToken.ThrowIfCancellationRequested();
             }
             catch (OperationCanceledException)
@@ -139,7 +140,7 @@
                 try
                 {
                     this.Logger.Info($"AppInitializer '{initializerType}' started.");
-                    await appInitializer.Item1.InitializeAsync(appContext, cancellationToken).ConfigureAwait(false);
+                    await appInitializer.Item1.InitializeAsync(appContext, cancellationToken).WithServerContext();
                     itemStopwatch.Stop();
                     this.Logger.Info($"AppInitializer '{initializerType}' completed initialization. Elapsed {itemStopwatch.Elapsed:c}");
                 }

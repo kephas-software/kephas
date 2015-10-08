@@ -11,6 +11,7 @@
     using Kephas.Extensions;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Runtime;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Registry reading the <see cref="ModelAssemblyAttribute"/> and providing the types
@@ -43,7 +44,7 @@
         /// </returns>
         public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var assemblies = await this.platformManager.GetAppAssembliesAsync(cancellationToken).ConfigureAwait(false);
+            var assemblies = await this.platformManager.GetAppAssembliesAsync(cancellationToken).WithServerContext();
             var eligibleAssemblyPairs =
                 (from kv in 
                     (from a in assemblies

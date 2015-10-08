@@ -19,6 +19,7 @@ namespace Kephas.Model.Services
     using Kephas.Model.Factory;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// The default implementation of a model space provider.
@@ -91,7 +92,7 @@ namespace Kephas.Model.Services
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(cancellationToken)));
-                var elementInfos = (await elementInfosCollectorTask.ConfigureAwait(false)).SelectMany(e => e);
+                var elementInfos = (await elementInfosCollectorTask.WithServerContext()).SelectMany(e => e);
 
                 throw new NotImplementedException();
 

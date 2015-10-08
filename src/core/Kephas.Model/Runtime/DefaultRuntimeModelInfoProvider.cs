@@ -23,6 +23,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Factory;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Model provider based on the .NET runtime and the type system.
@@ -73,7 +74,7 @@ namespace Kephas.Model.Runtime
             var runtimeElements = new HashSet<object>();
             foreach (var modelRegistry in this.modelRegistries)
             {
-                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).ConfigureAwait(false);
+                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerContext();
                 runtimeElements.AddRange(registryElements.Select(this.NormalizeRuntimeElement));
 
                 cancellationToken.ThrowIfCancellationRequested();
