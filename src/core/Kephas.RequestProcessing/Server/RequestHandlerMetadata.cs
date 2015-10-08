@@ -12,6 +12,7 @@ namespace Kephas.RequestProcessing.Server
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Extensions;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -37,11 +38,7 @@ namespace Kephas.RequestProcessing.Server
                 return;
             }
 
-            object value;
-            if (metadata.TryGetValue(RequestTypeKey, out value))
-            {
-                this.RequestType = (Type)value;
-            }
+            this.RequestType = (Type)metadata.TryGetValue(RequestTypeKey, null);
         }
 
         /// <summary>
@@ -49,7 +46,7 @@ namespace Kephas.RequestProcessing.Server
         /// </summary>
         /// <param name="requestType">Type of the request.</param>
         /// <param name="overridePriority">The override priority.</param>
-        public RequestHandlerMetadata(Type requestType, Priority overridePriority = Priority.Normal)
+        public RequestHandlerMetadata(Type requestType, int overridePriority = 0)
             : base(0, overridePriority)
         {
             this.RequestType = requestType;

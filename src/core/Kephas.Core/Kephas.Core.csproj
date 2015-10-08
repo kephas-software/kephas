@@ -127,6 +127,12 @@
     </Compile>
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
+    <Compile Include="Application\AppBoostrapperExtensions.cs" />
+    <Compile Include="Application\AppContext.cs" />
+    <Compile Include="Application\DefaultAppBoostrapper.cs" />
+    <Compile Include="Application\IAppBootstrapper.cs" />
+    <Compile Include="Application\IAppInitializer.cs" />
+    <Compile Include="Application\IAppContext.cs" />
     <Compile Include="Behaviors\BehaviorValue.cs" />
     <Compile Include="Behaviors\IBehaviorRule.cs" />
     <Compile Include="Behaviors\IAsyncBehaviorRule.cs" />
@@ -157,6 +163,7 @@
     <Compile Include="Dynamic\RuntimeDynamicMethod.cs" />
     <Compile Include="Dynamic\RuntimeDynamicProperty.cs" />
     <Compile Include="Dynamic\RuntimeDynamicType.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
@@ -165,6 +172,7 @@
     <Compile Include="Services\IAsyncInitializable.cs" />
     <Compile Include="Services\IContext.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
+    <Compile Include="Services\OptionalServiceAttribute.cs" />
     <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
     <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitor.cs" />

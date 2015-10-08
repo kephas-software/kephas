@@ -244,7 +244,7 @@ namespace Kephas.RequestProcessing.Tests.Server
             var factory =
                 new ExportFactoryAdapter<IRequestProcessingFilter, RequestProcessingFilterMetadata>(
                     () => Tuple.Create(filter, (Action)(() => { })),
-                    new RequestProcessingFilterMetadata(requestType, processingPriority, overridePriority));
+                    new RequestProcessingFilterMetadata(requestType, processingPriority, (int)overridePriority));
             return factory;
         } 
 

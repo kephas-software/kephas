@@ -12,6 +12,7 @@ namespace Kephas.Model.Runtime.Factory
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Extensions;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -37,16 +38,8 @@ namespace Kephas.Model.Runtime.Factory
         public RuntimeElementInfoFactoryMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
-            object value;
-            if (metadata.TryGetValue(ElementInfoTypeKey, out value))
-            {
-                this.ElementInfoType = (Type)value;
-            }
-
-            if (metadata.TryGetValue(RuntimeInfoTypeKey, out value))
-            {
-                this.RuntimeInfoType = (Type)value;
-            }
+            this.ElementInfoType = (Type)metadata.TryGetValue(ElementInfoTypeKey, null);
+            this.RuntimeInfoType = (Type)metadata.TryGetValue(RuntimeInfoTypeKey, null);
         }
 
         /// <summary>
@@ -56,7 +49,7 @@ namespace Kephas.Model.Runtime.Factory
         /// <param name="runtimeInfoType">Type of the runtime information.</param>
         /// <param name="processingPriority">The processing priority.</param>
         /// <param name="overridePriority">The override priority.</param>
-        public RuntimeElementInfoFactoryMetadata(Type elementInfoType, Type runtimeInfoType, int processingPriority = 0, Priority overridePriority = Priority.Normal)
+        public RuntimeElementInfoFactoryMetadata(Type elementInfoType, Type runtimeInfoType, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.ElementInfoType = elementInfoType;
