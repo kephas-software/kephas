@@ -12,8 +12,6 @@ namespace Kephas.Core.Tests.Extensions
     using System.Collections.Generic;
     using System.Dynamic;
 
-    using Kephas.Extensions;
-
     using NUnit.Framework;
 
     /// <summary>

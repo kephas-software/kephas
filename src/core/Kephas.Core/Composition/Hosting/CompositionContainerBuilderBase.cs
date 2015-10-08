@@ -17,10 +17,10 @@ namespace Kephas.Composition.Hosting
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+    using Kephas.Collections;
     using Kephas.Composition.Conventions;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
-    using Kephas.Extensions;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Runtime;

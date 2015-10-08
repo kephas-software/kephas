@@ -12,7 +12,7 @@ namespace Kephas.RequestProcessing.Server
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Extensions;
+    using Kephas.Collections;
     using Kephas.Reflection;
     using Kephas.Services;
 

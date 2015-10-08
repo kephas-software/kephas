@@ -11,8 +11,8 @@ namespace Kephas.Services
 {
     using System.Collections.Generic;
 
+    using Kephas.Collections;
     using Kephas.Composition.Metadata;
-    using Kephas.Extensions;
     using Kephas.Reflection;
 
     /// <summary>

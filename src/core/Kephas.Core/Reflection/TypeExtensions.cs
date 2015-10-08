@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions
+namespace Kephas.Reflection
 {
     using System;
     using System.Diagnostics.Contracts;

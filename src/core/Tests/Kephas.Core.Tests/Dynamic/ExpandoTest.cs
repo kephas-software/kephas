@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Dynamic
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Extensions;
 
     using NUnit.Framework;
 

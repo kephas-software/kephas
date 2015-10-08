@@ -8,7 +8,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Extensions;
+    using Kephas.Collections;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;

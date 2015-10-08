@@ -60,7 +60,7 @@ namespace Kephas.RequestProcessing.Server
         /// </returns>
         public virtual Task BeforeProcessAsync(TRequest request, IProcessingContext context, CancellationToken token)
         {
-            return TaskHelper.EmptyTask<bool>();
+            return CompletedTask.Value;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Kephas.RequestProcessing.Server
         /// </remarks>
         public Task AfterProcessAsync(TRequest request, IProcessingContext context, CancellationToken token)
         {
-            return TaskHelper.EmptyTask<bool>();
+            return CompletedTask.Value;
         }
     }
 }

@@ -7,12 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions
+namespace Kephas
 {
     using System.Diagnostics.Contracts;
     using System.Dynamic;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Extension methods for objects.

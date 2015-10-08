@@ -97,7 +97,7 @@
         /// </returns>
         protected virtual Task BeforeStartAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return CompletedTask.Value;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@
         /// </returns>
         protected virtual Task AfterStartAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return CompletedTask.Value;
         }
 
         /// <summary>

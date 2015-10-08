@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions
+namespace Kephas.Collections
 {
     using System.Collections.Generic;
 

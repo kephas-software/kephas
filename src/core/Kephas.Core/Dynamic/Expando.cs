@@ -22,7 +22,7 @@ namespace Kephas.Dynamic
     using System.Diagnostics.Contracts;
     using System.Dynamic;
 
-    using Kephas.Extensions;
+    using Kephas.Reflection;
 
     /// <summary>
     /// <para>
@@ -58,7 +58,7 @@ namespace Kephas.Dynamic
         private readonly Dictionary<string, object> properties = new Dictionary<string, object>();
 
         /// <summary>
-        /// Instance of object passed in.
+        /// Value of object passed in.
         /// </summary>
         private object wrappedInstance;
 

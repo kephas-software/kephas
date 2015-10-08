@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Test class for <see cref="DefaultRequestProcessor" />
+//   Test class for <see cref="DefaultRequestProcessor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,14 +18,8 @@ namespace Kephas.RequestProcessing.Tests.Server
 
     using Kephas.Composition;
     using Kephas.Composition.Mef;
-    using Kephas.Composition.Mef.Conventions;
-    using Kephas.Composition.Mef.Hosting;
-    using Kephas.Configuration;
-    using Kephas.Logging;
-    using Kephas.RequestProcessing;
     using Kephas.RequestProcessing.Ping;
     using Kephas.RequestProcessing.Server;
-    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -35,7 +29,7 @@ namespace Kephas.RequestProcessing.Tests.Server
     using Telerik.JustMock.Helpers;
 
     /// <summary>
-    /// Test class for <see cref="DefaultRequestProcessor"/>
+    /// Test class for <see cref="DefaultRequestProcessor"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -137,12 +131,12 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return TaskHelper.EmptyTask<bool>(); },
-                (c, t) => { afterlist.Add(1); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { beforelist.Add(1); return CompletedTask.Value; }, 
+                (c, t) => { afterlist.Add(1); return CompletedTask.Value; }, 
                 processingPriority: 2);
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return TaskHelper.EmptyTask<bool>(); },
-                (c, t) => { afterlist.Add(2); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { beforelist.Add(2); return CompletedTask.Value; }, 
+                (c, t) => { afterlist.Add(2); return CompletedTask.Value; }, 
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
@@ -172,12 +166,12 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return TaskHelper.EmptyTask<bool>(); },
-                (c, t) => { afterlist.Add(1); return TaskHelper.EmptyTask<bool>(); },
+                (c, t) => { beforelist.Add(1); return CompletedTask.Value; }, 
+                (c, t) => { afterlist.Add(1); return CompletedTask.Value; }, 
                 requestType: typeof(PingRequest));
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return TaskHelper.EmptyTask<bool>(); },
-                (c, t) => { afterlist.Add(2); return TaskHelper.EmptyTask<bool>(); });
+                (c, t) => { beforelist.Add(2); return CompletedTask.Value; }, 
+                (c, t) => { afterlist.Add(2); return CompletedTask.Value; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IRequest>(), default(CancellationToken));
@@ -203,8 +197,8 @@ namespace Kephas.RequestProcessing.Tests.Server
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(c.Exception); return TaskHelper.EmptyTask<bool>(); },
-                (c, t) => { afterlist.Add(c.Exception); return TaskHelper.EmptyTask<bool>(); });
+                (c, t) => { beforelist.Add(c.Exception); return CompletedTask.Value; }, 
+                (c, t) => { afterlist.Add(c.Exception); return CompletedTask.Value; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1 });
             InvalidOperationException thrownException = null;
@@ -227,15 +221,15 @@ namespace Kephas.RequestProcessing.Tests.Server
         }
 
         private IExportFactory<IRequestProcessingFilter, RequestProcessingFilterMetadata> CreateFilterFactory(
-            Func<IProcessingContext, CancellationToken, Task> beforeFunc = null,
-            Func<IProcessingContext, CancellationToken, Task> afterFunc = null,
+            Func<IProcessingContext, CancellationToken, Task> beforeFunc = null, 
+            Func<IProcessingContext, CancellationToken, Task> afterFunc = null, 
             Type requestType = null, 
             int processingPriority = 0, 
             Priority overridePriority = Priority.Normal)
         {
             requestType = requestType ?? typeof(IRequest);
-            beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.EmptyTask<bool>());
-            afterFunc = afterFunc ?? ((c, t) => TaskHelper.EmptyTask<bool>());
+            beforeFunc = beforeFunc ?? ((c, t) => CompletedTask.Value);
+            afterFunc = afterFunc ?? ((c, t) => CompletedTask.Value);
             var filter = Mock.Create<IRequestProcessingFilter>();
             filter.Arrange(f => f.BeforeProcessAsync(Arg.IsAny<IProcessingContext>(), Arg.IsAny<CancellationToken>()))
                 .Returns(beforeFunc);
@@ -243,7 +237,7 @@ namespace Kephas.RequestProcessing.Tests.Server
                 .Returns(afterFunc);
             var factory =
                 new ExportFactoryAdapter<IRequestProcessingFilter, RequestProcessingFilterMetadata>(
-                    () => Tuple.Create(filter, (Action)(() => { })),
+                    () => Tuple.Create(filter, (Action)(() => { })), 
                     new RequestProcessingFilterMetadata(requestType, processingPriority, (int)overridePriority));
             return factory;
         } 

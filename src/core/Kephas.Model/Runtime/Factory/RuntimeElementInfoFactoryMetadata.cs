@@ -12,7 +12,7 @@ namespace Kephas.Model.Runtime.Factory
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Extensions;
+    using Kephas.Collections;
     using Kephas.Reflection;
     using Kephas.Services;
 

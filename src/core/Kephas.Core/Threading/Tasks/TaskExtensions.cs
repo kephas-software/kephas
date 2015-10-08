@@ -7,19 +7,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions
+namespace Kephas.Threading.Tasks
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
-
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
     /// </summary>
     public static class TaskExtensions
     {
+        /// <summary>
+        /// The default value of milliseconds to wait when simulating synchronous calls.
+        /// </summary>
+        public const int DefaultWaitMilliseconds = 20;
+
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.
         /// </summary>
@@ -45,7 +48,7 @@ namespace Kephas.Extensions
         {
             Contract.Requires(task != null);
 
-            var waitInterval = waitMilliseconds ?? TaskHelper.DefaultWaitMilliseconds;
+            var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
             var startTime = DateTime.Now;
             while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
             {
@@ -91,6 +94,41 @@ namespace Kephas.Extensions
             }
 
             return default(T);
+        }
+
+        /// <summary>
+        /// Gets a task awaiter preserving the current server context upon continuation.
+        /// </summary>
+        /// <remarks>
+        /// ConfigureAwait(false) is called and the current culture and current UI culture are preserved.
+        /// </remarks>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        /// A <see cref="WithServerContextAwaiter{TResult}"/>.
+        /// </returns>
+        public static WithServerContextAwaiter<TResult> WithServerContext<TResult>(this Task<TResult> task)
+        {
+            Contract.Requires(task != null);
+
+            return new WithServerContextAwaiter<TResult>(task);
+        }
+
+        /// <summary>
+        /// Gets a task awaiter preserving the current culture upon continuation.
+        /// </summary>
+        /// <remarks>
+        /// ConfigureAwait(false) is called and the current culture and current UI culture are preserved.
+        /// </remarks>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        /// A <see cref="WithServerContextAwaiter"/>.
+        /// </returns>
+        public static WithServerContextAwaiter WithServerContext(this Task task)
+        {
+            Contract.Requires(task != null);
+
+            return new WithServerContextAwaiter(task);
         }
     }
 }

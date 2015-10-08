@@ -163,10 +163,10 @@
     <Compile Include="Dynamic\RuntimeDynamicMethod.cs" />
     <Compile Include="Dynamic\RuntimeDynamicProperty.cs" />
     <Compile Include="Dynamic\RuntimeDynamicType.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="Logging\NullLogger.cs" />
     <Compile Include="Services\ContextBase.cs" />
     <Compile Include="Services\IAsyncInitializable.cs" />
@@ -187,7 +187,7 @@
     <Compile Include="Diagnostics\Logging\DebugConfigurationManager.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\ILogManager.cs" />
@@ -204,7 +204,7 @@
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
     <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
-    <Compile Include="Threading\Tasks\TaskHelper.cs" />
+    <Compile Include="Threading\Tasks\CompletedTask.cs" />
     <Compile Include="Threading\Tasks\WithServerContextAwaiter.cs" />
     <Compile Include="Undefined.cs" />
   </ItemGroup>
