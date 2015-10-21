@@ -77,7 +77,7 @@ namespace Kephas
         /// <value>
         /// The instance.
         /// </value>
-        public static AmbientServices Instance { get; }
+        public static AmbientServices Instance { get; private set; }
 
         /// <summary>
         /// Gets or sets the composition container.
