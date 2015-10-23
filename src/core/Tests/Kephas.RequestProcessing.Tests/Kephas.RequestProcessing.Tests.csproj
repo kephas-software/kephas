@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Server\DefaultRequestProcessorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\RequestHandlerMetadataTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
