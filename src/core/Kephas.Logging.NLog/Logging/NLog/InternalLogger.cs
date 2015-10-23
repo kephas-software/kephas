@@ -40,33 +40,34 @@ namespace Kephas.Logging.NLog
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">The logging level.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public void Log(Logging.LogLevel level, object message, Exception exception = null)
+        /// <param name="level">        The logging level.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         A variable-length parameters list containing arguments.</param>
+        public void Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
             switch (level)
             {
                 case Logging.LogLevel.Fatal:
-                    this.LogWithException(message, exception, this.logger.Fatal, this.logger.Fatal);
+                    this.logger.Fatal(exception, messageFormat, args);
                     break;
                 case Logging.LogLevel.Error:
-                    this.LogWithException(message, exception, this.logger.Error, this.logger.Error);
+                    this.logger.Error(exception, messageFormat, args);
                     break;
                 case Logging.LogLevel.Warning:
-                    this.LogWithException(message, exception, this.logger.Warn, this.logger.Warn);
+                    this.logger.Warn(exception, messageFormat, args);
                     break;
                 case Logging.LogLevel.Info:
-                    this.LogWithException(message, exception, this.logger.Info, this.logger.Info);
+                    this.logger.Info(exception, messageFormat, args);
                     break;
                 case Logging.LogLevel.Debug:
-                    this.LogWithException(message, exception, this.logger.Debug, this.logger.Debug);
+                    this.logger.Debug(exception, messageFormat, args);
                     break;
                 case Logging.LogLevel.Trace:
-                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
+                    this.logger.Trace(exception, messageFormat, args);
                     break;
                 default:
-                    this.LogWithException(message, exception, this.logger.Trace, this.logger.Trace);
+                    this.logger.Trace(exception, messageFormat, args);
                     break;
             }
         }
@@ -102,29 +103,6 @@ namespace Kephas.Logging.NLog
                 default:
                     this.logger.Trace(messageFormat, args);
                     break;
-            }
-        }
-
-        /// <summary>
-        /// Logs the message with exception.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="exceptionLogger">The exception logger.</param>
-        /// <param name="messageLogger">The message logger.</param>
-        private void LogWithException(
-            object message,
-            Exception exception,
-            Action<Exception, string, object[]> exceptionLogger,
-            Action<object> messageLogger)
-        {
-            if (exception != null)
-            {
-                exceptionLogger(exception, message.ToString(), NoArgs);
-            }
-            else
-            {
-                messageLogger(message);
             }
         }
     }

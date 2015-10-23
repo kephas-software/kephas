@@ -92,7 +92,7 @@ namespace Kephas.Model.Runtime
                 var elementInfo = this.RuntimeElementInfoFactoryDispatcher.TryGetModelElementInfo(runtimeElement);
                 if (elementInfo == null)
                 {
-                    this.Logger.WarnFormat(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
+                    this.Logger.Warn(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
                     continue;
                 }
 

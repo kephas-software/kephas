@@ -86,7 +86,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The configuration manager.
         /// </value>
-        public IConfigurationManager ConfigurationManager { get; private set; }
+        public IConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
         /// Gets the runtime platform manager..
@@ -94,7 +94,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The runtime platform manager.
         /// </value>
-        public IPlatformManager PlatformManager { get; private set; }
+        public IPlatformManager PlatformManager { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -102,7 +102,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The logger.
         /// </value>
-        protected ILogger Logger { get; private set; }
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// Gets the conventions builder.
@@ -126,7 +126,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The export providers.
         /// </value>
-        protected IDictionary<Type, IExportProvider> ExportProviders { get; private set; }
+        protected IDictionary<Type, IExportProvider> ExportProviders { get; }
 
         /// <summary>
         /// Adds the assemblies containing the conventions.
@@ -316,7 +316,7 @@ namespace Kephas.Composition.Hosting
                     container = this.CreateContainerWithConventions(assemblies);
                 });
 
-            this.Logger.Info(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Info($"composition-container:create-container:end. Elapsed {elapsed:c}.");
 
             return container;
         }
@@ -339,7 +339,7 @@ namespace Kephas.Composition.Hosting
                         container = this.CreateContainerWithConventions(assemblies);
                     });
 
-            this.Logger.Info(string.Format("composition-container:create-container:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Info($"composition-container:create-container:end. Elapsed {elapsed:c}.");
 
             return container;
         }
@@ -407,7 +407,7 @@ namespace Kephas.Composition.Hosting
                 return conventions;
             }
 
-            this.Logger.DebugFormat("composition-container:get-conventions:begin. Convention assemblies:\n'{0}'", string.Join(Environment.NewLine, assemblies.Select(a => a.GetName().Name)));
+            this.Logger.Debug("composition-container:get-conventions:begin. Convention assemblies: {0}.", string.Join(", ", assemblies.Select(a => a.GetName().Name)));
 
             var elapsed = Profiler.WithStopwatch(
                 () =>
@@ -415,7 +415,7 @@ namespace Kephas.Composition.Hosting
                     conventions.RegisterConventionsFrom(assemblies, parts);
                 });
 
-            this.Logger.Debug(string.Format("composition-container:get-conventions:end. Elapsed {0:c}.", elapsed));
+            this.Logger.Debug($"composition-container:get-conventions:end. Elapsed {elapsed:c}.");
 
             return conventions;
         }
@@ -429,7 +429,7 @@ namespace Kephas.Composition.Hosting
         {
             searchPattern = searchPattern ?? this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
 
-            this.Logger.DebugFormat("composition-container:get-assemblies:begin. Assemblies matching '{0}'.", searchPattern);
+            this.Logger.Debug("composition-container:get-assemblies:begin. Assemblies matching '{0}'.", searchPattern);
 
             IList<Assembly> assemblies = null;
 
@@ -449,7 +449,7 @@ namespace Kephas.Composition.Hosting
                     }
                 });
 
-            this.Logger.Debug(string.Format("composition-container:get-assemblies:end. Elapsed: {0:c}.", elapsed));
+            this.Logger.Debug($"composition-container:get-assemblies:end. Elapsed: {elapsed:c}.");
 
             return assemblies;
         }

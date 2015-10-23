@@ -57,17 +57,18 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">The logging level.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        void Log(LogLevel level, object message, Exception exception = null);
+        /// <param name="level">        The logging level.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        void Log(LogLevel level, Exception exception, string messageFormat, params object[] args);
 
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">The logging level.</param>
+        /// <param name="level">        The logging level.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="args">         The arguments.</param>
         void Log(LogLevel level, string messageFormat, params object[] args);
     }
 
@@ -88,17 +89,13 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs fatal exceptions.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public static void Fatal(this ILogger logger, object message, Exception exception = null)
+        /// <param name="logger">       The logger.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        public static void Fatal(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Fatal, message, exception);
+            logger?.Log(LogLevel.Fatal, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -107,30 +104,21 @@ namespace Kephas.Logging
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void FatalFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Fatal(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Fatal, messageFormat, args);
+            logger?.Log(LogLevel.Fatal, messageFormat, args);
         }
 
         /// <summary>
         /// Logs the error.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public static void Error(this ILogger logger, object message, Exception exception = null)
+        /// <param name="logger">       The logger.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        public static void Error(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Error, message, exception);
+            logger?.Log(LogLevel.Error, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -139,30 +127,21 @@ namespace Kephas.Logging
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void ErrorFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Error(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Error, messageFormat, args);
+            logger?.Log(LogLevel.Error, messageFormat, args);
         }
 
         /// <summary>
         /// Logs the warn.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public static void Warn(this ILogger logger, object message, Exception exception = null)
+        /// <param name="logger">       The logger.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        public static void Warn(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Warning, message, exception);
+            logger?.Log(LogLevel.Warning, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -171,30 +150,21 @@ namespace Kephas.Logging
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void WarnFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Warn(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Warning, messageFormat, args);
+            logger?.Log(LogLevel.Warning, messageFormat, args);
         }
 
         /// <summary>
         /// Logs the information.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public static void Info(this ILogger logger, object message, Exception exception = null)
+        /// <param name="messageFormat"></param>
+        /// <param name="args"></param>
+        public static void Info(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Info, message, exception);
+            logger?.Log(LogLevel.Info, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -203,30 +173,21 @@ namespace Kephas.Logging
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void InfoFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Info(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Info, messageFormat, args);
+            logger?.Log(LogLevel.Info, messageFormat, args);
         }
 
         /// <summary>
         /// Logs the debug.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="exception">The exception.</param>
-        public static void Debug(this ILogger logger, object message, Exception exception = null)
+        /// <param name="logger">       The logger.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        public static void Debug(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Debug, message, exception);
+            logger?.Log(LogLevel.Debug, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -235,30 +196,21 @@ namespace Kephas.Logging
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void DebugFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Debug(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Debug, messageFormat, args);
+            logger?.Log(LogLevel.Debug, messageFormat, args);
         }
 
         /// <summary>
         /// Logs the debug.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        public static void Trace(this ILogger logger, object message, Exception exception = null)
+        /// <param name="messageFormat"></param>
+        /// <param name="args"></param>
+        public static void Trace(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Trace, message, exception);
+            logger?.Log(LogLevel.Trace, exception, messageFormat, args);
         }
 
         /// <summary>
@@ -269,12 +221,7 @@ namespace Kephas.Logging
         /// <param name="args">The arguments.</param>
         public static void TraceFormat(this ILogger logger, string messageFormat, params object[] args)
         {
-            if (logger == null)
-            {
-                return;
-            }
-
-            logger.Log(LogLevel.Trace, messageFormat, args);
+            logger?.Log(LogLevel.Trace, messageFormat, args);
         }
     }
 }

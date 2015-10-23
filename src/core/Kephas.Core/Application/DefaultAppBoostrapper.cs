@@ -79,7 +79,7 @@
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                this.Logger.Error($"The boostrapper encountered an exception while starting at {DateTimeOffset.Now:s}. Elapsed: {stopwatch.Elapsed:c}.", ex);
+                this.Logger.Error(ex, $"The boostrapper encountered an exception while starting at {DateTimeOffset.Now:s}. Elapsed: {stopwatch.Elapsed:c}.");
                 throw;
             }
 
@@ -146,13 +146,13 @@
                 }
                 catch (OperationCanceledException cex)
                 {
-                    this.Logger.Error($"AppInitializer '{initializerType}' was canceled during initialization. The current operation will be interrupted.", cex);
+                    this.Logger.Error(cex, $"AppInitializer '{initializerType}' was canceled during initialization. The current operation will be interrupted.");
                     throw;
                 }
                 catch (Exception ex)
                 {
                     var initializerKind = appInitializer.Item2.OptionalService ? "optional" : "required";
-                    this.Logger.Error($"AppInitializer '{initializerType}' ({initializerKind}) failed to initialize. See the inner exception for more details.", ex);
+                    this.Logger.Error(ex, $"AppInitializer '{initializerType}' ({initializerKind}) failed to initialize. See the inner exception for more details.");
                     // interrupt the bootstrapping if a required initializer failed to start.
                     if (!appInitializer.Item2.OptionalService)
                     {
