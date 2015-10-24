@@ -22,6 +22,7 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Factory;
+    using Kephas.Model.Runtime.Factory.Composition;
 
     using NUnit.Framework;
 

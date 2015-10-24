@@ -71,8 +71,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.JustMock, Version=2015.2.715.1, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JustMock.2015.2.715.1\lib\Net35\Telerik.JustMock.dll</HintPath>
+    <Reference Include="Telerik.JustMock, Version=2015.3.929.5, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JustMock.2015.3.929.5\lib\Net35\Telerik.JustMock.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

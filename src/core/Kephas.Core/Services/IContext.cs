@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Provides an indexer for getting and setting custom values.
+//   Defines a base contract for context-dependent operations.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,6 +24,6 @@ namespace Kephas.Services
         /// <value>
         /// The authenticated identity.
         /// </value>
-        IIdentity AuthenticatedIdentity { get; set; }
+        IIdentity Identity { get; set; }
     }
 }

@@ -31,13 +31,13 @@ namespace Kephas.Core.Tests.Services
             Assert.AreEqual(12, context.Value);
 
             var mockUser = Mock.Create<IIdentity>();
-            context.AuthenticatedIdentity = mockUser;
-            Assert.AreEqual(mockUser, context.AuthenticatedIdentity);
+            context.Identity = mockUser;
+            Assert.AreEqual(mockUser, context.Identity);
 
             var contextBase = (ContextBase)context;
-            Assert.AreEqual(mockUser, contextBase.AuthenticatedIdentity);
+            Assert.AreEqual(mockUser, contextBase.Identity);
 
-            Assert.AreEqual(mockUser, contextBase["AuthenticatedIdentity"]);
+            Assert.AreEqual(mockUser, contextBase["Identity"]);
             Assert.AreEqual(12, contextBase["Value"]);
         }
 

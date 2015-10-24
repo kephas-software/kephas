@@ -147,7 +147,7 @@
     <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
     <Compile Include="Behaviors\IValidBehaviorRule.cs" />
     <Compile Include="Configuration\ElementConfiguratorBase.cs" />
-    <Compile Include="Configuration\ElementConfiguratorMetadata.cs" />
+    <Compile Include="Configuration\Composition\ElementConfiguratorMetadata.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
     <Compile Include="Data\IInstanceContext.cs" />
@@ -218,7 +218,7 @@
     <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
     <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />
     <Compile Include="Runtime\Factory\RuntimeNamedElementInfoFactoryBase.cs" />
-    <Compile Include="Runtime\Factory\RuntimeElementInfoFactoryMetadata.cs" />
+    <Compile Include="Runtime\Factory\Composition\RuntimeElementInfoFactoryMetadata.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
     <Compile Include="Dimensions\IAppLayerDimension.cs" />
@@ -258,8 +258,8 @@
     <Reference Include="System.Collections.Concurrent">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.6\Profile\Profile32\System.Collections.Concurrent.dll</HintPath>
     </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
