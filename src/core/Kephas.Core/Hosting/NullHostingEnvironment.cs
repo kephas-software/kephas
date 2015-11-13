@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullPlatformManager.cs" company="Quartz Software SRL">
+// <copyright file="NullHostingEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime
+namespace Kephas.Hosting
 {
     using System.Collections.Generic;
     using System.Reflection;
@@ -20,7 +20,7 @@ namespace Kephas.Runtime
     /// A platform manager doing nothing.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullPlatformManager : IPlatformManager
+    public class NullHostingEnvironment : IHostingEnvironment
     {
         /// <summary>
         /// Gets the application assemblies.

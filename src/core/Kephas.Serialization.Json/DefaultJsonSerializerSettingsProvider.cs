@@ -29,7 +29,7 @@
         {
             Instance = new DefaultJsonSerializerSettingsProvider
                            {
-                               Logger = LoggerExtensions.GetLogger<DefaultJsonSerializerSettingsProvider>()
+                               Logger = AmbientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
                            };
         }
 

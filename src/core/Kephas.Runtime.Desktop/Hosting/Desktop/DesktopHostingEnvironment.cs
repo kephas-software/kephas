@@ -1,28 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UniversalPlatformManager.cs" company="Quartz Software SRL">
+// <copyright file="DesktopHostingEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Platform manager for Windows Store.
+//   The platform manager for desktop applications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime.Universal
+namespace Kephas.Hosting.Desktop
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Hosting;
     using Kephas.Logging;
 
     /// <summary>
-    /// Platform manager for Universal Windows Platform.
+    /// The platform manager for desktop applications.
     /// </summary>
-    public class UniversalPlatformManager : IPlatformManager
+    public class DesktopHostingEnvironment : IHostingEnvironment
     {
         /// <summary>
         /// The logger.
@@ -30,14 +30,14 @@ namespace Kephas.Runtime.Universal
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UniversalPlatformManager"/> class.
+        /// Initializes a new instance of the <see cref="DesktopHostingEnvironment" /> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public UniversalPlatformManager(ILogManager logManager)
+        public DesktopHostingEnvironment(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger<UniversalPlatformManager>();
+            this.logger = logManager.GetLogger<DesktopHostingEnvironment>();
         }
 
         /// <summary>
@@ -47,15 +47,9 @@ namespace Kephas.Runtime.Universal
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var folder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-
-            return from file in await folder.GetFilesAsync()
-                    where file.FileType == ".dll" || file.FileType == ".exe"
-                    select new AssemblyName { Name = file.Name }
-                    into name
-                    select Assembly.Load(name);
+            return Task.FromResult((IEnumerable<Assembly>)AppDomain.CurrentDomain.GetAssemblies());
         }
     }
 }

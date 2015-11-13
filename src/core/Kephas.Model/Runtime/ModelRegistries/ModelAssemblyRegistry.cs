@@ -9,8 +9,8 @@
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Hosting;
     using Kephas.Model.Runtime.AttributedModel;
-    using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -22,17 +22,17 @@
         /// <summary>
         /// The platform manager.
         /// </summary>
-        private readonly IPlatformManager platformManager;
+        private readonly IHostingEnvironment hostingEnvironment;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
-        /// <param name="platformManager">The platform manager.</param>
-        public ModelAssemblyRegistry(IPlatformManager platformManager)
+        /// <param name="hostingEnvironment">The platform manager.</param>
+        public ModelAssemblyRegistry(IHostingEnvironment hostingEnvironment)
         {
-            Contract.Requires(platformManager != null);
+            Contract.Requires(hostingEnvironment != null);
 
-            this.platformManager = platformManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@
         /// </returns>
         public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var assemblies = await this.platformManager.GetAppAssembliesAsync(cancellationToken).WithServerContext();
+            var assemblies = await this.hostingEnvironment.GetAppAssembliesAsync(cancellationToken).WithServerContext();
             var eligibleAssemblyPairs =
                 (from kv in 
                     (from a in assemblies

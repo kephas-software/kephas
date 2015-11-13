@@ -13,8 +13,8 @@ namespace Kephas
 
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Builder for ambient services.
@@ -83,15 +83,15 @@ namespace Kephas
         /// <summary>
         /// Sets the platform manager to the ambient services.
         /// </summary>
-        /// <param name="platformManager">The platform manager.</param>
+        /// <param name="hostingEnvironment">The platform manager.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithPlatformManager(IPlatformManager platformManager)
+        public AmbientServicesBuilder WithPlatformManager(IHostingEnvironment hostingEnvironment)
         {
-            Contract.Requires(platformManager != null);
+            Contract.Requires(hostingEnvironment != null);
 
-            this.AmbientServices.PlatformManager = platformManager;
+            this.AmbientServices.HostingEnvironment = hostingEnvironment;
 
             return this;
         }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPlatformManager.cs" company="Quartz Software SRL">
+// <copyright file="IHostingEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Runtime
+namespace Kephas.Hosting
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -18,8 +18,8 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides platform specific functionality.
     /// </summary>
-    [ContractClass(typeof(PlatformManagerContractClass))]
-    public interface IPlatformManager
+    [ContractClass(typeof(HostingEnvironmentContractClass))]
+    public interface IHostingEnvironment
     {
         /// <summary>
         /// Gets the application assemblies.
@@ -32,10 +32,10 @@ namespace Kephas.Runtime
     }
 
     /// <summary>
-    /// Code contracts for <see cref="IPlatformManager"/>.
+    /// Code contracts for <see cref="IHostingEnvironment"/>.
     /// </summary>
-    [ContractClassFor(typeof(IPlatformManager))]
-    internal abstract class PlatformManagerContractClass : IPlatformManager
+    [ContractClassFor(typeof(IHostingEnvironment))]
+    internal abstract class HostingEnvironmentContractClass : IHostingEnvironment
     {
         /// <summary>
         /// Gets the application assemblies.

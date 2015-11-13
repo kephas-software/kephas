@@ -19,8 +19,8 @@ namespace Kephas.Core.Tests.Composition
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     using NUnit.Framework;
 
@@ -38,16 +38,16 @@ namespace Kephas.Core.Tests.Composition
         {
             var logManager = Mock.Create<ILogManager>();
             var configManager = Mock.Create<IConfigurationManager>();
-            var platformManager = Mock.Create<IPlatformManager>();
+            var platformManager = Mock.Create<IHostingEnvironment>();
             var builder = new TestCompositionContainerBuilder(logManager, configManager, platformManager);
 
             Assert.AreEqual(logManager, builder.LogManager);
             Assert.AreEqual(configManager, builder.ConfigurationManager);
-            Assert.AreEqual(platformManager, builder.PlatformManager);
+            Assert.AreEqual(platformManager, builder.HostingEnvironment);
             Assert.AreEqual(3, builder.InternalExportProviders.Count);
             Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(ILogManager)));
             Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IConfigurationManager)));
-            Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IPlatformManager)));
+            Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IHostingEnvironment)));
         }
 
         [Test]
@@ -83,12 +83,12 @@ namespace Kephas.Core.Tests.Composition
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             public TestCompositionContainerBuilder()
-                : this(Mock.Create<ILogManager>(), Mock.Create<IConfigurationManager>(), Mock.Create<IPlatformManager>())
+                : this(Mock.Create<ILogManager>(), Mock.Create<IConfigurationManager>(), Mock.Create<IHostingEnvironment>())
             {
             }
 
-            public TestCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IPlatformManager platformManager)
-                : base(logManager, configurationManager, platformManager)
+            public TestCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
+                : base(logManager, configurationManager, hostingEnvironment)
             {
             }
 

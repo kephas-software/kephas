@@ -210,8 +210,8 @@
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\Universal\UniversalAmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Runtime\Universal\UniversalPlatformManager.cs" />
+    <Compile Include="Hosting\Universal\UniversalAmbientServicesBuilderExtensions.cs" />
+    <Compile Include="Hosting\Universal\UniversalHostingEnvironment.cs" />
     <Content Include="Properties\Kephas.Runtime.Universal.rd.xml" />
   </ItemGroup>
   <ItemGroup>

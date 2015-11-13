@@ -19,8 +19,8 @@ namespace Kephas.Composition.Mef
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     using NUnit.Framework;
 
@@ -54,13 +54,13 @@ namespace Kephas.Composition.Mef
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IPlatformManager platformManager = null)
+        public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IHostingEnvironment hostingEnvironment = null)
         {
             logManager = logManager ?? Mock.Create<ILogManager>();
             configurationManager = configurationManager ?? Mock.Create<IConfigurationManager>();
-            platformManager = platformManager ?? Mock.Create<IPlatformManager>();
+            hostingEnvironment = hostingEnvironment ?? Mock.Create<IHostingEnvironment>();
 
-            return new MefCompositionContainerBuilder(logManager, configurationManager, platformManager);
+            return new MefCompositionContainerBuilder(logManager, configurationManager, hostingEnvironment);
         }
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)

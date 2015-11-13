@@ -34,7 +34,7 @@ namespace Kephas.Composition.Mef
             var containerBuilder = new MefCompositionContainerBuilder(
                 ambientServicesBuilder.AmbientServices.LogManager,
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
-                ambientServicesBuilder.AmbientServices.PlatformManager);
+                ambientServicesBuilder.AmbientServices.HostingEnvironment);
 
             containerBuilderConfig(containerBuilder);
 
@@ -54,7 +54,7 @@ namespace Kephas.Composition.Mef
             var containerBuilder = new MefCompositionContainerBuilder(
                 ambientServicesBuilder.AmbientServices.LogManager,
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
-                ambientServicesBuilder.AmbientServices.PlatformManager);
+                ambientServicesBuilder.AmbientServices.HostingEnvironment);
 
             if (containerBuilderConfig != null)
             {

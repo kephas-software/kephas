@@ -21,8 +21,8 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Configuration;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Builder for the MEF composition container.
@@ -42,9 +42,9 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="platformManager">The platform manager.</param>
-        public MefCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IPlatformManager platformManager)
-            : base(logManager, configurationManager, platformManager)
+        /// <param name="hostingEnvironment">The platform manager.</param>
+        public MefCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
+            : base(logManager, configurationManager, hostingEnvironment)
         {
         }
 

@@ -210,8 +210,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="Runtime\IPlatformManager.cs" />
-    <Compile Include="Runtime\NullPlatformManager.cs" />
+    <Compile Include="Hosting\IHostingEnvironment.cs" />
+    <Compile Include="Hosting\NullHostingEnvironment.cs" />
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
     <Compile Include="Services\SharedAppServiceContractAttribute.cs" />

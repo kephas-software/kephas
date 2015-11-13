@@ -224,26 +224,5 @@ namespace Kephas.Logging
         {
             logger?.Log(LogLevel.Trace, messageFormat, args);
         }
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>A logger instance.</returns>
-        public static ILogger GetLogger(this Type type)
-        {
-            Contract.Requires(type != null);
-
-            return AmbientServices.Instance.LogManager.GetLogger(type);
-        }
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <returns>A logger instance.</returns>
-        public static ILogger<T> GetLogger<T>()
-        {
-            return new TypedLogger<T>(AmbientServices.Instance.LogManager);
-        }
     }
 }

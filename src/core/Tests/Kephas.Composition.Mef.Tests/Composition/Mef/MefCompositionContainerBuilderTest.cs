@@ -18,8 +18,8 @@ namespace Kephas.Composition.Mef
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -39,7 +39,7 @@ namespace Kephas.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IPlatformManager>();
+            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
 
             Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(CancellationToken.None))
                 .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(MefCompositionContainer).Assembly }));
@@ -54,7 +54,7 @@ namespace Kephas.Composition.Mef
             var configurationManager = container.GetExport<IConfigurationManager>();
             Assert.AreEqual(mockConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IPlatformManager>();
+            var platformManager = container.GetExport<IHostingEnvironment>();
             Assert.AreEqual(mockPlatformManager, platformManager);
         }
 
@@ -64,7 +64,7 @@ namespace Kephas.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IPlatformManager>();
+            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
 
             var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory.CreateContainer();
@@ -75,7 +75,7 @@ namespace Kephas.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IPlatformManager>();
+            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
 
             var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = factory
@@ -88,7 +88,7 @@ namespace Kephas.Composition.Mef
             var configurationManager = container.GetExport<IConfigurationManager>();
             Assert.AreEqual(mockConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IPlatformManager>();
+            var platformManager = container.GetExport<IHostingEnvironment>();
             Assert.AreEqual(mockPlatformManager, platformManager);
         }
 
@@ -249,7 +249,7 @@ namespace Kephas.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IPlatformManager>();
+            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
 
             Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
                 .Returns(Mock.Create<ILogger>);

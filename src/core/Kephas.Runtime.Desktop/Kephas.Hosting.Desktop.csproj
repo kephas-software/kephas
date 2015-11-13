@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kephas</RootNamespace>
-    <AssemblyName>Kephas.Runtime.Desktop</AssemblyName>
+    <AssemblyName>Kephas.Hosting.Desktop</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -95,8 +95,8 @@
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\Desktop\DesktopAmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Runtime\Desktop\DesktopPlatformManager.cs" />
+    <Compile Include="Hosting\Desktop\DesktopAmbientServicesBuilderExtensions.cs" />
+    <Compile Include="Hosting\Desktop\DesktopHostingEnvironment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">

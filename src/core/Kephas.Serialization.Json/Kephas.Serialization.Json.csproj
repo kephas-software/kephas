@@ -41,6 +41,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Core.cs">
+      <Link>Properties\AssemblyInfo.Core.cs</Link>
+    </Compile>
     <Compile Include="Converters\DateTimeJsonConverter.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
     <Compile Include="Converters\JsonConverterBase.cs" />

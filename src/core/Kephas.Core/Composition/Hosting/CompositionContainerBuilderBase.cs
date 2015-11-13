@@ -21,9 +21,9 @@ namespace Kephas.Composition.Hosting
     using Kephas.Composition.Conventions;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
+    using Kephas.Hosting;
     using Kephas.Logging;
     using Kephas.Resources;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for composition container builders.
@@ -52,12 +52,12 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="platformManager">The platform manager.</param>
-        protected CompositionContainerBuilderBase(ILogManager logManager, IConfigurationManager configurationManager, IPlatformManager platformManager)
+        /// <param name="hostingEnvironment">The platform manager.</param>
+        protected CompositionContainerBuilderBase(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
         {
             Contract.Requires(logManager != null);
             Contract.Requires(configurationManager != null);
-            Contract.Requires(platformManager != null);
+            Contract.Requires(hostingEnvironment != null);
 
             this.ExportProviders = new Dictionary<Type, IExportProvider>();
 
@@ -65,11 +65,11 @@ namespace Kephas.Composition.Hosting
 
             this.LogManager = logManager;
             this.ConfigurationManager = configurationManager;
-            this.PlatformManager = platformManager;
+            this.HostingEnvironment = hostingEnvironment;
 
             this.WithFactoryProvider(() => logManager, isShared: true)
                 .WithFactoryProvider(() => configurationManager, isShared: true)
-                .WithFactoryProvider(() => platformManager, isShared: true);
+                .WithFactoryProvider(() => hostingEnvironment, isShared: true);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The runtime platform manager.
         /// </value>
-        public IPlatformManager PlatformManager { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -436,7 +436,7 @@ namespace Kephas.Composition.Hosting
             var elapsed = await Profiler.WithStopwatchAsync(
                 async () =>
                 {
-                    var appAssemblies = await this.PlatformManager.GetAppAssembliesAsync();
+                    var appAssemblies = await this.HostingEnvironment.GetAppAssembliesAsync();
 
                     if (string.IsNullOrWhiteSpace(searchPattern))
                     {

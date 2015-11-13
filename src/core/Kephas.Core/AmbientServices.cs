@@ -16,8 +16,8 @@ namespace Kephas
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Dynamic;
+    using Kephas.Hosting;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Provides the global ambient services.
@@ -43,9 +43,9 @@ namespace Kephas
         private ILogManager logManager;
 
         /// <summary>
-        /// The runtime platform.
+        /// The hosting environment.
         /// </summary>
-        private IPlatformManager platformManager;
+        private IHostingEnvironment hostingEnvironment;
 
         /// <summary>
         /// The application configuration provider.
@@ -67,7 +67,7 @@ namespace Kephas
         {
             this.CompositionContainer = new NullCompositionContainer();
             this.LogManager = new NullLogManager();
-            this.PlatformManager = new NullPlatformManager();
+            this.HostingEnvironment = new NullHostingEnvironment();
             this.ConfigurationManager = new NullConfigurationManager();
         }
 
@@ -100,22 +100,22 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets or sets the platform manager.
+        /// Gets or sets the hosting environment.
         /// </summary>
         /// <value>
-        /// The platform manager.
+        /// The hosting environment.
         /// </value>
-        public IPlatformManager PlatformManager
+        public IHostingEnvironment HostingEnvironment
         {
             get
             {
-                return this.platformManager;
+                return this.hostingEnvironment;
             }
             set
             {
                 Contract.Requires(value != null);
 
-                this.platformManager = value;
+                this.hostingEnvironment = value;
             }
         }
 
@@ -183,6 +183,18 @@ namespace Kephas
             Contract.Requires(type != null);
 
             return Instance.LogManager.GetLogger(type);
+        }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <typeparam name="T">The type for which a logger should be created.</typeparam>
+        /// <returns>
+        /// A logger for the provided type.
+        /// </returns>
+        public static ILogger<T> GetLogger<T>()
+        {
+            return new TypedLogger<T>(Instance.LogManager);
         }
     }
 }

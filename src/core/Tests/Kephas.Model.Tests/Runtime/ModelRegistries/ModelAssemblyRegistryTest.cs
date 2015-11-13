@@ -18,9 +18,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
     using Kephas.Composition;
     using Kephas.Composition.Mef;
+    using Kephas.Hosting;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
-    using Kephas.Runtime;
 
     using NUnit.Framework;
 
@@ -51,7 +51,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var platformManager = Mock.Create<IPlatformManager>();
+            var platformManager = Mock.Create<IHostingEnvironment>();
             platformManager.Arrange(m => m.GetAppAssembliesAsync(CancellationToken.None))
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).Assembly }));
 

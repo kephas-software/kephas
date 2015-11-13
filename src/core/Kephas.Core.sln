@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model.Tests", "Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data", "Kephas.Data\Kephas.Data.csproj", "{87C40E7F-A56B-4A80-A2FF-53C15C947726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Runtime.Desktop", "Kephas.Runtime.Desktop\Kephas.Runtime.Desktop.csproj", "{4E7360E8-C815-491B-84DD-31ABB623C330}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.Desktop", "Kephas.Runtime.Desktop\Kephas.Hosting.Desktop.csproj", "{4E7360E8-C815-491B-84DD-31ABB623C330}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packaging", "Packaging", "{5AD9E077-F23D-406E-9A1A-4226916BEF90}"
 EndProject
