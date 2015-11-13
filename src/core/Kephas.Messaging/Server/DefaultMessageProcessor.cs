@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Server
             {
                 if (context == null)
                 {
-                    this.CreateProcessingContext(message, messageHandler);
+                    context = this.CreateProcessingContext(message, messageHandler);
                 }
                 else
                 {

@@ -12,10 +12,13 @@ namespace Kephas.Logging
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Services;
+
     /// <summary>
     /// NLog logger for the <typeparamref name="TService"/>.
     /// </summary>
     /// <typeparam name="TService">The type of the service.</typeparam>
+    [OverridePriority(Priority.Low)]
     public class TypedLogger<TService> : ILogger<TService>
     {
         /// <summary>

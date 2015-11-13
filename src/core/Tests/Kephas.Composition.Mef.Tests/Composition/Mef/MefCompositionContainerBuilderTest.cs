@@ -102,7 +102,7 @@ namespace Kephas.Composition.Mef
                 .CreateContainer();
 
             var logger = container.GetExport<ILogger<MefCompositionContainerTest.ExportedClass>>();
-            Assert.IsInstanceOf<NullLogger<MefCompositionContainerTest.ExportedClass>>(logger);
+            Assert.IsInstanceOf<TypedLogger<MefCompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
