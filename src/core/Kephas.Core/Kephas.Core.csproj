@@ -166,6 +166,7 @@
     <Compile Include="Dynamic\RuntimeDynamicProperty.cs" />
     <Compile Include="Dynamic\RuntimeDynamicType.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Logging\TypedLogger.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
     <Compile Include="Serialization\DefaultSerializationService.cs" />

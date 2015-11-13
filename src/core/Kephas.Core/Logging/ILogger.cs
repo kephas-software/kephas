@@ -10,6 +10,7 @@
 namespace Kephas.Logging
 {
     using System;
+    using System.Diagnostics.Contracts;
 
     using Kephas.Services;
 
@@ -222,6 +223,27 @@ namespace Kephas.Logging
         public static void TraceFormat(this ILogger logger, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Trace, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>A logger instance.</returns>
+        public static ILogger GetLogger(this Type type)
+        {
+            Contract.Requires(type != null);
+
+            return AmbientServices.Instance.LogManager.GetLogger(type);
+        }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <returns>A logger instance.</returns>
+        public static ILogger<T> GetLogger<T>()
+        {
+            return new TypedLogger<T>(AmbientServices.Instance.LogManager);
         }
     }
 }

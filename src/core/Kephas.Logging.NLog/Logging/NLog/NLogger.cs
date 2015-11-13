@@ -1,49 +1,75 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NLogger.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   NLog logger for the <typeparamref name="TService" />.
+//   NLog logger.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Logging.NLog
 {
     using System;
-    using System.Diagnostics.Contracts;
+
+    using global::NLog;
 
     /// <summary>
-    /// NLog logger for the <typeparamref name="TService"/>.
+    /// NLog logger.
     /// </summary>
-    /// <typeparam name="TService">The type of the service.</typeparam>
-    public class NLogger<TService> : ILogger<TService>
+    internal class NLogger : Logging.ILogger
     {
         /// <summary>
-        /// The inner logger.
+        /// The no arguments constant.
         /// </summary>
-        private readonly Logging.ILogger innerLogger;
+        private static readonly object[] NoArgs = new object[0];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NLogger{TService}"/> class.
+        /// The NLog logger.
         /// </summary>
-        /// <param name="logManager">The log manager.</param>
-        public NLogger(ILogManager logManager)
-        {
-            Contract.Requires(logManager != null);
+        private readonly Logger logger;
 
-            this.innerLogger = logManager.GetLogger(typeof(TService));
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NLogger"/> class.
+        /// </summary>
+        /// <param name="logger">The NLog logger.</param>
+        public NLogger(Logger logger)
+        {
+            this.logger = logger;
         }
 
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">The logging level.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat"></param>
-        /// <param name="args"></param>
-        public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        /// <param name="level">        The logging level.</param>
+        /// <param name="exception">    The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         A variable-length parameters list containing arguments.</param>
+        public void Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
-            this.innerLogger.Log(level, exception, messageFormat, args);
+            switch (level)
+            {
+                case Logging.LogLevel.Fatal:
+                    this.logger.Fatal(exception, messageFormat, args);
+                    break;
+                case Logging.LogLevel.Error:
+                    this.logger.Error(exception, messageFormat, args);
+                    break;
+                case Logging.LogLevel.Warning:
+                    this.logger.Warn(exception, messageFormat, args);
+                    break;
+                case Logging.LogLevel.Info:
+                    this.logger.Info(exception, messageFormat, args);
+                    break;
+                case Logging.LogLevel.Debug:
+                    this.logger.Debug(exception, messageFormat, args);
+                    break;
+                case Logging.LogLevel.Trace:
+                    this.logger.Trace(exception, messageFormat, args);
+                    break;
+                default:
+                    this.logger.Trace(exception, messageFormat, args);
+                    break;
+            }
         }
 
         /// <summary>
@@ -54,7 +80,30 @@ namespace Kephas.Logging.NLog
         /// <param name="args">The arguments.</param>
         public void Log(Logging.LogLevel level, string messageFormat, params object[] args)
         {
-            this.innerLogger.Log(level, messageFormat, args);
+            switch (level)
+            {
+                case Logging.LogLevel.Fatal:
+                    this.logger.Fatal(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Error:
+                    this.logger.Error(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Warning:
+                    this.logger.Warn(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Info:
+                    this.logger.Info(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Debug:
+                    this.logger.Debug(messageFormat, args);
+                    break;
+                case Logging.LogLevel.Trace:
+                    this.logger.Trace(messageFormat, args);
+                    break;
+                default:
+                    this.logger.Trace(messageFormat, args);
+                    break;
+            }
         }
     }
 }

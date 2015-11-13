@@ -43,7 +43,7 @@ namespace Kephas.Logging.NLog
         private Logging.ILogger CreateLogger(string loggerName)
         {
             var nlogger = LogManager.GetLogger(loggerName);
-            return new InternalLogger(nlogger);
+            return new NLogger(nlogger);
         }
     }
 }

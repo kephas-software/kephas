@@ -9,6 +9,15 @@
 
 namespace Kephas.Serialization
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+
+    using Kephas.Collections;
+    using Kephas.Composition;
+    using Kephas.Resources;
+    using Kephas.Serialization.Composition;
     using Kephas.Serialization.Formats;
 
     /// <summary>
@@ -16,6 +25,28 @@ namespace Kephas.Serialization
     /// </summary>
     public class DefaultSerializationService : ISerializationService
     {
+        /// <summary>
+        /// The serializer factories.
+        /// </summary>
+        private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories = new Dictionary<Type, IExportFactory<ISerializer, SerializerMetadata>>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
+        /// </summary>
+        /// <param name="serializerFactories">The serializer factories.</param>
+        public DefaultSerializationService(ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        {
+            Contract.Requires(serializerFactories != null);
+
+            foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
+            {
+                if (!this.serializerFactories.ContainsKey(factory.Metadata.FormatType))
+                {
+                    this.serializerFactories.Add(factory.Metadata.FormatType, factory);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets a serializer for the provided context.
         /// </summary>
@@ -26,8 +57,15 @@ namespace Kephas.Serialization
         public ISerializer GetSerializer(ISerializationContext context = null)
         {
             context = context ?? new SerializationContext(typeof(JsonFormat));
+            var formatType = context.FormatType ?? typeof(JsonFormat);
 
-            throw new System.NotImplementedException();
+            var serializer = this.serializerFactories.TryGetValue(formatType);
+            if (serializer == null)
+            {
+                throw new KeyNotFoundException(string.Format(Strings.DefaultSerializationService_SerializerNotFound_Exception, formatType));
+            }
+
+            return serializer.CreateExport().Value;
         }
     }
 }

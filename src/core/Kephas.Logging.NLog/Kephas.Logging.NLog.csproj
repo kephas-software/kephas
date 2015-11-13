@@ -124,7 +124,6 @@
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
     <Compile Include="Logging\NLog\NLogAmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Logging\NLog\InternalLogger.cs" />
     <Compile Include="Logging\NLog\NLogger.cs" />
     <Compile Include="Logging\NLog\NLogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

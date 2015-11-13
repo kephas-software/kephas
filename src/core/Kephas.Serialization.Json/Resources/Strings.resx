@@ -117,37 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
-    <value>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}.</value>
+  <data name="DefaultJsonSerializerSettingsProvider_ErrorOnSerializingMessage" xml:space="preserve">
+    <value>Error on JSON serializing/deserializing {0}.</value>
   </data>
-  <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
-  </data>
-  <data name="AppServiceMissingCompositionConstructor" xml:space="preserve">
-    <value>There are no constructors marked with {0} for service {1}.</value>
-  </data>
-  <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
-    <value>Multiple constructors marked with {0} are declared for service {1}.</value>
-  </data>
-  <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
-    <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
-  </data>
-  <data name="DefaultSerializationService_SerializerNotFound_Exception" xml:space="preserve">
-    <value>A serializer for the format type '{0}' was not found.</value>
-  </data>
-  <data name="NullServiceExceptionMessage" xml:space="preserve">
-    <value>{0} is intended to be replaced by a proper implementation.</value>
-  </data>
-  <data name="TransitionMonitor_AssertIsCompletedSuccessfully_Exception" xml:space="preserve">
-    <value>The {0} of '{1}' is not completed successfully.</value>
-  </data>
-  <data name="TransitionMonitor_AssertIsCompleted_Exception" xml:space="preserve">
-    <value>The {0} of '{1}' is not completed.</value>
-  </data>
-  <data name="TransitionMonitor_AssertIsInProgress_Exception" xml:space="preserve">
-    <value>The {0} of '{1}' is not in progress.</value>
-  </data>
-  <data name="TransitionMonitor_AssertIsNotStarted_Exception" xml:space="preserve">
-    <value>The {0} of '{1}' is already started.</value>
+  <data name="DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage" xml:space="preserve">
+    <value>Exception when serializing an object of type {0}.</value>
   </data>
 </root>

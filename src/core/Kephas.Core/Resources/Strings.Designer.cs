@@ -107,6 +107,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A serializer for the format type &apos;{0}&apos; was not found..
+        /// </summary>
+        internal static string DefaultSerializationService_SerializerNotFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultSerializationService_SerializerNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is intended to be replaced by a proper implementation..
         /// </summary>
         internal static string NullServiceExceptionMessage {
