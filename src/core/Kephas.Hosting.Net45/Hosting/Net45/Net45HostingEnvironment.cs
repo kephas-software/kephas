@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DesktopHostingEnvironment.cs" company="Quartz Software SRL">
+// <copyright file="Net45HostingEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The platform manager for desktop applications.
+//   The hosting environment for .NET 4.5 applications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Hosting.Desktop
+namespace Kephas.Hosting.Net45
 {
     using System;
     using System.Collections.Generic;
@@ -16,13 +16,14 @@ namespace Kephas.Hosting.Desktop
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Hosting;
     using Kephas.Logging;
 
     /// <summary>
-    /// The platform manager for desktop applications.
+    /// The hosting environment for .NET 4.5 applications.
     /// </summary>
-    public class DesktopHostingEnvironment : IHostingEnvironment
+    public class Net45HostingEnvironment : Expando, IHostingEnvironment
     {
         /// <summary>
         /// The logger.
@@ -30,14 +31,14 @@ namespace Kephas.Hosting.Desktop
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DesktopHostingEnvironment" /> class.
+        /// Initializes a new instance of the <see cref="Net45HostingEnvironment" /> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public DesktopHostingEnvironment(ILogManager logManager)
+        public Net45HostingEnvironment(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger<DesktopHostingEnvironment>();
+            this.logger = logManager.GetLogger<Net45HostingEnvironment>();
         }
 
         /// <summary>

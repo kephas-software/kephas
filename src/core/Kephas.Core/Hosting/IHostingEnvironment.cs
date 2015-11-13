@@ -11,15 +11,19 @@ namespace Kephas.Hosting
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Dynamic;
+    using System.Linq.Expressions;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Provides platform specific functionality.
     /// </summary>
     [ContractClass(typeof(HostingEnvironmentContractClass))]
-    public interface IHostingEnvironment
+    public interface IHostingEnvironment : IExpando
     {
         /// <summary>
         /// Gets the application assemblies.
@@ -37,6 +41,24 @@ namespace Kephas.Hosting
     [ContractClassFor(typeof(IHostingEnvironment))]
     internal abstract class HostingEnvironmentContractClass : IHostingEnvironment
     {
+        /// <summary>
+        /// Indexer to get or set items within this collection using array index syntax.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// The indexed item.
+        /// </returns>
+        public abstract object this[string key] { get; set; }
+
+        /// <summary>
+        /// Gets meta object.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>
+        /// The meta object.
+        /// </returns>
+        public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>

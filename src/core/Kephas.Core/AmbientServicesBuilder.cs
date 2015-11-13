@@ -81,13 +81,13 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the platform manager to the ambient services.
+        /// Sets the hosting environment to the ambient services.
         /// </summary>
-        /// <param name="hostingEnvironment">The platform manager.</param>
+        /// <param name="hostingEnvironment">The hosting environment.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithPlatformManager(IHostingEnvironment hostingEnvironment)
+        public AmbientServicesBuilder WithHostingEnvironment(IHostingEnvironment hostingEnvironment)
         {
             Contract.Requires(hostingEnvironment != null);
 

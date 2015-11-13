@@ -1,27 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UniversalHostingEnvironment.cs" company="Quartz Software SRL">
+// <copyright file="WindowsPlatformHostingEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Platform manager for Windows Store.
+//   Hosting environment for Universal Windows Platform.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Hosting.Universal
+namespace Kephas.Hosting.WindowsPlatform
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Hosting;
     using Kephas.Logging;
 
     /// <summary>
-    /// Platform manager for Universal Windows Platform.
+    /// Hosting environment for Universal Windows Platform.
     /// </summary>
-    public class UniversalHostingEnvironment : IHostingEnvironment
+    public class WindowsPlatformHostingEnvironment : Expando, IHostingEnvironment
     {
         /// <summary>
         /// The logger.
@@ -29,14 +32,14 @@ namespace Kephas.Hosting.Universal
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UniversalHostingEnvironment"/> class.
+        /// Initializes a new instance of the <see cref="WindowsPlatformHostingEnvironment"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public UniversalHostingEnvironment(ILogManager logManager)
+        public WindowsPlatformHostingEnvironment(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger<UniversalHostingEnvironment>();
+            this.logger = logManager.GetLogger<WindowsPlatformHostingEnvironment>();
         }
 
         /// <summary>

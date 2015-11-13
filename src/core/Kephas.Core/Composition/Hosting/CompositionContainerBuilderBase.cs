@@ -52,7 +52,7 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="hostingEnvironment">The platform manager.</param>
+        /// <param name="hostingEnvironment">The hosting environment.</param>
         protected CompositionContainerBuilderBase(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
         {
             Contract.Requires(logManager != null);
@@ -89,10 +89,10 @@ namespace Kephas.Composition.Hosting
         public IConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
-        /// Gets the runtime platform manager..
+        /// Gets the hosting environment.
         /// </summary>
         /// <value>
-        /// The runtime platform manager.
+        /// The hosting environment.
         /// </value>
         public IHostingEnvironment HostingEnvironment { get; }
 

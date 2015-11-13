@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   A platform manager doing nothing.
+//   A hosting environment doing nothing.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,13 +14,14 @@ namespace Kephas.Hosting
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
-    /// A platform manager doing nothing.
+    /// A hosting environment doing nothing.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullHostingEnvironment : IHostingEnvironment
+    public class NullHostingEnvironment : Expando, IHostingEnvironment
     {
         /// <summary>
         /// Gets the application assemblies.

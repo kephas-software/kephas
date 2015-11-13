@@ -20,14 +20,14 @@
     public class ModelAssemblyRegistry : IRuntimeModelRegistry
     {
         /// <summary>
-        /// The platform manager.
+        /// The hosting environment.
         /// </summary>
         private readonly IHostingEnvironment hostingEnvironment;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
-        /// <param name="hostingEnvironment">The platform manager.</param>
+        /// <param name="hostingEnvironment">The hosting environment.</param>
         public ModelAssemblyRegistry(IHostingEnvironment hostingEnvironment)
         {
             Contract.Requires(hostingEnvironment != null);

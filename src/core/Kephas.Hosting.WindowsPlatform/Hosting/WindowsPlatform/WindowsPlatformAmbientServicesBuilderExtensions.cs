@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UniversalAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+// <copyright file="WindowsPlatformAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,27 +7,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Hosting.Universal
+namespace Kephas.Hosting.WindowsPlatform
 {
     using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    public static class UniversalAmbientServicesBuilderExtensions
+    public static class WindowsPlatformAmbientServicesBuilderExtensions
     {
         /// <summary>
-        /// Sets the universal windows platform manager to the ambient services.
+        /// Sets the universal windows hosting environment to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithUniversalPlatformManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithWindowsPlatformHostingEnvironment(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithPlatformManager(new UniversalHostingEnvironment(ambientServicesBuilder.AmbientServices.LogManager));
+            return ambientServicesBuilder.WithHostingEnvironment(new WindowsPlatformHostingEnvironment(ambientServicesBuilder.AmbientServices.LogManager));
         }
     }
 }

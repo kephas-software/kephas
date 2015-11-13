@@ -42,7 +42,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="hostingEnvironment">The platform manager.</param>
+        /// <param name="hostingEnvironment">The hosting environment.</param>
         public MefCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
             : base(logManager, configurationManager, hostingEnvironment)
         {
