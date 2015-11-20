@@ -23,7 +23,7 @@ namespace Kephas.Diagnostics.Logging
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNLogManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithDebugLogManager(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Contract.Requires(ambientServicesBuilder != null);
 

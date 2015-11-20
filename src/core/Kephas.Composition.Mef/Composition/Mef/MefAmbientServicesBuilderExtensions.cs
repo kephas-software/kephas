@@ -56,10 +56,7 @@ namespace Kephas.Composition.Mef
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
                 ambientServicesBuilder.AmbientServices.HostingEnvironment);
 
-            if (containerBuilderConfig != null)
-            {
-                containerBuilderConfig(containerBuilder);
-            }
+            containerBuilderConfig?.Invoke(containerBuilder);
 
             return ambientServicesBuilder.WithCompositionContainer(await containerBuilder.CreateContainerAsync());
         }
