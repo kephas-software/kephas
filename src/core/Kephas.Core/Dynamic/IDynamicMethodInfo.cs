@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicMethod.cs" company="Quartz Software SRL">
+// <copyright file="IDynamicMethodInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -13,9 +13,9 @@ namespace Kephas.Dynamic
     using System.Reflection;
 
     /// <summary>
-    /// Contract for dynamically invoking a method.
+    /// Contract for a dynamic <see cref="MethodInfo"/>.
     /// </summary>
-    public interface IDynamicMethod
+    public interface IDynamicMethodInfo : IExpando
     {
         /// <summary>
         /// Gets the method information.

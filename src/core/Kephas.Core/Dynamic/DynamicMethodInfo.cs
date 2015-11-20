@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeDynamicMethod.cs" company="Quartz Software SRL">
+// <copyright file="DynamicMethodInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implementation of <see cref="IDynamicProperty" /> for runtime properties.
+//   Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,17 +16,22 @@ namespace Kephas.Dynamic
     using System.Reflection;
 
     /// <summary>
-    /// Implementation of <see cref="IDynamicProperty"/> for runtime properties.
+    /// Implementation of <see cref="IDynamicMethodInfo"/> for runtime methods.
     /// </summary>
-    public class RuntimeDynamicMethod : IDynamicMethod
+    public sealed class DynamicMethodInfo : Expando, IDynamicMethodInfo
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeDynamicMethod"/> class.
+        /// The <see cref="IDynamicTypeInfo"/> of <see cref="DynamicMethodInfo"/>.
+        /// </summary>
+        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicMethodInfo = new DynamicTypeInfo(typeof(DynamicMethodInfo));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicMethodInfo"/> class.
         /// </summary>
         /// <param name="methodInfo">
         /// The method information.
         /// </param>
-        internal RuntimeDynamicMethod(MethodInfo methodInfo)
+        internal DynamicMethodInfo(MethodInfo methodInfo)
         {
             Contract.Requires(methodInfo != null);
 
@@ -69,6 +74,17 @@ namespace Kephas.Dynamic
             {
                 return Undefined.Value;
             }
+        }
+
+        /// <summary>
+        /// Gets the dynamic type used by the expando in the dynamic behavior.
+        /// </summary>
+        /// <returns>
+        /// The dynamic type.
+        /// </returns>
+        protected override IDynamicTypeInfo GetDynamicTypeInfo()
+        {
+            return DynamicTypeInfoOfDynamicMethodInfo;
         }
     }
 }

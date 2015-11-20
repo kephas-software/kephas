@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeDynamicProperty.cs" company="Quartz Software SRL">
+// <copyright file="DynamicPropertyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implementation of <see cref="IDynamicProperty" /> for runtime properties.
+//   Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,34 +13,36 @@ namespace Kephas.Dynamic
     using System.Reflection;
 
     /// <summary>
-    /// Implementation of <see cref="IDynamicProperty" /> for runtime properties.
+    /// Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
     /// </summary>
     /// <typeparam name="T">The container type.</typeparam>
     /// <typeparam name="TMember">The member type.</typeparam>
-    public class RuntimeDynamicProperty<T, TMember> : IDynamicProperty
+    public sealed class DynamicPropertyInfo<T, TMember> : Expando, IDynamicPropertyInfo
     {
+        /// <summary>
+        /// The dynamic type of <see cref="DynamicPropertyInfo{T,TMember}"/>.
+        /// </summary>
+        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicPropertyInfo = new DynamicTypeInfo(typeof(DynamicPropertyInfo<T,TMember>));
+
         /// <summary>
         /// The getter.
         /// </summary>
-        private readonly Func<T, TMember> getter;
+        private Func<T, TMember> getter;
 
         /// <summary>
         /// The setter.
         /// </summary>
-        private readonly Action<T, TMember> setter;
+        private Action<T, TMember> setter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeDynamicProperty{T,TMember}"/> class. 
+        /// Initializes a new instance of the <see cref="DynamicPropertyInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="propertyInfo">
         /// The property information.
         /// </param>
-        internal RuntimeDynamicProperty(PropertyInfo propertyInfo)
+        internal DynamicPropertyInfo(PropertyInfo propertyInfo)
         {
             this.PropertyInfo = propertyInfo;
-
-            this.getter = this.GetMemberGetDelegate();
-            this.setter = this.GetMemberSetDelegate();
         }
 
         /// <summary>
@@ -59,12 +61,13 @@ namespace Kephas.Dynamic
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
         public void SetValue(object obj, object value)
         {
-            if (this.setter == null)
+            var setDelegate = this.GetMemberSetDelegate();
+            if (setDelegate == null)
             {
                 throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be set.");
             }
 
-            this.setter((T)obj, (TMember)value);
+            setDelegate((T)obj, (TMember)value);
         }
 
         /// <summary>
@@ -74,15 +77,27 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The value.
         /// </returns>
-        /// <exception cref="System.MemberAccessException">Property value cannot be get.</exception>
+        /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
         public object GetValue(object obj)
         {
-            if (this.getter == null)
+            var getDelegate = this.GetMemberGetDelegate();
+            if (getDelegate == null)
             {
                 throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be get.");
             }
 
-            return this.getter((T)obj);
+            return getDelegate((T)obj);
+        }
+
+        /// <summary>
+        /// Gets the dynamic type used by the expando in the dynamic behavior.
+        /// </summary>
+        /// <returns>
+        /// The dynamic type.
+        /// </returns>
+        protected override IDynamicTypeInfo GetDynamicTypeInfo()
+        {
+            return DynamicTypeInfoOfDynamicPropertyInfo;
         }
 
         /// <summary>
@@ -93,10 +108,15 @@ namespace Kephas.Dynamic
         /// </returns>
         private Func<T, TMember> GetMemberGetDelegate()
         {
+            if (this.getter != null)
+            {
+                return this.getter;
+            }
+
             var mi = this.PropertyInfo.GetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
+                return (this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>)));
             }
 
             return null;
@@ -110,10 +130,15 @@ namespace Kephas.Dynamic
         /// </returns>
         private Action<T, TMember> GetMemberSetDelegate()
         {
+            if (this.setter != null)
+            {
+                return this.setter;
+            }
+
             var mi = this.PropertyInfo.SetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
+                return (this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>)));
             }
 
             return null;

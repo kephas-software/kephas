@@ -30,7 +30,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var objectTypeAccessor = obj.GetType().GetDynamicType();
+            var objectTypeAccessor = obj.GetType().GetDynamicTypeInfo();
             objectTypeAccessor.SetValue(obj, propertyName, value);
         }
 
@@ -49,7 +49,7 @@ namespace Kephas
                 return false;
             }
 
-            var objectTypeAccessor = obj.GetType().GetDynamicType();
+            var objectTypeAccessor = obj.GetType().GetDynamicTypeInfo();
             return objectTypeAccessor.TrySetValue(obj, propertyName, value);
         }
 
@@ -63,7 +63,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var dynamicType = obj.GetType().GetDynamicType();
+            var dynamicType = obj.GetType().GetDynamicTypeInfo();
             return dynamicType.GetValue(obj, propertyName);
         }
 
@@ -81,7 +81,7 @@ namespace Kephas
                 return Undefined.Value;
             }
 
-            var dynamicType = obj.GetType().GetDynamicType();
+            var dynamicType = obj.GetType().GetDynamicTypeInfo();
             return dynamicType.TryGetValue(obj, propertyName);
         }
 

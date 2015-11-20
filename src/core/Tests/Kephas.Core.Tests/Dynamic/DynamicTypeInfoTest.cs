@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeDynamicTypeTest.cs" company="Quartz Software SRL">
+// <copyright file="DynamicTypeInfoTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Test class for <see cref="RuntimeDynamicType" />
+//   Test class for <see cref="DynamicTypeInfo" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,17 +18,17 @@ namespace Kephas.Core.Tests.Dynamic
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="RuntimeDynamicType"/>
+    /// Test class for <see cref="DynamicTypeInfo"/>
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class RuntimeDynamicTypeTest
+    public class DynamicTypeInfoTest
     {
         [Test]
-        public void RuntimeDynamicType_constructor_test()
+        public void DynamicTypeInfo_constructor_test()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var type = runtimeDynamicType.Type;
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            var type = dynamicTypeInfo.Type;
             Assert.AreEqual(type, typeof(TestClass));
         }
 
@@ -36,43 +36,43 @@ namespace Kephas.Core.Tests.Dynamic
         [ExpectedException]
         public void GetValue_instance_null_throws()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var result = runtimeDynamicType.GetValue(null, string.Empty);
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            var result = dynamicTypeInfo.GetValue(null, string.Empty);
             Assert.AreEqual(Undefined.Value, result);
         }
 
         [Test]
         public void GetValue_instance_not_null()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "noName" };
-            var result = runtimeDynamicType.GetValue(instance, "Name");
+            var result = dynamicTypeInfo.GetValue(instance, "Name");
             Assert.AreEqual(instance.Name, result);
         }
 
         [Test]
         public void TryGetValue_instance_null_returns_undefined()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var result = runtimeDynamicType.TryGetValue(null, string.Empty);
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            var result = dynamicTypeInfo.TryGetValue(null, string.Empty);
             Assert.AreEqual(Undefined.Value, result);
         }
 
         [Test]
         public void TryGetValue_instance_not_null_valid_property()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
-            var result = runtimeDynamicType.TryGetValue(instance, "Name");
+            var result = dynamicTypeInfo.TryGetValue(instance, "Name");
             Assert.AreEqual(instance.Name, result);
         }
 
         [Test]
         public void TryGetValue_instance_not_null_invalid_property()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
-            var result = runtimeDynamicType.TryGetValue(instance, "nothing");
+            var result = dynamicTypeInfo.TryGetValue(instance, "nothing");
             Assert.AreEqual(Undefined.Value, result);
         }
 
@@ -80,36 +80,36 @@ namespace Kephas.Core.Tests.Dynamic
         [ExpectedException]
         public void SetValue_instance_null_throws()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            runtimeDynamicType.SetValue(null, string.Empty, null);
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            dynamicTypeInfo.SetValue(null, string.Empty, null);
         }
 
         [Test]
         public void SetValue_valid_instance()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var instance = new TestClass();
             const string value = "someName";
-            runtimeDynamicType.SetValue(instance, "Name", value);
+            dynamicTypeInfo.SetValue(instance, "Name", value);
             Assert.AreEqual(value, instance.Name);
         }
 
         [Test]
         public void TrySetValue_instance_null_returns_false()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
-            var result = runtimeDynamicType.TrySetValue(null, string.Empty, null);
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            var result = dynamicTypeInfo.TrySetValue(null, string.Empty, null);
             Assert.AreEqual(false, result);
         }
 
         [Test]
         public void Invoke_valid_instance()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "someName" };
             var list = new List<string> { "IC" };
             var ienum = (IEnumerable<object>)list;
-            var result = runtimeDynamicType.Invoke(instance, "ComputeFullName", ienum);
+            var result = dynamicTypeInfo.Invoke(instance, "ComputeFullName", ienum);
             Assert.AreEqual(instance.ComputeFullName("IC"), result);
         }
 
@@ -117,31 +117,31 @@ namespace Kephas.Core.Tests.Dynamic
         [ExpectedException]
         public void Invoke_instance_null_throws()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var list = new List<string>();
             var ienum = (IEnumerable<object>)list;
-            var result = runtimeDynamicType.Invoke(null, string.Empty, ienum);
+            var result = dynamicTypeInfo.Invoke(null, string.Empty, ienum);
             Assert.AreEqual(null, result);
         }
 
         [Test]
         public void TryInvoke_instance_null_returns_undefined()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var list = new List<string>();
             var ienum = (IEnumerable<object>)list;
-            var result = runtimeDynamicType.TryInvoke(null, string.Empty, ienum);
+            var result = dynamicTypeInfo.TryInvoke(null, string.Empty, ienum);
             Assert.AreEqual(Undefined.Value, result);
         }
 
         [Test]
         public void TryInvoke_instance_non_existing_method_returns_undefined()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var list = new List<string>();
             object instance = new TestClass();
             var ienum = (IEnumerable<object>)list;
-            var result = runtimeDynamicType.TryInvoke(instance, "blah-blah", ienum);
+            var result = dynamicTypeInfo.TryInvoke(instance, "blah-blah", ienum);
             Assert.AreEqual(Undefined.Value, result);
         }
 
@@ -149,9 +149,9 @@ namespace Kephas.Core.Tests.Dynamic
         [ExpectedException(typeof(MemberAccessException))]
         public void GetDynamicProperty_throwOnNotFound()
         {
-            var runtimeDynamicType = new RuntimeDynamicType(typeof(TestClass));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             object instance = new TestClass();
-            runtimeDynamicType.GetValue(instance, string.Empty);
+            dynamicTypeInfo.GetValue(instance, string.Empty);
         }
 
         public class TestClass

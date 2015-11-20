@@ -65,7 +65,11 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Cached dynamic type of the instance.
         /// </summary>
-        private IDynamicType dynamicType;
+        /// <remarks>
+        /// Do not use directly this field, instead use the <see cref="GetDynamicTypeInfo"/> method
+        /// which knows how to late-initialize it.
+        /// </remarks>
+        private IDynamicTypeInfo dynamicTypeInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Expando"/> class. 
@@ -98,27 +102,18 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// Convenience method that provides a string Indexer to the Properties collection AND the
+        /// strongly typed properties of the object by name. // dynamic exp["Address"] = "112 nowhere
+        /// lane";
+        /// // strong var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
-        /// <value>
-        /// The <see cref="System.Object"/>.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>
-        /// The <see cref="object" />.
-        /// </returns>
         /// <remarks>
-        /// The getter checks the Properties dictionary first
-        /// then looks in PropertyInfo for properties.
-        /// The setter checks the instance properties before
-        /// checking the Properties dictionary.
+        /// The getter checks the Properties dictionary first then looks in PropertyInfo for properties.
+        /// The setter checks the instance properties before checking the Properties dictionary.
         /// </remarks>
+        /// <param name="key">The key.</param>
+        /// <returns>The <see cref="System.Object"/>.</returns>
+        /// <returns>The <see cref="object" />.</returns>
         public object this[string key]
         {
             get
@@ -131,7 +126,7 @@ namespace Kephas.Dynamic
 
                 // try reflection on instanceType
                 var instance = this.wrappedInstance ?? this;
-                return this.dynamicType.TryGetValue(instance, key);
+                return this.GetDynamicTypeInfo().TryGetValue(instance, key);
             }
 
             set
@@ -144,7 +139,7 @@ namespace Kephas.Dynamic
 
                 // check instance for existance of type first
                 var instance = this.wrappedInstance ?? this;
-                if (!this.dynamicType.TrySetValue(instance, key, value))
+                if (!this.GetDynamicTypeInfo().TrySetValue(instance, key, value))
                 {
                     this.properties[key] = value;
                 }
@@ -170,7 +165,7 @@ namespace Kephas.Dynamic
 
             // Next check for Public properties via Reflection
             var instance = this.wrappedInstance ?? this;
-            result = this.dynamicType.TryGetValue(instance, binder.Name);
+            result = this.GetDynamicTypeInfo().TryGetValue(instance, binder.Name);
 
             return result != Undefined.Value;
         }
@@ -188,7 +183,7 @@ namespace Kephas.Dynamic
         {
             // first check to see if there's a native property to set
             var instance = this.wrappedInstance ?? this;
-            if (this.dynamicType.TrySetValue(instance, binder.Name, value))
+            if (this.GetDynamicTypeInfo().TrySetValue(instance, binder.Name, value))
             {
                 return true;
             }
@@ -219,28 +214,37 @@ namespace Kephas.Dynamic
             }
 
             var instance = this.wrappedInstance ?? this;
-            result = this.dynamicType.TryInvoke(instance, binder.Name, args);
+            result = this.GetDynamicTypeInfo().TryInvoke(instance, binder.Name, args);
             return result != Undefined.Value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDynamicTypeInfo"/> used by the expando in the dynamic behavior.
+        /// </summary>
+        /// <returns>
+        /// The dynamic type.
+        /// </returns>
+        protected virtual IDynamicTypeInfo GetDynamicTypeInfo()
+        {
+            Contract.Ensures(Contract.Result<IDynamicTypeInfo>() != null);
+
+            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().GetDynamicTypeInfo());
         }
 
         /// <summary>
         /// The initialize.
         /// </summary>
-        /// <param name="instance">
-        /// The instance.
-        /// </param>
+        /// <param name="instance">The instance.</param>
         protected virtual void Initialize(object instance)
         {
             this.wrappedInstance = instance;
-            this.dynamicType = (instance ?? this).GetType().GetDynamicType();
         }
 
         /// <summary>
-        /// Returns and the properties of. 
+        /// Returns and the properties of.
         /// </summary>
-        /// <param name="includeInstanceProperties">
-        /// If set to <c>true</c> the instance properties are also returned.
-        /// </param>
+        /// <param name="includeInstanceProperties">If set to <c>true</c> the instance properties are
+        ///                                         also returned.</param>
         /// <returns>
         /// An enumeration of property (name, value) pairs.
         /// </returns>
@@ -248,7 +252,7 @@ namespace Kephas.Dynamic
         {
             if (includeInstanceProperties)
             {
-                foreach (var prop in this.dynamicType.DynamicProperties)
+                foreach (var prop in this.GetDynamicTypeInfo().Properties)
                 {
                     yield return new KeyValuePair<string, object>(prop.Key, prop.Value.GetValue(this.wrappedInstance));
                 }

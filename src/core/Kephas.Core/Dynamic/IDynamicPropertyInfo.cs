@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicProperty.cs" company="Quartz Software SRL">
+// <copyright file="IDynamicPropertyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -12,9 +12,9 @@ namespace Kephas.Dynamic
     using System.Reflection;
 
     /// <summary>
-    /// Contract for dynamically invoking a property.
+    /// Contract for a dynamic <see cref="PropertyInfo"/>.
     /// </summary>
-    public interface IDynamicProperty
+    public interface IDynamicPropertyInfo : IExpando
     {
         /// <summary>
         /// Gets the property information.

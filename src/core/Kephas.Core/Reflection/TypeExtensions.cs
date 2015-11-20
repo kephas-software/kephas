@@ -20,15 +20,17 @@ namespace Kephas.Reflection
     public static class TypeExtensions
     {
         /// <summary>
-        /// Gets the dynamic type for the provided type.
+        /// Gets the <see cref="IDynamicTypeInfo"/> for the provided <see cref="Type"/> instance.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>The provided type's associated dynamic type.</returns>
-        public static IDynamicType GetDynamicType(this Type type)
+        /// <returns>
+        /// The provided <see cref="Type"/>'s associated <see cref="IDynamicTypeInfo"/>.
+        /// </returns>
+        public static IDynamicTypeInfo GetDynamicTypeInfo(this Type type)
         {
             Contract.Requires(type != null);
 
-            return RuntimeDynamicType.GetDynamicType(type);
+            return DynamicTypeInfo.GetDynamicType(type);
         }
     }
 }
