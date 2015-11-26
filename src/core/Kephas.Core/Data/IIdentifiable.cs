@@ -9,20 +9,17 @@
 
 namespace Kephas.Data
 {
-    using Kephas.Model.Runtime.AttributedModel;
-
     /// <summary>
     /// Mix-in for identifiable entities.
     /// </summary>
-    [Mixin]
     public interface IIdentifiable
     {
         /// <summary>
-        /// Gets or sets the identifier for this instance.
+        /// Gets the identifier for this instance.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
-        Id Id { get; set; } 
+        Id Id { get; } 
     }
 }

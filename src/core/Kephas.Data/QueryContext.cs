@@ -1,20 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntity.cs" company="Quartz Software SRL">
+// <copyright file="QueryContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   An entity represents an identifiable type which gets persisted in some form of storage.
+//   The default implementation of a query context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Model
+namespace Kephas.Data
 {
-    using Kephas.Model;
+    using Kephas.Services;
 
     /// <summary>
-    /// An entity represents an identifiable type which gets persisted in some form of storage.
+    /// The default implementation of a query context.
     /// </summary>
-    public interface IEntity : IReferenceType
+    public class QueryContext : ContextBase, IQueryContext
     {
     }
 }

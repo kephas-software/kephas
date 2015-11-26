@@ -15,7 +15,7 @@ namespace Kephas.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
+    using Kephas.Data;
     using Kephas.Model.Elements.Construction;
     using Kephas.Model.Runtime.Construction.Builders;
     using Kephas.Model.Runtime.Factory;
@@ -70,6 +70,8 @@ namespace Kephas.Model.Runtime
                            new ValueTypeInfoBuilder(this.RuntimeElementInfoFactoryDispatcher, typeof(System.Guid)).AsPrimitive().InCoreProjection().ElementInfo,
 
                            new ValueTypeInfoBuilder(this.RuntimeElementInfoFactoryDispatcher, typeof(System.String)).AsPrimitive().InCoreProjection().ElementInfo,
+
+                           new ValueTypeInfoBuilder(this.RuntimeElementInfoFactoryDispatcher, typeof(Id)).AsPrimitive().InCoreProjection().ElementInfo,
                         };
 
             return Task.FromResult((IEnumerable<INamedElementInfo>)elementInfos);

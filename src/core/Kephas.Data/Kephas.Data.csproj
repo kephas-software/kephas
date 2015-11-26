@@ -132,22 +132,20 @@
       <Project>{84122862-c5dd-4460-a9f5-925d623b22d7}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj">
-      <Project>{74eb78fc-c8a4-4e6b-9329-1c5060a0fa2a}</Project>
-      <Name>Kephas.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Core.cs">
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
-    <Compile Include="Id.cs" />
-    <Compile Include="IIdentifiable.cs" />
-    <Compile Include="Model\IEntity.cs" />
-    <Compile Include="Model\Runtime\DataSimpleTypesModelInfoProvider.cs" />
+    <Compile Include="DataRepositoryBase.cs" />
+    <Compile Include="FindContext.cs" />
+    <Compile Include="IDataRepository.cs" />
+    <Compile Include="IFindContext.cs" />
+    <Compile Include="IQueryContext.cs" />
+    <Compile Include="Linq\IAsyncQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Model.AssemblyInfo.cs" />
-    <Compile Include="Storage\IDataStorage.cs" />
+    <Compile Include="QueryContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

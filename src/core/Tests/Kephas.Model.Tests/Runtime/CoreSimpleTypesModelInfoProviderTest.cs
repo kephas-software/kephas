@@ -15,7 +15,7 @@ namespace Kephas.Model.Tests.Runtime
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
+    using Kephas.Data;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
@@ -60,6 +60,8 @@ namespace Kephas.Model.Tests.Runtime
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Guid) && info.IsPrimitive));
 
             Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(string) && info.IsPrimitive));
+
+            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Id) && info.IsPrimitive));
         }
     }
 }
