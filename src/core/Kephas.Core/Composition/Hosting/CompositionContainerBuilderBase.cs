@@ -437,6 +437,7 @@ namespace Kephas.Composition.Hosting
                 async () =>
                 {
                     var appAssemblies = await this.HostingEnvironment.GetAppAssembliesAsync();
+                    appAssemblies = this.WhereNotSystemAssemblies(appAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))
                     {
@@ -452,6 +453,20 @@ namespace Kephas.Composition.Hosting
             this.Logger.Debug($"composition-container:get-assemblies:end. Elapsed: {elapsed:c}.");
 
             return assemblies;
+        }
+
+        /// <summary>
+        /// Filters out the system assemblies from the provided assemblies.
+        /// </summary>
+        /// <param name="assemblies">The convention assemblies.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process where not system assemblies in this
+        /// collection.
+        /// </returns>
+        private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
+        {
+            Func<Assembly, bool> isSystemAssembly = a => a.FullName.StartsWith("System") || a.FullName.StartsWith("mscorlib") || a.FullName.StartsWith("Microsoft") || a.FullName.StartsWith("vshost32");
+            return assemblies.Where(a => !isSystemAssembly(a));
         }
 
         /// <summary>

@@ -1,45 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   The entry point class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace ConsoleApp
 {
-    using System.Diagnostics;
+    using System;
 
-    using Kephas;
-    using Kephas.Application;
-    using Kephas.Composition.Mef;
-    using Kephas.Hosting.Net45;
-    using Kephas.Logging.NLog;
-
-    class Program
+    /// <summary>
+    /// The entry point class.
+    /// </summary>
+    internal class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Main entry-point for this application.
+        /// </summary>
+        /// <param name="args">Array of command-line argument strings.</param>
+        public static void Main(string[] args)
         {
-            StartAppAsync();
+            var shell = new ConsoleShell();
+            shell.StartAppAsync();
 
             Console.ReadLine();
-        }
-
-        static async Task StartAppAsync()
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            Console.WriteLine("Application starting...");
-
-            var ambientServicesBuilder = await new AmbientServicesBuilder()
-                    .WithNLogManager()
-                    .WithNet45HostingEnvironment()
-                    .WithMefCompositionContainerAsync();
-
-            var bootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
-            await bootstrapper.StartAsync();
-
-            stopwatch.Stop();
-            Console.WriteLine($"Application started. Elapsed: {stopwatch.Elapsed:c}.");
         }
     }
 }

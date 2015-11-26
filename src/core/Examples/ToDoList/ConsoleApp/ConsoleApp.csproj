@@ -66,11 +66,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleShell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +93,18 @@
     <ProjectReference Include="..\..\..\Kephas.Logging.NLog\Kephas.Logging.NLog.csproj">
       <Project>{e00367f4-f5d7-481a-8b41-e959313e0cd1}</Project>
       <Name>Kephas.Logging.NLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToDo.Domain\ToDo.Domain.csproj">
+      <Project>{d23b1139-56f8-45a4-bf34-10e7273fad7c}</Project>
+      <Name>ToDo.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToDo.Messaging.Server\ToDo.Messaging.Server.csproj">
+      <Project>{ee4d97f1-a846-4cf1-b3dd-e79f5f9556d0}</Project>
+      <Name>ToDo.Messaging.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToDo.Messaging\ToDo.Messaging.csproj">
+      <Project>{d9e7e413-70bd-4266-abe5-0bd10d104874}</Project>
+      <Name>ToDo.Messaging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
