@@ -19,6 +19,14 @@ namespace Kephas.Services
     public interface IContext : IExpando
     {
         /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>
         /// <value>

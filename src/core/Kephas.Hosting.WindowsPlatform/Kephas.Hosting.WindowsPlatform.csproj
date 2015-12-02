@@ -197,6 +197,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Core.cs">
       <Link>Properties\AssemblyInfo.Core.cs</Link>
     </Compile>
+    <Compile Include="Application\ServerAppInitializer.cs" />
     <Compile Include="Hosting\WindowsPlatform\WindowsPlatformAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Hosting\WindowsPlatform\WindowsPlatformHostingEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

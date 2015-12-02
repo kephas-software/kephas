@@ -92,7 +92,7 @@ namespace Kephas.Model.Services
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(cancellationToken)));
-                var elementInfos = (await elementInfosCollectorTask.WithServerContext()).SelectMany(e => e);
+                var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e);
 
                 throw new NotImplementedException();
 

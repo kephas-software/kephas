@@ -156,5 +156,29 @@ namespace Kephas.Reflection
 
             return (T)(object)methodInfo.CreateDelegate(typeof(T));
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the provided assembly is a system assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to be checked.</param>
+        /// <returns>
+        /// <c>true</c> if the assembly is a system assembly, <c>false</c> if not.
+        /// </returns>
+        public static bool IsSystemAssembly(this Assembly assembly)
+        {
+            return IsSystemAssembly(assembly.GetName());
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the provided assembly is a system assembly.
+        /// </summary>
+        /// <param name="assemblyName">The assembly to be checked.</param>
+        /// <returns>
+        /// <c>true</c> if the assembly is a system assembly, <c>false</c> if not.
+        /// </returns>
+        public static bool IsSystemAssembly(this AssemblyName assemblyName)
+        {
+            return assemblyName.FullName.StartsWith("System") || assemblyName.FullName.StartsWith("mscorlib") || assemblyName.FullName.StartsWith("Microsoft") || assemblyName.FullName.StartsWith("vshost32");
+        }
     }
 }

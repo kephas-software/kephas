@@ -36,7 +36,7 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServicesBuilder"/> class.
         /// </summary>
         public AmbientServicesBuilder()
-            : this(AmbientServices.Instance)
+            : this((AmbientServices)AmbientServices.Instance)
         {
         }
 

@@ -30,7 +30,7 @@ namespace Kephas
     /// (like in the case of the entities instatiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
-    public class AmbientServices : Expando
+    public class AmbientServices : Expando, IAmbientServices
     {
         /// <summary>
         /// The composition container.
@@ -77,7 +77,7 @@ namespace Kephas
         /// <value>
         /// The instance.
         /// </value>
-        public static AmbientServices Instance { get; private set; }
+        public static IAmbientServices Instance { get; }
 
         /// <summary>
         /// Gets or sets the composition container.
@@ -164,11 +164,11 @@ namespace Kephas
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>A logger for the provided name.</returns>
-        public static ILogger GetLogger(string loggerName)
+        public ILogger GetLogger(string loggerName)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(loggerName));
 
-            return Instance.LogManager.GetLogger(loggerName);
+            return this.LogManager.GetLogger(loggerName);
         }
 
         /// <summary>
@@ -178,11 +178,11 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
-        public static ILogger GetLogger(Type type)
+        public ILogger GetLogger(Type type)
         {
             Contract.Requires(type != null);
 
-            return Instance.LogManager.GetLogger(type);
+            return this.LogManager.GetLogger(type);
         }
 
         /// <summary>
@@ -192,9 +192,9 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
-        public static ILogger<T> GetLogger<T>()
+        public ILogger<T> GetLogger<T>()
         {
-            return new TypedLogger<T>(Instance.LogManager);
+            return new TypedLogger<T>(this.LogManager);
         }
     }
 }

@@ -105,13 +105,13 @@ namespace Kephas.Threading.Tasks
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="task">The task.</param>
         /// <returns>
-        /// A <see cref="WithServerContextAwaiter{TResult}"/>.
+        /// A <see cref="ServerThreadContextAwaiter{TResult}"/>.
         /// </returns>
-        public static WithServerContextAwaiter<TResult> WithServerContext<TResult>(this Task<TResult> task)
+        public static ServerThreadContextAwaiter<TResult> WithServerThreadingContext<TResult>(this Task<TResult> task)
         {
             Contract.Requires(task != null);
 
-            return new WithServerContextAwaiter<TResult>(task);
+            return new ServerThreadContextAwaiter<TResult>(task);
         }
 
         /// <summary>
@@ -122,13 +122,13 @@ namespace Kephas.Threading.Tasks
         /// </remarks>
         /// <param name="task">The task.</param>
         /// <returns>
-        /// A <see cref="WithServerContextAwaiter"/>.
+        /// A <see cref="ServerThreadContextAwaiter"/>.
         /// </returns>
-        public static WithServerContextAwaiter WithServerContext(this Task task)
+        public static ServerThreadContextAwaiter WithServerThreadingContext(this Task task)
         {
             Contract.Requires(task != null);
 
-            return new WithServerContextAwaiter(task);
+            return new ServerThreadContextAwaiter(task);
         }
     }
 }

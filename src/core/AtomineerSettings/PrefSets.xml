@@ -87,7 +87,7 @@
   <Format>
     <EntrySuppressNewlines value="false" />
     <GroupSuppressNewlines value="true" />
-    <AlignBlockStartColumns value="true" />
+    <AlignBlockStartColumns value="false" />
     <AccessLevelsToComment value="all" />
     <AccessLevelsApplyToAllCmds value="false" />
     <DeleteIllegalBlock value="true" />

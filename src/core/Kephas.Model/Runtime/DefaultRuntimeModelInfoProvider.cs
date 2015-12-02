@@ -74,7 +74,7 @@ namespace Kephas.Model.Runtime
             var runtimeElements = new HashSet<object>();
             foreach (var modelRegistry in this.modelRegistries)
             {
-                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerContext();
+                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerThreadingContext();
                 runtimeElements.AddRange(registryElements.Select(this.NormalizeRuntimeElement));
 
                 cancellationToken.ThrowIfCancellationRequested();

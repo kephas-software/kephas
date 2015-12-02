@@ -7,6 +7,7 @@
     using Kephas;
     using Kephas.Application;
     using Kephas.Composition.Mef;
+    using Kephas.Diagnostics;
     using Kephas.Hosting.Net45;
     using Kephas.Logging.NLog;
 
@@ -23,21 +24,21 @@
         /// </returns>
         public async Task StartAppAsync()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             Console.WriteLine("Application starting...");
 
-            var ambientServicesBuilder = await new AmbientServicesBuilder()
-                    .WithNLogManager()
-                    .WithNet45HostingEnvironment()
-                    .WithMefCompositionContainerAsync();
+            var elapsed = await Profiler.WithStopwatchAsync(
+                async () =>
+                    {
+                        var ambientServicesBuilder = await new AmbientServicesBuilder()
+                                .WithNLogManager()
+                                .WithNet45HostingEnvironment()
+                                .WithMefCompositionContainerAsync();
 
-            var bootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
-            await bootstrapper.StartAsync();
+                        var bootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
+                        await bootstrapper.StartAsync();
+                    });
 
-            stopwatch.Stop();
-            Console.WriteLine($"Application started. Elapsed: {stopwatch.Elapsed:c}.");
+            Console.WriteLine($"Application started. Elapsed: {elapsed:c}.");
         }
     }
 }

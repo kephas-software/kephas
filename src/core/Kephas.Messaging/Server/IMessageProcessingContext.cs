@@ -118,6 +118,14 @@ namespace Kephas.Messaging.Server
         public Exception Exception { get; set; }
 
         /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public abstract IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>
         /// <value>

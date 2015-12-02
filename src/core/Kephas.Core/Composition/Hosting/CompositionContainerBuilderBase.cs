@@ -23,6 +23,7 @@ namespace Kephas.Composition.Hosting
     using Kephas.Diagnostics;
     using Kephas.Hosting;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Resources;
 
     /// <summary>
@@ -303,8 +304,7 @@ namespace Kephas.Composition.Hosting
             Contract.Ensures(Contract.Result<ICompositionContext>() != null);
 
             ICompositionContext container = null;
-            this.Logger.Info("composition-container:create-container:begin");
-            var elapsed = Profiler.WithStopwatch(
+            Profiler.WithInfoStopwatch(
                 () =>
                 {
                     var assemblies = this.compositionAssemblies;
@@ -314,9 +314,8 @@ namespace Kephas.Composition.Hosting
                     }
 
                     container = this.CreateContainerWithConventions(assemblies);
-                });
-
-            this.Logger.Info($"composition-container:create-container:end. Elapsed {elapsed:c}.");
+                },
+                this.Logger);
 
             return container;
         }
@@ -330,16 +329,14 @@ namespace Kephas.Composition.Hosting
             Contract.Ensures(Contract.Result<Task<ICompositionContext>>() != null);
 
             ICompositionContext container = null;
-            this.Logger.Info("composition-container:create-container:begin");
-            var elapsed = await Profiler.WithStopwatchAsync(
+            await Profiler.WithInfoStopwatchAsync(
                 async () =>
                     {
                         var assemblies = await this.GetCompositionAssembliesAsync();
 
                         container = this.CreateContainerWithConventions(assemblies);
-                    });
-
-            this.Logger.Info($"composition-container:create-container:end. Elapsed {elapsed:c}.");
+                    },
+                this.Logger);
 
             return container;
         }
@@ -407,15 +404,15 @@ namespace Kephas.Composition.Hosting
                 return conventions;
             }
 
-            this.Logger.Debug("composition-container:get-conventions:begin. Convention assemblies: {0}.", string.Join(", ", assemblies.Select(a => a.GetName().Name)));
+            var assemblyNames = string.Join(", ", assemblies.Select(a => a.GetName().Name));
+            this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
 
-            var elapsed = Profiler.WithStopwatch(
+            Profiler.WithInfoStopwatch(
                 () =>
                 {
                     conventions.RegisterConventionsFrom(assemblies, parts);
-                });
-
-            this.Logger.Debug($"composition-container:get-conventions:end. Elapsed {elapsed:c}.");
+                },
+                this.Logger);
 
             return conventions;
         }
@@ -429,11 +426,11 @@ namespace Kephas.Composition.Hosting
         {
             searchPattern = searchPattern ?? this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
 
-            this.Logger.Debug("composition-container:get-assemblies:begin. Assemblies matching '{0}'.", searchPattern);
+            this.Logger.Debug($"{nameof(this.GetAssembliesAsync)}. With assemblies matching pattern '{searchPattern}'.");
 
             IList<Assembly> assemblies = null;
 
-            var elapsed = await Profiler.WithStopwatchAsync(
+            await Profiler.WithDebugStopwatchAsync(
                 async () =>
                 {
                     var appAssemblies = await this.HostingEnvironment.GetAppAssembliesAsync();
@@ -448,9 +445,8 @@ namespace Kephas.Composition.Hosting
                         var regex = new Regex(searchPattern);
                         assemblies = appAssemblies.Where(a => regex.IsMatch(a.FullName)).ToList();
                     }
-                });
-
-            this.Logger.Debug($"composition-container:get-assemblies:end. Elapsed: {elapsed:c}.");
+                },
+                this.Logger);
 
             return assemblies;
         }
@@ -465,8 +461,7 @@ namespace Kephas.Composition.Hosting
         /// </returns>
         private IEnumerable<Assembly> WhereNotSystemAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Func<Assembly, bool> isSystemAssembly = a => a.FullName.StartsWith("System") || a.FullName.StartsWith("mscorlib") || a.FullName.StartsWith("Microsoft") || a.FullName.StartsWith("vshost32");
-            return assemblies.Where(a => !isSystemAssembly(a));
+            return assemblies.Where(a => !a.IsSystemAssembly());
         }
 
         /// <summary>
