@@ -135,11 +135,10 @@ namespace Kephas.Composition.Mef
         }
 
         [Test]
-        [ExpectedException(typeof(CompositionFailedException))]
         public void GetExport_failure()
         {
             var container = this.CreateContainer();
-            var exported = container.GetExport(typeof(ExportedClass));
+            Assert.Throws<CompositionFailedException>(() => container.GetExport(typeof(ExportedClass)));
         }
 
         [Test]
@@ -166,12 +165,11 @@ namespace Kephas.Composition.Mef
         }
 
         [Test]
-        [ExpectedException(typeof(ObjectDisposedException))]
         public void Dispose()
         {
             var container = this.CreateContainer();
             container.Dispose();
-            var export = container.TryGetExport<IList<string>>();
+            Assert.Throws<ObjectDisposedException>(() => container.TryGetExport<IList<string>>());
         }
 
         [Test]

@@ -33,12 +33,10 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        [ExpectedException]
         public void GetValue_instance_null_throws()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
-            var result = dynamicTypeInfo.GetValue(null, string.Empty);
-            Assert.AreEqual(Undefined.Value, result);
+            Assert.That(() => dynamicTypeInfo.GetValue(null, string.Empty), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -77,11 +75,10 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        [ExpectedException]
         public void SetValue_instance_null_throws()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
-            dynamicTypeInfo.SetValue(null, string.Empty, null);
+            Assert.That(() => dynamicTypeInfo.SetValue(null, string.Empty, null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -114,14 +111,12 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        [ExpectedException]
         public void Invoke_instance_null_throws()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             var list = new List<string>();
             var ienum = (IEnumerable<object>)list;
-            var result = dynamicTypeInfo.Invoke(null, string.Empty, ienum);
-            Assert.AreEqual(null, result);
+            Assert.That(() => dynamicTypeInfo.Invoke(null, string.Empty, ienum), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -146,12 +141,11 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        [ExpectedException(typeof(MemberAccessException))]
         public void GetDynamicProperty_throwOnNotFound()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             object instance = new TestClass();
-            dynamicTypeInfo.GetValue(instance, string.Empty);
+            Assert.Throws<MemberAccessException>(() => dynamicTypeInfo.GetValue(instance, string.Empty));
         }
 
         public class TestClass

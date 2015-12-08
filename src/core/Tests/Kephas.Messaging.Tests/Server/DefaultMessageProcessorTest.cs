@@ -83,7 +83,6 @@ namespace Kephas.Messaging.Tests.Server
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public async Task ProcessAsync_exception()
         {
             var compositionContainer = Mock.Create<ICompositionContext>();
@@ -94,7 +93,7 @@ namespace Kephas.Messaging.Tests.Server
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+            Assert.Throws<InvalidOperationException>(() => processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken)));
         }
 
         [Test]

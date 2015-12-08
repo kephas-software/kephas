@@ -83,23 +83,19 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void RegisterConventions_Single_override_service_failure()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceConventionsRegistrar();
-            registrar.RegisterConventions(
+            Assert.Throws<InvalidOperationException>(() => registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleSameOverrideTestService).GetTypeInfo(),
-                    });
-
-            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
-            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
+                    }));
         }
 
         [Test]
@@ -216,19 +212,18 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
-        [ExpectedException(typeof(CompositionException))]
         public void RegisterConventions_bad_contract_type()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceConventionsRegistrar();
-            registrar.RegisterConventions(
-                conventions,
-                new[]
-                    {
-                        typeof(IBadAppService).GetTypeInfo(), 
-                        typeof(BadAppService).GetTypeInfo(), 
-                    });
+            Assert.Throws<CompositionException>(
+                () => registrar.RegisterConventions(
+                    conventions,
+                    new[] {
+                            typeof(IBadAppService).GetTypeInfo(), 
+                            typeof(BadAppService).GetTypeInfo(), 
+                        }));
         }
 
         [SharedAppServiceContract(AllowMultiple = false)]

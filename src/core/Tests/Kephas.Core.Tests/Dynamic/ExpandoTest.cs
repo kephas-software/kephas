@@ -79,33 +79,30 @@ namespace Kephas.Core.Tests.Dynamic
 
 
         [Test]
-        [ExpectedException(typeof(MemberAccessException))]
         public void ReadOnlyProperty_instance_setter()
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
 
-            expando.ReadOnlyFullName = "John Doe";
+            Assert.Throws<MemberAccessException>(() => expando.ReadOnlyFullName = "John Doe");
         }
 
         [Test]
-        [ExpectedException(typeof(MemberAccessException))]
         public void PrivateProperty_instance_getter()
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
 
-            var age = expando.PrivateAge;
+            Assert.Throws<MemberAccessException>(() => { var value = expando.PrivateAge; });
         }
 
         [Test]
-        [ExpectedException(typeof(MemberAccessException))]
         public void PrivateProperty_instance_setter()
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
 
-            expando.PrivateAge = "John Doe";
+            Assert.Throws<MemberAccessException>(() => expando.PrivateAge = "John Doe");
         }
 
         [Test]

@@ -40,11 +40,10 @@ namespace Kephas.Messaging.Tests.Server.Composition
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidCastException))]
         public void MessageHandlerMetadata_metadata_type_mismatch()
         {
             var metadata = new Dictionary<string, object> { { MessageHandlerMetadata.MessageTypeKey, "hello" } };
-            var instance = new MessageHandlerMetadata(metadata);
+            Assert.Throws<InvalidCastException>(() => new MessageHandlerMetadata(metadata));
         }
 
         [Test]

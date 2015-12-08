@@ -59,7 +59,6 @@ namespace Kephas.Composition.Mef
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void CreateContainer_assemblies_not_set()
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
@@ -67,7 +66,7 @@ namespace Kephas.Composition.Mef
             var mockPlatformManager = Mock.Create<IHostingEnvironment>();
 
             var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
-            var container = factory.CreateContainer();
+            Assert.Throws<InvalidOperationException>(() => factory.CreateContainer());
         }
 
         [Test]
@@ -192,29 +191,23 @@ namespace Kephas.Composition.Mef
         }
 
         [Test]
-        [ExpectedException(typeof(CompositionException))]
         public void GetExport_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilder();
-            var container = builder
+            Assert.Throws<CompositionException>(() => builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
-                .CreateContainer();
-
-            var export = container.GetExport<IConstructorAppService>();
+                .CreateContainer());
         }
 
         [Test]
-        [ExpectedException(typeof(CompositionException))]
         public void GetExport_AppService_multiple_constructor()
         {
             var builder = this.CreateCompositionContainerBuilder();
-            var container = builder
+            Assert.Throws<CompositionException>(() => builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
-                .CreateContainer();
-
-            var export = container.GetExport<IConstructorAppService>();
+                .CreateContainer());
         }
 
         [Test]

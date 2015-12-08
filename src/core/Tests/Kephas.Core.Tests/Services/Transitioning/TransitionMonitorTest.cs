@@ -43,32 +43,29 @@ namespace Kephas.Core.Tests.Services.Transitioning
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Start_twice_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Start();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Start());
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Start_after_complete_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
             monitor.Complete();
-            monitor.Start();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Start());
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Start_after_fault_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
             monitor.Fault();
-            monitor.Start();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Start());
         }
 
         [Test]
@@ -85,11 +82,10 @@ namespace Kephas.Core.Tests.Services.Transitioning
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Complete_not_started_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
-            monitor.Complete();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Complete());
         }
 
         [Test]
@@ -107,13 +103,12 @@ namespace Kephas.Core.Tests.Services.Transitioning
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Complete_on_faulted_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
             monitor.Fault();
-            monitor.Complete();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Complete());
         }
 
         [Test]
@@ -130,11 +125,10 @@ namespace Kephas.Core.Tests.Services.Transitioning
         }
 
         [Test]
-        [ExpectedException(typeof(ServiceTransitioningException))]
         public void Fault_not_started_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
-            monitor.Fault();
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Fault());
         }
 
         [Test]

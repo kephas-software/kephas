@@ -57,19 +57,17 @@ namespace Kephas.Model.Tests.Elements
         }
 
         [Test]
-        [ExpectedException]
         public void Constructor_Failure_ModelSpace_not_set()
         {
             var elementInfo = Mock.Create<INamedElementInfo>();
-            var element = new TestNamedElement(elementInfo, null);
+            Assert.That(() => new TestNamedElement(elementInfo, null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
-        [ExpectedException]
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var element = new TestNamedElement(null, modelSpace);
+            Assert.That(() => new TestNamedElement(null, modelSpace), Throws.InstanceOf<Exception>());
         }
 
         private interface ITestElement

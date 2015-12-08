@@ -10,7 +10,6 @@
 namespace Kephas.Core.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas;
@@ -29,11 +28,10 @@ namespace Kephas.Core.Tests
     public class AmbientServicesTest
     {
         [Test]
-        [ExpectedException]
         public void CompositionContainer_cannot_set_null()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.CompositionContainer = null;
+            Assert.That(() => ambientServices.CompositionContainer = null, Throws.InstanceOf<Exception>());
         }
 
         [Test]

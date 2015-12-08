@@ -33,20 +33,18 @@ namespace Kephas.Core.Tests.Serialization
         [Test]
         [TestCase(typeof(XmlFormat))]
         [TestCase(typeof(JsonFormat))]
-        [ExpectedException(typeof(KeyNotFoundException))]
         public void GetSerializer_WithContext_Exception(Type formatType)
         {
             var serializationService = new DefaultSerializationService(new List<IExportFactory<ISerializer, SerializerMetadata>>());
             var context = new SerializationContext(formatType);
-            var serializer = serializationService.GetSerializer(context);
+            Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
         }
 
         [Test]
-        [ExpectedException(typeof(KeyNotFoundException))]
         public void GetSerializer_NoContext_Exception()
         {
             var serializationService = new DefaultSerializationService(new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            var serializer = serializationService.GetSerializer();
+            Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer());
         }
 
         [Test]
