@@ -93,7 +93,7 @@ namespace Kephas.Messaging.Tests.Server
             compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.Throws<InvalidOperationException>(() => processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken)));
+            Assert.That(() => processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<InvalidOperationException>());
         }
 
         [Test]
