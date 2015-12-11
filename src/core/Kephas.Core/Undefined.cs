@@ -12,7 +12,7 @@ namespace Kephas
     /// <summary>
     /// Type used for providing undefined values.
     /// </summary>
-    public class Undefined
+    public sealed class Undefined
     {
         /// <summary>
         /// The single value of the <see cref="Undefined"/> type.
@@ -24,6 +24,17 @@ namespace Kephas
         /// </summary>
         private Undefined()
         {
-        } 
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return "(undefined)";
+        }
     }
 }

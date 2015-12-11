@@ -10,8 +10,10 @@
 namespace Kephas.Data
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,6 +24,19 @@ namespace Kephas.Data
     /// </summary>
     public abstract class DataRepositoryBase : Expando, IDataRepository
     {
+        /// <summary>
+        /// The <see cref="MethodInfo"/> of the generic <see cref="FindAsync{T}"/> method.
+        /// </summary>
+        private static MethodInfo findAsyncGenericMethodInfo;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataRepositoryBase"/> class.
+        /// </summary>
+        protected DataRepositoryBase()
+        {
+            EnsureStaticGenericMethodInfosInitialized();
+        }
+
         /// <summary>
         /// Searches for the entity with the provided ID and returns it asynchronously.
         /// </summary>
@@ -87,7 +102,10 @@ namespace Kephas.Data
             IFindContext findContext = null,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            throw new NotImplementedException();
+            var entityImplementationType = this.GetEntityImplementationType(entityType);
+
+            var findAsyncMethodInfo = findAsyncGenericMethodInfo.MakeGenericMethod(entityImplementationType);
+            findAsyncMethodInfo.CreateDelegate()
         }
 
         /// <summary>
@@ -111,6 +129,32 @@ namespace Kephas.Data
         public virtual IQueryable Query(Type entityType, IQueryContext queryContext = null)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the entity implementation type based on the provided contract type.
+        /// </summary>
+        /// <param name="contractType">The entity contract type.</param>
+        /// <returns>
+        /// The entity implementation type.
+        /// </returns>
+        protected virtual Type GetEntityImplementationType(Type contractType)
+        {
+            Contract.Requires(contractType != null);
+
+            return contractType;
+        }
+
+        /// <summary>
+        /// Initializes the static generic method infos.
+        /// </summary>
+        private static void EnsureStaticGenericMethodInfosInitialized()
+        {
+            if (findAsyncGenericMethodInfo == null)
+            {
+                var repositoryType = typeof(DataRepositoryBase);
+                findAsyncGenericMethodInfo = repositoryType.GetRuntimeMethod(nameof(FindAsync), new[] { typeof(Type), typeof(Id), typeof(IFindContext), typeof(CancellationToken) });
+            }
         }
     }
 }

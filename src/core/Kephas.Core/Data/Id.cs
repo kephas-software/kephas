@@ -43,7 +43,7 @@ namespace Kephas.Data
         {
             isUnsetValueTester = value =>
             {
-                if (value == null)
+                if (value == null || value == Undefined.Value)
                 {
                     return true;
                 }
@@ -83,7 +83,7 @@ namespace Kephas.Data
         /// <value>
         ///   <c>true</c> if this instance is considered unset; otherwise, <c>false</c>.
         /// </value>
-        public bool IsUnset => this.value == null;
+        public bool IsUnset => this.value == null || this.value == Undefined.Value;
 
         /// <summary>
         /// Gets or sets a function to determine whether a specified value is considered unset.
@@ -105,6 +105,95 @@ namespace Kephas.Data
                 isUnsetValueTester = value;
             }
         }
+
+        /// <summary>
+        /// Implicit cast that converts the given int to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(int value)
+        {
+            return new Id(value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given int? to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(int? value)
+        {
+            return value == null ? null : new Id(value.Value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given long to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(long value)
+        {
+            return new Id(value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given long? to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(long? value)
+        {
+            return value == null ? null : new Id(value.Value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given GUID to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(Guid value)
+        {
+            return new Id(value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given Guid? to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(Guid? value)
+        {
+            return value == null ? null : new Id(value.Value);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given string to an ID.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Id(string value)
+        {
+            return value == null ? null : new Id(value);
+        }
+
+        /// <summary>
+        /// Gets the IDs underlzing value.
+        /// </summary>
+        public object Value => this.value;
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -158,5 +247,16 @@ namespace Kephas.Data
         /// A hash code for the current object.
         /// </returns>
         public override int GetHashCode() => this.value?.GetHashCode() ?? 0;
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"id({this.value ?? "null"})";
+        }
     }
 }

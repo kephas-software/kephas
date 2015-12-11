@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="AmbientServicesTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
+    <Compile Include="Data\IdTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
     <Compile Include="Dynamic\DynamicTypeInfoTest.cs" />
     <Compile Include="Extensions\ObjectExtensionsTest.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
     <Compile Include="Services\ContextBaseTest.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
+    <Compile Include="UndefinedTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
