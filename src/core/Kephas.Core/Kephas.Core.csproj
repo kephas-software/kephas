@@ -159,6 +159,7 @@
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Data\Id.cs" />
     <Compile Include="Data\IIdentifiable.cs" />
+    <Compile Include="IInstance.cs" />
     <Compile Include="Dynamic\Expando.cs" />
     <Compile Include="Dynamic\IDynamicMethodInfo.cs" />
     <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
@@ -170,7 +171,8 @@
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="IAmbientServices.cs" />
     <Compile Include="Logging\TypedLogger.cs" />
-    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Reflection\ITypeInfo.cs" />
     <Compile Include="Reflection\TypeInfoExtensions.cs" />
     <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
     <Compile Include="Serialization\DefaultSerializationService.cs" />

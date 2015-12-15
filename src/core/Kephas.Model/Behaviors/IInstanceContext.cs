@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
+namespace Kephas.Model.Behaviors
 {
     using Kephas.Model;
     using Kephas.Services;

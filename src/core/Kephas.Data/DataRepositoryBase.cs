@@ -105,7 +105,7 @@ namespace Kephas.Data
             var entityImplementationType = this.GetEntityImplementationType(entityType);
 
             var findAsyncMethodInfo = findAsyncGenericMethodInfo.MakeGenericMethod(entityImplementationType);
-            findAsyncMethodInfo.CreateDelegate()
+            throw new NotImplementedException();
         }
 
         /// <summary>

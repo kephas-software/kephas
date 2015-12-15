@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectExtensionsTest.cs" company="Quartz Software SRL">
+// <copyright file="DynamicObjectExtensionsTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="ObjectExtensions" />
+//   Tests for <see cref="DynamicObjectExtensions" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Extensions
+namespace Kephas.Core.Tests
 {
     using System.Collections.Generic;
     using System.Dynamic;
@@ -15,10 +15,10 @@ namespace Kephas.Core.Tests.Extensions
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="ObjectExtensions"/>
+    /// Tests for <see cref="DynamicObjectExtensions"/>
     /// </summary>
     [TestFixture]
-    public class ObjectExtensionsTest
+    public class DynamicObjectExtensionsTest
     {
         [Test]
         public void ToDynamic_dynamic()

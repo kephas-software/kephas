@@ -15,12 +15,13 @@ namespace Kephas.Model
     using System.Linq.Expressions;
 
     using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract for classifiers.
     /// </summary>
     [ContractClass(typeof(ClassifierContractClass))]
-    public interface IClassifier : IModelElement
+    public interface IClassifier : IModelElement, ITypeInfo
     {
         /// <summary>
         /// Gets the projection where the model element is defined.

@@ -33,6 +33,13 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void Name_test()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            Assert.AreEqual("TestClass", dynamicTypeInfo.Name);
+        }
+
+        [Test]
         public void GetValue_instance_null_throws()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));

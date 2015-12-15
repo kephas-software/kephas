@@ -7,9 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
+namespace Kephas
 {
-    using Kephas.Model;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract for instances of classifiers.
@@ -17,11 +17,11 @@ namespace Kephas.Data
     public interface IInstance
     {
         /// <summary>
-        /// Gets the classifier for this instance.
+        /// Gets the type information for this instance.
         /// </summary>
         /// <returns>
-        /// The classifier.
+        /// The type information.
         /// </returns>
-        IClassifier GetClassifier();
+        ITypeInfo GetTypeInfo();
     }
 }

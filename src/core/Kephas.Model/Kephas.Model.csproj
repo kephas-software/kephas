@@ -150,8 +150,8 @@
     <Compile Include="Configuration\Composition\ElementConfiguratorMetadata.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
-    <Compile Include="Data\IInstanceContext.cs" />
-    <Compile Include="Data\InstanceContext.cs" />
+    <Compile Include="Behaviors\IInstanceContext.cs" />
+    <Compile Include="Behaviors\InstanceContext.cs" />
     <Compile Include="Dimensions\AppLayer\IKephasAppLayerDimensionElement.cs" />
     <Compile Include="Dimensions\Aspect\IMainAspectDimensionElement.cs" />
     <Compile Include="Dimensions\IModelDimension.cs" />
@@ -179,7 +179,6 @@
     <Compile Include="Elements\Property.cs" />
     <Compile Include="Elements\ValueType.cs" />
     <Compile Include="Factory\IModelInfoProvider.cs" />
-    <Compile Include="Data\IInstance.cs" />
     <Compile Include="IReferenceType.cs" />
     <Compile Include="IValueType.cs" />
     <Compile Include="Properties\Model.AssemblyInfo.cs" />

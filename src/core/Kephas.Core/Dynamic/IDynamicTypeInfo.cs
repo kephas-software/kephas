@@ -16,11 +16,13 @@ namespace Kephas.Dynamic
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Contract for a dynamic <see cref="TypeInfo"/>.
     /// </summary>
     [ContractClass(typeof(DynamicTypeInfoContractClass))]
-    public interface IDynamicTypeInfo : IExpando
+    public interface IDynamicTypeInfo : ITypeInfo
     {
         /// <summary>
         /// Gets the underlying <see cref="Type"/>.
@@ -129,6 +131,14 @@ namespace Kephas.Dynamic
     [ContractClassFor(typeof(IDynamicTypeInfo))]
     internal abstract class DynamicTypeInfoContractClass : IDynamicTypeInfo
     {
+        /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public abstract string Name { get; }
+
         /// <summary>
         /// Gets the underlying <see cref="IDynamicTypeInfo.Type"/>.
         /// </summary>

@@ -76,6 +76,14 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Gets the name of the type.
+        /// </summary>
+        /// <value>
+        /// The name of the type.
+        /// </value>
+        public string Name => this.Type?.Name;
+
+        /// <summary>
         /// Gets the type.
         /// </summary>
         /// <value>

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectExtensions.cs" company="Quartz Software SRL">
+// <copyright file="DynamicObjectExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Extension methods for objects.
+//   Dynamic extension methods for objects.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +16,9 @@ namespace Kephas
     using Kephas.Reflection;
 
     /// <summary>
-    /// Extension methods for objects.
+    /// Dynamic extension methods for objects.
     /// </summary>
-    public static class ObjectExtensions
+    public static class DynamicObjectExtensions
     {
         /// <summary>
         /// Dynamically sets the property value.
@@ -76,13 +76,8 @@ namespace Kephas
         /// <remarks>If the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
         public static object TryGetPropertyValue(this object obj, string propertyName)
         {
-            if (obj == null)
-            {
-                return Undefined.Value;
-            }
-
-            var dynamicType = obj.GetType().GetDynamicTypeInfo();
-            return dynamicType.TryGetValue(obj, propertyName);
+            var dynamicType = obj?.GetType().GetDynamicTypeInfo();
+            return dynamicType?.TryGetValue(obj, propertyName);
         }
 
         /// <summary>

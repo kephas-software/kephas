@@ -116,12 +116,7 @@ namespace Kephas.Behaviors
                 return reason;
             }
 
-            if (value == Undefined.Value)
-            {
-                return null;
-            }
-
-            return value.ToString();
+            return value == Undefined.Value ? null : value.ToString();
         }
     }
 }
