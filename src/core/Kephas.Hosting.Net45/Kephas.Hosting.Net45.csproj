@@ -127,7 +127,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\ServerAppInitializer.cs" />
+    <Compile Include="Application\ServerThreadContextAppInitializer.cs" />
     <Compile Include="Hosting\Net45\Net45AmbientServicesBuilderExtensions.cs" />
     <Compile Include="Hosting\Net45\Net45HostingEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

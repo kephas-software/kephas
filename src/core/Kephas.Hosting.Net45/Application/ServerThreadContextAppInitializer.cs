@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServerAppInitializer.cs" company="Quartz Software SRL">
+// <copyright file="ServerThreadContextAppInitializer.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -12,12 +12,14 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A server application initializer.
     /// </summary>
-    public class ServerAppInitializer : IAppInitializer
+    [ProcessingPriority(Priority.Highest)]
+    public class ServerThreadContextAppInitializer : IAppInitializer
     {
         /// <summary>
         /// Initializes the application asynchronously.
