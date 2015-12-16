@@ -107,6 +107,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The boostrapper start procedure was canceled, at {0:s}..
+        /// </summary>
+        internal static string DefaultAppBootstrapper_StartCanceled_Exception {
+            get {
+                return ResourceManager.GetString("DefaultAppBootstrapper_StartCanceled_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The boostrapper encountered an exception while starting, at {0:s}..
+        /// </summary>
+        internal static string DefaultAppBootstrapper_StartFaulted_Exception {
+            get {
+                return ResourceManager.GetString("DefaultAppBootstrapper_StartFaulted_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A serializer for the format type &apos;{0}&apos; was not found..
         /// </summary>
         internal static string DefaultSerializationService_SerializerNotFound_Exception {

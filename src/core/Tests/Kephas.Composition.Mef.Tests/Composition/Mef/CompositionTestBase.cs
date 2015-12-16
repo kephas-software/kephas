@@ -32,7 +32,7 @@ namespace Kephas.Composition.Mef
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionTestBase
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestSetup()
         {
             this.OnTestSetup();

@@ -9,7 +9,9 @@
 
 namespace Kephas.Services.Transitioning
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Class monitoring the state of a service transition.
@@ -61,10 +63,7 @@ namespace Kephas.Services.Transitioning
         /// <value>
         /// <c>true</c> if the transition is not started; otherwise, <c>false</c>.
         /// </value>
-        public bool IsNotStarted
-        {
-            get { return this.inProgress == null; }
-        }
+        public bool IsNotStarted => this.inProgress == null;
 
         /// <summary>
         /// Gets a value indicating whether the transition is in progress.
@@ -72,10 +71,7 @@ namespace Kephas.Services.Transitioning
         /// <value>
         /// <c>true</c> if the transition is in progress; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInProgress
-        {
-            get { return this.inProgress.HasValue && this.inProgress.Value; }
-        }
+        public bool IsInProgress => this.inProgress.HasValue && this.inProgress.Value;
 
         /// <summary>
         /// Gets a value indicating whether the transition is completed.
@@ -83,10 +79,7 @@ namespace Kephas.Services.Transitioning
         /// <value>
         /// <c>true</c> if the transition is completed; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCompleted
-        {
-            get { return this.inProgress.HasValue && !this.inProgress.Value; }
-        }
+        public bool IsCompleted => this.inProgress.HasValue && !this.inProgress.Value;
 
         /// <summary>
         /// Gets a value indicating whether the transition is completed succcessfully.
@@ -94,10 +87,7 @@ namespace Kephas.Services.Transitioning
         /// <value>
         /// <c>true</c> if the transition  is completed succcessfully; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCompletedSuccessfully
-        {
-            get { return this.inProgress.HasValue && !this.inProgress.Value && !this.IsFaulted; }
-        }
+        public bool IsCompletedSuccessfully => this.inProgress.HasValue && !this.inProgress.Value && !this.IsFaulted;
 
         /// <summary>
         /// Gets a value indicating whether the transition is faulted.
@@ -105,10 +95,15 @@ namespace Kephas.Services.Transitioning
         /// <value>
         /// <c>true</c> if the transition is faulted; otherwise, <c>false</c>.
         /// </value>
-        public bool IsFaulted
-        {
-            get { return this.isFaulted; }
-        }
+        public bool IsFaulted => this.isFaulted;
+
+        /// <summary>
+        /// Gets the exception in the case the transitioning is faulted.
+        /// </summary>
+        /// <value>
+        /// The exception.
+        /// </value>
+        public Exception Exception { get; private set; }
 
         /// <summary>
         /// Asserts that the service is not started.
@@ -190,8 +185,10 @@ namespace Kephas.Services.Transitioning
         /// <summary>
         /// Marks the transition as faulted.
         /// </summary>
-        public void Fault()
+        public void Fault(Exception exception)
         {
+            Contract.Requires(exception != null);
+
             if (this.IsFaulted)
             {
                 return;
@@ -204,6 +201,7 @@ namespace Kephas.Services.Transitioning
                 this.AssertIsInProgress();
                 this.inProgress = false;
                 this.isFaulted = true;
+                this.Exception = exception;
             }
         }
 

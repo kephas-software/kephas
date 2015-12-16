@@ -166,8 +166,6 @@ namespace Kephas
         /// <returns>A logger for the provided name.</returns>
         public ILogger GetLogger(string loggerName)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(loggerName));
-
             return this.LogManager.GetLogger(loggerName);
         }
 
@@ -180,8 +178,6 @@ namespace Kephas
         /// </returns>
         public ILogger GetLogger(Type type)
         {
-            Contract.Requires(type != null);
-
             return this.LogManager.GetLogger(type);
         }
 

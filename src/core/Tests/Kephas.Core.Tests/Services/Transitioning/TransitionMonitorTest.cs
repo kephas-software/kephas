@@ -9,6 +9,8 @@
 
 namespace Kephas.Core.Tests.Services.Transitioning
 {
+    using System;
+
     using Kephas.Services.Transitioning;
 
     using NUnit.Framework;
@@ -64,7 +66,7 @@ namespace Kephas.Core.Tests.Services.Transitioning
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Fault();
+            monitor.Fault(new Exception());
             Assert.Throws<ServiceTransitioningException>(() => monitor.Start());
         }
 
@@ -107,7 +109,7 @@ namespace Kephas.Core.Tests.Services.Transitioning
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Fault();
+            monitor.Fault(new Exception());
             Assert.Throws<ServiceTransitioningException>(() => monitor.Complete());
         }
 
@@ -116,7 +118,7 @@ namespace Kephas.Core.Tests.Services.Transitioning
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Fault();
+            monitor.Fault(new Exception());
             Assert.IsFalse(monitor.IsNotStarted);
             Assert.IsFalse(monitor.IsInProgress);
             Assert.IsTrue(monitor.IsCompleted);
@@ -128,7 +130,14 @@ namespace Kephas.Core.Tests.Services.Transitioning
         public void Fault_not_started_failure()
         {
             var monitor = new TransitionMonitor("init", "svc");
-            Assert.Throws<ServiceTransitioningException>(() => monitor.Fault());
+            Assert.Throws<ServiceTransitioningException>(() => monitor.Fault(new Exception()));
+        }
+
+        [Test]
+        public void Fault_must_provide_exception()
+        {
+            var monitor = new TransitionMonitor("init", "svc");
+            Assert.That(() => monitor.Fault(null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -136,8 +145,8 @@ namespace Kephas.Core.Tests.Services.Transitioning
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Fault();
-            monitor.Fault();
+            monitor.Fault(new Exception());
+            monitor.Fault(new Exception());
             Assert.IsFalse(monitor.IsNotStarted);
             Assert.IsFalse(monitor.IsInProgress);
             Assert.IsTrue(monitor.IsCompleted);
@@ -189,7 +198,7 @@ namespace Kephas.Core.Tests.Services.Transitioning
         {
             var monitor = new TransitionMonitor("init", "svc");
             monitor.Start();
-            monitor.Fault();
+            monitor.Fault(new Exception());
             monitor.Reset();
             Assert.IsTrue(monitor.IsNotStarted);
             Assert.IsFalse(monitor.IsInProgress);

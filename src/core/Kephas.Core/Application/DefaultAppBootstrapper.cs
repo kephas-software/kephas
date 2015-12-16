@@ -1,8 +1,16 @@
-﻿namespace Kephas.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultAppBootstrapper.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the default application bootstrapper class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -10,20 +18,21 @@
     using Kephas.Composition;
     using Kephas.Diagnostics;
     using Kephas.Logging;
+    using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A default application boostrapper.
+    /// A default application bootstrapper.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultAppBoostrapper : IAppBootstrapper
+    public class DefaultAppBootstrapper : IAppBootstrapper
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAppBoostrapper"/> class.
+        /// Initializes a new instance of the <see cref="DefaultAppBootstrapper"/> class.
         /// </summary>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public DefaultAppBoostrapper(ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
+        public DefaultAppBootstrapper(ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
         {
             this.AppIntializerFactories = appIntializerFactories ?? new List<IExportFactory<IAppInitializer, AppServiceMetadata>>();
         }
@@ -74,12 +83,12 @@
             }
             catch (OperationCanceledException)
             {
-                this.Logger.Error($"The boostrapper start procedure was canceled, at {DateTimeOffset.Now:s}.");
+                this.Logger.Error(Strings.DefaultAppBootstrapper_StartCanceled_Exception, DateTimeOffset.Now);
                 throw;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, $"The boostrapper encountered an exception while starting, at {DateTimeOffset.Now:s}.");
+                this.Logger.Error(ex, Strings.DefaultAppBootstrapper_StartFaulted_Exception, DateTimeOffset.Now);
                 throw;
             }
         }

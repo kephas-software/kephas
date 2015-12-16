@@ -98,9 +98,9 @@ namespace Kephas.Model.Services
 
                 this.initialization.Complete();
             }
-            catch
+            catch (Exception exception)
             {
-                this.initialization.Fault();
+                this.initialization.Fault(exception);
                 throw;
             }
         }
