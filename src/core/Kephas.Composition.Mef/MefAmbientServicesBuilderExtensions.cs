@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef
+namespace Kephas
 {
     using System;
     using System.Diagnostics.Contracts;

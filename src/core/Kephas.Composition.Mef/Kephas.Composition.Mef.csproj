@@ -139,7 +139,7 @@
     </Compile>
     <Compile Include="Composition\Mef\Hosting\MefCompositionContainerBuilder.cs" />
     <Compile Include="Composition\Mef\Hosting\MefCompositionContainer.cs" />
-    <Compile Include="Composition\Mef\MefAmbientServicesBuilderExtensions.cs" />
+    <Compile Include="MefAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
