@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{42523208-F30B-46C1-99FB-A1A1E079614C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas</RootNamespace>
+    <AssemblyName>Kephas.Core</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="AmbientServices.cs" />
+    <Compile Include="AmbientServicesBuilder.cs" />
+    <Compile Include="Application\AppBoostrapperExtensions.cs" />
+    <Compile Include="Application\AppContext.cs" />
+    <Compile Include="Application\DefaultAppBootstrapper.cs" />
+    <Compile Include="Application\IAppBootstrapper.cs" />
+    <Compile Include="Application\IAppContext.cs" />
+    <Compile Include="Application\IAppInitializer.cs" />
+    <Compile Include="Behaviors\BehaviorValue.cs" />
+    <Compile Include="Behaviors\IAsyncBehaviorRule.cs" />
+    <Compile Include="Behaviors\IBehaviorRule.cs" />
+    <Compile Include="Behaviors\IBehaviorValue.cs" />
+    <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Composition\AttributedModel\CompositionConstructorAttribute.cs" />
+    <Compile Include="Composition\AttributedModel\ExcludeFromCompositionAttribute.cs" />
+    <Compile Include="Composition\AttributedModel\ImportAttribute.cs" />
+    <Compile Include="Composition\AttributedModel\ImportManyAttribute.cs" />
+    <Compile Include="Composition\CompositionException.cs" />
+    <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
+    <Compile Include="Composition\Conventions\IConventionsBuilder.cs" />
+    <Compile Include="Composition\Conventions\IConventionsRegistrar.cs" />
+    <Compile Include="Composition\Conventions\IExportConventionsBuilder.cs" />
+    <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
+    <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
+    <Compile Include="Composition\Hosting\CompositionContainerBuilderBase.cs" />
+    <Compile Include="Composition\Hosting\NullCompositionContainer.cs" />
+    <Compile Include="Composition\ICompositionContext.cs" />
+    <Compile Include="Composition\IExport.cs" />
+    <Compile Include="Composition\IExportFactory.cs" />
+    <Compile Include="Composition\IExportProvider.cs" />
+    <Compile Include="Composition\Metadata\ExportMetadataBase.cs" />
+    <Compile Include="Composition\Metadata\IMetadataValue.cs" />
+    <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
+    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\IConfigurationProvider.cs" />
+    <Compile Include="Configuration\NullConfigurationManager.cs" />
+    <Compile Include="Data\Id.cs" />
+    <Compile Include="Data\IIdentifiable.cs" />
+    <Compile Include="Diagnostics\Logging\DebugConfigurationManager.cs" />
+    <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
+    <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
+    <Compile Include="Diagnostics\Profiler.cs" />
+    <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Dynamic\DynamicMethodInfo.cs" />
+    <Compile Include="Dynamic\DynamicPropertyInfo.cs" />
+    <Compile Include="Dynamic\DynamicTypeInfo.cs" />
+    <Compile Include="Dynamic\Expando.cs" />
+    <Compile Include="Dynamic\IDynamicMethodInfo.cs" />
+    <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
+    <Compile Include="Dynamic\IDynamicTypeInfo.cs" />
+    <Compile Include="Dynamic\IExpando.cs" />
+    <Compile Include="Hosting\IHostingEnvironment.cs" />
+    <Compile Include="Hosting\NullHostingEnvironment.cs" />
+    <Compile Include="IAmbientServices.cs" />
+    <Compile Include="IInstance.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILogManager.cs" />
+    <Compile Include="Logging\NullLogManager.cs" />
+    <Compile Include="Logging\TypedLogger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\ITypeInfo.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="Reflection\TypeInfoExtensions.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
+    <Compile Include="Serialization\DefaultSerializationService.cs" />
+    <Compile Include="Serialization\Formats\IFormat.cs" />
+    <Compile Include="Serialization\Formats\JsonFormat.cs" />
+    <Compile Include="Serialization\Formats\XmlFormat.cs" />
+    <Compile Include="Serialization\ISerializationContext.cs" />
+    <Compile Include="Serialization\ISerializationService.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\SerializationContext.cs" />
+    <Compile Include="Services\AppServiceContractAttribute.cs" />
+    <Compile Include="Services\AppServiceLifetime.cs" />
+    <Compile Include="Services\AppServiceMetadata.cs" />
+    <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
+    <Compile Include="Services\ContextBase.cs" />
+    <Compile Include="Services\IAsyncInitializable.cs" />
+    <Compile Include="Services\IContext.cs" />
+    <Compile Include="Services\NullServiceException.cs" />
+    <Compile Include="Services\OptionalServiceAttribute.cs" />
+    <Compile Include="Services\OverridePriorityAttribute.cs" />
+    <Compile Include="Services\Priority.cs" />
+    <Compile Include="Services\ProcessingPriorityAttribute.cs" />
+    <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
+    <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
+    <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
+    <Compile Include="Services\Transitioning\TransitionMonitor.cs" />
+    <Compile Include="Threading\Tasks\CompletedTask.cs" />
+    <Compile Include="Threading\Tasks\ServerThreadContextAwaiter.cs" />
+    <Compile Include="Threading\Tasks\ServerThreadContextBuilder.cs" />
+    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
+    <Compile Include="Threading\Tasks\ThreadContext.cs" />
+    <Compile Include="Undefined.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)Packages\$(ProjectName).NuGet.Packager\lib\
+copy /Y $(ProjectDir)$(OutDir)$(ProjectName).xml $(SolutionDir)Packages\$(ProjectName).NuGet.Packager\lib\
+copy /Y $(ProjectDir)$(OutDir)$(ProjectName).pdb $(SolutionDir)Packages\$(ProjectName).NuGet.Packager\lib\
+copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.dll $(SolutionDir)Packages\$(ProjectName).NuGet.Packager\lib\CodeContracts\
+copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.pdb $(SolutionDir)Packages\$(ProjectName).NuGet.Packager\lib\CodeContracts\
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
