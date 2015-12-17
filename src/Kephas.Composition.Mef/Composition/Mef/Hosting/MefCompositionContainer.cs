@@ -79,7 +79,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <typeparam name="T">The service type.</typeparam>
         /// <param name="contractName">The contract name.</param>
         /// <returns>
-        /// An object implementing <paramref name="{T}" />.
+        /// An object implementing <typeparamref name="T" />.
         /// </returns>
         public T GetExport<T>(string contractName = null)
         {
@@ -97,7 +97,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <typeparam name="T">The service type.</typeparam>
         /// <param name="contractName">The contract name.</param>
         /// <returns>
-        /// An enumeration of objects implementing <paramref name="{T}" />.
+        /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         public IEnumerable<T> GetExports<T>(string contractName = null)
         {
@@ -134,7 +134,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <typeparam name="T">The service type.</typeparam>
         /// <param name="contractName">The contract name.</param>
         /// <returns>
-        /// An object implementing <typeparamref name="{T}" />, or <c>null</c> if a service with the provided contract was not found.
+        /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
         public T TryGetExport<T>(string contractName = null)
         {
