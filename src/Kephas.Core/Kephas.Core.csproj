@@ -246,6 +246,7 @@
     <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
 copy /Y $(ProjectDir)$(OutDir)$(ProjectName).xml $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
 copy /Y $(ProjectDir)$(OutDir)$(ProjectName).pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
+mkdir $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
 copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.dll $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
 copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
 </PostBuildEvent>
