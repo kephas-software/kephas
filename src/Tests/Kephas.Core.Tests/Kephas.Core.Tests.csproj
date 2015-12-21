@@ -50,6 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="AmbientServicesBuilderTest.cs" />
     <Compile Include="AmbientServicesTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />

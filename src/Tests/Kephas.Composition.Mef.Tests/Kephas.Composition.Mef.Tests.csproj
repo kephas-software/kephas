@@ -70,6 +70,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="Composition\Mef\CompositionTestBase.cs" />
     <Compile Include="Composition\Mef\MefCompositionContainerBuilderTest.cs" />
     <Compile Include="Composition\Mef\MefCompositionContainerTest.cs" />

@@ -46,7 +46,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The properties.
         /// </value>
-        IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>> Properties { get; }
+        IDictionary<string, IDynamicPropertyInfo> Properties { get; }
 
         /// <summary>
         /// Gets the methods.
@@ -54,7 +54,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The methods.
         /// </value>
-        IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>> Methods { get; }
+        IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods { get; }
         
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -161,12 +161,12 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic properties.
         /// </value>
-        public IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>> Properties
+        public IDictionary<string, IDynamicPropertyInfo> Properties
         {
             get
             {
                 Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>>>() != null);
-                return Contract.Result<IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>>>();
+                return Contract.Result<IDictionary<string, IDynamicPropertyInfo>>();
             }
         }
 
@@ -176,12 +176,12 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        public IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>> Methods
+        public IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods
         {
             get
             {
                 Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>>>() != null);
-                return Contract.Result<IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>>>();
+                return Contract.Result<IDictionary<string, IEnumerable<IDynamicMethodInfo>>>();
             }
         }
 

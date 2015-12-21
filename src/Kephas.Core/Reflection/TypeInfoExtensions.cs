@@ -26,7 +26,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The provided <see cref="TypeInfo"/>'s associated <see cref="IDynamicTypeInfo"/>.
         /// </returns>
-        public static IDynamicTypeInfo GetDynamicTypeInfo(this TypeInfo typeInfo)
+        public static IDynamicTypeInfo AsDynamicTypeInfo(this TypeInfo typeInfo)
         {
             Contract.Requires(typeInfo != null);
 

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{918F8D47-7BF5-4005-A92A-7B9C62D3EF7A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Model.Tests</RootNamespace>
+    <AssemblyName>Kephas.Model.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="Telerik.JustMock, Version=2015.3.929.5, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JustMock.2015.3.929.5\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Elements\ModelDimensionElementTest.cs" />
+    <Compile Include="Elements\ModelDimensionTest.cs" />
+    <Compile Include="Elements\NamedElementBaseTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
+    <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactoryTest.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
+    <Compile Include="Runtime\Factory\RuntimePropertyInfoFactoryTest.cs" />
+    <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
+      <Project>{32fa6130-ddf0-4d2f-8057-a38ef9ed3d49}</Project>
+      <Name>Kephas.Composition.Mef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
+      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
+      <Name>Kephas.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj">
+      <Project>{965e1983-d19c-4d22-b6b9-8a3221520542}</Project>
+      <Name>Kephas.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj">
+      <Project>{af177881-80c4-4d2f-9d5e-761938918641}</Project>
+      <Name>Kephas.Composition.Mef.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Core.Tests\Kephas.Core.Tests.csproj">
+      <Project>{6dcfd4c6-26fa-46f0-a959-16d9acb40dd0}</Project>
+      <Name>Kephas.Core.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

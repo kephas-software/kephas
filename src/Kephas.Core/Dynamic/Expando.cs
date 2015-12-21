@@ -228,7 +228,7 @@ namespace Kephas.Dynamic
         {
             Contract.Ensures(Contract.Result<IDynamicTypeInfo>() != null);
 
-            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().GetDynamicTypeInfo());
+            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().AsDynamicTypeInfo());
         }
 
         /// <summary>

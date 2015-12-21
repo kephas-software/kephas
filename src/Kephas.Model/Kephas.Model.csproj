@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{965E1983-D19C-4D22-B6B9-8A3221520542}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Model</RootNamespace>
+    <AssemblyName>Kephas.Model</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Model.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Model.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="Behaviors\Behaviors.cd" />
+    <None Include="ModelContracts.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
+    <Compile Include="AttributedModel\Behaviors\RequiredAttribute.cs" />
+    <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
+    <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
+    <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
+    <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
+    <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
+    <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
+    <Compile Include="Behaviors\IInstanceContext.cs" />
+    <Compile Include="Behaviors\InstanceContext.cs" />
+    <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
+    <Compile Include="Behaviors\IValidBehaviorRule.cs" />
+    <Compile Include="Configuration\Composition\ElementConfiguratorMetadata.cs" />
+    <Compile Include="Configuration\ElementConfiguratorBase.cs" />
+    <Compile Include="Configuration\IElementConfigurator.cs" />
+    <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
+    <Compile Include="Dimensions\AppLayer\IKephasAppLayerDimensionElement.cs" />
+    <Compile Include="Dimensions\Aspect\IMainAspectDimensionElement.cs" />
+    <Compile Include="Dimensions\IAppLayerDimension.cs" />
+    <Compile Include="Dimensions\IAspectDimension.cs" />
+    <Compile Include="Dimensions\IModelDimension.cs" />
+    <Compile Include="Dimensions\IModuleDimension.cs" />
+    <Compile Include="Dimensions\IScopeDimension.cs" />
+    <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
+    <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
+    <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
+    <Compile Include="Elements\Annotation.cs" />
+    <Compile Include="Elements\Annotations\RequiredAnnotation.cs" />
+    <Compile Include="Elements\ClassifierBase.cs" />
+    <Compile Include="Elements\Construction\IAnnotationInfo.cs" />
+    <Compile Include="Elements\Construction\IClassifierInfo.cs" />
+    <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />
+    <Compile Include="Elements\Construction\IModelDimensionInfo.cs" />
+    <Compile Include="Elements\Construction\IModelElementInfo.cs" />
+    <Compile Include="Elements\Construction\IModelSpaceInfo.cs" />
+    <Compile Include="Elements\Construction\INamedElementInfo.cs" />
+    <Compile Include="Elements\Construction\Internal\IModelElementConstructor.cs" />
+    <Compile Include="Elements\Construction\Internal\IModelSpaceConstructor.cs" />
+    <Compile Include="Elements\Construction\Internal\INamedElementConstructor.cs" />
+    <Compile Include="Elements\Construction\IPropertyInfo.cs" />
+    <Compile Include="Elements\Construction\IValueTypeInfo.cs" />
+    <Compile Include="Elements\DefaultModelSpace.cs" />
+    <Compile Include="Elements\ElementNotFoundException.cs" />
+    <Compile Include="Elements\ModelDimension.cs" />
+    <Compile Include="Elements\ModelDimensionElement.cs" />
+    <Compile Include="Elements\ModelElementBase.cs" />
+    <Compile Include="Elements\ModelHelper.cs" />
+    <Compile Include="Elements\NamedElementBase.cs" />
+    <Compile Include="Elements\Property.cs" />
+    <Compile Include="Elements\ValueType.cs" />
+    <Compile Include="Factory\IModelInfoProvider.cs" />
+    <Compile Include="IAnnotation.cs" />
+    <Compile Include="IClassifier.cs" />
+    <Compile Include="IModelDimension.cs" />
+    <Compile Include="IModelDimensionElement.cs" />
+    <Compile Include="IModelElement.cs" />
+    <Compile Include="IModelProjection.cs" />
+    <Compile Include="IModelSpace.cs" />
+    <Compile Include="IModelSpaceProvider.cs" />
+    <Compile Include="INamedElement.cs" />
+    <Compile Include="IProperty.cs" />
+    <Compile Include="IReferenceType.cs" />
+    <Compile Include="IValueType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Model.AssemblyInfo.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Runtime\AttributedModel\AspectAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
+    <Compile Include="Runtime\Construction\Annotations\DefaultRuntimeAnnotationInfo.cs" />
+    <Compile Include="Runtime\Construction\Annotations\RuntimeAnnotationInfoBase.cs" />
+    <Compile Include="Runtime\Construction\Annotations\RuntimeRequiredAnnotationInfo.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeClassifierInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeModelElementInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\RuntimeNamedElementInfoBuilderBase.cs" />
+    <Compile Include="Runtime\Construction\Builders\ValueTypeInfoBuilder.cs" />
+    <Compile Include="Runtime\Construction\IRuntimeNamedElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeClassifierInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelDimensionInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeModelElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeNamedElementInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimePropertyInfo.cs" />
+    <Compile Include="Runtime\Construction\RuntimeValueTypeInfo.cs" />
+    <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
+    <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />
+    <Compile Include="Runtime\Factory\Annotations\DefaultRuntimeAnnotationInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\Annotations\RuntimeAnnotationInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\Annotations\RuntimeRequiredAnnotationInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\Composition\RuntimeElementInfoFactoryMetadata.cs" />
+    <Compile Include="Runtime\Factory\DefaultRuntimeElementInfoFactoryDispatcher.cs" />
+    <Compile Include="Runtime\Factory\IRuntimeElementInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\IRuntimeElementInfoFactoryDispatcher.cs" />
+    <Compile Include="Runtime\Factory\RuntimeClassifierInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactory.cs" />
+    <Compile Include="Runtime\Factory\RuntimeModelElementInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimeNamedElementInfoFactoryBase.cs" />
+    <Compile Include="Runtime\Factory\RuntimePropertyInfoFactory.cs" />
+    <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
+    <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
+    <Compile Include="Runtime\RuntimeModelInfoProviderBase.cs" />
+    <Compile Include="Services\DefaultModelSpaceProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
+      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
+      <Name>Kephas.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
+copy /Y $(ProjectDir)$(OutDir)$(ProjectName).xml $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
+copy /Y $(ProjectDir)$(OutDir)$(ProjectName).pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
+mkdir $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
+copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.dll $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
+copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

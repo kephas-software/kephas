@@ -12,6 +12,7 @@ namespace Kephas.Dynamic
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -105,7 +106,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic properties.
         /// </value>
-        public IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>> Properties => this.GetProperties();
+        public IDictionary<string, IDynamicPropertyInfo> Properties => this.GetProperties();
 
         /// <summary>
         /// Gets the dynamic methods.
@@ -113,7 +114,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        public IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>> Methods => this.GetMethods();
+        public IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods => this.GetMethods();
 
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -281,7 +282,7 @@ namespace Kephas.Dynamic
         private static IDictionary<string, IEnumerable<IDynamicMethodInfo>> CreateMethodInfos(Type type)
         {
             var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethodInfo>>(name, methods.Select(mi => (IDynamicMethodInfo)new DynamicMethodInfo(mi)).ToList()));
-            return methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IDynamicMethodInfo>)g.Value);
+            return new ReadOnlyDictionary<string, IEnumerable<IDynamicMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IDynamicMethodInfo>)g.Value));
         }
 
         /// <summary>
@@ -311,7 +312,7 @@ namespace Kephas.Dynamic
                 dynamicProperties.Add(propertyName, propertyAccessor);
             }
 
-            return dynamicProperties;
+            return new ReadOnlyDictionary<string, IDynamicPropertyInfo>(dynamicProperties);
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var objectTypeAccessor = obj.GetType().GetDynamicTypeInfo();
+            var objectTypeAccessor = obj.GetType().AsDynamicTypeInfo();
             objectTypeAccessor.SetValue(obj, propertyName, value);
         }
 
@@ -49,7 +49,7 @@ namespace Kephas
                 return false;
             }
 
-            var objectTypeAccessor = obj.GetType().GetDynamicTypeInfo();
+            var objectTypeAccessor = obj.GetType().AsDynamicTypeInfo();
             return objectTypeAccessor.TrySetValue(obj, propertyName, value);
         }
 
@@ -63,7 +63,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var dynamicType = obj.GetType().GetDynamicTypeInfo();
+            var dynamicType = obj.GetType().AsDynamicTypeInfo();
             return dynamicType.GetValue(obj, propertyName);
         }
 
@@ -76,8 +76,18 @@ namespace Kephas
         /// <remarks>If the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
         public static object TryGetPropertyValue(this object obj, string propertyName)
         {
-            var dynamicType = obj?.GetType().GetDynamicTypeInfo();
+            var dynamicType = obj?.GetType().AsDynamicTypeInfo();
             return dynamicType?.TryGetValue(obj, propertyName);
+        }
+
+        /// <summary>
+        /// Gets a dynamic type information out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>A dynamic type information for the provided object.</returns>
+        public static IDynamicTypeInfo GetDynamicTypeInfo(this object obj)
+        {
+            return obj?.GetType().AsDynamicTypeInfo();
         }
 
         /// <summary>
