@@ -55,7 +55,7 @@ namespace Kephas.Dynamic
         /// The methods.
         /// </value>
         IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods { get; }
-        
+
         /// <summary>
         /// Gets the value of the property with the specified name.
         /// </summary>
@@ -145,7 +145,14 @@ namespace Kephas.Dynamic
         /// <value>
         /// The type.
         /// </value>
-        public abstract Type Type { get; }
+        public Type Type
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<Type>() != null);
+                return Contract.Result<Type>();
+            }
+        }
 
         /// <summary>
         /// Gets the underlying <see cref="IDynamicTypeInfo.TypeInfo"/>.
@@ -153,7 +160,14 @@ namespace Kephas.Dynamic
         /// <value>
         /// The type.
         /// </value>
-        public abstract TypeInfo TypeInfo { get; }
+        public TypeInfo TypeInfo
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<TypeInfo>() != null);
+                return Contract.Result<TypeInfo>();
+            }
+        }
 
         /// <summary>
         /// Gets the dynamic properties.
