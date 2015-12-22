@@ -23,7 +23,9 @@
     <dependencies>
       <dependency id="Kephas.Core" version="3.0.0-rc1" />
     </dependencies>
-    <references></references>
+    <references>
+      <reference file="Kephas.Data.dll" />
+    </references>
     <tags>kephas framework serialization json quartz software</tags>
   </metadata>
   <files>

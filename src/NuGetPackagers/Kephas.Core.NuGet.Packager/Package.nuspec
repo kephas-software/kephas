@@ -22,7 +22,9 @@
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
     </dependencies>
-    <references></references>
+    <references>
+      <reference file="Kephas.Core.dll" />
+    </references>
     <tags>kephas framework core quartz software</tags>
   </metadata>
   <files>

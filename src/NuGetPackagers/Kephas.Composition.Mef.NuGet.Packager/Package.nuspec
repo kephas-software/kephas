@@ -24,7 +24,9 @@
       <dependency id="Kephas.Core" version="3.0.0-rc1" />
       <dependency id="Microsoft.Composition" version="1.0.30" />
     </dependencies>
-    <references></references>
+    <references>
+      <reference file="Kephas.Composition.Mef.dll" />
+    </references>
     <tags>kephas framework composition mef quartz software</tags>
   </metadata>
   <files>

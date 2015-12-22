@@ -24,7 +24,9 @@
       <dependency id="Kephas.Core" version="3.0.0-rc1" />
       <dependency id="Newtonsoft.Json" version="6.0.0" />
     </dependencies>
-    <references></references>
+    <references>
+      <reference file="Kephas.Serialization.Json.dll" />
+    </references>
     <tags>kephas framework serialization json quartz software</tags>
   </metadata>
   <files>
