@@ -68,6 +68,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.Net45.NuGet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.Net45", "Kephas.Hosting.Net45\Kephas.Hosting.Net45.csproj", "{C02B6804-DAB0-482B-B4C3-66CF8AF91256}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{344D159A-34BA-4F2F-97E1-983BCA5CF7D3}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Kephas.Core.docx = Documentation\Kephas.Core.docx
+		Documentation\ModelContracts.png = Documentation\ModelContracts.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{B5E8C7E1-C334-4C6C-B7C1-61D4618B21E7}"
+	ProjectSection(SolutionItems) = preProject
+		Deployment\DeployNugetPackages.cmd = Deployment\DeployNugetPackages.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

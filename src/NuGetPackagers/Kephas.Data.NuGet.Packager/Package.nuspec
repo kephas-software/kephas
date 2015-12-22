@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Data</id>
-    <version>3.0.0-rc1</version>
+    <version>3.0.0-rc3</version>
     <title>Kephas.Data</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0-rc1" />
+      <dependency id="Kephas.Core" version="3.0.0-rc3" />
     </dependencies>
     <references>
       <reference file="Kephas.Data.dll" />
