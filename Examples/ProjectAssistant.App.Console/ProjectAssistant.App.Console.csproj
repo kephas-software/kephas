@@ -34,19 +34,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kephas.Composition.Mef, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\packages\Kephas.Composition.Mef.3.0.0-rc2\lib\Kephas.Composition.Mef.dll</HintPath>
+      <HintPath>..\packages\Kephas.Composition.Mef.3.0.0-rc3\lib\Kephas.Composition.Mef.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\packages\Kephas.Core.3.0.0-rc1\lib\Kephas.Core.dll</HintPath>
+      <HintPath>..\packages\Kephas.Core.3.0.0-rc3\lib\Kephas.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Hosting.Net45, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\packages\Kephas.Hosting.Net45.3.0.0-rc1\lib\Kephas.Hosting.Net45.dll</HintPath>
+      <HintPath>..\packages\Kephas.Hosting.Net45.3.0.0-rc3\lib\Kephas.Hosting.Net45.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\packages\Kephas.Logging.NLog.3.0.0-rc1\lib\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\packages\Kephas.Logging.NLog.3.0.0-rc3\lib\Kephas.Logging.NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
