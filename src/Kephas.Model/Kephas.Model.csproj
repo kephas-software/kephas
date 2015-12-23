@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="Runtime\AttributedModel\AspectAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\AbstractAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
     <Compile Include="Runtime\Construction\Annotations\DefaultRuntimeAnnotationInfo.cs" />
