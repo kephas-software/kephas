@@ -36,7 +36,24 @@ namespace Kephas.Dynamic
             Contract.Requires(methodInfo != null);
 
             this.MethodInfo = methodInfo;
+            this.Name = methodInfo.Name;
         }
+
+        /// <summary>
+        /// Gets the name of the element.
+        /// </summary>
+        /// <value>
+        /// The name of the element.
+        /// </value>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public IEnumerable<object> Annotations => this.MethodInfo.GetCustomAttributes();
 
         /// <summary>
         /// Gets the method info.

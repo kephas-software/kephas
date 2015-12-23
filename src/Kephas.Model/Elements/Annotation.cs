@@ -9,6 +9,9 @@
 
 namespace Kephas.Model.Elements
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
     using Kephas.Model.Elements.Construction;
 
     /// <summary>
@@ -16,6 +19,11 @@ namespace Kephas.Model.Elements
     /// </summary>
     public class Annotation : NamedElementBase<IAnnotation, IAnnotationInfo>, IAnnotation
     {
+        /// <summary>
+        /// The empty annotations.
+        /// </summary>
+        private static readonly IReadOnlyList<IAnnotation> EmptyAnnotations = new ReadOnlyCollection<IAnnotation>(new List<IAnnotation>());
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Annotation"/> class.
         /// </summary>
@@ -38,5 +46,13 @@ namespace Kephas.Model.Elements
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         public bool AllowMultiple { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public override IEnumerable<IAnnotation> Annotations => EmptyAnnotations;
     }
 }

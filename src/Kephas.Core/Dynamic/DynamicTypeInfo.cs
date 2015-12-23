@@ -61,9 +61,8 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="type">The type.</param>
         internal DynamicTypeInfo(Type type)
+            : this(type, type.GetTypeInfo())
         {
-            this.Type = type;
-            this.TypeInfo = type.GetTypeInfo();
         }
 
         /// <summary>
@@ -71,9 +70,20 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         internal DynamicTypeInfo(TypeInfo typeInfo)
+            : this(typeInfo.AsType(), typeInfo)
         {
-            this.Type = typeInfo.AsType();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        private DynamicTypeInfo(Type type, TypeInfo typeInfo)
+        {
+            this.Type = type;
             this.TypeInfo = typeInfo;
+            this.Name = type.Name;
         }
 
         /// <summary>
@@ -82,7 +92,15 @@ namespace Kephas.Dynamic
         /// <value>
         /// The name of the type.
         /// </value>
-        public string Name => this.Type?.Name;
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public IEnumerable<object> Annotations => this.TypeInfo.GetCustomAttributes();
 
         /// <summary>
         /// Gets the type.

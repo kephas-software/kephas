@@ -47,12 +47,12 @@ namespace Kephas.Model.Elements
         public virtual IEnumerable<INamedElement> Members => this.members.Values;
 
         /// <summary>
-        /// Gets the annotations of this model element.
+        /// Gets the element annotations.
         /// </summary>
         /// <value>
-        /// The model element annotations.
+        /// The element annotations.
         /// </value>
-        public virtual IEnumerable<IAnnotation> Annotations => this.members.OfType<IAnnotation>();
+        public override IEnumerable<IAnnotation> Annotations => this.members.OfType<IAnnotation>();
 
         /// <summary>
         /// Gets the base model element.

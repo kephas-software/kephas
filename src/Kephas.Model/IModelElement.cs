@@ -16,7 +16,7 @@ namespace Kephas.Model
     using System.Linq;
     using System.Linq.Expressions;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract providing base information about a model element.
@@ -31,14 +31,6 @@ namespace Kephas.Model
         /// The model element members.
         /// </value>
         IEnumerable<INamedElement> Members { get; }
-
-        /// <summary>
-        /// Gets the annotations of this model element.
-        /// </summary>
-        /// <value>
-        /// The model element annotations.
-        /// </value>
-        IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
         /// Gets the base model element.
@@ -116,6 +108,14 @@ namespace Kephas.Model
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
         /// Gets the qualified name of the element.
         /// </summary>
         /// <value>
@@ -158,6 +158,14 @@ namespace Kephas.Model
         public abstract string FullyQualifiedName { get; }
 
         /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<IElementInfo> Parts { get; }
+
+        /// <summary>
         /// Gets the container element.
         /// </summary>
         /// <value>
@@ -172,14 +180,6 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
-
-        /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer

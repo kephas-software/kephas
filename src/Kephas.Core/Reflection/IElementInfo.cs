@@ -1,58 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicPropertyInfo.cs" company="Quartz Software SRL">
+// <copyright file="IElementInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract for dynamically accessing a property.
+//   Contract providing base element information.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Reflection
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq.Expressions;
-    using System.Reflection;
 
-    using Kephas.Reflection;
-
-    /// <summary>
-    /// Contract for a dynamic <see cref="PropertyInfo"/>.
-    /// </summary>
-    [ContractClass(typeof(DynamicPropertyInfoContractClass))]
-    public interface IDynamicPropertyInfo : IPropertyInfo
-    {
-        /// <summary>
-        /// Gets the property information.
-        /// </summary>
-        /// <value>
-        /// The property information.
-        /// </value>
-        PropertyInfo PropertyInfo { get; }
-
-        /// <summary>
-        /// Sets the specified value.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="value">The value.</param>
-        void SetValue(object obj, object value);
-
-        /// <summary>
-        /// Gets the value from the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        object GetValue(object obj);
-    }
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// Contract class for <see cref="IDynamicPropertyInfo"/>.
+    /// Contract providing base element information.
     /// </summary>
-    [ContractClassFor(typeof(IDynamicPropertyInfo))]
-    internal abstract class DynamicPropertyInfoContractClass : IDynamicPropertyInfo
+    [ContractClass(typeof(ElementInfoContractClass))]
+    public interface IElementInfo : IExpando
     {
         /// <summary>
         /// Gets the name of the element.
@@ -60,7 +28,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The name of the element.
         /// </value>
-        public abstract string Name { get; }
+        string Name { get; }
 
         /// <summary>
         /// Gets the element annotations.
@@ -68,21 +36,44 @@ namespace Kephas.Dynamic
         /// <value>
         /// The element annotations.
         /// </value>
-        public abstract IEnumerable<object> Annotations { get; }
+        IEnumerable<object> Annotations { get; }
+    }
 
+    /// <summary>
+    /// Contract class for <see cref="IElementInfo"/>.
+    /// </summary>
+    [ContractClassFor(typeof(IElementInfo))]
+    internal abstract class ElementInfoContractClass : IElementInfo
+    {
         /// <summary>
-        /// Gets the property information.
+        /// Gets the name of the element.
         /// </summary>
         /// <value>
-        /// The property information.
+        /// The name of the element.
         /// </value>
-        public PropertyInfo PropertyInfo
+        public string Name
         {
             get
             {
-                Contract.Ensures(Contract.Result<PropertyInfo>() != null);
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
 
-                return Contract.Result<PropertyInfo>();
+                return Contract.Result<string>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public IEnumerable<object> Annotations
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<object>>() != null);
+
+                return Contract.Result<IEnumerable<object>>();
             }
         }
 
@@ -110,21 +101,5 @@ namespace Kephas.Dynamic
         /// </returns>
         /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
-
-        /// <summary>
-        /// Sets the specified value.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="value">The value.</param>
-        public abstract void SetValue(object obj, object value);
-
-        /// <summary>
-        /// Gets the value from the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        public abstract object GetValue(object obj);
     }
 }

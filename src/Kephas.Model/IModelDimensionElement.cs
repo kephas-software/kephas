@@ -15,7 +15,7 @@ namespace Kephas.Model
     using System.Linq.Expressions;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract for model dimension elements.
@@ -39,6 +39,22 @@ namespace Kephas.Model
         /// The element name.
         /// </value>
         public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the annotations of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element annotations.
+        /// </value>
+        public abstract IEnumerable<IAnnotation> Annotations { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
 
         /// <summary>
         /// Gets the qualified name of the element.
@@ -99,14 +115,6 @@ namespace Kephas.Model
         public abstract IModelSpace ModelSpace { get; }
 
         /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
-
-        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -130,5 +138,13 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<IElementInfo> Parts { get; }
     }
 }

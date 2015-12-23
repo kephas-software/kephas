@@ -13,8 +13,8 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Elements.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base class for named elements.
@@ -22,12 +22,12 @@ namespace Kephas.Model.Elements
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
     public abstract class NamedElementBase<TModelContract, TElementInfo> : Expando, INamedElement, INamedElementConstructor
-        where TElementInfo : class, INamedElementInfo
+        where TElementInfo : class, IElementInfo
     {
         /// <summary>
         /// The underlying element infos.
         /// </summary>
-        private readonly IList<INamedElementInfo> underlyingElementInfos;
+        private readonly IList<IElementInfo> parts;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract, TElementInfo}" /> class.
@@ -44,7 +44,7 @@ namespace Kephas.Model.Elements
             this.ModelSpace = modelSpace;
             this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + elementInfo.Name;
 
-            this.underlyingElementInfos = new List<INamedElementInfo> { elementInfo };
+            this.parts = new List<IElementInfo> { elementInfo };
         }
 
         /// <summary>
@@ -53,7 +53,31 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model element name.
         /// </value>
-        public string Name { get; private set; }
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the annotations of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element annotations.
+        /// </value>
+        public abstract IEnumerable<IAnnotation> Annotations { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        IEnumerable<IElementInfo> IAggregatedElementInfo.Parts => this.parts;
 
         /// <summary>
         /// Gets or sets the qualified name of the element.
@@ -112,14 +136,6 @@ namespace Kephas.Model.Elements
         /// The model space.
         /// </value>
         public virtual IModelSpace ModelSpace { get; private set; }
-
-        /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        public IEnumerable<INamedElementInfo> UnderlyingElementInfos => this.underlyingElementInfos;
 
         /// <summary>
         /// Sets the element container.

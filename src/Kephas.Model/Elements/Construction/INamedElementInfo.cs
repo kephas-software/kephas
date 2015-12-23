@@ -10,26 +10,19 @@
 namespace Kephas.Model.Elements.Construction
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq.Expressions;
 
-    using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Information for constructing named elements.
     /// </summary>
     [ContractClass(typeof(NamedElementInfoContractClass))]
-    public interface INamedElementInfo : IExpando
+    public interface INamedElementInfo : IElementInfo
     {
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; }
-
         /// <summary>
         /// Gets the function used to select the container.
         /// </summary>
@@ -54,14 +47,15 @@ namespace Kephas.Model.Elements.Construction
         /// <value>
         /// The name.
         /// </value>
-        public string Name
-        {
-            get
-            {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
-                return Contract.Result<string>();
-            }
-        }
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public abstract IEnumerable<object> Annotations { get; }
 
         /// <summary>
         /// Gets or sets the function used to select the container.

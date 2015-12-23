@@ -10,6 +10,7 @@
 namespace Kephas.Dynamic
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     /// <summary>
@@ -43,7 +44,24 @@ namespace Kephas.Dynamic
         internal DynamicPropertyInfo(PropertyInfo propertyInfo)
         {
             this.PropertyInfo = propertyInfo;
+            this.Name = propertyInfo.Name;
         }
+
+        /// <summary>
+        /// Gets the name of the element.
+        /// </summary>
+        /// <value>
+        /// The name of the element.
+        /// </value>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public IEnumerable<object> Annotations => this.PropertyInfo.GetCustomAttributes();
 
         /// <summary>
         /// Gets the property information.

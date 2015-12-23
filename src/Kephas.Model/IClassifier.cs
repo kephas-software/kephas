@@ -14,7 +14,6 @@ namespace Kephas.Model
     using System.Dynamic;
     using System.Linq.Expressions;
 
-    using Kephas.Model.Elements.Construction;
     using Kephas.Reflection;
 
     /// <summary>
@@ -78,6 +77,14 @@ namespace Kephas.Model
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
         /// Gets the qualified name of the element.
         /// </summary>
         /// <value>
@@ -114,14 +121,6 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         public abstract IModelSpace ModelSpace { get; }
-
-        /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        public abstract IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
 
         /// <summary>
         /// Gets the members of this model element.
@@ -181,5 +180,13 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<IElementInfo> Parts { get; }
     }
 }

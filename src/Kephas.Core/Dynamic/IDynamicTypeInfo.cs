@@ -140,6 +140,14 @@ namespace Kephas.Dynamic
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public abstract IEnumerable<object> Annotations { get; }
+
+        /// <summary>
         /// Gets the underlying <see cref="IDynamicTypeInfo.Type"/>.
         /// </summary>
         /// <value>

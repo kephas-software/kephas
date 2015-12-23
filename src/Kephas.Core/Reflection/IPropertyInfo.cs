@@ -1,18 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITypeInfo.cs" company="Quartz Software SRL">
+// <copyright file="IPropertyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Contract providing type information.
+//   Contract providing property information.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Reflection
 {
     /// <summary>
-    /// Contract providing type information.
+    /// Contract providing property information.
     /// </summary>
-    public interface ITypeInfo : IElementInfo
+    public interface IPropertyInfo : IElementInfo
     {
     }
 }

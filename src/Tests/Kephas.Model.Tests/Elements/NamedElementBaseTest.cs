@@ -10,6 +10,7 @@
 namespace Kephas.Model.Tests.Elements
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.AttributedModel;
@@ -85,6 +86,14 @@ namespace Kephas.Model.Tests.Elements
                 : base(elementInfo, modelSpace)
             {
             }
+
+            /// <summary>
+            /// Gets the annotations of this model element.
+            /// </summary>
+            /// <value>
+            /// The model element annotations.
+            /// </value>
+            public override IEnumerable<IAnnotation> Annotations => new List<IAnnotation>();
         }
 
         private class TestNamedElementWithDiscriminator : NamedElementBase<ITestElementWithDiscriminator, INamedElementInfo>
@@ -93,6 +102,14 @@ namespace Kephas.Model.Tests.Elements
                 : base(elementInfo, modelSpace)
             {
             }
+
+            /// <summary>
+            /// Gets the annotations of this model element.
+            /// </summary>
+            /// <value>
+            /// The model element annotations.
+            /// </value>
+            public override IEnumerable<IAnnotation> Annotations => new List<IAnnotation>();
         }
     }
 }

@@ -1,7 +1,19 @@
-﻿namespace Kephas.Model.Runtime.Construction.Annotations
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RuntimeRequiredAnnotationInfo.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Information about the runtime required annotation.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Runtime.Construction.Annotations
 {
     using Kephas.Model.AttributedModel.Behaviors;
 
+    /// <summary>
+    /// Information about the runtime required annotation.
+    /// </summary>
     public class RuntimeRequiredAnnotationInfo : RuntimeAnnotationInfoBase<RequiredAttribute>
     {
         /// <summary>

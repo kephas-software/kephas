@@ -14,23 +14,14 @@ namespace Kephas.Model
     using System.Dynamic;
     using System.Linq.Expressions;
 
-    using Kephas.Dynamic;
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract for named elements.
     /// </summary>
     [ContractClass(typeof(NamedElementContractClass))]
-    public interface INamedElement : IExpando
+    public interface INamedElement : IAggregatedElementInfo
     {
-        /// <summary>
-        /// Gets the friendly name of the element.
-        /// </summary>
-        /// <value>
-        /// The element name.
-        /// </value>
-        string Name { get; }
-
         /// <summary>
         /// Gets the qualified name of the element.
         /// </summary>
@@ -74,6 +65,14 @@ namespace Kephas.Model
         string FullyQualifiedName { get; }
 
         /// <summary>
+        /// Gets the annotations of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element annotations.
+        /// </value>
+        new IEnumerable<IAnnotation> Annotations { get; }
+
+        /// <summary>
         /// Gets the container element.
         /// </summary>
         /// <value>
@@ -88,14 +87,6 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         IModelSpace ModelSpace { get; }
-
-        /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        IEnumerable<INamedElementInfo> UnderlyingElementInfos { get; }
     }
 
     /// <summary>
@@ -105,19 +96,36 @@ namespace Kephas.Model
     internal abstract class NamedElementContractClass : INamedElement
     {
         /// <summary>
-        /// Gets the name of the model element.
+        /// Gets the name of the element.
         /// </summary>
         /// <value>
-        /// The model element name.
+        /// The name of the element.
         /// </value>
-        public string Name
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<string>() != null);
-                return Contract.Result<string>();
-            }
-        }
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the annotations of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element annotations.
+        /// </value>
+        public abstract IEnumerable<IAnnotation> Annotations { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations { get; }
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<IElementInfo> Parts { get; }
 
         /// <summary>
         /// Gets the qualified name of the element.
@@ -178,21 +186,6 @@ namespace Kephas.Model
             {
                 Contract.Ensures(Contract.Result<IModelSpace>() != null);
                 return Contract.Result<IModelSpace>();
-            }
-        }
-
-        /// <summary>
-        /// Gets the element infos which constructed this element.
-        /// </summary>
-        /// <value>
-        /// The element infos.
-        /// </value>
-        public IEnumerable<INamedElementInfo> UnderlyingElementInfos
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IEnumerable<INamedElementInfo>>() != null);
-                return Contract.Result<IEnumerable<INamedElementInfo>>();
             }
         }
 

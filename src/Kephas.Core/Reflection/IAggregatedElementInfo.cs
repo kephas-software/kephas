@@ -1,61 +1,45 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IModelElementInfo.cs" company="Quartz Software SRL">
+// <copyright file="IAggregatedElementInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Information for constructing model elements.
+//   Contract for aggregated element information.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Elements.Construction
+namespace Kephas.Reflection
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Information for constructing model elements.
+    /// Contract for aggregated element information.
     /// </summary>
-    [ContractClass(typeof(ModelElementInfoContractClass))]
-    public interface IModelElementInfo : INamedElementInfo
+    [ContractClass(typeof(AggregatedElementInfoContractClass))]
+    public interface IAggregatedElementInfo : IElementInfo
     {
         /// <summary>
-        /// Gets the members' constructor information.
+        /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>
-        /// The members' constructor information.
+        /// The parts.
         /// </value>
-        IEnumerable<INamedElementInfo> Members { get; } 
+        IEnumerable<IElementInfo> Parts { get; }  
     }
 
     /// <summary>
-    /// Contract class for <see cref="IModelElementInfo"/>.
+    /// Contract class for <see cref="IAggregatedElementInfo"/>.
     /// </summary>
-    [ContractClassFor(typeof(IModelElementInfo))]
-    internal abstract class ModelElementInfoContractClass : IModelElementInfo
+    [ContractClassFor(typeof(IAggregatedElementInfo))]
+    internal abstract class AggregatedElementInfoContractClass : IAggregatedElementInfo
     {
         /// <summary>
-        /// Gets the members' constructor information.
+        /// Gets the name of the element.
         /// </summary>
         /// <value>
-        /// The members' constructor information.
-        /// </value>
-        public IEnumerable<INamedElementInfo> Members
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IEnumerable<INamedElementInfo>>() != null);
-                return Contract.Result<IEnumerable<INamedElementInfo>>();
-            }
-        }
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
+        /// The name of the element.
         /// </value>
         public abstract string Name { get; }
 
@@ -68,15 +52,20 @@ namespace Kephas.Model.Elements.Construction
         public abstract IEnumerable<object> Annotations { get; }
 
         /// <summary>
-        /// Gets the function used to select the container.
+        /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>
-        /// The function used to select the container.
+        /// The parts.
         /// </value>
-        /// <remarks>
-        /// This function returns <c>true</c> if the current element is member of the provided container.
-        /// </remarks>
-        public abstract Func<IModelElement, bool> IsMemberOf { get; }
+        public IEnumerable<IElementInfo> Parts
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IElementInfo>>() != null);
+
+                return Contract.Result<IEnumerable<IElementInfo>>();
+            }
+        }
 
         /// <summary>
         /// Convenience method that provides a string Indexer
@@ -95,12 +84,12 @@ namespace Kephas.Model.Elements.Construction
         public abstract object this[string key] { get; set; }
 
         /// <summary>
-        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject" /> responsible for binding operations performed on this object.
+        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
         /// </summary>
-        /// <param name="parameter">The expression tree representation of the runtime value.</param>
         /// <returns>
-        /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
+        /// The <see cref="T:System.Dynamic.DynamicMetaObject"/> to bind this object.
         /// </returns>
+        /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
     }
 }

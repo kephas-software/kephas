@@ -41,7 +41,7 @@ namespace Kephas.Model.Runtime.AttributedModel
             var runtimeTypeInfos = runtimeTypes.Select(t => t.GetTypeInfo()).ToList();
             return
                 c =>
-                c.UnderlyingElementInfos.OfType<IRuntimeNamedElementInfo>()
+                c.Parts.OfType<IRuntimeNamedElementInfo>()
                     .Any(info => runtimeTypeInfos.Contains(info.RuntimeElement));
         } 
     }

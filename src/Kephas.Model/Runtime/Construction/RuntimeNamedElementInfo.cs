@@ -10,6 +10,8 @@
 namespace Kephas.Model.Runtime.Construction
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
     using System.Reflection;
     using System.Text;
@@ -23,6 +25,11 @@ namespace Kephas.Model.Runtime.Construction
     /// <typeparam name="TRuntimeElement">The type of the runtime information.</typeparam>
     public abstract class RuntimeNamedElementInfo<TRuntimeElement> : Expando, IRuntimeNamedElementInfo
     {
+        /// <summary>
+        /// The empty annotations.
+        /// </summary>
+        protected static readonly IList<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeNamedElementInfo{TRuntimeElement}"/> class.
         /// </summary>
@@ -59,6 +66,14 @@ namespace Kephas.Model.Runtime.Construction
         /// The name.
         /// </value>
         public string Name { get; }
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        public virtual IEnumerable<object> Annotations => EmptyAnnotations;
 
         /// <summary>
         /// Gets or sets the function used to select the container.

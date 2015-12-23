@@ -45,7 +45,7 @@ namespace Kephas.Model.Runtime.Construction
         /// Constructs the information.
         /// </summary>
         /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model information provider.</param>
-        internal protected override void ConstructInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
+        protected internal override void ConstructInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
         {
             this.Members = this.ComputeMembers(runtimeElementInfoFactoryDispatcher, this.RuntimeElement);
         }

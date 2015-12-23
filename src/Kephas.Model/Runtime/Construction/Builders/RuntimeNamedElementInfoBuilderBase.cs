@@ -54,7 +54,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
-        /// A new instance of <see cref="TNamedElementInfo"/>.
+        /// A new instance of <see typeparamref="TNamedElementInfo"/>.
         /// </returns>
         protected abstract TNamedElementInfo CreateElementInfo(TRuntimeElement runtimeElement);
     }
