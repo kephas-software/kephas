@@ -18,6 +18,7 @@ namespace Kephas.Data
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Interface for data repository.
@@ -47,7 +48,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        Task<object> FindAsync(Type entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> FindAsync(ITypeInfo entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Searches for the first entity matching the provided criteria and returns it asynchronously.
@@ -71,7 +72,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        Task<object> FindOneAsync(Type entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> FindOneAsync(ITypeInfo entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets a query over the entity type for the given query context, if any is provided.
@@ -91,7 +92,7 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        IQueryable Query(Type entityType, IQueryContext queryContext = null);
+        IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null);
     }
 
     /// <summary>
@@ -100,6 +101,22 @@ namespace Kephas.Data
     [ContractClassFor(typeof(IDataRepository))]
     internal abstract class DataRepositoryContractClass : IDataRepository
     {
+        /// <summary>
+        /// Convenience method that provides a string Indexer
+        /// to the Properties collection AND the strongly typed
+        /// properties of the object by name.
+        /// // dynamic
+        /// exp["Address"] = "112 nowhere lane";
+        /// // strong
+        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// </summary>
+        /// <value>
+        /// The <see cref="System.Object" />.
+        /// </value>
+        /// <param name="key">The key.</param>
+        /// <returns>The requested property value.</returns>
+        public abstract object this[string key] { get; set; }
+
         /// <summary>
         /// Searches for the entity with the provided ID and returns it asynchronously.
         /// </summary>
@@ -126,11 +143,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        public Task<object> FindAsync(
-            Type entityType,
-            Id id,
-            IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken())
+        public Task<object> FindAsync(ITypeInfo entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(entityType != null);
             Contract.Ensures(Contract.Result<Task<object>>() != null);
@@ -167,11 +180,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        public Task<object> FindOneAsync(
-            Type entityType,
-            Expression criteria,
-            IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken())
+        public Task<object> FindOneAsync(ITypeInfo entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(entityType != null);
             Contract.Requires(criteria != null);
@@ -201,7 +210,7 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public IQueryable Query(Type entityType, IQueryContext queryContext = null)
+        public IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null)
         {
             Contract.Requires(entityType != null);
             Contract.Ensures(Contract.Result<IQueryable>() != null);
@@ -216,21 +225,5 @@ namespace Kephas.Data
         /// </returns>
         /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
-
-        /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
-        /// </summary>
-        /// <value>
-        /// The <see cref="System.Object" />.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        public abstract object this[string key] { get; set; }
     }
 }

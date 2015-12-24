@@ -18,6 +18,7 @@ namespace Kephas.Data
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base implementation of a data repository.
@@ -62,11 +63,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        public virtual Task<object> FindAsync(
-            Type entityType,
-            Id id,
-            IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken())
+        public virtual Task<object> FindAsync(ITypeInfo entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new NotImplementedException();
         }
@@ -96,11 +93,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        public virtual Task<object> FindOneAsync(
-            Type entityType,
-            Expression criteria,
-            IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken())
+        public virtual Task<object> FindOneAsync(ITypeInfo entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var entityImplementationType = this.GetEntityImplementationType(entityType);
 
@@ -126,7 +119,7 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public virtual IQueryable Query(Type entityType, IQueryContext queryContext = null)
+        public virtual IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null)
         {
             throw new NotImplementedException();
         }
@@ -138,11 +131,11 @@ namespace Kephas.Data
         /// <returns>
         /// The entity implementation type.
         /// </returns>
-        protected virtual Type GetEntityImplementationType(Type contractType)
+        protected virtual Type GetEntityImplementationType(ITypeInfo contractType)
         {
             Contract.Requires(contractType != null);
 
-            return contractType;
+            throw new NotImplementedException($"The method '{nameof(this.GetEntityImplementationType)}' must be overridden in derived classes.");
         }
 
         /// <summary>
