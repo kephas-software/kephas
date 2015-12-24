@@ -12,8 +12,8 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Elements.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
@@ -21,7 +21,7 @@ namespace Kephas.Model.Elements
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
     /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
     public abstract class ModelElementBase<TModelContract, TElementInfo> : NamedElementBase<TModelContract, TElementInfo>, IModelElement, IModelElementConstructor
-        where TElementInfo : class, IModelElementInfo
+        where TElementInfo : class, IElementInfo
     {
         /// <summary>
         /// The members.

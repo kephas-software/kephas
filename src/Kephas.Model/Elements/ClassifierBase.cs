@@ -11,7 +11,7 @@ namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -19,7 +19,7 @@ namespace Kephas.Model.Elements
     /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
     /// <typeparam name="TClassifierInfo">The type of the classifier information.</typeparam>
     public abstract class ClassifierBase<TModelContract, TClassifierInfo> : ModelElementBase<TModelContract, TClassifierInfo>, IClassifier
-        where TClassifierInfo : class, IClassifierInfo
+        where TClassifierInfo : class, ITypeInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract, TClassifierInfo}" /> class.

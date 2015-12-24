@@ -9,29 +9,28 @@
 
 namespace Kephas.Model.Elements
 {
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Classifier definition for a value type.
     /// </summary>
-    public class ValueType : ClassifierBase<IValueType, IValueTypeInfo>, IValueType
+    public class ValueType : ClassifierBase<ValueType, ITypeInfo>, IValueType
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueType" /> class.
         /// </summary>
         /// <param name="elementInfo">Information describing the element.</param>
         /// <param name="modelSpace">The model space.</param>
-        public ValueType(IValueTypeInfo elementInfo, IModelSpace modelSpace)
+        public ValueType(ITypeInfo elementInfo, IModelSpace modelSpace)
             : base(elementInfo, modelSpace)
         {
-            this.IsPrimitive = elementInfo.IsPrimitive;
         }
 
         /// <summary>
         /// Gets a value indicating whether the value type represents a primitive value, 
         /// like an integer or a string.
         /// </summary>
-        public bool IsPrimitive { get; }
+        public bool IsPrimitive { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether the value type representing a complex value,

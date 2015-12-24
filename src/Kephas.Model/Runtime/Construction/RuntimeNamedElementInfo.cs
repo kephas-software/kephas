@@ -101,7 +101,7 @@ namespace Kephas.Model.Runtime.Construction
         /// Constructs the information.
         /// </summary>
         /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model information provider.</param>
-        internal protected virtual void ConstructInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
+        protected internal virtual void ConstructInfo(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
         {
         }
 

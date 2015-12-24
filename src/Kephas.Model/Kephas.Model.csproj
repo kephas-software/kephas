@@ -166,6 +166,10 @@
     <Compile Include="Elements\Annotation.cs" />
     <Compile Include="Elements\Annotations\RequiredAnnotation.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
+    <Compile Include="Elements\Construction\Builders\ClassifierBuilderBase.cs" />
+    <Compile Include="Elements\Construction\Builders\ModelElementBuilderBase.cs" />
+    <Compile Include="Elements\Construction\Builders\NamedElementBuilderBase.cs" />
+    <Compile Include="Elements\Construction\Builders\ValueTypeBuilder.cs" />
     <Compile Include="Elements\Construction\IAnnotationInfo.cs" />
     <Compile Include="Elements\Construction\IClassifierInfo.cs" />
     <Compile Include="Elements\Construction\IModelDimensionElementInfo.cs" />

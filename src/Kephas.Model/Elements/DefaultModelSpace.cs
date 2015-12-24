@@ -34,10 +34,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model space.
         /// </value>
-        public override IModelSpace ModelSpace
-        {
-            get { return this; }
-        }
+        public override IModelSpace ModelSpace => this;
 
         /// <summary>
         /// Gets the dimensions.
