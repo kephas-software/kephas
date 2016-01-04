@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Expando.cs" company="Quartz Software SRL">
+// <copyright file="ConcurrentExpando.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,12 +17,13 @@
 
 namespace Kephas.Dynamic
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     /// <summary>
     /// <para>
-    /// Class that provides extensible properties and methods. This
+    /// Class that provides extensible properties and methods in a thread safe manner. This
     /// dynamic object stores 'extra' properties in a dictionary or
     /// checks the actual properties of the instance.
     /// This means you can subclass this expando and retrieve either
@@ -46,24 +47,24 @@ namespace Kephas.Dynamic
     /// </list> 
     /// </para>
     /// </summary>
-    public class Expando : ExpandoBase
+    public class ConcurrentExpando : ExpandoBase
     {
         /// <summary>
         /// The properties.
         /// </summary>
-        private readonly Dictionary<string, object> properties = new Dictionary<string, object>();
+        private readonly ConcurrentDictionary<string, object> properties = new ConcurrentDictionary<string, object>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Expando"/> class. 
+        /// Initializes a new instance of the <see cref="ConcurrentExpando"/> class.
         /// This constructor just works off the internal dictionary and any 
         /// public properties of this object.
         /// </summary>
-        public Expando()
+        public ConcurrentExpando()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Expando"/> class. 
+        /// Initializes a new instance of the <see cref="ConcurrentExpando"/> class.
         /// Allows passing in an existing instance variable to 'extend'.
         /// </summary>
         /// <param name="instance">
@@ -73,7 +74,7 @@ namespace Kephas.Dynamic
         /// You can pass in null here if you don't want to
         /// check native properties and only check the Dictionary!.
         /// </remarks>
-        public Expando(object instance)
+        public ConcurrentExpando(object instance)
             : base(instance)
         {
             Contract.Requires(instance != null);

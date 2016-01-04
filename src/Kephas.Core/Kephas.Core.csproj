@@ -183,9 +183,11 @@
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Dynamic\ExpandoBase.cs" />
     <Compile Include="Dynamic\DynamicMethodInfo.cs" />
     <Compile Include="Dynamic\DynamicPropertyInfo.cs" />
     <Compile Include="Dynamic\DynamicTypeInfo.cs" />
+    <Compile Include="Dynamic\ConcurrentExpando.cs" />
     <Compile Include="Dynamic\Expando.cs" />
     <Compile Include="Dynamic\IDynamicMethodInfo.cs" />
     <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
