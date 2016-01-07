@@ -17,6 +17,7 @@
 
 namespace Kephas.Dynamic
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
@@ -51,32 +52,34 @@ namespace Kephas.Dynamic
         /// <summary>
         /// The properties.
         /// </summary>
-        private readonly Dictionary<string, object> properties = new Dictionary<string, object>();
+        private IDictionary<string, object> properties;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Expando"/> class. 
-        /// This constructor just works off the internal dictionary and any 
-        /// public properties of this object.
+        /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
+        /// off the internal dictionary and any public properties of this object.
         /// </summary>
-        public Expando()
+        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
+        public Expando(bool isThreadSafe = false)
         {
+            this.InitializeDictionary(isThreadSafe);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Expando"/> class. 
-        /// Allows passing in an existing instance variable to 'extend'.
+        /// Initializes a new instance of the <see cref="Expando"/> class. Allows passing in an existing
+        /// instance variable to 'extend'.
         /// </summary>
-        /// <param name="instance">
-        /// The instance which sould be extended.
-        /// </param>
         /// <remarks>
-        /// You can pass in null here if you don't want to
-        /// check native properties and only check the Dictionary!.
+        /// You can pass in null here if you don't want to check native properties and only check the
+        /// Dictionary!.
         /// </remarks>
-        public Expando(object instance)
+        /// <param name="instance">The instance which sould be extended.</param>
+        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
+        public Expando(object instance, bool isThreadSafe = false)
             : base(instance)
         {
             Contract.Requires(instance != null);
+
+            this.InitializeDictionary(isThreadSafe);
         }
 
         /// <summary>
@@ -122,6 +125,17 @@ namespace Kephas.Dynamic
         protected override IEnumerable<KeyValuePair<string, object>> GetDictionaryEntries()
         {
             return this.properties;
+        }
+
+        /// <summary>
+        /// Initializes the dictionary.
+        /// </summary>
+        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
+        private void InitializeDictionary(bool isThreadSafe)
+        {
+            this.properties = isThreadSafe
+                                  ? (IDictionary<string, object>)new ConcurrentDictionary<string, object>()
+                                  : new Dictionary<string, object>();
         }
     }
 }

@@ -10,6 +10,9 @@
 namespace Kephas.Core.Tests.Dynamic
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Dynamic;
 
@@ -123,6 +126,69 @@ namespace Kephas.Core.Tests.Dynamic
 
             var name = instance.GetName(30);
             Assert.AreEqual("John Doe: 30", name);
+        }
+
+        [Test]
+        [TestCase(12)]
+        [TestCase(15.3)]
+        [TestCase("23.45")]
+        public void Dynamic_Property(object age)
+        {
+            dynamic expando = new Expando();
+            expando.Age = age;
+
+            Assert.AreEqual(age, expando.Age);
+        }
+
+        [Test]
+        public async Task Dynamic_Property_concurrent()
+        {
+            dynamic expando = new Expando(isThreadSafe: true);
+            Action accessor = () =>
+                {
+                    for (var i = 0; i <= 2000; i++)
+                    {
+                        expando["Prop" + Thread.CurrentThread.Name + i] = Thread.CurrentThread.Name + i;
+                    }
+                };
+
+            var tasks = new List<Task>();
+            for (var j = 0; j < 200; j++)
+            {
+                tasks.Add(Task.Factory.StartNew(accessor));    
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        [Test]
+        public async Task Dynamic_Property_non_concurrent()
+        {
+            dynamic expando = new Expando();
+            Action accessor = () =>
+            {
+                for (var i = 0; i <= 2000; i++)
+                {
+                    expando["Prop" + Thread.CurrentThread.Name + i] = Thread.CurrentThread.Name + i;
+                }
+            };
+
+            var tasks = new List<Task>();
+            for (var j = 0; j < 200; j++)
+            {
+                tasks.Add(Task.Factory.StartNew(accessor));
+            }
+
+            try
+            {
+                await Task.WhenAll(tasks);
+
+                Assert.Inconclusive("If the inner dictionary did not crash it doesn't mean it is thread safe.");
+            }
+            catch
+            {
+                // normally it should crash
+            }
         }
 
         [Test]

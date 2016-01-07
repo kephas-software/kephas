@@ -35,6 +35,7 @@ namespace Kephas.Model.Elements
         /// <param name="elementInfo">The element information.</param>
         /// <param name="modelSpace">The model space.</param>
         protected NamedElementBase(TElementInfo elementInfo, IModelSpace modelSpace)
+            : base(isThreadSafe: true)
         {
             Contract.Requires(elementInfo != null);
             Contract.Requires(elementInfo.Name != null);

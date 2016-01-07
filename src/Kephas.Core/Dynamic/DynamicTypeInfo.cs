@@ -80,6 +80,7 @@ namespace Kephas.Dynamic
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         private DynamicTypeInfo(Type type, TypeInfo typeInfo)
+            : base(isThreadSafe: true)
         {
             this.Type = type;
             this.TypeInfo = typeInfo;

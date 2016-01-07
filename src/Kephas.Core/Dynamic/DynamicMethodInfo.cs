@@ -32,6 +32,7 @@ namespace Kephas.Dynamic
         /// The method information.
         /// </param>
         internal DynamicMethodInfo(MethodInfo methodInfo)
+            : base(isThreadSafe: true)
         {
             Contract.Requires(methodInfo != null);
 

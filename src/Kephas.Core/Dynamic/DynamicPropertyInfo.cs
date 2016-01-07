@@ -42,6 +42,7 @@ namespace Kephas.Dynamic
         /// The property information.
         /// </param>
         internal DynamicPropertyInfo(PropertyInfo propertyInfo)
+            : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
