@@ -132,6 +132,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="Behaviors\Behaviors.cd" />
     <None Include="ModelContracts.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
@@ -262,6 +263,11 @@
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
