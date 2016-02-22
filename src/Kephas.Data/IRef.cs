@@ -76,7 +76,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        public Task<T> GetAsync(IFindContext context = null, CancellationToken cancellationToken = new CancellationToken())
+        public Task<T> GetAsync(IFindContext context = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Ensures(Contract.Result<Task<T>>() != null);
 

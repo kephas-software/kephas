@@ -111,7 +111,7 @@ namespace Kephas.Data
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="object" />.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>
@@ -127,7 +127,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        public Task<T> FindAsync<T>(Id id, IFindContext findContext = null, CancellationToken cancellationToken = new CancellationToken())
+        public Task<T> FindAsync<T>(Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Ensures(Contract.Result<Task<T>>() != null);
             return Contract.Result<Task<T>>();
@@ -163,7 +163,7 @@ namespace Kephas.Data
         public Task<T> FindOneAsync<T>(
             Expression<Func<T, bool>> criteria,
             IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken())
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(criteria != null);
             Contract.Ensures(Contract.Result<Task<T>>() != null);

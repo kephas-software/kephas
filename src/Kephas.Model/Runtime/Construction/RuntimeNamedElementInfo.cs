@@ -87,6 +87,17 @@ namespace Kephas.Model.Runtime.Construction
         public Func<IModelElement, bool> IsMemberOf { get; protected set; }
 
         /// <summary>
+        /// Convert this object into a string representation.
+        /// </summary>
+        /// <returns>
+        /// A string that represents this object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.Name} ({this.RuntimeElement})";
+        }
+
+        /// <summary>
         /// Gets the element name discriminator.
         /// </summary>
         /// <value>
@@ -136,17 +147,6 @@ namespace Kephas.Model.Runtime.Construction
             }
 
             return nameBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Convert this object into a string representation.
-        /// </summary>
-        /// <returns>
-        /// A string that represents this object.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"{this.Name} ({this.RuntimeElement})";
         }
     }
 }

@@ -23,5 +23,10 @@ namespace Kephas.Services
         /// The application service in instanciated on every request.
         /// </summary>
         Instance,
+
+        /// <summary>
+        /// The application service is shared within a scope.
+        /// </summary>
+        ScopeShared,
     }
 }

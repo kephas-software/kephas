@@ -17,7 +17,6 @@ namespace Kephas.Serialization.Json
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Resources;
 
@@ -147,11 +146,7 @@ namespace Kephas.Serialization.Json
         {
             Contract.Ensures(Contract.Result<IContractResolver>() != null);
 
-            // TODO ContractResolver
-            ////serializerSettings.ContractResolver = camelCase
-            ////                                          ? DefaultClientModelContractResolver.CamelCaseContractResolver
-            ////                                          : DefaultClientModelContractResolver.PascalCaseContractResolver;
-            return new CamelCasePropertyNamesContractResolver();
+            return camelCase ? new CamelCasePropertyNamesContractResolver() : new DefaultContractResolver();
         }
 
         /// <summary>

@@ -50,7 +50,7 @@ namespace Kephas.Serialization.Json
         public Task<string> SerializeAsync(
             object obj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = new CancellationToken())
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
@@ -81,7 +81,7 @@ namespace Kephas.Serialization.Json
         public Task<object> DeserializeAsync(
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = new CancellationToken())
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);

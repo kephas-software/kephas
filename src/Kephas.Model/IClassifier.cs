@@ -156,7 +156,7 @@ namespace Kephas.Model
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="object" />.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>

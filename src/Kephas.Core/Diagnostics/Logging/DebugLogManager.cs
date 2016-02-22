@@ -60,8 +60,8 @@ namespace Kephas.Diagnostics.Logging
             /// </summary>
             /// <param name="level">The logging level.</param>
             /// <param name="exception">The exception.</param>
-            /// <param name="messageFormat"></param>
-            /// <param name="args"></param>
+            /// <param name="messageFormat">The message format.</param>
+            /// <param name="args">The arguments.</param>
             public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
             {
                 this.LogCore(level.ToString(), messageFormat, exception);

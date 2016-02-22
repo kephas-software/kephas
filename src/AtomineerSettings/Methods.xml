@@ -92,9 +92,9 @@
 			<!-- Rules for various types of constructors -->
 			<If methodType="constructor">
 				<If stylecop="true">
-					<If specialType="static" desc="Initializes static members of the &lt;see cref=&quot;%containingclass%&quot;/&gt; %classType%." />
-					<If numArgs="0" access="private" desc="Prevents a default instance of the &lt;see cref=&quot;%containingclass%&quot;/&gt; %classType% from being created." />
-					<Set desc="Initializes a new instance of the &lt;see cref=&quot;%containingclass%&quot;/&gt; %classType%." />
+					<If specialType="static" desc="Initializes static members of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType%." />
+					<If numArgs="0" access="private" desc="Prevents a default instance of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType% from being created." />
+					<Set desc="Initializes a new instance of the &lt;see cref=&quot;%containingclass:leaf%&quot;/&gt; %classType%." />
 				</If>
 
 				<If specialType="static" desc="Static constructor" />

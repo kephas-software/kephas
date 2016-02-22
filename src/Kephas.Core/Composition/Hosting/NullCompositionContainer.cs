@@ -92,5 +92,23 @@ namespace Kephas.Composition.Hosting
         {
             return default(T);
         }
+
+        /// <summary>
+        /// Creates a new scoped composition context.
+        /// </summary>
+        /// <returns>
+        /// The new scoped context.
+        /// </returns>
+        public ICompositionContext CreateScopedContext()
+        {
+            return this;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+        }
     }
 }

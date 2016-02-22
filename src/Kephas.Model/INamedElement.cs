@@ -109,7 +109,14 @@ namespace Kephas.Model
         /// <value>
         /// The model element annotations.
         /// </value>
-        public abstract IEnumerable<IAnnotation> Annotations { get; }
+        public IEnumerable<IAnnotation> Annotations
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IAnnotation>>() != null);
+                return Contract.Result<IEnumerable<IAnnotation>>();
+            }
+        }
 
         /// <summary>
         /// Gets the element annotations.
@@ -199,7 +206,7 @@ namespace Kephas.Model
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="object" />.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>

@@ -1,0 +1,3 @@
+<UserVariables>
+  <Variable name="company" ifSet="false" value="Quartz Software SRL" />
+</UserVariables>

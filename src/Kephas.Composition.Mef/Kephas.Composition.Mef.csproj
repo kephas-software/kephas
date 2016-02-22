@@ -151,8 +151,11 @@
     <Compile Include="Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\Metadata\MetadataViewProvider.cs" />
+    <Compile Include="Composition\Mef\Hosting\MefScopedCompositionContext.cs" />
     <Compile Include="Composition\Mef\Hosting\MefCompositionContainer.cs" />
     <Compile Include="Composition\Mef\Hosting\MefCompositionContainerBuilder.cs" />
+    <Compile Include="Composition\Mef\Hosting\MefCompositionContext.cs" />
+    <Compile Include="Composition\Mef\Internals\MefScopeProvider.cs" />
     <Compile Include="Composition\Mef\Internals\Constants.cs" />
     <Compile Include="Composition\Mef\Internals\FormattingHelper.cs" />
     <Compile Include="Composition\Mef\Resources\Strings.Designer.cs">
@@ -160,6 +163,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Composition\Mef\SharingBoundaries.cs" />
     <Compile Include="MefAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -187,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Composition\Mef\Resources\Strings.resx">

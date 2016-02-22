@@ -133,6 +133,7 @@
     <None Include="Behaviors\Behaviors.cd" />
     <None Include="ModelContracts.cd" />
     <None Include="packages.config" />
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">

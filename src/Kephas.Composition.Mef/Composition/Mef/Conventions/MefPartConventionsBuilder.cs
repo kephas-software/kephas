@@ -37,7 +37,7 @@ namespace Kephas.Composition.Mef.Conventions
 
             this.innerConventionBuilder = innerConventionBuilder;
         }
-        
+
         /// <summary>
         /// Mark the part as being shared within the entire composition.
         /// </summary>
@@ -45,6 +45,16 @@ namespace Kephas.Composition.Mef.Conventions
         public IPartConventionsBuilder Shared()
         {
             this.innerConventionBuilder.Shared();
+            return this;
+        }
+
+        /// <summary>
+        /// Mark the part as being shared within the scope.
+        /// </summary>
+        /// <returns>A part builder allowing further configuration of the part.</returns>
+        public IPartConventionsBuilder ScopeShared()
+        {
+            this.innerConventionBuilder.Shared(SharingBoundaries.Scope);
             return this;
         }
 

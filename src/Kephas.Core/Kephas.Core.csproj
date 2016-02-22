@@ -235,6 +235,7 @@
     <Compile Include="Services\OverridePriorityAttribute.cs" />
     <Compile Include="Services\Priority.cs" />
     <Compile Include="Services\ProcessingPriorityAttribute.cs" />
+    <Compile Include="Services\ScopedAppServiceContractAttribute.cs" />
     <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
     <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
     <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
@@ -248,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

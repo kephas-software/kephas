@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.Core.cs" company="Quartz Software SRL">
+// <copyright file="AssemblyInfo.Kephas.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   AssemblyInfo.Core.cs
+//   AssemblyInfo.Kephas.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,3 +23,6 @@ using System.Resources;
 [assembly: AssemblyVersion("3.0.0.0")]
 [assembly: AssemblyFileVersion("3.0.0.0")]
 [assembly: AssemblyInformationalVersion("3.0.*")]
+
+// Stylecop global rule suppresions.
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1028:Code must not contain trailing whitespace", Justification = "It is OK to leave the trailing spaces.")]

@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Provider for <see cref="ConventionBuilder" />.
+//   Declares the IMefConventionBuilderProvider interface
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,13 @@
-﻿namespace Kephas.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OptionalServiceAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the optional service attribute class
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Services
 {
     using System;
 
@@ -27,7 +36,7 @@
         object IMetadataValue.Value => this.Value;
 
         /// <summary>
-        /// Gets the metadata value.
+        /// Gets a value indicating whether the service is optional for its consumers.
         /// </summary>
         /// <value>
         /// The metadata value.

@@ -44,7 +44,8 @@ namespace Kephas.Tests.Composition.Mef
 
         public virtual ContainerConfiguration WithEmptyConfiguration()
         {
-            return new ContainerConfiguration();
+            var configuration = new ContainerConfiguration();
+            return configuration;
         }
 
         public virtual ContainerConfiguration WithExportProviders(ContainerConfiguration configuration)

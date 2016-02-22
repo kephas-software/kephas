@@ -16,12 +16,12 @@ namespace Kephas.Data
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="Id"/> type stores internally an <see cref="object"/>. 
+    /// The <see cref="Id"/> type stores internally an <see cref="object"/>.
     /// It is the responsibility of the concrete storage mapper to provide
     /// a concrete value of a specific type (for example <see cref="long"/>).
     /// </para>
     /// <para>
-    /// The IsUnsetValue static property can be changed to fit the 
+    /// The <see cref="IsUnsetValue"/> static property can be set to change the default check of an unset value.
     /// </para>
     /// </remarks>
     public class Id : IEquatable<Id>
@@ -37,7 +37,7 @@ namespace Kephas.Data
         private readonly object value;
 
         /// <summary>
-        /// Initializes static members of the the <see cref="Id"/> class.
+        /// Initializes static members of the <see cref="Id"/> class.
         /// </summary>
         static Id()
         {
@@ -48,8 +48,8 @@ namespace Kephas.Data
                     return true;
                 }
 
-                return (0.Equals(value) || 0L.Equals(value) || string.Empty.Equals(value)
-                        || Guid.Empty.Equals(value));
+                return 0.Equals(value) || 0L.Equals(value) || string.Empty.Equals(value)
+                       || Guid.Empty.Equals(value);
             };
         }
 
@@ -78,17 +78,8 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is considered unset.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is considered unset; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsUnset => this.value == null || this.value == Undefined.Value;
-
-        /// <summary>
         /// Gets or sets a function to determine whether a specified value is considered unset.
         /// </summary>
-        /// <returns></returns>
         public static Func<object, bool> IsUnsetValue
         {
             get
@@ -105,6 +96,19 @@ namespace Kephas.Data
                 isUnsetValueTester = value;
             }
         }
+
+        /// <summary>
+        /// Gets the IDs underlzing value.
+        /// </summary>
+        public object Value => this.value;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is considered unset.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is considered unset; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsUnset => this.value == null || this.value == Undefined.Value;
 
         /// <summary>
         /// Implicit cast that converts the given int to an ID.
@@ -189,11 +193,6 @@ namespace Kephas.Data
         {
             return value == null ? null : new Id(value);
         }
-
-        /// <summary>
-        /// Gets the IDs underlzing value.
-        /// </summary>
-        public object Value => this.value;
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.

@@ -15,7 +15,7 @@ namespace Kephas.Composition
     /// <summary>
     /// Public interface for the composition context.
     /// </summary>
-    public interface ICompositionContext
+    public interface ICompositionContext : IDisposable
     {
         /// <summary>
         /// Resolves the specified contract type.
@@ -70,5 +70,13 @@ namespace Kephas.Composition
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
         T TryGetExport<T>(string contractName = null);
+
+        /// <summary>
+        /// Creates a new scoped composition context.
+        /// </summary>
+        /// <returns>
+        /// The new scoped context.
+        /// </returns>
+        ICompositionContext CreateScopedContext();
     }
 }

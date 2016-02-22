@@ -11,6 +11,7 @@ namespace Kephas.Composition.Mef.Hosting
 {
     using System;
     using System.Collections.Generic;
+    using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
     using System.Diagnostics.Contracts;
@@ -19,6 +20,7 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.ExportProviders;
+    using Kephas.Composition.Mef.Internals;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Configuration;
     using Kephas.Hosting;
@@ -114,8 +116,10 @@ namespace Kephas.Composition.Mef.Hosting
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var containerConfiguration = this.configuration ?? new ContainerConfiguration();
+            var conventionBuilder = this.GetConventionBuilder(conventions);
+
             containerConfiguration
-                .WithDefaultConventions(((IMefConventionBuilderProvider)conventions).GetConventionBuilder())
+                .WithDefaultConventions(conventionBuilder)
                 .WithParts(parts);
 
             foreach (var provider in this.ExportProviders.Values)
@@ -124,6 +128,23 @@ namespace Kephas.Composition.Mef.Hosting
             }
 
             return new MefCompositionContainer(containerConfiguration);
+        }
+
+        /// <summary>
+        /// Gets the convention builder out of the provided abstract conventions.
+        /// </summary>
+        /// <param name="conventions">The conventions.</param>
+        /// <returns>
+        /// The convention builder.
+        /// </returns>
+        protected virtual ConventionBuilder GetConventionBuilder(IConventionsBuilder conventions)
+        {
+            var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
+            mefConventions
+                .ForType<MefScopeProvider>()
+                .Export(b => b.AsContractType<MefScopeProvider>())
+                .Shared();
+            return mefConventions;
         }
     }
 }

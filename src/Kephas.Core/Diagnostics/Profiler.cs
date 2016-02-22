@@ -103,7 +103,7 @@ namespace Kephas.Diagnostics
         {
             if (action == null)
             {
-                return new TimeSpan();
+                return TimeSpan.Zero;
             }
 
             logger?.Log(logLevel, $"{memberName}. Started at: {DateTime.Now:s}.");
@@ -200,7 +200,7 @@ namespace Kephas.Diagnostics
         {
             if (action == null)
             {
-                return new TimeSpan();
+                return TimeSpan.Zero;
             }
 
             logger?.Log(logLevel, $"{memberName}. Started at: {DateTime.Now:s}.");

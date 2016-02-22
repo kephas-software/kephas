@@ -10,7 +10,6 @@
 namespace Kephas.Logging
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Services;
 
@@ -90,10 +89,10 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs fatal exceptions.
         /// </summary>
-        /// <param name="logger">       The logger.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         public static void Fatal(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Fatal, exception, messageFormat, args);
@@ -113,10 +112,10 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the error.
         /// </summary>
-        /// <param name="logger">       The logger.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         public static void Error(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Error, exception, messageFormat, args);
@@ -136,10 +135,10 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the warn.
         /// </summary>
-        /// <param name="logger">       The logger.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         public static void Warn(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Warning, exception, messageFormat, args);
@@ -161,8 +160,8 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat"></param>
-        /// <param name="args"></param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
         public static void Info(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Info, exception, messageFormat, args);
@@ -182,10 +181,10 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the debug.
         /// </summary>
-        /// <param name="logger">       The logger.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         public static void Debug(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Debug, exception, messageFormat, args);
@@ -207,8 +206,8 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat"></param>
-        /// <param name="args"></param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
         public static void Trace(this ILogger logger, Exception exception, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Trace, exception, messageFormat, args);

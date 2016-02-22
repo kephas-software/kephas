@@ -13,7 +13,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
 
     /// <summary>
-    /// Contract for dynamic objects allowing getting or setting 
+    /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
     public interface IExpando : IDynamicMetaObjectProvider
@@ -28,7 +28,7 @@ namespace Kephas.Dynamic
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="object" /> identified by the key.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>

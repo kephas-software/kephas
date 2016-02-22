@@ -88,6 +88,10 @@ namespace Kephas.Services.Composition
                 {
                     partBuilder.Shared();
                 }
+                else if (serviceContractMetadata.IsScopeShared)
+                {
+                    partBuilder.ScopeShared();
+                }
             }
         }
 

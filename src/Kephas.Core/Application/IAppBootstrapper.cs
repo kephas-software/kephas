@@ -47,7 +47,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task StartAsync(IAppContext appContext, CancellationToken cancellationToken = new CancellationToken())
+        public Task StartAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(appContext != null);
             Contract.Ensures(Contract.Result<Task>() != null);

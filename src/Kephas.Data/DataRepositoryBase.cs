@@ -51,7 +51,7 @@ namespace Kephas.Data
         public abstract Task<T> FindAsync<T>(
             Id id,
             IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken());
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Searches for the entity with the provided ID and returns it asynchronously.
@@ -81,7 +81,7 @@ namespace Kephas.Data
         public abstract Task<T> FindOneAsync<T>(
             Expression<Func<T, bool>> criteria,
             IFindContext findContext = null,
-            CancellationToken cancellationToken = new CancellationToken());
+            CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Searches for the first entity matching the provided criteria and returns it asynchronously.

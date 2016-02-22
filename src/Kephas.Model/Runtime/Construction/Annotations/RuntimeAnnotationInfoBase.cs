@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRuntimeAnnotationInfo.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeAnnotationInfoBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
     /// <summary>
     /// Base runtime information class for constructing annotations.
     /// </summary>
+    /// <typeparam name="TAttribute">Type of the runtime attribute.</typeparam>
     public abstract class RuntimeAnnotationInfoBase<TAttribute> : RuntimeNamedElementInfo<TAttribute>
         where TAttribute : Attribute
     {

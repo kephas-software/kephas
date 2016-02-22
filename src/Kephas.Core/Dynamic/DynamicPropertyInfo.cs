@@ -23,7 +23,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// The dynamic type of <see cref="DynamicPropertyInfo{T,TMember}"/>.
         /// </summary>
-        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicPropertyInfo = new DynamicTypeInfo(typeof(DynamicPropertyInfo<T,TMember>));
+        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicPropertyInfo = new DynamicTypeInfo(typeof(DynamicPropertyInfo<T, TMember>));
 
         /// <summary>
         /// The getter.
@@ -135,7 +135,7 @@ namespace Kephas.Dynamic
             var mi = this.PropertyInfo.GetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return (this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>)));
+                return this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
             }
 
             return null;
@@ -157,7 +157,7 @@ namespace Kephas.Dynamic
             var mi = this.PropertyInfo.SetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return (this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>)));
+                return this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
             }
 
             return null;

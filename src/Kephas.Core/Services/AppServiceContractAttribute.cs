@@ -77,10 +77,7 @@ namespace Kephas.Services
         /// <value>
         ///   <c>true</c> if shared; otherwise, <c>false</c>.
         /// </value>
-        public bool IsShared
-        {
-            get { return this.Lifetime == AppServiceLifetime.Shared; }
-        }
+        public bool IsShared => this.Lifetime == AppServiceLifetime.Shared;
 
         /// <summary>
         /// Gets a value indicating whether the application service is instanced per request.
@@ -88,10 +85,15 @@ namespace Kephas.Services
         /// <value>
         ///   <c>true</c> if instanced per request; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInstance
-        {
-            get { return this.Lifetime == AppServiceLifetime.Instance; }
-        }
+        public bool IsInstance => this.Lifetime == AppServiceLifetime.Instance;
+
+        /// <summary>
+        /// Gets a value indicating whether the application service is shared within a scope.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if shared within a scope; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsScopeShared => this.Lifetime == AppServiceLifetime.ScopeShared;
 
         /// <summary>
         /// Gets or sets the contract type of the export.

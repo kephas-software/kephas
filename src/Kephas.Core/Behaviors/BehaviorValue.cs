@@ -35,7 +35,7 @@ namespace Kephas.Behaviors
         object IBehaviorValue.Value => this.Value;
 
         /// <summary>
-        /// Gets the behavior value.
+        /// Gets or sets the behavior value.
         /// </summary>
         /// <value>
         /// The behavior value.

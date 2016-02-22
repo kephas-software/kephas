@@ -34,7 +34,7 @@ namespace Kephas.Model
         ///   <c>true</c> if multiple annotations of the same kind are allowed; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
+        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         bool AllowMultiple { get; }
@@ -53,7 +53,7 @@ namespace Kephas.Model
         ///   <c>true</c> if multiple annotations of the same kind are allowed; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
+        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         public abstract bool AllowMultiple { get; }
@@ -141,6 +141,14 @@ namespace Kephas.Model
         public abstract IModelSpace ModelSpace { get; }
 
         /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<IElementInfo> Parts { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -150,7 +158,7 @@ namespace Kephas.Model
         /// var name = exp["StronglyTypedProperty"] as string;.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object" />.
+        /// The <see cref="object" />.
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>
@@ -164,13 +172,5 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
-
-        /// <summary>
-        /// Gets the parts of an aggregated element.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        public abstract IEnumerable<IElementInfo> Parts { get; }
     }
 }

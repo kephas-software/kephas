@@ -31,6 +31,7 @@
     <CMAddAccessMethods value="false" />
     <CMImplementMethod value="false" />
     <CMOpenSourceOrHeader value="false" />
+    <EditXmlInNotepad />
   </Misc>
   <Doxygen>
     <CommandPrefix value="@" />

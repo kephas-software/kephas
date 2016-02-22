@@ -47,6 +47,6 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public abstract Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = new CancellationToken());
+        public abstract Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }

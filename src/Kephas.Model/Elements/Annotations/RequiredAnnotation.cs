@@ -48,7 +48,7 @@
         /// <returns>
         /// A promise of a value indicating whether the rule may be applied or not.
         /// </returns>
-        public Task<bool> CanApplyAsync(IInstanceContext context, CancellationToken cancellationToken = new CancellationToken())
+        public Task<bool> CanApplyAsync(IInstanceContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult(true);
         }

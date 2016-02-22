@@ -43,7 +43,7 @@ namespace Kephas.Model.Runtime
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
         [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-        public override Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var elementInfos = new List<INamedElementInfo>
                         {

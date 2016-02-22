@@ -193,6 +193,16 @@ namespace Kephas.Core.Tests.Composition
                 return this;
             }
 
+            /// <summary>
+            /// Mark the part as being shared within the scope.
+            /// </summary>
+            /// <returns>A part builder allowing further configuration of the part.</returns>
+            public IPartConventionsBuilder ScopeShared()
+            {
+                // TODO test this
+                throw new NotImplementedException();
+            }
+
             public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
             {
                 if (conventionsBuilder != null)

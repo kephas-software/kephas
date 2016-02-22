@@ -107,7 +107,6 @@ namespace Kephas.Dynamic
         /// The setter checks the instance properties before checking the Properties dictionary.
         /// </remarks>
         /// <param name="key">The key.</param>
-        /// <returns>The <see cref="System.Object"/>.</returns>
         /// <returns>The <see cref="object" />.</returns>
         public object this[string key]
         {

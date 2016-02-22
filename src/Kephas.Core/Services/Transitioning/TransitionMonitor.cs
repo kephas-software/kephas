@@ -185,6 +185,7 @@ namespace Kephas.Services.Transitioning
         /// <summary>
         /// Marks the transition as faulted.
         /// </summary>
+        /// <param name="exception">The exception which occured.</param>
         public void Fault(Exception exception)
         {
             Contract.Requires(exception != null);

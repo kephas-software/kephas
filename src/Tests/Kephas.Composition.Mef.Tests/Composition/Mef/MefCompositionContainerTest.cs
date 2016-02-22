@@ -12,12 +12,18 @@ namespace Kephas.Tests.Composition.Mef
     using System;
     using System.Collections.Generic;
     using System.Composition;
+    using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Composition.Mef.Internals;
+    using Kephas.Configuration;
+    using Kephas.Hosting;
+    using Kephas.Logging;
 
     using NUnit.Framework;
 
@@ -30,7 +36,16 @@ namespace Kephas.Tests.Composition.Mef
     {
         public MefCompositionContainer CreateContainer(params Type[] types)
         {
-            return this.WithEmptyConfiguration().WithParts(types).CreateCompositionContainer();
+            return this.WithEmptyConfiguration()
+                .WithParts(types)
+                .CreateCompositionContainer();
+        }
+
+        public MefCompositionContainer CreateContainerWithBuilder(params Type[] types)
+        {
+            var configuration = this.WithEmptyConfiguration().WithParts(types);
+            var builder = new MefCompositionContainerBuilder(new NullLogManager(), new NullConfigurationManager(), new NullHostingEnvironment());
+            return (MefCompositionContainer)builder.WithConfiguration(configuration).CreateContainer();
         }
 
         public MefCompositionContainer CreateExportProvidersContainer(params Type[] types)
@@ -181,10 +196,33 @@ namespace Kephas.Tests.Composition.Mef
             container.Dispose();
         }
 
+        [Test]
+        public void CreateScopedContext_ScopeExportedClass()
+        {
+            var container = this.CreateContainerWithBuilder(typeof(ScopeExportedClass));
+            using (var scopedContext = container.CreateScopedContext())
+            using (var otherScopedContext = container.CreateScopedContext())
+            {
+                var scopedInstance1 = scopedContext.GetExport<ScopeExportedClass>();
+                var scopedInstance2 = scopedContext.GetExport<ScopeExportedClass>();
+
+                Assert.AreSame(scopedInstance1, scopedInstance2);
+
+                var otherScopedInstance = otherScopedContext.GetExport<ScopeExportedClass>();
+                Assert.AreNotSame(scopedInstance1, otherScopedInstance);
+            }
+        }
+
         private class ContainerServicesImporter
         {
             [Import]
             public ICompositionContext CompositionContainer { get; set; }
+        }
+
+        [Export]
+        [Shared(SharingBoundaries.Scope)]
+        public class ScopeExportedClass
+        {
         }
 
         [Export]
