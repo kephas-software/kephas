@@ -47,10 +47,10 @@
             var assemblies = await this.hostingEnvironment.GetAppAssembliesAsync(cancellationToken).WithServerThreadingContext();
             var eligibleAssemblyPairs =
                 (from kv in 
-                    (from a in assemblies
+                    from a in assemblies
                     select new KeyValuePair<Assembly, IList<ModelAssemblyAttribute>>(
                             a,
-                            a.GetCustomAttributes<ModelAssemblyAttribute>().ToList()))
+                            a.GetCustomAttributes<ModelAssemblyAttribute>().ToList())
                 where kv.Value.Count > 0
                 select kv).ToList();
 

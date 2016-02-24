@@ -12,7 +12,6 @@ namespace Kephas.Tests.Composition.Mef
     using System;
     using System.Collections.Generic;
     using System.Composition;
-    using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -20,10 +19,6 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Composition;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
-    using Kephas.Composition.Mef.Internals;
-    using Kephas.Configuration;
-    using Kephas.Hosting;
-    using Kephas.Logging;
 
     using NUnit.Framework;
 
@@ -39,13 +34,6 @@ namespace Kephas.Tests.Composition.Mef
             return this.WithEmptyConfiguration()
                 .WithParts(types)
                 .CreateCompositionContainer();
-        }
-
-        public MefCompositionContainer CreateContainerWithBuilder(params Type[] types)
-        {
-            var configuration = this.WithEmptyConfiguration().WithParts(types);
-            var builder = new MefCompositionContainerBuilder(new NullLogManager(), new NullConfigurationManager(), new NullHostingEnvironment());
-            return (MefCompositionContainer)builder.WithConfiguration(configuration).CreateContainer();
         }
 
         public MefCompositionContainer CreateExportProvidersContainer(params Type[] types)

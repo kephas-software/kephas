@@ -12,12 +12,10 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition;
     using System.Diagnostics.Contracts;
 
-    using Kephas.Composition;
-
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class MefScopedCompositionContext : MefCompositionContext
+    public class MefScopedCompositionContext : MefCompositionContextBase
     {
         /// <summary>
         /// The composition context export.
@@ -34,17 +32,6 @@ namespace Kephas.Composition.Mef.Hosting
 
             this.export = export;
             this.Initialize(this.export.Value);
-        }
-
-        /// <summary>
-        /// Creates a new scoped composition context.
-        /// </summary>
-        /// <returns>
-        /// The new scoped context.
-        /// </returns>
-        public override ICompositionContext CreateScopedContext()
-        {
-            return this;
         }
 
         /// <summary>

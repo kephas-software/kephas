@@ -87,17 +87,6 @@ namespace Kephas.Model.Runtime.Construction
         public Func<IModelElement, bool> IsMemberOf { get; protected set; }
 
         /// <summary>
-        /// Convert this object into a string representation.
-        /// </summary>
-        /// <returns>
-        /// A string that represents this object.
-        /// </returns>
-        public override string ToString()
-        {
-            return $"{this.Name} ({this.RuntimeElement})";
-        }
-
-        /// <summary>
         /// Gets the element name discriminator.
         /// </summary>
         /// <value>
@@ -107,6 +96,17 @@ namespace Kephas.Model.Runtime.Construction
         /// This dicriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
         protected virtual string ElementNameDiscriminator => null;
+
+        /// <summary>
+        /// Convert this object into a string representation.
+        /// </summary>
+        /// <returns>
+        /// A string that represents this object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.Name} ({this.RuntimeElement})";
+        }
 
         /// <summary>
         /// Constructs the information.

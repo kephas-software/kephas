@@ -76,6 +76,7 @@
     <Compile Include="Composition\Mef\CompositionTestBase.cs" />
     <Compile Include="Composition\Mef\MefCompositionContainerBuilderTest.cs" />
     <Compile Include="Composition\Mef\MefCompositionContainerTest.cs" />
+    <Compile Include="Composition\Mef\MefScopedCompositionContextTest.cs" />
     <Compile Include="Composition\Mef\TestCompositionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

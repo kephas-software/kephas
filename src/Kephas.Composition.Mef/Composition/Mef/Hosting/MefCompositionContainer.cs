@@ -20,13 +20,8 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class MefCompositionContainer : MefCompositionContext
+    public class MefCompositionContainer : MefCompositionContextBase
     {
-        /// <summary>
-        /// The scope provider.
-        /// </summary>
-        private MefScopeProvider scopeProvider;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MefCompositionContainer" /> class.
         /// </summary>
@@ -36,19 +31,6 @@ namespace Kephas.Composition.Mef.Hosting
             Contract.Requires(configuration != null);
 
             this.Initialize(this.CreateCompositionContext(configuration));
-        }
-
-        /// <summary>
-        /// Creates a new scoped composition context.
-        /// </summary>
-        /// <returns>
-        /// The new scoped context.
-        /// </returns>
-        public override ICompositionContext CreateScopedContext()
-        {
-            this.scopeProvider = this.scopeProvider ?? this.GetExport<MefScopeProvider>();
-
-            return new MefScopedCompositionContext(this.scopeProvider.CreateScopedContextExport());
         }
 
         /// <summary>

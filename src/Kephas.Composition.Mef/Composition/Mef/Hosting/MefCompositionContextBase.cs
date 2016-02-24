@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContext.cs" company="Quartz Software SRL">
+// <copyright file="MefCompositionContextBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -14,17 +14,23 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Composition.Mef.Internals;
     using Kephas.Composition.Mef.Resources;
 
     /// <summary>
     /// A MEF composition context.
     /// </summary>
-    public abstract class MefCompositionContext : ICompositionContext
+    public abstract class MefCompositionContextBase : ICompositionContext
     {
         /// <summary>
         /// The inner container.
         /// </summary>
         private CompositionContext innerContainer;
+
+        /// <summary>
+        /// The scope provider.
+        /// </summary>
+        private MefScopeProvider scopeProvider;
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -138,7 +144,12 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public abstract ICompositionContext CreateScopedContext();
+        public virtual ICompositionContext CreateScopedContext()
+        {
+            this.scopeProvider = this.scopeProvider ?? this.GetExport<MefScopeProvider>();
+
+            return new MefScopedCompositionContext(this.scopeProvider.CreateScopedContextExport());
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -161,7 +172,7 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MefCompositionContext"/> class.
+        /// Initializes a new instance of the <see cref="MefCompositionContextBase"/> class.
         /// </summary>
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)

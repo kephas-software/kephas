@@ -8,6 +8,7 @@ namespace Kephas.Tests.Composition.Mef
     using System;
     using System.Collections.Generic;
     using System.Composition;
+    using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
@@ -192,6 +193,44 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        public void GetExport_ScopeSharedAppService_no_scope()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
+                .CreateContainer();
+
+            Assert.Throws<CompositionFailedException>(() => container.GetExport<ITestScopedExport>());
+        }
+
+        [Test]
+        public void GetExport_ScopeSharedAppService_export()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
+                .CreateContainer();
+
+            ITestScopedExport exportScope1;
+            using (var scopedContext = container.CreateScopedContext())
+            {
+                exportScope1 = scopedContext.GetExport<ITestScopedExport>();
+                Assert.IsInstanceOf<TestScopedExport>(exportScope1);
+
+                var export = scopedContext.GetExport<ITestScopedExport>();
+                Assert.AreSame(exportScope1, export);
+            }
+
+            using (var scopedContext2 = container.CreateScopedContext())
+            {
+                var export2 = scopedContext2.GetExport<ITestScopedExport>();
+                Assert.AreNotSame(exportScope1, export2);
+            }
+        }
+
+        [Test]
         public void GetExport_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilder();
@@ -318,6 +357,11 @@ namespace Kephas.Tests.Composition.Mef
             [Kephas.Composition.AttributedModel.ImportMany]
             public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
+
+        [ScopeSharedAppServiceContract]
+        public interface ITestScopedExport { }
+
+        public class TestScopedExport : ITestScopedExport { }
 
         [SharedAppServiceContract]
         public interface ITestGenericExport<T> { }
