@@ -22,7 +22,7 @@ namespace Kephas.Model
     /// </summary>
     [MemberNameDiscriminator(":")]
     [ContractClass(typeof(ModelDimensionElementContractClass))]
-    public interface IModelDimensionElement : INamedElement
+    public interface IModelDimensionElement : IModelElement
     {
     }
 
@@ -131,6 +131,22 @@ namespace Kephas.Model
         public abstract IEnumerable<object> Parts { get; }
 
         /// <summary>
+        /// Gets the members of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element members.
+        /// </value>
+        public abstract IEnumerable<INamedElement> Members { get; }
+
+        /// <summary>
+        /// Gets the base model element.
+        /// </summary>
+        /// <value>
+        /// The base model element.
+        /// </value>
+        public abstract IModelElement Base { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -154,5 +170,13 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Gets the member with the specified qualified name.
+        /// </summary>
+        /// <param name="qualifiedName">The qualified name of the member.</param>
+        /// <param name="throwOnNotFound">If set to <c>true</c> and the member is not found, an exception occurs; otherwise <c>null</c> is returned if the member is not found.</param>
+        /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
+        public abstract INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true);
     }
 }

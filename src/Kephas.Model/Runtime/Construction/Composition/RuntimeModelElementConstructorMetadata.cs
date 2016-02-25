@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory.Composition
+namespace Kephas.Model.Runtime.Construction.Composition
 {
     using System;
     using System.Collections.Generic;
@@ -22,12 +22,17 @@ namespace Kephas.Model.Runtime.Factory.Composition
     public class RuntimeModelElementConstructorMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// The element info type metadata key.
+        /// The concrete model type metadata key.
         /// </summary>
         public static readonly string ModelTypeKey = ReflectionHelper.GetPropertyName<RuntimeModelElementConstructorMetadata>(m => m.ModelType);
 
         /// <summary>
-        /// The runtime info type metadata key.
+        /// The model contract type metadata key.
+        /// </summary>
+        public static readonly string ModelContractTypeKey = ReflectionHelper.GetPropertyName<RuntimeModelElementConstructorMetadata>(m => m.ModelContractType);
+
+        /// <summary>
+        /// The runtime definition type metadata key.
         /// </summary>
         public static readonly string RuntimeTypeKey = ReflectionHelper.GetPropertyName<RuntimeModelElementConstructorMetadata>(m => m.RuntimeType);
 
@@ -39,6 +44,7 @@ namespace Kephas.Model.Runtime.Factory.Composition
             : base(metadata)
         {
             this.ModelType = (Type)metadata.TryGetValue(ModelTypeKey);
+            this.ModelContractType = (Type)metadata.TryGetValue(ModelContractTypeKey);
             this.RuntimeType = (Type)metadata.TryGetValue(RuntimeTypeKey);
         }
 
@@ -57,18 +63,26 @@ namespace Kephas.Model.Runtime.Factory.Composition
         }
 
         /// <summary>
-        /// Gets the type of the element information.
+        /// Gets the type of the concrete implementation.
         /// </summary>
         /// <value>
-        /// The type of the element information.
+        /// The type of the concrete implementation.
         /// </value>
         public Type ModelType { get; private set; }
 
         /// <summary>
-        /// Gets the type of the runtime information.
+        /// Gets the type of the model contract (the interface).
         /// </summary>
         /// <value>
-        /// The type of the runtime information.
+        /// The type of the model contract.
+        /// </value>
+        public Type ModelContractType { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the runtime definition.
+        /// </summary>
+        /// <value>
+        /// The type of the runtime definition.
         /// </value>
         public Type RuntimeType { get; private set; }
     }

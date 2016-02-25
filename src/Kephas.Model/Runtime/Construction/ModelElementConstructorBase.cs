@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeModelElementInfoProviderBase.cs" company="Quartz Software SRL">
+// <copyright file="ModelElementConstructorBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,16 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-
-using Kephas.Model.AttributedModel;
-
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements;
     using Kephas.Model.Factory;
     using Kephas.Reflection;
@@ -25,9 +23,11 @@ namespace Kephas.Model.Runtime.Factory
     /// Base runtime provider for model element information.
     /// </summary>
     /// <typeparam name="TModel">The type of the element information.</typeparam>
+    /// <typeparam name="TModelContract">Type of the model contract.</typeparam>
     /// <typeparam name="TRuntime">The type of the runtime information.</typeparam>
-    public abstract class ModelElementConstructorBase<TModel, TRuntime> : NamedElementConstructorBase<TModel, TRuntime>
-        where TModel : ModelElementBase<TModel>
+    public abstract class ModelElementConstructorBase<TModel, TModelContract, TRuntime> : NamedElementConstructorBase<TModel, TModelContract, TRuntime>
+        where TModel : ModelElementBase<TModelContract>
+        where TModelContract : class, IModelElement
         where TRuntime : class, IElementInfo, IDynamicElementInfo
     {
         /// <summary>

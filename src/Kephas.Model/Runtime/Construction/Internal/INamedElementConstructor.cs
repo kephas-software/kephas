@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction
+namespace Kephas.Model.Runtime.Construction.Internal
 {
     /// <summary>
     /// Interface for named element constructor.

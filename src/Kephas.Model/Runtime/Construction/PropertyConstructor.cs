@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using Kephas.Dynamic;
     using Kephas.Model.Elements;
@@ -16,7 +16,7 @@ namespace Kephas.Model.Runtime.Factory
     /// <summary>
     /// Factory class for runtime property information.
     /// </summary>
-    public class PropertyConstructor : ModelElementConstructorBase<Property, IDynamicPropertyInfo>
+    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IDynamicPropertyInfo>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.

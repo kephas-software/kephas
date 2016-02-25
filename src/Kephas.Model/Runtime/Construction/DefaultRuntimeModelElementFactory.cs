@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -15,8 +15,7 @@ namespace Kephas.Model.Runtime.Factory
 
     using Kephas.Composition;
     using Kephas.Model.Factory;
-    using Kephas.Model.Runtime.Factory.Composition;
-    using Kephas.Reflection;
+    using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Services;
 
     /// <summary>

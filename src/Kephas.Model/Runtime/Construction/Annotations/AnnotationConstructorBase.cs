@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory.Annotations
+namespace Kephas.Model.Runtime.Construction.Annotations
 {
     using System;
     using System.Reflection;
@@ -19,8 +19,8 @@ namespace Kephas.Model.Runtime.Factory.Annotations
     /// </summary>
     /// <typeparam name="TAnnotation">Type of the annotation information.</typeparam>
     /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
-    public abstract class AnnotationConstructorBase<TAnnotation, TAttribute> : NamedElementConstructorBase<TAnnotation, TAttribute>
-        where TAnnotation : NamedElementBase<TAnnotation>
+    public abstract class AnnotationConstructorBase<TAnnotation, TAttribute> : NamedElementConstructorBase<TAnnotation, IAnnotation, TAttribute>
+        where TAnnotation : NamedElementBase<IAnnotation>, IAnnotation
         where TAttribute : Attribute
     {
         /// <summary>

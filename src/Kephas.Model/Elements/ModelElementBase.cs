@@ -14,12 +14,14 @@ namespace Kephas.Model.Elements
 
     using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
-    /// <typeparam name="TModelElement">The type of the model contract.</typeparam>
-    public abstract class ModelElementBase<TModelElement> : NamedElementBase<TModelElement>, IModelElement
+    /// <typeparam name="TModelContract">The type of the model contract (the model interface).</typeparam>
+    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement
+        where TModelContract : IModelElement
     {
         /// <summary>
         /// The members.
@@ -27,7 +29,7 @@ namespace Kephas.Model.Elements
         private readonly IDictionary<string, INamedElement> members = new Dictionary<string, INamedElement>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelElementBase{TModelElement}"/> class.
+        /// Initializes a new instance of the <see cref="ModelElementBase{TModelContract}"/> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>

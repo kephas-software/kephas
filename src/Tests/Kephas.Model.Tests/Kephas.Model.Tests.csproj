@@ -54,8 +54,8 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <None Include="Elements\ModelDimensionElementTest.cs" />
-    <None Include="Elements\ModelDimensionTest.cs" />
-    <None Include="Elements\NamedElementBaseTest.cs" />
+    <Compile Include="Runtime\Construction\ModelDimensionConstructorTest.cs" />
+    <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
     <None Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />

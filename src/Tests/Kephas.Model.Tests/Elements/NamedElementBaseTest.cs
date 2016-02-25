@@ -15,13 +15,11 @@ namespace Kephas.Model.Tests.Elements
 
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements;
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Factory;
 
     using NUnit.Framework;
 
     using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Test class for <see cref="NamedElementBase{TModelContract}"/>.
@@ -58,7 +56,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var context = Mock.Create<IModelConstructionContext>();
+            var context = new ModelConstructionContext { ModelSpace = null };
             Assert.That(() => new TestNamedElement(context, "name"), Throws.InstanceOf<Exception>());
         }
 
@@ -70,16 +68,16 @@ namespace Kephas.Model.Tests.Elements
             Assert.That(() => new TestNamedElement(context, null), Throws.InstanceOf<Exception>());
         }
 
-        private interface ITestElement
+        private interface ITestElement : INamedElement
         {
         }
 
         [MemberNameDiscriminator("##")]
-        private interface ITestElementWithDiscriminator
+        private interface ITestElementWithDiscriminator : INamedElement
         {
         }
 
-        private class TestNamedElement : NamedElementBase<TestNamedElement>
+        private class TestNamedElement : NamedElementBase<ITestElement>
         {
             public TestNamedElement(IModelConstructionContext constructionContext, string name)
                 : base(constructionContext, name)
@@ -95,7 +93,7 @@ namespace Kephas.Model.Tests.Elements
             public override IEnumerable<IAnnotation> Annotations => new List<IAnnotation>();
         }
 
-        private class TestNamedElementWithDiscriminator : NamedElementBase<TestNamedElementWithDiscriminator>
+        private class TestNamedElementWithDiscriminator : NamedElementBase<ITestElementWithDiscriminator>
         {
             public TestNamedElementWithDiscriminator(IModelConstructionContext constructionContext, string name)
                 : base(constructionContext, name)

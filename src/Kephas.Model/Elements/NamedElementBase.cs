@@ -15,13 +15,15 @@ namespace Kephas.Model.Elements
     using Kephas.Dynamic;
     using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
 
     /// <summary>
     /// Base class for named elements.
     /// </summary>
-    /// <typeparam name="TModelElement">The type of the model contract.</typeparam>
-    public abstract class NamedElementBase<TModelElement> : Expando, INamedElement, INamedElementConstructor
+    /// <typeparam name="TModelContract">The type of the model contract (the interface).</typeparam>
+    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, INamedElementConstructor
+        where TModelContract : INamedElement
     {
         /// <summary>
         /// The underlying element infos.
@@ -29,7 +31,7 @@ namespace Kephas.Model.Elements
         private readonly IList<object> parts;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NamedElementBase{TModelElement}" /> class.
+        /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract}" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The model element name.</param>
@@ -42,7 +44,7 @@ namespace Kephas.Model.Elements
 
             this.Name = name;
             this.ModelSpace = constructionContext.ModelSpace;
-            this.QualifiedName = typeof(TModelElement).GetMemberNameDiscriminator() + name;
+            this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
 
             this.parts = new List<object>();
         }

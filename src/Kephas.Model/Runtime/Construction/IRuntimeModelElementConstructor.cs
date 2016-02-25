@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using System.Diagnostics.Contracts;
 
@@ -37,13 +37,15 @@ namespace Kephas.Model.Runtime.Factory
     /// Contract for element factories.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelContract">The model contract type.</typeparam>
     /// <typeparam name="TRuntime">The runtime type.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true, 
         ContractType = typeof(IRuntimeModelElementConstructor),
         MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
-    public interface IRuntimeModelElementConstructor<TModel, TRuntime> : IRuntimeModelElementConstructor
+    public interface IRuntimeModelElementConstructor<TModel, TModelContract, TRuntime> : IRuntimeModelElementConstructor
         where TModel : class, INamedElement
+        where TModelContract : class, INamedElement
         where TRuntime : class
     {
     }

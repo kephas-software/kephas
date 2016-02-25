@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using System.Reflection;
 
@@ -21,7 +21,7 @@ namespace Kephas.Model.Runtime.Factory
     /// Runtime factory for model dimension information.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class ModelDimensionConstructor : ModelElementConstructorBase<ModelDimension, IDynamicTypeInfo>
+    public class ModelDimensionConstructor : ModelElementConstructorBase<ModelDimension, IModelDimension, IDynamicTypeInfo>
     {
         /// <summary>
         /// The dimension name discriminator.

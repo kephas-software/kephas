@@ -17,7 +17,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// Definition class for annotations.
     /// </summary>
-    public class Annotation : NamedElementBase<Annotation>, IAnnotation
+    public class Annotation : NamedElementBase<IAnnotation>, IAnnotation
     {
         /// <summary>
         /// The empty annotations.

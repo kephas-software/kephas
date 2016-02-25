@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using Kephas.Dynamic;
     using Kephas.Model.Elements;
@@ -16,8 +16,10 @@ namespace Kephas.Model.Runtime.Factory
     /// Base runtime provider for classifier information.
     /// </summary>
     /// <typeparam name="TModel">The type of the element information.</typeparam>
-    public abstract class ClassifierConstructorBase<TModel> : ModelElementConstructorBase<TModel, IDynamicTypeInfo>
-        where TModel : ClassifierBase<TModel>
+    /// <typeparam name="TModelContract">Type of the model contract.</typeparam>
+    public abstract class ClassifierConstructorBase<TModel, TModelContract> : ModelElementConstructorBase<TModel, TModelContract, IDynamicTypeInfo>
+        where TModel : ClassifierBase<TModelContract>
+        where TModelContract : class, IClassifier
     {
     }
 }

@@ -17,7 +17,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// Implementation of model dimensions.
     /// </summary>
-    public class ModelDimension : ModelElementBase<ModelDimension>, IModelDimension
+    public class ModelDimension : ModelElementBase<IModelDimension>, IModelDimension
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelDimension" /> class.

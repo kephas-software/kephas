@@ -7,23 +7,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory
+namespace Kephas.Model.Runtime.Construction
 {
     using System.Text;
 
     using Kephas.Dynamic;
     using Kephas.Model.Elements;
     using Kephas.Model.Factory;
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
 
     /// <summary>
     /// Base implementation of a named element information provider based on the .NET runtime.
     /// </summary>
-    /// <typeparam name="TModel">The type of the element information.</typeparam>
-    /// <typeparam name="TRuntime">The type of the runtime information.</typeparam>
-    public abstract class NamedElementConstructorBase<TModel, TRuntime> : IRuntimeModelElementConstructor<TModel, TRuntime>
-        where TModel : NamedElementBase<TModel>
+    /// <typeparam name="TModel">Type of the model.</typeparam>
+    /// <typeparam name="TModelContract">Type of the model contract.</typeparam>
+    /// <typeparam name="TRuntime">Type of the runtime definition.</typeparam>
+    public abstract class NamedElementConstructorBase<TModel, TModelContract, TRuntime> : IRuntimeModelElementConstructor<TModel, TModelContract, TRuntime>
+        where TModel : NamedElementBase<TModelContract>
+        where TModelContract : class, INamedElement
         where TRuntime : class
     {
         /// <summary>

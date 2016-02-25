@@ -103,7 +103,7 @@ namespace Kephas.Services.Composition
         /// <returns><c>true</c> if the specified property imports an application service, otherwise <c>false</c>.</returns>
         private bool IsAppServiceImport(PropertyInfo pi, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos)
         {
-            if (!pi.CanWrite || !pi.SetMethod.IsPublic)
+            if (pi == null || !pi.CanWrite || !pi.SetMethod.IsPublic)
             {
                 return false;
             }

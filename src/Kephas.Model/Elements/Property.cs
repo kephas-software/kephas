@@ -14,7 +14,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// Definition class for properties.
     /// </summary>
-    public class Property : ModelElementBase<Property>
+    public class Property : ModelElementBase<IProperty>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class.

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Factory.Annotations
+namespace Kephas.Model.Runtime.Construction.Annotations
 {
     using System;
 

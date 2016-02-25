@@ -22,7 +22,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Logging;
     using Kephas.Model.Factory;
     using Kephas.Model.Resources;
-    using Kephas.Model.Runtime.Factory;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

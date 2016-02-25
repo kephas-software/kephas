@@ -9,7 +9,7 @@
 
 namespace Kephas.Model.Factory
 {
-    using Kephas.Model.Runtime.Factory;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Services;
 
     /// <summary>
