@@ -53,17 +53,16 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <None Include="Elements\ModelDimensionElementTest.cs" />
     <Compile Include="Runtime\Construction\ModelDimensionConstructorTest.cs" />
     <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
+    <Compile Include="Runtime\Construction\AnnotationConstructorBaseTest.cs" />
     <None Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
     <None Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
-    <None Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
-    <None Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
-    <None Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactoryTest.cs" />
-    <None Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
+    <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\Construction\Annotations\AnnotationConstructorTest.cs" />
+    <Compile Include="Runtime\Construction\ModelDimensionElementConstructorTest.cs" />
     <None Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
     <None Include="Runtime\Factory\RuntimePropertyInfoFactoryTest.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />

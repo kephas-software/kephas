@@ -1,12 +1,20 @@
-﻿namespace Kephas.Model.Elements.Annotations
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="RequiredAnnotation.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the required annotation class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Elements.Annotations
 {
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Behaviors;
-    using Kephas.Data;
     using Kephas.Model.Behaviors;
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// A required annotation.
@@ -14,13 +22,12 @@
     public class RequiredAnnotation : Annotation, IRequiredBehaviorRule
     {
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="Kephas.Model.Elements.Annotations.RequiredAnnotation"/> class.
+        /// Initializes a new instance of the <see cref="RequiredAnnotation"/> class.
         /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace"> The model space.</param>
-        public RequiredAnnotation(IAnnotationInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        public RequiredAnnotation(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
 

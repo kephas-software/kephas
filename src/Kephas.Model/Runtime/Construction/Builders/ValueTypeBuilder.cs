@@ -10,32 +10,35 @@
 namespace Kephas.Model.Runtime.Construction.Builders
 {
     using System;
-    using System.Reflection;
 
-    using Kephas.Model.Runtime.Factory;
+    using Kephas.Dynamic;
+    using Kephas.Model.Factory;
+    using Kephas.Reflection;
+
+    using ValueType = Kephas.Model.Elements.ValueType;
 
     /// <summary>
     /// Builder for runtime value type information.
     /// </summary>
-    public class ValueTypeBuilder : RuntimeClassifierBuilderBase<RuntimeValueTypeInfo, ValueTypeBuilder>
+    public class ValueTypeBuilder : ClassifierBuilderBase<ValueType, IValueType, ValueTypeBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueTypeBuilder"/> class.
         /// </summary>
-        /// <param name="runtimeModelElementFactory">The runtime model information provider.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeBuilder(IRuntimeModelElementFactory runtimeModelElementFactory, Type runtimeElement)
-            : this(runtimeModelElementFactory, runtimeElement.GetTypeInfo())
+        public ValueTypeBuilder(IModelConstructionContext constructionContext, Type runtimeElement)
+            : this(constructionContext, runtimeElement.AsDynamicTypeInfo())
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueTypeBuilder"/> class.
         /// </summary>
-        /// <param name="runtimeModelElementFactory">The runtime model information provider.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeBuilder(IRuntimeModelElementFactory runtimeModelElementFactory, TypeInfo runtimeElement)
-            : base(runtimeModelElementFactory, runtimeElement)
+        public ValueTypeBuilder(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+            : base(constructionContext, runtimeElement)
         {
         }
 
@@ -68,13 +71,16 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <summary>
         /// Creates the element information out of the provided runtime element.
         /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
-        /// A new instance of <see cref="RuntimeValueTypeInfo"/>.
+        /// A new instance of <see typeparamref="TNamedElement"/>.
         /// </returns>
-        protected override RuntimeValueTypeInfo CreateElementInfo(TypeInfo runtimeElement)
+        protected override IRuntimeModelElementConstructor CreateElementConstructor(
+            IModelConstructionContext constructionContext,
+            IDynamicTypeInfo runtimeElement)
         {
-            return new RuntimeValueTypeInfo(runtimeElement);
+            return new ValueTypeConstructor();
         }
     }
 }

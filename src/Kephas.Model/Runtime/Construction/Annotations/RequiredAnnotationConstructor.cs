@@ -1,22 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyConstructor.cs" company="Quartz Software SRL">
+// <copyright file="RequiredAnnotationConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Factory class for runtime property information.
+//   Implements the required annotation constructor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction
+namespace Kephas.Model.Runtime.Construction.Annotations
 {
-    using Kephas.Dynamic;
-    using Kephas.Model.Elements;
+    using Kephas.Model.AttributedModel.Behaviors;
+    using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Factory;
 
     /// <summary>
-    /// Factory class for runtime property information.
+    /// A required annotation constructor.
     /// </summary>
-    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IDynamicPropertyInfo>
+    public class RequiredAnnotationConstructor : AnnotationConstructorBase<RequiredAnnotation, RequiredAttribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -27,10 +27,11 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicPropertyInfo runtimeElement)
+        protected override RequiredAnnotation TryCreateModelElementCore(
+            IModelConstructionContext constructionContext,
+            RequiredAttribute runtimeElement)
         {
-            var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement));
-            return property;
+            return new RequiredAnnotation(constructionContext, this.TryComputeNameCore(runtimeElement));
         }
     }
 }

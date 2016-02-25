@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyConstructor.cs" company="Quartz Software SRL">
+// <copyright file="ValueTypeConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Factory class for runtime property information.
+//   Implements the value type constructor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,9 +14,9 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Factory;
 
     /// <summary>
-    /// Factory class for runtime property information.
+    /// A value type constructor.
     /// </summary>
-    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IDynamicPropertyInfo>
+    public class ValueTypeConstructor : ClassifierConstructorBase<ValueType, IValueType>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -27,10 +27,9 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicPropertyInfo runtimeElement)
+        protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
         {
-            var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement));
-            return property;
+            return new ValueType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
 }

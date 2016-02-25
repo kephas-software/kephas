@@ -14,7 +14,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// Classifier definition for a value type.
     /// </summary>
-    public class ValueType : ClassifierBase<ValueType>, IValueType
+    public class ValueType : ClassifierBase<IValueType>, IValueType
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueType" /> class.

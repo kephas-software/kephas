@@ -9,22 +9,15 @@
 
 namespace Kephas.Model.Tests.Runtime
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
-    using Kephas.Composition.Mef;
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Factory;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
-    using Kephas.Model.Runtime.Factory;
-    using Kephas.Model.Runtime.Factory.Composition;
 
     using NUnit.Framework;
 
@@ -44,27 +37,17 @@ namespace Kephas.Model.Tests.Runtime
             var registrar = Mock.Create<IRuntimeModelRegistry>();
             registrar.Arrange(r => r.GetRuntimeElementsAsync(CancellationToken.None)).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetDynamicTypeInfo() }));
 
-            var stringInfoMock = Mock.Create<INamedElementInfo>();
+            var stringInfoMock = Mock.Create<INamedElement>();
 
             var factory = Mock.Create<IRuntimeModelElementFactory>();
             factory.Arrange(f => f.TryCreateModelElement(Arg.IsAny<IModelConstructionContext>(), Arg.Is(typeof(string).GetDynamicTypeInfo()))).Returns(stringInfoMock);
 
             var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar });
 
-            var elementInfos = (await provider.GetElementInfosAsync(TODO)).ToList();
+            var elementInfos = (await provider.GetElementInfosAsync(Mock.Create<IModelConstructionContext>())).ToList();
 
             Assert.AreEqual(1, elementInfos.Count);
             Assert.AreSame(stringInfoMock, elementInfos[0]);
-        }
-
-        private IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata> CreateElementInfoFactory(IRuntimeModelElementConstructor constructor)
-        {
-            var metadata = new RuntimeModelElementConstructorMetadata(typeof(IClassifierInfo), typeof(TypeInfo));
-            var exportFactory =
-                new ExportFactoryAdapter<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(
-                    () => Tuple.Create(constructor, (Action)null),
-                    metadata);
-            return exportFactory;
         }
     }
 }

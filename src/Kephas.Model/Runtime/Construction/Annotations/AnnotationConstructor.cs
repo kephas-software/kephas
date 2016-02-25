@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAnnotationConstructor.cs" company="Quartz Software SRL">
+// <copyright file="AnnotationConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,7 +17,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
     /// <summary>
     /// A default runtime factory for annotation information.
     /// </summary>
-    public class DefaultAnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
+    public class AnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -30,9 +30,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// </returns>
         protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
         {
-            var name = this.ComputeName(runtimeElement);
-            var modelElement = new Annotation(constructionContext, name);
-            return modelElement;
+            return new Annotation(constructionContext, this.TryComputeNameCore(runtimeElement));
         }
     }
 }

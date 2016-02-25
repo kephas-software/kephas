@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction.Annotations
+namespace Kephas.Model.Runtime.Construction
 {
     using System;
     using System.Reflection;
@@ -44,9 +44,9 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string ComputeName(object runtimeElement)
+        protected override string TryComputeNameCore(object runtimeElement)
         {
-            var attrTypeInfo = runtimeElement.GetType().GetDynamicTypeInfo();
+            var attrTypeInfo = runtimeElement.GetDynamicTypeInfo();
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             // NOTE: The speciality of the runtime is to prepend the @ sign to the
             // attribute name, because the member name conventions imply it.
@@ -54,7 +54,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
             // This simplifies the member aggregation in the final classifier
             // because the name is already prepared by the info classes and the 
             // classifier must simply create the corresponding members.
-            var name = "@" + base.ComputeName(attrTypeInfo);
+            var name = "@" + base.TryComputeNameCore(attrTypeInfo);
             if (usage == null || usage.AllowMultiple)
             {
                 name = name + "_" + runtimeElement.GetHashCode();

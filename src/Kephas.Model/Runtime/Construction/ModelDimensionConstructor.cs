@@ -62,7 +62,7 @@ namespace Kephas.Model.Runtime.Construction
                 return null;
             }
 
-            var modelElement = new ModelDimension(constructionContext, this.ComputeName(runtimeElement))
+            var modelElement = new ModelDimension(constructionContext, this.TryComputeNameCore(runtimeElement))
                                    {
                                        Index = dimensionAttribute.Index,
                                        IsAggregatable = dimensionAttribute.IsAggregatable

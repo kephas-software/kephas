@@ -10,15 +10,15 @@
 namespace Kephas.Model.Tests.Runtime
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Data;
+    using Kephas.Model.Factory;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
-    using Kephas.Model.Runtime.Factory;
+    using Kephas.Reflection;
 
     using NUnit.Framework;
 
@@ -35,33 +35,34 @@ namespace Kephas.Model.Tests.Runtime
         public async Task GetElementInfosAsync()
         {
             var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelElementFactory>());
-            var elementInfos = (await provider.GetElementInfosAsync(TODO)).Cast<RuntimeValueTypeInfo>().ToList();
+            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var elementInfos = (await provider.GetElementInfosAsync(context)).Cast<IValueType>().ToList();
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(bool) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(bool).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(byte) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(sbyte) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(short) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(ushort) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(int) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(uint) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(long) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(ulong) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(byte).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(sbyte).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(short).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(ushort).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(int).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(uint).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(long).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(ulong).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(decimal) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(double) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(float) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(decimal).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(double).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(float).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(DateTime) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(DateTimeOffset) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(TimeSpan) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(DateTime).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(DateTimeOffset).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(TimeSpan).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Uri) && info.IsPrimitive));
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Guid) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(Uri).AsDynamicTypeInfo() && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(Guid).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(string) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(string).AsDynamicTypeInfo() && info.IsPrimitive));
 
-            Assert.IsTrue(elementInfos.Any(info => info.RuntimeElement == typeof(Id) && info.IsPrimitive));
+            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(Id).AsDynamicTypeInfo() && info.IsPrimitive));
         }
     }
 }

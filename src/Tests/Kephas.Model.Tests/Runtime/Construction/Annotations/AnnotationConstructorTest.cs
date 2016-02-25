@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRuntimeAnnotationInfoFactoryTest.cs" company="Quartz Software SRL">
+// <copyright file="AnnotationConstructorTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,16 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Tests.Runtime.Factory
+namespace Kephas.Model.Tests.Runtime.Construction.Annotations
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
 
-    using Kephas.Model.Runtime;
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Elements;
+    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction.Annotations;
-    using Kephas.Model.Runtime.Factory;
-    using Kephas.Model.Runtime.Factory.Annotations;
 
     using NUnit.Framework;
 
@@ -27,15 +25,18 @@ namespace Kephas.Model.Tests.Runtime.Factory
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultRuntimeAnnotationInfoFactoryTest
+    public class AnnotationConstructorTest
     {
         [Test]
-        public void TryCreateElement_ReturnType()
+        public void TryCreateModelElement_success()
         {
-            var factory = new DefaultAnnotationConstructor();
-            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), new NotMultipleAttribute());
-            Assert.IsNotNull(elementInfo);
-            Assert.IsInstanceOf<DefaultRuntimeAnnotationInfo>(elementInfo);
+            var constructor = new AnnotationConstructor();
+            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var annotation = constructor.TryCreateModelElement(context, new NotMultipleAttribute());
+
+            Assert.IsInstanceOf<Annotation>(annotation);
+            Assert.AreEqual("@NotMultiple", annotation.Name);
+            Assert.AreEqual(false, ((Annotation)annotation).AllowMultiple);
         }
 
         [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
