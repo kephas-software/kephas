@@ -15,6 +15,8 @@ namespace Kephas.Dynamic
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Implementation of <see cref="IDynamicMethodInfo"/> for runtime methods.
     /// </summary>
@@ -38,6 +40,7 @@ namespace Kephas.Dynamic
 
             this.MethodInfo = methodInfo;
             this.Name = methodInfo.Name;
+            this.FullName = methodInfo.DeclaringType.FullName + "." + methodInfo.Name;
         }
 
         /// <summary>
@@ -49,6 +52,14 @@ namespace Kephas.Dynamic
         public string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public string FullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -57,9 +68,33 @@ namespace Kephas.Dynamic
         public IEnumerable<object> Annotations => this.MethodInfo.GetCustomAttributes();
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer => DynamicTypeInfo.GetDynamicType(this.MethodInfo.DeclaringType);
+
+        /// <summary>
         /// Gets the method info.
         /// </summary>
         public MethodInfo MethodInfo { get; }
+
+        /// <summary>
+        /// Gets the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The return type of the method.
+        /// </value>
+        public ITypeInfo ReturnType => DynamicTypeInfo.GetDynamicType(this.MethodInfo.ReturnType);
+
+        /// <summary>
+        /// Gets the underlying member information.
+        /// </summary>
+        /// <returns>
+        /// The underlying member information.
+        /// </returns>
+        public MemberInfo GetUnderlyingMemberInfo() => this.MethodInfo;
 
         /// <summary>
         /// The invoke.

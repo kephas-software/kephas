@@ -13,6 +13,8 @@ namespace Kephas.Dynamic
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
     /// </summary>
@@ -46,6 +48,7 @@ namespace Kephas.Dynamic
         {
             this.PropertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
+            this.FullName = propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
         }
 
         /// <summary>
@@ -57,6 +60,14 @@ namespace Kephas.Dynamic
         public string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public string FullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -65,12 +76,36 @@ namespace Kephas.Dynamic
         public IEnumerable<object> Annotations => this.PropertyInfo.GetCustomAttributes();
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer => DynamicTypeInfo.GetDynamicType(this.PropertyInfo.DeclaringType);
+
+        /// <summary>
         /// Gets the property information.
         /// </summary>
         /// <value>
         /// The property information.
         /// </value>
         public PropertyInfo PropertyInfo { get; }
+
+        /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>
+        /// The type of the property.
+        /// </value>
+        public ITypeInfo PropertyType => DynamicTypeInfo.GetDynamicType(this.PropertyInfo.PropertyType);
+
+        /// <summary>
+        /// Gets the underlying member information.
+        /// </summary>
+        /// <returns>
+        /// The underlying member information.
+        /// </returns>
+        public MemberInfo GetUnderlyingMemberInfo() => this.PropertyInfo;
 
         /// <summary>
         /// Sets the specified value.

@@ -27,9 +27,9 @@ namespace Kephas.Model.Tests.Runtime.Factory
         [Test]
         public void TryCreateElement_ReturnType()
         {
-            var factory = new RuntimePropertyInfoFactory();
+            var factory = new PropertyConstructor();
             var propertyInfo = typeof(TestModelElement).GetTypeInfo().GetProperty("Age");
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), propertyInfo);
+            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), propertyInfo);
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<RuntimePropertyInfo>(elementInfo);
         }
@@ -37,9 +37,9 @@ namespace Kephas.Model.Tests.Runtime.Factory
         [Test]
         public void TryCreateElement_Name()
         {
-            var factory = new RuntimePropertyInfoFactory();
+            var factory = new PropertyConstructor();
             var propertyInfo = typeof(TestModelElement).GetTypeInfo().GetProperty("Age");
-            var elementInfo = (RuntimePropertyInfo)factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), propertyInfo);
+            var elementInfo = (RuntimePropertyInfo)factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), propertyInfo);
             Assert.AreEqual("Age", elementInfo.Name);
         }
 

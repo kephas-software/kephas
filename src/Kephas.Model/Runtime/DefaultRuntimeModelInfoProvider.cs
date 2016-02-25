@@ -18,10 +18,12 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Factory;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -39,14 +41,14 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
-        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model info factory.</param>
+        /// <param name="runtimeModelElementFactory">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
         public DefaultRuntimeModelInfoProvider(
-            IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher,
+            IRuntimeModelElementFactory runtimeModelElementFactory,
             ICollection<IRuntimeModelRegistry> modelRegistries)
-            : base(runtimeElementInfoFactoryDispatcher)
+            : base(runtimeModelElementFactory)
         {
-            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
+            Contract.Requires(runtimeModelElementFactory != null);
             Contract.Requires(modelRegistries != null);
 
             this.modelRegistries = modelRegistries;
@@ -63,24 +65,19 @@ namespace Kephas.Model.Runtime
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public override async Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var runtimeElements = new HashSet<object>();
-            foreach (var modelRegistry in this.modelRegistries)
-            {
-                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerThreadingContext();
-                runtimeElements.AddRange(registryElements.Select(this.NormalizeRuntimeElement));
+            var runtimeElements = await this.GetRuntimeElementInfos(cancellationToken).WithServerThreadingContext();
 
-                cancellationToken.ThrowIfCancellationRequested();
-            }
-
-            var elementInfos = new List<INamedElementInfo>();
+            constructionContext.RuntimeModelElementFactory = this.RuntimeModelElementFactory;
+            var elementInfos = new List<INamedElement>();
 
             foreach (var runtimeElement in runtimeElements)
             {
@@ -89,7 +86,7 @@ namespace Kephas.Model.Runtime
                     continue;
                 }
 
-                var elementInfo = this.RuntimeElementInfoFactoryDispatcher.TryGetModelElementInfo(runtimeElement);
+                var elementInfo = this.RuntimeModelElementFactory.TryCreateModelElement(constructionContext, runtimeElement);
                 if (elementInfo == null)
                 {
                     this.Logger.Warn(Strings.CannotProvideElementInfoForRuntimeElement, runtimeElement.ToString());
@@ -105,14 +102,47 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
-        /// Normalizes the runtime element by returing the associated <see cref="TypeInfo"/> instead.
+        /// Gets the runtime element infos.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The runtime element infos.
+        /// </returns>
+        private async Task<HashSet<IDynamicTypeInfo>> GetRuntimeElementInfos(CancellationToken cancellationToken)
+        {
+            var runtimeElements = new HashSet<IDynamicTypeInfo>();
+            foreach (var modelRegistry in this.modelRegistries)
+            {
+                var registryElements =
+                    await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerThreadingContext();
+                runtimeElements.AddRange(registryElements.Select(this.ToDynamicTypeInfo));
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+
+            return runtimeElements;
+        }
+
+        /// <summary>
+        /// Normalizes the runtime element by returning the associated <see cref="IDynamicTypeInfo"/> instead.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The normalized runtime type.</returns>
-        private object NormalizeRuntimeElement(object runtimeElement)
+        private IDynamicTypeInfo ToDynamicTypeInfo(object runtimeElement)
         {
             var runtimeType = runtimeElement as Type;
-            return runtimeType != null ? runtimeType.GetTypeInfo() : runtimeElement;
+            if (runtimeType != null)
+            {
+                return runtimeType.AsDynamicTypeInfo();
+            }
+
+            var runtimeTypeInfo = runtimeElement as TypeInfo;
+            if (runtimeTypeInfo != null)
+            {
+                return runtimeTypeInfo.AsDynamicTypeInfo();
+            }
+
+            return runtimeElement as IDynamicTypeInfo;
         }
     }
 }

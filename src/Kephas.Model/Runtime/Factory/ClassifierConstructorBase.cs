@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeClassifierInfoFactoryBase.cs" company="Quartz Software SRL">
+// <copyright file="ClassifierConstructorBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -9,16 +9,15 @@
 
 namespace Kephas.Model.Runtime.Factory
 {
-    using System.Reflection;
-
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Dynamic;
+    using Kephas.Model.Elements;
 
     /// <summary>
     /// Base runtime provider for classifier information.
     /// </summary>
-    /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class RuntimeClassifierInfoFactoryBase<TElementInfo> : RuntimeModelElementInfoFactoryBase<TElementInfo, TypeInfo>
-        where TElementInfo : RuntimeClassifierInfo
+    /// <typeparam name="TModel">The type of the element information.</typeparam>
+    public abstract class ClassifierConstructorBase<TModel> : ModelElementConstructorBase<TModel, IDynamicTypeInfo>
+        where TModel : ClassifierBase<TModel>
     {
     }
 }

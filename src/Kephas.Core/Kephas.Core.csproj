@@ -188,6 +188,7 @@
     <Compile Include="Dynamic\DynamicPropertyInfo.cs" />
     <Compile Include="Dynamic\DynamicTypeInfo.cs" />
     <Compile Include="Dynamic\Expando.cs" />
+    <Compile Include="Dynamic\IDynamicElementInfo.cs" />
     <Compile Include="Dynamic\IDynamicMethodInfo.cs" />
     <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
     <Compile Include="Dynamic\IDynamicTypeInfo.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Logging\NullLogManager.cs" />
     <Compile Include="Logging\TypedLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\IAggregatedElementInfo.cs" />
     <Compile Include="Reflection\IElementInfo.cs" />
     <Compile Include="Reflection\IMethodInfo.cs" />

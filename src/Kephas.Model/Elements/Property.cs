@@ -9,20 +9,20 @@
 
 namespace Kephas.Model.Elements
 {
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Definition class for properties.
     /// </summary>
-    public class Property : ModelElementBase<IProperty, IPropertyInfo>
+    public class Property : ModelElementBase<Property>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Property" /> class.
+        /// Initializes a new instance of the <see cref="Property"/> class.
         /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace">The model space.</param>
-        public Property(IPropertyInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        public Property(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
     }

@@ -11,6 +11,7 @@
     using Kephas.Collections;
     using Kephas.Hosting;
     using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -72,12 +73,12 @@
                 {
                     // if no model types or namespaces are indicated, simply add all
                     // exported types from the assembly with no further processing
-                    types.AddRange(assembly.ExportedTypes);
+                    types.AddRange(assembly.GetLoadableExportedTypes());
                 }
                 else
                 {
                     // add only the types from the provided namespaces
-                    var allTypes = assembly.ExportedTypes.ToList();
+                    var allTypes = assembly.GetLoadableExportedTypes().ToList();
                     var namespaces = new HashSet<string>(attrs.Where(a => a.ModelNamespaces != null && a.ModelNamespaces.Length > 0).SelectMany(a => a.ModelNamespaces));
                     var namespacePatterns = namespaces.Select(n => n + ".").ToList();
                     types.AddRange(allTypes.Where(t => namespaces.Contains(t.Namespace) || namespacePatterns.Any(p => t.Namespace.StartsWith(p))));

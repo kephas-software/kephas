@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="RuntimeModelDimensionElementInfoFactory" />.
+//   Tests for <see cref="ModelDimensionElementConstructor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
     using Telerik.JustMock;
 
     /// <summary>
-    /// Tests for <see cref="RuntimeModelDimensionElementInfoFactory"/>.
+    /// Tests for <see cref="ModelDimensionElementConstructor"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -31,8 +31,8 @@ namespace Kephas.Model.Tests.Runtime.Factory
         [Test]
         public void TryCreateElement_ReturnType()
         {
-            var factory = new RuntimeModelDimensionElementInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(IFirstTestDimDimensionElement).GetTypeInfo());
+            var factory = new ModelDimensionElementConstructor();
+            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), typeof(IFirstTestDimDimensionElement).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<RuntimeModelDimensionElementInfo>(elementInfo);
         }

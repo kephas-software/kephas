@@ -21,7 +21,7 @@ namespace Kephas.Dynamic
     /// Contract for a dynamic <see cref="MethodInfo"/>.
     /// </summary>
     [ContractClass(typeof(DynamicMethodInfoContractClass))]
-    public interface IDynamicMethodInfo : IMethodInfo
+    public interface IDynamicMethodInfo : IMethodInfo, IDynamicElementInfo
     {
         /// <summary>
         /// Gets the method information.
@@ -63,12 +63,28 @@ namespace Kephas.Dynamic
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public abstract string FullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
         /// The element annotations.
         /// </value>
         public abstract IEnumerable<object> Annotations { get; }
+
+        /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer { get; }
 
         /// <summary>
         /// Gets the method information.
@@ -85,6 +101,14 @@ namespace Kephas.Dynamic
                 return Contract.Result<MethodInfo>();
             }
         }
+
+        /// <summary>
+        /// Gets the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The return type of the method.
+        /// </value>
+        public abstract ITypeInfo ReturnType { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer
@@ -126,5 +150,16 @@ namespace Kephas.Dynamic
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
         public abstract object TryInvoke(object instance, IEnumerable<object> args);
+
+        /// <summary>
+        /// Gets the underlying member information.
+        /// </summary>
+        /// <returns>
+        /// The underlying member information.
+        /// </returns>
+        public MemberInfo GetUnderlyingMemberInfo()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

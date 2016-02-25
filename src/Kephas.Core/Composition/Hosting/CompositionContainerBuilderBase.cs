@@ -486,7 +486,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>The composition parts.</returns>
         private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
         {
-            var parts = assemblies.SelectMany(a => a.ExportedTypes).ToList();
+            var parts = assemblies.SelectMany(a => a.GetLoadableExportedTypes()).ToList();
             if (this.CompositionParts != null)
             {
                 parts.AddRange(this.CompositionParts);

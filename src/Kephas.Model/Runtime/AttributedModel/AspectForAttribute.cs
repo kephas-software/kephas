@@ -12,9 +12,9 @@ namespace Kephas.Model.Runtime.AttributedModel
     using System;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Reflection;
 
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Attribute to mark aspects to be applied to classifiers indicated by the provided types.
@@ -38,11 +38,11 @@ namespace Kephas.Model.Runtime.AttributedModel
         /// <returns>A predicate to filter the classifiers based on the provided runtime types.</returns>
         private static Func<IClassifier, bool> GetRuntimeTypesFilter(Type[] runtimeTypes)
         {
-            var runtimeTypeInfos = runtimeTypes.Select(t => t.GetTypeInfo()).ToList();
+            var runtimeTypeInfos = runtimeTypes.Select(t => t.AsDynamicTypeInfo()).ToList();
             return
                 c =>
-                c.Parts.OfType<IRuntimeNamedElementInfo>()
-                    .Any(info => runtimeTypeInfos.Contains(info.RuntimeElement));
+                c.Parts.OfType<IDynamicTypeInfo>()
+                    .Any(info => runtimeTypeInfos.Contains(info));
         } 
     }
 }

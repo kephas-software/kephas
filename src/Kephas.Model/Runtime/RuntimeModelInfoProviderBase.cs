@@ -14,9 +14,10 @@ namespace Kephas.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Elements.Construction;
     using Kephas.Model.Factory;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Factory;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base class for runtime model info providers.
@@ -24,29 +25,30 @@ namespace Kephas.Model.Runtime
     public abstract class RuntimeModelInfoProviderBase : IModelInfoProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Kephas.Model.Runtime.RuntimeModelInfoProviderBase"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelInfoProviderBase"/> class.
         /// </summary>
-        /// <param name="runtimeElementInfoFactoryDispatcher">  The runtime model information factory. </param>
-        protected RuntimeModelInfoProviderBase(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher)
+        /// <param name="runtimeModelElementFactory">  The runtime model information factory. </param>
+        protected RuntimeModelInfoProviderBase(IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Contract.Requires(runtimeElementInfoFactoryDispatcher != null);
+            Contract.Requires(runtimeModelElementFactory != null);
 
-            this.RuntimeElementInfoFactoryDispatcher = runtimeElementInfoFactoryDispatcher;
+            this.RuntimeModelElementFactory = runtimeModelElementFactory;
         }
 
         /// <summary>
         /// Gets the runtime model information factory. 
         /// </summary>
         /// <value> The runtime model information factory. </value>
-        public IRuntimeElementInfoFactoryDispatcher RuntimeElementInfoFactoryDispatcher { get; }
+        public IRuntimeModelElementFactory RuntimeModelElementFactory { get; }
 
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public abstract Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken));
+        public abstract Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

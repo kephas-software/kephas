@@ -11,23 +11,21 @@ namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
 
-    using Kephas.Reflection;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Base abstract class for classifiers.
     /// </summary>
-    /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
-    /// <typeparam name="TClassifierInfo">The type of the classifier information.</typeparam>
-    public abstract class ClassifierBase<TModelContract, TClassifierInfo> : ModelElementBase<TModelContract, TClassifierInfo>, IClassifier
-        where TClassifierInfo : class, ITypeInfo
+    /// <typeparam name="TModelElement">The type of the model contract.</typeparam>
+    public abstract class ClassifierBase<TModelElement> : ModelElementBase<TModelElement>, IClassifier
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract, TClassifierInfo}" /> class.
+        /// Initializes a new instance of the <see cref="ClassifierBase{TModelElement}" /> class.
         /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace">The model space.</param>
-        protected ClassifierBase(TClassifierInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        protected ClassifierBase(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
 
@@ -46,5 +44,13 @@ namespace Kephas.Model.Elements
         /// The classifier properties.
         /// </value>
         public IEnumerable<IProperty> Properties { get; }
+
+        /// <summary>
+        /// Gets the namespace of the type.
+        /// </summary>
+        /// <value>
+        /// The namespace of the type.
+        /// </value>
+        public string Namespace => this.Projection?.FullName;
     }
 }

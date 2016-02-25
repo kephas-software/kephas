@@ -17,6 +17,8 @@ namespace Kephas.Dynamic
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Provides optimized access to methods and properties at runtime.
     /// </summary>
@@ -85,6 +87,8 @@ namespace Kephas.Dynamic
             this.Type = type;
             this.TypeInfo = typeInfo;
             this.Name = type.Name;
+            this.FullName = typeInfo.FullName;
+            this.Namespace = type.Namespace;
         }
 
         /// <summary>
@@ -96,12 +100,36 @@ namespace Kephas.Dynamic
         public string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public string FullName { get; }
+
+        /// <summary>
+        /// Gets the namespace of the type.
+        /// </summary>
+        /// <value>
+        /// The namespace of the type.
+        /// </value>
+        public string Namespace { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
         /// The element annotations.
         /// </value>
         public IEnumerable<object> Annotations => this.TypeInfo.GetCustomAttributes();
+
+        /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer => null;
 
         /// <summary>
         /// Gets the type.
@@ -134,6 +162,14 @@ namespace Kephas.Dynamic
         /// The dynamic methods.
         /// </value>
         public IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods => this.GetMethods();
+
+        /// <summary>
+        /// Gets the underlying member information.
+        /// </summary>
+        /// <returns>
+        /// The underlying member information.
+        /// </returns>
+        public MemberInfo GetUnderlyingMemberInfo() => this.TypeInfo;
 
         /// <summary>
         /// Gets the value of the property with the specified name.

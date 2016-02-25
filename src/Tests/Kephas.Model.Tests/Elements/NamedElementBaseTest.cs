@@ -16,6 +16,7 @@ namespace Kephas.Model.Tests.Elements
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     using NUnit.Framework;
 
@@ -33,10 +34,8 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var elementInfo = Mock.Create<INamedElementInfo>();
-            elementInfo.Arrange(e => e.Name).Returns("name");
-
-            var element = new TestNamedElement(elementInfo, modelSpace);
+            var context = new ModelConstructionContext { ModelSpace = modelSpace };
+            var element = new TestNamedElement(context, "name");
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
@@ -47,10 +46,9 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var elementInfo = Mock.Create<INamedElementInfo>();
-            elementInfo.Arrange(e => e.Name).Returns("name");
+            var context = new ModelConstructionContext { ModelSpace = modelSpace };
 
-            var element = new TestNamedElementWithDiscriminator(elementInfo, modelSpace);
+            var element = new TestNamedElementWithDiscriminator(context, "name");
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
@@ -60,15 +58,16 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var elementInfo = Mock.Create<INamedElementInfo>();
-            Assert.That(() => new TestNamedElement(elementInfo, null), Throws.InstanceOf<Exception>());
+            var context = Mock.Create<IModelConstructionContext>();
+            Assert.That(() => new TestNamedElement(context, "name"), Throws.InstanceOf<Exception>());
         }
 
         [Test]
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            Assert.That(() => new TestNamedElement(null, modelSpace), Throws.InstanceOf<Exception>());
+            var context = new ModelConstructionContext { ModelSpace = modelSpace };
+            Assert.That(() => new TestNamedElement(context, null), Throws.InstanceOf<Exception>());
         }
 
         private interface ITestElement
@@ -80,10 +79,10 @@ namespace Kephas.Model.Tests.Elements
         {
         }
 
-        private class TestNamedElement : NamedElementBase<ITestElement, INamedElementInfo>
+        private class TestNamedElement : NamedElementBase<TestNamedElement>
         {
-            public TestNamedElement(INamedElementInfo elementInfo, IModelSpace modelSpace)
-                : base(elementInfo, modelSpace)
+            public TestNamedElement(IModelConstructionContext constructionContext, string name)
+                : base(constructionContext, name)
             {
             }
 
@@ -96,10 +95,10 @@ namespace Kephas.Model.Tests.Elements
             public override IEnumerable<IAnnotation> Annotations => new List<IAnnotation>();
         }
 
-        private class TestNamedElementWithDiscriminator : NamedElementBase<ITestElementWithDiscriminator, INamedElementInfo>
+        private class TestNamedElementWithDiscriminator : NamedElementBase<TestNamedElementWithDiscriminator>
         {
-            public TestNamedElementWithDiscriminator(INamedElementInfo elementInfo, IModelSpace modelSpace)
-                : base(elementInfo, modelSpace)
+            public TestNamedElementWithDiscriminator(IModelConstructionContext constructionContext, string name)
+                : base(constructionContext, name)
             {
             }
 

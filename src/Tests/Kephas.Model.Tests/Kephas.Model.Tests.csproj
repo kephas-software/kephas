@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
@@ -47,19 +53,19 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Elements\ModelDimensionElementTest.cs" />
-    <Compile Include="Elements\ModelDimensionTest.cs" />
-    <Compile Include="Elements\NamedElementBaseTest.cs" />
+    <None Include="Elements\ModelDimensionElementTest.cs" />
+    <None Include="Elements\ModelDimensionTest.cs" />
+    <None Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
-    <Compile Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
-    <Compile Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
-    <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
-    <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
-    <Compile Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactoryTest.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
-    <Compile Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
-    <Compile Include="Runtime\Factory\RuntimePropertyInfoFactoryTest.cs" />
+    <None Include="Runtime\Construction\RuntimeAnnotationInfoBaseTest.cs" />
+    <None Include="Runtime\Construction\RuntimeModelDimensionElementInfoTest.cs" />
+    <None Include="Runtime\Construction\RuntimeModelDimensionInfoTest.cs" />
+    <None Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
+    <None Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
+    <None Include="Runtime\Factory\DefaultRuntimeAnnotationInfoFactoryTest.cs" />
+    <None Include="Runtime\Factory\RuntimeModelDimensionElementInfoFactoryTest.cs" />
+    <None Include="Runtime\Factory\RuntimeModelDimensionInfoFactoryTest.cs" />
+    <None Include="Runtime\Factory\RuntimePropertyInfoFactoryTest.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
   </ItemGroup>
   <ItemGroup>

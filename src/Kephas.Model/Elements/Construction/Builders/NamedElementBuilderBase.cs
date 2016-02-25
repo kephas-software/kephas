@@ -20,7 +20,7 @@ namespace Kephas.Model.Elements.Construction.Builders
     /// <typeparam name="TElementInfo">Type of the runtime element.</typeparam>
     /// <typeparam name="TBuilder">Type of the builder.</typeparam>
     public abstract class NamedElementBuilderBase<TNamedElement, TElementInfo, TBuilder>
-        where TNamedElement : NamedElementBase<TNamedElement, TElementInfo> 
+        where TNamedElement : NamedElementBase<TNamedElement> 
         where TElementInfo : class, IElementInfo
         where TBuilder : NamedElementBuilderBase<TNamedElement, TElementInfo, TBuilder>
     {

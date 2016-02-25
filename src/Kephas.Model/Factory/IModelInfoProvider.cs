@@ -13,7 +13,8 @@ namespace Kephas.Model.Factory
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Runtime.Construction;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -25,10 +26,11 @@ namespace Kephas.Model.Factory
         /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        Task<IEnumerable<INamedElementInfo>> GetElementInfosAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

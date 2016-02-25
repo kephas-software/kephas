@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeElementInfoFactoryMetadata.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeModelElementConstructorMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Metadata for element factories.
+//   Metadata for model element constructors.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,43 +17,43 @@ namespace Kephas.Model.Runtime.Factory.Composition
     using Kephas.Services;
 
     /// <summary>
-    /// Metadata for element factories.
+    /// Metadata for model element constructors.
     /// </summary>
-    public class RuntimeElementInfoFactoryMetadata : AppServiceMetadata
+    public class RuntimeModelElementConstructorMetadata : AppServiceMetadata
     {
         /// <summary>
         /// The element info type metadata key.
         /// </summary>
-        public static readonly string ElementInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoFactoryMetadata>(m => m.ElementInfoType);
+        public static readonly string ModelTypeKey = ReflectionHelper.GetPropertyName<RuntimeModelElementConstructorMetadata>(m => m.ModelType);
 
         /// <summary>
         /// The runtime info type metadata key.
         /// </summary>
-        public static readonly string RuntimeInfoTypeKey = ReflectionHelper.GetPropertyName<RuntimeElementInfoFactoryMetadata>(m => m.RuntimeInfoType);
+        public static readonly string RuntimeTypeKey = ReflectionHelper.GetPropertyName<RuntimeModelElementConstructorMetadata>(m => m.RuntimeType);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeElementInfoFactoryMetadata"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelElementConstructorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public RuntimeElementInfoFactoryMetadata(IDictionary<string, object> metadata) 
+        public RuntimeModelElementConstructorMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
-            this.ElementInfoType = (Type)metadata.TryGetValue(ElementInfoTypeKey, null);
-            this.RuntimeInfoType = (Type)metadata.TryGetValue(RuntimeInfoTypeKey, null);
+            this.ModelType = (Type)metadata.TryGetValue(ModelTypeKey);
+            this.RuntimeType = (Type)metadata.TryGetValue(RuntimeTypeKey);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeElementInfoFactoryMetadata"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelElementConstructorMetadata"/> class.
         /// </summary>
-        /// <param name="elementInfoType">Type of the element information.</param>
-        /// <param name="runtimeInfoType">Type of the runtime information.</param>
+        /// <param name="modelType">Type of the element information.</param>
+        /// <param name="runtimeType">Type of the runtime information.</param>
         /// <param name="processingPriority">The processing priority.</param>
         /// <param name="overridePriority">The override priority.</param>
-        public RuntimeElementInfoFactoryMetadata(Type elementInfoType, Type runtimeInfoType, int processingPriority = 0, int overridePriority = 0)
+        public RuntimeModelElementConstructorMetadata(Type modelType, Type runtimeType, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.ElementInfoType = elementInfoType;
-            this.RuntimeInfoType = runtimeInfoType;
+            this.ModelType = modelType;
+            this.RuntimeType = runtimeType;
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Kephas.Model.Runtime.Factory.Composition
         /// <value>
         /// The type of the element information.
         /// </value>
-        public Type ElementInfoType { get; private set; }
+        public Type ModelType { get; private set; }
 
         /// <summary>
         /// Gets the type of the runtime information.
@@ -70,6 +70,6 @@ namespace Kephas.Model.Runtime.Factory.Composition
         /// <value>
         /// The type of the runtime information.
         /// </value>
-        public Type RuntimeInfoType { get; private set; }
+        public Type RuntimeType { get; private set; }
     }
 }

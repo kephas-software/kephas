@@ -12,12 +12,12 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Definition class for annotations.
     /// </summary>
-    public class Annotation : NamedElementBase<IAnnotation, IAnnotationInfo>, IAnnotation
+    public class Annotation : NamedElementBase<Annotation>, IAnnotation
     {
         /// <summary>
         /// The empty annotations.
@@ -27,12 +27,13 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Initializes a new instance of the <see cref="Annotation"/> class.
         /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace"> The model space.</param>
-        public Annotation(IAnnotationInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The model element name.</param>
+        public Annotation(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
-            this.AllowMultiple = elementInfo.AllowMultiple;
+            // TODO
+            ////    this.AllowMultiple = elementInfo.AllowMultiple;
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace Kephas.Model.Elements
         /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
-        public bool AllowMultiple { get; }
+        public bool AllowMultiple { get; internal set; }
 
         /// <summary>
         /// Gets the element annotations.

@@ -12,23 +12,21 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Implementation of model dimensions.
     /// </summary>
-    public class ModelDimension : ModelElementBase<IModelDimension, IModelDimensionInfo>, IModelDimension
+    public class ModelDimension : ModelElementBase<ModelDimension>, IModelDimension
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelDimension" /> class.
         /// </summary>
-        /// <param name="elementInfo">The element information.</param>
-        /// <param name="modelSpace">The model space.</param>
-        public ModelDimension(IModelDimensionInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        public ModelDimension(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
-            this.Index = elementInfo.Index;
-            this.IsAggregatable = elementInfo.IsAggregatable;
         }
 
         /// <summary>
@@ -37,7 +35,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The dimension index.
         /// </value>
-        public int Index { get; private set; }
+        public int Index { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether this dimension is aggregatable.
@@ -50,7 +48,7 @@ namespace Kephas.Model.Elements
         /// aggregated into one integral element. For example, this helps modelling aplication layers or aspects
         /// which provide different logical views on the same element.
         /// </remarks>
-        public bool IsAggregatable { get; private set; }
+        public bool IsAggregatable { get; internal set; }
 
         /// <summary>
         /// Gets the dimension elements.

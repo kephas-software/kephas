@@ -12,12 +12,10 @@ namespace Kephas.Model.Tests.Elements
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.Elements;
-    using Kephas.Model.Elements.Construction;
 
     using NUnit.Framework;
 
     using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Test class for <see cref="ModelDimension"/>.

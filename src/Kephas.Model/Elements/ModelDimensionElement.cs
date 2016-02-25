@@ -9,21 +9,29 @@
 
 namespace Kephas.Model.Elements
 {
-    using Kephas.Model.Elements.Construction;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Implementation of model dimension elements.
     /// </summary>
-    public class ModelDimensionElement : ModelElementBase<IModelDimensionElement, IModelDimensionElementInfo>, IModelDimensionElement
+    public class ModelDimensionElement : ModelElementBase<ModelDimensionElement>, IModelDimensionElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelDimensionElement"/> class.
         /// </summary>
-        /// <param name="elementInfo">The element information.</param>
-        /// <param name="modelSpace">The model space.</param>
-        public ModelDimensionElement(IModelDimensionElementInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        public ModelDimensionElement(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
+
+        /// <summary>
+        /// Gets the name of the dimension.
+        /// </summary>
+        /// <value>
+        /// The name of the dimension.
+        /// </value>
+        public string DimensionName { get; internal set; }
     }
 }

@@ -26,7 +26,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The parts.
         /// </value>
-        IEnumerable<IElementInfo> Parts { get; }  
+        IEnumerable<object> Parts { get; }  
     }
 
     /// <summary>
@@ -44,6 +44,14 @@ namespace Kephas.Reflection
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public abstract string FullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -52,18 +60,26 @@ namespace Kephas.Reflection
         public abstract IEnumerable<object> Annotations { get; }
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public abstract IElementInfo DeclaringContainer { get; }
+
+        /// <summary>
         /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>
         /// The parts.
         /// </value>
-        public IEnumerable<IElementInfo> Parts
+        public IEnumerable<object> Parts
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<IElementInfo>>() != null);
+                Contract.Ensures(Contract.Result<IEnumerable<object>>() != null);
 
-                return Contract.Result<IEnumerable<IElementInfo>>();
+                return Contract.Result<IEnumerable<object>>();
             }
         }
 

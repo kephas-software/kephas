@@ -115,6 +115,14 @@ namespace Kephas.Model
         IEnumerable<object> IElementInfo.Annotations => this.Annotations;
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer { get; }
+
+        /// <summary>
         /// Gets the qualified name of the element.
         /// </summary>
         /// <value>
@@ -154,7 +162,7 @@ namespace Kephas.Model
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
         /// </para>
         /// </example>
-        public abstract string FullyQualifiedName { get; }
+        public abstract string FullName { get; }
 
         /// <summary>
         /// Gets the container element.
@@ -237,6 +245,6 @@ namespace Kephas.Model
         /// <value>
         /// The parts.
         /// </value>
-        public abstract IEnumerable<IElementInfo> Parts { get; }
+        public abstract IEnumerable<object> Parts { get; }
     }
 }

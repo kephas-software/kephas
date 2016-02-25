@@ -85,6 +85,14 @@ namespace Kephas.Model
         IEnumerable<object> IElementInfo.Annotations => this.Annotations;
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer { get; }
+
+        /// <summary>
         /// Gets the qualified name of the element.
         /// </summary>
         /// <value>
@@ -104,7 +112,7 @@ namespace Kephas.Model
         /// <value>
         /// The full name.
         /// </value>
-        public abstract string FullyQualifiedName { get; }
+        public abstract string FullName { get; }
 
         /// <summary>
         /// Gets the container element.
@@ -147,6 +155,22 @@ namespace Kephas.Model
         public abstract IModelElement Base { get; }
 
         /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<object> Parts { get; }
+
+        /// <summary>
+        /// Gets the namespace of the type.
+        /// </summary>
+        /// <value>
+        /// The namespace of the type.
+        /// </value>
+        public abstract string Namespace { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -180,13 +204,5 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
-
-        /// <summary>
-        /// Gets the parts of an aggregated element.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        public abstract IEnumerable<IElementInfo> Parts { get; }
     }
 }

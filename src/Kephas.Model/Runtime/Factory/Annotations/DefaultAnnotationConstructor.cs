@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRuntimeAnnotationInfoFactory.cs" company="Quartz Software SRL">
+// <copyright file="DefaultAnnotationConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -11,26 +11,28 @@ namespace Kephas.Model.Runtime.Factory.Annotations
 {
     using System;
 
-    using Kephas.Model.Runtime.Construction.Annotations;
+    using Kephas.Model.Elements;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// A default runtime factory for annotation information.
     /// </summary>
-    public class DefaultRuntimeAnnotationInfoFactory : RuntimeAnnotationInfoFactoryBase<DefaultRuntimeAnnotationInfo, Attribute>
+    public class DefaultAnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
-        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model information provider.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
-        /// A new element information based on the provided runtime element information, or <c>null</c> if the runtime element information is not supported.
+        /// A new element information based on the provided runtime element information, or <c>null</c>
+        /// if the runtime element information is not supported.
         /// </returns>
-        protected override DefaultRuntimeAnnotationInfo TryGetElementInfoCore(
-            IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher,
-            Attribute runtimeElement)
+        protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
         {
-            return new DefaultRuntimeAnnotationInfo(runtimeElement);
+            var name = this.ComputeName(runtimeElement);
+            var modelElement = new Annotation(constructionContext, name);
+            return modelElement;
         }
     }
 }

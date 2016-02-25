@@ -11,20 +11,19 @@ namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
 
-    using Kephas.Model.Elements.Construction;
-    using Kephas.Model.Elements.Construction.Internal;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// The default implementation of the model space.
     /// </summary>
-    public class DefaultModelSpace : ModelElementBase<IModelSpace, IModelSpaceInfo>, IModelSpace, IModelSpaceConstructor
+    public class DefaultModelSpace : ModelElementBase<IModelSpace>, IModelSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpace"/> class.
         /// </summary>
-        /// <param name="elementInfo">The element information.</param>
-        public DefaultModelSpace(IModelSpaceInfo elementInfo)
-            : base(elementInfo, null)
+        /// <param name="constructionContext">Context for the construction.</param>
+        public DefaultModelSpace(IModelConstructionContext constructionContext)
+            : base(constructionContext, string.Empty)
         {
         }
 

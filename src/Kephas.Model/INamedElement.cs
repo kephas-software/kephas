@@ -62,7 +62,7 @@ namespace Kephas.Model
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection. 
         /// </para>
         /// </example>
-        string FullyQualifiedName { get; }
+        new string FullName { get; }
 
         /// <summary>
         /// Gets the annotations of this model element.
@@ -119,6 +119,14 @@ namespace Kephas.Model
         }
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -132,7 +140,7 @@ namespace Kephas.Model
         /// <value>
         /// The parts.
         /// </value>
-        public abstract IEnumerable<IElementInfo> Parts { get; }
+        public abstract IEnumerable<object> Parts { get; }
 
         /// <summary>
         /// Gets the qualified name of the element.
@@ -158,14 +166,7 @@ namespace Kephas.Model
         /// <value>
         /// The fully qualified name.
         /// </value>
-        public string FullyQualifiedName
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<string>() != null);
-                return Contract.Result<string>();
-            }
-        }
+        public abstract string FullName { get; }
 
         /// <summary>
         /// Gets the container element.

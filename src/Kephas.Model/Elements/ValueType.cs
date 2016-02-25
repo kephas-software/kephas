@@ -9,20 +9,20 @@
 
 namespace Kephas.Model.Elements
 {
-    using Kephas.Reflection;
+    using Kephas.Model.Factory;
 
     /// <summary>
     /// Classifier definition for a value type.
     /// </summary>
-    public class ValueType : ClassifierBase<ValueType, ITypeInfo>, IValueType
+    public class ValueType : ClassifierBase<ValueType>, IValueType
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueType" /> class.
         /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <param name="modelSpace">The model space.</param>
-        public ValueType(ITypeInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        public ValueType(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
 

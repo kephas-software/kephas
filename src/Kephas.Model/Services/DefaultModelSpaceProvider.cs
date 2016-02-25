@@ -16,6 +16,7 @@ namespace Kephas.Model.Services
     using System.Threading.Tasks;
 
     using Kephas.Logging;
+    using Kephas.Model.Elements;
     using Kephas.Model.Factory;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -89,12 +90,18 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
+            var constructionContext = new ModelConstructionContext();
+            var modelSpace = new DefaultModelSpace(constructionContext);
+            constructionContext.ModelSpace = modelSpace;
+
             try
             {
-                var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(cancellationToken)));
+                var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
                 var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e);
 
                 throw new NotImplementedException();
+
+                this.modelSpace = modelSpace;
 
                 this.initialization.Complete();
             }

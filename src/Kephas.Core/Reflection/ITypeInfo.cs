@@ -14,5 +14,12 @@ namespace Kephas.Reflection
     /// </summary>
     public interface ITypeInfo : IElementInfo
     {
+        /// <summary>
+        /// Gets the namespace of the type.
+        /// </summary>
+        /// <value>
+        /// The namespace of the type.
+        /// </value>
+        string Namespace { get; }
     }
 }

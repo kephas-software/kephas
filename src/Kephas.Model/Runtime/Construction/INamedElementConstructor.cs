@@ -3,14 +3,14 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Constructor interface for named elements.
+//   Declares the INamedElementConstructor interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Elements.Construction.Internal
+namespace Kephas.Model.Runtime.Construction
 {
     /// <summary>
-    /// Constructor interface for named elements.
+    /// Interface for named element constructor.
     /// </summary>
     internal interface INamedElementConstructor
     {
@@ -21,14 +21,26 @@ namespace Kephas.Model.Elements.Construction.Internal
         void SetContainer(IModelElement container);
 
         /// <summary>
-        /// Sets the fully qualified name.
+        /// Sets the full name.
         /// </summary>
-        /// <param name="fullyQualifiedName">The fully qualified name.</param>
-        void SetFullyQualifiedName(string fullyQualifiedName);
+        /// <param name="fullName">The full name.</param>
+        void SetFullName(string fullName);
 
         /// <summary>
         /// Completes the construction of the element.
         /// </summary>
         void CompleteConstruction();
+
+        /// <summary>
+        /// Adds the member to the members list.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        void AddMember(INamedElement member);
+
+        /// <summary>
+        /// Adds a part to the aggregated element.
+        /// </summary>
+        /// <param name="part">The part to be added.</param>
+        void AddPart(object part);
     }
 }

@@ -1,37 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeAnnotationInfoBase.cs" company="Quartz Software SRL">
+// <copyright file="AnnotationConstructorBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Base runtime information class for constructing annotations.
+//   Base class for runtime annotation information factories.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction.Annotations
+namespace Kephas.Model.Runtime.Factory.Annotations
 {
     using System;
     using System.Reflection;
 
+    using Kephas.Model.Elements;
+
     /// <summary>
-    /// Base runtime information class for constructing annotations.
+    /// Base class for runtime annotation information factories.
     /// </summary>
-    /// <typeparam name="TAttribute">Type of the runtime attribute.</typeparam>
-    public abstract class RuntimeAnnotationInfoBase<TAttribute> : RuntimeNamedElementInfo<TAttribute>
+    /// <typeparam name="TAnnotation">Type of the annotation information.</typeparam>
+    /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+    public abstract class AnnotationConstructorBase<TAnnotation, TAttribute> : NamedElementConstructorBase<TAnnotation, TAttribute>
+        where TAnnotation : NamedElementBase<TAnnotation>
         where TAttribute : Attribute
     {
         /// <summary>
         /// The annotation discriminator.
         /// </summary>
         public const string AnnotationDiscriminator = "Attribute";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeAnnotationInfoBase{TRuntimeElement}"/> class.
-        /// </summary>
-        /// <param name="runtimeElement">The runtime element.</param>
-        protected RuntimeAnnotationInfoBase(TAttribute runtimeElement)
-            : base(runtimeElement)
-        {
-        }
 
         /// <summary>
         /// Gets the element name discriminator.
@@ -51,8 +46,8 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
         protected override string ComputeName(object runtimeElement)
         {
-            var attrTypeInfo = runtimeElement.GetType().GetTypeInfo();
-            var usage = attrTypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
+            var attrTypeInfo = runtimeElement.GetType().GetDynamicTypeInfo();
+            var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             // NOTE: The speciality of the runtime is to prepend the @ sign to the
             // attribute name, because the member name conventions imply it.
             // Other annotation info classes must provide the same convention.

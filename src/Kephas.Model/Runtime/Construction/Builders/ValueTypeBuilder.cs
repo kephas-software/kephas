@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueTypeInfoBuilder.cs" company="Quartz Software SRL">
+// <copyright file="ValueTypeBuilder.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,25 +17,25 @@ namespace Kephas.Model.Runtime.Construction.Builders
     /// <summary>
     /// Builder for runtime value type information.
     /// </summary>
-    public class ValueTypeInfoBuilder : RuntimeClassifierInfoBuilderBase<RuntimeValueTypeInfo, ValueTypeInfoBuilder>
+    public class ValueTypeBuilder : RuntimeClassifierBuilderBase<RuntimeValueTypeInfo, ValueTypeBuilder>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValueTypeInfoBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ValueTypeBuilder"/> class.
         /// </summary>
-        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model information provider.</param>
+        /// <param name="runtimeModelElementFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeInfoBuilder(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher, Type runtimeElement)
-            : this(runtimeElementInfoFactoryDispatcher, runtimeElement.GetTypeInfo())
+        public ValueTypeBuilder(IRuntimeModelElementFactory runtimeModelElementFactory, Type runtimeElement)
+            : this(runtimeModelElementFactory, runtimeElement.GetTypeInfo())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValueTypeInfoBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ValueTypeBuilder"/> class.
         /// </summary>
-        /// <param name="runtimeElementInfoFactoryDispatcher">The runtime model information provider.</param>
+        /// <param name="runtimeModelElementFactory">The runtime model information provider.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeInfoBuilder(IRuntimeElementInfoFactoryDispatcher runtimeElementInfoFactoryDispatcher, TypeInfo runtimeElement)
-            : base(runtimeElementInfoFactoryDispatcher, runtimeElement)
+        public ValueTypeBuilder(IRuntimeModelElementFactory runtimeModelElementFactory, TypeInfo runtimeElement)
+            : base(runtimeModelElementFactory, runtimeElement)
         {
         }
 
@@ -45,9 +45,9 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <returns>
         /// This builder.
         /// </returns>
-        public ValueTypeInfoBuilder AsPrimitive()
+        public ValueTypeBuilder AsPrimitive()
         {
-            this.ElementInfo.IsPrimitive = true;
+            this.Element.IsPrimitive = true;
 
             return this;
         }
@@ -58,9 +58,9 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <returns>
         /// This builder.
         /// </returns>
-        public ValueTypeInfoBuilder AsComplex()
+        public ValueTypeBuilder AsComplex()
         {
-            this.ElementInfo.IsPrimitive = false;
+            this.Element.IsPrimitive = false;
 
             return this;
         }

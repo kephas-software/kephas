@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="RuntimeModelDimensionInfoFactory" />.
+//   Tests for <see cref="ModelDimensionConstructor" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ namespace Kephas.Model.Tests.Runtime.Factory
     using Telerik.JustMock;
 
     /// <summary>
-    /// Tests for <see cref="RuntimeModelDimensionInfoFactory"/>.
+    /// Tests for <see cref="ModelDimensionConstructor"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -31,8 +31,8 @@ namespace Kephas.Model.Tests.Runtime.Factory
         [Test]
         public void TryCreateElement_ReturnType()
         {
-            var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimension).GetTypeInfo());
+            var factory = new ModelDimensionConstructor();
+            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), typeof(ITestDimension).GetTypeInfo());
             Assert.IsNotNull(elementInfo);
             Assert.IsInstanceOf<RuntimeModelDimensionInfo>(elementInfo);
         }
@@ -40,24 +40,24 @@ namespace Kephas.Model.Tests.Runtime.Factory
         [Test]
         public void TryCreateElement_DimensionSuffix()
         {
-            var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimension).GetTypeInfo());
+            var factory = new ModelDimensionConstructor();
+            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), typeof(ITestDimension).GetTypeInfo());
             Assert.AreEqual("Test", elementInfo.Name);
         }
 
         [Test]
         public void TryCreateElement_DimensionWithoutSuffix()
         {
-            var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            var factory = new ModelDimensionConstructor();
+            var elementInfo = factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual("TestDimensionWithoutSuffix", elementInfo.Name);
         }
 
         [Test]
         public void TryCreateElement_Index()
         {
-            var factory = new RuntimeModelDimensionInfoFactory();
-            var elementInfo = (IModelDimensionInfo)factory.TryGetElementInfo(Mock.Create<IRuntimeElementInfoFactoryDispatcher>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
+            var factory = new ModelDimensionConstructor();
+            var elementInfo = (IModelDimensionInfo)factory.TryCreateModelElement(Mock.Create<IRuntimeModelElementFactory>(), typeof(ITestDimensionWithoutSuffix).GetTypeInfo());
             Assert.AreEqual(1, elementInfo.Index);
         }
 

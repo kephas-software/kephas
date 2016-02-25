@@ -22,7 +22,7 @@ namespace Kephas.Dynamic
     /// Contract for a dynamic <see cref="TypeInfo"/>.
     /// </summary>
     [ContractClass(typeof(DynamicTypeInfoContractClass))]
-    public interface IDynamicTypeInfo : ITypeInfo
+    public interface IDynamicTypeInfo : ITypeInfo, IDynamicElementInfo
     {
         /// <summary>
         /// Gets the underlying <see cref="Type"/>.
@@ -140,12 +140,28 @@ namespace Kephas.Dynamic
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets the full name of the element.
+        /// </summary>
+        /// <value>
+        /// The full name of the element.
+        /// </value>
+        public abstract string FullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
         /// The element annotations.
         /// </value>
         public abstract IEnumerable<object> Annotations { get; }
+
+        /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        public IElementInfo DeclaringContainer { get; }
 
         /// <summary>
         /// Gets the underlying <see cref="IDynamicTypeInfo.Type"/>.
@@ -206,6 +222,14 @@ namespace Kephas.Dynamic
                 return Contract.Result<IDictionary<string, IEnumerable<IDynamicMethodInfo>>>();
             }
         }
+
+        /// <summary>
+        /// Gets the namespace of the type.
+        /// </summary>
+        /// <value>
+        /// The namespace of the type.
+        /// </value>
+        public abstract string Namespace { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer
@@ -306,5 +330,16 @@ namespace Kephas.Dynamic
         /// </returns>
         /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Gets the underlying member information.
+        /// </summary>
+        /// <returns>
+        /// The underlying member information.
+        /// </returns>
+        public MemberInfo GetUnderlyingMemberInfo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,39 +13,38 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Elements.Construction.Internal;
+    using Kephas.Model.Factory;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 
     /// <summary>
     /// Base class for named elements.
     /// </summary>
-    /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
-    /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class NamedElementBase<TModelContract, TElementInfo> : Expando, INamedElement, INamedElementConstructor
-        where TElementInfo : class, IElementInfo
+    /// <typeparam name="TModelElement">The type of the model contract.</typeparam>
+    public abstract class NamedElementBase<TModelElement> : Expando, INamedElement, INamedElementConstructor
     {
         /// <summary>
         /// The underlying element infos.
         /// </summary>
-        private readonly IList<IElementInfo> parts;
+        private readonly IList<object> parts;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract, TElementInfo}" /> class.
+        /// Initializes a new instance of the <see cref="NamedElementBase{TModelElement}" /> class.
         /// </summary>
-        /// <param name="elementInfo">The element information.</param>
-        /// <param name="modelSpace">The model space.</param>
-        protected NamedElementBase(TElementInfo elementInfo, IModelSpace modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The model element name.</param>
+        protected NamedElementBase(IModelConstructionContext constructionContext, string name)
             : base(isThreadSafe: true)
         {
-            Contract.Requires(elementInfo != null);
-            Contract.Requires(elementInfo.Name != null);
-            Contract.Requires(modelSpace != null);
+            Contract.Requires(constructionContext != null);
+            Contract.Requires(constructionContext.ModelSpace != null);
+            Contract.Requires(name != null);
 
-            this.Name = elementInfo.Name;
-            this.ModelSpace = modelSpace;
-            this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + elementInfo.Name;
+            this.Name = name;
+            this.ModelSpace = constructionContext.ModelSpace;
+            this.QualifiedName = typeof(TModelElement).GetMemberNameDiscriminator() + name;
 
-            this.parts = new List<IElementInfo> { elementInfo };
+            this.parts = new List<object>();
         }
 
         /// <summary>
@@ -65,6 +64,14 @@ namespace Kephas.Model.Elements
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        IElementInfo IElementInfo.DeclaringContainer => this.Container;
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -78,7 +85,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The parts.
         /// </value>
-        IEnumerable<IElementInfo> IAggregatedElementInfo.Parts => this.parts;
+        IEnumerable<object> IAggregatedElementInfo.Parts => this.parts;
 
         /// <summary>
         /// Gets or sets the qualified name of the element.
@@ -120,7 +127,7 @@ namespace Kephas.Model.Elements
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
         /// </para>
         /// </example>
-        public string FullyQualifiedName { get; private set; }
+        public string FullName { get; private set; }
 
         /// <summary>
         /// Gets the container element.
@@ -136,7 +143,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The model space.
         /// </value>
-        public virtual IModelSpace ModelSpace { get; private set; }
+        public virtual IModelSpace ModelSpace { get; }
 
         /// <summary>
         /// Sets the element container.
@@ -148,12 +155,12 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Sets the fully qualified name.
+        /// Sets the full name.
         /// </summary>
-        /// <param name="fullyQualifiedName">The fully qualified name.</param>
-        void INamedElementConstructor.SetFullyQualifiedName(string fullyQualifiedName)
+        /// <param name="fullName">The full name.</param>
+        void INamedElementConstructor.SetFullName(string fullName)
         {
-            this.FullyQualifiedName = fullyQualifiedName;
+            this.FullName = fullName;
         }
 
         /// <summary>
@@ -165,9 +172,35 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Adds the member to the members list.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        void INamedElementConstructor.AddMember(INamedElement member)
+        {
+            this.AddMember(member);
+        }
+
+        /// <summary>
+        /// Adds a part to the aggregated element.
+        /// </summary>
+        /// <param name="part">The part to be added.</param>
+        void INamedElementConstructor.AddPart(object part)
+        {
+            this.parts.Add(part);
+        }
+
+        /// <summary>
         /// Called when the construction is complete.
         /// </summary>
         protected virtual void OnCompleteConstruction()
+        {
+        }
+
+        /// <summary>
+        /// Adds the member to the members list.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        protected virtual void AddMember(INamedElement member)
         {
         }
     }

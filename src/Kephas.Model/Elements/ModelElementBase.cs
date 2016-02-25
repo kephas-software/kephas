@@ -12,16 +12,14 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Model.Elements.Construction.Internal;
-    using Kephas.Reflection;
+    using Kephas.Model.Factory;
+    using Kephas.Model.Runtime.Construction;
 
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
-    /// <typeparam name="TModelContract">The type of the model contract.</typeparam>
-    /// <typeparam name="TElementInfo">The type of the element information.</typeparam>
-    public abstract class ModelElementBase<TModelContract, TElementInfo> : NamedElementBase<TModelContract, TElementInfo>, IModelElement, IModelElementConstructor
-        where TElementInfo : class, IElementInfo
+    /// <typeparam name="TModelElement">The type of the model contract.</typeparam>
+    public abstract class ModelElementBase<TModelElement> : NamedElementBase<TModelElement>, IModelElement
     {
         /// <summary>
         /// The members.
@@ -29,12 +27,12 @@ namespace Kephas.Model.Elements
         private readonly IDictionary<string, INamedElement> members = new Dictionary<string, INamedElement>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelElementBase{TModelContract, TElementInfo}" /> class.
+        /// Initializes a new instance of the <see cref="ModelElementBase{TModelElement}"/> class.
         /// </summary>
-        /// <param name="elementInfo">The element information.</param>
-        /// <param name="modelSpace">The model space.</param>
-        protected ModelElementBase(TElementInfo elementInfo, IModelSpace modelSpace)
-            : base(elementInfo, modelSpace)
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The name.</param>
+        protected ModelElementBase(IModelConstructionContext constructionContext, string name)
+            : base(constructionContext, name)
         {
         }
 
@@ -90,13 +88,10 @@ namespace Kephas.Model.Elements
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
-        void IModelElementConstructor.AddMember(INamedElement member)
+        protected override void AddMember(INamedElement member)
         {
             var memberBuilder = member as INamedElementConstructor;
-            if (memberBuilder != null)
-            {
-                memberBuilder.SetContainer(this);
-            }
+            memberBuilder?.SetContainer(this);
 
             this.members.Add(member.Name, member);
         }
