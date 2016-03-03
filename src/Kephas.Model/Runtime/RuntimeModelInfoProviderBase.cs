@@ -14,7 +14,7 @@ namespace Kephas.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 

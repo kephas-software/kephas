@@ -13,7 +13,7 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;

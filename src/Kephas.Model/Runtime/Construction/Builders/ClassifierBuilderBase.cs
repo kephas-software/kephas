@@ -12,13 +12,13 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Model.Construction;
     using Kephas.Model.Dimensions.AppLayer;
     using Kephas.Model.Dimensions.Aspect;
     using Kephas.Model.Dimensions.Model;
     using Kephas.Model.Dimensions.Module;
     using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
 
     /// <summary>
     /// Base abstract builder for runtime classifier information.

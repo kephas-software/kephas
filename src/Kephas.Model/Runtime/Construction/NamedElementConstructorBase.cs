@@ -12,8 +12,8 @@ namespace Kephas.Model.Runtime.Construction
     using System.Text;
 
     using Kephas.Dynamic;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
 

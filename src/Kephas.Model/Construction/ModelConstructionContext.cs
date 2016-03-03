@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Factory
+namespace Kephas.Model.Construction
 {
     using Kephas.Model.Runtime.Construction;
     using Kephas.Services;

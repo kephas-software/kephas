@@ -14,8 +14,8 @@ namespace Kephas.Model.Tests.Elements
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
 
     using NUnit.Framework;
 

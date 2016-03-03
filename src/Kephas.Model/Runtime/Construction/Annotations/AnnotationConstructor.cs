@@ -11,8 +11,8 @@ namespace Kephas.Model.Runtime.Construction.Annotations
 {
     using System;
 
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
 
     /// <summary>
     /// A default runtime factory for annotation information.

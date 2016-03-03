@@ -10,8 +10,8 @@
 namespace Kephas.Model.Runtime.Construction.Annotations
 {
     using Kephas.Model.AttributedModel.Behaviors;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements.Annotations;
-    using Kephas.Model.Factory;
 
     /// <summary>
     /// A required annotation constructor.

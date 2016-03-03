@@ -10,8 +10,8 @@
 namespace Kephas.Model.Runtime.Construction
 {
     using Kephas.Dynamic;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
 
     /// <summary>
     /// Factory class for runtime property information.

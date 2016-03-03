@@ -229,6 +229,12 @@ namespace Kephas.Services.Composition
             var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
             if (eligibleConstructors.Count == 0)
             {
+                var publicConstructors = constructorsList.Where(c => c.IsPublic).ToList();
+                if (publicConstructors.Count == 1)
+                {
+                    return publicConstructors[0];
+                }
+
                 throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 

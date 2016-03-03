@@ -14,7 +14,7 @@ namespace Kephas.Model.Elements.Annotations
 
     using Kephas.Behaviors;
     using Kephas.Model.Behaviors;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// A required annotation.

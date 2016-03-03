@@ -9,15 +9,43 @@
 
 namespace Kephas.Model.Runtime.Construction
 {
+    using System.Reflection;
+
     using Kephas.Dynamic;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Runtime.AttributedModel;
 
     /// <summary>
     /// A value type constructor.
     /// </summary>
     public class ValueTypeConstructor : ClassifierConstructorBase<ValueType, IValueType>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValueTypeConstructor"/> class.
+        /// </summary>
+        public ValueTypeConstructor()
+            : this(forceValueType: false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValueTypeConstructor"/> class.
+        /// </summary>
+        /// <param name="forceValueType"><c>true</c> if a value type should be forced, <c>false</c> if not.</param>
+        internal ValueTypeConstructor(bool forceValueType)
+        {
+            this.ForceValueType = forceValueType;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the value type should be forced.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if a value type should be forced, <c>false</c> if not.
+        /// </value>
+        public bool ForceValueType { get; }
+
         /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
@@ -29,6 +57,12 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
         {
+            var underlyingType = runtimeElement.TypeInfo;
+            if (underlyingType.GetCustomAttribute<ValueTypeAttribute>() == null && !underlyingType.IsValueType && !this.ForceValueType)
+            {
+                return null;
+            }
+
             return new ValueType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }

@@ -12,7 +12,7 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// Definition class for annotations.

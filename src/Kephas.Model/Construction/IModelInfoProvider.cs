@@ -7,13 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Factory
+namespace Kephas.Model.Construction
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
     using Kephas.Services;
 

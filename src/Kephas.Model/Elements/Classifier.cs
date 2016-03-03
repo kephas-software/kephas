@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelDimensionElement.cs" company="Quartz Software SRL">
+// <copyright file="Classifier.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implementation of model dimension elements.
+//   Implements the classifier class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,26 +12,18 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction;
 
     /// <summary>
-    /// Implementation of model dimension elements.
+    /// A class for generic classifiers. This class cannot be inherited.
     /// </summary>
-    public class ModelDimensionElement : ModelElementBase<IModelDimensionElement>, IModelDimensionElement
+    public sealed class Classifier : ClassifierBase<IClassifier>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelDimensionElement"/> class.
+        /// Initializes a new instance of the <see cref="Classifier" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>
-        public ModelDimensionElement(IModelConstructionContext constructionContext, string name)
+        public Classifier(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
         }
-
-        /// <summary>
-        /// Gets the name of the dimension.
-        /// </summary>
-        /// <value>
-        /// The name of the dimension.
-        /// </value>
-        public string DimensionName { get; internal set; }
     }
 }

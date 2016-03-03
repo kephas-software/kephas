@@ -11,7 +11,7 @@ namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// The default implementation of the model space.

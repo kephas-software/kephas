@@ -20,7 +20,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;

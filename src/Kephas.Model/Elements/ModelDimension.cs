@@ -12,7 +12,7 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// Implementation of model dimensions.

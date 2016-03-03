@@ -167,7 +167,9 @@
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
     <Compile Include="Elements\Annotation.cs" />
     <Compile Include="Elements\Annotations\RequiredAnnotation.cs" />
+    <Compile Include="Elements\Classifier.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
+    <Compile Include="Runtime\AttributedModel\ValueTypeAttribute.cs" />
     <Compile Include="Runtime\Construction\Builders\ClassifierBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\ModelElementBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\NamedElementBuilderBase.cs" />
@@ -183,7 +185,7 @@
     <Compile Include="Elements\NamedElementBase.cs" />
     <Compile Include="Elements\Property.cs" />
     <Compile Include="Elements\ValueType.cs" />
-    <Compile Include="Factory\IModelInfoProvider.cs" />
+    <Compile Include="Construction\IModelInfoProvider.cs" />
     <Compile Include="IAnnotation.cs" />
     <Compile Include="IClassifier.cs" />
     <Compile Include="IModelDimension.cs" />
@@ -208,9 +210,10 @@
     <Compile Include="Runtime\AttributedModel\AbstractAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
-    <Compile Include="Factory\IModelConstructionContext.cs" />
-    <Compile Include="Factory\ModelConstructionContext.cs" />
+    <Compile Include="Construction\IModelConstructionContext.cs" />
+    <Compile Include="Construction\ModelConstructionContext.cs" />
     <Compile Include="Runtime\Construction\Annotations\RequiredAnnotationConstructor.cs" />
+    <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
     <Compile Include="Runtime\Construction\Internal\INamedElementConstructor.cs" />
     <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructor.cs" />

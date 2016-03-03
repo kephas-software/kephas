@@ -12,8 +12,8 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction.Annotations;
 
     using NUnit.Framework;
