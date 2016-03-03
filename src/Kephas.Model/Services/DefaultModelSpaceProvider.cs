@@ -90,14 +90,19 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
-            var constructionContext = new ModelConstructionContext();
             var modelSpace = new DefaultModelSpace(constructionContext);
-            constructionContext.ModelSpace = modelSpace;
+            var constructionContext = new ModelConstructionContext { ModelSpace = modelSpace };
 
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
                 var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e);
+
+                // collect the model dimensions and dimension elements, completing their construction
+                // build the model projections
+                // complete the construction of the other model elements, assigning them to the right projection
+                // build the aggregated projections
+                // aggregate the model elements, adding them to the right aggregated projection
 
                 throw new NotImplementedException();
 

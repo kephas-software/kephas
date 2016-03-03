@@ -23,7 +23,7 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
-        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
