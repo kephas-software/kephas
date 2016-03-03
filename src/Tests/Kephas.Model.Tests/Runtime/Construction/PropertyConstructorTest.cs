@@ -22,12 +22,12 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// A runtime property information factory test.
     /// </summary>
     [TestFixture]
-    public class PropertyConstructorTest
+    public class PropertyConstructorTest : ConstructorTestBase
     {
         private INamedElement TryCreateAgeModelElement()
         {
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
             var constructor = new PropertyConstructor();
+            var context = this.GetConstructionContext();
             var propertyInfo = typeof(TestModelElement).AsDynamicTypeInfo().Properties["Age"];
             var modelElement = constructor.TryCreateModelElement(context, propertyInfo);
 

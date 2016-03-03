@@ -26,13 +26,13 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ModelDimensionConstructorTest
+    public class ModelDimensionConstructorTest : ConstructorTestBase
     {
         [Test]
         public void TryCreateModelElement_Success()
         {
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
             var constructor = new ModelDimensionConstructor();
+            var context = this.GetConstructionContext();
             var element = constructor.TryCreateModelElement(context, typeof(IHelloDimension).AsDynamicTypeInfo());
 
             Assert.AreEqual("Hello", element.Name);
@@ -47,7 +47,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_ending()
         {
             var constructor = new ModelDimensionConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
 
             Assert.AreEqual("Dim2", dimElement.Name);
@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_aggregatable()
         {
             var constructor = new ModelDimensionConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = (IModelDimension)constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
 
             Assert.AreEqual(true, dimElement.IsAggregatable);

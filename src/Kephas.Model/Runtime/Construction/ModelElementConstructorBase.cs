@@ -17,6 +17,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
 
     /// <summary>
@@ -30,6 +31,22 @@ namespace Kephas.Model.Runtime.Construction
         where TModelContract : class, IModelElement
         where TRuntime : class, IElementInfo, IDynamicElementInfo
     {
+        /// <summary>
+        /// Constructs the model element content.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="element">The element being constructed.</param>
+        protected override void ConstructModelElementContent(IModelConstructionContext constructionContext, TRuntime runtimeElement, TModel element)
+        {
+            var members = this.ComputeMembers(constructionContext, runtimeElement);
+            var writableElement = (IWritableNamedElement)element;
+            foreach (var member in members)
+            {
+                writableElement.AddMember(member);
+            }
+        }
+
         /// <summary>
         /// Computes the members from the runtime element.
         /// </summary>
@@ -69,8 +86,8 @@ namespace Kephas.Model.Runtime.Construction
         {
             var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
             var attributes = runtimeElement.GetUnderlyingMemberInfo().GetCustomAttributes(inherit: false);
-            return attributes.Select(runtimeElement1 => runtimeModelElementFactory.TryCreateModelElement(constructionContext, runtimeElement1))
-                             .Where(annotationInfo => annotationInfo != null);
+            return attributes.Select(attr => runtimeModelElementFactory.TryCreateModelElement(constructionContext, attr))
+                             .Where(annotation => annotation != null);
         }
 
         /// <summary>

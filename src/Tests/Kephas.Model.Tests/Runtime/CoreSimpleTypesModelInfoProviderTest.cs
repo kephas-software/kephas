@@ -18,6 +18,7 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Tests.Runtime.Construction;
     using Kephas.Reflection;
 
     using NUnit.Framework;
@@ -29,13 +30,13 @@ namespace Kephas.Model.Tests.Runtime
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CoreSimpleTypesModelInfoProviderTest
+    public class CoreSimpleTypesModelInfoProviderTest : ConstructorTestBase
     {
         [Test]
         public async Task GetElementInfosAsync()
         {
             var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelElementFactory>());
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var elementInfos = (await provider.GetElementInfosAsync(context)).Cast<IValueType>().ToList();
 
             Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(bool).AsDynamicTypeInfo() && info.IsPrimitive));

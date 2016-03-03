@@ -51,15 +51,20 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         public virtual INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
         {
-            var typedRuntimeInfo = runtimeElement as TRuntime;
-            if (typedRuntimeInfo == null)
+            var runtimeInfo = runtimeElement as TRuntime;
+            if (runtimeInfo == null)
             {
                 return null;
             }
 
-            var elementInfo = this.TryCreateModelElementCore(constructionContext, typedRuntimeInfo);
-            ((INamedElementConstructor)elementInfo)?.AddPart(typedRuntimeInfo);
-            return elementInfo;
+            var element = this.TryCreateModelElementCore(constructionContext, runtimeInfo);
+            if (element != null)
+            {
+                ((IWritableNamedElement)element).AddPart(runtimeInfo);
+                this.ConstructModelElementContent(constructionContext, runtimeInfo, element);
+            }
+
+            return element;
         }
 
         /// <summary>
@@ -85,6 +90,16 @@ namespace Kephas.Model.Runtime.Construction
         /// if the runtime element information is not supported.
         /// </returns>
         protected abstract TModel TryCreateModelElementCore(IModelConstructionContext constructionContext, TRuntime runtimeElement);
+
+        /// <summary>
+        /// Constructs the model element content.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="element">The element being constructed.</param>
+        protected virtual void ConstructModelElementContent(IModelConstructionContext constructionContext, TRuntime runtimeElement, TModel element)
+        {
+        }
 
         /// <summary>
         /// Computes the model element name based on the runtime element.

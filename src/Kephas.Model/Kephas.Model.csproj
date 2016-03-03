@@ -214,7 +214,7 @@
     <Compile Include="Construction\ModelConstructionContext.cs" />
     <Compile Include="Runtime\Construction\Annotations\RequiredAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
-    <Compile Include="Runtime\Construction\Internal\INamedElementConstructor.cs" />
+    <Compile Include="Runtime\Construction\Internal\IWritableNamedElement.cs" />
     <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructor.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />

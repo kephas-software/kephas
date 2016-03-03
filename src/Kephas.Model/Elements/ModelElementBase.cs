@@ -52,7 +52,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The element annotations.
         /// </value>
-        public override IEnumerable<IAnnotation> Annotations => this.members.OfType<IAnnotation>();
+        public override IEnumerable<IAnnotation> Annotations => this.Members.OfType<IAnnotation>();
 
         /// <summary>
         /// Gets the base model element.
@@ -60,7 +60,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The base model element.
         /// </value>
-        public virtual IModelElement Base { get; internal set; }
+        public virtual IModelElement Base { get; private set; }
 
         /// <summary>
         /// Gets the member with the specified qualified name.
@@ -92,10 +92,19 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         protected override void AddMember(INamedElement member)
         {
-            var memberBuilder = member as INamedElementConstructor;
+            var memberBuilder = member as IWritableNamedElement;
             memberBuilder?.SetContainer(this);
 
             this.members.Add(member.Name, member);
+        }
+
+        /// <summary>
+        /// Sets the base element.
+        /// </summary>
+        /// <param name="base">The base.</param>
+        protected override void SetBase(IModelElement @base)
+        {
+            this.Base = @base;
         }
     }
 }

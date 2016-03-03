@@ -56,6 +56,7 @@
     <Compile Include="Runtime\Construction\Builders\ValueTypeBuilderTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorTest.cs" />
+    <Compile Include="Runtime\Construction\ConstructorTestBase.cs" />
     <Compile Include="Runtime\Construction\ModelDimensionConstructorTest.cs" />
     <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

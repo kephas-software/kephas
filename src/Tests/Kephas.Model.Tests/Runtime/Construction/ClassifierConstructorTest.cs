@@ -21,12 +21,12 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Telerik.JustMock;
 
     [TestFixture]
-    public class ClassifierConstructorTest
+    public class ClassifierConstructorTest : ConstructorTestBase
     {
         private INamedElement TryCreateTestModelElement()
         {
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
             var constructor = new ClassifierConstructor();
+            var context = this.GetConstructionContext();
             var runtimeElement = typeof(TestContact).AsDynamicTypeInfo();
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 

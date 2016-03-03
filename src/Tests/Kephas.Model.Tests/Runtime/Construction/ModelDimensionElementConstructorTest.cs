@@ -27,13 +27,13 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ModelDimensionElementConstructorTest
+    public class ModelDimensionElementConstructorTest : ConstructorTestBase
     {
         [Test]
         public void TryCreateModelElement_success()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(IFirstTestDimDimensionElement).AsDynamicTypeInfo());
 
             Assert.IsNotNull(dimElement);
@@ -49,7 +49,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_ending()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(ISecondTestDim).AsDynamicTypeInfo());
 
             Assert.AreEqual("Second", dimElement.Name);
@@ -59,7 +59,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_dimension_name_in_element_name()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(IThirdDimensionElement).AsDynamicTypeInfo());
 
             Assert.AreEqual("Third", dimElement.Name);
@@ -69,13 +69,12 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_dimension_name_in_namespace()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(INoDimTestDimDimensionElement).AsDynamicTypeInfo());
 
             Assert.AreEqual("NoDimTestDim", dimElement.Name);
         }
     }
-
 
     [ModelDimensionElement]
     public interface INoDimTestDimDimensionElement { }

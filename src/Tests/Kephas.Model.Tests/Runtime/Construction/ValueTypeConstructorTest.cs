@@ -23,12 +23,12 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using ValueType = Kephas.Model.Elements.ValueType;
 
     [TestFixture]
-    public class ValueTypeConstructorTest
+    public class ValueTypeConstructorTest : ConstructorTestBase
     {
         private INamedElement TryCreateTestModelElement<T>()
         {
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
             var constructor = new ValueTypeConstructor();
+            var context = this.GetConstructionContext();
             var runtimeElement = typeof(T).AsDynamicTypeInfo();
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
