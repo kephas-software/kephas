@@ -13,10 +13,12 @@ namespace Kephas.Model.Runtime.Construction.Annotations
 
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Services;
 
     /// <summary>
     /// A default runtime factory for annotation information.
     /// </summary>
+    [ProcessingPriority(Priority.Low)]
     public class AnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
     {
         /// <summary>

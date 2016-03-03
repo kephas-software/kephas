@@ -14,17 +14,21 @@ namespace Kephas.Model.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics;
+    using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for runtime model info providers.
     /// </summary>
-    public abstract class RuntimeModelInfoProviderBase : IModelInfoProvider
+    /// <typeparam name="TProvider">The concrete provider type.</typeparam>
+    public abstract class RuntimeModelInfoProviderBase<TProvider> : IModelInfoProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeModelInfoProviderBase"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelInfoProviderBase{TProvider}"/> class.
         /// </summary>
         /// <param name="runtimeModelElementFactory">  The runtime model information factory. </param>
         protected RuntimeModelInfoProviderBase(IRuntimeModelElementFactory runtimeModelElementFactory)
@@ -33,6 +37,14 @@ namespace Kephas.Model.Runtime
 
             this.RuntimeModelElementFactory = runtimeModelElementFactory;
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<TProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the runtime model information factory. 
@@ -48,6 +60,26 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public abstract Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken));
+        public async Task<IEnumerable<IElementInfo>> GetElementInfosAsync(
+            IModelConstructionContext constructionContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            IEnumerable<IElementInfo> elementInfos = null;
+            await Profiler.WithInfoStopwatchAsync(
+                async () => elementInfos = await this.GetElementInfosCoreAsync(constructionContext, cancellationToken).WithServerThreadingContext(),
+                this.Logger).WithServerThreadingContext();
+
+            return elementInfos;
+        }
+
+        /// <summary>
+        /// Gets the element infos used for building the model space (core implementation).
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task promising an enumeration of element information.
+        /// </returns>
+        protected abstract Task<IEnumerable<IElementInfo>> GetElementInfosCoreAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken);
     }
 }
