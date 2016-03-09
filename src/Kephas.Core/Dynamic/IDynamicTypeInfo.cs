@@ -123,6 +123,15 @@ namespace Kephas.Dynamic
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
         object TryInvoke(object instance, string methodName, IEnumerable<object> args);
+
+        /// <summary>
+        /// Creates an instance with the provided arguments (if any).
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        object CreateInstance(IEnumerable<object> args = null);
     }
 
     /// <summary>
@@ -321,6 +330,19 @@ namespace Kephas.Dynamic
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
         public abstract object TryInvoke(object instance, string methodName, IEnumerable<object> args);
+
+        /// <summary>
+        /// Creates an instance with the provided arguments (if any).
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        public object CreateInstance(IEnumerable<object> args = null)
+        {
+            Contract.Ensures(Contract.Result<object>() != null);
+            return Contract.Result<object>();
+        }
 
         /// <summary>
         /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.

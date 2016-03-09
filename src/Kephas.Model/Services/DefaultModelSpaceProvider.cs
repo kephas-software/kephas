@@ -90,8 +90,9 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
+            var constructionContext = new ModelConstructionContext();
             var modelSpace = new DefaultModelSpace(constructionContext);
-            var constructionContext = new ModelConstructionContext { ModelSpace = modelSpace };
+            constructionContext.ModelSpace = modelSpace;
 
             try
             {

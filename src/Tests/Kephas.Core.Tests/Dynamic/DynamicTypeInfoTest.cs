@@ -13,6 +13,7 @@ namespace Kephas.Core.Tests.Dynamic
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Activation;
     using Kephas.Dynamic;
 
     using NUnit.Framework;
@@ -148,6 +149,36 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void CreateInstance_exception_interface()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(IActivator));
+            Assert.Throws<MissingMethodException>(() => dynamicTypeInfo.CreateInstance());
+        }
+
+        [Test]
+        public void CreateInstance_exception_private_constructor()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClassWithConstructor));
+            Assert.Throws<MissingMethodException>(() => dynamicTypeInfo.CreateInstance(new object[] {3, "Hello"}));
+        }
+
+        [Test]
+        public void CreateInstance_no_args()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+            var instance = dynamicTypeInfo.CreateInstance();
+            Assert.IsInstanceOf<TestClass>(instance);
+        }
+
+        [Test]
+        public void CreateInstance_args()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClassWithConstructor));
+            var instance = dynamicTypeInfo.CreateInstance(3);
+            Assert.IsInstanceOf<TestClass>(instance);
+        }
+
+        [Test]
         public void GetDynamicProperty_throwOnNotFound()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
@@ -171,6 +202,17 @@ namespace Kephas.Core.Tests.Dynamic
             public static explicit operator Func<object, object, object>(TestClass v)
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public class TestClassWithConstructor
+        {
+            public TestClassWithConstructor(int age)
+            {
+            }
+
+            private TestClassWithConstructor(int age, string name)
+            {
             }
         }
     }

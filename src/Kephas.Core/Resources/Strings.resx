@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivatorBase_CannotGetImplementationType_Exception" xml:space="preserve">
+    <value>Cannot get the implementation type for the provided abstract type info '{0}'.</value>
+  </data>
+  <data name="ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
+    <value>Cannot instantiate the implementation type '{0}' because it is not resolved to an {1} instance. The provided type info was '{2}'.</value>
+  </data>
   <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
     <value>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}.</value>
   </data>

@@ -295,6 +295,35 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Creates an instance with the provided arguments (if any).
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        public object CreateInstance(IEnumerable<object> args = null)
+        {
+            // TODO optimize
+            if (args == null)
+            {
+                return Activator.CreateInstance(this.Type);
+            }
+
+            return Activator.CreateInstance(this.Type, args);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.Type.ToString();
+        }
+
+        /// <summary>
         /// Gets the dynamic type.
         /// </summary>
         /// <param name="type">The type.</param>

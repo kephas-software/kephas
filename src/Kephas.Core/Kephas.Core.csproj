@@ -139,6 +139,9 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Activation\ActivationException.cs" />
+    <Compile Include="Activation\ActivatorBase.cs" />
+    <Compile Include="Activation\IActivator.cs" />
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="Application\AppBoostrapperExtensions.cs" />
@@ -153,6 +156,7 @@
     <Compile Include="Behaviors\IBehaviorValue.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Composition\AttributedModel\CompositionConstructorAttribute.cs" />
     <Compile Include="Composition\AttributedModel\ExcludeFromCompositionAttribute.cs" />
     <Compile Include="Composition\AttributedModel\ImportAttribute.cs" />
@@ -183,6 +187,7 @@
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Dynamic\DynamicTypeInfoExtensions.cs" />
     <Compile Include="Dynamic\ExpandoBase.cs" />
     <Compile Include="Dynamic\DynamicMethodInfo.cs" />
     <Compile Include="Dynamic\DynamicPropertyInfo.cs" />

@@ -62,6 +62,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot get the implementation type for the provided abstract type info &apos;{0}&apos;..
+        /// </summary>
+        internal static string ActivatorBase_CannotGetImplementationType_Exception {
+            get {
+                return ResourceManager.GetString("ActivatorBase_CannotGetImplementationType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot instantiate the implementation type &apos;{0}&apos; because it is not resolved to an {1} instance. The provided type info was &apos;{2}&apos;..
+        /// </summary>
+        internal static string ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception {
+            get {
+                return ResourceManager.GetString("ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}..
         /// </summary>
         internal static string AmbiguousOverrideForAppServiceContract {
