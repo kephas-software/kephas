@@ -14,7 +14,7 @@ namespace Kephas.Model.Runtime.Construction
     using System.Linq;
 
     using Kephas.Composition;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Services;
 

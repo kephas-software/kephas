@@ -10,8 +10,9 @@
 namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
+    using System.Linq;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -44,7 +45,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The classifier properties.
         /// </value>
-        public IEnumerable<IProperty> Properties { get; }
+        public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
 
         /// <summary>
         /// Gets the namespace of the type.

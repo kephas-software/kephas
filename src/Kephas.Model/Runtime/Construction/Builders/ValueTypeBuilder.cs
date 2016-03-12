@@ -12,7 +12,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using System;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Reflection;
 
     using ValueType = Kephas.Model.Elements.ValueType;
@@ -80,7 +80,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
             IModelConstructionContext constructionContext,
             IDynamicTypeInfo runtimeElement)
         {
-            return new ValueTypeConstructor();
+            return new ValueTypeConstructor(forceValueType: true);
         }
     }
 }

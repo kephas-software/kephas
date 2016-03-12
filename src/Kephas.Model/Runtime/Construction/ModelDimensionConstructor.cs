@@ -13,8 +13,8 @@ namespace Kephas.Model.Runtime.Construction
 
     using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
     using Kephas.Services;
 
     /// <summary>

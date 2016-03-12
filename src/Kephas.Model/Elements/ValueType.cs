@@ -9,7 +9,7 @@
 
 namespace Kephas.Model.Elements
 {
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// Classifier definition for a value type.

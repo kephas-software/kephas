@@ -13,7 +13,7 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
 
     using Kephas.Dynamic;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
@@ -22,7 +22,7 @@ namespace Kephas.Model.Elements
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the interface).</typeparam>
-    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, INamedElementConstructor
+    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IWritableNamedElement
         where TModelContract : INamedElement
     {
         /// <summary>
@@ -151,16 +151,25 @@ namespace Kephas.Model.Elements
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
-        void INamedElementConstructor.SetContainer(IModelElement container)
+        void IWritableNamedElement.SetContainer(IModelElement container)
         {
             this.Container = container;
+        }
+
+        /// <summary>
+        /// Sets the base element.
+        /// </summary>
+        /// <param name="base">The base.</param>
+        void IWritableNamedElement.SetBase(IModelElement @base)
+        {
+            this.SetBase(@base);
         }
 
         /// <summary>
         /// Sets the full name.
         /// </summary>
         /// <param name="fullName">The full name.</param>
-        void INamedElementConstructor.SetFullName(string fullName)
+        void IWritableNamedElement.SetFullName(string fullName)
         {
             this.FullName = fullName;
         }
@@ -168,7 +177,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Completes the construction of the element.
         /// </summary>
-        void INamedElementConstructor.CompleteConstruction()
+        void IWritableNamedElement.CompleteConstruction()
         {
             this.OnCompleteConstruction();
         }
@@ -177,7 +186,7 @@ namespace Kephas.Model.Elements
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
-        void INamedElementConstructor.AddMember(INamedElement member)
+        void IWritableNamedElement.AddMember(INamedElement member)
         {
             this.AddMember(member);
         }
@@ -186,7 +195,7 @@ namespace Kephas.Model.Elements
         /// Adds a part to the aggregated element.
         /// </summary>
         /// <param name="part">The part to be added.</param>
-        void INamedElementConstructor.AddPart(object part)
+        void IWritableNamedElement.AddPart(object part)
         {
             this.parts.Add(part);
         }
@@ -203,6 +212,14 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="member">The member.</param>
         protected virtual void AddMember(INamedElement member)
+        {
+        }
+
+        /// <summary>
+        /// Sets the base element.
+        /// </summary>
+        /// <param name="base">The base.</param>
+        protected virtual void SetBase(IModelElement @base)
         {
         }
     }

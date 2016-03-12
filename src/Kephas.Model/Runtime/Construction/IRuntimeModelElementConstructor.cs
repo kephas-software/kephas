@@ -11,7 +11,7 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Diagnostics.Contracts;
 
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Services;
 
     /// <summary>

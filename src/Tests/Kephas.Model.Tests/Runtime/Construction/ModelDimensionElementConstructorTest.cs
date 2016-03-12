@@ -10,32 +10,30 @@
 namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System.Diagnostics.CodeAnalysis;
-    using System.Reflection;
 
+    using Kephas.Model.AttributedModel;
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Tests.Runtime.Construction.TestDim;
     using Kephas.Reflection;
 
     using NUnit.Framework;
 
     using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
-
-    using TestModel.TestDim;
 
     /// <summary>
     /// Tests for <see cref="ModelDimensionElementConstructor"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ModelDimensionElementConstructorTest
+    public class ModelDimensionElementConstructorTest : ConstructorTestBase
     {
         [Test]
         public void TryCreateModelElement_success()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(IFirstTestDimDimensionElement).AsDynamicTypeInfo());
 
             Assert.IsNotNull(dimElement);
@@ -51,7 +49,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_ending()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(ISecondTestDim).AsDynamicTypeInfo());
 
             Assert.AreEqual("Second", dimElement.Name);
@@ -61,24 +59,35 @@ namespace Kephas.Model.Tests.Runtime.Construction
         public void TryCreateModelElement_Success_no_dimension_name_in_element_name()
         {
             var constructor = new ModelDimensionElementConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = this.GetConstructionContext();
             var dimElement = constructor.TryCreateModelElement(context, typeof(IThirdDimensionElement).AsDynamicTypeInfo());
 
             Assert.AreEqual("Third", dimElement.Name);
         }
+
+        [Test]
+        public void TryCreateModelElement_Success_no_dimension_name_in_namespace()
+        {
+            var constructor = new ModelDimensionElementConstructor();
+            var context = this.GetConstructionContext();
+            var dimElement = constructor.TryCreateModelElement(context, typeof(INoDimTestDimDimensionElement).AsDynamicTypeInfo());
+
+            Assert.AreEqual("NoDimTestDim", dimElement.Name);
+        }
     }
-}
-
-namespace TestModel.TestDim
-{
-    using Kephas.Model.AttributedModel;
 
     [ModelDimensionElement]
-    public interface IFirstTestDimDimensionElement { }
+    public interface INoDimTestDimDimensionElement { }
 
-    [ModelDimensionElement]
-    public interface ISecondTestDim { }
+    namespace TestDim
+    {
+        [ModelDimensionElement]
+        public interface IFirstTestDimDimensionElement { }
 
-    [ModelDimensionElement]
-    public interface IThirdDimensionElement { }
+        [ModelDimensionElement]
+        public interface ISecondTestDim { }
+
+        [ModelDimensionElement]
+        public interface IThirdDimensionElement { }
+    }
 }

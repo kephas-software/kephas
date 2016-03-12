@@ -16,7 +16,7 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Data;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Builders;
     using Kephas.Reflection;
@@ -24,7 +24,7 @@ namespace Kephas.Model.Runtime
     /// <summary>
     /// A model information provider for simple types.
     /// </summary>
-    public class CoreSimpleTypesModelInfoProvider : RuntimeModelInfoProviderBase
+    public class CoreSimpleTypesModelInfoProvider : RuntimeModelInfoProviderBase<CoreSimpleTypesModelInfoProvider>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreSimpleTypesModelInfoProvider"/> class.
@@ -45,7 +45,7 @@ namespace Kephas.Model.Runtime
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
         [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-        public override Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected override Task<IEnumerable<IElementInfo>> GetElementInfosCoreAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken)
         {
             var elementInfos = new List<IElementInfo>
                         {

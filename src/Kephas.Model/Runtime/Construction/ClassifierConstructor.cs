@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyConstructor.cs" company="Quartz Software SRL">
+// <copyright file="ClassifierConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Factory class for runtime property information.
+//   Implements the classifier constructor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,11 +12,13 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Services;
 
     /// <summary>
-    /// Factory class for runtime property information.
+    /// A constructor for generic classifiers. This class cannot be inherited.
     /// </summary>
-    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IDynamicPropertyInfo>
+    [ProcessingPriority(Priority.Low)]
+    public sealed class ClassifierConstructor : ClassifierConstructorBase<Classifier, IClassifier>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -27,10 +29,9 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicPropertyInfo runtimeElement)
+        protected override Classifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
         {
-            var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement));
-            return property;
+            return new Classifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
 }

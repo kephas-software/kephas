@@ -12,8 +12,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Construction;
     using Kephas.Model.Dimensions.Scope;
-    using Kephas.Model.Factory;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 
@@ -26,15 +26,13 @@ namespace Kephas.Model.Tests.Runtime.Construction
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class ModelDimensionConstructorTest
+    public class ModelDimensionConstructorTest : ConstructorTestBase
     {
         [Test]
         public void TryCreateModelElement_Success()
         {
-            var modelSpace = Mock.Create<IModelSpace>();
-
-            var context = new ModelConstructionContext { ModelSpace = modelSpace };
             var constructor = new ModelDimensionConstructor();
+            var context = this.GetConstructionContext();
             var element = constructor.TryCreateModelElement(context, typeof(IHelloDimension).AsDynamicTypeInfo());
 
             Assert.AreEqual("Hello", element.Name);
@@ -43,10 +41,35 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
             var dimension = (IModelDimension)element;
             Assert.AreEqual(12, dimension.Index);
-            Assert.AreEqual(true, dimension.IsAggregatable);
         }
 
-        [AggregatableModelDimension(12, DefaultDimensionElement = typeof(IGlobalScopeDimensionElement))]
+        [Test]
+        public void TryCreateModelElement_Success_no_ending()
+        {
+            var constructor = new ModelDimensionConstructor();
+            var context = this.GetConstructionContext();
+            var dimElement = constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
+
+            Assert.AreEqual("Dim2", dimElement.Name);
+        }
+
+        [Test]
+        public void TryCreateModelElement_Success_aggregatable()
+        {
+            var constructor = new ModelDimensionConstructor();
+            var context = this.GetConstructionContext();
+            var dimElement = (IModelDimension)constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
+
+            Assert.AreEqual(true, dimElement.IsAggregatable);
+        }
+
+        [ModelDimension(12, DefaultDimensionElement = typeof(IGlobalScopeDimensionElement))]
         private interface IHelloDimension { }
+
+        [ModelDimension(10)]
+        public interface IDim1Dimension { }
+
+        [AggregatableModelDimension(24)]
+        public interface IDim2 { }
     }
 }

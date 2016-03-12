@@ -20,7 +20,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Model.Factory;
+    using Kephas.Model.Construction;
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
@@ -31,7 +31,7 @@ namespace Kephas.Model.Runtime
     /// Model provider based on the .NET runtime and the type system.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase
+    public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase<DefaultRuntimeModelInfoProvider>
     {
         /// <summary>
         /// The model registrars.
@@ -55,14 +55,6 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultRuntimeModelInfoProvider> Logger { get; set; }
-
-        /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -70,7 +62,7 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        public override async Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected override async Task<IEnumerable<IElementInfo>> GetElementInfosCoreAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

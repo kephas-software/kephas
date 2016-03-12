@@ -9,8 +9,8 @@
 
 namespace Kephas.Model.Runtime.Construction.Builders
 {
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Factory;
     using Kephas.Reflection;
 
     /// <summary>

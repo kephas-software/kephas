@@ -1,24 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="INamedElementConstructor.cs" company="Quartz Software SRL">
+// <copyright file="IWritableNamedElement.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the INamedElementConstructor interface.
+//   Declares the IWritableNamedElement interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Model.Runtime.Construction.Internal
 {
     /// <summary>
-    /// Interface for named element constructor.
+    /// Interface for writable named elements used during construction.
     /// </summary>
-    internal interface INamedElementConstructor
+    internal interface IWritableNamedElement
     {
         /// <summary>
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
         void SetContainer(IModelElement container);
+
+        /// <summary>
+        /// Sets the base element.
+        /// </summary>
+        /// <param name="base">The base.</param>
+        void SetBase(IModelElement @base);
 
         /// <summary>
         /// Sets the full name.
