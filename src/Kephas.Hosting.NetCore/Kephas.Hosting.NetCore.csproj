@@ -130,6 +130,7 @@
     <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Package.nuspec" />
     <None Include="project.json" />
     <AdditionalFiles Include="stylecop.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->

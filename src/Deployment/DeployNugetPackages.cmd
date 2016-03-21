@@ -1,13 +1,9 @@
-set DropFolder="Z:\Software\KephasFramework\"
-
-copy /y ..\NuGetPackagers\Kephas.Core.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Composition.Mef.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Data.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Hosting.Net45.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Hosting.NetCore.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Logging.NLog.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Messaging.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Model.NuGet.Packager\*.nupkg %DropFolder%
-copy /y ..\NuGetPackagers\Kephas.Serialization.Json.NuGet.Packager\*.nupkg %DropFolder%
-
-del /Q %DropFolder%*.symbols.*
+nuget pack ..\Kephas.Core\Package.nuspec -BasePath ..\Kephas.Core -Symbols
+nuget pack ..\Kephas.Logging.NLog\Package.nuspec -BasePath ..\Kephas.Logging.NLog -Symbols
+nuget pack ..\Kephas.Composition.Mef\Package.nuspec -BasePath ..\Kephas.Composition.Mef -Symbols
+nuget pack ..\Kephas.Messaging\Package.nuspec -BasePath ..\Kephas.Messaging -Symbols
+nuget pack ..\Kephas.Model\Package.nuspec -BasePath ..\Kephas.Model -Symbols
+nuget pack ..\Kephas.Data\Package.nuspec -BasePath ..\Kephas.Data -Symbols
+nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols
+nuget pack ..\Kephas.Hosting.NetCore\Package.nuspec -BasePath ..\Kephas.Hosting.NetCore -Symbols
+nuget pack ..\Kephas.Hosting.Net45\Package.nuspec -BasePath ..\Kephas.Hosting.Net45 -Symbols

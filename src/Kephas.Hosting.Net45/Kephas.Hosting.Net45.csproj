@@ -146,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Package.nuspec" />
     <None Include="packages.config" />
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
