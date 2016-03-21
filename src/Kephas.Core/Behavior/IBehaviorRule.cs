@@ -7,30 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behaviors
+namespace Kephas.Behavior
 {
     /// <summary>
     /// Non-generic contract for defining a behavior rule.
     /// </summary>
     /// <typeparam name="TContext">The context type.</typeparam>
-    public interface IBehaviorRule<in TContext>
+    public interface IBehaviorRule<in TContext> : IBehaviorRuleFlowControl
     {
-        /// <summary>
-        /// Gets the processing priority.
-        /// </summary>
-        /// <value>
-        /// The processing priority.
-        /// </value>
-        int ProcessingPriority { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this rule ends the processing flow.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this rule ends the processing flow, <c>false</c> if not.
-        /// </value>
-        bool IsEndRule { get; }
-
         /// <summary>
         /// Gets a value indicating whether the rule may be applied or not.
         /// </summary>

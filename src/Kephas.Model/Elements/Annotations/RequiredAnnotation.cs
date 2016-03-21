@@ -12,7 +12,7 @@ namespace Kephas.Model.Elements.Annotations
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Behaviors;
+    using Kephas.Behavior;
     using Kephas.Model.Behaviors;
     using Kephas.Model.Construction;
 

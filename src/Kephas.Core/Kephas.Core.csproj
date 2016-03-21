@@ -150,10 +150,15 @@
     <Compile Include="Application\IAppBootstrapper.cs" />
     <Compile Include="Application\IAppContext.cs" />
     <Compile Include="Application\IAppInitializer.cs" />
-    <Compile Include="Behaviors\BehaviorValue.cs" />
-    <Compile Include="Behaviors\IAsyncBehaviorRule.cs" />
-    <Compile Include="Behaviors\IBehaviorRule.cs" />
-    <Compile Include="Behaviors\IBehaviorValue.cs" />
+    <Compile Include="Behavior\AsyncBehaviorRuleBase.cs" />
+    <Compile Include="Behavior\BehaviorRuleBase.cs" />
+    <Compile Include="Behavior\BehaviorRuleFlowControlBase.cs" />
+    <Compile Include="Behavior\BehaviorValue.cs" />
+    <Compile Include="Behavior\EndRuleAttribute.cs" />
+    <Compile Include="Behavior\IAsyncBehaviorRule.cs" />
+    <Compile Include="Behavior\IBehaviorRule.cs" />
+    <Compile Include="Behavior\IBehaviorRuleFlowControl.cs" />
+    <Compile Include="Behavior\IBehaviorValue.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -233,6 +238,11 @@
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
     <Compile Include="Services\AppServiceMetadata.cs" />
+    <Compile Include="Services\Behavior\ServiceEnumerableExtensions.cs" />
+    <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBase.cs" />
+    <Compile Include="Services\Behavior\IEnabledServiceBehaviorRule.cs" />
+    <Compile Include="Services\Behavior\IServiceBehaviorContext.cs" />
+    <Compile Include="Services\Behavior\ServiceBehaviorContext.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrar.cs" />
     <Compile Include="Services\ContextBase.cs" />
     <Compile Include="Services\IAsyncInitializable.cs" />
@@ -263,6 +273,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

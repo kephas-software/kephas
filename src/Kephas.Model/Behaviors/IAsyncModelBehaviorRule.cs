@@ -9,7 +9,7 @@
 
 namespace Kephas.Model.Behaviors
 {
-    using Kephas.Behaviors;
+    using Kephas.Behavior;
     using Kephas.Data;
 
     /// <summary>

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behaviors
+namespace Kephas.Behavior
 {
     using Kephas.Dynamic;
 

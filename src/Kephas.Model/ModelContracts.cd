@@ -2,11 +2,7 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Kephas.Model.INamedElement">
     <Position X="6.25" Y="0.5" Width="2" />
-    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement" FixedToPoint="true">
-      <Path>
-        <Point X="6.5" Y="2.31" />
-        <Point X="6.5" Y="3.25" />
-      </Path>
+    <AssociationLine Name="Container" Type="Kephas.Model.IModelElement">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.048" Y="0.248" />
       </MemberNameLabel>
@@ -20,7 +16,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAAAAAAAAAAAAAESIAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAAAIAAAAAAAAAIQAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>INamedElement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -30,14 +26,8 @@
   </Interface>
   <Interface Name="Kephas.Model.IModelElement">
     <Position X="6.25" Y="3.25" Width="2" />
-    <AssociationLine Name="Members" Type="Kephas.Model.INamedElement" FixedToPoint="true">
-      <Path>
-        <Point X="6.875" Y="3.25" />
-        <Point X="6.875" Y="2.309" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAACAEAAAAQAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAQAA=</HashCode>
       <FileName>IModelElement.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -45,7 +35,6 @@
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Members" />
-      <Property Name="Annotations" />
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Kephas.Model.IClassifier">
@@ -131,15 +120,8 @@
   <Interface Name="Kephas.Model.IValueType">
     <Position X="0.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>IValueType.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Kephas.Model.IReferenceType" Collapsed="true">
-    <Position X="3.5" Y="8.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IReferenceType.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

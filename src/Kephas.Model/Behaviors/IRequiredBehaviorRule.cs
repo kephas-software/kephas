@@ -9,8 +9,6 @@
 
 namespace Kephas.Model.Behaviors
 {
-    using Kephas.Behaviors;
-
     /// <summary>
     /// Value rule contract for the required behavior.
     /// </summary>

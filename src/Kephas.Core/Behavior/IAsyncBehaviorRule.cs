@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behaviors
+namespace Kephas.Behavior
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -16,28 +16,12 @@ namespace Kephas.Behaviors
     /// Value agnostic contract for defining an asynchronous behavior rule.
     /// </summary>
     /// <typeparam name="TContext">The context type.</typeparam>
-    public interface IAsyncBehaviorRule<in TContext>
+    public interface IAsyncBehaviorRule<in TContext> : IBehaviorRuleFlowControl
     {
-        /// <summary>
-        /// Gets the processing priority.
-        /// </summary>
-        /// <value>
-        /// The processing priority.
-        /// </value>
-        int ProcessingPriority { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this rule ends the processing flow.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this rule ends the processing flow, <c>false</c> if not.
-        /// </value>
-        bool IsEndRule { get; }
-
         /// <summary>
         /// Gets a value asynchronously indicating whether the rule may be applied or not.
         /// </summary>
-        /// <param name="context">          The context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of a value indicating whether the rule may be applied or not.
@@ -47,7 +31,7 @@ namespace Kephas.Behaviors
         /// <summary>
         /// Gets the behavior value asynchronously.
         /// </summary>
-        /// <param name="context">          The context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of the behavior value.
@@ -59,13 +43,13 @@ namespace Kephas.Behaviors
     /// Contract for defining an asynchronous behavior rule.
     /// </summary>
     /// <typeparam name="TContext">The context type.</typeparam>
-    /// <typeparam name="TValue">  The type of the behavior value.</typeparam>
+    /// <typeparam name="TValue">The type of the behavior value.</typeparam>
     public interface IAsyncBehaviorRule<in TContext, TValue> : IAsyncBehaviorRule<TContext>
     {
         /// <summary>
         /// Gets the behavior value asynchronously.
         /// </summary>
-        /// <param name="context">          The context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of the behavior value.
