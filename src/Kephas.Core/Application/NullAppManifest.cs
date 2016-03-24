@@ -1,4 +1,13 @@
-﻿namespace Kephas.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="NullAppManifest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the null application manifest class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Application
 {
     using Kephas.Services;
 

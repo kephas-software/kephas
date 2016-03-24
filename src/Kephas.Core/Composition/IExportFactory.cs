@@ -36,5 +36,11 @@ namespace Kephas.Composition
         /// The metadata associated with the export.
         /// </value>
         TMetadata Metadata { get; }
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        new IExport<T, TMetadata> CreateExport();
     }
 }

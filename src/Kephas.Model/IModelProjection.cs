@@ -159,6 +159,14 @@ namespace Kephas.Model
         public abstract IModelSpace ModelSpace { get; }
 
         /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        public abstract IEnumerable<object> Parts { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -182,13 +190,5 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
-
-        /// <summary>
-        /// Gets the parts of an aggregated element.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        public abstract IEnumerable<object> Parts { get; }
     }
 }

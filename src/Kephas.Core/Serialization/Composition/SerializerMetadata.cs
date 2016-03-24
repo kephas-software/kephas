@@ -13,7 +13,6 @@ namespace Kephas.Serialization.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -21,11 +20,6 @@ namespace Kephas.Serialization.Composition
     /// </summary>
     public class SerializerMetadata : AppServiceMetadata
     {
-        /// <summary>
-        /// The format type metadata key.
-        /// </summary>
-        public static readonly string FormatTypeKey = ReflectionHelper.GetPropertyName<SerializerMetadata>(m => m.FormatType);
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializerMetadata"/> class.
         /// </summary>
@@ -38,7 +32,7 @@ namespace Kephas.Serialization.Composition
                 return;
             }
 
-            this.FormatType = (Type)metadata.TryGetValue(FormatTypeKey, null);
+            this.FormatType = (Type)metadata.TryGetValue(nameof(this.FormatType), null);
         }
 
         /// <summary>
@@ -54,11 +48,11 @@ namespace Kephas.Serialization.Composition
         }
 
         /// <summary>
-        /// Gets or sets the format to use.
+        /// Gets the format to use.
         /// </summary>
         /// <value>
         /// The format type.
         /// </value>
-        public Type FormatType { get; set; }
+        public Type FormatType { get; }
     }
 }

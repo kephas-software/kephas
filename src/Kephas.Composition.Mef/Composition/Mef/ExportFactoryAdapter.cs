@@ -10,6 +10,7 @@
 namespace Kephas.Composition.Mef
 {
     using System;
+    using System.Composition;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace Kephas.Composition.Mef
         /// <summary>
         /// The inner export factory.
         /// </summary>
-        private readonly System.Composition.ExportFactory<T> innerExportFactory;
+        private readonly ExportFactory<T> innerExportFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportFactoryAdapter{T}"/> class.
@@ -29,17 +30,22 @@ namespace Kephas.Composition.Mef
         /// <param name="exportCreator">The export creator.</param>
         public ExportFactoryAdapter(Func<Tuple<T, Action>> exportCreator)
         {
-            this.innerExportFactory = new System.Composition.ExportFactory<T>(exportCreator);
+            this.innerExportFactory = new ExportFactory<T>(exportCreator);
         }
 
         /// <summary>
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        public IExport<T> CreateExport()
-        {
-            return new ExportAdapter<T>(this.innerExportFactory.CreateExport());
-        }
+        public virtual IExport<T> CreateExport() => new ExportAdapter<T>(this.CreateInnerExport());
+
+        /// <summary>
+        /// Creates the inner export.
+        /// </summary>
+        /// <returns>
+        /// The new inner export.
+        /// </returns>
+        protected Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
     }
 
     /// <summary>
@@ -64,6 +70,20 @@ namespace Kephas.Composition.Mef
         /// <summary>
         /// Gets the metadata associated with the export.
         /// </summary>
-        public TMetadata Metadata { get; private set; }
+        public TMetadata Metadata { get; }
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        public override IExport<T> CreateExport()
+            => new ExportAdapter<T, TMetadata>(this.CreateInnerExport(), this.Metadata);
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport<T, TMetadata> IExportFactory<T, TMetadata>.CreateExport()
+            => new ExportAdapter<T, TMetadata>(this.CreateInnerExport(), this.Metadata);
     }
 }

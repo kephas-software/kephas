@@ -26,7 +26,7 @@ namespace Kephas.Model.Construction
         public IModelSpace ModelSpace { get; internal set; }
 
         /// <summary>
-        /// Gets the model element factory.
+        /// Gets or sets the model element factory.
         /// </summary>
         /// <value>
         /// The model element factory.

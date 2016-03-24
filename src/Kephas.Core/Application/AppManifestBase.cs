@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the application base class.
+//   Base class for the application manifest.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,18 +12,13 @@ namespace Kephas.Application
     using System;
     using System.Diagnostics.Contracts;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
-    using Kephas.Diagnostics;
-    using Kephas.Logging;
-    using Kephas.Resources;
-    using Kephas.Threading.Tasks;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Base class for the application manifest.
     /// </summary>
-    public abstract class AppManifestBase : IAppManifest
+    public abstract class AppManifestBase : Expando, IAppManifest
     {
         /// <summary>
         /// The application assembly.
@@ -40,11 +35,11 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appId">The identifier of the application.</param>
         protected AppManifestBase(string appId)
+            : base(isThreadSafe: true)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
 
             this.AppId = appId;
-            this.appAssembly = this.GetDynamicTypeInfo().TypeInfo.Assembly;
         }
 
         /// <summary>
@@ -61,6 +56,11 @@ namespace Kephas.Application
         /// <value>
         /// The application version.
         /// </value>
-        public virtual Version AppVersion => this.appVersion ?? (this.appVersion = new Version(this.appAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion));
+        public virtual Version AppVersion => this.appVersion ?? (this.appVersion = new Version(this.AppAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion));
+
+        /// <summary>
+        /// Gets the application assembly from which the assembly attributes are queried.
+        /// </summary>
+        protected virtual Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetDynamicTypeInfo().TypeInfo.Assembly);
     }
 }

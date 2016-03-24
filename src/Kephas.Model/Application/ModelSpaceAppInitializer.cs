@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelSpaceAppInitializer.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Application initializer for the model space.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Application
 {
     using System.Diagnostics.Contracts;
     using System.Threading;

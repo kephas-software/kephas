@@ -11,13 +11,14 @@ namespace Kephas.Application
 {
     using System;
 
+    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
     /// Contract for the application manifest.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IAppManifest
+    public interface IAppManifest : IExpando
     {
         /// <summary>
         /// Gets the identifier of the application.

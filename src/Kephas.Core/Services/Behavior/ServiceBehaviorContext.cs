@@ -42,7 +42,7 @@ namespace Kephas.Services.Behavior
         public IAppContext AppContext { get; }
 
         /// <summary>
-        /// Gets or sets the service.
+        /// Gets the service.
         /// </summary>
         /// <value>
         /// The service.

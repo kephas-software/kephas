@@ -12,7 +12,7 @@ namespace Kephas.Model.Configuration.Composition
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Reflection;
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -21,22 +21,18 @@ namespace Kephas.Model.Configuration.Composition
     public class ElementConfiguratorMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// The native element type metadata key.
-        /// </summary>
-        public static readonly string NativeElementTypeKey = ReflectionHelper.GetPropertyName<ElementConfiguratorMetadata>(m => m.NativeElementType);
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ElementConfiguratorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
         public ElementConfiguratorMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
-            object value;
-            if (metadata.TryGetValue(NativeElementTypeKey, out value))
+            if (metadata == null)
             {
-                this.NativeElementType = (Type)value;
+                return;
             }
+
+            this.NativeElementType = (Type)metadata.TryGetValue(nameof(this.NativeElementType));
         }
 
         /// <summary>
@@ -45,6 +41,6 @@ namespace Kephas.Model.Configuration.Composition
         /// <value>
         /// The type of the element.
         /// </value>
-        public Type NativeElementType { get; private set; }
+        public Type NativeElementType { get; }
     }
 }

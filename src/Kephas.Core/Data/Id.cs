@@ -86,6 +86,7 @@ namespace Kephas.Data
             {
                 return isUnsetValueTester;
             }
+
             set
             {
                 if (value == null)

@@ -21,6 +21,7 @@ namespace Kephas.Application
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
+    using Kephas.Services.Behavior;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -142,19 +143,20 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task RunInitializersAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var orderedAppInitializerFactories = this.AppIntializerFactories
-                                          .OrderBy(i => i.Metadata.ProcessingPriority)
-                                          .Select(i => Tuple.Create(i.CreateExport().Value, i.Metadata))
+            var orderedAppInitializerExports = this.AppIntializerFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.CompositionContext)
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            foreach (var appInitializerFactory in orderedAppInitializerFactories)
+            foreach (var appInitializerFactory in orderedAppInitializerExports)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var appInitializer = appInitializerFactory.Item1;
-                var appInitializerMetadata = appInitializerFactory.Item2;
+                var appInitializer = appInitializerFactory.Value;
+                var appInitializerMetadata = appInitializerFactory.Metadata;
 
                 var appInitializerType = appInitializer.GetType();
                 var appInitializerIdentifier = $"AppInitializer '{appInitializerType}' (#{appInitializerMetadata.ProcessingPriority})";
@@ -175,7 +177,7 @@ namespace Kephas.Application
                     var initializerKind = appInitializerMetadata.OptionalService ? "optional" : "required";
                     this.Logger.Error(ex, $"{appInitializerIdentifier} ({initializerKind}) failed to initialize. See the inner exception for more details.");
                     // interrupt the bootstrapping if a required initializer failed to start.
-                    if (!appInitializerFactory.Item2.OptionalService)
+                    if (!appInitializerMetadata.OptionalService)
                     {
                         throw;
                     }

@@ -91,6 +91,7 @@ namespace Kephas
             {
                 return this.compositionContainer;
             }
+
             set
             {
                 Contract.Requires(value != null);
@@ -111,6 +112,7 @@ namespace Kephas
             {
                 return this.hostingEnvironment;
             }
+
             set
             {
                 Contract.Requires(value != null);
@@ -131,6 +133,7 @@ namespace Kephas
             {
                 return this.configurationManager;
             }
+
             set
             {
                 Contract.Requires(value != null);
@@ -151,6 +154,7 @@ namespace Kephas
             {
                 return this.logManager;
             }
+
             set
             {
                 Contract.Requires(value != null);

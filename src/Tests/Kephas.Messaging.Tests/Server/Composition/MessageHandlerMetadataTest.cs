@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Tests.Server.Composition
         [Test]
         public void MessageHandlerMetadata_metadata_valid()
         {
-            var metadata = new Dictionary<string, object> { { MessageHandlerMetadata.MessageTypeKey, typeof(string) } };
+            var metadata = new Dictionary<string, object> { { nameof(MessageHandlerMetadata.MessageType), typeof(string) } };
             var instance = new MessageHandlerMetadata(metadata);
             var messageType = instance.MessageType;
             Assert.AreEqual(messageType, typeof(string));
@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Tests.Server.Composition
         [Test]
         public void MessageHandlerMetadata_metadata_type_mismatch()
         {
-            var metadata = new Dictionary<string, object> { { MessageHandlerMetadata.MessageTypeKey, "hello" } };
+            var metadata = new Dictionary<string, object> { { nameof(MessageHandlerMetadata.MessageType), "hello" } };
             Assert.Throws<InvalidCastException>(() => new MessageHandlerMetadata(metadata));
         }
 

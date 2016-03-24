@@ -17,7 +17,6 @@ namespace Kephas.Services.Behavior
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true, 
-        AsOpenGeneric = true,
         MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
     public interface IEnabledServiceBehaviorRule<in TServiceContract> : IBehaviorRule<IServiceBehaviorContext<TServiceContract>, bool>
     {
