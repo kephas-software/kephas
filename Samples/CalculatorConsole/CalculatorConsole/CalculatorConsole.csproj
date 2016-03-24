@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\CalculatorApplication.cs" />
+    <Compile Include="Application\CalculatorAppManifest.cs" />
     <Compile Include="Application\CalculatorShell.cs" />
     <Compile Include="Calculator\Calculator.cs" />
     <Compile Include="Calculator\ICalculator.cs" />

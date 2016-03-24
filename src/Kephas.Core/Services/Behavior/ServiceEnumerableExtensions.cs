@@ -13,6 +13,7 @@ namespace Kephas.Services.Behavior
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Application;
     using Kephas.Composition;
 
     /// <summary>
@@ -25,11 +26,13 @@ namespace Kephas.Services.Behavior
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <param name="services">The services.</param>
-        /// <param name="compositionContext">The composition context where the behaviors for the services can be retrieved.</param>
+        /// <param name="compositionContext">The composition context where the behaviors for the services
+        ///                                  can be retrieved.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, ICompositionContext compositionContext)
+        public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, ICompositionContext compositionContext, IAppContext appContext = null)
         {
             Contract.Requires(services != null);
             Contract.Requires(compositionContext != null);

@@ -67,8 +67,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\ConsoleApplication.cs" />
+    <Compile Include="Application\ConsoleAppManifest.cs" />
     <Compile Include="Application\ConsoleShell.cs" />
+    <Compile Include="Initialization\GreenConsoleAppInitializer.cs" />
     <Compile Include="Initialization\YellowConsoleAppInitializer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

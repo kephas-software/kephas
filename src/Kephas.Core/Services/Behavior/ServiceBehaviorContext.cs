@@ -11,6 +11,8 @@ namespace Kephas.Services.Behavior
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Application;
+
     /// <summary>
     /// The default implementation of a service behavior context.
     /// </summary>
@@ -18,15 +20,26 @@ namespace Kephas.Services.Behavior
     public class ServiceBehaviorContext<TServiceContract> : ContextBase, IServiceBehaviorContext<TServiceContract>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" /> class.
+        /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
+        /// class.
         /// </summary>
         /// <param name="service">The service.</param>
-        public ServiceBehaviorContext(TServiceContract service)
+        /// <param name="appContext">Context for the application.</param>
+        public ServiceBehaviorContext(TServiceContract service, IAppContext appContext = null)
         {
             Contract.Requires(service != null);
 
             this.Service = service;
+            this.AppContext = appContext;
         }
+
+        /// <summary>
+        /// Gets the application context.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public IAppContext AppContext { get; }
 
         /// <summary>
         /// Gets or sets the service.
@@ -34,6 +47,6 @@ namespace Kephas.Services.Behavior
         /// <value>
         /// The service.
         /// </value>
-        public TServiceContract Service { get; set; }
+        public TServiceContract Service { get; }
     }
 }

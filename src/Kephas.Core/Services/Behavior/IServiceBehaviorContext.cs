@@ -14,6 +14,8 @@ namespace Kephas.Services.Behavior
     using System.Linq.Expressions;
     using System.Security.Principal;
 
+    using Kephas.Application;
+
     /// <summary>
     /// Interface for service behavior context.
     /// </summary>
@@ -21,13 +23,21 @@ namespace Kephas.Services.Behavior
     [ContractClass(typeof(ServiceBehaviorContextContractClass<>))]
     public interface IServiceBehaviorContext<out TServiceContract> : IContext
     {
-         /// <summary>
-         /// Gets the service.
-         /// </summary>
-         /// <value>
-         /// The service.
-         /// </value>
-         TServiceContract Service { get; }
+        /// <summary>
+        /// Gets the application context.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        IAppContext AppContext { get; }
+
+        /// <summary>
+        /// Gets the service.
+        /// </summary>
+        /// <value>
+        /// The service.
+        /// </value>
+        TServiceContract Service { get; }
     }
 
     /// <summary>
@@ -37,6 +47,14 @@ namespace Kephas.Services.Behavior
     [ContractClassFor(typeof(IServiceBehaviorContext<>))]
     internal abstract class ServiceBehaviorContextContractClass<TServiceContract> : IServiceBehaviorContext<TServiceContract>
     {
+        /// <summary>
+        /// Gets the application context.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public abstract IAppContext AppContext { get; }
+
         /// <summary>
         /// Gets the service.
         /// </summary>

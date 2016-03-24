@@ -35,11 +35,11 @@
                                 .WithNet45HostingEnvironment()
                                 .WithMefCompositionContainerAsync();
 
-                        var application = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IApplication>();
-                        await application.StartAsync(new AppContext());
+                        var appBootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
+                        await appBootstrapper.StartAsync(new AppContext());
                     });
 
-            var consoleApplication = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IApplication>();
+            var consoleApplication = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
             Console.WriteLine($"Application '{consoleApplication.AppId}' started. Elapsed: {elapsed:c}.");
 
             Console.WriteLine();

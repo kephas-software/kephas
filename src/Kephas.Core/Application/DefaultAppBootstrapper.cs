@@ -11,6 +11,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -31,11 +32,23 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppBootstrapper"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public DefaultAppBootstrapper(ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
+        public DefaultAppBootstrapper(ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
         {
+            Contract.Requires(compositionContext != null);
+
+            this.CompositionContext = compositionContext;
             this.AppIntializerFactories = appIntializerFactories ?? new List<IExportFactory<IAppInitializer, AppServiceMetadata>>();
         }
+
+        /// <summary>
+        /// Gets a context for the composition.
+        /// </summary>
+        /// <value>
+        /// The composition context.
+        /// </value>
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the logger.

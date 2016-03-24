@@ -32,18 +32,18 @@
                             .WithNet45HostingEnvironment()
                             .WithMefCompositionContainerAsync();
 
-                    var application = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IApplication>();
-                    await application.StartAsync(new AppContext());
+                    var appBootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
+                    await appBootstrapper.StartAsync(new AppContext());
                 });
 
-            var consoleApplication = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IApplication>();
-            Console.WriteLine($"Application '{consoleApplication.AppId}' started. Elapsed: {elapsed:c}.");
+            var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
+            Console.WriteLine($"Application '{appManifest.AppId}' started. Elapsed: {elapsed:c}.");
 
             Console.WriteLine();
 
             Console.WriteLine("Provide an operation in form of: term1 op term2. End the program with q instead of an operation.");
 
-            var calculator = ((CalculatorApplication)consoleApplication).Calculator;
+            var calculator = ((CalculatorAppManifest)appManifest).Calculator;
             while (true)
             {
                 var input = Console.ReadLine();
