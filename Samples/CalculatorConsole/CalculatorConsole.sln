@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorConsole", "CalculatorConsole\CalculatorConsole.csproj", "{49EB7C9A-BC81-4085-83FB-A4A40EE82098}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kephas", "Kephas", "{91927376-3355-4A3F-85C8-8FA2718C3893}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "..\..\src\Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef", "..\..\src\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.Net45", "..\..\src\Kephas.Hosting.Net45\Kephas.Hosting.Net45.csproj", "{C02B6804-DAB0-482B-B4C3-66CF8AF91256}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog", "..\..\src\Kephas.Logging.NLog\Kephas.Logging.NLog.csproj", "{8CB50297-39C4-45F5-9195-14A75D699710}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42523208-F30B-46C1-99FB-A1A1E079614C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42523208-F30B-46C1-99FB-A1A1E079614C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42523208-F30B-46C1-99FB-A1A1E079614C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42523208-F30B-46C1-99FB-A1A1E079614C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CB50297-39C4-45F5-9195-14A75D699710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CB50297-39C4-45F5-9195-14A75D699710}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42523208-F30B-46C1-99FB-A1A1E079614C} = {91927376-3355-4A3F-85C8-8FA2718C3893}
+		{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49} = {91927376-3355-4A3F-85C8-8FA2718C3893}
+		{C02B6804-DAB0-482B-B4C3-66CF8AF91256} = {91927376-3355-4A3F-85C8-8FA2718C3893}
+		{8CB50297-39C4-45F5-9195-14A75D699710} = {91927376-3355-4A3F-85C8-8FA2718C3893}
+	EndGlobalSection
+EndGlobal

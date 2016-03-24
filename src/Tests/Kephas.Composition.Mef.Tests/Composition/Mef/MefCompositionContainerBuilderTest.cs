@@ -180,6 +180,21 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        public void GetExports_AppService_IExportFactory_Success()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
+                .CreateContainer();
+
+            var export = (TestMultiAppServiceConsumer)container.GetExport<ITestMultiAppServiceConsumer>();
+
+            Assert.AreEqual(2, export.Factories.Count());
+            Assert.AreEqual(2, export.MetadataFactories.Count());
+        }
+
+        [Test]
         public void GetExport_AppService_generic_export()
         {
             var builder = this.CreateCompositionContainerBuilder();
@@ -320,6 +335,9 @@ namespace Kephas.Tests.Composition.Mef
         [SharedAppServiceContract(AllowMultiple = true)]
         public interface ITestMultiAppService { }
 
+        [SharedAppServiceContract]
+        public interface ITestMultiAppServiceConsumer { }
+
         public class TestAppService : ITestAppService { }
 
         [OverridePriority(Priority.High)]
@@ -328,6 +346,13 @@ namespace Kephas.Tests.Composition.Mef
         public class TestMultiAppService1 : ITestMultiAppService { }
 
         public class TestMultiAppService2 : ITestMultiAppService { }
+
+        public class TestMultiAppServiceConsumer : ITestMultiAppServiceConsumer
+        {
+            public IEnumerable<IExportFactory<ITestMultiAppService>> Factories { get; set; }
+
+            public IEnumerable<IExportFactory<ITestMultiAppService, AppServiceMetadata>> MetadataFactories { get; set; }
+        }
 
         public class TestMetadataConsumer
         {

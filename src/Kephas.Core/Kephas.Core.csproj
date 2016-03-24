@@ -133,6 +133,7 @@
     <EmbeddedResource Include="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -146,10 +147,12 @@
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="Application\AppBoostrapperExtensions.cs" />
     <Compile Include="Application\AppContext.cs" />
+    <Compile Include="Application\ApplicationBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
     <Compile Include="Application\IAppBootstrapper.cs" />
     <Compile Include="Application\IAppContext.cs" />
     <Compile Include="Application\IAppInitializer.cs" />
+    <Compile Include="Application\IApplication.cs" />
     <Compile Include="Behavior\AsyncBehaviorRuleBase.cs" />
     <Compile Include="Behavior\BehaviorRuleBase.cs" />
     <Compile Include="Behavior\BehaviorRuleFlowControlBase.cs" />

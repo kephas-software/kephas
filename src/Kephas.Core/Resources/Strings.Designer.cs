@@ -89,6 +89,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application start procedure was canceled, at {0:s}..
+        /// </summary>
+        internal static string Application_StartCanceled_Exception {
+            get {
+                return ResourceManager.GetString("Application_StartCanceled_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application encountered an exception while starting, at {0:s}..
+        /// </summary>
+        internal static string Application_StartFaulted_Exception {
+            get {
+                return ResourceManager.GetString("Application_StartFaulted_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
         /// </summary>
         internal static string AppServiceCompositionContractTypeDoesNotMatchServiceContract {

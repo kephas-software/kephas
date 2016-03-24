@@ -13,7 +13,6 @@ namespace Kephas.Services
 
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Metadata for application services.
@@ -23,17 +22,17 @@ namespace Kephas.Services
         /// <summary>
         /// The processing priority metadata key.
         /// </summary>
-        public static readonly string ProcessingPriorityKey = ReflectionHelper.GetPropertyName<AppServiceMetadata>(m => m.ProcessingPriority);
+        public static readonly string ProcessingPriorityKey = nameof(ProcessingPriority);
 
         /// <summary>
         /// The override priority metadata key.
         /// </summary>
-        public static readonly string OverridePriorityKey = ReflectionHelper.GetPropertyName<AppServiceMetadata>(m => m.OverridePriority);
+        public static readonly string OverridePriorityKey = nameof(OverridePriority);
 
         /// <summary>
         /// The processing priority metadata key.
         /// </summary>
-        public static readonly string OptionalServiceKey = ReflectionHelper.GetPropertyName<AppServiceMetadata>(m => m.OptionalService);
+        public static readonly string OptionalServiceKey = nameof(OptionalService);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
@@ -47,9 +46,9 @@ namespace Kephas.Services
                 return;
             }
 
-            this.ProcessingPriority = (int)metadata.TryGetValue(ProcessingPriorityKey, 0);
-            this.OverridePriority = (int)metadata.TryGetValue(OverridePriorityKey, 0);
-            this.OptionalService = (bool)metadata.TryGetValue(OptionalServiceKey, false);
+            this.ProcessingPriority = (int)(metadata.TryGetValue(ProcessingPriorityKey, 0) ?? 0);
+            this.OverridePriority = (int)(metadata.TryGetValue(OverridePriorityKey, 0) ?? 0);
+            this.OptionalService = (bool)(metadata.TryGetValue(OptionalServiceKey, false) ?? false);
         }
 
         /// <summary>

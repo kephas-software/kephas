@@ -127,6 +127,11 @@ namespace Kephas.Composition.Mef.Hosting
                 containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
             }
 
+            // add the default export descriptor providers.
+            containerConfiguration
+                .WithProvider(new ExportFactoryExportDescriptorProvider())
+                .WithProvider(new ExportFactoryWithMetadataExportDescriptorProvider());
+
             return new MefCompositionContainer(containerConfiguration);
         }
 
