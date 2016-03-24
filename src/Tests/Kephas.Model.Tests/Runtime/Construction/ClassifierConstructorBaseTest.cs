@@ -20,8 +20,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     using NUnit.Framework;
 
-    using Telerik.JustMock;
-
     [TestFixture]
     public class ClassifierConstructorBaseTest : ConstructorTestBase
     {

@@ -33,6 +33,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Kephas.Composition.Mef, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.0.0-rc5\lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\Kephas.Composition.Mef.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kephas.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Core.3.0.0-rc5\lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\Kephas.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kephas.Hosting.Net45, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Hosting.Net45.3.0.0-rc5\lib\net45\Kephas.Hosting.Net45.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kephas.Logging.NLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.0.0-rc5\lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\Kephas.Logging.NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -81,24 +97,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
-      <Project>{32fa6130-ddf0-4d2f-8057-a38ef9ed3d49}</Project>
-      <Name>Kephas.Composition.Mef</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Kephas.Core\Kephas.Core.csproj">
-      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
-      <Name>Kephas.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Kephas.Hosting.Net45\Kephas.Hosting.Net45.csproj">
-      <Project>{c02b6804-dab0-482b-b4c3-66cf8af91256}</Project>
-      <Name>Kephas.Hosting.Net45</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Kephas.Logging.NLog\Kephas.Logging.NLog.csproj">
-      <Project>{8cb50297-39c4-45f5-9195-14a75d699710}</Project>
-      <Name>Kephas.Logging.NLog</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

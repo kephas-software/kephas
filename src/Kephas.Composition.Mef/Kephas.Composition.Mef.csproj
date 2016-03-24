@@ -207,13 +207,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
-copy /Y $(ProjectDir)$(OutDir)$(ProjectName).xml $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
-copy /Y $(ProjectDir)$(OutDir)$(ProjectName).pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\
-mkdir $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
-copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.dll $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
-copy /Y $(ProjectDir)$(OutDir)CodeContracts\$(ProjectName).Contracts.pdb $(SolutionDir)NuGetPackagers\$(ProjectName).NuGet.Packager\lib\CodeContracts\
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

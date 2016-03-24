@@ -66,7 +66,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
         public IExportFactory<T, TMetadata> CreateExportFactory<T, TMetadata>(T service, TMetadata metadata)
         {
-            var export = Mock.Create<IExport<T>>();
+            var export = Mock.Create<IExport<T, TMetadata>>();
             export.Arrange(ex => ex.Value).Returns(service);
 
             var exportFactory = Mock.Create<IExportFactory<T, TMetadata>>();

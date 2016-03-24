@@ -22,6 +22,7 @@ namespace Kephas.Core.Tests.Serialization
     using NUnit.Framework;
 
     using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Tests for <see cref="DefaultSerializationService"/>
@@ -75,17 +76,15 @@ namespace Kephas.Core.Tests.Serialization
             ISerializer serializer = null,
             Priority overridePriority = Priority.Normal)
         {
+            var metadata = new SerializerMetadata(formatType, overridePriority: (int)overridePriority);
             serializer = serializer ?? Mock.Create<ISerializer>();
-            var export = Mock.Create<IExport<ISerializer>>();
-            Mock.Arrange(export, e => e.Value)
-                .Returns(serializer);
+            var export = Mock.Create<IExport<ISerializer, SerializerMetadata>>();
+            export.Arrange(e => e.Value).Returns(serializer);
+            export.Arrange(e => e.Metadata).Returns(metadata);
 
             var factory = Mock.Create<IExportFactory<ISerializer, SerializerMetadata>>();
-            Mock.Arrange(factory, f => f.Metadata)
-                .Returns(new SerializerMetadata(formatType, overridePriority: (int)overridePriority));
-
-            Mock.Arrange(factory, f => f.CreateExport())
-                .Returns(export);
+            factory.Arrange(f => f.Metadata).Returns(metadata);
+            factory.Arrange(f => f.CreateExport()).Returns(export);
 
             return factory;
         }
