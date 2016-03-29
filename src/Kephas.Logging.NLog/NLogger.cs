@@ -19,11 +19,6 @@ namespace Kephas.Logging.NLog
     internal class NLogger : Logging.ILogger
     {
         /// <summary>
-        /// The no arguments constant.
-        /// </summary>
-        private static readonly object[] NoArgs = new object[0];
-
-        /// <summary>
         /// The NLog logger.
         /// </summary>
         private readonly Logger logger;

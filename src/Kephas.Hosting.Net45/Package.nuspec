@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Hosting.Net45</id>
-    <version>3.0.0-rc5</version>
+    <version>3.0.0-rc6</version>
     <title>Kephas.Hosting.Net45</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0-rc5" />
+      <dependency id="Kephas.Core" version="3.0.0" />
     </dependencies>
     <references>
       <reference file="Kephas.Hosting.Net45.dll" />
@@ -32,7 +32,7 @@
       <file src="bin\debug\Kephas.Hosting.Net45.dll" target="lib\net45" />
       <file src="bin\debug\Kephas.Hosting.Net45.pdb" target="lib\net45" />
       <file src="bin\debug\Kephas.Hosting.Net45.xml" target="lib\net45" />
-      <file src="bin\debug\CodeContracts\Kephas.Hosting.Net45.Contracts.dll" target="lib\net45" />
-      <file src="bin\debug\CodeContracts\Kephas.Hosting.Net45.Contracts.pdb" target="lib\net45" />
+      <file src="bin\debug\CodeContracts\Kephas.Hosting.Net45.Contracts.dll" target="lib\net45\CodeContracts" />
+      <file src="bin\debug\CodeContracts\Kephas.Hosting.Net45.Contracts.pdb" target="lib\net45\CodeContracts" />
   </files>
 </package>

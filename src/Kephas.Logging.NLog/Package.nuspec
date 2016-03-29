@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Logging.NLog</id>
-    <version>3.0.0-rc5</version>
+    <version>3.0.0</version>
     <title>Kephas.Logging.NLog</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0-rc5" />
+      <dependency id="Kephas.Core" version="3.0.0" />
       <dependency id="NLog" version="4.0.0" />
     </dependencies>
     <references>
@@ -30,10 +30,10 @@
     <tags>kephas framework logging nlog quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
+    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
+    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net45\CodeContracts" />
   </files>
 </package>

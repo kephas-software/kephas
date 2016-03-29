@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calculator", "Calculator", "{37EDA61C-1DB4-4338-9877-8C2404ECFB89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorConsole", "CalculatorConsole\CalculatorConsole\CalculatorConsole.csproj", "{49EB7C9A-BC81-4085-83FB-A4A40EE82098}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Startup", "Startup", "{C15F2D0E-BD12-4185-A021-F630094651B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupConsole", "StartupConsole\StartupConsole\StartupConsole.csproj", "{2B15F402-2704-4121-97E5-59B143936214}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B15F402-2704-4121-97E5-59B143936214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B15F402-2704-4121-97E5-59B143936214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B15F402-2704-4121-97E5-59B143936214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B15F402-2704-4121-97E5-59B143936214}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37EDA61C-1DB4-4338-9877-8C2404ECFB89} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
+		{49EB7C9A-BC81-4085-83FB-A4A40EE82098} = {37EDA61C-1DB4-4338-9877-8C2404ECFB89}
+		{C15F2D0E-BD12-4185-A021-F630094651B0} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
+		{2B15F402-2704-4121-97E5-59B143936214} = {C15F2D0E-BD12-4185-A021-F630094651B0}
+	EndGlobalSection
+EndGlobal

@@ -14,6 +14,8 @@ namespace Kephas.Serialization.Json.Tests
 
     using NUnit.Framework;
 
+    using Kephas.Serialization.Json;
+
     /// <summary>
     /// Tests for <see cref="JsonSerializer"/>.
     /// </summary>

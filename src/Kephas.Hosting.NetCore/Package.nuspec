@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Hosting.NetCore</id>
-    <version>3.0.0-rc5</version>
+    <version>3.0.0-rc6</version>
     <title>Kephas.Hosting.NetCore</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0-rc5" />
+      <dependency id="Kephas.Core" version="3.0.0" />
     </dependencies>
     <references>
       <reference file="Kephas.Hosting.NetCore.dll" />
@@ -30,9 +30,9 @@
   </metadata>
   <files>
     <file src="bin\debug\Kephas.Hosting.NetCore.dll" target="lib\portable-dnxcore50" />
-    <file src="bin\debug\Kephas.Hosting.NetCore.pdb" target="lib\portable-dnxcore" />
-    <file src="bin\debug\Kephas.Hosting.NetCore.xml" target="lib\portable-dnxcore" />
-    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.dll" target="lib\portable-dnxcore\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.pdb" target="lib\portable-dnxcore\CodeContracts" />
+    <file src="bin\debug\Kephas.Hosting.NetCore.pdb" target="lib\portable-dnxcore50" />
+    <file src="bin\debug\Kephas.Hosting.NetCore.xml" target="lib\portable-dnxcore50" />
+    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.dll" target="lib\portable-dnxcore50\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.pdb" target="lib\portable-dnxcore50\CodeContracts" />
   </files>
 </package>

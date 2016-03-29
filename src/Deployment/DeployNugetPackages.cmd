@@ -1,5 +1,6 @@
 nuget pack ..\Kephas.Core\Package.nuspec -BasePath ..\Kephas.Core -Symbols
 nuget pack ..\Kephas.Logging.NLog\Package.nuspec -BasePath ..\Kephas.Logging.NLog -Symbols
+nuget pack ..\Kephas.Logging.Log4Net\Package.nuspec -BasePath ..\Kephas.Logging.Log4Net -Symbols
 nuget pack ..\Kephas.Composition.Mef\Package.nuspec -BasePath ..\Kephas.Composition.Mef -Symbols
 nuget pack ..\Kephas.Messaging\Package.nuspec -BasePath ..\Kephas.Messaging -Symbols
 nuget pack ..\Kephas.Model\Package.nuspec -BasePath ..\Kephas.Model -Symbols

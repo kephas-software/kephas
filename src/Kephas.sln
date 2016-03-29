@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 		Deployment\DeployNugetPackages.cmd = Deployment\DeployNugetPackages.cmd
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
