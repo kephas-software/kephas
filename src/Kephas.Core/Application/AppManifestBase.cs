@@ -50,13 +50,12 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appId">The identifier of the application.</param>
         /// <param name="appVersion">The application version.</param>
-        protected AppManifestBase(string appId, Version appVersion)
+        protected AppManifestBase(string appId, Version appVersion = null)
             : base(isThreadSafe: true)
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(appVersion != null);
 
-            this.Initialize(appId, appVersion);
+            this.Initialize(appId, appVersion ?? VersionZero);
         }
 
         /// <summary>

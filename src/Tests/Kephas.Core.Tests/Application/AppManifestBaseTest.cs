@@ -38,6 +38,14 @@
             Assert.AreEqual(new Version("2.3.4"), appManifest.AppVersion);
         }
 
+        [Test]
+        public void AppManifestBase_AppId_success()
+        {
+            var appManifest = new AppIdAndVersionManifest("hello");
+            Assert.AreEqual("hello", appManifest.AppId);
+            Assert.AreEqual(new Version("0.0.0.0"), appManifest.AppVersion);
+        }
+
         private class EmptyAppManifest : AppManifestBase { }
 
         private class AssemblyAppManifest : AppManifestBase
@@ -50,7 +58,7 @@
 
         private class AppIdAndVersionManifest : AppManifestBase
         {
-            public AppIdAndVersionManifest(string appId, Version appVersion)
+            public AppIdAndVersionManifest(string appId, Version appVersion = null)
                 : base(appId, appVersion)
             {
             }
