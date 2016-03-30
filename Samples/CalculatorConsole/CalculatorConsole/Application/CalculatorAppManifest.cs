@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="calculator">The calculator.</param>
         public CalculatorAppManifest(ICalculator calculator)
-            : base("calculator")
+            : base("demo-calculator")
         {
             this.Calculator = calculator;
         }

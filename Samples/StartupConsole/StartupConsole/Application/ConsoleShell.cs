@@ -39,8 +39,9 @@
                         await appBootstrapper.StartAsync(new AppContext());
                     });
 
-            var consoleApplication = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
-            Console.WriteLine($"Application '{consoleApplication.AppId}' started. Elapsed: {elapsed:c}.");
+            var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
+            Console.WriteLine();
+            Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started. Elapsed: {elapsed:c}.");
 
             Console.WriteLine();
             Console.WriteLine("Press any key to end the program.");

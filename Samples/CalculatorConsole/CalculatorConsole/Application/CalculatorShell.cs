@@ -21,7 +21,7 @@
         /// </returns>
         public async Task StartAppAsync()
         {
-            Console.WriteLine("Application starting...");
+            Console.WriteLine("Application initializing...");
 
             var ambientServicesBuilder = new AmbientServicesBuilder();
             var elapsed = await Profiler.WithStopwatchAsync(
@@ -32,15 +32,16 @@
                             .WithNet45HostingEnvironment()
                             .WithMefCompositionContainerAsync();
 
-                    var appBootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
+                    var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
+                    var appBootstrapper = compositionContainer.GetExport<IAppBootstrapper>();
                     await appBootstrapper.StartAsync(new AppContext());
                 });
 
             var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
-            Console.WriteLine($"Application '{appManifest.AppId}' started. Elapsed: {elapsed:c}.");
+            Console.WriteLine();
+            Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started. Elapsed: {elapsed:c}.");
 
             Console.WriteLine();
-
             Console.WriteLine("Provide an operation in form of: term1 op term2. End the program with q instead of an operation.");
 
             var calculator = ((CalculatorAppManifest)appManifest).Calculator;
