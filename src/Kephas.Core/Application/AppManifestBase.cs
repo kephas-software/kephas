@@ -27,11 +27,16 @@ namespace Kephas.Application
         protected static readonly Version VersionZero = new Version("0.0.0.0");
 
         /// <summary>
+        /// The application assembly.
+        /// </summary>
+        private Assembly appAssembly;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AppManifestBase"/> class.
         /// </summary>
         protected AppManifestBase()
         {
-            this.Initialize(this.GetDynamicTypeInfo().TypeInfo.Assembly);
+            this.Initialize(this.AppAssembly);
         }
 
         /// <summary>
@@ -42,6 +47,7 @@ namespace Kephas.Application
         {
             Contract.Requires(appAssembly != null);
 
+            this.appAssembly = appAssembly;
             this.Initialize(appAssembly);
         }
 
@@ -55,7 +61,7 @@ namespace Kephas.Application
         {
             Contract.Requires(!string.IsNullOrEmpty(appId));
 
-            this.Initialize(appId, appVersion ?? VersionZero);
+            this.Initialize(appId, appVersion);
         }
 
         /// <summary>
@@ -75,20 +81,69 @@ namespace Kephas.Application
         public Version AppVersion { get; private set; }
 
         /// <summary>
+        /// Gets the application assembly.
+        /// </summary>
+        public Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetDynamicTypeInfo().TypeInfo.Assembly);
+
+        /// <summary>
         /// Initializes the application manifest from the <see cref="AppManifestAttribute"/> set in the provided application assembly.
         /// </summary>
         protected virtual void Initialize(Assembly appAssembly)
         {
             Contract.Requires(appAssembly != null);
 
+            this.Initialize(this.GetAppId(appAssembly), this.GetAppVersion(appAssembly), appAssembly);
+        }
+
+        /// <summary>
+        /// Initializes the application manifest with the provided application ID and version.
+        /// </summary>
+        /// <param name="appId">The identifier of the application.</param>
+        /// <param name="appVersion">The application version.</param>
+        /// <param name="appAssembly">The application assembly containing the
+        ///                           <see cref="AppManifestAttribute"/>.</param>
+        protected virtual void Initialize(string appId, Version appVersion = null, Assembly appAssembly = null)
+        {
+            Contract.Requires(!string.IsNullOrEmpty(appId));
+
+            this.AppId = appId;
+            this.AppVersion = appVersion ?? this.GetAppVersion(appAssembly ?? this.AppAssembly);
+        }
+
+        /// <summary>
+        /// Gets the application identifier.
+        /// </summary>
+        /// <param name="appAssembly">The application assembly containing the
+        ///                           <see cref="AppManifestAttribute"/>.</param>
+        /// <returns>
+        /// The application identifier.
+        /// </returns>
+        private string GetAppId(Assembly appAssembly)
+        {
             var appManifestAttribute = appAssembly.GetCustomAttribute<AppManifestAttribute>();
             if (appManifestAttribute == null)
             {
-                throw new InvalidOperationException(string.Format(Strings.AppManifestBase_MissingAppManifestAttribute_Exception, appAssembly.FullName));
+                throw new InvalidOperationException(
+                    string.Format(Strings.AppManifestBase_MissingAppManifestAttribute_Exception, appAssembly.FullName));
             }
 
+            return appManifestAttribute.AppId;
+        }
+
+        /// <summary>
+        /// Gets the application version from the assembly.
+        /// </summary>
+        /// <param name="appAssembly">The application assembly containing the
+        ///                           <see cref="AppManifestAttribute"/>.</param>
+        /// <returns>
+        /// The application version.
+        /// </returns>
+        private Version GetAppVersion(Assembly appAssembly)
+        {
+            var appManifestAttribute = appAssembly.GetCustomAttribute<AppManifestAttribute>();
+            var version = appManifestAttribute?.AppVersion;
+
             Version appVersion;
-            var version = appManifestAttribute.AppVersion;
             if (!Version.TryParse(version, out appVersion))
             {
                 version = appAssembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
@@ -101,21 +156,7 @@ namespace Kephas.Application
                 }
             }
 
-            this.Initialize(appManifestAttribute.AppId, appVersion);
-        }
-
-        /// <summary>
-        /// Initializes the application manifest with the provided application ID and version.
-        /// </summary>
-        /// <param name="appId">The identifier of the application.</param>
-        /// <param name="appVersion">The application version.</param>
-        protected virtual void Initialize(string appId, Version appVersion)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
-            Contract.Requires(appVersion != null);
-
-            this.AppId = appId;
-            this.AppVersion = appVersion;
+            return appVersion;
         }
     }
 }

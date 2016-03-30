@@ -43,7 +43,9 @@
         {
             var appManifest = new AppIdAndVersionManifest("hello");
             Assert.AreEqual("hello", appManifest.AppId);
-            Assert.AreEqual(new Version("0.0.0.0"), appManifest.AppVersion);
+
+            var appVersion = typeof(AppManifestBaseTest).Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+            Assert.AreEqual(new Version(appVersion), appManifest.AppVersion);
         }
 
         private class EmptyAppManifest : AppManifestBase { }
