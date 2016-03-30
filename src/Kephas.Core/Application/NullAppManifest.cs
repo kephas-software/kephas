@@ -12,7 +12,7 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// The Null application manifest.
+    /// An application manifest returning the "null" ID and version 0.0.0.0.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
     public class NullAppManifest : AppManifestBase
@@ -21,7 +21,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="NullAppManifest"/> class.
         /// </summary>
         public NullAppManifest()
-            : base("null-app")
+            : base("null", VersionZero)
         {
         }
     }

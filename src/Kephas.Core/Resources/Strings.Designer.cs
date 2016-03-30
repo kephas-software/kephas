@@ -107,6 +107,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided &apos;{0}&apos; assembly is missing the AppManifestAttribute..
+        /// </summary>
+        internal static string AppManifestBase_MissingAppManifestAttribute_Exception {
+            get {
+                return ResourceManager.GetString("AppManifestBase_MissingAppManifestAttribute_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
         /// </summary>
         internal static string AppServiceCompositionContractTypeDoesNotMatchServiceContract {

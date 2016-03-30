@@ -56,6 +56,8 @@
     <Compile Include="Activation\ActivatorBaseTest.cs" />
     <Compile Include="AmbientServicesBuilderTest.cs" />
     <Compile Include="AmbientServicesTest.cs" />
+    <Compile Include="Application\AppManifestBaseTest.cs" />
+    <Compile Include="Application\NullAppManifestTest.cs" />
     <Compile Include="Behavior\BehaviorRuleFlowControlBaseTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
     <Compile Include="Data\IdTest.cs" />

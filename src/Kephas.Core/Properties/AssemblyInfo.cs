@@ -7,8 +7,12 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+using Kephas.Application;
+
 [assembly: AssemblyTitle("Kephas.Core")]
 [assembly: AssemblyDescription("Kephas Framework: core artifacts")]
+
+[assembly: AppManifest(appId: "kephas", appVersion: "3.0")]
 
 [assembly: InternalsVisibleTo("Kephas.Core.Tests, PublicKey=" +
 "0024000004800000940000000602000000240000525341310004000001000100fdab739edd4ea5" +

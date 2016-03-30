@@ -175,7 +175,7 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClassWithConstructor));
             var instance = dynamicTypeInfo.CreateInstance(3);
-            Assert.IsInstanceOf<TestClass>(instance);
+            Assert.IsInstanceOf<TestClassWithConstructor>(instance);
         }
 
         [Test]

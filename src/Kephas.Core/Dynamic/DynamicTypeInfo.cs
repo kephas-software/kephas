@@ -309,7 +309,7 @@ namespace Kephas.Dynamic
                 return Activator.CreateInstance(this.Type);
             }
 
-            return Activator.CreateInstance(this.Type, args);
+            return Activator.CreateInstance(this.Type, args.ToArray());
         }
 
         /// <summary>

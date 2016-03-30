@@ -147,13 +147,14 @@
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="Application\AppBoostrapperExtensions.cs" />
     <Compile Include="Application\AppContext.cs" />
+    <Compile Include="Application\AppManifestAttribute.cs" />
     <Compile Include="Application\AppManifestBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
+    <Compile Include="Application\NullAppManifest.cs" />
     <Compile Include="Application\IAppBootstrapper.cs" />
     <Compile Include="Application\IAppContext.cs" />
     <Compile Include="Application\IAppInitializer.cs" />
     <Compile Include="Application\IAppManifest.cs" />
-    <Compile Include="Application\NullAppManifest.cs" />
     <Compile Include="Behavior\AsyncBehaviorRuleBase.cs" />
     <Compile Include="Behavior\BehaviorRuleBase.cs" />
     <Compile Include="Behavior\BehaviorRuleFlowControlBase.cs" />
