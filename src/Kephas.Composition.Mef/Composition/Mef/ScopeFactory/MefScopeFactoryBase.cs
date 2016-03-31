@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefScopeProvider.cs" company="Quartz Software SRL">
+// <copyright file="MefScopeFactoryBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef.Internals
+namespace Kephas.Composition.Mef.ScopeFactory
 {
     using System.Composition;
     using System.Diagnostics.Contracts;
@@ -15,16 +15,15 @@ namespace Kephas.Composition.Mef.Internals
     /// <summary>
     /// A MEF scope provider.
     /// </summary>
-    public class MefScopeProvider
+    public abstract class MefScopeFactoryBase : IMefScopeFactory
     {
         private readonly ExportFactory<CompositionContext> scopedContextFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MefScopeProvider"/> class.
+        /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
         /// </summary>
         /// <param name="scopedContextFactory">The scoped context factory.</param>
-        [ImportingConstructor]
-        public MefScopeProvider([SharingBoundary(SharingBoundaries.Scope)] ExportFactory<CompositionContext> scopedContextFactory)
+        protected MefScopeFactoryBase(ExportFactory<CompositionContext> scopedContextFactory)
         {
             Contract.Requires(scopedContextFactory != null);
 
@@ -37,7 +36,7 @@ namespace Kephas.Composition.Mef.Internals
         /// <returns>
         /// The new scoped context export.
         /// </returns>
-        internal Export<CompositionContext> CreateScopedContextExport()
+        public virtual Export<CompositionContext> CreateScopedContextExport()
         {
             return this.scopedContextFactory.CreateExport();
         }

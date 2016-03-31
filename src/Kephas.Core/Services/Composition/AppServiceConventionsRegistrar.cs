@@ -90,7 +90,8 @@ namespace Kephas.Services.Composition
                 }
                 else if (serviceContractMetadata.IsScopeShared)
                 {
-                    partBuilder.ScopeShared();
+                    var scopeName = ((ScopeSharedAppServiceContractAttribute)serviceContractMetadata).ScopeName;
+                    partBuilder.ScopeShared(scopeName);
                 }
             }
         }
@@ -332,7 +333,7 @@ namespace Kephas.Services.Composition
             {
                 var attrType = attributeType;
                 builder.AddMetadata(
-                    this.GetMetadataNameFromAttributeType(attributeType),
+                    this.GetMetadataNameFromAttributeType(attrType),
                     t => this.GetMetadataValueFromAttribute(t, attrType));
             }
         }

@@ -1,22 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SharingBoundaries.cs" company="Quartz Software SRL">
+// <copyright file="ScopeNames.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the sharing boundaries class.
+//   Implements the scope names class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Mef
+namespace Kephas.Composition
 {
     /// <summary>
-    /// Provides the sharing boundaries.
+    /// Provides the built-in scope names.
     /// </summary>
-    public static class SharingBoundaries
+    public static class ScopeNames
     {
         /// <summary>
-        /// The scope sharing boundary.
+        /// The default scope name.
         /// </summary>
-        public const string Scope = "Scope";
+        public const string Default = "default";
     }
 }

@@ -80,6 +80,15 @@ namespace Kephas.Composition.Mef.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided &apos;{0}&apos; does not provide a scope name. Please annotate the type with [SharingBoundaryScope(&lt;scope name&gt;)] attribute..
+        /// </summary>
+        internal static string MefCompositionContainerBuilder_MissingScopeName_Exception {
+            get {
+                return ResourceManager.GetString("MefCompositionContainerBuilder_MissingScopeName_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor..
         /// </summary>
         internal static string MetadataViewProvider_InvalidViewImplementation {

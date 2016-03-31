@@ -29,8 +29,11 @@ namespace Kephas.Composition.Conventions
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        IPartConventionsBuilder ScopeShared();
+        /// <param name="scopeName">Name of the scope.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default);
 
         /// <summary>
         /// Exports the part using the specified conventions builder.
@@ -86,9 +89,13 @@ namespace Kephas.Composition.Conventions
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder ScopeShared()
+        /// <param name="scopeName">Name of the scope.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
         {
+            Contract.Requires(!string.IsNullOrEmpty(scopeName));
             Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
             throw new NotSupportedException();
         }

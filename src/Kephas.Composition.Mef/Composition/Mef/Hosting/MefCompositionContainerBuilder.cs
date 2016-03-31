@@ -20,8 +20,9 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.ExportProviders;
-    using Kephas.Composition.Mef.Internals;
     using Kephas.Composition.Mef.Resources;
+    using Kephas.Composition.Mef.ScopeFactory;
+    using Kephas.Composition.Metadata;
     using Kephas.Configuration;
     using Kephas.Hosting;
     using Kephas.Logging;
@@ -34,6 +35,11 @@ namespace Kephas.Composition.Mef.Hosting
     /// </remarks>
     public class MefCompositionContainerBuilder : CompositionContainerBuilderBase<MefCompositionContainerBuilder>
     {
+        /// <summary>
+        /// The scope factories.
+        /// </summary>
+        private readonly ICollection<Type> scopeFactories = new HashSet<Type>();
+
         /// <summary>
         /// The container configuration.
         /// </summary>
@@ -82,6 +88,62 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
+        /// Registers the scope factory <typeparamref name="TFactory"/>.
+        /// </summary>
+        /// <typeparam name="TFactory">Type of the factory.</typeparam>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public MefCompositionContainerBuilder WithScopeFactory<TFactory>() 
+            where TFactory : IMefScopeFactory
+        {
+            this.scopeFactories.Add(typeof(TFactory));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the scope factory.
+        /// </summary>
+        /// <typeparam name="TFactory">Type of the factory.</typeparam>
+        /// <param name="conventions">The conventions.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        protected MefCompositionContainerBuilder RegisterScopeFactory<TFactory>(IConventionsBuilder conventions)
+            where TFactory : IMefScopeFactory
+        {
+            return this.RegisterScopeFactory(conventions, typeof(TFactory));
+        }
+
+        /// <summary>
+        /// Registers the scope factory.
+        /// </summary>
+        /// <param name="conventions">The conventions.</param>
+        /// <param name="factoryType">Type of the factory.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        protected MefCompositionContainerBuilder RegisterScopeFactory(IConventionsBuilder conventions, Type factoryType)
+        {
+            var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
+
+            var scopeName = factoryType.ExtractMetadataValue<SharingBoundaryScopeAttribute, string>(a => a.Value);
+            if (string.IsNullOrEmpty(scopeName))
+            {
+                throw new InvalidOperationException(string.Format(Strings.MefCompositionContainerBuilder_MissingScopeName_Exception, factoryType.FullName));
+            }
+
+            mefConventions
+                .ForType(factoryType)
+                .Export(b => b.AsContractType<IMefScopeFactory>()
+                              .AsContractName(scopeName))
+                .Shared();
+
+            return this;
+        }
+
+        /// <summary>
         /// Creates a new factory provider.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
@@ -115,12 +177,16 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
+            this.RegisterScopeFactoryConventions(conventions);
+
             var containerConfiguration = this.configuration ?? new ContainerConfiguration();
             var conventionBuilder = this.GetConventionBuilder(conventions);
 
             containerConfiguration
                 .WithDefaultConventions(conventionBuilder)
                 .WithParts(parts);
+
+            this.RegisterScopeFactoryParts(containerConfiguration);
 
             foreach (var provider in this.ExportProviders.Values)
             {
@@ -145,11 +211,29 @@ namespace Kephas.Composition.Mef.Hosting
         protected virtual ConventionBuilder GetConventionBuilder(IConventionsBuilder conventions)
         {
             var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
-            mefConventions
-                .ForType<MefScopeProvider>()
-                .Export(b => b.AsContractType<MefScopeProvider>())
-                .Shared();
             return mefConventions;
+        }
+
+        /// <summary>
+        /// Registers the scope factories into the conventions.
+        /// </summary>
+        /// <param name="conventions">The conventions.</param>
+        private void RegisterScopeFactoryConventions(IConventionsBuilder conventions)
+        {
+            this.scopeFactories.Add(typeof(DefaultMefScopeFactory));
+            foreach (var scopeFactory in this.scopeFactories)
+            {
+                this.RegisterScopeFactory(conventions, scopeFactory);
+            }
+        }
+
+        /// <summary>
+        /// Registers the scope factory parts into the container configuration.
+        /// </summary>
+        /// <param name="containerConfiguration">The container configuration.</param>
+        private void RegisterScopeFactoryParts(ContainerConfiguration containerConfiguration)
+        {
+            containerConfiguration.WithParts(this.scopeFactories);
         }
     }
 }

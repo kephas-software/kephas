@@ -51,10 +51,13 @@ namespace Kephas.Composition.Mef.Conventions
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder ScopeShared()
+        /// <param name="scopeName">Name of the scope.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
         {
-            this.innerConventionBuilder.Shared(SharingBoundaries.Scope);
+            this.innerConventionBuilder.Shared(scopeName);
             return this;
         }
 

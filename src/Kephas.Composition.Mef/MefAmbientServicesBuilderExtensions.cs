@@ -14,6 +14,7 @@ namespace Kephas
     using System.Threading.Tasks;
 
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// MEF extensions for the ambient services builder.
@@ -26,7 +27,7 @@ namespace Kephas
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig)
+        public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
             Contract.Requires(containerBuilderConfig != null);
@@ -36,7 +37,7 @@ namespace Kephas
                 ambientServicesBuilder.AmbientServices.ConfigurationManager,
                 ambientServicesBuilder.AmbientServices.HostingEnvironment);
 
-            containerBuilderConfig(containerBuilder);
+            containerBuilderConfig?.Invoke(containerBuilder);
 
             return ambientServicesBuilder.WithCompositionContainer(containerBuilder.CreateContainer());
         }
@@ -58,7 +59,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            return ambientServicesBuilder.WithCompositionContainer(await containerBuilder.CreateContainerAsync());
+            return ambientServicesBuilder.WithCompositionContainer(await containerBuilder.CreateContainerAsync().WithServerThreadingContext());
         }
     }
 }

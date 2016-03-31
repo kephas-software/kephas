@@ -196,8 +196,9 @@ namespace Kephas.Core.Tests.Composition
             /// <summary>
             /// Mark the part as being shared within the scope.
             /// </summary>
+            /// <param name="scopeName"></param>
             /// <returns>A part builder allowing further configuration of the part.</returns>
-            public IPartConventionsBuilder ScopeShared()
+            public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
             {
                 // TODO test this
                 throw new NotImplementedException();

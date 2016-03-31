@@ -20,6 +20,7 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Configuration;
     using Kephas.Hosting;
     using Kephas.Logging;
@@ -246,6 +247,33 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        public void GetExport_ScopeSharedAppService_myscope_export()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
+                .WithScopeFactory<MyScopeFactory>()
+                .CreateContainer();
+
+            ITestMyScopedExport exportScope1;
+            using (var scopedContext = container.CreateScopedContext("my-scope"))
+            {
+                exportScope1 = scopedContext.GetExport<ITestMyScopedExport>();
+                Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
+
+                var export = scopedContext.GetExport<ITestMyScopedExport>();
+                Assert.AreSame(exportScope1, export);
+            }
+
+            using (var scopedContext2 = container.CreateScopedContext("my-scope"))
+            {
+                var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
+                Assert.AreNotSame(exportScope1, export2);
+            }
+        }
+
+        [Test]
         public void GetExport_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilder();
@@ -381,6 +409,24 @@ namespace Kephas.Tests.Composition.Mef
             /// </summary>
             [Kephas.Composition.AttributedModel.ImportMany]
             public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
+        }
+
+        [ScopeSharedAppServiceContract("my-scope")]
+        public interface ITestMyScopedExport { }
+
+        public class TestMyScopedExport : ITestMyScopedExport { }
+
+        [SharingBoundaryScope("my-scope")]
+        public class MyScopeFactory : MefScopeFactoryBase
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
+            /// </summary>
+            /// <param name="scopedContextFactory">The scoped context factory.</param>
+            public MyScopeFactory([SharingBoundary("my-scope")] ExportFactory<CompositionContext> scopedContextFactory)
+                : base(scopedContextFactory)
+            {
+            }
         }
 
         [ScopeSharedAppServiceContract]

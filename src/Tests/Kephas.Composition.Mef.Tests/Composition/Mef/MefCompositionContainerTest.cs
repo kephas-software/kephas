@@ -208,7 +208,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Export]
-        [Shared(SharingBoundaries.Scope)]
+        [Shared(ScopeNames.Default)]
         public class ScopeExportedClass
         {
         }

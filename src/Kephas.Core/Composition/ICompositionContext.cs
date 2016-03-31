@@ -74,9 +74,10 @@ namespace Kephas.Composition
         /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
+        /// <param name="scopeName">The scope name. If not provided the <see cref="ScopeNames.Default"/> scope name is used.</param>
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        ICompositionContext CreateScopedContext();
+        ICompositionContext CreateScopedContext(string scopeName = ScopeNames.Default);
     }
 }

@@ -15,7 +15,6 @@ namespace Kephas.Composition.Mef.Hosting
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.ExportProviders;
-    using Kephas.Composition.Mef.Internals;
 
     /// <summary>
     /// The MEF composition container.
@@ -42,7 +41,6 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         private CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
         {
-            configuration.WithPart<MefScopeProvider>();
             configuration.WithProvider(new FactoryExportDescriptorProvider<ICompositionContext>(() => this, isShared: true));
             return configuration.CreateContainer();
         }

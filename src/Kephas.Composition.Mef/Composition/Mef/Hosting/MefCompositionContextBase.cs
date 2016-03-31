@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef.Hosting
 
     using Kephas.Composition.Mef.Internals;
     using Kephas.Composition.Mef.Resources;
+    using Kephas.Composition.Mef.ScopeFactory;
 
     /// <summary>
     /// A MEF composition context.
@@ -26,11 +27,6 @@ namespace Kephas.Composition.Mef.Hosting
         /// The inner container.
         /// </summary>
         private CompositionContext innerContainer;
-
-        /// <summary>
-        /// The scope provider.
-        /// </summary>
-        private MefScopeProvider scopeProvider;
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -141,14 +137,17 @@ namespace Kephas.Composition.Mef.Hosting
         /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
+        /// <param name="scopeName">The scope name. If not provided the
+        ///                         <see cref="F:Kephas.Composition.ScopeNames.Default" /> scope name is
+        ///                         used.</param>
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public virtual ICompositionContext CreateScopedContext()
+        public virtual ICompositionContext CreateScopedContext(string scopeName = ScopeNames.Default)
         {
-            this.scopeProvider = this.scopeProvider ?? this.GetExport<MefScopeProvider>();
+            var scopeProvider = this.GetExport<IMefScopeFactory>(scopeName);
 
-            return new MefScopedCompositionContext(this.scopeProvider.CreateScopedContextExport());
+            return new MefScopedCompositionContext(scopeProvider.CreateScopedContextExport());
         }
 
         /// <summary>
