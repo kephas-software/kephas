@@ -13,7 +13,6 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
-    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Threading.Tasks;
 

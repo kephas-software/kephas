@@ -14,7 +14,7 @@
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNLogManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithLog4NetManager(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
