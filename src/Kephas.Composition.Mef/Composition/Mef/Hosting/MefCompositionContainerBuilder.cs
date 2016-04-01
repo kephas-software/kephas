@@ -15,6 +15,7 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
@@ -186,7 +187,7 @@ namespace Kephas.Composition.Mef.Hosting
                 .WithDefaultConventions(conventionBuilder)
                 .WithParts(parts);
 
-            this.RegisterScopeFactoryParts(containerConfiguration);
+            this.RegisterScopeFactoryParts(containerConfiguration, parts);
 
             foreach (var provider in this.ExportProviders.Values)
             {
@@ -231,9 +232,15 @@ namespace Kephas.Composition.Mef.Hosting
         /// Registers the scope factory parts into the container configuration.
         /// </summary>
         /// <param name="containerConfiguration">The container configuration.</param>
-        private void RegisterScopeFactoryParts(ContainerConfiguration containerConfiguration)
+        /// <param name="registeredParts">The registered parts.</param>
+        private void RegisterScopeFactoryParts(ContainerConfiguration containerConfiguration, IEnumerable<Type> registeredParts)
         {
-            containerConfiguration.WithParts(this.scopeFactories);
+            if (this.scopeFactories.Count == 0)
+            {
+                return;
+            }
+
+            containerConfiguration.WithParts(this.scopeFactories.Where(f => !registeredParts.Contains(f)));
         }
     }
 }

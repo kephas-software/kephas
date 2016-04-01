@@ -26,8 +26,6 @@ namespace CalculatorConsole
         {
             var shell = new CalculatorShell();
             shell.StartAppAsync();
-
-            Console.ReadLine();
         }
     }
 }

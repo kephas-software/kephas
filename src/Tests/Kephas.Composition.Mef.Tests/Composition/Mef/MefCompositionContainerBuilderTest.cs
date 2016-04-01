@@ -247,7 +247,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_myscope_export()
+        public void GetExport_ScopeSharedAppService_custom_scope_export()
         {
             var builder = this.CreateCompositionContainerBuilder();
             var container = builder
@@ -271,6 +271,21 @@ namespace Kephas.Tests.Composition.Mef
                 var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
                 Assert.AreNotSame(exportScope1, export2);
             }
+        }
+
+        [Test]
+        public void GetExport_ScopeSharedAppService_scopefactory_composed_only_once()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
+                .WithScopeFactory<MyScopeFactory>()
+                .CreateContainer();
+
+            var scopedContext = container.CreateScopedContext("my-scope");
+            Assert.AreNotSame(container, scopedContext);
+            Assert.IsNotNull(scopedContext);
         }
 
         [Test]

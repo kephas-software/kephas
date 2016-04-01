@@ -76,6 +76,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\RoleGameAppManifest.cs" />
     <Compile Include="Application\RoleGameShell.cs" />
     <Compile Include="Composition\CompositionHelper.cs" />
     <Compile Include="Composition\IConventionRegistrar.cs" />

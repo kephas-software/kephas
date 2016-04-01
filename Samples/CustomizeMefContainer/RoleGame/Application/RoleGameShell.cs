@@ -52,22 +52,19 @@
             Console.WriteLine();
             Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started. Elapsed: {elapsed:c}.");
 
-            Console.WriteLine();
-            Console.WriteLine("Provide an operation in form of: term1 op term2. End the program with q instead of an operation.");
-
             // TODO...
 
-            var context = CreateContext(container, "Adela");
+            var context = CreateUserContext(container, "Adela");
             this.compositionContexts.Add("Adela", context);
 
-            context = CreateContext(container, "Ioan");
+            context = CreateUserContext(container, "Ioan");
             this.compositionContexts.Add("Ioan", context);
 
-            var assertManagerUser1 = this.compositionContexts["Ioan"].GetExport<IGameManager>().User.Name;
-            var assertManagerUser2 = this.compositionContexts["Adela"].GetExport<IGameManager>().User.Name;
+            var gameManagerUser1 = this.compositionContexts["Ioan"].GetExport<IGameManager>().User.Name;
+            var gameManagerUser2 = this.compositionContexts["Adela"].GetExport<IGameManager>().User.Name;
         }
 
-        private static ICompositionContext CreateContext(ICompositionContext container, string name)
+        private static ICompositionContext CreateUserContext(ICompositionContext container, string name)
         {
             var context = container.CreateScopedContext(ScopeNames.User);
             var user = context.GetExport<IUser>();
