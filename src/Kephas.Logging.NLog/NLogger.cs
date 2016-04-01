@@ -16,7 +16,7 @@ namespace Kephas.Logging.NLog
     /// <summary>
     /// NLog logger.
     /// </summary>
-    internal class NLogger : Logging.ILogger
+    public class NLogger : Logging.ILogger
     {
         /// <summary>
         /// The NLog logger.
@@ -27,7 +27,7 @@ namespace Kephas.Logging.NLog
         /// Initializes a new instance of the <see cref="NLogger"/> class.
         /// </summary>
         /// <param name="logger">The NLog logger.</param>
-        public NLogger(Logger logger)
+        protected internal NLogger(Logger logger)
         {
             this.logger = logger;
         }

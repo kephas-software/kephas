@@ -21,7 +21,7 @@ namespace Kephas.Logging.Log4Net
         /// <summary>
         /// The loggers dictionary.
         /// </summary>
-        private readonly ConcurrentDictionary<string, Logging.ILogger> loggers = new ConcurrentDictionary<string, Logging.ILogger>();
+        private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
 
         /// <summary>
         /// Gets the logger with the provided name.
@@ -40,7 +40,7 @@ namespace Kephas.Logging.Log4Net
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>A logger with the provided name.</returns>
-        private ILogger CreateLogger(string loggerName)
+        protected virtual ILogger CreateLogger(string loggerName)
         {
             var nlogger = LogManager.GetLogger(loggerName);
             return new Log4NetLogger(nlogger);

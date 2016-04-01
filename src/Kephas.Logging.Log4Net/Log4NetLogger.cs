@@ -16,7 +16,7 @@ namespace Kephas.Logging.Log4Net
     /// <summary>
     /// A log4net logger.
     /// </summary>
-    internal class Log4NetLogger : ILogger
+    public class Log4NetLogger : ILogger
     {
         /// <summary>
         /// The log4net logger.
@@ -27,7 +27,7 @@ namespace Kephas.Logging.Log4Net
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
         /// <param name="logger">The NLog logger.</param>
-        public Log4NetLogger(ILog logger)
+        protected internal Log4NetLogger(ILog logger)
         {
             this.logger = logger;
         }

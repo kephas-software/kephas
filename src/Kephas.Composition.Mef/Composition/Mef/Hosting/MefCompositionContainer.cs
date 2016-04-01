@@ -25,7 +25,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// Initializes a new instance of the <see cref="MefCompositionContainer" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        internal MefCompositionContainer(ContainerConfiguration configuration)
+        protected internal MefCompositionContainer(ContainerConfiguration configuration)
         {
             Contract.Requires(configuration != null);
 

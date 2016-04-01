@@ -40,7 +40,7 @@ namespace Kephas.Logging.NLog
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>A logger with the provided name.</returns>
-        private Logging.ILogger CreateLogger(string loggerName)
+        protected virtual Logging.ILogger CreateLogger(string loggerName)
         {
             var nlogger = LogManager.GetLogger(loggerName);
             return new NLogger(nlogger);

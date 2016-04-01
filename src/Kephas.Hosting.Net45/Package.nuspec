@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Hosting.Net45</id>
-    <version>3.0.0-rc6</version>
+    <version>3.0.4</version>
     <title>Kephas.Hosting.Net45</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0" />
+      <dependency id="Kephas.Core" version="3.0.4" />
     </dependencies>
     <references>
       <reference file="Kephas.Hosting.Net45.dll" />
