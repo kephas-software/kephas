@@ -14,7 +14,6 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition;
     using System.Diagnostics.Contracts;
 
-    using Kephas.Composition.Mef.Internals;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
 
@@ -26,7 +25,12 @@ namespace Kephas.Composition.Mef.Hosting
         /// <summary>
         /// The inner container.
         /// </summary>
-        private CompositionContext innerContainer;
+        private CompositionContext innerCompositionContext;
+
+        /// <summary>
+        /// Gets the inner composition context.
+        /// </summary>
+        protected CompositionContext InnerCompositionContext => this.innerCompositionContext;
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -39,8 +43,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var component = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.GetExport(contractType)
-                              : this.innerContainer.GetExport(contractType, contractName);
+                              ? this.innerCompositionContext.GetExport(contractType)
+                              : this.innerCompositionContext.GetExport(contractType, contractName);
             return component;
         }
 
@@ -55,8 +59,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var components = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.GetExports(contractType)
-                              : this.innerContainer.GetExports(contractType, contractName);
+                              ? this.innerCompositionContext.GetExports(contractType)
+                              : this.innerCompositionContext.GetExports(contractType, contractName);
             return components;
         }
 
@@ -73,8 +77,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var component = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.GetExport<T>()
-                              : this.innerContainer.GetExport<T>(contractName);
+                              ? this.innerCompositionContext.GetExport<T>()
+                              : this.innerCompositionContext.GetExport<T>(contractName);
             return component;
         }
 
@@ -91,8 +95,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var components = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.GetExports<T>()
-                              : this.innerContainer.GetExports<T>(contractName);
+                              ? this.innerCompositionContext.GetExports<T>()
+                              : this.innerCompositionContext.GetExports<T>(contractName);
             return components;
         }
 
@@ -110,8 +114,8 @@ namespace Kephas.Composition.Mef.Hosting
 
             object component;
             var successful = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.TryGetExport(contractType, out component)
-                              : this.innerContainer.TryGetExport(contractType, contractName, out component);
+                              ? this.innerCompositionContext.TryGetExport(contractType, out component)
+                              : this.innerCompositionContext.TryGetExport(contractType, contractName, out component);
             return successful ? component : null;
         }
 
@@ -129,8 +133,8 @@ namespace Kephas.Composition.Mef.Hosting
 
             T component;
             var successful = string.IsNullOrEmpty(contractName)
-                              ? this.innerContainer.TryGetExport(out component)
-                              : this.innerContainer.TryGetExport(contractName, out component);
+                              ? this.innerCompositionContext.TryGetExport(out component)
+                              : this.innerCompositionContext.TryGetExport(contractName, out component);
             return component;
         }
 
@@ -164,10 +168,10 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            var disposableInnerContainer = this.innerContainer as IDisposable;
+            var disposableInnerContainer = this.innerCompositionContext as IDisposable;
             disposableInnerContainer?.Dispose();
 
-            this.innerContainer = null;
+            this.innerCompositionContext = null;
         }
 
         /// <summary>
@@ -178,7 +182,7 @@ namespace Kephas.Composition.Mef.Hosting
         {
             Contract.Requires(context != null);
 
-            this.innerContainer = context;
+            this.innerCompositionContext = context;
         }
 
         /// <summary>
@@ -186,7 +190,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         protected void AssertNotDisposed()
         {
-            if (this.innerContainer == null)
+            if (this.innerCompositionContext == null)
             {
                 throw new ObjectDisposedException(Strings.MefCompositionContainer_Disposed_Exception);
             }

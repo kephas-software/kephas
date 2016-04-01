@@ -49,6 +49,16 @@ namespace Kephas.Composition.Mef.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
         /// </summary>
+        /// <param name="context">The context.</param>
+        public MefCompositionContainerBuilder(ICompositionContainerBuilderContext context)
+            : base(context)
+        {
+            Contract.Requires(context != null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
+        /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <param name="configurationManager">The configuration manager.</param>
         /// <param name="hostingEnvironment">The hosting environment.</param>
@@ -199,6 +209,18 @@ namespace Kephas.Composition.Mef.Hosting
                 .WithProvider(new ExportFactoryExportDescriptorProvider())
                 .WithProvider(new ExportFactoryWithMetadataExportDescriptorProvider());
 
+            return this.CreateCompositionContext(containerConfiguration);
+        }
+
+        /// <summary>
+        /// Creates the composition context based on the provided container configuration.
+        /// </summary>
+        /// <param name="containerConfiguration">The container configuration.</param>
+        /// <returns>
+        /// The new composition context.
+        /// </returns>
+        protected virtual ICompositionContext CreateCompositionContext(ContainerConfiguration containerConfiguration)
+        {
             return new MefCompositionContainer(containerConfiguration);
         }
 

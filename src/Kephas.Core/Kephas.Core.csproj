@@ -179,6 +179,9 @@
     <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
     <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
     <Compile Include="Composition\Hosting\CompositionContainerBuilderBase.cs" />
+    <Compile Include="Composition\Hosting\CompositionContainerBuilderContext.cs" />
+    <Compile Include="Composition\Hosting\ICompositionContainerBuilder.cs" />
+    <Compile Include="Composition\Hosting\ICompositionContainerBuilderContext.cs" />
     <Compile Include="Composition\Hosting\NullCompositionContainer.cs" />
     <Compile Include="Composition\ICompositionContext.cs" />
     <Compile Include="Composition\IExport.cs" />

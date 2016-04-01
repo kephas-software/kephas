@@ -9,12 +9,17 @@
 
 namespace Kephas
 {
+    using System;
     using System.Diagnostics.Contracts;
+    using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Hosting;
     using Kephas.Logging;
+    using Kephas.Reflection;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Builder for ambient services.
@@ -110,6 +115,54 @@ namespace Kephas
             this.AmbientServices.CompositionContainer = compositionContainer;
 
             return this;
+        }
+
+        /// <summary>
+        /// Sets the composition container to the ambient services.
+        /// </summary>
+        /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
+        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="ICompositionContainerBuilderContext" />.</remarks>
+        /// <returns>
+        /// The provided ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithCompositionContainer<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
+            where TContainerBuilder : ICompositionContainerBuilder
+        {
+            var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
+            var context = new CompositionContainerBuilderContext(
+                this.AmbientServices.LogManager,
+                this.AmbientServices.ConfigurationManager,
+                this.AmbientServices.HostingEnvironment);
+
+            var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
+
+            containerBuilderConfig?.Invoke(containerBuilder);
+
+            return this.WithCompositionContainer(containerBuilder.CreateContainer());
+        }
+
+        /// <summary>
+        /// Sets asynchronously the composition container to the ambient services.
+        /// </summary>
+        /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
+        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="ICompositionContainerBuilderContext" />.</remarks>
+        /// <returns>A promise of the provided ambient services builder.</returns>
+        public async Task<AmbientServicesBuilder> WithCompositionContainerAsync<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
+            where TContainerBuilder : ICompositionContainerBuilder
+        {
+            var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
+            var context = new CompositionContainerBuilderContext(
+                this.AmbientServices.LogManager,
+                this.AmbientServices.ConfigurationManager,
+                this.AmbientServices.HostingEnvironment);
+
+            var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
+
+            containerBuilderConfig?.Invoke(containerBuilder);
+
+            return this.WithCompositionContainer(await containerBuilder.CreateContainerAsync().WithServerThreadingContext());
         }
     }
 }

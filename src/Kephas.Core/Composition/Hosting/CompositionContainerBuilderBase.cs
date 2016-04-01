@@ -30,7 +30,7 @@ namespace Kephas.Composition.Hosting
     /// Base class for composition container builders.
     /// </summary>
     /// <typeparam name="TBuilder">The type of the builder.</typeparam>
-    public abstract class CompositionContainerBuilderBase<TBuilder>
+    public abstract class CompositionContainerBuilderBase<TBuilder> : ICompositionContainerBuilder
         where TBuilder : CompositionContainerBuilderBase<TBuilder>
     {
         /// <summary>
@@ -47,6 +47,16 @@ namespace Kephas.Composition.Hosting
         /// The convention assemblies.
         /// </summary>
         private HashSet<Assembly> conventionAssemblies;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        protected CompositionContainerBuilderBase(ICompositionContainerBuilderContext context)
+            : this(context.LogManager, context.ConfigurationManager, context.HostingEnvironment)
+        {
+            Contract.Requires(context != null);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
@@ -301,8 +311,6 @@ namespace Kephas.Composition.Hosting
         /// <returns>A new container with the provided configuration.</returns>
         public virtual ICompositionContext CreateContainer()
         {
-            Contract.Ensures(Contract.Result<ICompositionContext>() != null);
-
             ICompositionContext container = null;
             Profiler.WithInfoStopwatch(
                 () =>
@@ -326,8 +334,6 @@ namespace Kephas.Composition.Hosting
         /// <returns>A new container with the provided configuration.</returns>
         public virtual async Task<ICompositionContext> CreateContainerAsync()
         {
-            Contract.Ensures(Contract.Result<Task<ICompositionContext>>() != null);
-
             ICompositionContext container = null;
             await Profiler.WithInfoStopwatchAsync(
                 async () =>

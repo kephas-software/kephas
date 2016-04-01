@@ -39,7 +39,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The new composition context.
         /// </returns>
-        private CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
+        protected virtual CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
         {
             configuration.WithProvider(new FactoryExportDescriptorProvider<ICompositionContext>(() => this, isShared: true));
             return configuration.CreateContainer();
