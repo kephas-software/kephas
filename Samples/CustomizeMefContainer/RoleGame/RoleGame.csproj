@@ -33,18 +33,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kephas.Composition.Mef">
-      <HintPath>..\..\..\src\Kephas.Composition.Mef\bin\Debug\Kephas.Composition.Mef.dll</HintPath>
+    <Reference Include="Kephas.Composition.Mef, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.0.4\lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\Kephas.Composition.Mef.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Kephas.Core">
-      <HintPath>..\..\..\src\Kephas.Composition.Mef\bin\Debug\Kephas.Core.dll</HintPath>
+    <Reference Include="Kephas.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Core.3.0.4\lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\Kephas.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Hosting.Net45, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Hosting.Net45.3.0.0-rc6\lib\net45\Kephas.Hosting.Net45.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Hosting.Net45.3.0.4\lib\net45\Kephas.Hosting.Net45.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.0.0\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.0.4\lib\net45\Kephas.Logging.NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
