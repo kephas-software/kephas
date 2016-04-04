@@ -26,6 +26,7 @@ namespace Kephas.Model.Elements
         public ModelProjection(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
+            this.Annotations = new List<IAnnotation>();
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// <c>true</c> if this instance is aggregated; otherwise, <c>false</c>.
         /// </value>
-        public bool IsAggregated { get; }
+        public bool IsAggregated { get; internal set; }
 
         /// <summary>
         /// Gets the dimension elements making up this projection.
@@ -50,6 +51,6 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The dimension elements.
         /// </value>
-        public IModelDimensionElement[] DimensionElements { get; }
+        public IModelDimensionElement[] DimensionElements { get; internal set; }
     }
 }

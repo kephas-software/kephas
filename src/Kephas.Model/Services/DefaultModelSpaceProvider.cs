@@ -11,6 +11,7 @@ namespace Kephas.Model.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace Kephas.Model.Services
     using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
@@ -28,6 +31,11 @@ namespace Kephas.Model.Services
     [OverridePriority(Priority.Low)]
     public class DefaultModelSpaceProvider : IModelSpaceProvider
     {
+        /// <summary>
+        /// The runtime model element factory.
+        /// </summary>
+        private readonly IRuntimeModelElementFactory runtimeModelElementFactory;
+
         /// <summary>
         /// Monitors the initialization state.
         /// </summary>
@@ -41,12 +49,15 @@ namespace Kephas.Model.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
-        /// <param name="modelInfoProviders">
-        /// The model information providers.
-        /// </param>
-        public DefaultModelSpaceProvider(ICollection<IModelInfoProvider> modelInfoProviders)
+        /// <param name="modelInfoProviders">The model information providers.</param>
+        /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
+        public DefaultModelSpaceProvider(ICollection<IModelInfoProvider> modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)
         {
+            Contract.Requires(runtimeModelElementFactory != null);
+            Contract.Requires(modelInfoProviders != null);
+
             this.ModelInfoProviders = modelInfoProviders;
+            this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
 
         /// <summary>
@@ -63,7 +74,7 @@ namespace Kephas.Model.Services
         /// <value>
         /// The model information providers.
         /// </value>
-        public ICollection<IModelInfoProvider> ModelInfoProviders { get; private set; }
+        public ICollection<IModelInfoProvider> ModelInfoProviders { get; }
 
         /// <summary>
         /// Gets the model space.
@@ -90,22 +101,17 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
-            var constructionContext = new ModelConstructionContext();
-            var modelSpace = new DefaultModelSpace(constructionContext);
+            var constructionContext = new ModelConstructionContext { RuntimeModelElementFactory = this.runtimeModelElementFactory };
+            var modelSpace = this.CreateModelSpace(constructionContext);
             constructionContext.ModelSpace = modelSpace;
 
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
-                var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e);
+                var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e).ToList();
 
-                // collect the model dimensions and dimension elements, completing their construction
-                // build the model projections
-                // complete the construction of the other model elements, assigning them to the right projection
-                // build the aggregated projections
-                // aggregate the model elements, adding them to the right aggregated projection
-
-                throw new NotImplementedException();
+                constructionContext[nameof(IModelConstructionContext.ElementInfos)] = elementInfos;
+                ((IWritableNamedElement)modelSpace).CompleteConstruction(constructionContext);
 
                 this.modelSpace = modelSpace;
 
@@ -116,6 +122,20 @@ namespace Kephas.Model.Services
                 this.initialization.Fault(exception);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Creates the model space.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// The new model space.
+        /// </returns>
+        protected virtual IModelSpace CreateModelSpace(IModelConstructionContext constructionContext)
+        {
+            Contract.Requires(constructionContext != null);
+
+            return new DefaultModelSpace(constructionContext);
         }
     }
 }

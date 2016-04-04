@@ -9,7 +9,10 @@
 
 namespace Kephas.Model.Construction
 {
+    using System.Collections.Generic;
+
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -18,12 +21,12 @@ namespace Kephas.Model.Construction
     public class ModelConstructionContext : ContextBase, IModelConstructionContext
     {
         /// <summary>
-        /// Gets the model space.
+        /// Gets or sets the model space.
         /// </summary>
         /// <value>
         /// The model space.
         /// </value>
-        public IModelSpace ModelSpace { get; internal set; }
+        public IModelSpace ModelSpace { get; set; }
 
         /// <summary>
         /// Gets or sets the model element factory.
@@ -32,5 +35,13 @@ namespace Kephas.Model.Construction
         /// The model element factory.
         /// </value>
         public IRuntimeModelElementFactory RuntimeModelElementFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the element infos.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        public IEnumerable<IElementInfo> ElementInfos { get; set; }
     }
 }

@@ -123,4 +123,7 @@
   <data name="ElementNotFoundInMembers" xml:space="preserve">
     <value>The element '{0}' is not a member of '{1}'.</value>
   </data>
+  <data name="NamedElementBase_MissingModelSpaceInConstructionContext_Exception" xml:space="preserve">
+    <value>The model space is not set in the construction context.</value>
+  </data>
 </root>

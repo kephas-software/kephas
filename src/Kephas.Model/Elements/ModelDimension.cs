@@ -13,6 +13,7 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>
     /// Implementation of model dimensions.
@@ -57,5 +58,23 @@ namespace Kephas.Model.Elements
         /// The dimension elements.
         /// </value>
         public IEnumerable<IModelDimensionElement> Elements => this.Members.OfType<IModelDimensionElement>();
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
+        {
+            var elements =
+                constructionContext.ElementInfos.OfType<IModelDimensionElement>()
+                    .Where(e => e.DimensionName == this.Name)
+                    .ToList();
+
+            foreach (var element in elements)
+            {
+                this.AddMember(element);
+                (element as IWritableNamedElement)?.CompleteConstruction(constructionContext);
+            }
+        }
     }
 }

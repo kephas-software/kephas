@@ -13,7 +13,6 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Construction;
-    using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>

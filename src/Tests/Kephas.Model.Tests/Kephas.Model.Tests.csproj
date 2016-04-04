@@ -68,6 +68,7 @@
     <Compile Include="Runtime\Construction\ModelDimensionElementConstructorTest.cs" />
     <Compile Include="Runtime\Construction\PropertyConstructorTest.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
+    <Compile Include="Services\DefaultModelSpaceProviderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">

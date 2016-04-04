@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Logging.Log4Net</id>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
     <title>Kephas.Logging.Log4Net</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>

@@ -9,7 +9,10 @@
 
 namespace Kephas.Model.Construction
 {
+    using System.Collections.Generic;
+
     using Kephas.Model.Runtime.Construction;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -32,5 +35,13 @@ namespace Kephas.Model.Construction
         /// The model element factory.
         /// </value>
         IRuntimeModelElementFactory RuntimeModelElementFactory { get; set; }
+
+        /// <summary>
+        /// Gets the element infos.
+        /// </summary>
+        /// <value>
+        /// The element infos.
+        /// </value>
+        IEnumerable<IElementInfo> ElementInfos { get; }
     }
 }

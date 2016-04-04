@@ -9,12 +9,13 @@
 
 namespace Kephas.Model.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
-    using Kephas.Model.Runtime.Construction;
+    using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
 
@@ -39,8 +40,18 @@ namespace Kephas.Model.Elements
             : base(isThreadSafe: true)
         {
             Contract.Requires(constructionContext != null);
-            Contract.Requires(constructionContext.ModelSpace != null);
             Contract.Requires(name != null);
+
+            if (constructionContext.ModelSpace == null)
+            {
+                var thisModelSpace = this as IModelSpace;
+                if (thisModelSpace == null)
+                {
+                    throw new InvalidOperationException(Strings.NamedElementBase_MissingModelSpaceInConstructionContext_Exception);
+                }
+
+                constructionContext[nameof(IModelConstructionContext.ModelSpace)] = thisModelSpace;
+            }
 
             this.Name = name;
             this.ModelSpace = constructionContext.ModelSpace;
@@ -148,6 +159,17 @@ namespace Kephas.Model.Elements
         public virtual IModelSpace ModelSpace { get; }
 
         /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.QualifiedName;
+        }
+
+        /// <summary>
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
@@ -177,9 +199,10 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Completes the construction of the element.
         /// </summary>
-        void IWritableNamedElement.CompleteConstruction()
+        /// <param name="constructionContext">Context for the construction.</param>
+        void IWritableNamedElement.CompleteConstruction(IModelConstructionContext constructionContext)
         {
-            this.OnCompleteConstruction();
+            this.OnCompleteConstruction(constructionContext);
         }
 
         /// <summary>
@@ -203,8 +226,10 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Called when the construction is complete.
         /// </summary>
-        protected virtual void OnCompleteConstruction()
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected virtual void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
+            Contract.Requires(constructionContext != null);
         }
 
         /// <summary>
@@ -213,6 +238,7 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         protected virtual void AddMember(INamedElement member)
         {
+            Contract.Requires(member != null);
         }
 
         /// <summary>
@@ -221,6 +247,7 @@ namespace Kephas.Model.Elements
         /// <param name="base">The base.</param>
         protected virtual void SetBase(IModelElement @base)
         {
+            Contract.Requires(@base != null);
         }
     }
 }

@@ -78,5 +78,14 @@ namespace Kephas.Model.Resources {
                 return ResourceManager.GetString("ElementNotFoundInMembers", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The model space is not set in the construction context..
+        /// </summary>
+        internal static string NamedElementBase_MissingModelSpaceInConstructionContext_Exception {
+            get {
+                return ResourceManager.GetString("NamedElementBase_MissingModelSpaceInConstructionContext_Exception", resourceCulture);
+            }
+        }
     }
 }

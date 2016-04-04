@@ -10,8 +10,11 @@
 namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
+    using System.Linq;
 
+    using Kephas.Collections;
     using Kephas.Model.Construction;
+    using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>
     /// The default implementation of the model space.
@@ -58,5 +61,135 @@ namespace Kephas.Model.Elements
         /// The classifiers.
         /// </value>
         public IEnumerable<IClassifier> Classifiers { get; private set; }
+
+        /// <summary>
+        /// Calculates the dimensions.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// The calculated dimensions.
+        /// </returns>
+        protected internal virtual IModelDimension[] ComputeDimensions(
+            IModelConstructionContext constructionContext)
+        {
+            var dimensions = constructionContext.ElementInfos.OfType<IModelDimension>().OrderBy(d => d.Index).ToArray();
+            foreach (IWritableNamedElement dimension in dimensions)
+            {
+                dimension.CompleteConstruction(constructionContext);
+            }
+
+            return dimensions;
+        }
+
+        /// <summary>
+        /// Calculates the projections.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="dimensions">The dimensions.</param>
+        /// <returns>
+        /// The calculated projections.
+        /// </returns>
+        protected internal virtual IList<IModelProjection> ComputeProjections(
+            IModelConstructionContext constructionContext,
+            IModelDimension[] dimensions)
+        {
+            var projections = new List<IModelProjection>();
+            this.BuildProjections(constructionContext, dimensions, 0, new List<IModelDimensionElement>(), projections);
+
+            var nonAggregatableDimensions = dimensions.Where(d => !d.IsAggregatable).ToArray();
+            if (dimensions.Length > nonAggregatableDimensions.Length)
+            {
+                var nonAggregatableProjections = new List<IModelProjection>();
+                this.BuildProjections(constructionContext, nonAggregatableDimensions, 0, new List<IModelDimensionElement>(), nonAggregatableProjections);
+                nonAggregatableProjections.ForEach(p => ((ModelProjection)p).IsAggregated = true);
+
+                // TODO build the parts of the non-aggregatable projections from the projections
+
+                projections.AddRange(nonAggregatableProjections);
+            }
+            else
+            {
+                projections.ForEach(p => ((ModelProjection)p).IsAggregated = true);
+            }
+
+            return projections;
+        }
+
+        /// <summary>
+        /// Enumerates compute classifiers in this collection.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process compute classifiers in this
+        /// collection.
+        /// </returns>
+        protected internal virtual IEnumerable<IClassifier> ComputeClassifiers(IModelConstructionContext constructionContext)
+        {
+            // TODO
+            var classifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
+            classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
+
+            return classifiers;
+        }
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
+        {
+            // collect the model dimensions and dimension elements, completing their construction
+            this.Dimensions = this.ComputeDimensions(constructionContext);
+
+            // build the model projections
+            this.Projections = this.ComputeProjections(constructionContext, this.Dimensions);
+
+            // complete the construction of the other model elements, assigning them to the right projection
+            this.Classifiers = this.ComputeClassifiers(constructionContext);
+
+            // build the aggregated projections
+            // aggregate the model elements, adding them to the right aggregated projection
+
+            //TODO...;
+        }
+
+        /// <summary>
+        /// Builds the projections.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="dimensions">The dimensions.</param>
+        /// <param name="index">Zero-based index of the dimensions array.</param>
+        /// <param name="elements">The elements of the projection.</param>
+        /// <param name="projections">The projections.</param>
+        private void BuildProjections(IModelConstructionContext constructionContext, IModelDimension[] dimensions, int index, IList<IModelDimensionElement> elements, IList<IModelProjection> projections)
+        {
+            if (index >= dimensions.Length)
+            {
+                var projection = new ModelProjection(constructionContext, this.ComputeProjectionName(elements)) { DimensionElements = elements.ToArray() };
+                projections.Add(projection);
+                return;
+            }
+
+            var dimension = dimensions[index];
+            foreach (var element in dimension.Elements)
+            {
+                var projectionElements = new List<IModelDimensionElement>(elements);
+                projectionElements.Add(element);
+                
+                this.BuildProjections(constructionContext, dimensions, index + 1, projectionElements, projections);
+            }
+        }
+
+        /// <summary>
+        /// Calculates the projection name.
+        /// </summary>
+        /// <param name="elements">The elements.</param>
+        /// <returns>
+        /// The calculated projection name.
+        /// </returns>
+        private string ComputeProjectionName(IEnumerable<IModelDimensionElement> elements)
+        {
+            return string.Concat(elements.Select(e => e.QualifiedName));
+        }
     }
 }

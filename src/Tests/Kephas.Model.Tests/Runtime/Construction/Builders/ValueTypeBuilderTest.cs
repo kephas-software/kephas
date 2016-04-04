@@ -29,7 +29,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
         }
 
         [Test]
-        public void Element_success()
+        public void Element_class_forced_as_value_type()
         {
             var builder = this.CreateBuilder<ForcedValueType>();
 
@@ -37,6 +37,17 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
 
             Assert.IsInstanceOf<ValueType>(element);
             Assert.AreEqual("ForcedValueType", element.Name);
+        }
+
+        [Test]
+        public void Element_boolean()
+        {
+            var builder = this.CreateBuilder<bool>();
+
+            var element = builder.Element;
+
+            Assert.IsInstanceOf<ValueType>(element);
+            Assert.AreEqual("Boolean", element.Name);
         }
 
         private class ForcedValueType

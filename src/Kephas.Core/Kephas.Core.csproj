@@ -212,6 +212,15 @@
     <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
     <Compile Include="Dynamic\IDynamicTypeInfo.cs" />
     <Compile Include="Dynamic\IExpando.cs" />
+    <Compile Include="Graphs\GraphBase.cs" />
+    <Compile Include="Graphs\GraphEdge.cs" />
+    <Compile Include="Graphs\GraphExtensions.cs" />
+    <Compile Include="Graphs\GraphNode.cs" />
+    <Compile Include="Graphs\IGraphEdge.cs" />
+    <Compile Include="Graphs\IGraphNode.cs" />
+    <Compile Include="Graphs\OrientedGraph.cs" />
+    <Compile Include="Graphs\UnorientedGraph.cs" />
+    <Compile Include="Graphs\UnorientedGraphEdge.cs" />
     <Compile Include="Hosting\IHostingEnvironment.cs" />
     <Compile Include="Hosting\NullHostingEnvironment.cs" />
     <Compile Include="IAmbientServices.cs" />
@@ -283,6 +292,7 @@
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

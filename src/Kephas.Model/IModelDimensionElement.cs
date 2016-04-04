@@ -24,6 +24,13 @@ namespace Kephas.Model
     [ContractClass(typeof(ModelDimensionElementContractClass))]
     public interface IModelDimensionElement : IModelElement
     {
+        /// <summary>
+        /// Gets the name of the dimension.
+        /// </summary>
+        /// <value>
+        /// The name of the dimension.
+        /// </value>
+        string DimensionName { get; }
     }
 
     /// <summary>
@@ -145,6 +152,14 @@ namespace Kephas.Model
         /// The base model element.
         /// </value>
         public abstract IModelElement Base { get; }
+
+        /// <summary>
+        /// Gets the name of the dimension.
+        /// </summary>
+        /// <value>
+        /// The name of the dimension.
+        /// </value>
+        public string DimensionName { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer

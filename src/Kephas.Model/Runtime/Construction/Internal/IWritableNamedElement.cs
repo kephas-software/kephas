@@ -9,6 +9,8 @@
 
 namespace Kephas.Model.Runtime.Construction.Internal
 {
+    using Kephas.Model.Construction;
+
     /// <summary>
     /// Interface for writable named elements used during construction.
     /// </summary>
@@ -35,7 +37,8 @@ namespace Kephas.Model.Runtime.Construction.Internal
         /// <summary>
         /// Completes the construction of the element.
         /// </summary>
-        void CompleteConstruction();
+        /// <param name="constructionContext">Context for the construction.</param>
+        void CompleteConstruction(IModelConstructionContext constructionContext);
 
         /// <summary>
         /// Adds the member to the members list.
