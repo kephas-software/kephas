@@ -104,6 +104,10 @@
       <Project>{96cfa2e2-78ff-43c8-83e4-d7a97f1757aa}</Project>
       <Name>SimpleModel.Contacts.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleModel.Model\SimpleModel.Model.csproj">
+      <Project>{b70dbbe6-310f-4b42-a53d-09353b4bf13d}</Project>
+      <Name>SimpleModel.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

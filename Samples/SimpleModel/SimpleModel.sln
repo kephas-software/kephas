@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleModel.App.Console", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleModel.Contacts.Domain", "SimpleModel.Contacts.Domain\SimpleModel.Contacts.Domain.csproj", "{96CFA2E2-78FF-43C8-83E4-D7A97F1757AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleModel.Model", "SimpleModel.Model\SimpleModel.Model.csproj", "{B70DBBE6-310F-4B42-A53D-09353B4BF13D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{96CFA2E2-78FF-43C8-83E4-D7A97F1757AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96CFA2E2-78FF-43C8-83E4-D7A97F1757AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96CFA2E2-78FF-43C8-83E4-D7A97F1757AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70DBBE6-310F-4B42-A53D-09353B4BF13D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70DBBE6-310F-4B42-A53D-09353B4BF13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70DBBE6-310F-4B42-A53D-09353B4BF13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70DBBE6-310F-4B42-A53D-09353B4BF13D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
