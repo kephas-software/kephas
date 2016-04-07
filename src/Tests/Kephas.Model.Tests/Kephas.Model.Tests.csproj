@@ -62,7 +62,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Construction\AnnotationConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructorTest.cs" />
-    <Compile Include="Runtime\CoreSimpleTypesModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProviderTest.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
     <Compile Include="Runtime\Construction\Annotations\AnnotationConstructorTest.cs" />
     <Compile Include="Runtime\Construction\ModelDimensionElementConstructorTest.cs" />

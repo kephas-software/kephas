@@ -73,10 +73,7 @@ namespace Kephas.Model.Elements
             IModelConstructionContext constructionContext)
         {
             var dimensions = constructionContext.ElementInfos.OfType<IModelDimension>().OrderBy(d => d.Index).ToArray();
-            foreach (IWritableNamedElement dimension in dimensions)
-            {
-                dimension.CompleteConstruction(constructionContext);
-            }
+            dimensions.ForEach(dimension => (dimension as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
             return dimensions;
         }

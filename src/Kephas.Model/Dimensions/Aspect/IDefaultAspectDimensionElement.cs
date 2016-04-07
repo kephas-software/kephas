@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IKephasAppLayerDimensionElement.cs" company="Quartz Software SRL">
+// <copyright file="IDefaultAspectDimensionElement.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Element of the <see cref="IAppLayerDimension" />.
+//   Element of the <see cref="IAspectDimension" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Dimensions.AppLayer
+namespace Kephas.Model.Dimensions.Aspect
 {
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// The Kephas element of the <see cref="IAppLayerDimension"/>.
+    /// The Default element of the <see cref="IAspectDimension"/>.
     /// </summary>
     [ModelDimensionElement]
-    public interface IKephasAppLayerDimensionElement
+    public interface IDefaultAspectDimensionElement
     {
     }
 }

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CoreSimpleTypesModelInfoProviderTest.cs" company="Quartz Software SRL">
+// <copyright file="SystemPrimitiveTypesModelInfoProviderTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Tests for <see cref="CoreSimpleTypesModelInfoProvider" />
+//   Tests for <see cref="SystemPrimitiveTypesModelInfoProvider" />
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -26,16 +26,16 @@ namespace Kephas.Model.Tests.Runtime
     using Telerik.JustMock;
 
     /// <summary>
-    /// Tests for <see cref="CoreSimpleTypesModelInfoProvider"/>
+    /// Tests for <see cref="SystemPrimitiveTypesModelInfoProvider"/>
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CoreSimpleTypesModelInfoProviderTest : ConstructorTestBase
+    public class SystemPrimitiveTypesModelInfoProviderTest : ConstructorTestBase
     {
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new CoreSimpleTypesModelInfoProvider(Mock.Create<IRuntimeModelElementFactory>());
+            var provider = new SystemPrimitiveTypesModelInfoProvider(Mock.Create<IRuntimeModelElementFactory>());
             var context = this.GetConstructionContext();
             var elementInfos = (await provider.GetElementInfosAsync(context)).Cast<IValueType>().ToList();
 

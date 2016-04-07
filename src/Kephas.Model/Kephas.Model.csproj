@@ -157,14 +157,15 @@
     <Compile Include="Configuration\ElementConfiguratorBase.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Configuration\ModelSpaceConfigurator.cs" />
-    <Compile Include="Dimensions\AppLayer\IKephasAppLayerDimensionElement.cs" />
-    <Compile Include="Dimensions\Aspect\IMainAspectDimensionElement.cs" />
-    <Compile Include="Dimensions\IAppLayerDimension.cs" />
+    <Compile Include="Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs" />
+    <Compile Include="Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs" />
+    <Compile Include="Dimensions\Aspect\IDefaultAspectDimensionElement.cs" />
+    <Compile Include="Dimensions\IAppFamilyDimension.cs" />
     <Compile Include="Dimensions\IAspectDimension.cs" />
-    <Compile Include="Dimensions\IModelDimension.cs" />
+    <Compile Include="Dimensions\IAppDimension.cs" />
     <Compile Include="Dimensions\IModuleDimension.cs" />
     <Compile Include="Dimensions\IScopeDimension.cs" />
-    <Compile Include="Dimensions\Model\IPrimitivesModelDimensionElement.cs" />
+    <Compile Include="Dimensions\App\IFoundationAppDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
     <Compile Include="Elements\Annotation.cs" />
@@ -216,7 +217,7 @@
     <Compile Include="Runtime\Construction\Annotations\RequiredAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
     <Compile Include="Runtime\Construction\Internal\IWritableNamedElement.cs" />
-    <Compile Include="Runtime\CoreSimpleTypesModelInfoProvider.cs" />
+    <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructor.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\Annotations\AnnotationConstructor.cs" />
@@ -232,6 +233,7 @@
     <Compile Include="Runtime\Construction\NamedElementConstructorBase.cs" />
     <Compile Include="Runtime\Construction\PropertyConstructor.cs" />
     <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
+    <Compile Include="Runtime\IRuntimeModelProjectionProvider.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
     <Compile Include="Runtime\RuntimeModelInfoProviderBase.cs" />
     <Compile Include="Services\DefaultModelSpaceProvider.cs" />

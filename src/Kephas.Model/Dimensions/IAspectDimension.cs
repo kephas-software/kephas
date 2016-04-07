@@ -21,7 +21,7 @@ namespace Kephas.Model.Dimensions
     /// The aspect dimension is aggregatable because it may provide logical aspects
     /// of the same element, which, after aggregation, are weaved into one integral element.
     /// </remarks>
-    [AggregatableModelDimension(5, DefaultDimensionElement = typeof(IMainAspectDimensionElement))]
+    [AggregatableModelDimension(5, DefaultDimensionElement = typeof(IDefaultAspectDimensionElement))]
     public interface IAspectDimension
     {
     }
