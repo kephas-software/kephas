@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.0" />
+      <dependency id="Kephas.Core" version="3.0.5" />
     </dependencies>
     <references>
       <reference file="Kephas.Hosting.NetCore.dll" />
@@ -29,10 +29,10 @@
     <tags>kephas framework hosting desktop net aspnet core quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Hosting.NetCore.dll" target="lib\portable-dnxcore50" />
-    <file src="bin\debug\Kephas.Hosting.NetCore.pdb" target="lib\portable-dnxcore50" />
-    <file src="bin\debug\Kephas.Hosting.NetCore.xml" target="lib\portable-dnxcore50" />
-    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.dll" target="lib\portable-dnxcore50\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.pdb" target="lib\portable-dnxcore50\CodeContracts" />
+    <file src="bin\debug\Kephas.Hosting.NetCore.dll" target="lib\portable-net46+dnxcore50+uap10" />
+    <file src="bin\debug\Kephas.Hosting.NetCore.pdb" target="lib\portable-net46+dnxcore50+uap10" />
+    <file src="bin\debug\Kephas.Hosting.NetCore.xml" target="lib\portable-net46+dnxcore50+uap10" />
+    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.dll" target="lib\portable-net46+dnxcore50+uap10\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Hosting.NetCore.Contracts.pdb" target="lib\portable-net46+dnxcore50+uap10\CodeContracts" />
   </files>
 </package>

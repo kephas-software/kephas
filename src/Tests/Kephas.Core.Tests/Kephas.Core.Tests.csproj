@@ -64,7 +64,10 @@
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\DynamicTypeInfoTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
+    <Compile Include="Graphs\GraphEdgeOfTNodeValueTest.cs" />
     <Compile Include="Graphs\GraphExtensionsTest.cs" />
+    <Compile Include="Graphs\GraphNodeOfTValueTest.cs" />
+    <Compile Include="Graphs\GraphNodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ReflectionHelperTest.cs" />
     <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />

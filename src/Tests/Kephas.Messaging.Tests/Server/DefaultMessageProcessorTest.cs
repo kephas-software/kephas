@@ -30,6 +30,8 @@ namespace Kephas.Messaging.Tests.Server
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
 
+    using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
+
     /// <summary>
     /// Test class for <see cref="DefaultMessageProcessor"/>.
     /// </summary>
@@ -132,12 +134,12 @@ namespace Kephas.Messaging.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return CompletedTask.Value; }, 
-                (c, t) => { afterlist.Add(1); return CompletedTask.Value; }, 
+                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; }, 
+                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; }, 
                 processingPriority: 2);
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return CompletedTask.Value; }, 
-                (c, t) => { afterlist.Add(2); return CompletedTask.Value; }, 
+                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; }, 
+                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; }, 
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
@@ -167,12 +169,12 @@ namespace Kephas.Messaging.Tests.Server
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(1); return CompletedTask.Value; }, 
-                (c, t) => { afterlist.Add(1); return CompletedTask.Value; }, 
+                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; }, 
+                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; }, 
                 requestType: typeof(PingMessage));
             var f2 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(2); return CompletedTask.Value; }, 
-                (c, t) => { afterlist.Add(2); return CompletedTask.Value; });
+                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; }, 
+                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
             var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
@@ -198,8 +200,8 @@ namespace Kephas.Messaging.Tests.Server
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
             var f1 = this.CreateFilterFactory(
-                (c, t) => { beforelist.Add(c.Exception); return CompletedTask.Value; }, 
-                (c, t) => { afterlist.Add(c.Exception); return CompletedTask.Value; });
+                (c, t) => { beforelist.Add(c.Exception); return TaskHelper.CompletedTask; }, 
+                (c, t) => { afterlist.Add(c.Exception); return TaskHelper.CompletedTask; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1 });
             InvalidOperationException thrownException = null;
@@ -229,8 +231,8 @@ namespace Kephas.Messaging.Tests.Server
             Priority overridePriority = Priority.Normal)
         {
             requestType = requestType ?? typeof(IMessage);
-            beforeFunc = beforeFunc ?? ((c, t) => CompletedTask.Value);
-            afterFunc = afterFunc ?? ((c, t) => CompletedTask.Value);
+            beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
+            afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
             var filter = Mock.Create<IMessageProcessingFilter>();
             filter.Arrange(f => f.BeforeProcessAsync(Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
                 .Returns(beforeFunc);

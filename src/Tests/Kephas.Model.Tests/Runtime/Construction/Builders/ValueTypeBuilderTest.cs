@@ -9,9 +9,14 @@
 
 namespace Kephas.Model.Tests.Runtime.Construction.Builders
 {
+    using System.Collections.Generic;
+
+    using Kephas.Composition;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Builders;
+    using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Reflection;
 
     using NUnit.Framework;
@@ -23,7 +28,11 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     {
         public ValueTypeBuilder CreateBuilder<T>()
         {
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = new ModelConstructionContext
+                              {
+                                  ModelSpace = Mock.Create<IModelSpace>(),
+                                  RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>())
+                              };
             var dynamicType = typeof(T).AsDynamicTypeInfo();
             return new ValueTypeBuilder(context, dynamicType);
         }

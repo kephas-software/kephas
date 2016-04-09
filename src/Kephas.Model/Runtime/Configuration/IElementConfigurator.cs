@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Configuration
+namespace Kephas.Model.Runtime.Configuration
 {
     using Kephas.Services;
 
@@ -30,14 +30,15 @@ namespace Kephas.Model.Configuration
     }
 
     /// <summary>
-    /// Contract for model element configurators for a specific native type.
+    /// Generic contract for model element configurators.
     /// </summary>
-    /// <typeparam name="TNativeElement">The type of the native element.</typeparam>
+    /// <typeparam name="TElement">The type of the element.</typeparam>
+    /// <typeparam name="TRuntimeElement">The type of the runtime element.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true,
         ContractType = typeof(IElementConfigurator),
         MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
-    public interface IElementConfigurator<TNativeElement> : IElementConfigurator
+    public interface IElementConfigurator<TElement, TRuntimeElement> : IElementConfigurator
     {
     }
 }

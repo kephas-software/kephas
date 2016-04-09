@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TaskExtensions.cs" company="Quartz Software SRL">
+// <copyright file="TaskHelper.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -16,12 +16,28 @@ namespace Kephas.Threading.Tasks
     /// <summary>
     /// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
     /// </summary>
-    public static class TaskExtensions
+    public static class TaskHelper
     {
         /// <summary>
         /// The default value of milliseconds to wait when simulating synchronous calls.
         /// </summary>
         public const int DefaultWaitMilliseconds = 20;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="TaskHelper"/> class.
+        /// </summary>
+        static TaskHelper()
+        {
+            CompletedTask = Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Gets a task that has already completed successfully.
+        /// </summary>
+        /// <value>
+        /// A successfully completed task.
+        /// </value>
+        public static Task CompletedTask { get; }
 
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.

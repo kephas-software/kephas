@@ -144,4 +144,46 @@ namespace Kephas.Graphs
             return true;
         }
     }
+
+    /// <summary>
+    /// Defines a graph node holding a value.
+    /// </summary>
+    /// <typeparam name="TValue">Type of the value.</typeparam>
+    public class GraphNode<TValue> : GraphNode, IGraphNode<TValue>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphNode{TValue}"/> class.
+        /// </summary>
+        public GraphNode()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GraphNode{TValue}"/> class.
+        /// </summary>
+        /// <param name="value">The node value.</param>
+        public GraphNode(TValue value)
+        {
+            this.Value = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the node value.
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        public TValue Value { get; set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{{{this.Value}}}";
+        }
+    }
 }

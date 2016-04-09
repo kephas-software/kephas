@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Configuration.Composition
+namespace Kephas.Model.Runtime.Configuration.Composition
 {
     using System;
     using System.Collections.Generic;
@@ -32,7 +32,8 @@ namespace Kephas.Model.Configuration.Composition
                 return;
             }
 
-            this.NativeElementType = (Type)metadata.TryGetValue(nameof(this.NativeElementType));
+            this.ElementType = (Type)metadata.TryGetValue(nameof(this.ElementType));
+            this.RuntimeElementType = (Type)metadata.TryGetValue(nameof(this.RuntimeElementType));
         }
 
         /// <summary>
@@ -41,6 +42,14 @@ namespace Kephas.Model.Configuration.Composition
         /// <value>
         /// The type of the element.
         /// </value>
-        public Type NativeElementType { get; }
+        public Type ElementType { get; }
+
+        /// <summary>
+        /// Gets the type of the runtime element.
+        /// </summary>
+        /// <value>
+        /// The type of the runtime element.
+        /// </value>
+        public Type RuntimeElementType { get; }
     }
 }

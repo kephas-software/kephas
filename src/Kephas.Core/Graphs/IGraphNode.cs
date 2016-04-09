@@ -41,4 +41,19 @@
         /// </value>
         IReadOnlyCollection<IGraphNode> ConnectedNodes { get; }
     }
+
+    /// <summary>
+    /// Defines the contract for a graph node holding a value.
+    /// </summary>
+    /// <typeparam name="TValue">Type of the value.</typeparam>
+    public interface IGraphNode<TValue> : IGraphNode
+    {
+        /// <summary>
+        /// Gets or sets the node value.
+        /// </summary>
+        /// <value>
+        /// The node value.
+        /// </value>
+        TValue Value { get; set; }
+    }
 }

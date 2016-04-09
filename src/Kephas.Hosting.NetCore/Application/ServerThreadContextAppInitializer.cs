@@ -37,7 +37,7 @@ namespace Kephas.Web.Application
                 .WithStoreAction(StoreThreadCulture)
                 .WithRestoreAction(RestoreThreadCulture);
 
-            return CompletedTask.Value;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>

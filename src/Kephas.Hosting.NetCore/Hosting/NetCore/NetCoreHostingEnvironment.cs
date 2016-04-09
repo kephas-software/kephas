@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Hosting.Net45
+namespace Kephas.Hosting.NetCore.Hosting.NetCore
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace Kephas.Hosting.Net45
     /// <summary>
     /// The hosting environment for .NET 4.5 applications.
     /// </summary>
-    public class Net45HostingEnvironment : Expando, IHostingEnvironment
+    public class NetCoreHostingEnvironment : Expando, IHostingEnvironment
     {
         /// <summary>
         /// The logger.
@@ -35,14 +35,14 @@ namespace Kephas.Hosting.Net45
         private readonly ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Net45HostingEnvironment" /> class.
+        /// Initializes a new instance of the <see cref="NetCoreHostingEnvironment" /> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        public Net45HostingEnvironment(ILogManager logManager)
+        public NetCoreHostingEnvironment(ILogManager logManager)
         {
             Contract.Requires(logManager != null);
 
-            this.logger = logManager.GetLogger<Net45HostingEnvironment>();
+            this.logger = logManager.GetLogger<NetCoreHostingEnvironment>();
         }
 
         /// <summary>
@@ -61,7 +61,6 @@ namespace Kephas.Hosting.Net45
 
             var loadedAssemblyRefs = new HashSet<string>(assemblies.Select(a => a.GetName().FullName));
             var assembliesToCheck = assemblies.Where(a => !a.IsSystemAssembly()).ToList();
-
             while (assembliesToCheck.Count > 0)
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
@@ -76,12 +75,13 @@ namespace Kephas.Hosting.Net45
                 assemblies.AddRange(assembliesToCheck);
             }
 
+            // TODO...
             // load all the assemblies found in the application directory which are not already loaded.
-            var directory = this.GetAppLocation();
-            var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
-            var assemblyFiles = Directory.EnumerateFiles(directory, "*.dll", SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
-            var assemblyFilesToLoad = assemblyFiles.Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()));
-            assemblies.AddRange(assemblyFilesToLoad.Select(f => Assembly.LoadFile(Path.Combine(directory, f))).Where(a => !a.IsSystemAssembly()));
+            ////var directory = this.GetAppLocation();
+            ////var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
+            ////var assemblyFiles = Directory.EnumerateFiles(directory, "*.dll", SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
+            ////var assemblyFilesToLoad = assemblyFiles.Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()));
+            ////assemblies.AddRange(assemblyFilesToLoad.Select(f => Assembly.LoadFile(Path.Combine(directory, f))).Where(a => !a.IsSystemAssembly()));
 
             return Task.FromResult((IEnumerable<Assembly>)assemblies);
         }
@@ -94,7 +94,11 @@ namespace Kephas.Hosting.Net45
         /// </returns>
         private IList<Assembly> GetLoadedAssemblies()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().ToList();
+            // TODO use something better than reflection
+            var currentdomain = typeof(string).GetTypeInfo().Assembly.GetType("System.AppDomain").GetRuntimeProperty("CurrentDomain").GetMethod.Invoke(null, new object[] { });
+            var getassemblies = currentdomain.GetType().GetRuntimeMethod("GetAssemblies", new Type[] { });
+            var assemblies = ((Assembly[])getassemblies.Invoke(currentdomain, new object[] { })).ToList();
+            return assemblies;
         }
 
         /// <summary>
@@ -106,7 +110,10 @@ namespace Kephas.Hosting.Net45
         /// </returns>
         private AssemblyName[] GetReferencedAssemblies(Assembly assembly)
         {
-            return assembly.GetReferencedAssemblies();
+            // TODO use something better than reflection
+            var getReferencedAssemblies = assembly.GetType().GetRuntimeMethod("GetReferencedAssemblies", new Type[] {});
+            var refAssemblies = (AssemblyName[])getReferencedAssemblies.Invoke(assembly, new object[] { });
+            return refAssemblies;
         }
 
         /// <summary>
@@ -117,11 +124,14 @@ namespace Kephas.Hosting.Net45
         /// </returns>
         private string GetAppLocation()
         {
-            var assembly = Assembly.GetEntryAssembly();
+            ////var assembly = Assembly.GetEntryAssembly();
 
-            var codebaseUri = new Uri(assembly.CodeBase);
-            var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
-            return location;
+            ////var codebaseUri = new Uri(assembly.CodeBase);
+            ////var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
+            ////return location;
+            
+            // TODO find an implementation
+            return string.Empty;
         }
 
         /// <summary>
@@ -133,7 +143,10 @@ namespace Kephas.Hosting.Net45
         /// </returns>
         private string GetFileName(Assembly assembly)
         {
-            var codebaseUri = new Uri(assembly.CodeBase);
+            ////var codebaseUri = new Uri(assembly.CodeBase);
+
+            // TODO find an implementation
+            var codebaseUri = new Uri("dummy:dummy");
             return Path.GetFileName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
         }
     }

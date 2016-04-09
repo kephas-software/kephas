@@ -13,9 +13,31 @@
     public class GraphExtensionsTest
     {
         [Test]
+        public void Merge_simple()
+        {
+            var graph = this.CreateGraph(new[]
+                                        {
+                                            Tuple.Create(2, 1),
+                                            Tuple.Create(3, 4)
+                                        });
+
+            var sourceGraph = this.CreateGraph(new[]
+                                        {
+                                            Tuple.Create(5, 6),
+                                            Tuple.Create(5, 7)
+                                        });
+
+            var merged = graph.Merge(sourceGraph);
+
+            Assert.AreSame(merged, graph);
+            Assert.AreEqual(7, merged.Nodes.Count);
+            Assert.AreEqual(4, merged.Edges.Count);
+        }
+
+        [Test]
         public void GetConnectedSubgraphs_cyclic_simple()
         {
-            var orderedGraph = this.CreateGraph<TestOrientedGraph, int>(new[]
+            var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
                                         {
                                             Tuple.Create(2, 1),
                                             Tuple.Create(1, 2)
@@ -34,7 +56,7 @@
         [Test]
         public void GetConnectedSubgraphs_two_not_connected_edges()
         {
-            var orderedGraph = this.CreateGraph<TestOrientedGraph, int>(new[]
+            var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
                                         {
                                             Tuple.Create(2, 1),
                                             Tuple.Create(4, 3)
@@ -58,7 +80,7 @@
         [Test]
         public void GetConnectedSubgraphs_three_connected_edges()
         {
-            var orderedGraph = this.CreateGraph<TestOrientedGraph, int>(new[]
+            var orderedGraph = this.CreateGraph<TestGraph, int>(new[]
                                         {
                                             Tuple.Create(2, 1),
                                             Tuple.Create(4, 3),
@@ -78,7 +100,12 @@
             Assert.AreSame(subgraphs[0].Edges[2], orderedGraph.Edges[1]);
         }
 
-        private T CreateGraph<T, TItem>(IEnumerable<Tuple<TItem, TItem>> edges) where T : GraphBase, new()
+        private Graph<TItem> CreateGraph<TItem>(IEnumerable<Tuple<TItem, TItem>> edges)
+        {
+            return this.CreateGraph<Graph<TItem>, TItem>(edges);
+        }
+
+        private T CreateGraph<T, TItem>(IEnumerable<Tuple<TItem, TItem>> edges) where T : Graph, new()
         {
             var nodes = new HashSet<TItem>();
             edges.ForEach(e => nodes.AddRange(new[] { e.Item1, e.Item2 }));
@@ -118,8 +145,13 @@
             }
         }
 
-        private class TestOrientedGraph : OrientedGraph
+        private class TestGraph : Graph
         {
+            protected internal override Graph CreateSubgraph()
+            {
+                return new TestGraph();
+            }
+
             protected override GraphNode CreateNode()
             {
                 return new TestNode();
@@ -128,11 +160,6 @@
             protected override GraphEdge CreateEdge(GraphNode @from, GraphNode to)
             {
                 return new TestEdge(@from, to);
-            }
-
-            public override GraphBase CreateSubgraph()
-            {
-                return new TestOrientedGraph();
             }
         }
     }

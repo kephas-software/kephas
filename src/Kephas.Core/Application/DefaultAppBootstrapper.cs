@@ -117,7 +117,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task BeforeStartAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return CompletedTask.Value;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task AfterStartAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return CompletedTask.Value;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>

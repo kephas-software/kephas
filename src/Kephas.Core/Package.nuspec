@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Core</id>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
     <title>Kephas.Core</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -28,10 +28,10 @@
     <tags>kephas framework core quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Core.dll" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Core.pdb" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Core.xml" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net45+dnx451+dnxcore50+win+wp80+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\Kephas.Core.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\Kephas.Core.xml" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
   </files>
 </package>

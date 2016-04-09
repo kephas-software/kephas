@@ -212,13 +212,12 @@
     <Compile Include="Dynamic\IDynamicPropertyInfo.cs" />
     <Compile Include="Dynamic\IDynamicTypeInfo.cs" />
     <Compile Include="Dynamic\IExpando.cs" />
-    <Compile Include="Graphs\GraphBase.cs" />
+    <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\GraphEdge.cs" />
     <Compile Include="Graphs\GraphExtensions.cs" />
     <Compile Include="Graphs\GraphNode.cs" />
     <Compile Include="Graphs\IGraphEdge.cs" />
     <Compile Include="Graphs\IGraphNode.cs" />
-    <Compile Include="Graphs\OrientedGraph.cs" />
     <Compile Include="Graphs\UnorientedGraph.cs" />
     <Compile Include="Graphs\UnorientedGraphEdge.cs" />
     <Compile Include="Hosting\IHostingEnvironment.cs" />
@@ -275,10 +274,9 @@
     <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
     <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitor.cs" />
-    <Compile Include="Threading\Tasks\CompletedTask.cs" />
     <Compile Include="Threading\Tasks\ServerThreadContextAwaiter.cs" />
     <Compile Include="Threading\Tasks\ServerThreadContextBuilder.cs" />
-    <Compile Include="Threading\Tasks\TaskExtensions.cs" />
+    <Compile Include="Threading\Tasks\TaskHelper.cs" />
     <Compile Include="Threading\Tasks\ThreadContext.cs" />
     <Compile Include="Undefined.cs" />
   </ItemGroup>

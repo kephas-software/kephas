@@ -60,7 +60,7 @@ namespace Kephas.Messaging.Server
         /// </returns>
         public virtual Task BeforeProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return CompletedTask.Value;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Server
         /// </remarks>
         public Task AfterProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return CompletedTask.Value;
+            return TaskHelper.CompletedTask;
         }
     }
 }

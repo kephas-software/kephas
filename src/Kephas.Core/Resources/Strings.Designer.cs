@@ -179,6 +179,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple nodes found for value &apos;{0}&apos;..
+        /// </summary>
+        internal static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
+            get {
+                return ResourceManager.GetString("GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is intended to be replaced by a proper implementation..
         /// </summary>
         internal static string NullServiceExceptionMessage {

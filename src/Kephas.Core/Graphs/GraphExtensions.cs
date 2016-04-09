@@ -20,6 +20,31 @@ namespace Kephas.Graphs
     public static class GraphExtensions
     {
         /// <summary>
+        /// Merges the source graph into this graph.
+        /// </summary>
+        /// <typeparam name="TGraph">Type of the graph.</typeparam>
+        /// <param name="graph">The graph to act on.</param>
+        /// <param name="sourceGraph">The source graph.</param>
+        /// <returns>
+        /// This graph.
+        /// </returns>
+        public static TGraph Merge<TGraph>(this TGraph graph, TGraph sourceGraph)
+            where TGraph : Graph
+        {
+            Contract.Requires(graph != null);
+
+            if (sourceGraph == null)
+            {
+                return graph;
+            }
+
+            sourceGraph.Nodes.ForEach(n => graph.AddNode(n));
+            sourceGraph.Edges.ForEach(e => graph.AddEdge(e));
+
+            return graph;
+        }
+
+        /// <summary>
         /// Gets the connected subgraphs.
         /// </summary>
         /// <typeparam name="TGraph">Type of the graph.</typeparam>
@@ -28,7 +53,7 @@ namespace Kephas.Graphs
         /// The connected subgraphs.
         /// </returns>
         public static ICollection<TGraph> GetConnectedSubgraphs<TGraph>(this TGraph graph)
-            where TGraph : GraphBase
+            where TGraph : Graph
         {
             Contract.Requires(graph != null);
 
