@@ -45,6 +45,16 @@ namespace Kephas.Model
         /// The classifiers.
         /// </value>
         IEnumerable<IClassifier> Classifiers { get; }
+
+        /// <summary>
+        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was not found.</param>
+        /// <returns>
+        /// The classifier, or <c>null</c> if the classifier was not found and should not throw exceptions in this case.
+        /// </returns>
+        IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true);
     }
 
     /// <summary>
@@ -96,6 +106,22 @@ namespace Kephas.Model
                 Contract.Ensures(Contract.Result<IEnumerable<IClassifier>>() != null);
                 return Contract.Result<IEnumerable<IClassifier>>();
             }
+        }
+
+        /// <summary>
+        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was
+        ///                               not found.</param>
+        /// <returns>
+        /// The classifier.
+        /// </returns>
+        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
+        {
+            Contract.Requires(typeInfo != null);
+
+            return Contract.Result<IClassifier>();
         }
 
         /// <summary>

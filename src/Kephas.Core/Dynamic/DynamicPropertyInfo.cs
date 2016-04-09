@@ -100,6 +100,22 @@ namespace Kephas.Dynamic
         public ITypeInfo PropertyType => DynamicTypeInfo.GetDynamicType(this.PropertyInfo.PropertyType);
 
         /// <summary>
+        /// Gets a value indicating whether the property can be written to.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// </value>
+        public bool CanWrite => this.PropertyInfo.CanWrite;
+
+        /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        public bool CanRead => this.PropertyInfo.CanRead;
+
+        /// <summary>
         /// Gets the underlying member information.
         /// </summary>
         /// <returns>

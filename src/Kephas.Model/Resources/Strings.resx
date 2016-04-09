@@ -120,10 +120,16 @@
   <data name="CannotProvideElementInfoForRuntimeElement" xml:space="preserve">
     <value>Cannot provide an element information for the runtime element '{0}'.</value>
   </data>
+  <data name="DefaultModelSpace_ClassifierNotFoundException" xml:space="preserve">
+    <value>A classifier for '{0}' could not be found.</value>
+  </data>
   <data name="ElementNotFoundInMembers" xml:space="preserve">
     <value>The element '{0}' is not a member of '{1}'.</value>
   </data>
   <data name="NamedElementBase_MissingModelSpaceInConstructionContext_Exception" xml:space="preserve">
     <value>The model space is not set in the construction context.</value>
+  </data>
+  <data name="Property_MissingPartsToComputePropertyType_Exception" xml:space="preserve">
+    <value>Property '{0}' in '{1}' does not have any parts to be able to compute the property type.</value>
   </data>
 </root>

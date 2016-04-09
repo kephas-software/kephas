@@ -71,6 +71,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A classifier for &apos;{0}&apos; could not be found..
+        /// </summary>
+        internal static string DefaultModelSpace_ClassifierNotFoundException {
+            get {
+                return ResourceManager.GetString("DefaultModelSpace_ClassifierNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The element &apos;{0}&apos; is not a member of &apos;{1}&apos;..
         /// </summary>
         internal static string ElementNotFoundInMembers {
@@ -85,6 +94,15 @@ namespace Kephas.Model.Resources {
         internal static string NamedElementBase_MissingModelSpaceInConstructionContext_Exception {
             get {
                 return ResourceManager.GetString("NamedElementBase_MissingModelSpaceInConstructionContext_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property &apos;{0}&apos; in &apos;{1}&apos; does not have any parts to be able to compute the property type..
+        /// </summary>
+        internal static string Property_MissingPartsToComputePropertyType_Exception {
+            get {
+                return ResourceManager.GetString("Property_MissingPartsToComputePropertyType_Exception", resourceCulture);
             }
         }
     }

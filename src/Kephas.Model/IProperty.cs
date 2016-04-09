@@ -20,7 +20,7 @@ namespace Kephas.Model
     /// Contract for properties.
     /// </summary>
     [ContractClass(typeof(PropertyContractClass))]
-    public interface IProperty : IModelElement
+    public interface IProperty : IModelElement, IPropertyInfo
     {
         /// <summary>
         /// Gets the type of the property.
@@ -28,15 +28,7 @@ namespace Kephas.Model
         /// <value>
         /// The type of the property.
         /// </value>
-        IClassifier PropertyType { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the property can be written to.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the property can be written to; otherwise, <c>false</c>.
-        /// </value>
-        bool CanWrite { get; }
+        new IClassifier PropertyType { get; }
     }
 
     /// <summary>
@@ -61,12 +53,28 @@ namespace Kephas.Model
         }
 
         /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>
+        /// The type of the property.
+        /// </value>
+        ITypeInfo IPropertyInfo.PropertyType => this.PropertyType;
+
+        /// <summary>
         /// Gets a value indicating whether the property can be written to.
         /// </summary>
         /// <value>
         /// <c>true</c> if the property can be written to; otherwise, <c>false</c>.
         /// </value>
         public abstract bool CanWrite { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        public abstract bool CanRead { get; }
 
         /// <summary>
         /// Gets the friendly name of the element.

@@ -9,12 +9,15 @@
 
 namespace Kephas.Model.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Model.Construction;
+    using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// The default implementation of the model space.
@@ -22,12 +25,23 @@ namespace Kephas.Model.Elements
     public class DefaultModelSpace : ModelElementBase<IModelSpace>, IModelSpace
     {
         /// <summary>
+        /// Unique identifier.
+        /// </summary>
+        private readonly Guid guid = Guid.NewGuid();
+
+        /// <summary>
+        /// The classifier cache key.
+        /// </summary>
+        private string classifierCacheKey;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpace"/> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         public DefaultModelSpace(IModelConstructionContext constructionContext)
             : base(constructionContext, string.Empty)
         {
+            this.classifierCacheKey = $"CLS_{this.guid}";
         }
 
         /// <summary>
@@ -61,6 +75,47 @@ namespace Kephas.Model.Elements
         /// The classifiers.
         /// </value>
         public IEnumerable<IClassifier> Classifiers { get; private set; }
+
+        /// <summary>
+        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was not found.</param>
+        /// <returns>
+        /// The classifier, or <c>null</c> if the classifier was not found and should not throw exceptions in this case.
+        /// </returns>
+        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
+        {
+            var classifier = typeInfo as IClassifier;
+            if (classifier != null)
+            {
+                return classifier;
+            }
+
+            // try to get from the cached value.
+            classifier = typeInfo[this.classifierCacheKey] as IClassifier;
+            if (classifier != null)
+            {
+                return classifier;
+            }
+
+            classifier = this.TryComputeClassifier(typeInfo);
+            if (classifier == null)
+            {
+                if (throwOnNotFound)
+                {
+                    throw new ModelException(
+                        string.Format(Strings.DefaultModelSpace_ClassifierNotFoundException, typeInfo));
+                }
+            }
+            else
+            {
+                // set the cached value.
+                typeInfo[this.classifierCacheKey] = classifier;
+            }
+
+            return classifier;
+        }
 
         /// <summary>
         /// Calculates the dimensions.
@@ -172,7 +227,7 @@ namespace Kephas.Model.Elements
             {
                 var projectionElements = new List<IModelDimensionElement>(elements);
                 projectionElements.Add(element);
-                
+
                 this.BuildProjections(constructionContext, dimensions, index + 1, projectionElements, projections);
             }
         }
@@ -187,6 +242,22 @@ namespace Kephas.Model.Elements
         private string ComputeProjectionName(IEnumerable<IModelDimensionElement> elements)
         {
             return string.Concat(elements.Select(e => e.QualifiedName));
+        }
+
+        /// <summary>
+        /// Tries to compute the classifier of the provided <see cref="ITypeInfo"/>.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <returns>
+        /// An IClassifier.
+        /// </returns>
+        private IClassifier TryComputeClassifier(ITypeInfo typeInfo)
+        {
+            // TODO 
+            // return only aggregated classifiers, not partial ones.
+            // try to find in all classifiers, in all parts, the provided type info
+            // if one is found, the containing classifier is the searched one.
+            return null;
         }
     }
 }

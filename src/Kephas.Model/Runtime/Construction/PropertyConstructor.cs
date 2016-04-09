@@ -29,7 +29,11 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicPropertyInfo runtimeElement)
         {
-            var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement));
+            var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement))
+                               {
+                                   CanRead = runtimeElement.CanRead,
+                                   CanWrite = runtimeElement.CanWrite
+                               };
             return property;
         }
     }

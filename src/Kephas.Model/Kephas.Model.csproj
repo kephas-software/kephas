@@ -153,6 +153,8 @@
     <Compile Include="Behaviors\InstanceContext.cs" />
     <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
     <Compile Include="Behaviors\IValidBehaviorRule.cs" />
+    <Compile Include="Construction\ModelConstructionException.cs" />
+    <Compile Include="ModelException.cs" />
     <Compile Include="Runtime\Configuration\Composition\ElementConfiguratorMetadata.cs" />
     <Compile Include="Runtime\Configuration\ElementConfiguratorBase.cs" />
     <Compile Include="Runtime\Configuration\IElementConfigurator.cs" />
@@ -164,7 +166,7 @@
     <Compile Include="Dimensions\IAppDimension.cs" />
     <Compile Include="Dimensions\IModuleDimension.cs" />
     <Compile Include="Dimensions\IScopeDimension.cs" />
-    <Compile Include="Dimensions\App\IFoundationAppDimensionElement.cs" />
+    <Compile Include="Dimensions\App\IKernelAppDimensionElement.cs" />
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
     <Compile Include="Elements\Annotation.cs" />

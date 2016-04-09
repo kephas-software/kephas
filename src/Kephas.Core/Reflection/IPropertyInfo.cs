@@ -27,6 +27,22 @@ namespace Kephas.Reflection
         /// The type of the property.
         /// </value>
         ITypeInfo PropertyType { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the property can be written to.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// </value>
+        bool CanWrite { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        bool CanRead { get; }
     }
 
     /// <summary>
@@ -82,6 +98,22 @@ namespace Kephas.Reflection
                 return Contract.Result<ITypeInfo>();
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the property can be written to.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// </value>
+        public abstract bool CanWrite { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        public abstract bool CanRead { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer

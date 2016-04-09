@@ -70,7 +70,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         {
             return this.InProjection(b => b
                             .Dim<IKephasAppFamilyDimensionElement>()
-                            .Dim<IFoundationAppDimensionElement>()
+                            .Dim<IKernelAppDimensionElement>()
                             .Dim<ICoreModuleDimensionElement>()
                             .Dim<IGlobalScopeDimensionElement>()
                             .Dim<IDefaultAspectDimensionElement>());

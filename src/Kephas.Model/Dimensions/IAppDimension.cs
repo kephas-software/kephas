@@ -18,9 +18,9 @@ namespace Kephas.Model.Dimensions
     /// One possible use is the association of each model with a persistence store, like a database. 
     /// </summary>
     /// <remarks>
-    /// By default, Kephas provides an "Primitives" model which can be used to provide primitives to all the other models.
+    /// By default, Kephas provides the "Kernel" application which can be used to provide primitives to all the other models.
     /// </remarks>
-    [ModelDimension(1, DefaultDimensionElement = typeof(IFoundationAppDimensionElement))]
+    [ModelDimension(1, DefaultDimensionElement = typeof(IKernelAppDimensionElement))]
     public interface IAppDimension
     {
     }
