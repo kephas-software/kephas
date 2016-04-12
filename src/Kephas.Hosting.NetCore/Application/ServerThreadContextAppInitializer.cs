@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Web.Application
+namespace Kephas.Hosting.NetCore.Application
 {
     using System.Globalization;
     using System.Threading;
@@ -21,17 +21,17 @@ namespace Kephas.Web.Application
     /// A server application initializer.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class ServerThreadContextAppInitializer : IAppInitializer
+    public class ServerThreadContextAppInitializer : AppInitializerBase
     {
         /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
-        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             new ServerThreadContextBuilder(appContext.AmbientServices)
                 .WithStoreAction(StoreThreadCulture)

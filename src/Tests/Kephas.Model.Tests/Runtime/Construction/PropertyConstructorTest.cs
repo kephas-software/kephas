@@ -9,7 +9,6 @@
 
 namespace Kephas.Model.Tests.Runtime.Construction
 {
-    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
@@ -17,6 +16,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using NUnit.Framework;
 
     using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// A runtime property information factory test.
@@ -24,10 +24,10 @@ namespace Kephas.Model.Tests.Runtime.Construction
     [TestFixture]
     public class PropertyConstructorTest : ConstructorTestBase
     {
-        private INamedElement TryCreateAgeModelElement()
+        private INamedElement TryCreateAgeModelElement(IModelSpace modelSpace = null)
         {
             var constructor = new PropertyConstructor();
-            var context = this.GetConstructionContext();
+            var context = this.GetConstructionContext(modelSpace);
             var propertyInfo = typeof(TestModelElement).AsDynamicTypeInfo().Properties["Age"];
             var modelElement = constructor.TryCreateModelElement(context, propertyInfo);
 
@@ -52,20 +52,19 @@ namespace Kephas.Model.Tests.Runtime.Construction
         }
 
         [Test]
+        public void TryCreateModelElement_CanRead()
+        {
+            var modelElement = (IProperty)this.TryCreateAgeModelElement();
+
+            Assert.AreEqual(true, modelElement.CanRead);
+        }
+
+        [Test]
         public void TryCreateModelElement_CanWrite()
         {
             var modelElement = (IProperty)this.TryCreateAgeModelElement();
 
             Assert.AreEqual(true, modelElement.CanWrite);
-        }
-
-        [Test]
-        public void TryCreateModelElement_PropertyType()
-        {
-            var modelElement = (IProperty)this.TryCreateAgeModelElement();
-
-            // TODO fix the test
-            Assert.AreEqual(Mock.Create<IClassifier>(), modelElement.PropertyType);
         }
 
         public class TestModelElement

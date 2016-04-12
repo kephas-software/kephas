@@ -147,6 +147,7 @@
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="Application\AppBoostrapperExtensions.cs" />
     <Compile Include="Application\AppContext.cs" />
+    <Compile Include="Application\AppInitializerBase.cs" />
     <Compile Include="Application\AppManifestAttribute.cs" />
     <Compile Include="Application\AppManifestBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
@@ -284,6 +285,7 @@
     <None Include="Package.nuspec" />
     <AdditionalFiles Include="stylecop.json" />
     <None Include="packages.config" />
+    <None Include="Services\Transitioning\Transitioning.cd" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />

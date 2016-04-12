@@ -9,16 +9,33 @@
 
 namespace Kephas.Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Base class for application initializers.
+    /// Base class for application initializers providing an initialization monitor.
     /// </summary>
     public abstract class AppInitializerBase : IAppInitializer
     {
+#pragma warning disable SA1401 // Fields must be private
+        /// <summary>
+        /// The initialization monitor.
+        /// </summary>
+        protected readonly InitializationMonitor<IAppInitializer> InitializationMonitor;
+#pragma warning restore SA1401 // Fields must be private
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppInitializerBase"/> class.
+        /// </summary>
+        protected AppInitializerBase()
+        {
+            this.InitializationMonitor = new InitializationMonitor<IAppInitializer>(this.GetType());
+        }
+
         /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
@@ -27,22 +44,30 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return CompletedTask.Value;
+            this.InitializationMonitor.Start();
+
+            try
+            {
+                await this.InitializeCoreAsync(appContext, cancellationToken).WithServerThreadingContext();
+                this.InitializationMonitor.Complete();
+            }
+            catch (Exception ex)
+            {
+                this.InitializationMonitor.Fault(ex);
+                throw;
+            }
         }
 
         /// <summary>
-        /// Initializes the application asynchronously. The call can be executed with a delay, it is not critical for the application startup.
+        /// Initializes the application asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task InitializeDelayedAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return CompletedTask.Value;
-        }
+        protected abstract Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken);
     }
 }

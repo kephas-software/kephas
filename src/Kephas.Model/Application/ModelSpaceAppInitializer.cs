@@ -20,7 +20,7 @@ namespace Kephas.Model.Application
     /// Application initializer for the model space.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class ModelSpaceAppInitializer : IAppInitializer
+    public class ModelSpaceAppInitializer : AppInitializerBase
     {
         /// <summary>
         /// The model space provider.
@@ -46,7 +46,7 @@ namespace Kephas.Model.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken);
         }

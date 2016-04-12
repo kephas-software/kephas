@@ -50,11 +50,23 @@ namespace Kephas.Services.Transitioning
         /// Initializes a new instance of the <see cref="TransitionMonitor"/> class.
         /// </summary>
         /// <param name="transitionName">Name of the transition.</param>
+        public TransitionMonitor(string transitionName)
+        {
+            this.transitionName = transitionName;
+            // ReSharper disable once VirtualMemberCallInContructor
+            this.serviceName = this.GetServiceName();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransitionMonitor"/> class.
+        /// </summary>
+        /// <param name="transitionName">Name of the transition.</param>
         /// <param name="serviceName">Name of the service.</param>
         public TransitionMonitor(string transitionName, string serviceName)
         {
             this.transitionName = transitionName;
-            this.serviceName = serviceName;
+            // ReSharper disable once VirtualMemberCallInContructor
+            this.serviceName = serviceName ?? this.GetServiceName();
         }
 
         /// <summary>
@@ -217,6 +229,17 @@ namespace Kephas.Services.Transitioning
                 this.isFaulted = false;
             }
         }
+
+        /// <summary>
+        /// Gets service name.
+        /// </summary>
+        /// <returns>
+        /// The service name.
+        /// </returns>
+        protected virtual string GetServiceName()
+        {
+            return $"[{this.GetType().Name}]";
+        }
     }
 
     /// <summary>
@@ -232,7 +255,7 @@ namespace Kephas.Services.Transitioning
         /// </summary>
         /// <param name="transitionName">Name of the transition.</param>
         public TransitionMonitor(string transitionName)
-            : base(transitionName, GetServiceName())
+            : base(transitionName, ComputeServiceName())
         {
         }
 
@@ -240,9 +263,40 @@ namespace Kephas.Services.Transitioning
         /// Gets the name of the service.
         /// </summary>
         /// <returns>The name of the service.</returns>
-        private static string GetServiceName()
+        private static string ComputeServiceName()
         {
-            return string.Format("{0} [{1}]", typeof(TContract).Name, typeof(TServiceImplementation).Name);
+            return $"{typeof(TContract).Name} [{typeof(TServiceImplementation).Name}]";
+        }
+    }
+
+    /// <summary>
+    /// Class monitoring the state of a transition for the service <typeparamref name="TContract"/> with the implementation type provided in constructor.
+    /// </summary>
+    /// <typeparam name="TContract">The contract type.</typeparam>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    public class TransitionMonitor<TContract> : TransitionMonitor
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransitionMonitor{TContract}" /> class.
+        /// </summary>
+        /// <param name="transitionName">Name of the transition.</param>
+        /// <param name="serviceImplementationType">Type of the service implementation.</param>
+        public TransitionMonitor(string transitionName, Type serviceImplementationType)
+            : base(transitionName, ComputeServiceName(serviceImplementationType))
+        {
+            Contract.Requires(serviceImplementationType != null);
+        }
+
+        /// <summary>
+        /// Gets the name of the service.
+        /// </summary>
+        /// <param name="serviceImplementationType">Type of the service implementation.</param>
+        /// <returns>
+        /// The name of the service.
+        /// </returns>
+        private static string ComputeServiceName(Type serviceImplementationType)
+        {
+            return $"{typeof(TContract).Name} [{serviceImplementationType.Name}]";
         }
     }
 }
