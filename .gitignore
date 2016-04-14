@@ -228,3 +228,4 @@ _Pvt_Extensions
 
 # Vagrant virtual-machine directory
 .vagrant
+/Samples/SimpleAspNetWebApp

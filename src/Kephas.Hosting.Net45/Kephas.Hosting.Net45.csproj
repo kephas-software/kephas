@@ -147,6 +147,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
     <None Include="Package.nuspec" />
     <AdditionalFiles Include="stylecop.json" />
     <None Include="packages.config" />

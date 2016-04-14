@@ -130,6 +130,9 @@
     <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
     <None Include="Package.nuspec" />
     <None Include="project.json" />
     <AdditionalFiles Include="stylecop.json" />

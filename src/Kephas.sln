@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -54,6 +54,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail", "Kephas.Mail\Kephas.Mail.csproj", "{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.Net45", "Kephas.Mail.Net45\Kephas.Mail.Net45.csproj", "{51222BCB-E855-4CF5-9BB0-4049EE035E54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +133,14 @@ Global
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51222BCB-E855-4CF5-9BB0-4049EE035E54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51222BCB-E855-4CF5-9BB0-4049EE035E54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51222BCB-E855-4CF5-9BB0-4049EE035E54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51222BCB-E855-4CF5-9BB0-4049EE035E54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

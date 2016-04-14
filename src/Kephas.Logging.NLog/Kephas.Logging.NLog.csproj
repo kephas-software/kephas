@@ -144,6 +144,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
     <None Include="Package.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
