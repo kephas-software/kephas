@@ -8,7 +8,7 @@
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Diagnostics;
-    using Kephas.Hosting.Net45;
+    using Kephas.Platform.Net45;
     using Kephas.Logging.NLog;
 
     using RoleGame.Composition;
@@ -38,7 +38,7 @@
                 {
                     await ambientServicesBuilder
                             .WithNLogManager()
-                            .WithNet45HostingEnvironment()
+                            .WithNet45AppEnvironment()
                             .WithMefCompositionContainerAsync(b => b.WithScopeFactory<UserMefScopeFactory>()
                                                                     .WithConventions(CompositionHelper.GetConventions()));
 

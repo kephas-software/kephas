@@ -6,7 +6,7 @@
     using Kephas;
     using Kephas.Application;
     using Kephas.Diagnostics;
-    using Kephas.Hosting.Net45;
+    using Kephas.Platform.Net45;
     using Kephas.Logging.NLog;
 
     using AppContext = Kephas.Application.AppContext;
@@ -29,7 +29,7 @@
                 {
                     await ambientServicesBuilder
                             .WithNLogManager()
-                            .WithNet45HostingEnvironment()
+                            .WithNet45AppEnvironment()
                             .WithMefCompositionContainerAsync();
 
                     var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
