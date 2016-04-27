@@ -37,6 +37,14 @@ namespace Kephas.Model
         /// The classifier properties.
         /// </value>
         IEnumerable<IProperty> Properties { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this classifier is a mixin.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this classifier is a mixin, <c>false</c> if not.
+        /// </value>
+        bool IsMixin { get; }
     }
 
     /// <summary>
@@ -67,6 +75,14 @@ namespace Kephas.Model
                 return Contract.Result<IEnumerable<IProperty>>();
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this classifier is a mixin.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this classifier is a mixin, <c>false</c> if not.
+        /// </value>
+        public bool IsMixin { get; }
 
         /// <summary>
         /// Gets the name of the model element.

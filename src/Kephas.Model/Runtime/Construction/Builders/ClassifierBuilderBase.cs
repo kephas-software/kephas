@@ -10,6 +10,7 @@
 namespace Kephas.Model.Runtime.Construction.Builders
 {
     using System;
+    using System.Linq;
 
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
@@ -19,6 +20,10 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Model.Dimensions.Module;
     using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Annotations;
+    using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Model.Runtime.Construction.Annotations;
+    using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>
     /// Base abstract builder for runtime classifier information.
@@ -74,6 +79,26 @@ namespace Kephas.Model.Runtime.Construction.Builders
                             .Dim<ICoreModuleDimensionElement>()
                             .Dim<IGlobalScopeDimensionElement>()
                             .Dim<IDefaultAspectDimensionElement>());
+        }
+
+        /// <summary>
+        /// Marks the classifier as mixin.
+        /// </summary>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public TBuilder AsMixin()
+        {
+            if (!this.Element.Members.OfType<MixinAnnotation>().Any())
+            {
+                var annotation = MixinAnnotationConstructor.Instance.TryCreateModelElement(this.ConstructionContext, new MixinAttribute());
+                if (annotation != null)
+                {
+                    (this.Element as IWritableNamedElement)?.AddMember(annotation);
+                }
+            }
+
+            return (TBuilder)this;
         }
     }
 }

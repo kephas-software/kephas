@@ -232,6 +232,7 @@
     <Compile Include="Logging\NullLogManager.cs" />
     <Compile Include="Logging\TypedLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\AggregatedElementInfoExtensions.cs" />
     <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\DefaultAssemblyLoader.cs" />
     <Compile Include="Reflection\IAggregatedElementInfo.cs" />

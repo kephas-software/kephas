@@ -257,7 +257,8 @@ namespace Kephas.Model.Elements
             // return only aggregated classifiers, not partial ones.
             // try to find in all classifiers, in all parts, the provided type info
             // if one is found, the containing classifier is the searched one.
-            return null;
+
+            return this.Classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
         }
     }
 }

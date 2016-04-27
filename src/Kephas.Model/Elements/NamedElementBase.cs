@@ -18,6 +18,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
+    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base class for named elements.
@@ -58,6 +59,9 @@ namespace Kephas.Model.Elements
             this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
 
             this.parts = new List<object>();
+
+            this.ConstructionMonitor = new InitializationMonitor<TModelContract>(this.GetType());
+            this.ConstructionMonitor.Start();
         }
 
         /// <summary>
@@ -159,6 +163,14 @@ namespace Kephas.Model.Elements
         public virtual IModelSpace ModelSpace { get; }
 
         /// <summary>
+        /// Gets the construction monitor.
+        /// </summary>
+        /// <value>
+        /// The construction monitor.
+        /// </value>
+        protected InitializationMonitor<TModelContract> ConstructionMonitor { get; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -202,7 +214,15 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         void IWritableNamedElement.CompleteConstruction(IModelConstructionContext constructionContext)
         {
-            this.OnCompleteConstruction(constructionContext);
+            try
+            {
+                this.OnCompleteConstruction(constructionContext);
+                this.ConstructionMonitor.Complete();
+            }
+            catch (Exception exception)
+            {
+                this.ConstructionMonitor.Fault(exception);
+            }
         }
 
         /// <summary>

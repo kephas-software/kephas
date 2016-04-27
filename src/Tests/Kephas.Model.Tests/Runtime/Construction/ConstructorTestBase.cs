@@ -16,9 +16,13 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Configuration;
+    using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Construction.Composition;
+
+    using NUnit.Framework.Constraints;
 
     using Telerik.JustMock;
     using Telerik.JustMock.Helpers;
@@ -52,7 +56,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
                                        this.CreateExportFactory((IRuntimeModelElementConstructor)new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IDynamicPropertyInfo))),
                                    };
 
-            var factory = new DefaultRuntimeModelElementFactory(constructors);
+            var configurators = new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>();
+
+            var factory = new DefaultRuntimeModelElementFactory(constructors, configurators);
             return factory;
         }
 

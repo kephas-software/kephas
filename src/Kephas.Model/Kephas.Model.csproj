@@ -156,11 +156,13 @@
     <Compile Include="Behaviors\InstanceContext.cs" />
     <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
     <Compile Include="Behaviors\IValidBehaviorRule.cs" />
+    <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Construction\ModelConstructionException.cs" />
+    <Compile Include="Elements\Annotations\MixinAnnotation.cs" />
     <Compile Include="ModelException.cs" />
-    <Compile Include="Runtime\Configuration\Composition\ElementConfiguratorMetadata.cs" />
-    <Compile Include="Runtime\Configuration\ElementConfiguratorBase.cs" />
-    <Compile Include="Runtime\Configuration\IElementConfigurator.cs" />
+    <Compile Include="Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs" />
+    <Compile Include="Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs" />
+    <Compile Include="Runtime\Configuration\IRuntimeModelElementConfigurator.cs" />
     <Compile Include="Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs" />
     <Compile Include="Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs" />
     <Compile Include="Dimensions\Aspect\IDefaultAspectDimensionElement.cs" />
@@ -177,7 +179,8 @@
     <Compile Include="Elements\Classifier.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
     <Compile Include="Runtime\AttributedModel\ValueTypeAttribute.cs" />
-    <Compile Include="Runtime\Configuration\ModelDimensionElementRuntimeConfigurator.cs" />
+    <Compile Include="Runtime\Configuration\ModelDimensionElementConfigurator.cs" />
+    <Compile Include="Runtime\Construction\Annotations\MixinAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\Builders\ClassifierBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\ModelElementBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\NamedElementBuilderBase.cs" />

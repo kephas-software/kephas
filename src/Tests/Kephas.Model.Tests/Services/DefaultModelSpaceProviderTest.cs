@@ -5,6 +5,8 @@
 
     using Kephas.Composition;
     using Kephas.Model.Construction;
+    using Kephas.Model.Runtime.Configuration;
+    using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Model.Services;
@@ -27,7 +29,8 @@
         private IRuntimeModelElementFactory GetRuntimeModelElementFactory()
         {
             return new DefaultRuntimeModelElementFactory(
-                new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>());
+                new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
+                new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>());
         }
     }
 }

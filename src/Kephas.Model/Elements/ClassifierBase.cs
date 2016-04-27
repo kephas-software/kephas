@@ -13,6 +13,7 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Construction;
+    using Kephas.Model.Elements.Annotations;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -21,6 +22,11 @@ namespace Kephas.Model.Elements
     public abstract class ClassifierBase<TModelContract> : ModelElementBase<TModelContract>, IClassifier
         where TModelContract : IClassifier
     {
+        /// <summary>
+        /// True if this object is a mixin.
+        /// </summary>
+        private bool? isMixin;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract}" /> class.
         /// </summary>
@@ -48,11 +54,34 @@ namespace Kephas.Model.Elements
         public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
 
         /// <summary>
+        /// Gets a value indicating whether this classifier is a mixin.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this classifier is a mixin, <c>false</c> if not.
+        /// </value>
+        public bool IsMixin
+            => // during construction, compute each time this flag, after that only once.
+                this.ConstructionMonitor.IsInProgress
+                    ? this.ComputeIsMixin()
+                    : (this.isMixin ?? (this.isMixin = this.ComputeIsMixin()).Value);
+
+        /// <summary>
         /// Gets the namespace of the type.
         /// </summary>
         /// <value>
         /// The namespace of the type.
         /// </value>
         public string Namespace => this.Projection?.FullName;
+
+        /// <summary>
+        /// Calculates the flag indicating whether the classifier is a mixin or not.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the classifier is a mixin, <c>false</c> otherwise.
+        /// </returns>
+        protected virtual bool ComputeIsMixin()
+        {
+            return this.Members.OfType<MixinAnnotation>().Any() || this.Name.EndsWith("Mixin");
+        }
     }
 }

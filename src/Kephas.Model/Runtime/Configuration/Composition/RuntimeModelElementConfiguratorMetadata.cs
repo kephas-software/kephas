@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ElementConfiguratorMetadata.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeModelElementConfiguratorMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -18,13 +18,13 @@ namespace Kephas.Model.Runtime.Configuration.Composition
     /// <summary>
     /// Metadata for element factories.
     /// </summary>
-    public class ElementConfiguratorMetadata : AppServiceMetadata
+    public class RuntimeModelElementConfiguratorMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ElementConfiguratorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeModelElementConfiguratorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ElementConfiguratorMetadata(IDictionary<string, object> metadata) 
+        public RuntimeModelElementConfiguratorMetadata(IDictionary<string, object> metadata) 
             : base(metadata)
         {
             if (metadata == null)

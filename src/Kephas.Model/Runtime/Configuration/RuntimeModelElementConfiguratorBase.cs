@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ElementConfiguratorBase.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeModelElementConfiguratorBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -9,15 +9,17 @@
 
 namespace Kephas.Model.Runtime.Configuration
 {
+    using Kephas.Model.Configuration;
+
     /// <summary>
     /// Base configurator for model elements.
     /// </summary>
     /// <typeparam name="TElement">The type of the element.</typeparam>
     /// <typeparam name="TRuntimeElement">Type of the runtime element.</typeparam>
     /// <typeparam name="TConfigurator">The type of the configurator.</typeparam>
-    public abstract class ElementConfiguratorBase<TElement, TRuntimeElement, TConfigurator> : IElementConfigurator<TElement, TRuntimeElement>
+    public abstract class RuntimeModelElementConfiguratorBase<TElement, TRuntimeElement, TConfigurator> : IRuntimeModelElementConfigurator<TElement, TRuntimeElement>
         where TElement : INamedElement
-        where TConfigurator : IElementConfigurator<TElement, TRuntimeElement>
+        where TConfigurator : IRuntimeModelElementConfigurator<TElement, TRuntimeElement>
     {
         /// <summary>
         /// Gets the element to be configured.

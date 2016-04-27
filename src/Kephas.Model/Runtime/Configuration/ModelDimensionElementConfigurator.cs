@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelDimensionElementRuntimeConfigurator.cs" company="Quartz Software SRL">
+// <copyright file="ModelDimensionElementConfigurator.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -15,7 +15,7 @@ namespace Kephas.Model.Runtime.Configuration
     /// A model dimension element runtime configurator.
     /// </summary>
     /// <typeparam name="TRuntimeElement">Type of the runtime element.</typeparam>
-    public abstract class ModelDimensionElementRuntimeConfigurator<TRuntimeElement> : ElementConfiguratorBase<IModelDimensionElement, TRuntimeElement, ModelDimensionElementRuntimeConfigurator<TRuntimeElement>>
+    public abstract class ModelDimensionElementConfigurator<TRuntimeElement> : RuntimeModelElementConfiguratorBase<IModelDimensionElement, TRuntimeElement, ModelDimensionElementConfigurator<TRuntimeElement>>
     {
         /// <summary>
         /// Marks the model dimension element depending on the provided other dimension elements identified by their runtime types.
@@ -24,7 +24,7 @@ namespace Kephas.Model.Runtime.Configuration
         /// <returns>
         /// This configurator.
         /// </returns>
-        public ModelDimensionElementRuntimeConfigurator<TRuntimeElement> DependsOn(params Type[] elements)
+        public ModelDimensionElementConfigurator<TRuntimeElement> DependsOn(params Type[] elements)
         {
             // TODO...
 
