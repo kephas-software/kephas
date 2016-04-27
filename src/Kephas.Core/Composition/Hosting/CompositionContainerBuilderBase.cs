@@ -17,14 +17,15 @@ namespace Kephas.Composition.Hosting
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Composition.Conventions;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
-    using Kephas.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Base class for composition container builders.
@@ -52,35 +53,26 @@ namespace Kephas.Composition.Hosting
         /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        protected CompositionContainerBuilderBase(ICompositionContainerBuilderContext context)
-            : this(context.LogManager, context.ConfigurationManager, context.HostingEnvironment)
+        protected CompositionContainerBuilderBase(IContext context)
         {
             Contract.Requires(context != null);
-        }
+            Contract.Requires(context.AmbientServices != null);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
-        /// </summary>
-        /// <param name="logManager">The log manager.</param>
-        /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="hostingEnvironment">The hosting environment.</param>
-        protected CompositionContainerBuilderBase(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
-        {
-            Contract.Requires(logManager != null);
-            Contract.Requires(configurationManager != null);
-            Contract.Requires(hostingEnvironment != null);
+            this.ExportProviders = new List<IExportProvider>();
 
-            this.ExportProviders = new Dictionary<Type, IExportProvider>();
+            this.LogManager = context.AmbientServices.GetService<ILogManager>();
+            this.AssertRequiredService(this.LogManager);
 
-            this.Logger = logManager.GetLogger(this.GetType());
+            this.ConfigurationManager = context.AmbientServices.GetService<IConfigurationManager>();
+            this.AssertRequiredService(this.ConfigurationManager);
 
-            this.LogManager = logManager;
-            this.ConfigurationManager = configurationManager;
-            this.HostingEnvironment = hostingEnvironment;
+            this.AppEnvironment = context.AmbientServices.GetService<IAppEnvironment>();
+            this.AssertRequiredService(this.AppEnvironment);
 
-            this.WithFactoryProvider(() => logManager, isShared: true)
-                .WithFactoryProvider(() => configurationManager, isShared: true)
-                .WithFactoryProvider(() => hostingEnvironment, isShared: true);
+            this.Logger = this.LogManager.GetLogger(this.GetType());
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.WithServiceProviderExportProvider(context.AmbientServices);
         }
 
         /// <summary>
@@ -89,7 +81,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The log manager.
         /// </value>
-        public ILogManager LogManager { get; private set; }
+        public ILogManager LogManager { get; }
 
         /// <summary>
         /// Gets the configuration manager.
@@ -105,7 +97,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The hosting environment.
         /// </value>
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IAppEnvironment AppEnvironment { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -137,7 +129,7 @@ namespace Kephas.Composition.Hosting
         /// <value>
         /// The export providers.
         /// </value>
-        protected IDictionary<Type, IExportProvider> ExportProviders { get; }
+        protected IList<IExportProvider> ExportProviders { get; }
 
         /// <summary>
         /// Adds the assemblies containing the conventions.
@@ -283,7 +275,7 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Adds the factory provider.
+        /// Adds the factory export provider.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="factory">The factory.</param>
@@ -294,13 +286,54 @@ namespace Kephas.Composition.Hosting
         /// <remarks>
         /// Can be used multiple times, the factories are added to the existing ones.
         /// </remarks>
-        public virtual TBuilder WithFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
+        public virtual TBuilder WithFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
         {
             Contract.Requires(factory != null);
             Contract.Ensures(Contract.Result<TBuilder>() != null);
 
-            var provider = this.CreateFactoryProvider(factory, isShared);
-            this.ExportProviders[typeof(TContract)] = provider;
+            var exportProvider = this.CreateFactoryExportProvider(factory, isShared);
+            this.ExportProviders.Add(exportProvider);
+
+            return (TBuilder)this;
+        }
+
+        /// <summary>
+        /// Adds an export provider based on the given <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <remarks>
+        /// Can be used multiple times, the factories are added to the existing ones.
+        /// </remarks>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public virtual TBuilder WithServiceProviderExportProvider(IServiceProvider serviceProvider)
+        {
+            Contract.Requires(serviceProvider != null);
+            Contract.Ensures(Contract.Result<TBuilder>() != null);
+
+            var exportProvider = this.CreateServiceProviderExportProvider(serviceProvider);
+            this.ExportProviders.Add(exportProvider);
+
+            return (TBuilder)this;
+        }
+
+        /// <summary>
+        /// Adds the export provider.
+        /// </summary>
+        /// <remarks>
+        /// Can be used multiple times, the factories are added to the existing ones.
+        /// </remarks>
+        /// <param name="exportProvider">The export provider.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public virtual TBuilder WithExportProvider(IExportProvider exportProvider)
+        {
+            Contract.Requires(exportProvider != null);
+            Contract.Ensures(Contract.Result<TBuilder>() != null);
+
+            this.ExportProviders.Add(exportProvider);
 
             return (TBuilder)this;
         }
@@ -348,7 +381,7 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Creates a new factory provider.
+        /// Creates a new factory export provider.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="factory">The factory.</param>
@@ -356,7 +389,16 @@ namespace Kephas.Composition.Hosting
         /// <returns>
         /// The export provider.
         /// </returns>
-        protected abstract IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false);
+        protected abstract IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false);
+
+        /// <summary>
+        /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <returns>
+        /// The export provider.
+        /// </returns>
+        protected abstract IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider);
 
         /// <summary>
         /// Factory method for creating the conventions builder.
@@ -424,6 +466,20 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
+        /// Asserts the the required service is not missing.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="service">The service.</param>
+        protected void AssertRequiredService<TService>(TService service)
+        {
+            if (service == null)
+            {
+                throw new InvalidOperationException(string.Format(Strings.CompositionContainerBuilderBase_RequiredServiceMissing_Exception, typeof(TService).FullName));
+            }
+        }
+
+        /// <summary>
         /// Gets the assemblies.
         /// </summary>
         /// <param name="searchPattern">The search pattern.</param>
@@ -439,7 +495,7 @@ namespace Kephas.Composition.Hosting
             await Profiler.WithDebugStopwatchAsync(
                 async () =>
                 {
-                    var appAssemblies = await this.HostingEnvironment.GetAppAssembliesAsync();
+                    var appAssemblies = await this.AppEnvironment.GetAppAssembliesAsync();
                     appAssemblies = this.WhereNotSystemAssemblies(appAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))

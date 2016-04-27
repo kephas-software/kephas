@@ -10,14 +10,16 @@
 namespace Kephas
 {
     using System;
-    using System.Diagnostics.Contracts;
+    using System.Collections.Concurrent;
 
+    using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Hosting;
     using Kephas.Logging;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Provides the global ambient services.
@@ -33,24 +35,9 @@ namespace Kephas
     public class AmbientServices : Expando, IAmbientServices
     {
         /// <summary>
-        /// The composition container.
+        /// The services.
         /// </summary>
-        private ICompositionContext compositionContainer;
-
-        /// <summary>
-        /// The logger factory.
-        /// </summary>
-        private ILogManager logManager;
-
-        /// <summary>
-        /// The hosting environment.
-        /// </summary>
-        private IHostingEnvironment hostingEnvironment;
-
-        /// <summary>
-        /// The application configuration provider.
-        /// </summary>
-        private IConfigurationManager configurationManager;
+        private readonly ConcurrentDictionary<Type, object> services = new ConcurrentDictionary<Type, object>();
 
         /// <summary>
         /// Initializes static members of the <see cref="AmbientServices"/> class.
@@ -65,10 +52,11 @@ namespace Kephas
         /// </summary>
         internal AmbientServices()
         {
-            this.CompositionContainer = new NullCompositionContainer();
-            this.LogManager = new NullLogManager();
-            this.HostingEnvironment = new NullHostingEnvironment();
-            this.ConfigurationManager = new NullConfigurationManager();
+            this.RegisterService<IAppEnvironment>(new DefaultAppEnvironment())
+                .RegisterService<ILogManager>(new NullLogManager())
+                .RegisterService<IConfigurationManager>(new NullConfigurationManager())
+                .RegisterService<ICompositionContext>(new NullCompositionContainer())
+                .RegisterService<IAssemblyLoader>(new DefaultAssemblyLoader());
         }
 
         /// <summary>
@@ -80,121 +68,77 @@ namespace Kephas
         public static IAmbientServices Instance { get; }
 
         /// <summary>
-        /// Gets or sets the composition container.
+        /// Gets the composition container.
         /// </summary>
         /// <value>
         /// The composition container.
         /// </value>
-        public ICompositionContext CompositionContainer
-        {
-            get
-            {
-                return this.compositionContainer;
-            }
-
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.compositionContainer = value;
-            }
-        }
+        public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
 
         /// <summary>
-        /// Gets or sets the hosting environment.
+        /// Gets the application environment.
         /// </summary>
         /// <value>
-        /// The hosting environment.
+        /// The application environment.
         /// </value>
-        public IHostingEnvironment HostingEnvironment
-        {
-            get
-            {
-                return this.hostingEnvironment;
-            }
-
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.hostingEnvironment = value;
-            }
-        }
+        public IAppEnvironment AppEnvironment => this.GetService<IAppEnvironment>();
 
         /// <summary>
-        /// Gets or sets the application configuration provider.
+        /// Gets the application configuration manager.
         /// </summary>
         /// <value>
-        /// The application configuration provider.
+        /// The application configuration manager.
         /// </value>
-        public IConfigurationManager ConfigurationManager
-        {
-            get
-            {
-                return this.configurationManager;
-            }
-
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.configurationManager = value;
-            }
-        }
+        public IConfigurationManager ConfigurationManager => this.GetService<IConfigurationManager>();
 
         /// <summary>
-        /// Gets or sets the logger factory.
+        /// Gets the log manager.
         /// </summary>
         /// <value>
-        /// The logger factory.
+        /// The log manager.
         /// </value>
-        public ILogManager LogManager
-        {
-            get
-            {
-                return this.logManager;
-            }
-
-            set
-            {
-                Contract.Requires(value != null);
-
-                this.logManager = value;
-            }
-        }
+        public ILogManager LogManager => this.GetService<ILogManager>();
 
         /// <summary>
-        /// Gets the logger with the provided name.
+        /// Registers the provided service.
         /// </summary>
-        /// <param name="loggerName">Name of the logger.</param>
-        /// <returns>A logger for the provided name.</returns>
-        public ILogger GetLogger(string loggerName)
-        {
-            return this.LogManager.GetLogger(loggerName);
-        }
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <param name="type">The type.</param>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="service">The service.</param>
         /// <returns>
-        /// A logger for the provided type.
+        /// The IAmbientServices.
         /// </returns>
-        public ILogger GetLogger(Type type)
+        public IAmbientServices RegisterService<TService>(TService service)
+            where TService : class
         {
-            return this.LogManager.GetLogger(type);
+            this.services[typeof(TService)] = service;
+
+            return this;
         }
 
         /// <summary>
-        /// Gets the logger for the provided type.
+        /// Gets the service with the provided type.
         /// </summary>
-        /// <typeparam name="T">The type for which a logger should be created.</typeparam>
+        /// <typeparam name="TService">Type of the service.</typeparam>
         /// <returns>
-        /// A logger for the provided type.
+        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no service object of type <typeparamref name="TService"/>.
         /// </returns>
-        public ILogger<T> GetLogger<T>()
+        public TService GetService<TService>()
+            where TService : class
         {
-            return new TypedLogger<T>(this.LogManager);
+            return (TService)this.GetService(typeof(TService));
+        }
+
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
+        /// <param name="serviceType">An object that specifies the type of service object to get. </param>
+        public object GetService(Type serviceType)
+        {
+            var service = this.services.TryGetValue(serviceType);
+            return service;
         }
     }
 }

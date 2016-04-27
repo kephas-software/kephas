@@ -14,17 +14,17 @@ namespace Kephas
     using System.Dynamic;
     using System.Linq.Expressions;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Hosting;
     using Kephas.Logging;
 
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
     [ContractClass(typeof(AmbientServicesContractClass))]
-    public interface IAmbientServices : IExpando
+    public interface IAmbientServices : IExpando, IServiceProvider
     {
         /// <summary>
         /// Gets the composition container.
@@ -35,53 +35,49 @@ namespace Kephas
         ICompositionContext CompositionContainer { get; }
 
         /// <summary>
-        /// Gets the hosting environment.
+        /// Gets the application environment.
         /// </summary>
         /// <value>
-        /// The hosting environment.
+        /// The application environment.
         /// </value>
-        IHostingEnvironment HostingEnvironment { get; }
+        IAppEnvironment AppEnvironment { get; }
 
         /// <summary>
-        /// Gets the application configuration provider.
+        /// Gets the application configuration manager.
         /// </summary>
         /// <value>
-        /// The application configuration provider.
+        /// The application configuration manager.
         /// </value>
         IConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
-        /// Gets the logger factory.
+        /// Gets the log manager.
         /// </summary>
         /// <value>
-        /// The logger factory.
+        /// The log manager.
         /// </value>
         ILogManager LogManager { get; }
 
         /// <summary>
-        /// Gets the logger with the provided name.
+        /// Registers the provided service.
         /// </summary>
-        /// <param name="loggerName">Name of the logger.</param>
-        /// <returns>A logger for the provided name.</returns>
-        ILogger GetLogger(string loggerName);
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        IAmbientServices RegisterService<TService>(TService service)
+            where TService : class;
 
         /// <summary>
-        /// Gets the logger for the provided type.
+        /// Gets the service with the provided type.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <typeparam name="TService">Type of the service.</typeparam>
         /// <returns>
-        /// A logger for the provided type.
+        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no service object of type <typeparamref name="TService"/>.
         /// </returns>
-        ILogger GetLogger(Type type);
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <typeparam name="T">The type for which a logger should be created.</typeparam>
-        /// <returns>
-        /// A logger for the provided type.
-        /// </returns>
-        ILogger<T> GetLogger<T>();
+        TService GetService<TService>()
+            where TService : class;
     }
 
     /// <summary>
@@ -99,26 +95,26 @@ namespace Kephas
         public abstract ICompositionContext CompositionContainer { get; }
 
         /// <summary>
-        /// Gets the hosting environment.
+        /// Gets the application environment.
         /// </summary>
         /// <value>
-        /// The hosting environment.
+        /// The application environment.
         /// </value>
-        public abstract IHostingEnvironment HostingEnvironment { get; }
+        public abstract IAppEnvironment AppEnvironment { get; }
 
         /// <summary>
-        /// Gets the application configuration provider.
+        /// Gets the application configuration manager.
         /// </summary>
         /// <value>
-        /// The application configuration provider.
+        /// The application configuration manager.
         /// </value>
         public abstract IConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
-        /// Gets the logger factory.
+        /// Gets the log manager.
         /// </summary>
         /// <value>
-        /// The logger factory.
+        /// The log manager.
         /// </value>
         public abstract ILogManager LogManager { get; }
 
@@ -139,41 +135,6 @@ namespace Kephas
         public abstract object this[string key] { get; set; }
 
         /// <summary>
-        /// Gets the logger with the provided name.
-        /// </summary>
-        /// <param name="loggerName">Name of the logger.</param>
-        /// <returns>A logger for the provided name.</returns>
-        public ILogger GetLogger(string loggerName)
-        {
-            Contract.Requires(!string.IsNullOrWhiteSpace(loggerName));
-
-            return Contract.Result<ILogger>();
-        }
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// A logger for the provided type.
-        /// </returns>
-        public ILogger GetLogger(Type type)
-        {
-            Contract.Requires(type != null);
-
-            return Contract.Result<ILogger>();
-        }
-
-        /// <summary>
-        /// Gets the logger for the provided type.
-        /// </summary>
-        /// <typeparam name="T">The type for which a logger should be created.</typeparam>
-        /// <returns>
-        /// A logger for the provided type.
-        /// </returns>
-        public abstract ILogger<T> GetLogger<T>();
-
-        /// <summary>
         /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject"/> responsible for binding operations performed on this object.
         /// </summary>
         /// <returns>
@@ -181,5 +142,42 @@ namespace Kephas
         /// </returns>
         /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public IAmbientServices RegisterService<TService>(TService service)
+            where TService : class
+        {
+            Contract.Requires(service != null);
+            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
+
+            return Contract.Result<IAmbientServices>();
+        }
+
+        /// <summary>
+        /// Gets the service with the provided type.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <returns>
+        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
+        /// service object of type <typeparamref name="TService"/>.
+        /// </returns>
+        public abstract TService GetService<TService>()
+            where TService : class;
+
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
+        /// <param name="serviceType">An object that specifies the type of service object to get. </param>
+        public abstract object GetService(Type serviceType);
     }
 }

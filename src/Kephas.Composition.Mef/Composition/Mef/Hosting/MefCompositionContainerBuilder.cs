@@ -24,9 +24,7 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Composition.Metadata;
-    using Kephas.Configuration;
-    using Kephas.Hosting;
-    using Kephas.Logging;
+    using Kephas.Services;
 
     /// <summary>
     /// Builder for the MEF composition container.
@@ -50,21 +48,10 @@ namespace Kephas.Composition.Mef.Hosting
         /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public MefCompositionContainerBuilder(ICompositionContainerBuilderContext context)
+        public MefCompositionContainerBuilder(IContext context)
             : base(context)
         {
             Contract.Requires(context != null);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
-        /// </summary>
-        /// <param name="logManager">The log manager.</param>
-        /// <param name="configurationManager">The configuration manager.</param>
-        /// <param name="hostingEnvironment">The hosting environment.</param>
-        public MefCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
-            : base(logManager, configurationManager, hostingEnvironment)
-        {
         }
 
         /// <summary>
@@ -163,9 +150,22 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The export provider.
         /// </returns>
-        protected override IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
+        protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
         {
             var provider = new FactoryExportDescriptorProvider<TContract>(factory, isShared);
+            return provider;
+        }
+
+        /// <summary>
+        /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <returns>
+        /// The export provider.
+        /// </returns>
+        protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
+        {
+            var provider = new ServiceProviderExportDescriptorProvider(serviceProvider);
             return provider;
         }
 
@@ -199,7 +199,7 @@ namespace Kephas.Composition.Mef.Hosting
 
             this.RegisterScopeFactoryParts(containerConfiguration, parts);
 
-            foreach (var provider in this.ExportProviders.Values)
+            foreach (var provider in this.ExportProviders)
             {
                 containerConfiguration.WithProvider((ExportDescriptorProvider)provider);
             }

@@ -11,6 +11,8 @@ namespace Kephas.Hosting.Net45
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Application;
+
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
@@ -23,11 +25,11 @@ namespace Kephas.Hosting.Net45
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNet45HostingEnvironment(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithNet45AppEnvironment(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithHostingEnvironment(new Net45HostingEnvironment(ambientServicesBuilder.AmbientServices.LogManager));
+            return ambientServicesBuilder.WithAppEnvironment(new Net45AppEnvironment());
         }
     }
 }

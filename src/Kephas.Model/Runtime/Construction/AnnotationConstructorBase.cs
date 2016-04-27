@@ -12,6 +12,7 @@ namespace Kephas.Model.Runtime.Construction
     using System;
     using System.Reflection;
 
+    using Kephas.Model.Construction;
     using Kephas.Model.Elements;
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <typeparam name="TAnnotation">Type of the annotation information.</typeparam>
     /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
     public abstract class AnnotationConstructorBase<TAnnotation, TAttribute> : NamedElementConstructorBase<TAnnotation, IAnnotation, TAttribute>
-        where TAnnotation : NamedElementBase<IAnnotation>, IAnnotation
+        where TAnnotation : Annotation
         where TAttribute : Attribute
     {
         /// <summary>
@@ -61,6 +62,25 @@ namespace Kephas.Model.Runtime.Construction
             }
 
             return name;
+        }
+
+        /// <summary>
+        /// Constructs the model element content.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="element">The element being constructed.</param>
+        protected override void ConstructModelElementContent(
+            IModelConstructionContext constructionContext,
+            TAttribute runtimeElement,
+            TAnnotation element)
+        {
+            var attrTypeInfo = runtimeElement.GetDynamicTypeInfo();
+            var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
+            if (usage != null)
+            {
+                element.AllowMultiple = usage.AllowMultiple;
+            }
         }
     }
 }

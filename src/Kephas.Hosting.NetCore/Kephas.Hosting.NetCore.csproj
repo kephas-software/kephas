@@ -143,7 +143,7 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Application\ServerThreadContextAppInitializer.cs" />
-    <Compile Include="Hosting\NetCore\NetCoreHostingEnvironment.cs" />
+    <Compile Include="Application\NetCoreAppEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,7 +152,9 @@
       <Name>Kephas.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Hosting\NetCore\" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Diagnostics.Contracts">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Diagnostics.Contracts.dll</HintPath>

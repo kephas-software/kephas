@@ -15,17 +15,17 @@ namespace Kephas.Core.Tests.Composition
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
-    using Kephas.Hosting;
     using Kephas.Logging;
 
     using NUnit.Framework;
 
     using Telerik.JustMock;
-
+    using System.Linq;
     /// <summary>
     /// Test class for <see cref="CompositionContainerBuilderBase{TBuilder}"/>.
     /// </summary>
@@ -38,16 +38,13 @@ namespace Kephas.Core.Tests.Composition
         {
             var logManager = Mock.Create<ILogManager>();
             var configManager = Mock.Create<IConfigurationManager>();
-            var platformManager = Mock.Create<IHostingEnvironment>();
+            var platformManager = Mock.Create<IAppEnvironment>();
             var builder = new TestCompositionContainerBuilder(logManager, configManager, platformManager);
 
             Assert.AreEqual(logManager, builder.LogManager);
             Assert.AreEqual(configManager, builder.ConfigurationManager);
-            Assert.AreEqual(platformManager, builder.HostingEnvironment);
-            Assert.AreEqual(3, builder.InternalExportProviders.Count);
-            Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(ILogManager)));
-            Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IConfigurationManager)));
-            Assert.IsTrue(builder.InternalExportProviders.ContainsKey(typeof(IHostingEnvironment)));
+            Assert.AreEqual(platformManager, builder.AppEnvironment);
+            Assert.AreEqual(1, builder.InternalExportProviders.Count); // The IServiceProvider export provider.
         }
 
         [Test]
@@ -56,7 +53,7 @@ namespace Kephas.Core.Tests.Composition
             var conventions = Mock.Create<IConventionsBuilder>();
             var builder = new TestCompositionContainerBuilder()
                 .WithConventions(conventions);
-            
+
             Assert.AreSame(conventions, builder.InternalConventionsBuilder);
         }
 
@@ -83,12 +80,12 @@ namespace Kephas.Core.Tests.Composition
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             public TestCompositionContainerBuilder()
-                : this(Mock.Create<ILogManager>(), Mock.Create<IConfigurationManager>(), Mock.Create<IHostingEnvironment>())
+                : base(new CompositionContainerBuilderContext(new AmbientServices()))
             {
             }
 
-            public TestCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IHostingEnvironment hostingEnvironment)
-                : base(logManager, configurationManager, hostingEnvironment)
+            public TestCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IAppEnvironment appEnvironment)
+                : base(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(configurationManager).RegisterService(appEnvironment)))
             {
             }
 
@@ -97,12 +94,17 @@ namespace Kephas.Core.Tests.Composition
                 get { return this.ConventionsBuilder; }
             }
 
-            public IDictionary<Type, IExportProvider> InternalExportProviders
+            public IList<IExportProvider> InternalExportProviders
             {
                 get { return this.ExportProviders; }
             }
 
-            protected override IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            {
+                return Mock.Create<IExportProvider>();
+            }
+
+            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
                 return Mock.Create<IExportProvider>();
             }
@@ -201,8 +203,13 @@ namespace Kephas.Core.Tests.Composition
             public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
             {
                 // TODO test this
-                throw new NotImplementedException();
+                this.IsShared = true;
+                this.ScopeName = scopeName;
+
+                return this;
             }
+
+            public string ScopeName { get; private set; }
 
             public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
             {

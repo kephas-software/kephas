@@ -11,6 +11,9 @@ namespace Kephas.Composition
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
+    using Kephas.Composition.Internal;
 
     /// <summary>
     /// Public interface for the composition context.
@@ -79,5 +82,25 @@ namespace Kephas.Composition
         /// The new scoped context.
         /// </returns>
         ICompositionContext CreateScopedContext(string scopeName = ScopeNames.Default);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="ICompositionContext"/>.
+    /// </summary>
+    public static class CompositionContextExtensions
+    {
+        /// <summary>
+        /// Converts a <see cref="ICompositionContext"/> to a <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <param name="compositionContext">The compositionContext to act on.</param>
+        /// <returns>
+        /// compositionContext as an IServiceProvider.
+        /// </returns>
+        public static IServiceProvider ToServiceProvider(this ICompositionContext compositionContext)
+        {
+            Contract.Requires(compositionContext != null);
+
+            return new CompositionContextServiceProviderAdapter(compositionContext);
+        }
     }
 }

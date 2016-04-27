@@ -32,8 +32,6 @@ namespace Kephas.Model.Elements
         public Annotation(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
-            // TODO
-            ////    this.AllowMultiple = elementInfo.AllowMultiple;
         }
 
         /// <summary>

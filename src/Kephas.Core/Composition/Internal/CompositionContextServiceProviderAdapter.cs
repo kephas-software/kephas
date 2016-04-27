@@ -1,0 +1,47 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CompositionContextServiceProviderAdapter.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the composition context service provider adapter class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Composition.Internal
+{
+    using System;
+    using System.Diagnostics.Contracts;
+
+    /// <summary>
+    /// Adapter for <see cref="IServiceProvider"/> based on a composition context.
+    /// </summary>
+    internal class CompositionContextServiceProviderAdapter : IServiceProvider
+    {
+        private readonly ICompositionContext compositionContext;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositionContextServiceProviderAdapter"/>
+        /// class.
+        /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
+        public CompositionContextServiceProviderAdapter(ICompositionContext compositionContext)
+        {
+            Contract.Requires(compositionContext != null);
+
+            this.compositionContext = compositionContext;
+        }
+
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType" />.-or- null if there is no service
+        /// object of type <paramref name="serviceType" />.
+        /// </returns>
+        public object GetService(Type serviceType)
+        {
+            return this.compositionContext.GetExport(serviceType);
+        }
+    }
+}

@@ -149,6 +149,7 @@
     <Compile Include="Composition\Mef\ExportFactoryAdapter.cs" />
     <Compile Include="Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs" />
+    <Compile Include="Composition\Mef\ExportProviders\ServiceProviderExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs" />
     <Compile Include="Composition\Mef\ExportProviders\Metadata\MetadataViewProvider.cs" />
     <Compile Include="Composition\Mef\Hosting\MefScopedCompositionContext.cs" />

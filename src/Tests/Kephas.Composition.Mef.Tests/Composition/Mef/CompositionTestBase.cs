@@ -15,11 +15,12 @@ namespace Kephas.Tests.Composition.Mef
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
-    using Kephas.Hosting;
     using Kephas.Logging;
 
     using NUnit.Framework;
@@ -55,13 +56,13 @@ namespace Kephas.Tests.Composition.Mef
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IHostingEnvironment hostingEnvironment = null)
+        public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IAppEnvironment appEnvironment = null)
         {
             logManager = logManager ?? Mock.Create<ILogManager>();
             configurationManager = configurationManager ?? Mock.Create<IConfigurationManager>();
-            hostingEnvironment = hostingEnvironment ?? Mock.Create<IHostingEnvironment>();
+            appEnvironment = appEnvironment ?? Mock.Create<IAppEnvironment>();
 
-            return new MefCompositionContainerBuilder(logManager, configurationManager, hostingEnvironment);
+            return new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(configurationManager).RegisterService(appEnvironment)));
         }
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)

@@ -8,8 +8,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Collections;
-    using Kephas.Hosting;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -23,17 +23,17 @@
         /// <summary>
         /// The hosting environment.
         /// </summary>
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IAppEnvironment appEnvironment;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
-        /// <param name="hostingEnvironment">The hosting environment.</param>
-        public ModelAssemblyRegistry(IHostingEnvironment hostingEnvironment)
+        /// <param name="appEnvironment">The hosting environment.</param>
+        public ModelAssemblyRegistry(IAppEnvironment appEnvironment)
         {
-            Contract.Requires(hostingEnvironment != null);
+            Contract.Requires(appEnvironment != null);
 
-            this.hostingEnvironment = hostingEnvironment;
+            this.appEnvironment = appEnvironment;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@
         /// </returns>
         public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var assemblies = await this.hostingEnvironment.GetAppAssembliesAsync(cancellationToken).WithServerThreadingContext();
+            var assemblies = await this.appEnvironment.GetAppAssembliesAsync(cancellationToken).WithServerThreadingContext();
             var eligibleAssemblyPairs =
                 (from kv in 
                     from a in assemblies

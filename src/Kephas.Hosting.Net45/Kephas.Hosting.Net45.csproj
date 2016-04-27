@@ -135,9 +135,9 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Application\Net45AppEnvironment.cs" />
     <Compile Include="Application\ServerThreadContextAppInitializer.cs" />
     <Compile Include="Hosting\Net45\Net45AmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Hosting\Net45\Net45HostingEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

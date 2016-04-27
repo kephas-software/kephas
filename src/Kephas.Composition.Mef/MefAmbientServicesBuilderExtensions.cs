@@ -13,6 +13,7 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Threading.Tasks;
 
@@ -31,10 +32,7 @@ namespace Kephas
         {
             Contract.Requires(ambientServicesBuilder != null);
             
-            var containerBuilder = new MefCompositionContainerBuilder(
-                ambientServicesBuilder.AmbientServices.LogManager,
-                ambientServicesBuilder.AmbientServices.ConfigurationManager,
-                ambientServicesBuilder.AmbientServices.HostingEnvironment);
+            var containerBuilder = new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServicesBuilder.AmbientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
@@ -51,10 +49,7 @@ namespace Kephas
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            var containerBuilder = new MefCompositionContainerBuilder(
-                ambientServicesBuilder.AmbientServices.LogManager,
-                ambientServicesBuilder.AmbientServices.ConfigurationManager,
-                ambientServicesBuilder.AmbientServices.HostingEnvironment);
+            var containerBuilder = new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServicesBuilder.AmbientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

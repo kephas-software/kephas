@@ -31,7 +31,7 @@ namespace Kephas.Core.Tests
         public void CompositionContainer_cannot_set_null()
         {
             var ambientServices = new AmbientServices();
-            Assert.That(() => ambientServices.CompositionContainer = null, Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.RegisterService<ICompositionContext>(null), Throws.InstanceOf<Exception>());
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace Kephas.Core.Tests
             var ambientServices = new AmbientServices();
             var mockContainer = Mock.Create<ICompositionContext>();
             mockContainer.Arrange(c => c.TryGetExport<ICompositionContext>(null)).Returns((ICompositionContext)null);
-            ambientServices.CompositionContainer = mockContainer;
+            ambientServices.RegisterService(mockContainer);
             var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
             Assert.IsNull(noService);
         }

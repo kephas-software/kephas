@@ -44,7 +44,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = new CancellationToken())
+        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(emailMessage != null);
             Contract.Ensures(Contract.Result<Task>() != null);

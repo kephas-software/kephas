@@ -24,7 +24,7 @@ namespace Kephas.Mail
         /// <value>
         /// The name.
         /// </value>
-        string Name { get; set; } 
+        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the attachment content.

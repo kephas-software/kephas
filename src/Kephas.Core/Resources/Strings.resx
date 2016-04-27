@@ -174,4 +174,7 @@
   <data name="GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception" xml:space="preserve">
     <value>Multiple nodes found for value '{0}'.</value>
   </data>
+  <data name="CompositionContainerBuilderBase_RequiredServiceMissing_Exception" xml:space="preserve">
+    <value>The required service of type '{0}' was not provided.</value>
+  </data>
 </root>

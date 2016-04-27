@@ -1,13 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHostingEnvironment.cs" company="Quartz Software SRL">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IAppEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Provides platform specific functionality.
+//   Interface for abstracting away the environment for the application.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Hosting
+namespace Kephas.Application
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -20,10 +20,10 @@ namespace Kephas.Hosting
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Provides platform specific functionality.
+    /// Interface for abstracting away the environment for the application.
     /// </summary>
-    [ContractClass(typeof(HostingEnvironmentContractClass))]
-    public interface IHostingEnvironment : IExpando
+    [ContractClass(typeof(AppEnvironmentContractClass))]
+    public interface IAppEnvironment : IExpando
     {
         /// <summary>
         /// Gets the application assemblies.
@@ -36,10 +36,10 @@ namespace Kephas.Hosting
     }
 
     /// <summary>
-    /// Code contracts for <see cref="IHostingEnvironment"/>.
+    /// Code contracts for <see cref="IAppEnvironment"/>.
     /// </summary>
-    [ContractClassFor(typeof(IHostingEnvironment))]
-    internal abstract class HostingEnvironmentContractClass : IHostingEnvironment
+    [ContractClassFor(typeof(IAppEnvironment))]
+    internal abstract class AppEnvironmentContractClass : IAppEnvironment
     {
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.

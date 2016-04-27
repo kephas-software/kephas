@@ -86,8 +86,11 @@ namespace Kephas.Application
         public Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetDynamicTypeInfo().TypeInfo.Assembly);
 
         /// <summary>
-        /// Initializes the application manifest from the <see cref="AppManifestAttribute"/> set in the provided application assembly.
+        /// Initializes the application manifest from the <see cref="AppManifestAttribute"/> set in the
+        /// provided application assembly.
         /// </summary>
+        /// <param name="appAssembly">The application assembly containing the
+        ///                           <see cref="AppManifestAttribute"/>.</param>
         protected virtual void Initialize(Assembly appAssembly)
         {
             Contract.Requires(appAssembly != null);

@@ -15,14 +15,15 @@ namespace Kephas.Tests.Composition.Mef
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Configuration;
-    using Kephas.Hosting;
     using Kephas.Logging;
     using Kephas.Services;
 
@@ -40,64 +41,54 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public async Task CreateContainerAsync_simple_ambient_services_exported()
         {
-            var mockLoggerManager = Mock.Create<ILogManager>();
-            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
+            var factory = this.CreateCompositionContainerBuilder();
+            var mockPlatformManager = factory.AppEnvironment;
 
             Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(CancellationToken.None))
                 .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(MefCompositionContainer).Assembly }));
 
-            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
             var container = await factory
                 .CreateContainerAsync();
 
             var loggerManager = container.GetExport<ILogManager>();
-            Assert.AreEqual(mockLoggerManager, loggerManager);
+            Assert.AreEqual(factory.LogManager, loggerManager);
 
             var configurationManager = container.GetExport<IConfigurationManager>();
-            Assert.AreEqual(mockConfigurationManager, configurationManager);
+            Assert.AreEqual(factory.ConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IHostingEnvironment>();
+            var platformManager = container.GetExport<IAppEnvironment>();
             Assert.AreEqual(mockPlatformManager, platformManager);
         }
 
         [Test]
         public void CreateContainer_assemblies_not_set()
         {
-            var mockLoggerManager = Mock.Create<ILogManager>();
-            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
-
-            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = this.CreateCompositionContainerBuilder();
             Assert.Throws<InvalidOperationException>(() => factory.CreateContainer());
         }
 
         [Test]
         public void CreateContainer_simple_ambient_services_exported()
         {
-            var mockLoggerManager = Mock.Create<ILogManager>();
-            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
-
-            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
+            var factory = this.CreateCompositionContainerBuilder();
             var container = factory
                 .WithAssemblies(new Assembly[0])
                 .CreateContainer();
 
             var loggerManager = container.GetExport<ILogManager>();
-            Assert.AreEqual(mockLoggerManager, loggerManager);
+            Assert.AreEqual(factory.LogManager, loggerManager);
 
             var configurationManager = container.GetExport<IConfigurationManager>();
-            Assert.AreEqual(mockConfigurationManager, configurationManager);
+            Assert.AreEqual(factory.ConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IHostingEnvironment>();
-            Assert.AreEqual(mockPlatformManager, platformManager);
+            var platformManager = container.GetExport<IAppEnvironment>();
+            Assert.AreEqual(factory.AppEnvironment, platformManager);
         }
 
         [Test]
         public void CreateContainer_composed_loggers_exported()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithAssembly(typeof(MefConventionsBuilder).Assembly)
@@ -110,7 +101,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_Shared()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -125,7 +116,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_Single_Success()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
@@ -139,7 +130,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_Single_Override_Success()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
@@ -153,7 +144,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExports_AppService_Multiple_Shared()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
@@ -169,7 +160,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExports_AppService_Multiple_Success()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
@@ -183,7 +174,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExports_AppService_IExportFactory_Success()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
@@ -198,7 +189,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_generic_export()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
@@ -211,7 +202,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_ScopeSharedAppService_no_scope()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
@@ -223,7 +214,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_ScopeSharedAppService_export()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
@@ -249,7 +240,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_ScopeSharedAppService_custom_scope_export()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
@@ -276,7 +267,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_ScopeSharedAppService_scopefactory_composed_only_once()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
@@ -291,7 +282,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_no_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<CompositionException>(() => builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
@@ -301,7 +292,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_multiple_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<CompositionException>(() => builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
@@ -311,7 +302,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_default_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
@@ -325,7 +316,7 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void GetExport_AppService_single_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilder();
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
@@ -340,13 +331,22 @@ namespace Kephas.Tests.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IHostingEnvironment>();
+            var mockPlatformManager = Mock.Create<IAppEnvironment>();
 
+            var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfigurationManager).RegisterService(mockPlatformManager));
+            var factory = new MefCompositionContainerBuilder(context);
+            return factory;
+        }
+
+        private MefCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
+        {
+            var builder = this.CreateCompositionContainerBuilder();
+
+            var mockLoggerManager = builder.LogManager;
             Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
                 .Returns(Mock.Create<ILogger>);
 
-            var factory = new MefCompositionContainerBuilder(mockLoggerManager, mockConfigurationManager, mockPlatformManager);
-            return factory;
+            return builder;
         }
 
         [Export]

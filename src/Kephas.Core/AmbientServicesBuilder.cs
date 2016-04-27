@@ -13,12 +13,13 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
-    using Kephas.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -51,7 +52,7 @@ namespace Kephas
         /// <value>
         /// The ambient services.
         /// </value>
-        public AmbientServices AmbientServices { get; private set; }
+        public AmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Sets the log manager to the ambient services.
@@ -64,7 +65,7 @@ namespace Kephas
         {
             Contract.Requires(logManager != null);
 
-            this.AmbientServices.LogManager = logManager;
+            this.AmbientServices.RegisterService(logManager);
 
             return this;
         }
@@ -80,23 +81,23 @@ namespace Kephas
         {
             Contract.Requires(configurationManager != null);
 
-            this.AmbientServices.ConfigurationManager = configurationManager;
+            this.AmbientServices.RegisterService(configurationManager);
 
             return this;
         }
 
         /// <summary>
-        /// Sets the hosting environment to the ambient services.
+        /// Sets the application environment to the ambient services.
         /// </summary>
-        /// <param name="hostingEnvironment">The hosting environment.</param>
+        /// <param name="appEnvironment">The application environment.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithHostingEnvironment(IHostingEnvironment hostingEnvironment)
+        public AmbientServicesBuilder WithAppEnvironment(IAppEnvironment appEnvironment)
         {
-            Contract.Requires(hostingEnvironment != null);
+            Contract.Requires(appEnvironment != null);
 
-            this.AmbientServices.HostingEnvironment = hostingEnvironment;
+            this.AmbientServices.RegisterService(appEnvironment);
 
             return this;
         }
@@ -112,7 +113,7 @@ namespace Kephas
         {
             Contract.Requires(compositionContainer != null);
 
-            this.AmbientServices.CompositionContainer = compositionContainer;
+            this.AmbientServices.RegisterService(compositionContainer);
 
             return this;
         }
@@ -122,7 +123,7 @@ namespace Kephas
         /// </summary>
         /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="ICompositionContainerBuilderContext" />.</remarks>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
@@ -130,10 +131,7 @@ namespace Kephas
             where TContainerBuilder : ICompositionContainerBuilder
         {
             var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
-            var context = new CompositionContainerBuilderContext(
-                this.AmbientServices.LogManager,
-                this.AmbientServices.ConfigurationManager,
-                this.AmbientServices.HostingEnvironment);
+            var context = new CompositionContainerBuilderContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
 
@@ -147,16 +145,13 @@ namespace Kephas
         /// </summary>
         /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="ICompositionContainerBuilderContext" />.</remarks>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>A promise of the provided ambient services builder.</returns>
         public async Task<AmbientServicesBuilder> WithCompositionContainerAsync<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
         {
             var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
-            var context = new CompositionContainerBuilderContext(
-                this.AmbientServices.LogManager,
-                this.AmbientServices.ConfigurationManager,
-                this.AmbientServices.HostingEnvironment);
+            var context = new CompositionContainerBuilderContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
 

@@ -18,6 +18,7 @@ namespace Kephas.Core.Tests
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Services;
 
     using NUnit.Framework;
 
@@ -82,12 +83,17 @@ namespace Kephas.Core.Tests
             /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
             /// </summary>
             /// <param name="context">The context.</param>
-            public TestCompositionContainerBuilder(ICompositionContainerBuilderContext context)
+            public TestCompositionContainerBuilder(IContext context)
                 : base(context)
             {
             }
 
-            protected override IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            {
+                return Mock.Create<IExportProvider>();
+            }
+
+            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
                 return Mock.Create<IExportProvider>();
             }
@@ -109,11 +115,16 @@ namespace Kephas.Core.Tests
         public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<BadTestCompositionContainerBuilder>
         {
             public BadTestCompositionContainerBuilder()
-                : base(Mock.Create<ICompositionContainerBuilderContext>())
+                : base(Mock.Create<IContext>())
             {
             }
 
-            protected override IExportProvider CreateFactoryProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
+            {
+                return Mock.Create<IExportProvider>();
+            }
+
+            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
                 return Mock.Create<IExportProvider>();
             }

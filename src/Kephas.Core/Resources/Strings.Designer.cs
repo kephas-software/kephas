@@ -143,6 +143,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The required service of type &apos;{0}&apos; was not provided..
+        /// </summary>
+        internal static string CompositionContainerBuilderBase_RequiredServiceMissing_Exception {
+            get {
+                return ResourceManager.GetString("CompositionContainerBuilderBase_RequiredServiceMissing_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead..
         /// </summary>
         internal static string CreateContainerRequiresCompositionAssembliesSet {
