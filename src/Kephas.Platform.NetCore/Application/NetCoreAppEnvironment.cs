@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Net45HostingEnvironment.cs" company="Quartz Software SRL">
+// <copyright file="NetCoreAppEnvironment.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The hosting environment for .NET 4.5 applications.
+//   The hosting environment for .NET Core applications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

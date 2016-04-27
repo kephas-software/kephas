@@ -26,7 +26,7 @@
     <references>
       <reference file="Kephas.Platform.NetCore.dll" />
     </references>
-    <tags>kephas framework hosting desktop net aspnet core quartz software</tags>
+    <tags>kephas framework platform desktop net aspnet core quartz software</tags>
   </metadata>
   <files>
     <file src="bin\debug\Kephas.Platform.NetCore.dll" target="lib\portable-net46+dnxcore50+uap10" />

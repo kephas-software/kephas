@@ -22,8 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging", "Kephas.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{A1A9CB93-6D34-4912-8544-AA273C19234E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.NetCore", "Kephas.Hosting.NetCore\Kephas.Hosting.NetCore.csproj", "{5B1EFD58-0CA6-4A16-A9E4-03E755CCC5A3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog", "Kephas.Logging.NLog\Kephas.Logging.NLog.csproj", "{8CB50297-39C4-45F5-9195-14A75D699710}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model", "Kephas.Model\Kephas.Model.csproj", "{965E1983-D19C-4D22-B6B9-8A3221520542}"
@@ -37,8 +35,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model.Tests", "Tests\Kephas.Model.Tests\Kephas.Model.Tests.csproj", "{918F8D47-7BF5-4005-A92A-7B9C62D3EF7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json.Tests", "Tests\Kephas.Serialization.Json.Tests\Kephas.Serialization.Json.Tests.csproj", "{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Hosting.Net45", "Kephas.Hosting.Net45\Kephas.Hosting.Net45.csproj", "{C02B6804-DAB0-482B-B4C3-66CF8AF91256}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{344D159A-34BA-4F2F-97E1-983BCA5CF7D3}"
 	ProjectSection(SolutionItems) = preProject
@@ -91,10 +87,6 @@ Global
 		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B1EFD58-0CA6-4A16-A9E4-03E755CCC5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B1EFD58-0CA6-4A16-A9E4-03E755CCC5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B1EFD58-0CA6-4A16-A9E4-03E755CCC5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B1EFD58-0CA6-4A16-A9E4-03E755CCC5A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -123,10 +115,6 @@ Global
 		{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C02B6804-DAB0-482B-B4C3-66CF8AF91256}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
