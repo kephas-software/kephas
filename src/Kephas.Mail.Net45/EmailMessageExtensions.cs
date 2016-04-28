@@ -64,11 +64,11 @@ namespace Kephas.Mail.Net45
         }
 
         /// <summary>
-        /// Converts the <see cref="IEmailAttachment"/> to a <see cref="emailAttachment"/>.
+        /// Converts the <see cref="IEmailAttachment"/> to an <see cref="Attachment"/>.
         /// </summary>
         /// <param name="emailAttachment">The email attachment to act on.</param>
         /// <returns>
-        /// <paramref name="emailAttachment"/> as a <see cref="Attachment"/>.
+        /// <paramref name="emailAttachment"/> as an <see cref="Attachment"/>.
         /// </returns>
         public static Attachment ToAttachment(this IEmailAttachment emailAttachment)
         {

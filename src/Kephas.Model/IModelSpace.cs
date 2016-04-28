@@ -109,22 +109,6 @@ namespace Kephas.Model
         }
 
         /// <summary>
-        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
-        /// </summary>
-        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
-        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was
-        ///                               not found.</param>
-        /// <returns>
-        /// The classifier.
-        /// </returns>
-        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
-        {
-            Contract.Requires(typeInfo != null);
-
-            return Contract.Result<IClassifier>();
-        }
-
-        /// <summary>
         /// Gets the name of the model element.
         /// </summary>
         /// <value>
@@ -272,5 +256,21 @@ namespace Kephas.Model
         /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
         /// </returns>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
+
+        /// <summary>
+        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was
+        ///                               not found.</param>
+        /// <returns>
+        /// The classifier.
+        /// </returns>
+        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
+        {
+            Contract.Requires(typeInfo != null);
+
+            return Contract.Result<IClassifier>();
+        }
     }
 }

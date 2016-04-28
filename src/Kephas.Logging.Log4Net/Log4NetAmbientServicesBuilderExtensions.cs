@@ -1,4 +1,13 @@
-﻿namespace Kephas.Logging.Log4Net
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Log4NetAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the log 4 net ambient services builder extensions class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Logging.Log4Net
 {
     using System.Diagnostics.Contracts;
 

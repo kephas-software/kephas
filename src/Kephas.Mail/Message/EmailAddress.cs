@@ -17,12 +17,12 @@ namespace Kephas.Mail.Message
     public class EmailAddress : Expando, IEmailAddress
     {
         /// <summary>
-        /// Gets the address.
+        /// Gets or sets the address.
         /// </summary>
         public string Address { get; set; }
 
         /// <summary>
-        /// Gets the display name of the subject associated to the address.
+        /// Gets or sets the display name of the subject associated to the address.
         /// </summary>
         public string DisplayName { get; set; }
     }

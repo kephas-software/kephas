@@ -140,6 +140,7 @@ namespace Kephas.Threading.Tasks
         public void OnCompleted(Action continuation)
         {
             this.threadContext.Store();
+
             // ReSharper disable once ImpureMethodCallOnReadonlyValueField
             this.awaiter.OnCompleted(continuation);
         }
@@ -151,6 +152,7 @@ namespace Kephas.Threading.Tasks
         public void UnsafeOnCompleted(Action continuation)
         {
             this.threadContext.Store();
+
             // ReSharper disable once ImpureMethodCallOnReadonlyValueField
             this.awaiter.UnsafeOnCompleted(continuation);
         }

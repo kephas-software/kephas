@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.Runtime.ModelRegistries
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ModelAssemblyRegistry.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the model assembly registry class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Runtime.ModelRegistries
 {
     using System;
     using System.Collections.Generic;

@@ -12,38 +12,6 @@ namespace Kephas.Behavior
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Default implementation of a generic behavior value.
-    /// </summary>
-    /// <typeparam name="TValue">Type of the value.</typeparam>
-    public class BehaviorValue<TValue> : Expando, IBehaviorValue<TValue>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BehaviorValue{TValue}"/> class.
-        /// </summary>
-        /// <param name="value">The behavior value.</param>
-        public BehaviorValue(TValue value)
-        {
-            this.Value = value;
-        }
-
-        /// <summary>
-        /// Gets the behavior value.
-        /// </summary>
-        /// <value>
-        /// The behavior value.
-        /// </value>
-        object IBehaviorValue.Value => this.Value;
-
-        /// <summary>
-        /// Gets or sets the behavior value.
-        /// </summary>
-        /// <value>
-        /// The behavior value.
-        /// </value>
-        public TValue Value { get; protected set; }
-    }
-
-    /// <summary>
     /// Class providing convenience methods for behavior values.
     /// </summary>
     public static class BehaviorValue
@@ -118,5 +86,37 @@ namespace Kephas.Behavior
 
             return value == Undefined.Value ? null : value.ToString();
         }
+    }
+
+    /// <summary>
+    /// Default implementation of a generic behavior value.
+    /// </summary>
+    /// <typeparam name="TValue">Type of the value.</typeparam>
+    public class BehaviorValue<TValue> : Expando, IBehaviorValue<TValue>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BehaviorValue{TValue}"/> class.
+        /// </summary>
+        /// <param name="value">The behavior value.</param>
+        public BehaviorValue(TValue value)
+        {
+            this.Value = value;
+        }
+
+        /// <summary>
+        /// Gets the behavior value.
+        /// </summary>
+        /// <value>
+        /// The behavior value.
+        /// </value>
+        object IBehaviorValue.Value => this.Value;
+
+        /// <summary>
+        /// Gets or sets the behavior value.
+        /// </summary>
+        /// <value>
+        /// The behavior value.
+        /// </value>
+        public TValue Value { get; protected set; }
     }
 }

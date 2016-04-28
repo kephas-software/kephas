@@ -21,8 +21,9 @@ using System.Resources;
 [assembly: NeutralResourcesLanguage("en")]
 
 [assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.5.0")]
-[assembly: AssemblyInformationalVersion("3.0.5.0")]
+[assembly: AssemblyFileVersion("3.0.6.0")]
+[assembly: AssemblyInformationalVersion("3.0.6.0")]
 
 // Stylecop global rule suppresions.
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1028:Code must not contain trailing whitespace", Justification = "It is OK to leave the trailing spaces.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single class", Justification = "Generics with same name can stay in the same file.")]

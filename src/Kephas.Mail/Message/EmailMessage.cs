@@ -66,7 +66,7 @@ namespace Kephas.Mail.Message
         public IEmailBody Body { get; set; }
 
         /// <summary>
-        /// Gets or sets the attachments of the email.
+        /// Gets the attachments of the email.
         /// </summary>
         public ICollection<IEmailAttachment> Attachments { get; }
     }

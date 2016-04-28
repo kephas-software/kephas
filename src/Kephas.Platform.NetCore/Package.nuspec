@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Platform.NetCore</id>
-    <version>3.0.5-pre1</version>
+    <version>3.0.6-pre1</version>
     <title>Kephas.Platform.NetCore</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.5" />
+      <dependency id="Kephas.Core" version="3.0.6" />
     </dependencies>
     <references>
       <reference file="Kephas.Platform.NetCore.dll" />

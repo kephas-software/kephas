@@ -139,6 +139,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="Application\NetCoreAppEnvironment.cs" />
     <Compile Include="Application\ServerThreadContextAppInitializer.cs" />
     <Compile Include="Platform\NetCore\NetCoreAmbientServicesBuilderExtensions.cs" />

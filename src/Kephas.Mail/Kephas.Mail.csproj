@@ -93,6 +93,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="IEmailMessage.cs" />
     <Compile Include="IEmailAddress.cs" />
     <Compile Include="IEmailAttachment.cs" />

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Mail.Net45</id>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
     <title>Kephas.Mail.Net45</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.5" />
+      <dependency id="Kephas.Core" version="3.0.6" />
     </dependencies>
     <references>
       <reference file="Kephas.Mail.Net45.dll" />
