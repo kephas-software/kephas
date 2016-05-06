@@ -15,6 +15,7 @@ namespace Kephas.Model
     using System.Linq.Expressions;
 
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// The model space is the root model element.
@@ -47,14 +48,14 @@ namespace Kephas.Model
         IEnumerable<IClassifier> Classifiers { get; }
 
         /// <summary>
-        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// Tries to get the classifier associated to the provided <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
-        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was not found.</param>
+        /// <param name="findContext">Context to control the finding of classifiers.</param>
         /// <returns>
-        /// The classifier, or <c>null</c> if the classifier was not found and should not throw exceptions in this case.
+        /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true);
+        IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null);
     }
 
     /// <summary>
@@ -207,14 +208,6 @@ namespace Kephas.Model
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
-
-        /// <summary>
         /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>
@@ -258,15 +251,14 @@ namespace Kephas.Model
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
 
         /// <summary>
-        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// Tries to get the classifier associated to the provided <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
-        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was
-        ///                               not found.</param>
+        /// <param name="findContext">Context to control the finding of classifiers.</param>
         /// <returns>
-        /// The classifier.
+        /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
+        public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null)
         {
             Contract.Requires(typeInfo != null);
 

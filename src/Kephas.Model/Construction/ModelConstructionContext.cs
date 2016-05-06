@@ -43,5 +43,13 @@ namespace Kephas.Model.Construction
         /// The element infos.
         /// </value>
         public IEnumerable<IElementInfo> ElementInfos { get; set; }
+
+        /// <summary>
+        /// Gets or sets the constructed classifiers.
+        /// </summary>
+        /// <value>
+        /// The constructed classifiers.
+        /// </value>
+        public IEnumerable<IClassifier> ConstructedClassifiers { get; set; }
     }
 }

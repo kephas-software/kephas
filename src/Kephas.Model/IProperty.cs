@@ -22,13 +22,6 @@ namespace Kephas.Model
     [ContractClass(typeof(PropertyContractClass))]
     public interface IProperty : IModelElement, IPropertyInfo
     {
-        /// <summary>
-        /// Gets the type of the property.
-        /// </summary>
-        /// <value>
-        /// The type of the property.
-        /// </value>
-        new IClassifier PropertyType { get; }
     }
 
     /// <summary>
@@ -43,22 +36,7 @@ namespace Kephas.Model
         /// <value>
         /// The type of the property.
         /// </value>
-        public IClassifier PropertyType
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IClassifier>() != null);
-                return Contract.Result<IClassifier>();
-            }
-        }
-
-        /// <summary>
-        /// Gets the type of the property.
-        /// </summary>
-        /// <value>
-        /// The type of the property.
-        /// </value>
-        ITypeInfo IPropertyInfo.PropertyType => this.PropertyType;
+        public abstract ITypeInfo PropertyType { get; }
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.
@@ -173,14 +151,6 @@ namespace Kephas.Model
         /// The model element annotations.
         /// </value>
         public abstract IEnumerable<IAnnotation> Annotations { get; }
-
-        /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
 
         /// <summary>
         /// Gets the parts of an aggregated element.

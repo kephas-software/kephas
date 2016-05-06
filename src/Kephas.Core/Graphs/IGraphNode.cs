@@ -1,4 +1,13 @@
-﻿namespace Kephas.Graphs
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IGraphNode.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Declares the IGraphNode interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Graphs
 {
     using System.Collections.Generic;
 

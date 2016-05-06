@@ -23,7 +23,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Type of the property.
         /// </summary>
-        private IClassifier propertyType;
+        private ITypeInfo propertyType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class.
@@ -41,19 +41,11 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The type of the property.
         /// </value>
-        public IClassifier PropertyType
+        public ITypeInfo PropertyType
         {
             get { return this.propertyType ?? (this.propertyType = this.ComputePropertyType()); }
             protected internal set { this.propertyType = value; }
         } 
-
-        /// <summary>
-        /// Gets the type of the property.
-        /// </summary>
-        /// <value>
-        /// The type of the property.
-        /// </value>
-        ITypeInfo IPropertyInfo.PropertyType => this.PropertyType;
 
         /// <summary>
         /// Gets or sets a value indicating whether the property can be written to.
@@ -78,7 +70,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The calculated property type.
         /// </returns>
-        protected virtual IClassifier ComputePropertyType()
+        protected virtual ITypeInfo ComputePropertyType()
         {
             var firstPart = ((IAggregatedElementInfo)this).Parts.OfType<IPropertyInfo>().FirstOrDefault();
             if (firstPart == null)
@@ -86,7 +78,7 @@ namespace Kephas.Model.Elements
                 throw new ModelException(string.Format(Strings.Property_MissingPartsToComputePropertyType_Exception, this.Name, this.Container));
             }
 
-            return this.ModelSpace.GetClassifier(firstPart.PropertyType);
+            return this.ModelSpace.TryGetClassifier(firstPart.PropertyType) ?? firstPart.PropertyType;
         }
     }
 }

@@ -71,11 +71,11 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A classifier for &apos;{0}&apos; could not be found..
+        ///   Looks up a localized string similar to A generic classifier with more than one part is not supported. Check the {0} classifier with parts: {1}..
         /// </summary>
-        internal static string DefaultModelSpace_ClassifierNotFoundException {
+        internal static string ClassifierBase_MultipleGenericPartsNotSupported_Exception {
             get {
-                return ResourceManager.GetString("DefaultModelSpace_ClassifierNotFoundException", resourceCulture);
+                return ResourceManager.GetString("ClassifierBase_MultipleGenericPartsNotSupported_Exception", resourceCulture);
             }
         }
         

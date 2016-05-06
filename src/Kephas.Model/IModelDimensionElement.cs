@@ -146,14 +146,6 @@ namespace Kephas.Model
         public abstract IEnumerable<INamedElement> Members { get; }
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
-
-        /// <summary>
         /// Gets the name of the dimension.
         /// </summary>
         /// <value>

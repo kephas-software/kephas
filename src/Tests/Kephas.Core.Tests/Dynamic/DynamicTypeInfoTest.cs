@@ -10,11 +10,14 @@
 namespace Kephas.Core.Tests.Dynamic
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     using Kephas.Activation;
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     using NUnit.Framework;
 
@@ -179,11 +182,83 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public void GetDynamicProperty_throwOnNotFound()
+        public void GetValue_throwOnNotFound_DynamicProperty()
         {
             var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
             object instance = new TestClass();
             Assert.Throws<MemberAccessException>(() => dynamicTypeInfo.GetValue(instance, string.Empty));
+        }
+
+        [Test]
+        public void Bases_SystemObject()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(object));
+
+            Assert.AreEqual(0, dynamicTypeInfo.BaseTypes.Count());
+        }
+
+        [Test]
+        public void Bases_class_without_base()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+
+            Assert.AreEqual(1, dynamicTypeInfo.BaseTypes.Count());
+            Assert.AreEqual("System.Object", dynamicTypeInfo.BaseTypes.First().FullName);
+        }
+
+        [Test]
+        public void Bases_class_with_base()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestDerivedClass));
+
+            Assert.AreEqual(1, dynamicTypeInfo.BaseTypes.Count());
+            Assert.AreSame(typeof(TestClass).AsDynamicTypeInfo(), dynamicTypeInfo.BaseTypes.First());
+        }
+
+        [Test]
+        public void Bases_class_with_base_and_interfaces()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestDerivedClassWithInterfaces));
+
+            var bases = dynamicTypeInfo.BaseTypes.ToList();
+            Assert.AreEqual(3, bases.Count);
+            Assert.AreSame(typeof(TestClass).AsDynamicTypeInfo(), bases[0]);
+            Assert.AreSame(typeof(IEnumerable<int>).AsDynamicTypeInfo(), bases[1]);
+            Assert.AreSame(typeof(IEnumerable).AsDynamicTypeInfo(), bases[2]);
+        }
+
+        [Test]
+        public void GenericTypeDefinition_non_generic()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(TestClass));
+
+            Assert.AreSame(ReflectionHelper.EmptyTypeInfos, dynamicTypeInfo.GenericTypeParameters);
+            Assert.AreSame(ReflectionHelper.EmptyTypeInfos, dynamicTypeInfo.GenericTypeArguments);
+            Assert.IsNull(dynamicTypeInfo.GenericTypeDefinition);
+        }
+
+        [Test]
+        public void GenericTypeDefinition_open_generic()
+        {
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(IEnumerable<>));
+
+            Assert.AreEqual(1, dynamicTypeInfo.GenericTypeParameters.Count);
+            Assert.AreEqual(0, dynamicTypeInfo.GenericTypeArguments.Count);
+            Assert.AreEqual("T", dynamicTypeInfo.GenericTypeParameters[0].Name);
+            Assert.IsNull(dynamicTypeInfo.GenericTypeDefinition);
+        }
+
+        [Test]
+        public void GenericTypeDefinition_closed_generic()
+        {
+            var dynamicTypeInfoDef = new DynamicTypeInfo(typeof(IEnumerable<>));
+            var dynamicTypeInfo = new DynamicTypeInfo(typeof(IEnumerable<string>));
+
+            Assert.AreEqual(0, dynamicTypeInfo.GenericTypeParameters.Count);
+            Assert.AreEqual(1, dynamicTypeInfo.GenericTypeArguments.Count);
+            Assert.AreEqual("String", dynamicTypeInfo.GenericTypeArguments[0].Name);
+            Assert.IsNotNull(dynamicTypeInfo.GenericTypeDefinition);
+            Assert.AreEqual("IEnumerable`1", dynamicTypeInfo.GenericTypeDefinition.Name);
         }
 
         public class TestClass
@@ -213,6 +288,24 @@ namespace Kephas.Core.Tests.Dynamic
 
             private TestClassWithConstructor(int age, string name)
             {
+            }
+        }
+
+        public class TestDerivedClass : TestClass
+        {
+        }
+
+
+        public class TestDerivedClassWithInterfaces : TestClass, IEnumerable<int>
+        {
+            public IEnumerator<int> GetEnumerator()
+            {
+                throw new NotImplementedException();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
             }
         }
     }

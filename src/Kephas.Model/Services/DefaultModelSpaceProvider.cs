@@ -18,9 +18,9 @@ namespace Kephas.Model.Services
 
     using Kephas.Logging;
     using Kephas.Model.Construction;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
-    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;

@@ -120,8 +120,8 @@
   <data name="CannotProvideElementInfoForRuntimeElement" xml:space="preserve">
     <value>Cannot provide an element information for the runtime element '{0}'.</value>
   </data>
-  <data name="DefaultModelSpace_ClassifierNotFoundException" xml:space="preserve">
-    <value>A classifier for '{0}' could not be found.</value>
+  <data name="ClassifierBase_MultipleGenericPartsNotSupported_Exception" xml:space="preserve">
+    <value>A generic classifier with more than one part is not supported. Check the {0} classifier with parts: {1}.</value>
   </data>
   <data name="ElementNotFoundInMembers" xml:space="preserve">
     <value>The element '{0}' is not a member of '{1}'.</value>

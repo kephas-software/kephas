@@ -45,6 +45,22 @@ namespace Kephas.Model
         /// <c>true</c> if this classifier is a mixin, <c>false</c> if not.
         /// </value>
         bool IsMixin { get; }
+
+        /// <summary>
+        /// Gets the base classifier.
+        /// </summary>
+        /// <value>
+        /// The base classifier.
+        /// </value>
+        IClassifier BaseClassifier { get; }
+
+        /// <summary>
+        /// Gets the base mixins.
+        /// </summary>
+        /// <value>
+        /// The base mixins.
+        /// </value>
+        IEnumerable<IClassifier> BaseMixins { get; }
     }
 
     /// <summary>
@@ -82,7 +98,30 @@ namespace Kephas.Model
         /// <value>
         /// <c>true</c> if this classifier is a mixin, <c>false</c> if not.
         /// </value>
-        public bool IsMixin { get; }
+        public abstract bool IsMixin { get; }
+
+        /// <summary>
+        /// Gets the base classifier.
+        /// </summary>
+        /// <value>
+        /// The base classifier.
+        /// </value>
+        public abstract IClassifier BaseClassifier { get; }
+
+        /// <summary>
+        /// Gets the base mixins.
+        /// </summary>
+        /// <value>
+        /// The base mixins.
+        /// </value>
+        public IEnumerable<IClassifier> BaseMixins
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IClassifier>>() != null);
+                return Contract.Result<IEnumerable<IClassifier>>();
+            }
+        }
 
         /// <summary>
         /// Gets the name of the model element.
@@ -163,14 +202,6 @@ namespace Kephas.Model
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
-
-        /// <summary>
         /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>
@@ -185,6 +216,39 @@ namespace Kephas.Model
         /// The namespace of the type.
         /// </value>
         public abstract string Namespace { get; }
+
+        /// <summary>
+        /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
+        /// </summary>
+        /// <value>
+        /// The bases.
+        /// </value>
+        public abstract IEnumerable<ITypeInfo> BaseTypes { get; }
+
+        /// <summary>
+        /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters
+        /// of a closed generic type or the type parameters of a generic type definition.
+        /// </summary>
+        /// <value>
+        /// The generic arguments.
+        /// </value>
+        public abstract IReadOnlyList<ITypeInfo> GenericTypeParameters { get; }
+
+        /// <summary>
+        /// Gets the generic type arguments.
+        /// </summary>
+        /// <value>
+        /// The generic type arguments.
+        /// </value>
+        public abstract IReadOnlyList<ITypeInfo> GenericTypeArguments { get; }
+
+        /// <summary>
+        /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
+        /// </summary>
+        /// <value>
+        /// The generic type definition.
+        /// </value>
+        public abstract ITypeInfo GenericTypeDefinition { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer

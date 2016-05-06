@@ -33,14 +33,6 @@ namespace Kephas.Model
         IEnumerable<INamedElement> Members { get; }
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        IModelElement Base { get; }
-
-        /// <summary>
         /// Gets the member with the specified qualified name.
         /// </summary>
         /// <param name="qualifiedName">The qualified name of the member.</param>
@@ -85,14 +77,6 @@ namespace Kephas.Model
         /// The declaring element.
         /// </value>
         public IElementInfo DeclaringContainer { get; }
-
-        /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
 
         /// <summary>
         /// Gets the name of the model element.

@@ -205,14 +205,6 @@ namespace Kephas.Model
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public abstract IModelElement Base { get; }
-
-        /// <summary>
         /// Gets the parts of an aggregated element.
         /// </summary>
         /// <value>

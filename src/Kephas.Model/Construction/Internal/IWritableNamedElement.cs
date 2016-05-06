@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction.Internal
+namespace Kephas.Model.Construction.Internal
 {
     using Kephas.Model.Construction;
 
@@ -21,12 +21,6 @@ namespace Kephas.Model.Runtime.Construction.Internal
         /// </summary>
         /// <param name="container">The element container.</param>
         void SetContainer(IModelElement container);
-
-        /// <summary>
-        /// Sets the base element.
-        /// </summary>
-        /// <param name="base">The base.</param>
-        void SetBase(IModelElement @base);
 
         /// <summary>
         /// Sets the full name.

@@ -15,8 +15,8 @@ namespace Kephas.Model.Elements
 
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Resources;
-    using Kephas.Model.Runtime.Construction.Internal;
     using Kephas.Reflection;
     using Kephas.Services.Transitioning;
 
@@ -187,16 +187,8 @@ namespace Kephas.Model.Elements
         /// <param name="container">The element container.</param>
         void IWritableNamedElement.SetContainer(IModelElement container)
         {
+            this.ConstructionMonitor.AssertIsInProgress();
             this.Container = container;
-        }
-
-        /// <summary>
-        /// Sets the base element.
-        /// </summary>
-        /// <param name="base">The base.</param>
-        void IWritableNamedElement.SetBase(IModelElement @base)
-        {
-            this.SetBase(@base);
         }
 
         /// <summary>
@@ -205,6 +197,7 @@ namespace Kephas.Model.Elements
         /// <param name="fullName">The full name.</param>
         void IWritableNamedElement.SetFullName(string fullName)
         {
+            this.ConstructionMonitor.AssertIsInProgress();
             this.FullName = fullName;
         }
 
@@ -214,6 +207,7 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         void IWritableNamedElement.CompleteConstruction(IModelConstructionContext constructionContext)
         {
+            this.ConstructionMonitor.AssertIsInProgress();
             try
             {
                 this.OnCompleteConstruction(constructionContext);
@@ -231,6 +225,7 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         void IWritableNamedElement.AddMember(INamedElement member)
         {
+            this.ConstructionMonitor.AssertIsInProgress();
             this.AddMember(member);
         }
 
@@ -240,6 +235,7 @@ namespace Kephas.Model.Elements
         /// <param name="part">The part to be added.</param>
         void IWritableNamedElement.AddPart(object part)
         {
+            this.ConstructionMonitor.AssertIsInProgress();
             this.parts.Add(part);
         }
 
@@ -259,15 +255,6 @@ namespace Kephas.Model.Elements
         protected virtual void AddMember(INamedElement member)
         {
             Contract.Requires(member != null);
-        }
-
-        /// <summary>
-        /// Sets the base element.
-        /// </summary>
-        /// <param name="base">The base.</param>
-        protected virtual void SetBase(IModelElement @base)
-        {
-            Contract.Requires(@base != null);
         }
     }
 }

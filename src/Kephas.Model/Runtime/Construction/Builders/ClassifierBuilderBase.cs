@@ -14,6 +14,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
 
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Dimensions.App;
     using Kephas.Model.Dimensions.AppFamily;
     using Kephas.Model.Dimensions.Aspect;
@@ -23,7 +24,6 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Model.Runtime.Construction.Annotations;
-    using Kephas.Model.Runtime.Construction.Internal;
 
     /// <summary>
     /// Base abstract builder for runtime classifier information.

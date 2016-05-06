@@ -15,9 +15,9 @@ namespace Kephas.Model.Elements
 
     using Kephas.Collections;
     using Kephas.Model.Construction;
-    using Kephas.Model.Resources;
-    using Kephas.Model.Runtime.Construction.Internal;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// The default implementation of the model space.
@@ -32,7 +32,12 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The classifier cache key.
         /// </summary>
-        private string classifierCacheKey;
+        private readonly string classifierCacheKey;
+
+        /// <summary>
+        /// The classifier cache key for construction.
+        /// </summary>
+        private readonly string constructionClassifierCacheKey;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpace"/> class.
@@ -42,6 +47,7 @@ namespace Kephas.Model.Elements
             : base(constructionContext, string.Empty)
         {
             this.classifierCacheKey = $"CLS_{this.guid}";
+            this.constructionClassifierCacheKey = $"CLS_CONSTRUCT_{this.guid}";
         }
 
         /// <summary>
@@ -77,14 +83,14 @@ namespace Kephas.Model.Elements
         public IEnumerable<IClassifier> Classifiers { get; private set; }
 
         /// <summary>
-        /// Gets the classifier associated to the provided <see cref="ITypeInfo"/>.
+        /// Tries to get the classifier associated to the provided <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
-        /// <param name="throwOnNotFound"><c>true</c> to throw an exception if an associated classifier was not found.</param>
+        /// <param name="findContext">Context to control the finding of classifiers.</param>
         /// <returns>
-        /// The classifier, or <c>null</c> if the classifier was not found and should not throw exceptions in this case.
+        /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        public IClassifier GetClassifier(ITypeInfo typeInfo, bool throwOnNotFound = true)
+        public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null)
         {
             var classifier = typeInfo as IClassifier;
             if (classifier != null)
@@ -92,26 +98,23 @@ namespace Kephas.Model.Elements
                 return classifier;
             }
 
+            var cacheKey = findContext is IModelConstructionContext
+                               ? this.constructionClassifierCacheKey
+                               : this.classifierCacheKey;
+
             // try to get from the cached value.
-            classifier = typeInfo[this.classifierCacheKey] as IClassifier;
+            classifier = typeInfo[cacheKey] as IClassifier;
             if (classifier != null)
             {
                 return classifier;
             }
 
-            classifier = this.TryComputeClassifier(typeInfo);
-            if (classifier == null)
-            {
-                if (throwOnNotFound)
-                {
-                    throw new ModelException(
-                        string.Format(Strings.DefaultModelSpace_ClassifierNotFoundException, typeInfo));
-                }
-            }
-            else
+            var classifiers = (findContext as IModelConstructionContext)?.ConstructedClassifiers ?? this.Classifiers;
+            classifier = this.TryComputeClassifier(typeInfo, classifiers);
+            if (classifier != null)
             {
                 // set the cached value.
-                typeInfo[this.classifierCacheKey] = classifier;
+                typeInfo[cacheKey] = classifier;
             }
 
             return classifier;
@@ -179,6 +182,7 @@ namespace Kephas.Model.Elements
         {
             // TODO
             var classifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
+            constructionContext[nameof(IModelConstructionContext.ConstructedClassifiers)] = classifiers;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
             return classifiers;
@@ -202,7 +206,7 @@ namespace Kephas.Model.Elements
             // build the aggregated projections
             // aggregate the model elements, adding them to the right aggregated projection
 
-            //TODO...;
+            // TODO...;
         }
 
         /// <summary>
@@ -248,17 +252,18 @@ namespace Kephas.Model.Elements
         /// Tries to compute the classifier of the provided <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
+        /// <param name="classifiers">The classifiers.</param>
         /// <returns>
         /// An IClassifier.
         /// </returns>
-        private IClassifier TryComputeClassifier(ITypeInfo typeInfo)
+        private IClassifier TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers)
         {
             // TODO 
             // return only aggregated classifiers, not partial ones.
             // try to find in all classifiers, in all parts, the provided type info
             // if one is found, the containing classifier is the searched one.
 
-            return this.Classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
+            return classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
         }
     }
 }

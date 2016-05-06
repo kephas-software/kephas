@@ -10,6 +10,8 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -19,6 +21,19 @@ namespace Kephas.Reflection
     /// </summary>
     public static class ReflectionHelper
     {
+        /// <summary>
+        /// The empty type infos.
+        /// </summary>
+        internal static readonly IReadOnlyList<ITypeInfo> EmptyTypeInfos;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="ReflectionHelper"/> class.
+        /// </summary>
+        static ReflectionHelper()
+        {
+            EmptyTypeInfos = new ReadOnlyCollection<ITypeInfo>(new List<ITypeInfo>());
+        }
+
         /// <summary>
         /// Retrieves the property name from a lambda expression.
         /// </summary>

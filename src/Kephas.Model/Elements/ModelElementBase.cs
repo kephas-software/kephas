@@ -13,7 +13,8 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Construction;
-    using Kephas.Model.Runtime.Construction.Internal;
+    using Kephas.Model.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
@@ -54,14 +55,6 @@ namespace Kephas.Model.Elements
         public override IEnumerable<IAnnotation> Annotations => this.Members.OfType<IAnnotation>();
 
         /// <summary>
-        /// Gets the base model element.
-        /// </summary>
-        /// <value>
-        /// The base model element.
-        /// </value>
-        public virtual IModelElement Base { get; private set; }
-
-        /// <summary>
         /// Gets the member with the specified qualified name.
         /// </summary>
         /// <param name="qualifiedName">The qualified name of the member.</param>
@@ -95,15 +88,6 @@ namespace Kephas.Model.Elements
             memberBuilder?.SetContainer(this);
 
             this.members.Add(member.Name, member);
-        }
-
-        /// <summary>
-        /// Sets the base element.
-        /// </summary>
-        /// <param name="base">The base.</param>
-        protected override void SetBase(IModelElement @base)
-        {
-            this.Base = @base;
         }
     }
 }

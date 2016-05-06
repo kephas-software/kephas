@@ -10,6 +10,7 @@
 namespace Kephas.Model.Runtime.Construction.Builders
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -22,12 +23,20 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <summary>
         /// The projection.
         /// </summary>
-        private IList<IDynamicTypeInfo> projection = new List<IDynamicTypeInfo>();
+        private readonly IList<IDynamicTypeInfo> projection = new List<IDynamicTypeInfo>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeProjectionBuilder"/> class.
+        /// </summary>
+        public RuntimeProjectionBuilder()
+        {
+            this.Projection = new ReadOnlyCollection<IDynamicTypeInfo>(this.projection);
+        }
 
         /// <summary>
         /// Gets the runtime projection.
         /// </summary>
-        internal IList<IDynamicTypeInfo> Projection => this.projection;
+        internal IReadOnlyList<IDynamicTypeInfo> Projection { get; }
 
         /// <summary>
         /// Adds the dimension element identified by the type.

@@ -150,6 +150,7 @@
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
+    <Compile Include="AttributedModel\OverrideAttribute.cs" />
     <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
     <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
     <Compile Include="Behaviors\IInstanceContext.cs" />
@@ -224,7 +225,7 @@
     <Compile Include="Construction\ModelConstructionContext.cs" />
     <Compile Include="Runtime\Construction\Annotations\RequiredAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
-    <Compile Include="Runtime\Construction\Internal\IWritableNamedElement.cs" />
+    <Compile Include="Construction\Internal\IWritableNamedElement.cs" />
     <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProvider.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructor.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />

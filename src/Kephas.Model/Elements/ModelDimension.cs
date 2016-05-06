@@ -13,7 +13,7 @@ namespace Kephas.Model.Elements
     using System.Linq;
 
     using Kephas.Model.Construction;
-    using Kephas.Model.Runtime.Construction.Internal;
+    using Kephas.Model.Construction.Internal;
 
     /// <summary>
     /// Implementation of model dimensions.

@@ -17,6 +17,7 @@ namespace Kephas.Dynamic
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Collections;
     using Kephas.Reflection;
 
     /// <summary>
@@ -48,6 +49,26 @@ namespace Kephas.Dynamic
         /// The methods.
         /// </summary>
         private IDictionary<string, IEnumerable<IDynamicMethodInfo>> methods;
+
+        /// <summary>
+        /// The base <see cref="ITypeInfo"/>s.
+        /// </summary>
+        private IReadOnlyList<ITypeInfo> baseTypes;
+
+        /// <summary>
+        /// The generic type parameters.
+        /// </summary>
+        private IReadOnlyList<ITypeInfo> genericTypeParameters;
+
+        /// <summary>
+        /// The generic type arguments.
+        /// </summary>
+        private IReadOnlyList<ITypeInfo> genericTypeArguments;
+
+        /// <summary>
+        /// The generic type definition.
+        /// </summary>
+        private ITypeInfo genericTypeDefinition;
 
         /// <summary>
         /// Initializes static members of the <see cref="DynamicTypeInfo"/> class.
@@ -114,6 +135,38 @@ namespace Kephas.Dynamic
         /// The namespace of the type.
         /// </value>
         public string Namespace { get; }
+
+        /// <summary>
+        /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
+        /// </summary>
+        /// <value>
+        /// The bases.
+        /// </value>
+        public IEnumerable<ITypeInfo> BaseTypes => this.baseTypes ?? (this.baseTypes = this.CreateBaseTypes(this.TypeInfo));
+
+        /// <summary>
+        /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
+        /// </summary>
+        /// <value>
+        /// The generic arguments.
+        /// </value>
+        public IReadOnlyList<ITypeInfo> GenericTypeParameters => this.genericTypeParameters ?? (this.genericTypeParameters = this.CreateGenericTypeParameters(this.TypeInfo));
+
+        /// <summary>
+        /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type arguments of a closed generic type.
+        /// </summary>
+        /// <value>
+        /// The generic arguments.
+        /// </value>
+        public IReadOnlyList<ITypeInfo> GenericTypeArguments => this.genericTypeArguments ?? (this.genericTypeArguments = this.CreateGenericTypeArguments(this.TypeInfo));
+
+        /// <summary>
+        /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
+        /// </summary>
+        /// <value>
+        /// The generic type definition.
+        /// </value>
+        public ITypeInfo GenericTypeDefinition => this.genericTypeDefinition ?? (this.genericTypeDefinition = this.GetGenericTypeDefinition(this.TypeInfo));
 
         /// <summary>
         /// Gets the element annotations.
@@ -400,6 +453,43 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Creates the bases.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        /// <returns>
+        /// The new bases.
+        /// </returns>
+        private IReadOnlyList<ITypeInfo> CreateBaseTypes(TypeInfo typeInfo)
+        {
+            var baseTypes = new List<ITypeInfo>();
+            if (typeInfo.BaseType != null)
+            {
+                baseTypes.Add(typeInfo.BaseType.AsDynamicTypeInfo());
+            }
+
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypes.Add(i.AsDynamicTypeInfo()));
+
+            return new ReadOnlyCollection<ITypeInfo>(baseTypes);
+        }
+
+        /// <summary>
+        /// Gets the generic type definition.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        /// <returns>
+        /// The generic type definition.
+        /// </returns>
+        private ITypeInfo GetGenericTypeDefinition(TypeInfo typeInfo)
+        {
+            if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
+            {
+                return GetDynamicType(typeInfo.GetGenericTypeDefinition());
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the property infos, initializing them if necessary.
         /// </summary>
         /// <returns>
@@ -419,6 +509,42 @@ namespace Kephas.Dynamic
         private IDictionary<string, IEnumerable<IDynamicMethodInfo>> GetMethods()
         {
             return this.methods ?? (this.methods = CreateMethodInfos(this.Type));
+        }
+
+        /// <summary>
+        /// Creates the generic parameters.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        /// <returns>
+        /// The new generic arguments.
+        /// </returns>
+        private IReadOnlyList<ITypeInfo> CreateGenericTypeParameters(TypeInfo typeInfo)
+        {
+            var args = typeInfo.GenericTypeParameters;
+            if (args.Length == 0)
+            {
+                return ReflectionHelper.EmptyTypeInfos;
+            }
+
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetDynamicType(a)).ToList());
+        }
+
+        /// <summary>
+        /// Creates the generic arguments.
+        /// </summary>
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        /// <returns>
+        /// The new generic arguments.
+        /// </returns>
+        private IReadOnlyList<ITypeInfo> CreateGenericTypeArguments(TypeInfo typeInfo)
+        {
+            var args = typeInfo.GenericTypeArguments;
+            if (args.Length == 0)
+            {
+                return ReflectionHelper.EmptyTypeInfos;
+            }
+
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetDynamicType(a)).ToList());
         }
 
         /// <summary>

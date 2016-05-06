@@ -241,6 +241,38 @@ namespace Kephas.Dynamic
         public abstract string Namespace { get; }
 
         /// <summary>
+        /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
+        /// </summary>
+        /// <value>
+        /// The bases.
+        /// </value>
+        public abstract IEnumerable<ITypeInfo> BaseTypes { get; }
+
+        /// <summary>
+        /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
+        /// </summary>
+        /// <value>
+        /// The generic arguments.
+        /// </value>
+        public abstract IReadOnlyList<ITypeInfo> GenericTypeParameters { get; }
+
+        /// <summary>
+        /// Gets the generic type arguments.
+        /// </summary>
+        /// <value>
+        /// The generic type arguments.
+        /// </value>
+        public abstract IReadOnlyList<ITypeInfo> GenericTypeArguments { get; }
+
+        /// <summary>
+        /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
+        /// </summary>
+        /// <value>
+        /// The generic type definition.
+        /// </value>
+        public abstract ITypeInfo GenericTypeDefinition { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
