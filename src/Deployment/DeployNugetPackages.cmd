@@ -5,6 +5,8 @@ nuget pack ..\Kephas.Composition.Mef\Package.nuspec -BasePath ..\Kephas.Composit
 nuget pack ..\Kephas.Messaging\Package.nuspec -BasePath ..\Kephas.Messaging -Symbols
 nuget pack ..\Kephas.Model\Package.nuspec -BasePath ..\Kephas.Model -Symbols
 nuget pack ..\Kephas.Data\Package.nuspec -BasePath ..\Kephas.Data -Symbols
+nuget pack ..\Kephas.Data.DocumentDB\Package.nuspec -BasePath ..\Kephas.Data.DocumentDB -Symbols
+nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoDB -Symbols
 nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols
 nuget pack ..\Kephas.Platform.NetCore\Package.nuspec -BasePath ..\Kephas.Platform.NetCore -Symbols
 nuget pack ..\Kephas.Platform.Net45\Package.nuspec -BasePath ..\Kephas.Platform.Net45 -Symbols
