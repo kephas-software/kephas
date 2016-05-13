@@ -13,6 +13,7 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq.Expressions;
+    using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Composition;
@@ -61,23 +62,12 @@ namespace Kephas
         /// <summary>
         /// Registers the provided service.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        IAmbientServices RegisterService<TService>(TService service)
-            where TService : class;
-
-        /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <returns>
-        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no service object of type <typeparamref name="TService"/>.
-        /// </returns>
-        TService GetService<TService>()
-            where TService : class;
+        IAmbientServices RegisterService(Type serviceType, object service);
     }
 
     /// <summary>
@@ -146,30 +136,20 @@ namespace Kephas
         /// <summary>
         /// Registers the provided service.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public IAmbientServices RegisterService<TService>(TService service)
-            where TService : class
+        public IAmbientServices RegisterService(Type serviceType, object service)
         {
+            Contract.Requires(serviceType != null);
             Contract.Requires(service != null);
+            Contract.Requires(serviceType.GetTypeInfo().IsAssignableFrom(service.GetType().GetTypeInfo()));
             Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             return Contract.Result<IAmbientServices>();
         }
-
-        /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <returns>
-        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
-        /// service object of type <typeparamref name="TService"/>.
-        /// </returns>
-        public abstract TService GetService<TService>()
-            where TService : class;
 
         /// <summary>
         /// Gets the service object of the specified type.

@@ -102,30 +102,16 @@ namespace Kephas
         /// <summary>
         /// Registers the provided service.
         /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public IAmbientServices RegisterService<TService>(TService service)
-            where TService : class
+        public IAmbientServices RegisterService(Type serviceType, object service)
         {
-            this.services[typeof(TService)] = service;
+            this.services[serviceType] = service;
 
             return this;
-        }
-
-        /// <summary>
-        /// Gets the service with the provided type.
-        /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <returns>
-        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no service object of type <typeparamref name="TService"/>.
-        /// </returns>
-        public TService GetService<TService>()
-            where TService : class
-        {
-            return (TService)this.GetService(typeof(TService));
         }
 
         /// <summary>

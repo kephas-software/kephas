@@ -29,8 +29,9 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="Net45AppEnvironment"/> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        public Net45AppEnvironment(IAssemblyLoader assemblyLoader = null)
-            : base(assemblyLoader)
+        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
+        public Net45AppEnvironment(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+            : base(assemblyLoader, assemblyFilter)
         {
         }
 

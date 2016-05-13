@@ -65,5 +65,41 @@ namespace Kephas
 
             return new TypedLogger<T>(ambientServices.LogManager);
         }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, TService service)
+            where TService : class
+        {
+            Contract.Requires(ambientServices != null);
+            Contract.Requires(service != null);
+            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
+
+            return ambientServices.RegisterService(typeof(TService), service);
+        }
+
+        /// <summary>
+        /// Gets the service with the provided type.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <returns>
+        /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
+        /// service object of type <typeparamref name="TService"/>.
+        /// </returns>
+        public static TService GetService<TService>(this IServiceProvider ambientServices)
+            where TService : class
+        {
+            Contract.Requires(ambientServices != null);
+
+            return (TService)ambientServices.GetService(typeof(TService));
+        }
     }
 }

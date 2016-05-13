@@ -180,7 +180,7 @@
     <Compile Include="Elements\Classifier.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
     <Compile Include="Runtime\AttributedModel\ValueTypeAttribute.cs" />
-    <Compile Include="Runtime\Configuration\ModelDimensionElementConfigurator.cs" />
+    <Compile Include="Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs" />
     <Compile Include="Runtime\Construction\Annotations\MixinAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\Builders\ClassifierBuilderBase.cs" />
     <Compile Include="Runtime\Construction\Builders\ModelElementBuilderBase.cs" />

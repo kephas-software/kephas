@@ -9,6 +9,7 @@
 
 namespace Kephas.Application
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading;
@@ -25,8 +26,9 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="NetCoreAppEnvironment" /> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        public NetCoreAppEnvironment(IAssemblyLoader assemblyLoader = null)
-            : base(assemblyLoader)
+        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
+        public NetCoreAppEnvironment(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+            : base(assemblyLoader, assemblyFilter)
         {
         }
 

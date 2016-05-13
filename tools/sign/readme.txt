@@ -10,7 +10,7 @@ and then hit ENTER.
 
 .assembly extern /*23000002*/ MongoDB.Bson
 {
-  .publickeytoken = (15 B1 11 55 99 98 3C 50)                         // this was added
+  .publickeytoken = (15 B1 11 55 99 98 3C 50 )                         // this was added
   .ver 2:2:3:3
 }
 

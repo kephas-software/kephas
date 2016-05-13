@@ -30,10 +30,12 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppEnvironmentBase"/> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        protected AppEnvironmentBase(IAssemblyLoader assemblyLoader = null)
+        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
+        protected AppEnvironmentBase(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
             : base(isThreadSafe: true)
         {
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
+            this.AssemblyFilter = assemblyFilter ?? (a => !a.IsSystemAssembly());
         }
 
         /// <summary>
@@ -42,7 +44,15 @@ namespace Kephas.Application
         /// <value>
         /// The assembly loader.
         /// </value>
-        public IAssemblyLoader AssemblyLoader { get; private set; }
+        public IAssemblyLoader AssemblyLoader { get; }
+
+        /// <summary>
+        /// Gets the assembly filter.
+        /// </summary>
+        /// <value>
+        /// The assembly filter.
+        /// </value>
+        protected Func<AssemblyName, bool> AssemblyFilter { get; }
 
         /// <summary>
         /// Gets the application assemblies.
@@ -59,14 +69,14 @@ namespace Kephas.Application
             var assemblies = this.GetLoadedAssemblies();
 
             var loadedAssemblyRefs = new HashSet<string>(assemblies.Select(a => a.GetName().FullName));
-            var assembliesToCheck = assemblies.Where(a => !a.IsSystemAssembly()).ToList();
+            var assembliesToCheck = assemblies.Where(a => this.AssemblyFilter(a.GetName())).ToList();
 
             while (assembliesToCheck.Count > 0)
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var assembly in assembliesToCheck)
                 {
-                    var referencesToLoad = this.GetReferencedAssemblies(assembly).Where(a => !loadedAssemblyRefs.Contains(a.FullName) && !a.IsSystemAssembly());
+                    var referencesToLoad = this.GetReferencedAssemblies(assembly).Where(a => !loadedAssemblyRefs.Contains(a.FullName) && this.AssemblyFilter(a));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
