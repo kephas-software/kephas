@@ -31,6 +31,22 @@ namespace Kephas.Model
         bool IsAggregated { get; }
 
         /// <summary>
+        /// Gets the name of the aggregated projection.
+        /// </summary>
+        /// <value>
+        /// The name of the aggregated projection.
+        /// </value>
+        string AggregatedProjectionName { get; }
+
+        /// <summary>
+        /// Gets the aggregated projection, if the projection is part of an aggregated one.
+        /// </summary>
+        /// <value>
+        /// The aggregated projection.
+        /// </value>
+        IModelProjection AggregatedProjection { get; }
+
+        /// <summary>
         /// Gets the dimension elements making up this projection.
         /// </summary>
         /// <value>
@@ -52,6 +68,22 @@ namespace Kephas.Model
         /// <c>true</c> if this instance is aggregated; otherwise, <c>false</c>.
         /// </value>
         public abstract bool IsAggregated { get; }
+
+        /// <summary>
+        /// Gets the name of the aggregated projection.
+        /// </summary>
+        /// <value>
+        /// The name of the aggregated projection.
+        /// </value>
+        public abstract string AggregatedProjectionName { get; }
+
+        /// <summary>
+        /// Gets the aggregated projection, if the projection is part of an aggregated one.
+        /// </summary>
+        /// <value>
+        /// The aggregated projection.
+        /// </value>
+        public abstract IModelProjection AggregatedProjection { get; }
 
         /// <summary>
         /// Gets the dimension elements making up this projection.

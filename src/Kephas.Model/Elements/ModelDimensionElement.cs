@@ -33,5 +33,13 @@ namespace Kephas.Model.Elements
         /// The name of the dimension.
         /// </value>
         public string DimensionName { get; internal set; }
+
+        /// <summary>
+        /// Gets the dimension declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring dimension.
+        /// </value>
+        public IModelDimension DeclaringDimension => (IModelDimension)this.Container;
     }
 }

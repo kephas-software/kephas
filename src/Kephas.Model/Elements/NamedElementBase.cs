@@ -236,7 +236,7 @@ namespace Kephas.Model.Elements
         void IWritableNamedElement.AddPart(object part)
         {
             this.ConstructionMonitor.AssertIsInProgress();
-            this.parts.Add(part);
+            this.AddPart(part);
         }
 
         /// <summary>
@@ -246,6 +246,15 @@ namespace Kephas.Model.Elements
         protected virtual void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
             Contract.Requires(constructionContext != null);
+        }
+
+        /// <summary>
+        /// Adds a part to the aggregated element.
+        /// </summary>
+        /// <param name="part">The part to be added.</param>
+        protected virtual void AddPart(object part)
+        {
+            this.parts.Add(part);
         }
 
         /// <summary>

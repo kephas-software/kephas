@@ -156,15 +156,10 @@ namespace Kephas.Model.Elements
             {
                 var nonAggregatableProjections = new List<IModelProjection>();
                 this.BuildProjections(constructionContext, nonAggregatableDimensions, 0, new List<IModelDimensionElement>(), nonAggregatableProjections);
-                nonAggregatableProjections.ForEach(p => ((ModelProjection)p).IsAggregated = true);
-
-                // TODO build the parts of the non-aggregatable projections from the projections
+                var nonAggregatableDictionary = nonAggregatableProjections.ToDictionary(p => p.Name, p => p);
+                projections.ForEach(p => ((IWritableNamedElement)nonAggregatableDictionary[p.AggregatedProjectionName]).AddPart(p));
 
                 projections.AddRange(nonAggregatableProjections);
-            }
-            else
-            {
-                projections.ForEach(p => ((ModelProjection)p).IsAggregated = true);
             }
 
             return projections;
@@ -221,7 +216,11 @@ namespace Kephas.Model.Elements
         {
             if (index >= dimensions.Length)
             {
-                var projection = new ModelProjection(constructionContext, this.ComputeProjectionName(elements)) { DimensionElements = elements.ToArray() };
+                var aggregatedElements = elements.Where(e => !e.DeclaringDimension.IsAggregatable).ToArray();
+                var projection = new ModelProjection(
+                    constructionContext,
+                    this.ComputeProjectionName(elements),
+                    this.ComputeProjectionName(aggregatedElements)) { DimensionElements = elements.ToArray() };
                 projections.Add(projection);
                 return;
             }

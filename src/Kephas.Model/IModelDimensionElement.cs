@@ -31,6 +31,14 @@ namespace Kephas.Model
         /// The name of the dimension.
         /// </value>
         string DimensionName { get; }
+
+        /// <summary>
+        /// Gets the dimension declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring dimension.
+        /// </value>
+        IModelDimension DeclaringDimension { get; }
     }
 
     /// <summary>
@@ -152,6 +160,14 @@ namespace Kephas.Model
         /// The name of the dimension.
         /// </value>
         public string DimensionName { get; }
+
+        /// <summary>
+        /// Gets the dimension declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring dimension.
+        /// </value>
+        public abstract IModelDimension DeclaringDimension { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer
