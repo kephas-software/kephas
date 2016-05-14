@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}"
 EndProject
@@ -16,6 +16,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomizeMefContainer", "CustomizeMefContainer", "{07B8ABA1-319F-45F0-8298-E55370522BC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoleGame", "CustomizeMefContainer\RoleGame\RoleGame.csproj", "{2B436BEA-5734-47FA-A193-564F3FC0B17E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{5D739283-D925-4F6C-B7A2-64459E50405E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleChatApp", "SimpleChatApp", "{9335AC7A-1C21-44AD-8817-C127DEFFD24F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat.WebApp", "SimpleChatWebApp\SignalRChat.WebApp\SignalRChat.WebApp.csproj", "{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +41,10 @@ Global
 		{2B436BEA-5734-47FA-A193-564F3FC0B17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B436BEA-5734-47FA-A193-564F3FC0B17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B436BEA-5734-47FA-A193-564F3FC0B17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +56,7 @@ Global
 		{2B15F402-2704-4121-97E5-59B143936214} = {C15F2D0E-BD12-4185-A021-F630094651B0}
 		{07B8ABA1-319F-45F0-8298-E55370522BC5} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
 		{2B436BEA-5734-47FA-A193-564F3FC0B17E} = {07B8ABA1-319F-45F0-8298-E55370522BC5}
+		{9335AC7A-1C21-44AD-8817-C127DEFFD24F} = {5D739283-D925-4F6C-B7A2-64459E50405E}
+		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6} = {9335AC7A-1C21-44AD-8817-C127DEFFD24F}
 	EndGlobalSection
 EndGlobal
