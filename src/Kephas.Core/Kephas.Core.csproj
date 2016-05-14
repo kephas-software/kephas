@@ -241,7 +241,6 @@
     <Compile Include="Reflection\IMethodInfo.cs" />
     <Compile Include="Reflection\IPropertyInfo.cs" />
     <Compile Include="Reflection\ITypeInfo.cs" />
-    <Compile Include="Reflection\NullAssemblyLoader.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="Reflection\TypeInfoExtensions.cs" />
