@@ -12,3 +12,4 @@ nuget pack ..\Kephas.Platform.NetCore\Package.nuspec -BasePath ..\Kephas.Platfor
 nuget pack ..\Kephas.Platform.Net45\Package.nuspec -BasePath ..\Kephas.Platform.Net45 -Symbols
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols
 nuget pack ..\Kephas.Mail.Net45\Package.nuspec -BasePath ..\Kephas.Mail.Net45 -Symbols
+nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbols

@@ -115,7 +115,10 @@ namespace Kephas.Threading.Tasks
             if (actionsList == null)
             {
                 actionsList = new List<Action<ThreadContext>>();
-                this.ambientServices[actionsKey] = actionsList;
+                if (this.ambientServices != null)
+                {
+                    this.ambientServices[actionsKey] = actionsList;
+                }
             }
 
             return actionsList;
@@ -130,7 +133,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         private IList<Action<ThreadContext>> GetContextActions(string actionsKey)
         {
-            var rawActions = this.ambientServices[actionsKey];
+            var rawActions = this.ambientServices?[actionsKey];
 
             var actions = rawActions as IList<Action<ThreadContext>>;
 

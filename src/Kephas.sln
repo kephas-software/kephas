@@ -61,6 +61,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.DocumentDB", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{1090E4F1-7F99-404B-8F0E-5836E0D66465}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.Owin", "Kephas.Web.Owin\Kephas.Web.Owin.csproj", "{D4A22CB1-1DD0-4C40-A79A-81B939C58059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45.Tests", "Tests\Kephas.Platform.Net45.Tests\Kephas.Platform.Net45.Tests.csproj", "{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +151,14 @@ Global
 		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,5 +170,6 @@ Global
 		{D86A56DF-A18D-4051-A341-CBCEA5AE5E81} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{918F8D47-7BF5-4005-A92A-7B9C62D3EF7A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 EndGlobal

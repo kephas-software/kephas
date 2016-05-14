@@ -78,6 +78,7 @@
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
     <Compile Include="Services\ContextBaseTest.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
+    <Compile Include="Threading\Tasks\TaskHelperTest.cs" />
     <Compile Include="UndefinedTest.cs" />
   </ItemGroup>
   <ItemGroup>

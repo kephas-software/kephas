@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kephas.Logging.NLog</id>
-    <version>3.0.7</version>
-    <title>Kephas.Logging.NLog</title>
+    <id>Kephas.Web.Owin</id>
+    <version>3.0.7-pre1</version>
+    <title>Kephas.Web.Owin</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
     <description>
-        Provides the NLog 4 (and later) logging services implementation.
+        Provides Kephas web components for integration with OWIN.
         Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
         Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
     </description>
     <releaseNotes>
     </releaseNotes>
     <summary>
-        Provides the NLog 4 (and later) logging services implementation.
+        Provides Kephas web components for integration with OWIN.
         Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
         Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
     </summary>
@@ -26,18 +26,18 @@
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
       <dependency id="Kephas.Core" version="3.0.7" />
-      <dependency id="NLog" version="4.0.0" />
+      <dependency id="Owin" version="1.0" />
     </dependencies>
     <references>
-      <reference file="Kephas.Logging.NLog.dll" />
+      <reference file="Kephas.Web.Owin.dll" />
     </references>
-    <tags>kephas framework logging nlog quartz software</tags>
+    <tags>kephas framework web owin quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Web.Owin.dll" target="lib\net45" />
+    <file src="bin\debug\Kephas.Web.Owin.pdb" target="lib\net45" />
+    <file src="bin\debug\Kephas.Web.Owin.xml" target="lib\net45" />
+    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.dll" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.pdb" target="lib\net45\CodeContracts" />
   </files>
 </package>

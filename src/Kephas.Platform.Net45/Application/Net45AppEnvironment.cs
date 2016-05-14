@@ -73,7 +73,7 @@ namespace Kephas.Application
             var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
             var assemblyFiles = Directory.EnumerateFiles(directory, "*.dll", SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
             var assemblyFilesToLoad = assemblyFiles.Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()));
-            assemblies.AddRange(assemblyFilesToLoad.Select(f => Assembly.LoadFile(Path.Combine(directory, f))).Where(a => !a.IsSystemAssembly()));
+            assemblies.AddRange(assemblyFilesToLoad.Select(f => Assembly.LoadFile(Path.Combine(directory, f))).Where(a => this.AssemblyFilter(a.GetName())));
 
             return Task.FromResult((IEnumerable<Assembly>)assemblies);
         }
@@ -86,7 +86,7 @@ namespace Kephas.Application
         /// </returns>
         private string GetAppLocation()
         {
-            var assembly = Assembly.GetEntryAssembly();
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
 
             var codebaseUri = new Uri(assembly.CodeBase);
             var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));

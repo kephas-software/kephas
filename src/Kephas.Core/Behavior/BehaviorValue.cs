@@ -39,7 +39,7 @@ namespace Kephas.Behavior
         /// <returns>
         /// A BehaviorValue{TValue} representing the provided value.
         /// </returns>
-        public static IBehaviorValue<TValue> AsBehaviorValue<TValue>(this TValue value)
+        public static IBehaviorValue<TValue> ToBehaviorValue<TValue>(this TValue value)
         {
             return new BehaviorValue<TValue>(value);
         }

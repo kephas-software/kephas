@@ -26,6 +26,7 @@ namespace Kephas.Composition.Hosting
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for composition container builders.
@@ -371,7 +372,7 @@ namespace Kephas.Composition.Hosting
             await Profiler.WithInfoStopwatchAsync(
                 async () =>
                     {
-                        var assemblies = await this.GetCompositionAssembliesAsync();
+                        var assemblies = await this.GetCompositionAssembliesAsync().WithServerThreadingContext();
 
                         container = this.CreateContainerWithConventions(assemblies);
                     },
