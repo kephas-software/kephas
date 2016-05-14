@@ -279,6 +279,7 @@
     <Compile Include="Services\ScopeSharedAppServiceContractAttribute.cs" />
     <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
     <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
+    <Compile Include="Services\Transitioning\ITransitionState.cs" />
     <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitor.cs" />
     <Compile Include="Threading\Tasks\ServerThreadContextAwaiter.cs" />

@@ -10,12 +10,21 @@
 namespace Kephas.Model.Construction.Internal
 {
     using Kephas.Model.Construction;
+    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Interface for writable named elements used during construction.
     /// </summary>
     internal interface IWritableNamedElement
     {
+        /// <summary>
+        /// Gets the state of the construction.
+        /// </summary>
+        /// <value>
+        /// The construction state.
+        /// </value>
+        ITransitionState ConstructionState { get; }
+
         /// <summary>
         /// Sets the element container.
         /// </summary>

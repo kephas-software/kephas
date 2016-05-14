@@ -163,6 +163,14 @@ namespace Kephas.Model.Elements
         public virtual IModelSpace ModelSpace { get; }
 
         /// <summary>
+        /// Gets the state of the construction.
+        /// </summary>
+        /// <value>
+        /// The construction state.
+        /// </value>
+        ITransitionState IWritableNamedElement.ConstructionState => this.ConstructionMonitor;
+
+        /// <summary>
         /// Gets the construction monitor.
         /// </summary>
         /// <value>

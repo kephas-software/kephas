@@ -162,6 +162,8 @@ namespace Kephas.Model.Elements
                 projections.AddRange(nonAggregatableProjections);
             }
 
+            projections.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
+
             return projections;
         }
 

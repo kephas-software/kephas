@@ -16,7 +16,7 @@ namespace Kephas.Services.Transitioning
     /// <summary>
     /// Class monitoring the state of a service transition.
     /// </summary>
-    public class TransitionMonitor
+    public class TransitionMonitor : ITransitionState
     {
         /// <summary>
         /// The transition name.
