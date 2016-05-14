@@ -200,16 +200,6 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Sets the full name.
-        /// </summary>
-        /// <param name="fullName">The full name.</param>
-        void IWritableNamedElement.SetFullName(string fullName)
-        {
-            this.ConstructionMonitor.AssertIsInProgress();
-            this.FullName = fullName;
-        }
-
-        /// <summary>
         /// Completes the construction of the element.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -218,6 +208,7 @@ namespace Kephas.Model.Elements
             this.ConstructionMonitor.AssertIsInProgress();
             try
             {
+                this.FullName = this.Container?.FullName + this.QualifiedName;
                 this.OnCompleteConstruction(constructionContext);
                 this.ConstructionMonitor.Complete();
             }

@@ -33,6 +33,14 @@
 
             Assert.IsTrue(dimensions.Cast<IWritableNamedElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
             Assert.IsTrue(dimensions.SelectMany(d => d.Elements).Cast<IWritableNamedElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
+
+            var dimDictionary = dimensions.ToDictionary(d => d.Name, d => d);
+            var elemDictionary = dimensions.SelectMany(d => d.Elements).ToDictionary(e => e.Name, e => e);
+            Assert.AreSame(elemDictionary["E1"].DeclaringDimension, dimDictionary["D1"]);
+            Assert.AreSame(elemDictionary["E2"].DeclaringDimension, dimDictionary["D1"]);
+            Assert.AreSame(elemDictionary["F1"].DeclaringDimension, dimDictionary["D2"]);
+            Assert.AreSame(elemDictionary["F2"].DeclaringDimension, dimDictionary["D2"]);
+            Assert.AreEqual("^D1:E1", elemDictionary["E1"].FullName);
         }
 
         [Test]
@@ -53,6 +61,19 @@
 
             Assert.AreEqual(6, projections.Count);
             Assert.IsTrue(projections.Cast<IWritableNamedElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
+
+            var projDictionary = projections.ToDictionary(p => p.Name, p => p);
+            Assert.IsFalse(projDictionary[":E1:F1"].IsAggregated);
+            Assert.IsFalse(projDictionary[":E1:F2"].IsAggregated);
+            Assert.IsFalse(projDictionary[":E2:F1"].IsAggregated);
+            Assert.IsFalse(projDictionary[":E2:F2"].IsAggregated);
+            Assert.IsTrue(projDictionary[":E1"].IsAggregated);
+            Assert.IsTrue(projDictionary[":E2"].IsAggregated);
+            Assert.AreSame(projDictionary[":E1:F1"].AggregatedProjection, projDictionary[":E1"]);
+            Assert.AreSame(projDictionary[":E1:F2"].AggregatedProjection, projDictionary[":E1"]);
+            Assert.AreSame(projDictionary[":E2:F1"].AggregatedProjection, projDictionary[":E2"]);
+            Assert.AreSame(projDictionary[":E2:F2"].AggregatedProjection, projDictionary[":E2"]);
+            Assert.AreEqual(":E2:F2", projDictionary[":E2:F2"].FullName);
         }
 
         /// <summary>

@@ -32,18 +32,6 @@ namespace Kephas.Model.Construction.Internal
         void SetContainer(IModelElement container);
 
         /// <summary>
-        /// Sets the full name.
-        /// </summary>
-        /// <param name="fullName">The full name.</param>
-        void SetFullName(string fullName);
-
-        /// <summary>
-        /// Completes the construction of the element.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        void CompleteConstruction(IModelConstructionContext constructionContext);
-
-        /// <summary>
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
@@ -54,5 +42,11 @@ namespace Kephas.Model.Construction.Internal
         /// </summary>
         /// <param name="part">The part to be added.</param>
         void AddPart(object part);
+
+        /// <summary>
+        /// Completes the construction of the element.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        void CompleteConstruction(IModelConstructionContext constructionContext);
     }
 }

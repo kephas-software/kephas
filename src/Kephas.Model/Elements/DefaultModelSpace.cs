@@ -200,7 +200,6 @@ namespace Kephas.Model.Elements
             // complete the construction of the other model elements, assigning them to the right projection
             this.Classifiers = this.ComputeClassifiers(constructionContext);
 
-            // build the aggregated projections
             // aggregate the model elements, adding them to the right aggregated projection
 
             // TODO...;
