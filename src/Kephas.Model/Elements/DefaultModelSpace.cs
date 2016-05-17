@@ -64,7 +64,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The dimensions.
         /// </value>
-        public IModelDimension[] Dimensions { get; private set; }
+        public IReadOnlyList<IModelDimension> Dimensions { get; private set; }
 
         /// <summary>
         /// Gets the projections.
@@ -146,13 +146,13 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected internal virtual IList<IModelProjection> ComputeProjections(
             IModelConstructionContext constructionContext,
-            IModelDimension[] dimensions)
+            IReadOnlyList<IModelDimension> dimensions)
         {
             var projections = new List<IModelProjection>();
-            this.BuildProjections(constructionContext, dimensions, 0, new List<IModelDimensionElement>(), projections);
+            this.BuildProjections(constructionContext, dimensions.ToArray(), 0, new List<IModelDimensionElement>(), projections);
 
             var nonAggregatableDimensions = dimensions.Where(d => !d.IsAggregatable).ToArray();
-            if (dimensions.Length > nonAggregatableDimensions.Length)
+            if (dimensions.Count > nonAggregatableDimensions.Length)
             {
                 var nonAggregatableProjections = new List<IModelProjection>();
                 this.BuildProjections(constructionContext, nonAggregatableDimensions, 0, new List<IModelDimensionElement>(), nonAggregatableProjections);

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Formats
+namespace Kephas.Serialization.Xml
 {
     /// <summary>
     /// Marker class for XML format.

@@ -25,5 +25,13 @@ namespace Kephas.Serialization
         /// The type of the format.
         /// </value>
         Type FormatType { get; }
+
+        /// <summary>
+        /// Gets or sets the type of the root object.
+        /// </summary>
+        /// <value>
+        /// The type of the root object.
+        /// </value>
+        Type RootObjectType { get; set; }
     }
 }

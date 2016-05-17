@@ -22,7 +22,7 @@
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
       <dependency id="Kephas.Core" version="3.0.7" />
-      <dependency id="Newtonsoft.Json" version="6.0.0" />
+      <dependency id="Newtonsoft.Json" version="8.0.2" />
     </dependencies>
     <references>
       <reference file="Kephas.Serialization.Json.dll" />

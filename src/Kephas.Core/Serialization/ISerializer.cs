@@ -12,7 +12,6 @@ namespace Kephas.Serialization
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Serialization.Formats;
     using Kephas.Services;
 
     /// <summary>
@@ -53,7 +52,7 @@ namespace Kephas.Serialization
     /// Contract for a serializer with for a specific contract.
     /// </summary>
     /// <typeparam name="TFormat">Type of the format.</typeparam>
-    [AppServiceContract]
+    [AppServiceContract(ContractType = typeof(ISerializer))]
     public interface ISerializer<TFormat> : ISerializer
         where TFormat : IFormat
     {

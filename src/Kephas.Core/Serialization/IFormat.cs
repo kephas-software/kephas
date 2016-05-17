@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Formats
+namespace Kephas.Serialization
 {
     /// <summary>
     /// Contract for serialization formats.

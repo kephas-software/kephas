@@ -18,7 +18,7 @@ namespace Kephas.Serialization
     using Kephas.Composition;
     using Kephas.Resources;
     using Kephas.Serialization.Composition;
-    using Kephas.Serialization.Formats;
+    using Kephas.Serialization.Json;
 
     /// <summary>
     /// A default serialization service.

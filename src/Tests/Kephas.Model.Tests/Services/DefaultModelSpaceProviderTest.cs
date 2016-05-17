@@ -12,6 +12,7 @@
     using Kephas.Model.Services;
 
     using NUnit.Framework;
+    using Kephas.Model.Construction.Internal;
 
     [TestFixture]
     public class DefaultModelSpaceProviderTest
@@ -23,7 +24,9 @@
 
             await provider.InitializeAsync();
 
-            //...
+            var modelSpace = provider.GetModelSpace();
+
+            Assert.IsTrue((modelSpace as IWritableNamedElement)?.ConstructionState.IsCompleted);
         }
 
         private IRuntimeModelElementFactory GetRuntimeModelElementFactory()

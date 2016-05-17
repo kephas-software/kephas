@@ -39,6 +39,26 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -54,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
+      <Project>{32fa6130-ddf0-4d2f-8057-a38ef9ed3d49}</Project>
+      <Name>Kephas.Composition.Mef</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
@@ -61,6 +85,10 @@
     <ProjectReference Include="..\..\Kephas.Serialization.Json\Kephas.Serialization.Json.csproj">
       <Project>{a1a9cb93-6d34-4912-8544-aa273c19234e}</Project>
       <Name>Kephas.Serialization.Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj">
+      <Project>{af177881-80c4-4d2f-9d5e-761938918641}</Project>
+      <Name>Kephas.Composition.Mef.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

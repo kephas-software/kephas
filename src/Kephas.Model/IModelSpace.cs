@@ -29,7 +29,7 @@ namespace Kephas.Model
         /// <value>
         /// The dimensions.
         /// </value>
-        IModelDimension[] Dimensions { get; }
+        IReadOnlyList<IModelDimension> Dimensions { get; }
 
         /// <summary>
         /// Gets the projections.
@@ -70,12 +70,12 @@ namespace Kephas.Model
         /// <value>
         /// The dimensions.
         /// </value>
-        public IModelDimension[] Dimensions
+        public IReadOnlyList<IModelDimension> Dimensions
         {
             get
             {
-                Contract.Ensures(Contract.Result<IModelDimension[]>() != null);
-                return Contract.Result<IModelDimension[]>();
+                Contract.Ensures(Contract.Result<IReadOnlyList<IModelDimension>>() != null);
+                return Contract.Result<IReadOnlyList<IModelDimension>>();
             }
         }
 

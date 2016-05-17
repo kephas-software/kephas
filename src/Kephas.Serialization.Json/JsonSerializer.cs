@@ -14,8 +14,6 @@ namespace Kephas.Serialization.Json
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Serialization.Formats;
-
     using Newtonsoft.Json;
 
     /// <summary>
@@ -93,7 +91,9 @@ namespace Kephas.Serialization.Json
                         using (var streamReader = new StringReader(serializedObj))
                         using (var jsonReader = new JsonTextReader(streamReader))
                         {
-                            result = serializer.Deserialize(jsonReader);
+                            result = context?.RootObjectType != null
+                                         ? serializer.Deserialize(jsonReader, context.RootObjectType)
+                                         : serializer.Deserialize(jsonReader);
                         }
 
                         return result;

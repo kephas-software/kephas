@@ -20,6 +20,7 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Resources;
 
     /// <summary>
     /// Contract interface for ambient services.
@@ -145,8 +146,12 @@ namespace Kephas
         {
             Contract.Requires(serviceType != null);
             Contract.Requires(service != null);
-            Contract.Requires(serviceType.GetTypeInfo().IsAssignableFrom(service.GetType().GetTypeInfo()));
             Contract.Ensures(Contract.Result<IAmbientServices>() != null);
+
+            if (!serviceType.GetTypeInfo().IsAssignableFrom(service.GetType().GetTypeInfo()))
+            {
+                throw new InvalidOperationException(string.Format(Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception, service.GetType(), serviceType));
+            }
 
             return Contract.Result<IAmbientServices>();
         }

@@ -251,13 +251,15 @@
     </Compile>
     <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
     <Compile Include="Serialization\DefaultSerializationService.cs" />
-    <Compile Include="Serialization\Formats\IFormat.cs" />
-    <Compile Include="Serialization\Formats\JsonFormat.cs" />
-    <Compile Include="Serialization\Formats\XmlFormat.cs" />
+    <Compile Include="Serialization\IFormat.cs" />
+    <Compile Include="Serialization\Json\JsonFormat.cs" />
+    <Compile Include="Serialization\Json\JsonSerializationContext.cs" />
+    <Compile Include="Serialization\Xml\XmlFormat.cs" />
     <Compile Include="Serialization\ISerializationContext.cs" />
     <Compile Include="Serialization\ISerializationService.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\SerializationContext.cs" />
+    <Compile Include="Serialization\Xml\XmlSerializationContext.cs" />
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
     <Compile Include="Services\AppServiceMetadata.cs" />

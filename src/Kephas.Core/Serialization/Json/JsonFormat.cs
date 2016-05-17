@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Formats
+namespace Kephas.Serialization.Json
 {
     /// <summary>
     /// Marker class for JSON format.

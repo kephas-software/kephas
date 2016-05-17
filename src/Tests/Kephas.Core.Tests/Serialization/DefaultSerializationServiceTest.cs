@@ -16,7 +16,8 @@ namespace Kephas.Core.Tests.Serialization
     using Kephas.Composition;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
-    using Kephas.Serialization.Formats;
+    using Kephas.Serialization.Json;
+    using Kephas.Serialization.Xml;
     using Kephas.Services;
 
     using NUnit.Framework;
