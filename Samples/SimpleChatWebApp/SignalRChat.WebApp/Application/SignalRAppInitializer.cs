@@ -3,6 +3,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
@@ -11,6 +12,7 @@
     /// <summary>
     /// A SignalR application initializer.
     /// </summary>
+    [ProcessingPriority(Priority.High)]
     public class SignalRAppInitializer : OwinAppInitializerBase
     {
         /// <summary>Initializes the application asynchronously.</summary>
