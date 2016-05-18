@@ -180,4 +180,7 @@
   <data name="AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception" xml:space="preserve">
     <value>The provided service instance '{0}' is not convertible to the service type '{1}'.</value>
   </data>
+  <data name="Serialization_FormatTypeMismatch_Exception" xml:space="preserve">
+    <value>Expected {0} instead of {1} format type in the serialization context.</value>
+  </data>
 </root>

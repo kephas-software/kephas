@@ -10,7 +10,6 @@
 namespace Kephas.Serialization.Json
 {
     using System.IO;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -37,16 +36,18 @@ namespace Kephas.Serialization.Json
         }
 
         /// <summary>
-        /// Serializes the provided object asynchronously as JSON.
+        /// Serializes the provided object asynchronously.
         /// </summary>
-        /// <param name="obj">              The object.</param>
-        /// <param name="context">          The context.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task promising the serialized object as a string.
         /// </returns>
-        public Task<string> SerializeAsync(
+        public Task SerializeAsync(
             object obj,
+            TextWriter textWriter,
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -55,29 +56,23 @@ namespace Kephas.Serialization.Json
 
             return Task.Factory.StartNew(
                 () =>
-                    {
-                        var sb = new StringBuilder();
-                        using (var stringStream = new StringWriter(sb))
-                        {
-                            serializer.Serialize(stringStream, obj);
-                        }
-
-                        return sb.ToString();
-                    },
+                {
+                    serializer.Serialize(textWriter, obj);
+                },
                 cancellationToken);
         }
 
         /// <summary>
-        /// Deserialize an object asynchronously from the provided JSON.
+        /// Deserialize an object asynchronously.
         /// </summary>
-        /// <param name="serializedObj">    The serialized object.</param>
-        /// <param name="context">          The context.</param>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task promising the deserialized object.
         /// </returns>
         public Task<object> DeserializeAsync(
-            string serializedObj,
+            TextReader textReader,
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -86,18 +81,25 @@ namespace Kephas.Serialization.Json
 
             return Task.Factory.StartNew(
                 () =>
+                {
+                    object result;
+                    using (var jsonReader = new JsonTextReader(textReader))
                     {
-                        object result;
-                        using (var streamReader = new StringReader(serializedObj))
-                        using (var jsonReader = new JsonTextReader(streamReader))
+                        result = context?.RootObjectFactory?.Invoke();
+                        if (result != null)
+                        {
+                            serializer.Populate(jsonReader, result);
+                        }
+                        else
                         {
                             result = context?.RootObjectType != null
                                          ? serializer.Deserialize(jsonReader, context.RootObjectType)
                                          : serializer.Deserialize(jsonReader);
                         }
+                    }
 
-                        return result;
-                    }, 
+                    return result;
+                },
                 cancellationToken);
         }
     }

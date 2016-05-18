@@ -33,5 +33,13 @@ namespace Kephas.Serialization
         /// The type of the root object.
         /// </value>
         Type RootObjectType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the root object factory.
+        /// </summary>
+        /// <value>
+        /// The root object factory.
+        /// </value>
+        Func<object> RootObjectFactory { get; set; }
     }
 }

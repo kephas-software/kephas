@@ -45,36 +45,42 @@ namespace Kephas.Serialization
         /// The type of the root object.
         /// </value>
         public Type RootObjectType { get; set; }
-    }
 
-    /// <summary>
-    /// A serialization context for the specified format type.
-    /// </summary>
-    /// <typeparam name="TFormat">The format type.</typeparam>
-    public class SerializationContext<TFormat> : SerializationContext
-    {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SerializationContext{TFormat}"/> class.
+        /// Gets or sets the root object factory.
         /// </summary>
-        public SerializationContext()
-            : base(typeof(TFormat))
+        /// <value>
+        /// The root object factory.
+        /// </value>
+        public Func<object> RootObjectFactory { get; set; }
+
+        /// <summary>
+        /// Creates a new configured <see cref="SerializationContext"/>.
+        /// </summary>
+        /// <typeparam name="TFormatType">Type of the format type.</typeparam>
+        /// <param name="rootObjectFactory">The root object factory.</param>
+        /// <returns>
+        /// A configured <see cref="SerializationContext"/>.
+        /// </returns>
+        public static SerializationContext Create<TFormatType>(Func<object> rootObjectFactory = null)
+            where TFormatType : IFormat
         {
+            return new SerializationContext(typeof(TFormatType)) { RootObjectFactory = rootObjectFactory };
         }
-    }
 
-    /// <summary>
-    /// A serialization context for the specified format type.
-    /// </summary>
-    /// <typeparam name="TFormat">The format type.</typeparam>
-    /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-    public class SerializationContext<TFormat, TRootObject> : SerializationContext<TFormat>
-    {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SerializationContext{TFormat, TRootObject}"/> class.
+        /// Creates a new configured <see cref="SerializationContext"/>.
         /// </summary>
-        public SerializationContext()
+        /// <typeparam name="TFormatType">The format type.</typeparam>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="rootObjectFactory">The root object factory.</param>
+        /// <returns>
+        /// A configured <see cref="SerializationContext"/>.
+        /// </returns>
+        public static SerializationContext Create<TFormatType, TRootObject>(Func<object> rootObjectFactory = null)
+            where TFormatType : IFormat
         {
-            this.RootObjectType = typeof(TRootObject);
+            return new SerializationContext(typeof(TFormatType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
         }
     }
 }

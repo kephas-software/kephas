@@ -9,6 +9,8 @@
 
 namespace Kephas.Serialization
 {
+    using System.Diagnostics.Contracts;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -17,33 +19,36 @@ namespace Kephas.Serialization
     /// <summary>
     /// Base contract for serializers.
     /// </summary>
+    [ContractClass(typeof(SerializerContractClass))]
     public interface ISerializer
     {
         /// <summary>
         /// Serializes the provided object asynchronously.
         /// </summary>
-        /// <param name="obj">              The object.</param>
-        /// <param name="context">          The context.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task promising the serialized object as a string.
         /// </returns>
-        Task<string> SerializeAsync(
+        Task SerializeAsync(
             object obj,
+            TextWriter textWriter,
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Deserialize an object asynchronously.
         /// </summary>
-        /// <param name="serializedObj">    The serialized object.</param>
-        /// <param name="context">          The context.</param>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task promising the deserialized object.
         /// </returns>
         Task<object> DeserializeAsync(
-            string serializedObj,
+            TextReader textReader,
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken));
     }
@@ -52,9 +57,58 @@ namespace Kephas.Serialization
     /// Contract for a serializer with for a specific contract.
     /// </summary>
     /// <typeparam name="TFormat">Type of the format.</typeparam>
-    [AppServiceContract(ContractType = typeof(ISerializer))]
+    [AppServiceContract(ContractType = typeof(ISerializer), AllowMultiple = true)]
     public interface ISerializer<TFormat> : ISerializer
         where TFormat : IFormat
     {
+    }
+
+    /// <summary>
+    /// Contract class for <see cref="ISerializer"/>.
+    /// </summary>
+    [ContractClassFor(typeof(ISerializer))]
+    internal abstract class SerializerContractClass : ISerializer
+    {
+        /// <summary>
+        /// Serializes the provided object asynchronously.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the serialized object as a string.
+        /// </returns>
+        public Task SerializeAsync(
+            object obj,
+            TextWriter textWriter,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(textWriter != null);
+            Contract.Ensures(Contract.Result<Task>() != null);
+
+            return Contract.Result<Task>();
+        }
+
+        /// <summary>
+        /// Deserialize an object asynchronously.
+        /// </summary>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the deserialized object.
+        /// </returns>
+        public Task<object> DeserializeAsync(
+            TextReader textReader,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(textReader != null);
+            Contract.Ensures(Contract.Result<Task>() != null);
+
+            return Contract.Result<Task<object>>();
+        }
     }
 }

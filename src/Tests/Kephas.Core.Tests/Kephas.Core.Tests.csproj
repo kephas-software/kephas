@@ -73,6 +73,7 @@
     <Compile Include="Reflection\ReflectionHelperTest.cs" />
     <Compile Include="Reflection\TypeInfoExtensionsTest.cs" />
     <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />
+    <Compile Include="Serialization\SerializationExtensionsTest.cs" />
     <Compile Include="Services\Behavior\ServiceEnumerableExtensionsTest.cs" />
     <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />

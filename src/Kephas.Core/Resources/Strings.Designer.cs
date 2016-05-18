@@ -215,6 +215,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected {0} instead of {1} format type in the serialization context..
+        /// </summary>
+        internal static string Serialization_FormatTypeMismatch_Exception {
+            get {
+                return ResourceManager.GetString("Serialization_FormatTypeMismatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} of &apos;{1}&apos; is not completed..
         /// </summary>
         internal static string TransitionMonitor_AssertIsCompleted_Exception {
