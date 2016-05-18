@@ -5,7 +5,6 @@
 
     using Kephas.Messaging.Server;
     using Kephas.Serialization;
-    using Kephas.Serialization.Formats;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
@@ -19,18 +18,15 @@
 
         private readonly ISerializationService serializationService;
 
-        private ISerializer serializer;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiAppInitializer"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public ApiAppInitializer(IMessageProcessor messageProcessor /*, ISerializationService serializationService */)
+        public ApiAppInitializer(IMessageProcessor messageProcessor, ISerializationService serializationService)
         {
             this.messageProcessor = messageProcessor;
-            //this.serializationService = serializationService;
-            //this.serializer = this.serializationService.GetSerializer(new SerializationContext(typeof(JsonFormat)));
+            this.serializationService = serializationService;
         }
 
         /// <summary>Initializes the application asynchronously.</summary>
@@ -39,7 +35,7 @@
         /// <returns>A Task.</returns>
         protected override Task InitializeCoreAsync(IOwinAppContext appContext, CancellationToken cancellationToken)
         {
-            appContext.AppBuilder.Use<ChatAppApiMiddleware>(this.messageProcessor, this.serializer);
+            appContext.AppBuilder.Use<ChatAppApiMiddleware>(this.messageProcessor, this.serializationService);
 
             return TaskHelper.CompletedTask;
         }

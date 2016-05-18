@@ -6,8 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Messaging;
     using Kephas.Messaging.Server;
     using Kephas.Serialization;
+    using Kephas.Serialization.Json;
     using Kephas.Threading.Tasks;
 
     using Microsoft.Owin;
@@ -18,7 +20,7 @@
     {
         private readonly IMessageProcessor messageProcessor;
 
-        private readonly ISerializer serializer;
+        private readonly ISerializationService serializationService;
 
         /// <summary>
         /// Gets the next middleware.
@@ -33,12 +35,12 @@
         /// </summary>
         /// <param name="next">The next.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="serializer">The serializer.</param>
-        public ChatAppApiMiddleware(Func<IDictionary<string, object>, Task> next, IMessageProcessor messageProcessor, ISerializer serializer)
+        /// <param name="serializationService">The serializationService.</param>
+        public ChatAppApiMiddleware(Func<IDictionary<string, object>, Task> next, IMessageProcessor messageProcessor, ISerializationService serializationService)
         {
             this.next = next;
             this.messageProcessor = messageProcessor;
-            this.serializer = serializer;
+            this.serializationService = serializationService;
         }
 
         /// <summary>
@@ -54,17 +56,15 @@
 
             if (context.Request.Uri.LocalPath.ToLower().StartsWith("/post"))
             {
-                var msg = new PostMessage
-                                {
-                                    Name = "test",
-                                    Message = context.Request.Uri.Query,
-                                };
+                var content = Uri.UnescapeDataString(context.Request.Uri.Query.Substring(1));
+                var msg = (IMessage)await this.serializationService.JsonDeserializeAsync<PostMessage>(content).PreserveThreadContext();
 
-                var msgResponse = await this.messageProcessor.ProcessAsync(msg).WithServerThreadingContext();
+                var msgResponse = await this.messageProcessor.ProcessAsync(msg).PreserveThreadContext();
+                var msgJson = await this.serializationService.JsonSerializeAsync(msgResponse).PreserveThreadContext();
 
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync("{ response: 'ok' }");
+                await context.Response.WriteAsync(msgJson);
 
                 return;
             }
