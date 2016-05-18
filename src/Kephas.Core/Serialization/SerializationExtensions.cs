@@ -28,9 +28,40 @@ namespace Kephas.Serialization
         /// <summary>
         /// Deserializes the object from JSON asynchronously.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the
-        ///                                             <see cref="ISerializationContext.FormatType"/> is
-        ///                                             mismatched in the provided context.</exception>
+        /// <typeparam name="TFormatType">Type of the serialization format.</typeparam>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the deserialized object.
+        /// </returns>
+        public static async Task<TRootObject> DeserializeAsync<TFormatType, TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where TFormatType : IFormat
+        {
+            Contract.Requires(serializationService != null);
+
+            if (serializedObj == null)
+            {
+                return default(TRootObject);
+            }
+
+            context = CheckOrCreateSerializationContext<TFormatType>(context);
+            context.RootObjectType = typeof(TRootObject);
+
+            var serializer = serializationService.GetSerializer(context);
+            var result = await serializer.DeserializeAsync(serializedObj, context, cancellationToken).WithServerThreadingContext();
+            return (TRootObject)result;
+        }
+
+        /// <summary>
+        /// Deserializes the object from JSON asynchronously.
+        /// </summary>
         /// <typeparam name="TFormatType">Type of the serialization format.</typeparam>
         /// <param name="serializationService">The serializationService to act on.</param>
         /// <param name="serializedObj">The serialized object.</param>
@@ -53,17 +84,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((object)null);
             }
 
-            if (context == null)
-            {
-                context = SerializationContext.Create<TFormatType>();
-            }
-            else
-            {
-                if (context.FormatType != typeof(TFormatType))
-                {
-                    throw new InvalidOperationException(string.Format(Strings.Serialization_FormatTypeMismatch_Exception, typeof(TFormatType), context.FormatType));
-                }
-            }
+            context = CheckOrCreateSerializationContext<TFormatType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.DeserializeAsync(serializedObj, context, cancellationToken);
@@ -91,6 +112,28 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Deserializes the object from JSON asynchronously.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the deserialized object.
+        /// </returns>
+        public static Task<TRootObject> JsonDeserializeAsync<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(serializationService != null);
+
+            return DeserializeAsync<JsonFormat, TRootObject>(serializationService, serializedObj, context, cancellationToken);
+        }
+
+        /// <summary>
         /// Deserializes the object from XML asynchronously.
         /// </summary>
         /// <param name="serializationService">The serializationService to act on.</param>
@@ -109,6 +152,28 @@ namespace Kephas.Serialization
             Contract.Requires(serializationService != null);
 
             return DeserializeAsync<XmlFormat>(serializationService, serializedObj, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes the object from XML asynchronously.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the deserialized object.
+        /// </returns>
+        public static Task<TRootObject> XmlDeserializeAsync<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(serializationService != null);
+
+            return DeserializeAsync<XmlFormat, TRootObject>(serializationService, serializedObj, context, cancellationToken);
         }
 
         /// <summary>
@@ -139,17 +204,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((string)null);
             }
 
-            if (context == null)
-            {
-                context = SerializationContext.Create<TFormatType>();
-            }
-            else
-            {
-                if (context.FormatType != typeof(TFormatType))
-                {
-                    throw new InvalidOperationException(string.Format(Strings.Serialization_FormatTypeMismatch_Exception, typeof(TFormatType), context.FormatType));
-                }
-            }
+            context = CheckOrCreateSerializationContext<TFormatType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.SerializeAsync(obj, context, cancellationToken);
@@ -256,6 +311,36 @@ namespace Kephas.Serialization
             {
                 reader.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Creates serialization context.
+        /// </summary>
+        /// <typeparam name="TFormatType">Type of the format type.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The new serialization context.
+        /// </returns>
+        private static ISerializationContext CheckOrCreateSerializationContext<TFormatType>(ISerializationContext context)
+            where TFormatType : IFormat
+        {
+            if (context == null)
+            {
+                context = SerializationContext.Create<TFormatType>();
+            }
+            else
+            {
+                if (context.FormatType != typeof(TFormatType))
+                {
+                    throw new InvalidOperationException(
+                        string.Format(
+                            Strings.Serialization_FormatTypeMismatch_Exception,
+                            typeof(TFormatType),
+                            context.FormatType));
+                }
+            }
+
+            return context;
         }
     }
 }
