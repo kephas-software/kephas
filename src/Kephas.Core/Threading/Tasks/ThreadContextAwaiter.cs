@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServerThreadContextAwaiter.cs" company="Quartz Software SRL">
+// <copyright file="ThreadContextAwaiter.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Awaiter preserving the server context.
+//   Awaiter preserving the context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ namespace Kephas.Threading.Tasks
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Awaiter preserving the server thread context.
+    /// Awaiter preserving the thread context.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public class ServerThreadContextAwaiter<TResult> : INotifyCompletion, ICriticalNotifyCompletion
+    public class ThreadContextAwaiter<TResult> : INotifyCompletion, ICriticalNotifyCompletion
     {
         /// <summary>
         /// The awaiter.
@@ -32,16 +32,16 @@ namespace Kephas.Threading.Tasks
         private readonly ThreadContext threadContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerThreadContextAwaiter{TResult}"/> class.
+        /// Initializes a new instance of the <see cref="ThreadContextAwaiter{TResult}"/> class.
         /// </summary>
         /// <param name="task">The task.</param>
-        public ServerThreadContextAwaiter(Task<TResult> task)
+        public ThreadContextAwaiter(Task<TResult> task)
         {
             Contract.Requires(task != null);
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
-            this.threadContext = new ServerThreadContextBuilder().AsThreadContext();
+            this.threadContext = new ThreadContextBuilder().AsThreadContext();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The awaiter.
         /// </returns>
-        public ServerThreadContextAwaiter<TResult> GetAwaiter() => this;
+        public ThreadContextAwaiter<TResult> GetAwaiter() => this;
 
         /// <summary>
         /// Notifies the awaiter to get the result.
@@ -97,10 +97,10 @@ namespace Kephas.Threading.Tasks
     }
 
     /// <summary>
-    /// Awaiter preserving the server thread context.
+    /// Awaiter preserving the thread context.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class ServerThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
+    public class ThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
     {
         /// <summary>
         /// The awaiter.
@@ -108,21 +108,21 @@ namespace Kephas.Threading.Tasks
         private readonly ConfiguredTaskAwaitable.ConfiguredTaskAwaiter awaiter;
 
         /// <summary>
-        /// Threading context for the server.
+        /// Threading context.
         /// </summary>
         private readonly ThreadContext threadContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerThreadContextAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="ThreadContextAwaiter"/> class.
         /// </summary>
         /// <param name="task">The task.</param>
-        public ServerThreadContextAwaiter(Task task)
+        public ThreadContextAwaiter(Task task)
         {
             Contract.Requires(task != null);
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
-            this.threadContext = new ServerThreadContextBuilder().AsThreadContext();
+            this.threadContext = new ThreadContextBuilder().AsThreadContext();
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The awaiter.
         /// </returns>
-        public ServerThreadContextAwaiter GetAwaiter() => this;
+        public ThreadContextAwaiter GetAwaiter() => this;
 
         /// <summary>
         /// Notifies the awaiter to get the result.

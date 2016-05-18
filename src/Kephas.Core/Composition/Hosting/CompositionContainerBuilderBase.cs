@@ -372,7 +372,7 @@ namespace Kephas.Composition.Hosting
             await Profiler.WithInfoStopwatchAsync(
                 async () =>
                     {
-                        var assemblies = await this.GetCompositionAssembliesAsync().WithServerThreadingContext();
+                        var assemblies = await this.GetCompositionAssembliesAsync().PreserveThreadContext();
 
                         container = this.CreateContainerWithConventions(assemblies);
                     },

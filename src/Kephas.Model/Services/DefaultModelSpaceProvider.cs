@@ -108,7 +108,7 @@ namespace Kephas.Model.Services
             try
             {
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
-                var elementInfos = (await elementInfosCollectorTask.WithServerThreadingContext()).SelectMany(e => e).ToList();
+                var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
 
                 constructionContext[nameof(IModelConstructionContext.ElementInfos)] = elementInfos;
                 ((IWritableNamedElement)modelSpace).CompleteConstruction(constructionContext);

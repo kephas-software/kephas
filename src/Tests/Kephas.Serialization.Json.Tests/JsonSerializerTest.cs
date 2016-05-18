@@ -52,11 +52,25 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
-        public async Task DeserializeAsync_with_provided_type()
+        public async Task DeserializeAsync_with_in_string_provided_type()
+        {
+            var serializer = new JsonSerializer();
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
+            var obj = await serializer.DeserializeAsync(serializedObj, SerializationContext.Create<JsonFormat>());
+
+            Assert.IsInstanceOf<TestEntity>(obj);
+
+            var testEntity = (TestEntity)obj;
+
+            Assert.AreEqual("John Doe", testEntity.Name);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_with_runtime_provided_type()
         {
             var serializer = new JsonSerializer();
             var serializedObj = @"{""name"":""John Doe""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, SerializationContext.Create<JsonFormat>());
+            var obj = await serializer.DeserializeAsync(serializedObj, SerializationContext.Create<JsonFormat, TestEntity>());
 
             Assert.IsInstanceOf<TestEntity>(obj);
 

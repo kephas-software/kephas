@@ -66,7 +66,7 @@ namespace Kephas.Model.Runtime
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var runtimeElements = await this.GetRuntimeElementInfos(cancellationToken).WithServerThreadingContext();
+            var runtimeElements = await this.GetRuntimeElementInfos(cancellationToken).PreserveThreadContext();
 
             constructionContext.RuntimeModelElementFactory = this.RuntimeModelElementFactory;
             var elementInfos = new List<INamedElement>();
@@ -106,7 +106,7 @@ namespace Kephas.Model.Runtime
             foreach (var modelRegistry in this.modelRegistries)
             {
                 var registryElements =
-                    await modelRegistry.GetRuntimeElementsAsync(cancellationToken).WithServerThreadingContext();
+                    await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
                 runtimeElements.AddRange(registryElements.Select(this.ToDynamicTypeInfo));
 
                 cancellationToken.ThrowIfCancellationRequested();

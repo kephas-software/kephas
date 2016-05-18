@@ -85,7 +85,7 @@ namespace Kephas.Application
                 assemblies.AddRange(assembliesToCheck);
             }
 
-            await this.AddAdditionalAssembliesAsync(assemblies, cancellationToken).WithServerThreadingContext();
+            await this.AddAdditionalAssembliesAsync(assemblies, cancellationToken).PreserveThreadContext();
             return assemblies;
         }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServerThreadContextBuilder.cs" company="Quartz Software SRL">
+// <copyright file="ThreadContextBuilder.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -14,19 +14,19 @@ namespace Kephas.Threading.Tasks
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Provides methods to configure and build server <see cref="ThreadContext"/> instances.
+    /// Provides methods to configure and build <see cref="ThreadContext"/> instances.
     /// </summary>
-    public class ServerThreadContextBuilder
+    public class ThreadContextBuilder
     {
         /// <summary>
         /// The server thread context store actions key.
         /// </summary>
-        private const string ServerThreadingContextStoreActionsKey = "Kephas_ServerThreadContextStoreActions";
+        private const string ThreadingContextStoreActionsKey = "Kephas_ThreadContextStoreActions";
 
         /// <summary>
         /// The server thread context restore actions key.
         /// </summary>
-        private const string ServerThreadingContextRestoreActionsKey = "Kephas_ServerThreadContextRestoreActions";
+        private const string ThreadingContextRestoreActionsKey = "Kephas_ThreadContextRestoreActions";
 
         /// <summary>
         /// The ambient services.
@@ -34,12 +34,12 @@ namespace Kephas.Threading.Tasks
         private readonly IAmbientServices ambientServices;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerThreadContextBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
         /// </summary>
         /// <param name="ambientServices">
         /// The ambient services.
         /// </param>
-        public ServerThreadContextBuilder(IAmbientServices ambientServices)
+        public ThreadContextBuilder(IAmbientServices ambientServices)
         {
             Contract.Requires(ambientServices != null);
 
@@ -47,9 +47,9 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerThreadContextBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
         /// </summary>
-        public ServerThreadContextBuilder()
+        public ThreadContextBuilder()
             : this(AmbientServices.Instance)
         {
         }
@@ -61,11 +61,11 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// This builder.
         /// </returns>
-        public ServerThreadContextBuilder WithStoreAction(Action<ThreadContext> storeAction)
+        public ThreadContextBuilder WithStoreAction(Action<ThreadContext> storeAction)
         {
             Contract.Requires(storeAction != null);
 
-            var storeActions = this.GetOrCreateContextActions(ServerThreadingContextStoreActionsKey);
+            var storeActions = this.GetOrCreateContextActions(ThreadingContextStoreActionsKey);
             storeActions.Add(storeAction);
 
             return this;
@@ -78,11 +78,11 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// This builder.
         /// </returns>
-        public ServerThreadContextBuilder WithRestoreAction(Action<ThreadContext> restoreAction)
+        public ThreadContextBuilder WithRestoreAction(Action<ThreadContext> restoreAction)
         {
             Contract.Requires(restoreAction != null);
 
-            var restoreActions = this.GetOrCreateContextActions(ServerThreadingContextRestoreActionsKey);
+            var restoreActions = this.GetOrCreateContextActions(ThreadingContextRestoreActionsKey);
             restoreActions.Add(restoreAction);
 
             return this;
@@ -96,8 +96,8 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public ThreadContext AsThreadContext()
         {
-            var storeActions = this.GetContextActions(ServerThreadingContextStoreActionsKey);
-            var restoreActions = this.GetContextActions(ServerThreadingContextRestoreActionsKey);
+            var storeActions = this.GetContextActions(ThreadingContextStoreActionsKey);
+            var restoreActions = this.GetContextActions(ThreadingContextRestoreActionsKey);
 
             return new ThreadContext(this.ambientServices, storeActions, restoreActions);
         }

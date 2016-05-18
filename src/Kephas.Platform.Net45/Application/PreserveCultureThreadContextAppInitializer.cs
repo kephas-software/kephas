@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServerThreadContextAppInitializer.cs" company="Quartz Software SRL">
+// <copyright file="PreserveCultureThreadContextAppInitializer.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -9,7 +9,6 @@
 
 namespace Kephas.Application
 {
-    using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -17,10 +16,10 @@ namespace Kephas.Application
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A server application initializer.
+    /// Application initializer configuring the <see cref="ThreadContextAwaiter"/> to preserve the thread culture.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class ServerThreadContextAppInitializer : AppInitializerBase
+    public class PreserveCultureThreadContextAppInitializer : AppInitializerBase
     {
         /// <summary>
         /// Initializes the application asynchronously.
@@ -32,7 +31,7 @@ namespace Kephas.Application
         /// </returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            new ServerThreadContextBuilder(appContext.AmbientServices)
+            new ThreadContextBuilder(appContext.AmbientServices)
                 .WithStoreAction(StoreThreadCulture)
                 .WithRestoreAction(RestoreThreadCulture);
 
@@ -45,8 +44,8 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void StoreThreadCulture(ThreadContext threadContext)
         {
-            threadContext.CurrentCulture = CultureInfo.CurrentCulture;
-            threadContext.CurrentUICulture = CultureInfo.CurrentUICulture;
+            threadContext.CurrentCulture = Thread.CurrentThread.CurrentCulture;
+            threadContext.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
         }
 
         /// <summary>
@@ -57,12 +56,12 @@ namespace Kephas.Application
         {
             if (threadContext.CurrentCulture != null)
             {
-                CultureInfo.CurrentCulture = threadContext.CurrentCulture;
+                Thread.CurrentThread.CurrentCulture = threadContext.CurrentCulture;
             }
 
             if (threadContext.CurrentUICulture != null)
             {
-                CultureInfo.CurrentUICulture = threadContext.CurrentUICulture;
+                Thread.CurrentThread.CurrentUICulture = threadContext.CurrentUICulture;
             }
         }
     }

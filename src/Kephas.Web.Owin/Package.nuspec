@@ -25,7 +25,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.7" />
+      <dependency id="Kephas.Core" version="3.0.7-pre1" />
       <dependency id="Owin" version="1.0" />
     </dependencies>
     <references>

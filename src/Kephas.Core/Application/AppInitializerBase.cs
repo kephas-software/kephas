@@ -50,7 +50,7 @@ namespace Kephas.Application
 
             try
             {
-                await this.InitializeCoreAsync(appContext, cancellationToken).WithServerThreadingContext();
+                await this.InitializeCoreAsync(appContext, cancellationToken).PreserveThreadContext();
                 this.InitializationMonitor.Complete();
             }
             catch (Exception ex)

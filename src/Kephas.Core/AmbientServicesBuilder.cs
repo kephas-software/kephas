@@ -157,7 +157,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            return this.WithCompositionContainer(await containerBuilder.CreateContainerAsync().WithServerThreadingContext());
+            return this.WithCompositionContainer(await containerBuilder.CreateContainerAsync().PreserveThreadContext());
         }
     }
 }

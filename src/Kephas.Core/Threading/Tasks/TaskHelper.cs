@@ -113,38 +113,42 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Gets a task awaiter preserving the current server context upon continuation.
+        /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
         /// <remarks>
-        /// ConfigureAwait(false) is called and the current culture and current UI culture are preserved.
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called), 
+        /// but it can be configured to preserve some thread properties.
+        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
         /// </remarks>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="task">The task.</param>
         /// <returns>
-        /// A <see cref="ServerThreadContextAwaiter{TResult}"/>.
+        /// A <see cref="ThreadContextAwaiter{TResult}"/>.
         /// </returns>
-        public static ServerThreadContextAwaiter<TResult> WithServerThreadingContext<TResult>(this Task<TResult> task)
+        public static ThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this Task<TResult> task)
         {
             Contract.Requires(task != null);
 
-            return new ServerThreadContextAwaiter<TResult>(task);
+            return new ThreadContextAwaiter<TResult>(task);
         }
 
         /// <summary>
-        /// Gets a task awaiter preserving the current culture upon continuation.
+        /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
         /// <remarks>
-        /// ConfigureAwait(false) is called and the current culture and current UI culture are preserved.
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called), 
+        /// but it can be configured to preserve some thread properties.
+        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
         /// </remarks>
         /// <param name="task">The task.</param>
         /// <returns>
-        /// A <see cref="ServerThreadContextAwaiter"/>.
+        /// A <see cref="ThreadContextAwaiter"/>.
         /// </returns>
-        public static ServerThreadContextAwaiter WithServerThreadingContext(this Task task)
+        public static ThreadContextAwaiter PreserveThreadContext(this Task task)
         {
             Contract.Requires(task != null);
 
-            return new ServerThreadContextAwaiter(task);
+            return new ThreadContextAwaiter(task);
         }
     }
 }

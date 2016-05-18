@@ -84,16 +84,16 @@ namespace Kephas.Application
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-                            await this.BeforeStartAsync(appContext, cancellationToken).WithServerThreadingContext();
+                            await this.BeforeStartAsync(appContext, cancellationToken).PreserveThreadContext();
                             cancellationToken.ThrowIfCancellationRequested();
 
-                            await this.RunInitializersAsync(appContext, cancellationToken).WithServerThreadingContext();
+                            await this.RunInitializersAsync(appContext, cancellationToken).PreserveThreadContext();
                             cancellationToken.ThrowIfCancellationRequested();
 
-                            await this.AfterStartAsync(appContext, cancellationToken).WithServerThreadingContext();
+                            await this.AfterStartAsync(appContext, cancellationToken).PreserveThreadContext();
                             cancellationToken.ThrowIfCancellationRequested();
                         },
-                    this.Logger).WithServerThreadingContext();
+                    this.Logger).PreserveThreadContext();
             }
             catch (OperationCanceledException)
             {
@@ -165,7 +165,7 @@ namespace Kephas.Application
                     await Profiler.WithInfoStopwatchAsync(
                         () => appInitializer.InitializeAsync(appContext, cancellationToken),
                         this.Logger,
-                        appInitializerIdentifier).WithServerThreadingContext();
+                        appInitializerIdentifier).PreserveThreadContext();
                 }
                 catch (OperationCanceledException cex)
                 {

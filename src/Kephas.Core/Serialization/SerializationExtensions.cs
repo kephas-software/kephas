@@ -55,7 +55,7 @@ namespace Kephas.Serialization
             context.RootObjectType = typeof(TRootObject);
 
             var serializer = serializationService.GetSerializer(context);
-            var result = await serializer.DeserializeAsync(serializedObj, context, cancellationToken).WithServerThreadingContext();
+            var result = await serializer.DeserializeAsync(serializedObj, context, cancellationToken).PreserveThreadContext();
             return (TRootObject)result;
         }
 
@@ -275,7 +275,7 @@ namespace Kephas.Serialization
             var writer = new StringWriter();
             try
             {
-                await serializer.SerializeAsync(obj, writer, context, cancellationToken).WithServerThreadingContext();
+                await serializer.SerializeAsync(obj, writer, context, cancellationToken).PreserveThreadContext();
                 return writer.GetStringBuilder().ToString();
             }
             finally
@@ -294,7 +294,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// A Task promising the deserialized object.
         /// </returns>
-        public static Task<object> DeserializeAsync(
+        public static async Task<object> DeserializeAsync(
             this ISerializer serializer,
             string serializedObj,
             ISerializationContext context = null,
@@ -305,7 +305,8 @@ namespace Kephas.Serialization
             var reader = new StringReader(serializedObj);
             try
             {
-                return serializer.DeserializeAsync(reader, context, cancellationToken);
+                var result = await serializer.DeserializeAsync(reader, context, cancellationToken).PreserveThreadContext();
+                return result;
             }
             finally
             {

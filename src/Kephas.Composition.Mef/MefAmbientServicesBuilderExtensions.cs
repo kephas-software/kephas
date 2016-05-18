@@ -53,7 +53,7 @@ namespace Kephas
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            var container = await containerBuilder.CreateContainerAsync().WithServerThreadingContext();
+            var container = await containerBuilder.CreateContainerAsync().PreserveThreadContext();
             return ambientServicesBuilder.WithCompositionContainer(container);
         }
     }

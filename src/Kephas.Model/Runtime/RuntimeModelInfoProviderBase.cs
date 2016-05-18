@@ -66,8 +66,8 @@ namespace Kephas.Model.Runtime
         {
             IEnumerable<IElementInfo> elementInfos = null;
             await Profiler.WithInfoStopwatchAsync(
-                async () => elementInfos = await this.GetElementInfosCoreAsync(constructionContext, cancellationToken).WithServerThreadingContext(),
-                this.Logger).WithServerThreadingContext();
+                async () => elementInfos = await this.GetElementInfosCoreAsync(constructionContext, cancellationToken).PreserveThreadContext(),
+                this.Logger).PreserveThreadContext();
 
             return elementInfos;
         }
