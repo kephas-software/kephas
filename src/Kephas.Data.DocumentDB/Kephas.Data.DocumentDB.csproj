@@ -131,8 +131,8 @@
       <HintPath>..\..\Packages\Microsoft.Azure.DocumentDB.1.7.1\lib\net45\Microsoft.Azure.Documents.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\Packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -148,6 +148,7 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="app.config" />
     <None Include="Package.nuspec" />
     <None Include="packages.config" />
     <AdditionalFiles Include="stylecop.json" />
