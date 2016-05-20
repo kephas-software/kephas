@@ -41,6 +41,12 @@ namespace Kephas.Logging.NLog
         /// <param name="args">         A variable-length parameters list containing arguments.</param>
         public void Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
+            if (exception == null)
+            {
+                this.Log(level, messageFormat, args);
+                return;
+            }
+
             switch (level)
             {
                 case Logging.LogLevel.Fatal:

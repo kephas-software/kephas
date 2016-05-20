@@ -68,17 +68,6 @@ namespace Kephas.Diagnostics.Logging
             }
 
             /// <summary>
-            /// Logs the information at the provided level.
-            /// </summary>
-            /// <param name="level">The logging level.</param>
-            /// <param name="messageFormat">The message format.</param>
-            /// <param name="args">The arguments.</param>
-            public void Log(LogLevel level, string messageFormat, params object[] args)
-            {
-                this.LogCore(level.ToString(), string.Format(messageFormat, args));
-            }
-
-            /// <summary>
             /// Logs the message.
             /// </summary>
             /// <param name="level">The level.</param>

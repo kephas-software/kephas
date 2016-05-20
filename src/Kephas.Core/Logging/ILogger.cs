@@ -57,19 +57,15 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">        The logging level.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <remarks>
+        /// Note for implementors: the <paramref name="exception"/> may be <c>null</c>, so be cautious and handle this case too.
+        /// For example, the <see cref="LoggerExtensions.Log"/> extension method passes a <c>null</c> exception.
+        /// </remarks>
+        /// <param name="level">The logging level.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         void Log(LogLevel level, Exception exception, string messageFormat, params object[] args);
-
-        /// <summary>
-        /// Logs the information at the provided level.
-        /// </summary>
-        /// <param name="level">        The logging level.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
-        void Log(LogLevel level, string messageFormat, params object[] args);
     }
 
     /// <summary>
@@ -86,6 +82,18 @@ namespace Kephas.Logging
     /// </summary>
     public static class LoggerExtensions
     {
+        /// <summary>
+        /// Logs the information at the provided level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="level">        The logging level.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">         The arguments.</param>
+        public static void Log(this ILogger logger, LogLevel level, string messageFormat, params object[] args)
+        {
+            logger?.Log(level, null, messageFormat, args);
+        }
+
         /// <summary>
         /// Logs fatal exceptions.
         /// </summary>
