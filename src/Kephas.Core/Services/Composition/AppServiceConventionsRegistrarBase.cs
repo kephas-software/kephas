@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceConventionsRegistrar.cs" company="Quartz Software SRL">
+// <copyright file="AppServiceConventionsRegistrarBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Conventions registrar for application services.
+//   Base for conventions registrars of application services.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,9 +21,9 @@ namespace Kephas.Services.Composition
     using Kephas.Resources;
 
     /// <summary>
-    /// Conventions registrar for application services.
+    /// Base for conventions registrars of application services.
     /// </summary>
-    public class AppServiceConventionsRegistrar : IConventionsRegistrar
+    public abstract class AppServiceConventionsRegistrarBase : IConventionsRegistrar
     {
         /// <summary>
         /// Registers the conventions.
@@ -37,7 +37,7 @@ namespace Kephas.Services.Composition
 
             // get all type infos from the composition assemblies
             var appServiceContractsInfos =
-                typeInfos.ToDictionary(ti => ti, ti => ti.GetCustomAttribute<AppServiceContractAttribute>())
+                typeInfos.ToDictionary(ti => ti, this.TryGetAppServiceContractAttribute)
                     .Where(ta => ta.Value != null)
                     .ToList();
 
@@ -95,6 +95,15 @@ namespace Kephas.Services.Composition
                 }
             }
         }
+
+        /// <summary>
+        /// Tries to get the <see cref="AppServiceContractAttribute"/> for the provided type.
+        /// </summary>
+        /// <param name="typeInfo">Information describing the type.</param>
+        /// <returns>
+        /// An <see cref="AppServiceContractAttribute"/> or <c>null</c>, if the provided type is not a service contract.
+        /// </returns>
+        protected abstract AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo);
 
         /// <summary>
         /// Determines whether the specified property imports an application service.

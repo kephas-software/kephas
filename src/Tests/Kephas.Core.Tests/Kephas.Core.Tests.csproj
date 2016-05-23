@@ -76,7 +76,8 @@
     <Compile Include="Serialization\SerializationExtensionsTest.cs" />
     <Compile Include="Services\Behavior\ServiceEnumerableExtensionsTest.cs" />
     <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs" />
-    <Compile Include="Services\Composition\AppServiceConventionsRegistrarTest.cs" />
+    <Compile Include="Services\Composition\AppServiceConventionsRegistrarBaseTest.cs" />
+    <Compile Include="Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs" />
     <Compile Include="Services\ContextBaseTest.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
     <Compile Include="Threading\Tasks\TaskHelperTest.cs" />

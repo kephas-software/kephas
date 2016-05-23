@@ -17,7 +17,6 @@ namespace Kephas.Tests.Composition.Mef
     using System.Linq;
 
     using Kephas.Composition;
-    using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
 
     using NUnit.Framework;

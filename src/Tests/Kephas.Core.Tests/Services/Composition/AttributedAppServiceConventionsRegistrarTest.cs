@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceConventionsRegistrarTest.cs" company="Quartz Software SRL">
+// <copyright file="AttributedAppServiceConventionsRegistrarTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Test class for <see cref="AppServiceConventionsRegistrar" />.
+//   Test class for <see cref="AttributedAppServiceConventionsRegistrar" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,17 +21,17 @@ namespace Kephas.Core.Tests.Services.Composition
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="AppServiceConventionsRegistrar"/>.
+    /// Test class for <see cref="AttributedAppServiceConventionsRegistrar"/>.
     /// </summary>
     [TestFixture]
-    public class AppServiceConventionsRegistrarTest
+    public class AttributedAppServiceConventionsRegistrarTest
     {
         [Test]
         public void RegisterConventions_Multiple()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -68,7 +68,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -87,7 +87,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             Assert.Throws<InvalidOperationException>(() => registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -103,7 +103,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -122,7 +122,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -140,7 +140,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -163,7 +163,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -190,7 +190,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
@@ -216,7 +216,7 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AppServiceConventionsRegistrar();
+            var registrar = new AttributedAppServiceConventionsRegistrar();
             Assert.Throws<CompositionException>(
                 () => registrar.RegisterConventions(
                     conventions,

@@ -44,7 +44,7 @@ namespace Kephas.Services
         /// <value>
         /// The application service lifetime.
         /// </value>
-        public AppServiceLifetime Lifetime { get; private set; }
+        public AppServiceLifetime Lifetime { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether multiple services for this contract are allowed.

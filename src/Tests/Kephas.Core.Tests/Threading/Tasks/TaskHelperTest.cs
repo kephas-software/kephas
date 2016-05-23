@@ -32,7 +32,7 @@
         {
             var task = new Task(() => Thread.Sleep(50));
             task.Start();
-            task.WaitNonLocking(TimeSpan.FromMilliseconds(600));
+            task.WaitNonLocking(TimeSpan.FromMilliseconds(1000));
 
             Assert.IsTrue(task.IsCompleted);
         }

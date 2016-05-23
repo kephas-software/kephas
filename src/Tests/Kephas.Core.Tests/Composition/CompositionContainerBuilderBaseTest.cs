@@ -173,12 +173,14 @@ namespace Kephas.Core.Tests.Composition
             {
                 this.Type = type;
                 this.ExportBuilder = new TestExportConventionsBuilder();
+                this.ImportedProperties = new List<Tuple<Predicate<PropertyInfo>, Action<PropertyInfo, IImportConventionsBuilder>>>();
             }
 
             public TestPartConventionsBuilder(Predicate<Type> typePredicate)
             {
                 this.TypePredicate = typePredicate;
                 this.ExportBuilder = new TestExportConventionsBuilder();
+                this.ImportedProperties = new List<Tuple<Predicate<PropertyInfo>, Action<PropertyInfo, IImportConventionsBuilder>>>();
             }
 
             public TestExportConventionsBuilder ExportBuilder { get; set; }
@@ -188,6 +190,8 @@ namespace Kephas.Core.Tests.Composition
             public Predicate<Type> TypePredicate { get; set; }
 
             public bool IsShared { get; set; }
+
+            public List<Tuple<Predicate<PropertyInfo>, Action<PropertyInfo, IImportConventionsBuilder>>> ImportedProperties { get; }
 
             public IPartConventionsBuilder Shared()
             {
@@ -233,6 +237,8 @@ namespace Kephas.Core.Tests.Composition
 
             public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
             {
+                this.ImportedProperties.Add(Tuple.Create(propertyFilter, importConfiguration));
+
                 return this;
             }
         }
