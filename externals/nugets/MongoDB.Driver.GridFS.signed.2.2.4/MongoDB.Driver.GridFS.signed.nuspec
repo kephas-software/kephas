@@ -3,6 +3,7 @@
   <metadata>
     <id>MongoDB.Driver.GridFS.signed</id>
     <version>2.2.4</version>
+	<title>MongoDB.Driver.GridFS.signed (Unofficial)</title>
     <authors>MongoDB, Inc. and Kephas Framework</authors>
     <owners>rstam, craiggwilson</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
