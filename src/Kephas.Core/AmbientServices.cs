@@ -50,7 +50,7 @@ namespace Kephas
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
-        internal AmbientServices()
+        public AmbientServices()
         {
             this.RegisterService<IAppEnvironment>(new DefaultAppEnvironment())
                 .RegisterService<ILogManager>(new NullLogManager())
