@@ -16,4 +16,4 @@ Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deli
 For more details, please visit the [Kephas Framework](http://kephas-framework.com/) web site.
 
 
-[![Build Status](https://travis-ci.org/raimu/kephas.svg?branch=master)](https://travis-ci.org/raimu/kephas)
+[![Build Status](https://travis-ci.org/quartz-software/kephas.svg?branch=master)](https://travis-ci.org/quartz-software/kephas)
