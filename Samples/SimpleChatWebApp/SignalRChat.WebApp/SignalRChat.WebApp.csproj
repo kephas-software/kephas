@@ -44,31 +44,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kephas.Composition.Mef, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.0.7-pre1\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Composition.Mef.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.0.7\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Composition.Mef.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.3.0.7-pre1\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Core.3.0.7\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.0.7-pre1\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.0.7\lib\net45\Kephas.Logging.NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Messaging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Messaging.3.0.7-pre1\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Messaging.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Messaging.3.0.7\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Messaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Platform.Net45, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Platform.Net45.3.0.7-pre1\lib\net45\Kephas.Platform.Net45.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Platform.Net45.3.0.7\lib\net45\Kephas.Platform.Net45.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Serialization.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.3.0.7-pre1\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Serialization.Json.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.3.0.7\lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\Kephas.Serialization.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Kephas.Web.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Web.Owin.3.0.6-pre1\lib\net45\Kephas.Web.Owin.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Web.Owin.3.0.7\lib\net45\Kephas.Web.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
