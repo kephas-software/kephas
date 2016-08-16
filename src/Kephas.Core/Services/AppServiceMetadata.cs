@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Net.Http.Headers;
+using Kephas.Services.Composition;
+
 namespace Kephas.Services
 {
     using System.Collections.Generic;
@@ -20,21 +23,6 @@ namespace Kephas.Services
     public class AppServiceMetadata : ExportMetadataBase
     {
         /// <summary>
-        /// The processing priority metadata key.
-        /// </summary>
-        public static readonly string ProcessingPriorityKey = nameof(ProcessingPriority);
-
-        /// <summary>
-        /// The override priority metadata key.
-        /// </summary>
-        public static readonly string OverridePriorityKey = nameof(OverridePriority);
-
-        /// <summary>
-        /// The processing priority metadata key.
-        /// </summary>
-        public static readonly string OptionalServiceKey = nameof(OptionalService);
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
@@ -46,9 +34,9 @@ namespace Kephas.Services
                 return;
             }
 
-            this.ProcessingPriority = (int)(metadata.TryGetValue(ProcessingPriorityKey, 0) ?? 0);
-            this.OverridePriority = (int)(metadata.TryGetValue(OverridePriorityKey, 0) ?? 0);
-            this.OptionalService = (bool)(metadata.TryGetValue(OptionalServiceKey, false) ?? false);
+            this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
+            this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
+            this.OptionalService = this.GetMetadataValue<OptionalServiceAttribute, bool>(metadata);
         }
 
         /// <summary>
@@ -88,5 +76,20 @@ namespace Kephas.Services
         /// <c>true</c> if the service is optional, <c>false</c> if not.
         /// </value>
         public bool OptionalService { get; }
+
+        /// <summary>
+        /// Gets the metadata value for the specific attribute.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <typeparam name="TAttribute">The attribute type.</typeparam>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <returns>The metadata value if found, otherwise the default value.</returns>
+        protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object> metadata, TValue defaultValue = default(TValue))
+            where TAttribute : IMetadataValue<TValue>
+        {
+            var metadataName = AppServiceConventionsRegistrarBase.GetMetadataNameFromAttributeType(typeof(TAttribute));
+            return (TValue)metadata.TryGetValue(metadataName, defaultValue);
+        }
     }
 }

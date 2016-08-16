@@ -97,6 +97,35 @@ namespace Kephas.Services.Composition
         }
 
         /// <summary>
+        /// Gets the metadata name from the attribute type.
+        /// </summary>
+        /// <param name="attributeType">Type of the attribute.</param>
+        /// <returns>The metadata name from the attribute type.</returns>
+        internal static string GetMetadataNameFromAttributeType(Type attributeType)
+        {
+            var name = attributeType.Name;
+            const string AttributeSuffix = "Attribute";
+            return name.EndsWith(AttributeSuffix) ? name.Substring(0, name.Length - AttributeSuffix.Length) : name;
+        }
+
+        /// <summary>
+        /// Gets the metadata value from attribute.
+        /// </summary>
+        /// <param name="partType">Type of the part.</param>
+        /// <param name="attributeType">Type of the attribute.</param>
+        /// <returns>The metadata value from attribute.</returns>
+        internal static object GetMetadataValueFromAttribute(Type partType, Type attributeType)
+        {
+            var value =
+                partType.GetTypeInfo()
+                    .GetCustomAttributes(attributeType, inherit: true)
+                    .OfType<IMetadataValue>()
+                    .Select(a => a.Value)
+                    .FirstOrDefault();
+            return value;
+        }
+
+        /// <summary>
         /// Tries to get the <see cref="AppServiceContractAttribute"/> for the provided type.
         /// </summary>
         /// <param name="typeInfo">Information describing the type.</param>
@@ -342,38 +371,9 @@ namespace Kephas.Services.Composition
             {
                 var attrType = attributeType;
                 builder.AddMetadata(
-                    this.GetMetadataNameFromAttributeType(attrType),
-                    t => this.GetMetadataValueFromAttribute(t, attrType));
+                    GetMetadataNameFromAttributeType(attrType),
+                    t => GetMetadataValueFromAttribute(t, attrType));
             }
-        }
-
-        /// <summary>
-        /// Gets the metadata name from the attribute type.
-        /// </summary>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>The metadata name from the attribute type.</returns>
-        private string GetMetadataNameFromAttributeType(Type attributeType)
-        {
-            var name = attributeType.Name;
-            const string AttributeSuffix = "Attribute";
-            return name.EndsWith(AttributeSuffix) ? name.Substring(0, name.Length - AttributeSuffix.Length) : name;
-        }
-
-        /// <summary>
-        /// Gets the metadata value from attribute.
-        /// </summary>
-        /// <param name="partType">Type of the part.</param>
-        /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>The metadata value from attribute.</returns>
-        private object GetMetadataValueFromAttribute(Type partType, Type attributeType)
-        {
-            var value =
-                partType.GetTypeInfo()
-                    .GetCustomAttributes(attributeType, inherit: true)
-                    .OfType<IMetadataValue>()
-                    .Select(a => a.Value)
-                    .FirstOrDefault();
-            return value;
         }
 
         /// <summary>
