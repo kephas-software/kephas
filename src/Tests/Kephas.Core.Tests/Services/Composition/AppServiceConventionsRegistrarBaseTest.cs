@@ -60,6 +60,35 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(filter(derivedProperty));
         }
 
+        [Test]
+        public void RegisterConventions_hierarchy_with_missing_default_constructor()
+        {
+            var serviceContracts = new List<TypeInfo>
+                                       {
+                                           typeof(IGeneric2<,>).GetTypeInfo(),
+                                           typeof(INonGeneric).GetTypeInfo()
+                                       };
+            var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
+
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var parts = new List<TypeInfo>(serviceContracts)
+                            {
+                                typeof(Generic2Base<,>).GetTypeInfo(),
+                                typeof(Generic2).GetTypeInfo(),
+                            };
+
+            registrar.RegisterConventions(conventions, parts);
+
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(Generic2)));
+
+            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var constructorInfo = conventionBuilder.ConstructorSelector(typeof(Generic2).GetTypeInfo().DeclaredConstructors);
+            Assert.IsNotNull(constructorInfo);
+        }
+
         [ExcludeFromComposition]
         public class TestRegistrar : AppServiceConventionsRegistrarBase
         {
@@ -89,6 +118,30 @@ namespace Kephas.Core.Tests.Services.Composition
         public class TestDerivedImporter : TestBaseImporter
         {
             public new IConvertible ImportedService { get; set; }
+        }
+
+        public interface INonGeneric
+        {
+        }
+
+        [AppServiceContract(ContractType = typeof(INonGeneric), AllowMultiple = true)]
+        public interface IGeneric2<TSource, TTarget> : INonGeneric
+        {
+        }
+
+        public abstract class Generic2Base<TSource, TTarget> : IGeneric2<TSource, TTarget>
+        {
+            protected Generic2Base()
+            {
+            }
+
+            protected Generic2Base(string name)
+            {
+            }
+        }
+
+        public class Generic2 : Generic2Base<string, int>
+        {
         }
     }
 }

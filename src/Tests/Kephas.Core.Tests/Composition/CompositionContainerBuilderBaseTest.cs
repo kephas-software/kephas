@@ -215,12 +215,11 @@ namespace Kephas.Core.Tests.Composition
 
             public string ScopeName { get; private set; }
 
+            public Func<IEnumerable<ConstructorInfo>, ConstructorInfo> ConstructorSelector { get; private set; }
+
             public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
             {
-                if (conventionsBuilder != null)
-                {
-                    conventionsBuilder(this.ExportBuilder);
-                }
+                conventionsBuilder?.Invoke(this.ExportBuilder);
 
                 return this;
             }
@@ -232,6 +231,7 @@ namespace Kephas.Core.Tests.Composition
 
             public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
             {
+                this.ConstructorSelector = constructorSelector;
                 return this;
             }
 
