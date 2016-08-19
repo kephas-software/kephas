@@ -21,8 +21,8 @@ using System.Resources;
 [assembly: NeutralResourcesLanguage("en")]
 
 [assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.8.0")]
-[assembly: AssemblyInformationalVersion("3.0.8.0")]
+[assembly: AssemblyFileVersion("3.0.9.0")]
+[assembly: AssemblyInformationalVersion("3.0.9.0")]
 
 // Stylecop global rule suppresions.
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1028:Code must not contain trailing whitespace", Justification = "It is OK to leave the trailing spaces.")]
