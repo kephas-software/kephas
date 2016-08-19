@@ -7,15 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Net.Http.Headers;
-using Kephas.Services.Composition;
-
 namespace Kephas.Services
 {
     using System.Collections.Generic;
 
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata for application services.
@@ -89,7 +87,13 @@ namespace Kephas.Services
             where TAttribute : IMetadataValue<TValue>
         {
             var metadataName = AppServiceConventionsRegistrarBase.GetMetadataNameFromAttributeType(typeof(TAttribute));
-            return (TValue)metadata.TryGetValue(metadataName, defaultValue);
+            var value = metadata.TryGetValue(metadataName, defaultValue);
+            if (value == null && !typeof(TValue).IsByRef)
+            {
+              return defaultValue;
+            }
+
+            return (TValue)value;
         }
     }
 }

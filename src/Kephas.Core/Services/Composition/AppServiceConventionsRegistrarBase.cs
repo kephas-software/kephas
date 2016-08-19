@@ -454,7 +454,7 @@ namespace Kephas.Services.Composition
         private bool MatchOpenGenericContractType(Type partType, Type serviceContractType)
         {
             var implementedInterfaces = partType.GetTypeInfo().ImplementedInterfaces;
-            return implementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType);
+            return implementedInterfaces.Any(i => i.IsConstructedGenericType && i.GetGenericTypeDefinition() == serviceContractType) && !partType.GetTypeInfo().IsAbstract;
         }
     }
 }
