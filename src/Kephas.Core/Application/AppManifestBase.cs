@@ -121,7 +121,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application identifier.
         /// </returns>
-        private string GetAppId(Assembly appAssembly)
+        protected virtual string GetAppId(Assembly appAssembly)
         {
             var appManifestAttribute = appAssembly.GetCustomAttribute<AppManifestAttribute>();
             if (appManifestAttribute == null)
@@ -141,7 +141,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application version.
         /// </returns>
-        private Version GetAppVersion(Assembly appAssembly)
+        protected virtual Version GetAppVersion(Assembly appAssembly)
         {
             var appManifestAttribute = appAssembly.GetCustomAttribute<AppManifestAttribute>();
             var version = appManifestAttribute?.AppVersion;
