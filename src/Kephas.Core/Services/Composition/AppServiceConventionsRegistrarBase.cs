@@ -26,6 +26,16 @@ namespace Kephas.Services.Composition
     public abstract class AppServiceConventionsRegistrarBase : IConventionsRegistrar
     {
         /// <summary>
+        /// The default metadata attributes.
+        /// </summary>
+        private static readonly Type[] DefaultMetadataAttributes =
+            {
+                typeof(ProcessingPriorityAttribute),
+                typeof(OverridePriorityAttribute),
+                typeof(OptionalServiceAttribute),
+            };
+
+        /// <summary>
         /// Registers the conventions.
         /// </summary>
         /// <param name="builder">The registration builder.</param>
@@ -58,26 +68,26 @@ namespace Kephas.Services.Composition
                 var exportedContract = exportedContractType.GetTypeInfo();
                 this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType);
 
-                var metadataAttributes = appServiceContractInfo.Value.MetadataAttributes;
+                var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
                 if (exportedContract.IsGenericTypeDefinition)
                 {
                     if (serviceContractMetadata.AsOpenGeneric)
                     {
                         partBuilder.ExportInterfaces(
                             t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
-                            (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, metadataAttributes));
+                            (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
                     }
                     else
                     {
                         partBuilder.ExportInterfaces(
                             t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
-                            (t, b) => this.ConfigureExport(serviceContract, b, t, metadataAttributes));
+                            (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
                     }
                 }
                 else
                 {
                     partBuilder.Export(
-                        b => this.ConfigureExport(serviceContract, b, exportedContractType, metadataAttributes));
+                        b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
                 }
 
                 partBuilder.SelectConstructor(this.SelectAppServiceConstructor);
@@ -133,6 +143,32 @@ namespace Kephas.Services.Composition
         /// An <see cref="AppServiceContractAttribute"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
         protected abstract AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo);
+
+        /// <summary>
+        /// Gets metadata attributes.
+        /// </summary>
+        /// <param name="contractAttribute">The contract attribute.</param>
+        /// <returns>
+        /// An array of type.
+        /// </returns>
+        private Type[] GetMetadataAttributes(AppServiceContractAttribute contractAttribute)
+        {
+            if (contractAttribute.MetadataAttributes == null || contractAttribute.MetadataAttributes.Length == 0)
+            {
+                return DefaultMetadataAttributes;
+            }
+
+            var attrs = contractAttribute.MetadataAttributes.ToList();
+            foreach (var attr in DefaultMetadataAttributes)
+            {
+                if (!attrs.Contains(attr))
+                {
+                    attrs.Add(attr);
+                }
+            }
+
+            return attrs.ToArray();
+        }
 
         /// <summary>
         /// Determines whether the specified property imports an application service.
@@ -206,11 +242,12 @@ namespace Kephas.Services.Composition
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="exportBuilder">The export builder.</param>
         /// <param name="exportedContractType">Type of the exported contract.</param>
+        /// <param name="serviceImplementationType">Type of the service implementation.</param>
         /// <param name="metadataAttributes">The metadata attributes.</param>
-        private void ConfigureExport(TypeInfo serviceContract, IExportConventionsBuilder exportBuilder, Type exportedContractType, Type[] metadataAttributes)
+        private void ConfigureExport(TypeInfo serviceContract, IExportConventionsBuilder exportBuilder, Type exportedContractType, Type serviceImplementationType, Type[] metadataAttributes)
         {
             exportBuilder.AsContractType(exportedContractType);
-            this.AddCompositionMetadata(exportBuilder, metadataAttributes);
+            this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
             this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract);
         }
 
@@ -326,12 +363,7 @@ namespace Kephas.Services.Composition
                         i.IsGenericType && !i.IsGenericTypeDefinition
                         && i.GetGenericTypeDefinition() == serviceContractType);
 
-            if (closedGeneric == null)
-            {
-                return null;
-            }
-
-            return closedGeneric.GenericTypeArguments[position];
+            return closedGeneric?.GenericTypeArguments[position];
         }
 
         /// <summary>
@@ -359,9 +391,14 @@ namespace Kephas.Services.Composition
         /// Adds the composition metadata.
         /// </summary>
         /// <param name="builder">The builder.</param>
+        /// <param name="serviceImplementationType">Type of the service implementation.</param>
         /// <param name="attributeTypes">The attribute types.</param>
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type[] attributeTypes)
+        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type serviceImplementationType, Type[] attributeTypes)
         {
+            // add the service type.
+            builder.AddMetadata(nameof(AppServiceMetadata.AppServiceImplementationType), t => serviceImplementationType ?? t ?? typeof(Undefined));
+
+            // add the rest of the metadata indicated by the attributes.
             if (attributeTypes == null || attributeTypes.Length == 0)
             {
                 return;

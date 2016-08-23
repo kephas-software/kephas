@@ -9,6 +9,7 @@
 
 namespace Kephas.Services
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
@@ -74,6 +75,14 @@ namespace Kephas.Services
         /// <c>true</c> if the service is optional, <c>false</c> if not.
         /// </value>
         public bool OptionalService { get; }
+
+        /// <summary>
+        /// Gets or sets the concrete service type implementing the service contract.
+        /// </summary>
+        /// <value>
+        /// The type of the service.
+        /// </value>
+        public Type AppServiceImplementationType { get; set; }
 
         /// <summary>
         /// Gets the metadata value for the specific attribute.

@@ -118,6 +118,43 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
+        public void RegisterConventions_default_metadata()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AttributedAppServiceConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(ISimpleMetadataAppService).GetTypeInfo(),
+                        typeof(SimpleMetadataAppService).GetTypeInfo(),
+                    });
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(SimpleMetadataAppService)];
+            var metadata = testBuilder.ExportBuilder.Metadata;
+
+            Assert.AreEqual(4, metadata.Count);
+            Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
+            Assert.IsTrue(metadata.ContainsKey("OverridePriority"));
+            Assert.IsTrue(metadata.ContainsKey("OptionalService"));
+            Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.AppServiceImplementationType)));
+
+            var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.AppServiceImplementationType)];
+            Assert.AreEqual(typeof(ISimpleMetadataAppService), valueGetter(typeof(ISimpleMetadataAppService)));
+            Assert.AreEqual(typeof(Undefined), valueGetter(null));
+
+            valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
+            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+
+            valueGetter = (Func<Type, object>)metadata["OverridePriority"];
+            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+
+            valueGetter = (Func<Type, object>)metadata["OptionalService"];
+            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+        }
+
+        [Test]
         public void RegisterConventions_generic_with_nongeneric_base()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -151,7 +188,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(1, metadata.Count);
+            Assert.AreEqual(5, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("TType"));
 
             var valueGetter = (Func<Type, object>)metadata["TType"];
@@ -174,7 +211,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(2, metadata.Count);
+            Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("FromType"));
             Assert.IsTrue(metadata.ContainsKey("ToType"));
 
@@ -195,7 +232,7 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(IMetadataAppService).GetTypeInfo(), 
+                        typeof(IMetadataAppService).GetTypeInfo(),
                         typeof(MetadataAppService).GetTypeInfo(),
                         typeof(NullMetadataAppService).GetTypeInfo(),
                     });
@@ -203,7 +240,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.DerivedConventionsBuilders[typeof(IMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(1, metadata.Count);
+            Assert.AreEqual(4, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
 
             var valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
@@ -243,6 +280,13 @@ namespace Kephas.Core.Tests.Services.Composition
 
         public class NewMultipleTestService : IMultipleTestAppService { }
 
+
+        [AppServiceContract]
+        public interface ISimpleMetadataAppService { }
+
+        public class SimpleMetadataAppService : ISimpleMetadataAppService
+        {
+        }
 
         [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
         public interface IMetadataAppService { }
