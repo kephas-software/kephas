@@ -11,7 +11,7 @@ and then hit ENTER.
 .assembly extern /*23000002*/ MongoDB.Bson
 {
   .publickeytoken = (15 B1 11 55 99 98 3C 50 )                         // this was added
-  .ver 2:2:3:3
+  .ver 2:3:0:157
 }
 
 6. Go back in the command prompt and hit any key, to assemble the assembly again. The output file will have the ending <original>.signed.dll.
