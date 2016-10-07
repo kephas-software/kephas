@@ -2,7 +2,7 @@
 {
     using Kephas.Services;
 
-    [SharedAppServiceContract]
+    [SharedAppServiceContract()]
     public interface ICalculator
     {
         int Compute(string input);

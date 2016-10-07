@@ -22,11 +22,16 @@ namespace SignalRChat.WebApp
     {
         public void Configuration(IAppBuilder app)
         {
-            var ambientServices = this.InitializeAmbientServicesAsync().GetResultNonLocking(TimeSpan.FromMinutes(5));
+            this.ConfigurationAsync(app).WaitNonLocking(TimeSpan.FromMinutes(5));
+        }
+
+        private async Task ConfigurationAsync(IAppBuilder app)
+        {
+            var ambientServices = await this.InitializeAmbientServicesAsync().PreserveThreadContext();
 
             var appContext = new OwinAppContext(app);
             var bootstrapper = ambientServices.CompositionContainer.GetExport<IAppBootstrapper>();
-            bootstrapper.StartAsync(appContext).WaitNonLocking(TimeSpan.FromMinutes(5));
+            await bootstrapper.StartAsync(appContext).PreserveThreadContext();
         }
 
         private async Task<IAmbientServices> InitializeAmbientServicesAsync()
