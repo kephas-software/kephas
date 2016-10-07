@@ -229,3 +229,4 @@ _Pvt_Extensions
 # Vagrant virtual-machine directory
 .vagrant
 src/Deployment/SetNuGetApiKey.bat
+/externals/local-package-source

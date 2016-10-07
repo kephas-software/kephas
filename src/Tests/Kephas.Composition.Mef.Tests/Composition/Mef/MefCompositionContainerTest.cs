@@ -18,6 +18,7 @@ namespace Kephas.Tests.Composition.Mef
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Services;
 
     using NUnit.Framework;
 
@@ -252,8 +253,12 @@ namespace Kephas.Tests.Composition.Mef
             public IExportFactory<ExportedClass, TestMetadata> ExportedClassMetadataFactory { get; set; }
         }
 
-        public class TestMetadata
+        public class TestMetadata : AppServiceMetadata
         {
+            public TestMetadata(IDictionary<string, object> metadata)
+                : base(metadata)
+            {
+            }
         }
 
         private class ConsumerOfExportedClassImplicitImporter

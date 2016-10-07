@@ -26,6 +26,21 @@ namespace Kephas.Services.Composition
     public abstract class AppServiceConventionsRegistrarBase : IConventionsRegistrar
     {
         /// <summary>
+        /// The attribute suffix.
+        /// </summary>
+        private const string AttributeSuffix = "Attribute";
+
+        /// <summary>
+        /// The 'T' prefix in generic type arguments.
+        /// </summary>
+        private const string TPrefix = "T";
+
+        /// <summary>
+        /// The 'Type' suffix in generic type arguments.
+        /// </summary>
+        private const string TypeSuffix = "Type";
+
+        /// <summary>
         /// The default metadata attributes.
         /// </summary>
         private static readonly Type[] DefaultMetadataAttributes =
@@ -114,7 +129,6 @@ namespace Kephas.Services.Composition
         internal static string GetMetadataNameFromAttributeType(Type attributeType)
         {
             var name = attributeType.Name;
-            const string AttributeSuffix = "Attribute";
             return name.EndsWith(AttributeSuffix) ? name.Substring(0, name.Length - AttributeSuffix.Length) : name;
         }
 
@@ -374,14 +388,14 @@ namespace Kephas.Services.Composition
         private string GetMetadataNameFromGenericTypeParameter(Type genericTypeParameter)
         {
             var name = genericTypeParameter.Name;
-            if (name.StartsWith("T") && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
+            if (name.StartsWith(TPrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
             {
                 name = name.Substring(1);
             }
 
-            if (!name.EndsWith("Type"))
+            if (!name.EndsWith(TypeSuffix))
             {
-                name = name + "Type";
+                name = name + TypeSuffix;
             }
 
             return name;
