@@ -17,7 +17,7 @@ namespace Kephas.Web.Owin.Application
     using Kephas.Web.Owin.Resources;
 
     /// <summary>
-    /// Base OWIN implementtion of an <see cref="IAppInitializer"/>.
+    /// Base OWIN implementation of an <see cref="IAppInitializer"/>.
     /// </summary>
     public abstract class OwinAppInitializerBase : AppInitializerBase
     {
