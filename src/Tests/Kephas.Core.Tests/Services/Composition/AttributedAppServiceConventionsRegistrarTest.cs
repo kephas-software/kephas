@@ -41,8 +41,11 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(NewMultipleTestService).GetTypeInfo(),
                     });
 
-            Assert.AreEqual(1, conventions.DerivedConventionsBuilders.Count);
-            Assert.IsTrue(conventions.DerivedConventionsBuilders.ContainsKey(typeof(IMultipleTestAppService)));
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.Single();
+
+            Assert.IsTrue(builderEntry.Key(typeof(MultipleTestService)));
+            Assert.IsTrue(builderEntry.Key(typeof(NewMultipleTestService)));
         }
 
         [Test]
@@ -237,7 +240,11 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(NullMetadataAppService).GetTypeInfo(),
                     });
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.DerivedConventionsBuilders[typeof(IMetadataAppService)];
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(NullMetadataAppService)));
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(4, metadata.Count);

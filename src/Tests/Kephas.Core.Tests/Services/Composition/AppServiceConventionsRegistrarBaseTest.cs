@@ -48,10 +48,12 @@ namespace Kephas.Core.Tests.Services.Composition
 
             registrar.RegisterConventions(conventions, parts);
 
-            Assert.AreEqual(1, conventions.DerivedConventionsBuilders.Count);
-            Assert.IsTrue(conventions.DerivedConventionsBuilders.ContainsKey(typeof(IServiceProvider)));
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(TestBaseImporter)));
+            Assert.IsTrue(builderEntry.Key(typeof(TestDerivedImporter)));
 
-            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.DerivedConventionsBuilders.First().Value;
+            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             Assert.AreEqual(1, conventionBuilder.ImportedProperties.Count);
             var filter = conventionBuilder.ImportedProperties[0].Item1;
             var baseProperty = typeof(TestBaseImporter).GetTypeInfo().GetDeclaredProperty(nameof(TestBaseImporter.ImportedService));
@@ -111,10 +113,14 @@ namespace Kephas.Core.Tests.Services.Composition
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
-            Assert.IsTrue(builderEntry.Key(typeof(Generic2)));
+            Assert.IsTrue(builderEntry.Key(typeof(StringClassifierFactory)));
+            Assert.IsTrue(builderEntry.Key(typeof(IntClassifierFactory)));
+            Assert.IsFalse(builderEntry.Key(typeof(ClassifierFactoryBase)));
 
             var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            var constructorInfo = conventionBuilder.ConstructorSelector(typeof(Generic2).GetTypeInfo().DeclaredConstructors);
+            var constructorInfo = conventionBuilder.ConstructorSelector(typeof(StringClassifierFactory).GetTypeInfo().DeclaredConstructors);
+            Assert.IsNotNull(constructorInfo);
+            constructorInfo = conventionBuilder.ConstructorSelector(typeof(IntClassifierFactory).GetTypeInfo().DeclaredConstructors);
             Assert.IsNotNull(constructorInfo);
         }
 
