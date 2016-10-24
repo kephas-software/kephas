@@ -142,10 +142,12 @@ namespace Kephas.Core.Tests.Services.Composition
 
             registrar.RegisterConventions(conventions, parts);
 
-            Assert.AreEqual(0, conventions.MatchingConventionsBuilders.Count);
-        }
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsFalse(builderEntry.Key(typeof(ConverterBase<,>)));
+    }
 
-        [ExcludeFromComposition]
+    [ExcludeFromComposition]
         public class TestRegistrar : AppServiceConventionsRegistrarBase
         {
             private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;

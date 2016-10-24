@@ -456,10 +456,10 @@ namespace Kephas.Services.Composition
             {
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContractType));
+                return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract));
             }
 
-            var parts = typeInfos.Where(ti => serviceContract.IsAssignableFrom(ti) && this.IsEligiblePart(ti)).ToList();
+            var parts = typeInfos.Where(part => this.MatchDerivedFromContractType(part, serviceContract)).ToList();
             if (parts.Count == 1)
             {
                 return conventions.ForType(parts[0].AsType());
@@ -507,19 +507,28 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Checks whether the part type matches the type of the open generic contract.
         /// </summary>
-        /// <param name="partType">Type of the part.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
+        /// <param name="partTypeInfo">Type of the part.</param>
+        /// <param name="serviceContract">Type of the service contract.</param>
         /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchDerivedFromContractType(Type partType, Type serviceContractType)
+        private bool MatchDerivedFromContractType(TypeInfo partTypeInfo, TypeInfo serviceContract)
         {
-            var partTypeInfo = partType.GetTypeInfo();
-            if (!this.IsEligiblePart(partTypeInfo))
+            if (!this.IsEligiblePart(partTypeInfo) || partTypeInfo.IsGenericTypeDefinition)
             {
                 return false;
             }
 
-            var implementedInterfaces = partTypeInfo.ImplementedInterfaces;
-            return implementedInterfaces.Contains(serviceContractType);
+            return serviceContract.IsAssignableFrom(partTypeInfo);
+        }
+
+        /// <summary>
+        /// Checks whether the part type matches the type of the open generic contract.
+        /// </summary>
+        /// <param name="partType">Type of the part.</param>
+        /// <param name="serviceContract">Type of the service contract.</param>
+        /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
+        private bool MatchDerivedFromContractType(Type partType, TypeInfo serviceContract)
+        {
+            return this.MatchDerivedFromContractType(partType.GetTypeInfo(), serviceContract);
         }
 
         /// <summary>
