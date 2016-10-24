@@ -19,8 +19,9 @@ namespace Kephas.Data
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Services;
 
-    /// <summary>
+  /// <summary>
     /// Interface for data repository.
     /// </summary>
     [ContractClass(typeof(DataRepositoryContractClass))]
@@ -30,9 +31,9 @@ namespace Kephas.Data
         /// Searches for the entity with the provided ID and returns it asynchronously.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="id">               The identifier.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="findContext">(Optional) Context for the find.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -41,10 +42,10 @@ namespace Kephas.Data
         /// <summary>
         /// Searches for the entity with the provided ID and returns it asynchronously.
         /// </summary>
-        /// <param name="entityType">       The type of the entity.</param>
-        /// <param name="id">               The identifier.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="entityType">The type of the entity.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="findContext">(Optional) Context for the find.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -54,9 +55,9 @@ namespace Kephas.Data
         /// Searches for the first entity matching the provided criteria and returns it asynchronously.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="criteria">         The criteria.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="criteria">The criteria.</param>
+        /// <param name="findContext">(Optional) Context for the find.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -65,10 +66,10 @@ namespace Kephas.Data
         /// <summary>
         /// Searches for the first entity matching the provided criteria and returns it asynchronously.
         /// </summary>
-        /// <param name="entityType">       The type of the entity.</param>
-        /// <param name="criteria">         The criteria.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="entityType">The type of the entity.</param>
+        /// <param name="criteria">The criteria.</param>
+        /// <param name="findContext">(Optional) Context for the find.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -93,12 +94,24 @@ namespace Kephas.Data
         /// A query over the entity type.
         /// </returns>
         IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null);
+
+        /// <summary>
+        /// Tries to get a capability.
+        /// </summary>
+        /// <typeparam name="TCapability">Type of the capability.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The capability.
+        /// </returns>
+        TCapability TryGetCapability<TCapability>(object entity, IContext context)
+            where TCapability : class;
     }
 
-    /// <summary>
-    /// Contract class for <see cref="IDataRepository"/>.
-    /// </summary>
-    [ContractClassFor(typeof(IDataRepository))]
+  /// <summary>
+  /// Contract class for <see cref="IDataRepository"/>.
+  /// </summary>
+  [ContractClassFor(typeof(IDataRepository))]
     internal abstract class DataRepositoryContractClass : IDataRepository
     {
         /// <summary>
@@ -215,6 +228,21 @@ namespace Kephas.Data
             Contract.Requires(entityType != null);
             Contract.Ensures(Contract.Result<IQueryable>() != null);
             return Contract.Result<IQueryable>();
+        }
+
+        /// <summary>
+        /// Tries to get a capability.
+        /// </summary>
+        /// <typeparam name="TCapability">Type of the capability.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The capability.
+        /// </returns>
+        public TCapability TryGetCapability<TCapability>(object entity, IContext context)
+            where TCapability : class
+        {
+            return default(TCapability);
         }
 
         /// <summary>

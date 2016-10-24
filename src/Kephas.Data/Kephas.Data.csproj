@@ -139,8 +139,14 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Behaviors\IAsyncAggregatable.cs" />
+    <Compile Include="Behaviors\IAsyncInitializable.cs" />
+    <Compile Include="Behaviors\IAsyncPersistable.cs" />
+    <Compile Include="Commands\Builders\IDataCommandBuilder.cs" />
+    <Compile Include="Commands\IDataCommand.cs" />
     <Compile Include="DataRepositoryBase.cs" />
     <Compile Include="FindContext.cs" />
+    <Compile Include="IDataContext.cs" />
     <Compile Include="IDataRepository.cs" />
     <Compile Include="IFindContext.cs" />
     <Compile Include="IQueryContext.cs" />

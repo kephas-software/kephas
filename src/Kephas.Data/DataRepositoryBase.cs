@@ -19,8 +19,9 @@ namespace Kephas.Data
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Services;
 
-    /// <summary>
+  /// <summary>
     /// Base implementation of a data repository.
     /// </summary>
     public abstract class DataRepositoryBase : Expando, IDataRepository
@@ -122,6 +123,21 @@ namespace Kephas.Data
         public virtual IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Tries to get a capability.
+        /// </summary>
+        /// <typeparam name="TCapability">Type of the capability.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The capability.
+        /// </returns>
+        public virtual TCapability TryGetCapability<TCapability>(object entity, IContext context)
+            where TCapability : class
+        {
+            return entity as TCapability;
         }
 
         /// <summary>
