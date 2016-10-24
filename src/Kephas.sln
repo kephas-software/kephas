@@ -55,8 +55,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.Net45", "Kephas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45", "Kephas.Platform.Net45\Kephas.Platform.Net45.csproj", "{E4C34864-2654-4DD3-992C-AA56AB141016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.NetCore", "Kephas.Platform.NetCore\Kephas.Platform.NetCore.csproj", "{10E0E5B9-D04D-410F-A6C3-EED2A1F5CB4B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.DocumentDB", "Kephas.Data.DocumentDB\Kephas.Data.DocumentDB.csproj", "{40763700-491A-49BE-86BF-D4F28C9C8D9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{1090E4F1-7F99-404B-8F0E-5836E0D66465}"
@@ -139,10 +137,6 @@ Global
 		{E4C34864-2654-4DD3-992C-AA56AB141016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4C34864-2654-4DD3-992C-AA56AB141016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4C34864-2654-4DD3-992C-AA56AB141016}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10E0E5B9-D04D-410F-A6C3-EED2A1F5CB4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10E0E5B9-D04D-410F-A6C3-EED2A1F5CB4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10E0E5B9-D04D-410F-A6C3-EED2A1F5CB4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10E0E5B9-D04D-410F-A6C3-EED2A1F5CB4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU

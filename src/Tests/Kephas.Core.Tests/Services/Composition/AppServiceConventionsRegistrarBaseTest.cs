@@ -124,6 +124,27 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsNotNull(constructorInfo);
         }
 
+        [Test]
+        public void RegisterConventions_hierarchy_with_non_generic_contract_and_non_abstract_generic_implementation()
+        {
+            var serviceContracts = new List<TypeInfo>
+                                       {
+                                           typeof(IConverter).GetTypeInfo(),
+                                       };
+            var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
+
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var parts = new List<TypeInfo>(serviceContracts)
+                            {
+                                typeof(ConverterBase<,>).GetTypeInfo(),
+                            };
+
+            registrar.RegisterConventions(conventions, parts);
+
+            Assert.AreEqual(0, conventions.MatchingConventionsBuilders.Count);
+        }
+
         [ExcludeFromComposition]
         public class TestRegistrar : AppServiceConventionsRegistrarBase
         {
@@ -178,6 +199,15 @@ namespace Kephas.Core.Tests.Services.Composition
         public class Generic2 : Generic2Base<string, int>
         {
         }
+    }
+
+    [SharedAppServiceContract(AllowMultiple = true)]
+    public interface IConverter
+    {
+    }
+
+    public class ConverterBase<TSource, TTarget> : IConverter
+    {
     }
 
     [SharedAppServiceContract(AllowMultiple = true)]
