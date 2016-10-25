@@ -12,6 +12,7 @@ namespace Kephas.Tests.Composition.Mef
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
 

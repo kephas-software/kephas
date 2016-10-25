@@ -22,6 +22,7 @@ namespace Kephas.Messaging.Tests.Server
     using Kephas.Messaging.Server;
     using Kephas.Messaging.Server.Composition;
     using Kephas.Services;
+    using Kephas.Testing.Composition.Mef;
     using Kephas.Tests.Composition.Mef;
     using Kephas.Threading.Tasks;
 

@@ -9,12 +9,21 @@
 
 namespace Kephas.Data
 {
-    using Kephas.Services;
+    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// The default implementation of a query context.
     /// </summary>
-    public class QueryContext : ContextBase, IQueryContext
+    public class QueryContext : DataContext, IQueryContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QueryContext"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        public QueryContext(IDataRepository repository)
+            : base(repository)
+        {
+            Contract.Requires(repository != null);
+        }
     }
 }

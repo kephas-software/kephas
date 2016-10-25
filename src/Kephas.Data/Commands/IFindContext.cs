@@ -7,15 +7,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
+namespace Kephas.Data.Commands
 {
-    using Kephas.Services;
-
     /// <summary>
     /// Contract for find contexts.
     /// </summary>
-    public interface IFindContext : IContext
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    public interface IFindContext<TEntity> : IDataContext
     {
+        /// <summary>
+        /// Gets the identifier of the entity to find.
+        /// </summary>
+        /// <value>
+        /// The identifier of the entity.
+        /// </value>
+        Id Id { get; }
+
         /// <summary>
         /// Gets a value indicating whether to throw an exception if an entity is not found.
         /// </summary>

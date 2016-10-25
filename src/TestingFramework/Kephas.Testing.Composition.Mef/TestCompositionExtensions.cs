@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Composition.Mef
+namespace Kephas.Testing.Composition.Mef
 {
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;

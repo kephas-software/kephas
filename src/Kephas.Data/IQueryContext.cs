@@ -14,7 +14,7 @@ namespace Kephas.Data
     /// <summary>
     /// Contract for query contexts.
     /// </summary>
-    public interface IQueryContext : IContext
+    public interface IQueryContext : IDataContext
     {
     }
 }

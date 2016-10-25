@@ -13,6 +13,8 @@ namespace Kephas.Data
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Commands;
+
     /// <summary>
     /// Structure used to define and retrieve a referenced entity.
     /// </summary>
@@ -37,7 +39,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        Task<T> GetAsync(IFindContext context = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<T> GetAsync(IFindContext<T> context = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>
@@ -76,7 +78,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        public Task<T> GetAsync(IFindContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<T> GetAsync(IFindContext<T> context = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Ensures(Contract.Result<Task<T>>() != null);
 

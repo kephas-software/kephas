@@ -63,6 +63,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.Owin", "Kephas.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45.Tests", "Tests\Kephas.Platform.Net45.Tests\Kephas.Platform.Net45.Tests.csproj", "{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingFramework", "TestingFramework", "{EEE1C452-EDDF-47E2-842B-970E33C42FA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Core", "Kephas.Testing.Core\Kephas.Testing.Core.csproj", "{4CF8FD28-178F-41A8-8F2F-71377598DA41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.Mef", "TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj", "{F19C5319-4A09-49CD-B7D5-D5F292952723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +159,14 @@ Global
 		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CF8FD28-178F-41A8-8F2F-71377598DA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CF8FD28-178F-41A8-8F2F-71377598DA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CF8FD28-178F-41A8-8F2F-71377598DA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CF8FD28-178F-41A8-8F2F-71377598DA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19C5319-4A09-49CD-B7D5-D5F292952723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19C5319-4A09-49CD-B7D5-D5F292952723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19C5319-4A09-49CD-B7D5-D5F292952723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19C5319-4A09-49CD-B7D5-D5F292952723}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,5 +179,7 @@ Global
 		{918F8D47-7BF5-4005-A92A-7B9C62D3EF7A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{7ABF070C-A6F1-4588-BAD7-3BF0F0BA4BB5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{4CF8FD28-178F-41A8-8F2F-71377598DA41} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
+		{F19C5319-4A09-49CD-B7D5-D5F292952723} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 	EndGlobalSection
 EndGlobal

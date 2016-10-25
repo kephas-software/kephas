@@ -139,21 +139,54 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="AmbiguousMatchDataException.cs" />
     <Compile Include="Behaviors\IAsyncAggregatable.cs" />
     <Compile Include="Behaviors\IAsyncInitializable.cs" />
     <Compile Include="Behaviors\IAsyncPersistable.cs" />
+    <Compile Include="Behaviors\IChangeStateTrackable.cs" />
+    <Compile Include="Behaviors\IGraphDataContext.cs" />
     <Compile Include="Commands\Builders\IDataCommandBuilder.cs" />
+    <Compile Include="Commands\DataCommandBase.cs" />
+    <Compile Include="Commands\DataCommandResult.cs" />
+    <Compile Include="Commands\Factory\DataCommandFactory.cs" />
+    <Compile Include="Commands\Composition\DataCommandMetadata.cs" />
+    <Compile Include="Commands\Composition\DataRepositoryTypeAttribute.cs" />
+    <Compile Include="Commands\Factory\IDataCommandFactory.cs" />
+    <Compile Include="Commands\FindCommandBase.cs" />
+    <Compile Include="Commands\FindResult.cs" />
     <Compile Include="Commands\IDataCommand.cs" />
+    <Compile Include="Commands\IDataCommandResult.cs" />
+    <Compile Include="Commands\IFindCommand.cs" />
+    <Compile Include="Commands\IFindResult.cs" />
+    <Compile Include="Commands\IPersistChangesCommand.cs" />
+    <Compile Include="Commands\IPersistChangesContext.cs" />
+    <Compile Include="Commands\PersistChangesCommandBase.cs" />
+    <Compile Include="Commands\PersistChangesContext.cs" />
+    <Compile Include="DataContext.cs" />
+    <Compile Include="DataException.cs" />
     <Compile Include="DataRepositoryBase.cs" />
-    <Compile Include="FindContext.cs" />
+    <Compile Include="DataRepositoryExtensions.cs" />
+    <Compile Include="Commands\FindContext.cs" />
     <Compile Include="IDataContext.cs" />
     <Compile Include="IDataRepository.cs" />
-    <Compile Include="IFindContext.cs" />
+    <Compile Include="Commands\IFindContext.cs" />
     <Compile Include="IQueryContext.cs" />
     <Compile Include="IRef.cs" />
     <Compile Include="Linq\IAsyncQueryProvider.cs" />
+    <Compile Include="Linq\QueryableExtensions.cs" />
+    <Compile Include="NotFoundDataException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryContext.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Validation\DataValidationResult.cs" />
+    <Compile Include="Validation\IDataValidationResult.cs" />
+    <Compile Include="Validation\IDataValidationService.cs" />
+    <Compile Include="Validation\NullDataValidationService.cs" />
+    <Compile Include="Validation\DataValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Kephas.snk">
@@ -167,6 +200,13 @@
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>

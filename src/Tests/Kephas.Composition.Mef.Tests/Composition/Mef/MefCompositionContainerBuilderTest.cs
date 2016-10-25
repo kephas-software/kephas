@@ -26,6 +26,7 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Services;
+    using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
 

@@ -9,72 +9,21 @@
 
 namespace Kephas.Data
 {
-    using System;
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Threading;
-    using System.Threading.Tasks;
 
+    using Kephas.Data.Commands;
     using Kephas.Dynamic;
-    using Kephas.Reflection;
     using Kephas.Services;
 
   /// <summary>
     /// Interface for data repository.
     /// </summary>
     [ContractClass(typeof(DataRepositoryContractClass))]
-    public interface IDataRepository : IExpando
+    public interface IDataRepository : IExpando, IIdentifiable
     {
-        /// <summary>
-        /// Searches for the entity with the provided ID and returns it asynchronously.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="id">The identifier.</param>
-        /// <param name="findContext">(Optional) Context for the find.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        Task<T> FindAsync<T>(Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Searches for the entity with the provided ID and returns it asynchronously.
-        /// </summary>
-        /// <param name="entityType">The type of the entity.</param>
-        /// <param name="id">The identifier.</param>
-        /// <param name="findContext">(Optional) Context for the find.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        Task<object> FindAsync(ITypeInfo entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="criteria">The criteria.</param>
-        /// <param name="findContext">(Optional) Context for the find.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        Task<T> FindOneAsync<T>(Expression<Func<T, bool>> criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
-        /// </summary>
-        /// <param name="entityType">The type of the entity.</param>
-        /// <param name="criteria">The criteria.</param>
-        /// <param name="findContext">(Optional) Context for the find.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        Task<object> FindOneAsync(ITypeInfo entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken));
-
         /// <summary>
         /// Gets a query over the entity type for the given query context, if any is provided.
         /// </summary>
@@ -86,17 +35,17 @@ namespace Kephas.Data
         IQueryable<T> Query<T>(IQueryContext queryContext = null);
 
         /// <summary>
-        /// Gets a query over the entity type for the given query context, if any is provided.
+        /// Creates the command with the provided type.
         /// </summary>
-        /// <param name="entityType">  The type of the entity.</param>
-        /// <param name="queryContext">Context for the query.</param>
+        /// <typeparam name="TCommand">Type of the command.</typeparam>
         /// <returns>
-        /// A query over the entity type.
+        /// The new command.
         /// </returns>
-        IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null);
+        TCommand CreateCommand<TCommand>()
+            where TCommand : IDataCommand;
 
         /// <summary>
-        /// Tries to get a capability.
+        /// Tries to get a capability of the provided entity.
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
@@ -115,6 +64,14 @@ namespace Kephas.Data
     internal abstract class DataRepositoryContractClass : IDataRepository
     {
         /// <summary>
+        /// Gets the identifier for this instance.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public abstract Id Id { get; }
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.
@@ -131,77 +88,6 @@ namespace Kephas.Data
         public abstract object this[string key] { get; set; }
 
         /// <summary>
-        /// Searches for the entity with the provided ID and returns it asynchronously.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="id">               The identifier.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        public Task<T> FindAsync<T>(Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Contract.Ensures(Contract.Result<Task<T>>() != null);
-            return Contract.Result<Task<T>>();
-        }
-
-        /// <summary>
-        /// Searches for the entity with the provided ID and returns it asynchronously.
-        /// </summary>
-        /// <param name="entityType">       The type of the entity.</param>
-        /// <param name="id">               The identifier.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        public Task<object> FindAsync(ITypeInfo entityType, Id id, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Contract.Requires(entityType != null);
-            Contract.Ensures(Contract.Result<Task<object>>() != null);
-            return Contract.Result<Task<object>>();
-        }
-
-        /// <summary>
-        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
-        /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="criteria">         The criteria.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        public Task<T> FindOneAsync<T>(
-            Expression<Func<T, bool>> criteria,
-            IFindContext findContext = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Contract.Requires(criteria != null);
-            Contract.Ensures(Contract.Result<Task<T>>() != null);
-            return Contract.Result<Task<T>>();
-        }
-
-        /// <summary>
-        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
-        /// </summary>
-        /// <param name="entityType">       The type of the entity.</param>
-        /// <param name="criteria">         The criteria.</param>
-        /// <param name="findContext">      Context for the find.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        public Task<object> FindOneAsync(ITypeInfo entityType, Expression criteria, IFindContext findContext = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Contract.Requires(entityType != null);
-            Contract.Requires(criteria != null);
-            Contract.Ensures(Contract.Result<Task<object>>() != null);
-            return Contract.Result<Task<object>>();
-        }
-
-        /// <summary>
         /// Gets a query over the entity type for the given query context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
@@ -216,18 +102,17 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets a query over the entity type for the given query context, if any is provided.
+        /// Creates the command with the provided type.
         /// </summary>
-        /// <param name="entityType">  The type of the entity.</param>
-        /// <param name="queryContext">Context for the query.</param>
+        /// <typeparam name="TCommand">Type of the command.</typeparam>
         /// <returns>
-        /// A query over the entity type.
+        /// The new command.
         /// </returns>
-        public IQueryable Query(ITypeInfo entityType, IQueryContext queryContext = null)
+        public TCommand CreateCommand<TCommand>()
+            where TCommand : IDataCommand
         {
-            Contract.Requires(entityType != null);
-            Contract.Ensures(Contract.Result<IQueryable>() != null);
-            return Contract.Result<IQueryable>();
+            Contract.Ensures(Contract.Result<TCommand>() != null);
+            return Contract.Result<TCommand>();
         }
 
         /// <summary>
