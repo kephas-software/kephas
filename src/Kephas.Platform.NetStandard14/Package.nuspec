@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Kephas.Platform.NetStandard14</id>
+    <version>3.1.0-preview1</version>
+    <title>Kephas.Platform.NetStandard14</title>
+    <authors>Quartz Software SRL</authors>
+    <owners>Quartz Software SRL</owners>
+    <description>
+        Provides .NET Standard 1.4 and later platform specific infrastructure.
+        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+        Provides .NET Standard 1.4 and later platform specific infrastructure.
+        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
+    <dependencies>
+      <dependency id="Kephas.Core" version="3.1.0-preview1" />
+    </dependencies>
+    <references>
+      <reference file="Kephas.Platform.NetStandard14.dll" />
+    </references>
+    <tags>kephas framework platform netstandard quartz software</tags>
+  </metadata>
+  <files>
+      <file src="bin\debug\Kephas.Platform.NetStandard14.dll" target="lib\netstandard14" />
+      <file src="bin\debug\Kephas.Platform.NetStandard14.pdb" target="lib\netstandard14" />
+      <file src="bin\debug\Kephas.Platform.NetStandard14.xml" target="lib\netstandard14" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.dll" target="lib\netstandard14\CodeContracts" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.pdb" target="lib\netstandard14\CodeContracts" />
+  </files>
+</package>

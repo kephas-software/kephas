@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.AttributedModel
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AggregatableModelDimensionAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the aggregatable model dimension attribute class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.AttributedModel
 {
     using System;
 

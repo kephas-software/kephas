@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Logging.NLog</id>
-    <version>3.0.10-pre1</version>
+    <version>3.1.0-preview1</version>
     <title>Kephas.Logging.NLog</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -25,8 +25,8 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.10-pre1" />
-      <dependency id="NLog" version="4.0.0" />
+        <dependency id="Kephas.Core" version="3.1.0-preview1" />
+        <dependency id="NLog" version="4.4.0-betaV15" />
     </dependencies>
     <references>
       <reference file="Kephas.Logging.NLog.dll" />
@@ -34,10 +34,10 @@
     <tags>kephas framework logging nlog quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
   </files>
 </package>

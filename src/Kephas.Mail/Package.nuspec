@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Mail</id>
-    <version>3.0.10-pre1</version>
+    <version>3.1.0-preview1</version>
     <title>Kephas.Mail</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,7 +21,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.10-pre1" />
+      <dependency id="Kephas.Core" version="3.1.0-preview1" />
     </dependencies>
     <references>
       <reference file="Kephas.Mail.dll" />
@@ -29,10 +29,10 @@
     <tags>kephas framework mail quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Mail.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Mail.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Mail.xml" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Contracts.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Contracts.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\Kephas.Mail.dll" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Mail.pdb" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Mail.xml" target="lib\netstandard1.4" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
   </files>
 </package>

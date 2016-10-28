@@ -1,9 +1,21 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using Kephas.Composition.Metadata;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataRepositoryTypeAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the data repository type attribute class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Commands.Composition
 {
+    using System;
+    using System.Diagnostics.Contracts;
+    using Kephas.Composition.Metadata;
+
+    /// <summary>
+    /// Attribute for data repository type.
+    /// </summary>
     public class DataRepositoryTypeAttribute : IMetadataValue<Type>
     {
         /// <summary>

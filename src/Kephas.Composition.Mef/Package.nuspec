@@ -1,43 +1,45 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Composition.Mef</id>
-    <version>3.0.10-pre1</version>
-    <title>Kephas.Composition.Mef</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>
-        Provides the composition services implementation using the MEF for Windows Store framework.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-        Provides the composition services implementation using the MEF for Windows Store framework.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
-    <dependencies>
-      <dependency id="Kephas.Core" version="3.0.10-pre1" />
-      <dependency id="Microsoft.Composition" version="1.0.30" />
-    </dependencies>
-    <references>
-      <reference file="Kephas.Composition.Mef.dll" />
-    </references>
-    <tags>kephas framework composition mef quartz software</tags>
-  </metadata>
-  <files>
-    <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-  </files>
+    <metadata>
+        <id>Kephas.Composition.Mef</id>
+        <version>3.1.0-preview1</version>
+        <title>Kephas.Composition.Mef</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides the composition services implementation using the MEF for Windows Store framework.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides the composition services implementation using the MEF for Windows Store framework.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
+        <dependencies>
+            <dependency id="Kephas.Core" version="3.1.0-preview1" />
+            <dependency id="System.Composition" version="1.0.31" />
+        </dependencies>
+        <references>
+            <group>
+                <reference file="Kephas.Composition.Mef.dll" />
+            </group>
+        </references>
+        <tags>kephas framework composition mef quartz software</tags>
+    </metadata>
+    <files>
+        <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\netstandard1.5" />
+        <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\netstandard1.5" />
+        <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.5" />
+        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
+    </files>
 </package>

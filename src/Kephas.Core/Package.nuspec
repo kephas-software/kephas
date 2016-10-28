@@ -25,6 +25,12 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
+        <group targetFramework="netstandard1.4">
+            <dependency id="System.ComponentModel" version="4.0.1" />
+            <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+            <dependency id="System.Dynamic.Runtime" version="4.0.11" />
+            <dependency id="System.Security.Principal" version="4.0.1" />
+        </group>
     </dependencies>
     <references>
       <reference file="Kephas.Core.dll" />
@@ -32,10 +38,10 @@
     <tags>kephas framework core quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Core.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Core.xml" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\Kephas.Core.dll" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Core.pdb" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Core.xml" target="lib\netstandard1.4" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
   </files>
 </package>

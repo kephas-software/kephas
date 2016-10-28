@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Data.DocumentDB</id>
-    <version>3.0.10-pre1</version>
+    <version>3.1.0-preview1</version>
     <title>Kephas.Data.DocumentDB</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,8 +21,8 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.10-pre1" />
-      <dependency id="Kephas.Data" version="3.0.10-pre1" />
+      <dependency id="Kephas.Core" version="3.1.0-preview1" />
+      <dependency id="Kephas.Data" version="3.1.0-preview1" />
       <dependency id="Microsoft.Azure.DocumentDB" version="1.7.1" />
     </dependencies>
     <references>

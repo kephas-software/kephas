@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Serialization.Json</id>
-    <version>3.0.10-pre1</version>
+    <version>3.1.0-preview1</version>
     <title>Kephas.Serialization.Json</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,8 +21,8 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.0.10-pre1" />
-      <dependency id="Newtonsoft.Json" version="8.0.2" />
+      <dependency id="Kephas.Core" version="3.1.0-preview1" />
+      <dependency id="Newtonsoft.Json" version="9.0.1" />
     </dependencies>
     <references>
       <reference file="Kephas.Serialization.Json.dll" />
@@ -30,10 +30,10 @@
     <tags>kephas framework serialization json quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Serialization.Json.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Serialization.Json.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\Kephas.Serialization.Json.xml" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10" />
-    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.dll" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.pdb" target="lib\portable-net45+netcore45+wpa81+dnx45+dnxcore50+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\Kephas.Serialization.Json.dll" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Serialization.Json.pdb" target="lib\netstandard1.4" />
+    <file src="bin\debug\Kephas.Serialization.Json.xml" target="lib\netstandard1.4" />
+    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
   </files>
 </package>

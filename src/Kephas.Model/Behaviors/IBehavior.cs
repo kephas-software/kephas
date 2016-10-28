@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.Behaviors
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IBehavior.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Declares the IBehavior interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Behaviors
 {
   public interface IBehavior<TEntity>
   {
