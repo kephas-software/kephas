@@ -8,7 +8,7 @@ nuget pack ..\Kephas.Data\Package.nuspec -BasePath ..\Kephas.Data -Symbols
 nuget pack ..\Kephas.Data.DocumentDB\Package.nuspec -BasePath ..\Kephas.Data.DocumentDB -Symbols
 nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoDB -Symbols
 nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols
-nuget pack ..\Kephas.Platform.NetCore\Package.nuspec -BasePath ..\Kephas.Platform.NetCore -Symbols
+nuget pack ..\Kephas.Platform.NetStandard14\Package.nuspec -BasePath ..\Kephas.Platform.NetStandard14 -Symbols
 nuget pack ..\Kephas.Platform.Net45\Package.nuspec -BasePath ..\Kephas.Platform.Net45 -Symbols
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols
 nuget pack ..\Kephas.Mail.Net45\Package.nuspec -BasePath ..\Kephas.Mail.Net45 -Symbols
