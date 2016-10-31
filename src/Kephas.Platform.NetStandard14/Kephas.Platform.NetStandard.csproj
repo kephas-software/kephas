@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kephas</RootNamespace>
-    <AssemblyName>Kephas.Platform.NetStandard14</AssemblyName>
+    <AssemblyName>Kephas.Platform.NetStandard</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -69,7 +69,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Debug\Kephas.Platform.NetStandard14.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Kephas.Platform.NetStandard.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -121,7 +121,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Release\Kephas.Platform.NetStandard14.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Kephas.Platform.NetStandard.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\Kephas.snk">
@@ -138,9 +138,9 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\NetStandard14AppEnvironment.cs" />
+    <Compile Include="Application\NetStandardAppEnvironment.cs" />
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
-    <Compile Include="Platform\NetStandard14\NetStandard14AmbientServicesBuilderExtensions.cs" />
+    <Compile Include="Platform\NetStandard\NetStandardAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

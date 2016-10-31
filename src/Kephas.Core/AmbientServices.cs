@@ -52,7 +52,7 @@ namespace Kephas
         /// </summary>
         public AmbientServices()
         {
-            this.RegisterService<IAppEnvironment>(new DefaultAppEnvironment())
+            this.RegisterService<IAppEnvironment>(new NullAppEnvironment())
                 .RegisterService<ILogManager>(new NullLogManager())
                 .RegisterService<IConfigurationManager>(new NullConfigurationManager())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())

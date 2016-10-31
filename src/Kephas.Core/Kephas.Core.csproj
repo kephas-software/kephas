@@ -154,7 +154,7 @@
     <Compile Include="Application\AppManifestAttribute.cs" />
     <Compile Include="Application\AppManifestBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
-    <Compile Include="Application\DefaultAppEnvironment.cs" />
+    <Compile Include="Application\NullAppEnvironment.cs" />
     <Compile Include="Application\IAppEnvironment.cs" />
     <Compile Include="Application\NullAppManifest.cs" />
     <Compile Include="Application\IAppBootstrapper.cs" />

@@ -95,14 +95,7 @@ namespace Kephas.Application
         /// <returns>
         /// The loaded assemblies.
         /// </returns>
-        protected virtual IList<Assembly> GetLoadedAssemblies()
-        {
-            // TODO use something better than reflection
-            var currentdomain = typeof(string).GetTypeInfo().Assembly.GetType("System.AppDomain").GetRuntimeProperty("CurrentDomain").GetMethod.Invoke(null, new object[] { });
-            var getassemblies = currentdomain.GetType().GetRuntimeMethod("GetAssemblies", new Type[] { });
-            var assemblies = ((Assembly[])getassemblies.Invoke(currentdomain, new object[] { })).ToList();
-            return assemblies;
-        }
+        protected abstract IList<Assembly> GetLoadedAssemblies();
 
         /// <summary>
         /// Gets the referenced assemblies.
@@ -111,13 +104,7 @@ namespace Kephas.Application
         /// <returns>
         /// An array of assembly name.
         /// </returns>
-        protected virtual AssemblyName[] GetReferencedAssemblies(Assembly assembly)
-        {
-            // TODO use something better than reflection
-            var getReferencedAssemblies = assembly.GetType().GetRuntimeMethod("GetReferencedAssemblies", new Type[] { });
-            var refAssemblies = (AssemblyName[])getReferencedAssemblies.Invoke(assembly, new object[] { });
-            return refAssemblies;
-        }
+        protected abstract AssemblyName[] GetReferencedAssemblies(Assembly assembly);
 
         /// <summary>
         /// Adds additional assemblies to the ones already collected.

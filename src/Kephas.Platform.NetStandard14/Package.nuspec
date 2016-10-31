@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Kephas.Platform.NetStandard14</id>
+        <id>Kephas.Platform.NetStandard</id>
         <version>3.1.0-preview1-rc2</version>
-        <title>Kephas.Platform.NetStandard14</title>
+        <title>Kephas.Platform.NetStandard</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
         <description>
-            Provides .NET Standard 1.4 and later platform specific infrastructure.
+            Provides .NET Standard 1.5 and later platform specific infrastructure.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </description>
         <releaseNotes>
         </releaseNotes>
         <summary>
-            Provides .NET Standard 1.4 and later platform specific infrastructure.
+            Provides .NET Standard 1.5 and later platform specific infrastructure.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </summary>
@@ -28,20 +28,20 @@
             <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
         </dependencies>
         <references>
-            <reference file="Kephas.Platform.NetStandard14.dll" />
+            <reference file="Kephas.Platform.NetStandard.dll" />
         </references>
         <tags>kephas framework platform netstandard quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Platform.NetStandard14.dll" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Platform.NetStandard14.pdb" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Platform.NetStandard14.xml" target="lib\netstandard1.4" />
-        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
-        <file src="bin\debug\Kephas.Platform.NetStandard14.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\Kephas.Platform.NetStandard14.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\Kephas.Platform.NetStandard14.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard14.Contracts.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.dll" target="lib\netstandard1.5" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.pdb" target="lib\netstandard1.5" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.xml" target="lib\netstandard1.5" />
+        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.dll" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.pdb" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\debug\Kephas.Platform.NetStandard.xml" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard.Contracts.dll" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Platform.NetStandard.Contracts.pdb" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
     </files>
 </package>
