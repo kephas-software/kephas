@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Core</id>
-    <version>3.1.0-preview1</version>
+    <version>3.1.0-preview1-rc2</version>
     <title>Kephas.Core</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -43,5 +43,10 @@
     <file src="bin\debug\Kephas.Core.xml" target="lib\netstandard1.4" />
     <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
     <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\Kephas.Core.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\Kephas.Core.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\Kephas.Core.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
   </files>
 </package>
