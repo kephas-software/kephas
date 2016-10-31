@@ -93,11 +93,11 @@ namespace Kephas.Data.Commands
                                     throw ex;
                                 }
 
-                                await this.ExecuteBeforeSaveBehaviorsAsync(modifiedEntries, cancellationToken).PreserveThreadContext();
+                                await this.ExecuteBeforeSaveBehaviorsAsync(context, modifiedEntries, cancellationToken).PreserveThreadContext();
 
                                 changes = await this.ValidateAndPersistModifiedEntriesAsync(modifiedEntries, changes, context, sb, cancellationToken).PreserveThreadContext();
 
-                                await this.ExecuteAfterSaveBehaviorsAsync(modifiedEntries, cancellationToken).PreserveThreadContext();
+                                await this.ExecuteAfterSaveBehaviorsAsync(context, modifiedEntries, cancellationToken).PreserveThreadContext();
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
                                 modifiedEntries = await this.DetectModifiedEntriesAsync(context, cancellationToken).PreserveThreadContext();
@@ -151,29 +151,43 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the after save behaviors asynchronously.
         /// </summary>
+        /// <param name="context">The context for persisting the changes.</param>
         /// <param name="modifiedEntries">The modified entries.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task ExecuteAfterSaveBehaviorsAsync(IList<ModifiedEntry> modifiedEntries, CancellationToken cancellationToken)
+        protected virtual async Task ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext context, IList<IPersistChangesEntry> modifiedEntries, CancellationToken cancellationToken)
         {
-            // TODO use the IAsyncPersistable behavior
-            return Task.FromResult(0);
+            foreach (var entry in modifiedEntries)
+            {
+                var persistableBehavior = context.Repository.TryGetCapability<IAsyncPersistable>(entry.ModifiedEntity, context);
+                if (persistableBehavior != null)
+                {
+                    await persistableBehavior.AfterPersistAsync(context, cancellationToken).PreserveThreadContext();
+                }
+            }
         }
 
         /// <summary>
         /// Executes the before save behaviors asynchronously.
         /// </summary>
+        /// <param name="context">The context for persisting the changes.</param>
         /// <param name="modifiedEntries">The modified entries.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task ExecuteBeforeSaveBehaviorsAsync(IList<ModifiedEntry> modifiedEntries, CancellationToken cancellationToken)
+        protected virtual async Task ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext context, IList<IPersistChangesEntry> modifiedEntries, CancellationToken cancellationToken)
         {
-            // TODO use the IAsyncPersistable behavior
-            return Task.FromResult(0);
+            foreach (var entry in modifiedEntries)
+            {
+                var persistableBehavior = context.Repository.TryGetCapability<IAsyncPersistable>(entry.ModifiedEntity, context);
+                if (persistableBehavior != null)
+                {
+                    await persistableBehavior.BeforePersistAsync(context, cancellationToken).PreserveThreadContext();
+                }
+            }
         }
 
         /// <summary>
@@ -184,7 +198,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A list of modified entries tuples.
         /// </returns>
-        protected abstract Task<IList<ModifiedEntry>> DetectModifiedEntriesAsync(IPersistChangesContext context, CancellationToken cancellationToken);
+        protected abstract Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(IPersistChangesContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Saves the modified entries.
@@ -198,7 +212,7 @@ namespace Kephas.Data.Commands
         /// The aggregated number of changes.
         /// </returns>
         protected virtual async Task<int> ValidateAndPersistModifiedEntriesAsync(
-          IList<ModifiedEntry> modifiedEntries,
+          IList<IPersistChangesEntry> modifiedEntries,
           int changes,
           IPersistChangesContext entityContext,
           StringBuilder sb,
@@ -242,7 +256,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ValidateModifiedEntriesAsync(IList<ModifiedEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
+        protected virtual async Task ValidateModifiedEntriesAsync(IList<IPersistChangesEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
         {
             foreach (var entry in modifiedEntries)
             {
@@ -266,7 +280,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task PreProcessModifiedEntriesAsync(IList<ModifiedEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
+        protected virtual Task PreProcessModifiedEntriesAsync(IList<IPersistChangesEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
@@ -280,7 +294,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task PostProcessModifiedEntriesAsync(IList<ModifiedEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
+        protected virtual Task PostProcessModifiedEntriesAsync(IList<IPersistChangesEntry> modifiedEntries, IPersistChangesContext entityContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
@@ -295,51 +309,8 @@ namespace Kephas.Data.Commands
         /// A Task.
         /// </returns>
         protected abstract Task PersistModifiedEntriesAsync(
-            IList<ModifiedEntry> modifiedEntries,
+            IList<IPersistChangesEntry> modifiedEntries,
             IPersistChangesContext entityContext,
             CancellationToken cancellationToken);
-
-        /// <summary>
-        /// A modified entry.
-        /// </summary>
-        public class ModifiedEntry
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ModifiedEntry"/> class.
-            /// </summary>
-            /// <param name="modifiedEntity">The modified entity.</param>
-            /// <param name="changeState">The change state.</param>
-            /// <param name="flattenedEntityGraph">The flattened entity graph.</param>
-            public ModifiedEntry(object modifiedEntity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
-            {
-                this.ModifiedEntity = modifiedEntity;
-                this.ChangeState = changeState;
-                this.FlattenedEntityGraph = flattenedEntityGraph;
-            }
-
-            /// <summary>
-            /// Gets or sets the change state.
-            /// </summary>
-            /// <value>
-            /// The change state.
-            /// </value>
-            public ChangeState ChangeState { get; set; }
-
-            /// <summary>
-            /// Gets or sets the modified entity.
-            /// </summary>
-            /// <value>
-            /// The modified entity.
-            /// </value>
-            public object ModifiedEntity { get; set; }
-
-            /// <summary>
-            /// Gets or sets the parts of an aggregated entity as a flattened graph.
-            /// </summary>
-            /// <value>
-            /// The flattened entity graph.
-            /// </value>
-            public IEnumerable<object> FlattenedEntityGraph { get; set; }
-        }
     }
 }
