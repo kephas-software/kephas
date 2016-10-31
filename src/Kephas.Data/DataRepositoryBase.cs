@@ -15,7 +15,6 @@ namespace Kephas.Data
 
     using Kephas.Composition;
     using Kephas.Data.Commands;
-    using Kephas.Data.Commands.Composition;
     using Kephas.Data.Commands.Factory;
     using Kephas.Dynamic;
     using Kephas.Services;
