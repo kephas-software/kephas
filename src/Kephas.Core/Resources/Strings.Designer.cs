@@ -152,6 +152,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not load all types from &apos;{0}&apos;. Check the exception for more details..
+        /// </summary>
+        internal static string AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException {
+            get {
+                return ResourceManager.GetString("AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not load &apos;{0}&apos; from &apos;{1}&apos;. Check the exception for more details..
+        /// </summary>
+        internal static string AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException {
+            get {
+                return ResourceManager.GetString("AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The required service of type &apos;{0}&apos; was not provided..
         /// </summary>
         internal static string CompositionContainerBuilderBase_RequiredServiceMissing_Exception {

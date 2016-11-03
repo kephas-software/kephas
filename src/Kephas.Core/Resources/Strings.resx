@@ -183,4 +183,10 @@
   <data name="Serialization_FormatTypeMismatch_Exception" xml:space="preserve">
     <value>Expected {0} instead of {1} format type in the serialization context.</value>
   </data>
+  <data name="AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException" xml:space="preserve">
+    <value>Could not load '{0}' from '{1}'. Check the exception for more details.</value>
+  </data>
+  <data name="AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
+    <value>Could not load all types from '{0}'. Check the exception for more details.</value>
+  </data>
 </root>
