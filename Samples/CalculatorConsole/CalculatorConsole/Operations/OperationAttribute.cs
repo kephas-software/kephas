@@ -1,9 +1,21 @@
-﻿namespace CalculatorConsole.Operations
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OperationAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the operation attribute class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace CalculatorConsole.Operations
 {
     using System;
 
     using Kephas.Composition.Metadata;
 
+    /// <summary>
+    /// Metadata attribute for operation.
+    /// </summary>
     public class OperationAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>

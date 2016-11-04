@@ -1,4 +1,13 @@
-﻿namespace CalculatorConsole.Operations
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="OperationMetadata.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the operation metadata class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace CalculatorConsole.Operations
 {
     using System.Collections.Generic;
 
@@ -11,11 +20,6 @@
     public class OperationMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// The processing priority metadata key.
-        /// </summary>
-        public static readonly string OperationKey = nameof(Operation);
-
-        /// <summary>
         /// Initializes a new instance of the CalculatorConsole.Operations.OperationMetadata class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
@@ -27,11 +31,11 @@
                 return;
             }
 
-            this.Operation = (string)metadata.TryGetValue(OperationKey, string.Empty);
+            this.Operation = (string)metadata.TryGetValue(nameof(this.Operation), string.Empty);
         }
 
         /// <summary>
-        /// Gets or sets the operation.
+        /// Gets the operation.
         /// </summary>
         /// <value>
         /// The operation.

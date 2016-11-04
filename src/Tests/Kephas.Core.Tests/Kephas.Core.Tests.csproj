@@ -62,6 +62,7 @@
     <Compile Include="Application\NullAppManifestTest.cs" />
     <Compile Include="Behavior\BehaviorRuleFlowControlBaseTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
+    <Compile Include="Composition\Conventions\ConventionsBuilderExtensionsTest.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\DynamicTypeInfoTest.cs" />
