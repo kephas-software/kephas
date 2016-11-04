@@ -25,7 +25,7 @@ namespace Kephas.Core.Tests.Composition
     using NUnit.Framework;
 
     using Telerik.JustMock;
-    using System.Linq;
+
     /// <summary>
     /// Test class for <see cref="CompositionContainerBuilderBase{TBuilder}"/>.
     /// </summary>
