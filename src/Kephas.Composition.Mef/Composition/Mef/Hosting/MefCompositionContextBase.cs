@@ -38,7 +38,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contractName">The contract name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        public object GetExport(Type contractType, string contractName = null)
+        public virtual object GetExport(Type contractType, string contractName = null)
         {
             this.AssertNotDisposed();
 
@@ -54,7 +54,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contractName">The contract name.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        public IEnumerable<object> GetExports(Type contractType, string contractName = null)
+        public virtual IEnumerable<object> GetExports(Type contractType, string contractName = null)
         {
             this.AssertNotDisposed();
 
@@ -72,7 +72,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T GetExport<T>(string contractName = null)
+        public virtual T GetExport<T>(string contractName = null)
         {
             this.AssertNotDisposed();
 
@@ -90,7 +90,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public IEnumerable<T> GetExports<T>(string contractName = null)
+        public virtual IEnumerable<T> GetExports<T>(string contractName = null)
         {
             this.AssertNotDisposed();
 
@@ -108,7 +108,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public object TryGetExport(Type contractType, string contractName = null)
+        public virtual object TryGetExport(Type contractType, string contractName = null)
         {
             this.AssertNotDisposed();
 
@@ -127,7 +127,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public T TryGetExport<T>(string contractName = null)
+        public virtual T TryGetExport<T>(string contractName = null)
         {
             this.AssertNotDisposed();
 
