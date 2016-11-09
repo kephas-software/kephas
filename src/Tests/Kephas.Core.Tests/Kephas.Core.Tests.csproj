@@ -73,6 +73,7 @@
     <Compile Include="Graphs\GraphNodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ReflectionHelperTest.cs" />
+    <Compile Include="Reflection\TypeExtensionsTest.cs" />
     <Compile Include="Reflection\TypeInfoExtensionsTest.cs" />
     <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />
     <Compile Include="Serialization\SerializationExtensionsTest.cs" />

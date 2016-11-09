@@ -114,7 +114,7 @@ namespace Kephas.Reflection
             var enumerableType = isRequestedEnumerable(type)
                                      ? type
                                      : type.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
-            return enumerableType?.GetTypeInfo().GenericTypeParameters[0];
+            return enumerableType?.GetTypeInfo().GenericTypeArguments[0];
         }
     }
 }
