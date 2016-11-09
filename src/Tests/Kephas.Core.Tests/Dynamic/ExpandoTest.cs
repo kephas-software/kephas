@@ -165,11 +165,19 @@ namespace Kephas.Core.Tests.Dynamic
         public async Task Dynamic_Property_non_concurrent()
         {
             dynamic expando = new Expando();
+            Exception exception = null;
             Action accessor = () =>
             {
-                for (var i = 0; i <= 2000; i++)
+                try
                 {
-                    expando["Prop" + Thread.CurrentThread.Name + i] = Thread.CurrentThread.Name + i;
+                    for (var i = 0; i <= 2000; i++)
+                    {
+                        expando["Prop" + Thread.CurrentThread.Name + i] = Thread.CurrentThread.Name + i;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
                 }
             };
 
@@ -179,15 +187,12 @@ namespace Kephas.Core.Tests.Dynamic
                 tasks.Add(Task.Factory.StartNew(accessor));
             }
 
-            try
-            {
-                await Task.WhenAll(tasks);
+            // normally it should crash
+            await Task.WhenAll(tasks);
 
-                Assert.Inconclusive("If the inner dictionary did not crash it doesn't mean it is thread safe.");
-            }
-            catch
+            if (exception == null)
             {
-                // normally it should crash
+                Assert.Inconclusive("If the inner dictionary did not crash it doesn't mean it is thread safe.");
             }
         }
 
