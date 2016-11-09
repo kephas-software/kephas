@@ -19,7 +19,7 @@ namespace Kephas.Services
     /// Application services are automatically identified by the composition
     /// and added to the container.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class ScopeSharedAppServiceContractAttribute : AppServiceContractAttribute
     {
         /// <summary>
