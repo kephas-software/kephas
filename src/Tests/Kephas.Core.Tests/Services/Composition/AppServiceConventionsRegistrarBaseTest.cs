@@ -125,6 +125,33 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
+        public void RegisterConventions_exported_classes()
+        {
+            var serviceContracts = new List<TypeInfo>
+                                       {
+                                           typeof(ExportedClass).GetTypeInfo(),
+                                           typeof(DerivedExportedClass).GetTypeInfo()
+                                       };
+            var registrar = new TestRegistrar(ti => serviceContracts.Contains(ti) ? ti.GetCustomAttribute<AppServiceContractAttribute>() : null);
+
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var parts = new List<TypeInfo>(serviceContracts)
+                            {
+                            };
+
+            registrar.RegisterConventions(conventions, parts);
+
+            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
+            var builderEntry = conventions.TypeConventionsBuilders.First();
+            Assert.AreSame(typeof(ExportedClass), builderEntry.Key);
+
+            var builder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var exportBuilder = builder.ExportBuilder;
+            Assert.AreSame(typeof(ExportedClass), exportBuilder.ContractType);
+        }
+
+        [Test]
         public void RegisterConventions_hierarchy_with_non_generic_contract_and_non_abstract_generic_implementation()
         {
             var serviceContracts = new List<TypeInfo>
@@ -145,9 +172,9 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsFalse(builderEntry.Key(typeof(ConverterBase<,>)));
-    }
+        }
 
-    [ExcludeFromComposition]
+        [ExcludeFromComposition]
         public class TestRegistrar : AppServiceConventionsRegistrarBase
         {
             private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;
@@ -201,48 +228,54 @@ namespace Kephas.Core.Tests.Services.Composition
         public class Generic2 : Generic2Base<string, int>
         {
         }
-    }
 
-    [SharedAppServiceContract(AllowMultiple = true)]
-    public interface IConverter
-    {
-    }
-
-    public class ConverterBase<TSource, TTarget> : IConverter
-    {
-    }
-
-    [SharedAppServiceContract(AllowMultiple = true)]
-    public interface IClassifierFactory
-    {
-    }
-
-    public abstract class ClassifierFactoryBase : IClassifierFactory
-    {
-        protected ClassifierFactoryBase(Func<Type> factory)
-          : this(factory, t => true)
+        [SharedAppServiceContract(AllowMultiple = true)]
+        public interface IConverter
         {
         }
 
-        protected ClassifierFactoryBase(Func<Type> factory, Func<Type, bool> supportedTypePredicate)
+        public class ConverterBase<TSource, TTarget> : IConverter
         {
         }
-    }
 
-    [ProcessingPriority(Priority.Lowest)]
-    public class StringClassifierFactory : ClassifierFactoryBase
-    {
-        public StringClassifierFactory()
-          : base(() => typeof(string), t => t.IsInterface)
+        [SharedAppServiceContract(AllowMultiple = true)]
+        public interface IClassifierFactory
         {
         }
-    }
 
-    public class IntClassifierFactory : ClassifierFactoryBase
-    {
-        public IntClassifierFactory()
-          : base(() => typeof(int), t => t.IsInterface)
+        public abstract class ClassifierFactoryBase : IClassifierFactory
         {
+            protected ClassifierFactoryBase(Func<Type> factory)
+              : this(factory, t => true)
+            {
+            }
+
+            protected ClassifierFactoryBase(Func<Type> factory, Func<Type, bool> supportedTypePredicate)
+            {
+            }
         }
+
+        [ProcessingPriority(Priority.Lowest)]
+        public class StringClassifierFactory : ClassifierFactoryBase
+        {
+            public StringClassifierFactory()
+              : base(() => typeof(string), t => t.IsInterface)
+            {
+            }
+        }
+
+        public class IntClassifierFactory : ClassifierFactoryBase
+        {
+            public IntClassifierFactory()
+              : base(() => typeof(int), t => t.IsInterface)
+            {
+            }
+        }
+
+        [AppServiceContract]
+        public class ExportedClass { }
+
+        [OverridePriority(Priority.High)]
+        public class DerivedExportedClass { }
     }
 }
