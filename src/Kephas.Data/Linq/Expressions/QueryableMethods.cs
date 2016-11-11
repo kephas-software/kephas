@@ -14,6 +14,8 @@ namespace Kephas.Data.Linq.Expressions
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Helper class for accessing the methods of the <see cref="IQueryable{T}"/> interface.
     /// </summary>
@@ -21,29 +23,29 @@ namespace Kephas.Data.Linq.Expressions
     {
         static QueryableMethods()
         {
-            QueryableOrderByGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).OrderBy((Expression<Func<int, int>>)null));
-            QueryableOrderByDescendingGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).OrderByDescending((Expression<Func<int, int>>)null));
-            QueryableThenByGeneric = EnumerableMethods.GenericMethodOf(_ => ((IOrderedQueryable<int>)null).ThenBy((Expression<Func<int, int>>)null));
-            QueryableThenByDescendingGeneric = EnumerableMethods.GenericMethodOf(_ => ((IOrderedQueryable<int>)null).ThenByDescending((Expression<Func<int, int>>)null));
-            QueryableCountGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Count());
-            QueryableNonEmptyCountGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Count((Expression<Func<int, bool>>)null));
-            QueryableLongCountGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).LongCount());
-            QueryableNonEmptyLongCountGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).LongCount((Expression<Func<int, bool>>)null));
-            QueryableSkipGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Skip(0));
-            QueryableWhereGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Where((Expression<Func<int, bool>>)null));
-            QueryableEmptyAnyGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Any());
-            QueryableNonEmptyAnyGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Any(null));
-            QueryableAllGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).All(null));
-            QueryableMaxGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Max());
-            QueryableMaxNonEmptyGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Max((Expression<Func<int, int>>)null));
-            QueryableMinGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Min());
-            QueryableMinNonEmptyGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Min((Expression<Func<int, int>>)null));
-            QueryableOfType = EnumerableMethods.GenericMethodOf(_ => ((IQueryable)null).OfType<int>());
-            QueryableSelectGeneric = EnumerableMethods.GenericMethodOf(_ =>
+            QueryableOrderByGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).OrderBy((Expression<Func<int, int>>)null));
+            QueryableOrderByDescendingGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).OrderByDescending((Expression<Func<int, int>>)null));
+            QueryableThenByGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IOrderedQueryable<int>)null).ThenBy((Expression<Func<int, int>>)null));
+            QueryableThenByDescendingGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IOrderedQueryable<int>)null).ThenByDescending((Expression<Func<int, int>>)null));
+            QueryableCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Count());
+            QueryableNonEmptyCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Count((Expression<Func<int, bool>>)null));
+            QueryableLongCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).LongCount());
+            QueryableNonEmptyLongCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).LongCount((Expression<Func<int, bool>>)null));
+            QueryableSkipGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Skip(0));
+            QueryableWhereGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Where((Expression<Func<int, bool>>)null));
+            QueryableEmptyAnyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Any());
+            QueryableNonEmptyAnyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Any(null));
+            QueryableAllGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).All(null));
+            QueryableMaxGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Max());
+            QueryableMaxNonEmptyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Max((Expression<Func<int, int>>)null));
+            QueryableMinGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Min());
+            QueryableMinNonEmptyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Min((Expression<Func<int, int>>)null));
+            QueryableOfType = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable)null).OfType<int>());
+            QueryableSelectGeneric = ReflectionHelper.GetGenericMethodOf(_ =>
                                                      from i in (IQueryable<int>)null
                                                      select i);
-            QueryableTakeGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Take(0));
-            QueryableContainsGeneric = EnumerableMethods.GenericMethodOf(_ => ((IQueryable<int>)null).Contains(0));
+            QueryableTakeGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Take(0));
+            QueryableContainsGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).Contains(0));
         }
 
         /// <summary>

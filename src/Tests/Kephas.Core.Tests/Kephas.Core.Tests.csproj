@@ -61,6 +61,9 @@
     <Compile Include="Application\NullAppManifestTest.cs" />
     <Compile Include="Behavior\BehaviorRuleFlowControlBaseTest.cs" />
     <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
+    <Compile Include="Composition\CompositionContextExtensionsTest.cs" />
+    <Compile Include="Composition\Conventions\ConventionsBuilderExtensionsTest.cs" />
+    <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapterTest.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\DynamicTypeInfoTest.cs" />
@@ -89,6 +92,10 @@
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
+      <Project>{4cf8fd28-178f-41a8-8f2f-71377598da41}</Project>
+      <Name>Kephas.Testing.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

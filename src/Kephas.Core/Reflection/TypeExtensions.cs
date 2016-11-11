@@ -116,5 +116,20 @@ namespace Kephas.Reflection
                                      : type.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
             return enumerableType?.GetTypeInfo().GenericTypeArguments[0];
         }
+
+        /// <summary>
+        /// Indicates whether the type is a constructed generic of the provided open generic type.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <param name="openGenericType">The open generic type.</param>
+        /// <returns>
+        /// <c>true</c> if the type is a constructed generic of the provided open generic type, <c>false</c> otherwise.
+        /// </returns>
+        public static bool IsConstructedGenericOf(this Type type, Type openGenericType)
+        {
+            Contract.Requires(type != null);
+
+            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
+        }
     }
 }

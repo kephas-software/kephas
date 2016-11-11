@@ -15,6 +15,7 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.InteropServices.ComTypes;
 
     /// <summary>
     /// Helper class for reflection.
@@ -113,6 +114,29 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the generic method indicated by the given expression.
+        /// The given expression must be a lambda expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <returns>A <see cref="MethodInfo"/>.</returns>
+        public static MethodInfo GetGenericMethodOf(Expression expression)
+        {
+            return ((MethodCallExpression)((LambdaExpression)expression).Body).Method.GetGenericMethodDefinition();
+        }
+
+        /// <summary>
+        /// Gets the generic method indicated by the given expression.
+        /// The given expression must be a lambda expression.
+        /// </summary>
+        /// <typeparam name="TReturn">The type of the return.</typeparam>
+        /// <param name="expression">The expression.</param>
+        /// <returns>A <see cref="MethodInfo"/>.</returns>
+        public static MethodInfo GetGenericMethodOf<TReturn>(Expression<Func<object, TReturn>> expression)
+        {
+            return GetGenericMethodOf((Expression)expression);
+        }
+
+        /// <summary>
         /// Gets the assembly qualified name without the version and public key information.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -123,7 +147,7 @@ namespace Kephas.Reflection
         {
             Contract.Requires(type != null);
 
-            return string.Concat(type.FullName, ", ", type.GetTypeInfo().Assembly.GetName().Name);
+            return String.Concat(type.FullName, ", ", type.GetTypeInfo().Assembly.GetName().Name);
         }
 
         /// <summary>
@@ -194,6 +218,29 @@ namespace Kephas.Reflection
         public static bool IsSystemAssembly(this AssemblyName assemblyName)
         {
             return assemblyName.FullName.StartsWith("System") || assemblyName.FullName.StartsWith("mscorlib") || assemblyName.FullName.StartsWith("Microsoft") || assemblyName.FullName.StartsWith("vshost32");
+        }
+
+        /// <summary>
+        /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
+        /// ensuring in case of an exception that the original exception is thrown.
+        /// </summary>
+        /// <param name="methodInfo">The method information.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="arguments">A variable-length parameters list containing arguments.</param>
+        /// <returns>
+        /// The invocation result.
+        /// </returns>
+        public static object Call(this MethodInfo methodInfo, object instance, params object[] arguments)
+        {
+            try
+            {
+                var result = methodInfo.Invoke(instance, arguments);
+                return result;
+            }
+            catch (TargetInvocationException tie)
+            {
+                throw tie.InnerException;
+            }
         }
     }
 }

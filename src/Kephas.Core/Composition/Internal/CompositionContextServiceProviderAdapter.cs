@@ -10,7 +10,10 @@
 namespace Kephas.Composition.Internal
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+
+    using Kephas.Reflection;
 
     /// <summary>
     /// Adapter for <see cref="IServiceProvider"/> based on a composition context.
@@ -41,6 +44,42 @@ namespace Kephas.Composition.Internal
         /// </returns>
         public object GetService(Type serviceType)
         {
+            if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<>)))
+            {
+                var contractType = serviceType.GenericTypeArguments[0];
+                return this.compositionContext.GetExportFactory(contractType);
+            }
+
+            if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
+            {
+                var contractType = serviceType.GenericTypeArguments[0];
+                var metadataType = serviceType.GenericTypeArguments[1];
+                return this.compositionContext.GetExportFactory(contractType, metadataType);
+            }
+
+            if (serviceType.IsConstructedGenericOf(typeof(IEnumerable<>)) ||
+                serviceType.IsConstructedGenericOf(typeof(ICollection<>)) ||
+                serviceType.IsConstructedGenericOf(typeof(IList<>)) ||
+                serviceType.IsConstructedGenericOf(typeof(List<>)))
+            {
+                var exportType = serviceType.TryGetEnumerableItemType();
+                if (exportType != null)
+                {
+                    if (exportType.IsConstructedGenericOf(typeof(IExportFactory<>)))
+                    {
+                        var contractType = exportType.GenericTypeArguments[0];
+                        return this.compositionContext.GetExportFactories(contractType);
+                    }
+
+                    if (exportType.IsConstructedGenericOf(typeof(IExportFactory<,>)))
+                    {
+                        var contractType = exportType.GenericTypeArguments[0];
+                        var metadataType = exportType.GenericTypeArguments[1];
+                        return this.compositionContext.GetExportFactories(contractType, metadataType);
+                    }
+                }
+            }
+
             return this.compositionContext.GetExport(serviceType);
         }
     }
