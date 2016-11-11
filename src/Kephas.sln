@@ -76,8 +76,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.NetStandard", "Kephas.Platform.NetStandard14\Kephas.Platform.NetStandard.csproj", "{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PortableClassic", "PortableClassic", "{EDB11020-7F28-41CA-8697-6D5C7DF4DDE0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
