@@ -184,6 +184,10 @@
     <Compile Include="Composition\Conventions\IExportConventionsBuilder.cs" />
     <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
     <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
+    <Compile Include="Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs" />
+    <Compile Include="Composition\ExportFactoryImporters\ExportFactoryImporter.cs" />
+    <Compile Include="Composition\ExportFactoryImporters\ICollectionExportFactoryImporter.cs" />
+    <Compile Include="Composition\ExportFactoryImporters\IExportFactoryImporter.cs" />
     <Compile Include="Composition\Hosting\CompositionContainerBuilderBase.cs" />
     <Compile Include="Composition\Hosting\CompositionContainerBuilderContext.cs" />
     <Compile Include="Composition\Hosting\ICompositionContainerBuilder.cs" />

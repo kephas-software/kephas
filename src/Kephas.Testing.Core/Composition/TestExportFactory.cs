@@ -28,6 +28,15 @@ namespace Kephas.Testing.Core.Composition
         /// Initializes a new instance of the <see cref="TestExportFactory{TService}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
+        public TestExportFactory(Func<TService> factory)
+        {
+            this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestExportFactory{TService}"/> class.
+        /// </summary>
+        /// <param name="factory">The factory.</param>
         public TestExportFactory(Func<Tuple<TService, Action>> factory)
         {
             this.factory = factory;

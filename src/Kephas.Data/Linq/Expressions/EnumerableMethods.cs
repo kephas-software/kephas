@@ -15,6 +15,8 @@ namespace Kephas.Data.Linq.Expressions
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Helper class for accessing the methods of the <see cref="IEnumerable{T}"/> interface.
     /// </summary>
@@ -25,17 +27,17 @@ namespace Kephas.Data.Linq.Expressions
         /// </summary>
         static EnumerableMethods()
         {
-            EnumerableCountGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Count());
-            EnumerableNonEmptyCountGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Count((Func<int, bool>)null));
-            EnumerableLongCountGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).LongCount());
-            EnumerableNonEmptyLongCountGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).LongCount((Func<int, bool>)null));
-            EnumerableEmptyAnyGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Any());
-            EnumerableNonEmptyAnyGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Any(null));
-            EnumerableAllGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).All(null));
-            EnumerableOfType = GenericMethodOf(_ => ((System.Collections.IEnumerable)null).OfType<int>());
-            EnumerableSelectGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Select(i => i));
-            EnumerableTakeGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Take(0));
-            EnumerableContainsGeneric = GenericMethodOf(_ => ((IEnumerable<int>)null).Contains(0));
+            EnumerableCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Count());
+            EnumerableNonEmptyCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Count((Func<int, bool>)null));
+            EnumerableLongCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).LongCount());
+            EnumerableNonEmptyLongCountGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).LongCount((Func<int, bool>)null));
+            EnumerableEmptyAnyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Any());
+            EnumerableNonEmptyAnyGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Any(null));
+            EnumerableAllGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).All(null));
+            EnumerableOfType = ReflectionHelper.GetGenericMethodOf(_ => ((System.Collections.IEnumerable)null).OfType<int>());
+            EnumerableSelectGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Select(i => i));
+            EnumerableTakeGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Take(0));
+            EnumerableContainsGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IEnumerable<int>)null).Contains(0));
         }
 
         /// <summary>
@@ -107,26 +109,5 @@ namespace Kephas.Data.Linq.Expressions
         /// The enumerable contains generic.
         /// </value>
         public static MethodInfo EnumerableContainsGeneric { get; private set; }
-
-        /// <summary>
-        /// Gets the generic method indicated by the given expression.
-        /// </summary>
-        /// <typeparam name="TReturn">The type of the return.</typeparam>
-        /// <param name="expression">The expression.</param>
-        /// <returns>A <see cref="MethodInfo"/>.</returns>
-        internal static MethodInfo GenericMethodOf<TReturn>(Expression<Func<object, TReturn>> expression)
-        {
-            return GenericMethodOf((Expression)expression);
-        }
-
-        /// <summary>
-        /// Gets the generic method indicated by the given expression.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <returns>A <see cref="MethodInfo"/>.</returns>
-        internal static MethodInfo GenericMethodOf(Expression expression)
-        {
-            return ((MethodCallExpression)((LambdaExpression)expression).Body).Method.GetGenericMethodDefinition();
-        }
     }
 }
