@@ -104,5 +104,19 @@ namespace Kephas
 
             return new Expando(obj);
         }
+
+        /// <summary>
+        /// Gets the most specific type information out of the provided instance.
+        /// If the object implements <see cref="IInstance"/>, then it returns
+        /// the <see cref="ITypeInfo"/> provided by it, otherwise it returns the <see cref="IDynamicTypeInfo"/>
+        /// of its runtime type.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>A type information for the provided object.</returns>
+        public static ITypeInfo GetTypeInfo(this object obj)
+        {
+            var typeInfo = (obj as IInstance)?.GetTypeInfo();
+            return typeInfo ?? obj?.GetType().AsDynamicTypeInfo();
+        }
     }
 }
