@@ -273,6 +273,11 @@ namespace Kephas.Runtime
         public abstract ITypeInfo GenericTypeDefinition { get; }
 
         /// <summary>
+        /// Gets an enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties.Values;
+
+        /// <summary>
         /// Convenience method that provides a string Indexer
         /// to the Properties collection AND the strongly typed
         /// properties of the object by name.

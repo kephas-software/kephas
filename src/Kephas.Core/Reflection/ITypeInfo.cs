@@ -59,6 +59,14 @@ namespace Kephas.Reflection
         /// The generic type definition.
         /// </value>
         ITypeInfo GenericTypeDefinition { get; }
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <value>
+        /// The properties.
+        /// </value>
+        IEnumerable<IPropertyInfo> Properties { get; }
     }
 
     /// <summary>
@@ -160,6 +168,21 @@ namespace Kephas.Reflection
         /// The generic type definition.
         /// </value>
         public abstract ITypeInfo GenericTypeDefinition { get; }
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <value>
+        /// The properties.
+        /// </value>
+        public IEnumerable<IPropertyInfo> Properties
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IPropertyInfo>>() != null);
+                return Contract.Result<IEnumerable<IPropertyInfo>>();
+            }
+        }
 
         /// <summary>
         /// Convenience method that provides a string Indexer to the Properties collection AND the

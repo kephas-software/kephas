@@ -170,6 +170,11 @@ namespace Kephas.Runtime
         public ITypeInfo GenericTypeDefinition => this.genericTypeDefinition ?? (this.genericTypeDefinition = this.GetGenericTypeDefinition(this.TypeInfo));
 
         /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties.Values;
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>

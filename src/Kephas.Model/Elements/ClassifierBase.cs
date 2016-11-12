@@ -128,6 +128,11 @@ namespace Kephas.Model.Elements
         public ITypeInfo GenericTypeDefinition { get; private set; }
 
         /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+
+        /// <summary>
         /// Calculates the flag indicating whether the classifier is a mixin or not.
         /// </summary>
         /// <returns>
