@@ -67,7 +67,7 @@
     <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapterTest.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
-    <Compile Include="Dynamic\DynamicTypeInfoTest.cs" />
+    <Compile Include="Runtime\DynamicTypeInfoTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
     <Compile Include="Graphs\GraphEdgeOfTNodeValueTest.cs" />
     <Compile Include="Graphs\GraphExtensionsTest.cs" />

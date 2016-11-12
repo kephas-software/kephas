@@ -16,7 +16,7 @@ namespace Kephas.Reflection
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Dynamic;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Extension methods for types.
@@ -24,17 +24,17 @@ namespace Kephas.Reflection
     public static class TypeExtensions
     {
         /// <summary>
-        /// Gets the <see cref="IDynamicTypeInfo"/> for the provided <see cref="Type"/> instance.
+        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="Type"/> instance.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        /// The provided <see cref="Type"/>'s associated <see cref="IDynamicTypeInfo"/>.
+        /// The provided <see cref="Type"/>'s associated <see cref="IRuntimeTypeInfo"/>.
         /// </returns>
-        public static IDynamicTypeInfo AsDynamicTypeInfo(this Type type)
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
         {
             Contract.Requires(type != null);
 
-            return DynamicTypeInfo.GetDynamicType(type);
+            return RuntimeTypeInfo.GetRuntimeType(type);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsEnumerable(this Type type)
         {
-            return type != null && typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return type != null && IntrospectionExtensions.GetTypeInfo(typeof(IEnumerable)).IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsQueryable(this Type type)
         {
-            return type != null && typeof(IQueryable).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return type != null && IntrospectionExtensions.GetTypeInfo(typeof(IQueryable)).IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
         }
 
         /// <summary>
@@ -108,13 +108,16 @@ namespace Kephas.Reflection
 
             Func<Type, bool> isRequestedEnumerable = t =>
                 {
-                    var ti = t.GetTypeInfo();
+                    var ti = IntrospectionExtensions.GetTypeInfo(t);
                     return ti.IsGenericType && ti.GetGenericTypeDefinition() == enumerableGenericType;
                 };
             var enumerableType = isRequestedEnumerable(type)
                                      ? type
-                                     : type.GetTypeInfo().ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
-            return enumerableType?.GetTypeInfo().GenericTypeArguments[0];
+                                     : IntrospectionExtensions.GetTypeInfo(type).ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
+
+            return enumerableType == null
+                       ? null
+                       : IntrospectionExtensions.GetTypeInfo(enumerableType).GenericTypeArguments[0];
         }
 
         /// <summary>

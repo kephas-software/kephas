@@ -12,9 +12,9 @@ namespace Kephas.Activation
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -46,10 +46,10 @@ namespace Kephas.Activation
             IContext activationContext = null)
         {
             var implementationType = this.GetImplementationType(typeInfo, activationContext);
-            var runtimeType = implementationType as IDynamicTypeInfo;
+            var runtimeType = implementationType as IRuntimeTypeInfo;
             if (runtimeType == null)
             {
-                throw new ActivationException(string.Format(Strings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, implementationType, typeof(IDynamicTypeInfo), typeInfo));
+                throw new ActivationException(string.Format(Strings.ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception, implementationType, typeof(IRuntimeTypeInfo), typeInfo));
             }
 
             return runtimeType.CreateInstance(args);

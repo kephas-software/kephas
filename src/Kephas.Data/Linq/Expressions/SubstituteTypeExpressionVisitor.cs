@@ -19,6 +19,7 @@ namespace Kephas.Data.Linq.Expressions
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// The <see cref="SubstituteTypeExpressionVisitor"/>
@@ -137,7 +138,7 @@ namespace Kephas.Data.Linq.Expressions
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
-                var otherMember = concreteType.AsDynamicTypeInfo().Properties[memberName];
+                var otherMember = concreteType.AsRuntimeTypeInfo().Properties[memberName];
                 var expr = this.Visit(node.Expression);
                 if (expr.Type.GetTypeInfo().IsInterface)
                 {
@@ -250,9 +251,9 @@ namespace Kephas.Data.Linq.Expressions
         private Type TryGetImplementationType(Type abstractType)
         {
             var concreteType = this.activator.GetImplementationType(
-                abstractType.AsDynamicTypeInfo(),
+                abstractType.AsRuntimeTypeInfo(),
                 throwOnNotFound: false);
-            return (concreteType as IDynamicTypeInfo)?.Type;
+            return (concreteType as IRuntimeTypeInfo)?.Type;
         }
     }
 }

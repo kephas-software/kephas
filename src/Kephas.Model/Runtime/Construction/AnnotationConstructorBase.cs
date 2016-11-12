@@ -47,7 +47,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
         protected override string TryComputeNameCore(object runtimeElement)
         {
-            var attrTypeInfo = runtimeElement.GetDynamicTypeInfo();
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             // NOTE: The speciality of the runtime is to prepend the @ sign to the
             // attribute name, because the member name conventions imply it.
@@ -75,7 +75,7 @@ namespace Kephas.Model.Runtime.Construction
             TAttribute runtimeElement,
             TAnnotation element)
         {
-            var attrTypeInfo = runtimeElement.GetDynamicTypeInfo();
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             if (usage != null)
             {

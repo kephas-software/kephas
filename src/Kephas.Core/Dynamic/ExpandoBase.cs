@@ -23,6 +23,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
 
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// <para>
@@ -61,10 +62,10 @@ namespace Kephas.Dynamic
         /// Cached dynamic type of the instance.
         /// </summary>
         /// <remarks>
-        /// Do not use directly this field, instead use the <see cref="GetDynamicTypeInfo"/> method
+        /// Do not use directly this field, instead use the <see cref="GetRuntimeTypeInfo"/> method
         /// which knows how to late-initialize it.
         /// </remarks>
-        private IDynamicTypeInfo dynamicTypeInfo;
+        private IRuntimeTypeInfo dynamicTypeInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
@@ -120,7 +121,7 @@ namespace Kephas.Dynamic
 
                 // try reflection on instanceType
                 var instance = this.wrappedInstance ?? this;
-                return this.GetDynamicTypeInfo().TryGetValue(instance, key);
+                return this.GetRuntimeTypeInfo().TryGetValue(instance, key);
             }
 
             set
@@ -132,7 +133,7 @@ namespace Kephas.Dynamic
 
                 // check instance for existance of type first
                 var instance = this.wrappedInstance ?? this;
-                if (!this.GetDynamicTypeInfo().TrySetValue(instance, key, value))
+                if (!this.GetRuntimeTypeInfo().TrySetValue(instance, key, value))
                 {
                     this.TrySetDictionaryValue(key, value, addIfNonExisting: true);
                 }
@@ -158,7 +159,7 @@ namespace Kephas.Dynamic
 
             // Next check for Public properties via Reflection
             var instance = this.wrappedInstance ?? this;
-            result = this.GetDynamicTypeInfo().TryGetValue(instance, binder.Name);
+            result = this.GetRuntimeTypeInfo().TryGetValue(instance, binder.Name);
 
             return result != Undefined.Value;
         }
@@ -176,7 +177,7 @@ namespace Kephas.Dynamic
         {
             // first check to see if there's a native property to set
             var instance = this.wrappedInstance ?? this;
-            if (this.GetDynamicTypeInfo().TrySetValue(instance, binder.Name, value))
+            if (this.GetRuntimeTypeInfo().TrySetValue(instance, binder.Name, value))
             {
                 return true;
             }
@@ -206,21 +207,21 @@ namespace Kephas.Dynamic
             }
 
             var instance = this.wrappedInstance ?? this;
-            result = this.GetDynamicTypeInfo().TryInvoke(instance, binder.Name, args);
+            result = this.GetRuntimeTypeInfo().TryInvoke(instance, binder.Name, args);
             return result != Undefined.Value;
         }
 
         /// <summary>
-        /// Gets the <see cref="IDynamicTypeInfo"/> used by the expando in the dynamic behavior.
+        /// Gets the <see cref="IRuntimeTypeInfo"/> used by the expando in the dynamic behavior.
         /// </summary>
         /// <returns>
         /// The dynamic type.
         /// </returns>
-        protected virtual IDynamicTypeInfo GetDynamicTypeInfo()
+        protected virtual IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            Contract.Ensures(Contract.Result<IDynamicTypeInfo>() != null);
+            Contract.Ensures(Contract.Result<IRuntimeTypeInfo>() != null);
 
-            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().AsDynamicTypeInfo());
+            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().AsRuntimeTypeInfo());
         }
 
         /// <summary>
@@ -244,7 +245,7 @@ namespace Kephas.Dynamic
         {
             if (includeInstanceProperties)
             {
-                foreach (var prop in this.GetDynamicTypeInfo().Properties)
+                foreach (var prop in this.GetRuntimeTypeInfo().Properties)
                 {
                     yield return new KeyValuePair<string, object>(prop.Key, prop.Value.GetValue(this.wrappedInstance));
                 }

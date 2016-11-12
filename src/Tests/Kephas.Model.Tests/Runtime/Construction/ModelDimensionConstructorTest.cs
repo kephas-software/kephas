@@ -33,7 +33,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionConstructor();
             var context = this.GetConstructionContext();
-            var element = constructor.TryCreateModelElement(context, typeof(IHelloDimension).AsDynamicTypeInfo());
+            var element = constructor.TryCreateModelElement(context, typeof(IHelloDimension).AsRuntimeTypeInfo());
 
             Assert.AreEqual("Hello", element.Name);
             Assert.AreEqual("^Hello", element.QualifiedName);
@@ -48,7 +48,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
+            var dimElement = constructor.TryCreateModelElement(context, typeof(IDim2).AsRuntimeTypeInfo());
 
             Assert.AreEqual("Dim2", dimElement.Name);
         }
@@ -58,7 +58,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = (IModelDimension)constructor.TryCreateModelElement(context, typeof(IDim2).AsDynamicTypeInfo());
+            var dimElement = (IModelDimension)constructor.TryCreateModelElement(context, typeof(IDim2).AsRuntimeTypeInfo());
 
             Assert.AreEqual(true, dimElement.IsAggregatable);
         }

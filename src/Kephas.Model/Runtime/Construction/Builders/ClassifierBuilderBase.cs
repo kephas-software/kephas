@@ -24,6 +24,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Model.Runtime.Construction.Annotations;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base abstract builder for runtime classifier information.
@@ -31,7 +32,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
     /// <typeparam name="TModel">Type of the model.</typeparam>
     /// <typeparam name="TModelContract">Type of the model contract.</typeparam>
     /// <typeparam name="TBuilder">Type of the builder.</typeparam>
-    public abstract class ClassifierBuilderBase<TModel, TModelContract, TBuilder> : ModelElementBuilderBase<TModel, TModelContract, IDynamicTypeInfo, TBuilder>
+    public abstract class ClassifierBuilderBase<TModel, TModelContract, TBuilder> : ModelElementBuilderBase<TModel, TModelContract, IRuntimeTypeInfo, TBuilder>
         where TModel : ClassifierBase<TModelContract>
         where TModelContract : IClassifier
         where TBuilder : ClassifierBuilderBase<TModel, TModelContract, TBuilder>
@@ -41,7 +42,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        protected ClassifierBuilderBase(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        protected ClassifierBuilderBase(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
             : base(constructionContext, runtimeElement)
         {
         }

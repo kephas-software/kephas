@@ -34,7 +34,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionElementConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = constructor.TryCreateModelElement(context, typeof(IFirstTestDimDimensionElement).AsDynamicTypeInfo());
+            var dimElement = constructor.TryCreateModelElement(context, typeof(IFirstTestDimDimensionElement).AsRuntimeTypeInfo());
 
             Assert.IsNotNull(dimElement);
             Assert.IsInstanceOf<ModelDimensionElement>(dimElement);
@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionElementConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = constructor.TryCreateModelElement(context, typeof(ISecondTestDim).AsDynamicTypeInfo());
+            var dimElement = constructor.TryCreateModelElement(context, typeof(ISecondTestDim).AsRuntimeTypeInfo());
 
             Assert.AreEqual("Second", dimElement.Name);
         }
@@ -60,7 +60,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionElementConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = constructor.TryCreateModelElement(context, typeof(IThirdDimensionElement).AsDynamicTypeInfo());
+            var dimElement = constructor.TryCreateModelElement(context, typeof(IThirdDimensionElement).AsRuntimeTypeInfo());
 
             Assert.AreEqual("Third", dimElement.Name);
         }
@@ -70,7 +70,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ModelDimensionElementConstructor();
             var context = this.GetConstructionContext();
-            var dimElement = constructor.TryCreateModelElement(context, typeof(INoDimTestDimDimensionElement).AsDynamicTypeInfo());
+            var dimElement = constructor.TryCreateModelElement(context, typeof(INoDimTestDimDimensionElement).AsRuntimeTypeInfo());
 
             Assert.AreEqual("NoDimTestDim", dimElement.Name);
         }

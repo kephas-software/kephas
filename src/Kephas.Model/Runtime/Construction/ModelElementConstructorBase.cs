@@ -19,6 +19,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base runtime provider for model element information.
@@ -29,7 +30,7 @@ namespace Kephas.Model.Runtime.Construction
     public abstract class ModelElementConstructorBase<TModel, TModelContract, TRuntime> : NamedElementConstructorBase<TModel, TModelContract, TRuntime>
         where TModel : ModelElementBase<TModelContract>
         where TModelContract : class, IModelElement
-        where TRuntime : class, IElementInfo, IDynamicElementInfo
+        where TRuntime : class, IElementInfo, IRuntimeElementInfo
     {
         /// <summary>
         /// Constructs the model element content.
@@ -101,7 +102,7 @@ namespace Kephas.Model.Runtime.Construction
         protected virtual IEnumerable<INamedElement> ComputeMemberProperties(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
             var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
-            var typeInfo = runtimeElement as IDynamicTypeInfo;
+            var typeInfo = runtimeElement as IRuntimeTypeInfo;
             if (typeInfo == null)
             {
                 return new List<INamedElement>();

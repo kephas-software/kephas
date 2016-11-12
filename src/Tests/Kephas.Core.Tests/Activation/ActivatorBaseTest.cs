@@ -14,6 +14,7 @@ namespace Kephas.Core.Tests.Activation
     using Kephas.Activation;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     using NUnit.Framework;
@@ -28,16 +29,16 @@ namespace Kephas.Core.Tests.Activation
         public void CreateInstance_no_args()
         {
             var activator = new Activator();
-            var date = activator.CreateInstance(typeof(DateTime).AsDynamicTypeInfo());
+            var date = activator.CreateInstance(typeof(DateTime).AsRuntimeTypeInfo());
             Assert.IsInstanceOf<DateTime>(date);
         }
 
         [Test]
         public void GetImplementationType_overridden_core()
         {
-            var activator = new OverriddenActivator(t => typeof(string).AsDynamicTypeInfo());
-            var implementationType = activator.GetImplementationType(typeof(int).AsDynamicTypeInfo());
-            Assert.AreEqual(typeof(string), ((IDynamicTypeInfo)implementationType).Type);
+            var activator = new OverriddenActivator(t => typeof(string).AsRuntimeTypeInfo());
+            var implementationType = activator.GetImplementationType(typeof(int).AsRuntimeTypeInfo());
+            Assert.AreEqual(typeof(string), ((IRuntimeTypeInfo)implementationType).Type);
         }
 
         public class Activator : ActivatorBase { }

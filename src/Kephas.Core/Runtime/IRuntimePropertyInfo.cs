@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicPropertyInfo.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimePropertyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -20,8 +20,8 @@ namespace Kephas.Dynamic
     /// <summary>
     /// Contract for a dynamic <see cref="PropertyInfo"/>.
     /// </summary>
-    [ContractClass(typeof(DynamicPropertyInfoContractClass))]
-    public interface IDynamicPropertyInfo : IPropertyInfo, IDynamicElementInfo
+    [ContractClass(typeof(RuntimePropertyInfoContractClass))]
+    public interface IRuntimePropertyInfo : IPropertyInfo, IRuntimeElementInfo
     {
         /// <summary>
         /// Gets the property information.
@@ -49,10 +49,10 @@ namespace Kephas.Dynamic
     }
 
     /// <summary>
-    /// Contract class for <see cref="IDynamicPropertyInfo"/>.
+    /// Contract class for <see cref="IRuntimePropertyInfo"/>.
     /// </summary>
-    [ContractClassFor(typeof(IDynamicPropertyInfo))]
-    internal abstract class DynamicPropertyInfoContractClass : IDynamicPropertyInfo
+    [ContractClassFor(typeof(IRuntimePropertyInfo))]
+    internal abstract class RuntimePropertyInfoContractClass : IRuntimePropertyInfo
     {
         /// <summary>
         /// Gets the name of the element.

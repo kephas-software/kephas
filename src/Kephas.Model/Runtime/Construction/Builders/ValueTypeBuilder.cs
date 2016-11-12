@@ -14,6 +14,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     using ValueType = Kephas.Model.Elements.ValueType;
 
@@ -28,7 +29,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         public ValueTypeBuilder(IModelConstructionContext constructionContext, Type runtimeElement)
-            : this(constructionContext, runtimeElement.AsDynamicTypeInfo())
+            : this(constructionContext, runtimeElement.AsRuntimeTypeInfo())
         {
         }
 
@@ -37,7 +38,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
-        public ValueTypeBuilder(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        public ValueTypeBuilder(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
             : base(constructionContext, runtimeElement)
         {
         }
@@ -78,7 +79,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </returns>
         protected override IRuntimeModelElementConstructor CreateElementConstructor(
             IModelConstructionContext constructionContext,
-            IDynamicTypeInfo runtimeElement)
+            IRuntimeTypeInfo runtimeElement)
         {
             return new ValueTypeConstructor(forceValueType: true);
         }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicMethodInfo.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeMethodInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
@@ -20,8 +20,8 @@ namespace Kephas.Dynamic
     /// <summary>
     /// Contract for a dynamic <see cref="MethodInfo"/>.
     /// </summary>
-    [ContractClass(typeof(DynamicMethodInfoContractClass))]
-    public interface IDynamicMethodInfo : IMethodInfo, IDynamicElementInfo
+    [ContractClass(typeof(RuntimeMethodInfoContractClass))]
+    public interface IRuntimeMethodInfo : IMethodInfo, IRuntimeElementInfo
     {
         /// <summary>
         /// Gets the method information.
@@ -49,10 +49,10 @@ namespace Kephas.Dynamic
     }
 
     /// <summary>
-    /// Contract class for <see cref="IDynamicMethodInfo"/>.
+    /// Contract class for <see cref="IRuntimeMethodInfo"/>.
     /// </summary>
-    [ContractClassFor(typeof(IDynamicMethodInfo))]
-    internal abstract class DynamicMethodInfoContractClass : IDynamicMethodInfo
+    [ContractClassFor(typeof(IRuntimeMethodInfo))]
+    internal abstract class RuntimeMethodInfoContractClass : IRuntimeMethodInfo
     {
         /// <summary>
         /// Gets the name of the element.

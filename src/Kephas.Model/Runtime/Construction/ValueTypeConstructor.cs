@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Runtime;
 
     /// <summary>
     /// A value type constructor.
@@ -55,7 +56,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var underlyingType = runtimeElement.TypeInfo;
             if (underlyingType.GetCustomAttribute<ValueTypeAttribute>() == null && !underlyingType.IsValueType && !this.ForceValueType)

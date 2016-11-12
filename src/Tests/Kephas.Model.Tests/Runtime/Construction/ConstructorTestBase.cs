@@ -21,6 +21,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Construction.Composition;
+    using Kephas.Runtime;
 
     using NUnit.Framework.Constraints;
 
@@ -53,7 +54,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var constructors = new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>
                                    {
                                        this.CreateExportFactory((IRuntimeModelElementConstructor)new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
-                                       this.CreateExportFactory((IRuntimeModelElementConstructor)new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IDynamicPropertyInfo))),
+                                       this.CreateExportFactory((IRuntimeModelElementConstructor)new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
                                    };
 
             var configurators = new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>();

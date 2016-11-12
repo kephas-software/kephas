@@ -24,6 +24,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Model.Resources;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -100,14 +101,14 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// The runtime element infos.
         /// </returns>
-        private async Task<HashSet<IDynamicTypeInfo>> GetRuntimeElementInfos(CancellationToken cancellationToken)
+        private async Task<HashSet<IRuntimeTypeInfo>> GetRuntimeElementInfos(CancellationToken cancellationToken)
         {
-            var runtimeElements = new HashSet<IDynamicTypeInfo>();
+            var runtimeElements = new HashSet<IRuntimeTypeInfo>();
             foreach (var modelRegistry in this.modelRegistries)
             {
                 var registryElements =
                     await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
-                runtimeElements.AddRange(registryElements.Select(this.ToDynamicTypeInfo));
+                runtimeElements.AddRange(registryElements.Select(this.ToRuntimeTypeInfo));
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
@@ -116,25 +117,25 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
-        /// Normalizes the runtime element by returning the associated <see cref="IDynamicTypeInfo"/> instead.
+        /// Normalizes the runtime element by returning the associated <see cref="IRuntimeTypeInfo"/> instead.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The normalized runtime type.</returns>
-        private IDynamicTypeInfo ToDynamicTypeInfo(object runtimeElement)
+        private IRuntimeTypeInfo ToRuntimeTypeInfo(object runtimeElement)
         {
             var runtimeType = runtimeElement as Type;
             if (runtimeType != null)
             {
-                return runtimeType.AsDynamicTypeInfo();
+                return runtimeType.AsRuntimeTypeInfo();
             }
 
             var runtimeTypeInfo = runtimeElement as TypeInfo;
             if (runtimeTypeInfo != null)
             {
-                return runtimeTypeInfo.AsDynamicTypeInfo();
+                return runtimeTypeInfo.AsRuntimeTypeInfo();
             }
 
-            return runtimeElement as IDynamicTypeInfo;
+            return runtimeElement as IRuntimeTypeInfo;
         }
     }
 }

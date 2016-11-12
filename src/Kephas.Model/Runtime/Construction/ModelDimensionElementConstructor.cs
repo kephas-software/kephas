@@ -15,13 +15,14 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
     /// Runtime provider for model dimension element information.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class ModelDimensionElementConstructor : ModelElementConstructorBase<ModelDimensionElement, IModelDimensionElement, IDynamicTypeInfo>
+    public class ModelDimensionElementConstructor : ModelElementConstructorBase<ModelDimensionElement, IModelDimensionElement, IRuntimeTypeInfo>
     {
         /// <summary>
         /// The dimension element name discriminator.
@@ -46,7 +47,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
         protected override string TryComputeNameCore(object runtimeElement)
         {
-            var typeInfo = (runtimeElement as IDynamicTypeInfo)?.TypeInfo;
+            var typeInfo = (runtimeElement as IRuntimeTypeInfo)?.TypeInfo;
             var dimensionName = this.ComputeDimensionName(typeInfo?.Namespace);
 
             var baseName = base.TryComputeNameCore(runtimeElement);
@@ -67,7 +68,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ModelDimensionElement TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        protected override ModelDimensionElement TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var typeInfo = runtimeElement.TypeInfo;
             if (!typeInfo.IsInterface)

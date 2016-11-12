@@ -29,7 +29,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ValueTypeConstructor();
             var context = this.GetConstructionContext();
-            var runtimeElement = typeof(T).AsDynamicTypeInfo();
+            var runtimeElement = typeof(T).AsRuntimeTypeInfo();
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return modelElement;

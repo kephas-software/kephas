@@ -17,6 +17,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     using NUnit.Framework;
 
@@ -27,7 +28,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new TestClassifierConstructor();
             var context = this.GetConstructionContext(factory: this.GetTestRuntimeModelElementFactory());
-            var runtimeElement = typeof(TestContact).AsDynamicTypeInfo();
+            var runtimeElement = typeof(TestContact).AsRuntimeTypeInfo();
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return modelElement;
@@ -90,7 +91,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             /// A new element information based on the provided runtime element information, or <c>null</c>
             /// if the runtime element information is not supported.
             /// </returns>
-            protected override TestClassifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+            protected override TestClassifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
             {
                 return new TestClassifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
             }

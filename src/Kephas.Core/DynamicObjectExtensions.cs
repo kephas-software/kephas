@@ -14,6 +14,7 @@ namespace Kephas
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Dynamic extension methods for objects.
@@ -30,7 +31,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var objectTypeAccessor = obj.GetType().AsDynamicTypeInfo();
+            var objectTypeAccessor = obj.GetType().AsRuntimeTypeInfo();
             objectTypeAccessor.SetValue(obj, propertyName, value);
         }
 
@@ -49,7 +50,7 @@ namespace Kephas
                 return false;
             }
 
-            var objectTypeAccessor = obj.GetType().AsDynamicTypeInfo();
+            var objectTypeAccessor = obj.GetType().AsRuntimeTypeInfo();
             return objectTypeAccessor.TrySetValue(obj, propertyName, value);
         }
 
@@ -63,7 +64,7 @@ namespace Kephas
         {
             Contract.Requires(obj != null);
 
-            var dynamicType = obj.GetType().AsDynamicTypeInfo();
+            var dynamicType = obj.GetType().AsRuntimeTypeInfo();
             return dynamicType.GetValue(obj, propertyName);
         }
 
@@ -76,18 +77,18 @@ namespace Kephas
         /// <remarks>If the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
         public static object TryGetPropertyValue(this object obj, string propertyName)
         {
-            var dynamicType = obj?.GetType().AsDynamicTypeInfo();
+            var dynamicType = obj?.GetType().AsRuntimeTypeInfo();
             return dynamicType?.TryGetValue(obj, propertyName);
         }
 
         /// <summary>
-        /// Gets a dynamic type information out of the provided instance.
+        /// Gets a runtime type information out of the provided instance.
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>A dynamic type information for the provided object.</returns>
-        public static IDynamicTypeInfo GetDynamicTypeInfo(this object obj)
+        public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj)
         {
-            return obj?.GetType().AsDynamicTypeInfo();
+            return obj?.GetType().AsRuntimeTypeInfo();
         }
 
         /// <summary>
@@ -103,20 +104,6 @@ namespace Kephas
             }
 
             return new Expando(obj);
-        }
-
-        /// <summary>
-        /// Gets the most specific type information out of the provided instance.
-        /// If the object implements <see cref="IInstance"/>, then it returns
-        /// the <see cref="ITypeInfo"/> provided by it, otherwise it returns the <see cref="IDynamicTypeInfo"/>
-        /// of its runtime type.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>A type information for the provided object.</returns>
-        public static ITypeInfo GetTypeInfo(this object obj)
-        {
-            var typeInfo = (obj as IInstance)?.GetTypeInfo();
-            return typeInfo ?? obj?.GetType().AsDynamicTypeInfo();
         }
     }
 }

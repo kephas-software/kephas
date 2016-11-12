@@ -130,7 +130,7 @@ namespace Kephas
         public AmbientServicesBuilder WithCompositionContainer<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
         {
-            var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
+            var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
             var context = new CompositionContainerBuilderContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
@@ -150,7 +150,7 @@ namespace Kephas
         public async Task<AmbientServicesBuilder> WithCompositionContainerAsync<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
         {
-            var builderType = typeof(TContainerBuilder).AsDynamicTypeInfo();
+            var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
             var context = new CompositionContainerBuilderContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });

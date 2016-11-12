@@ -1,20 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicElementInfo.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeElementInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDynamicElementInfo interface.
+//   Declares the IRuntimeElementInfo interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System.Reflection;
 
     /// <summary>
     /// Interface for dynamic element information.
     /// </summary>
-    public interface IDynamicElementInfo
+    public interface IRuntimeElementInfo
     {
         /// <summary>
         /// Gets the underlying member information.

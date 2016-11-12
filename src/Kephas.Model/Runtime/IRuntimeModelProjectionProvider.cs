@@ -11,20 +11,21 @@ namespace Kephas.Model.Runtime
 {
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
+    using Kephas.Runtime;
 
     /// <summary>
-    /// Provides the model projection for the <see cref="IDynamicTypeInfo"/>.
+    /// Provides the model projection for the <see cref="IRuntimeTypeInfo"/>.
     /// </summary>
     public interface IRuntimeModelProjectionProvider
     {
         /// <summary>
-        /// Gets the model projection for the provided <see cref="IDynamicTypeInfo"/>.
+        /// Gets the model projection for the provided <see cref="IRuntimeTypeInfo"/>.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="typeInfo">Information describing the type.</param>
         /// <returns>
         /// The model projection.
         /// </returns>
-        IModelProjection GetModelProjection(IModelConstructionContext constructionContext, IDynamicTypeInfo typeInfo);
+        IModelProjection GetModelProjection(IModelConstructionContext constructionContext, IRuntimeTypeInfo typeInfo);
     }
 }

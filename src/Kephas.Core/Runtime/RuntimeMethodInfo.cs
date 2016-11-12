@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicMethodInfo.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeMethodInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
+//   Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Generic;
@@ -15,25 +15,26 @@ namespace Kephas.Dynamic
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
-    /// Implementation of <see cref="IDynamicMethodInfo"/> for runtime methods.
+    /// Implementation of <see cref="IRuntimeMethodInfo"/> for runtime methods.
     /// </summary>
-    public sealed class DynamicMethodInfo : Expando, IDynamicMethodInfo
+    public sealed class RuntimeMethodInfo : Expando, IRuntimeMethodInfo
     {
         /// <summary>
-        /// The <see cref="IDynamicTypeInfo"/> of <see cref="DynamicMethodInfo"/>.
+        /// The <see cref="IRuntimeTypeInfo"/> of <see cref="RuntimeMethodInfo"/>.
         /// </summary>
-        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicMethodInfo = new DynamicTypeInfo(typeof(DynamicMethodInfo));
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeMethodInfo = new RuntimeTypeInfo(typeof(RuntimeMethodInfo));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicMethodInfo"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeMethodInfo"/> class.
         /// </summary>
         /// <param name="methodInfo">
         /// The method information.
         /// </param>
-        internal DynamicMethodInfo(MethodInfo methodInfo)
+        internal RuntimeMethodInfo(MethodInfo methodInfo)
             : base(isThreadSafe: true)
         {
             Contract.Requires(methodInfo != null);
@@ -73,7 +74,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => DynamicTypeInfo.GetDynamicType(this.MethodInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.DeclaringType);
 
         /// <summary>
         /// Gets the method info.
@@ -86,7 +87,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo ReturnType => DynamicTypeInfo.GetDynamicType(this.MethodInfo.ReturnType);
+        public ITypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the underlying member information.
@@ -135,9 +136,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The dynamic type.
         /// </returns>
-        protected override IDynamicTypeInfo GetDynamicTypeInfo()
+        protected override IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            return DynamicTypeInfoOfDynamicMethodInfo;
+            return RuntimeTypeInfoOfRuntimeMethodInfo;
         }
     }
 }

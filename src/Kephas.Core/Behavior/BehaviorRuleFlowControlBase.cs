@@ -52,7 +52,7 @@ namespace Kephas.Behavior
         /// </returns>
         protected virtual bool ComputeIsEndRule()
         {
-            var endRuleAttribute = this.GetDynamicTypeInfo().Annotations.OfType<EndRuleAttribute>().FirstOrDefault();
+            var endRuleAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<EndRuleAttribute>().FirstOrDefault();
             return endRuleAttribute?.Value ?? false;
         }
 
@@ -64,7 +64,7 @@ namespace Kephas.Behavior
         /// </returns>
         protected virtual int ComputeProcessingPriority()
         {
-            var priorityOrderAttribute = this.GetDynamicTypeInfo().Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
+            var priorityOrderAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
             return priorityOrderAttribute?.Value ?? 0;
         }
     }

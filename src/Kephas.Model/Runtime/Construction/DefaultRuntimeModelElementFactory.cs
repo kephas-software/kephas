@@ -21,6 +21,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -37,7 +38,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// The model element configurators.
         /// </summary>
-        private readonly IDictionary<IDynamicTypeInfo, List<IRuntimeModelElementConfigurator>> modelElementConfigurators;
+        private readonly IDictionary<IRuntimeTypeInfo, List<IRuntimeModelElementConfigurator>> modelElementConfigurators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelElementFactory" /> class.
@@ -58,7 +59,7 @@ namespace Kephas.Model.Runtime.Construction
                 (from cfg in modelElementConfigurators
                  group cfg by cfg.Metadata.RuntimeElementType
                  into cfgGroup select cfgGroup).ToDictionary(
-                     g => g.Key.AsDynamicTypeInfo(),
+                     g => g.Key.AsRuntimeTypeInfo(),
                      g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExport().Value).ToList());
         }
 
@@ -85,7 +86,7 @@ namespace Kephas.Model.Runtime.Construction
                     .FirstOrDefault(elementInfo => elementInfo != null);
 
             // apply the configurators in the indicated order.
-            var runtimeDynamicType = runtimeElement as IDynamicTypeInfo;
+            var runtimeDynamicType = runtimeElement as IRuntimeTypeInfo;
             if (runtimeDynamicType != null)
             {
                 var configurators = this.modelElementConfigurators.TryGetValue(runtimeDynamicType);

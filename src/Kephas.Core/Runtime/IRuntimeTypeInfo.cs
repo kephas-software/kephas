@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDynamicTypeInfo.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeTypeInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Generic;
@@ -21,8 +21,8 @@ namespace Kephas.Dynamic
     /// <summary>
     /// Contract for a dynamic <see cref="TypeInfo"/>.
     /// </summary>
-    [ContractClass(typeof(DynamicTypeInfoContractClass))]
-    public interface IDynamicTypeInfo : ITypeInfo, IDynamicElementInfo
+    [ContractClass(typeof(RuntimeTypeInfoContractClass))]
+    public interface IRuntimeTypeInfo : ITypeInfo, IRuntimeElementInfo
     {
         /// <summary>
         /// Gets the underlying <see cref="Type"/>.
@@ -46,7 +46,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The properties.
         /// </value>
-        IDictionary<string, IDynamicPropertyInfo> Properties { get; }
+        IDictionary<string, IRuntimePropertyInfo> Properties { get; }
 
         /// <summary>
         /// Gets the methods.
@@ -54,7 +54,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The methods.
         /// </value>
-        IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods { get; }
+        IDictionary<string, IEnumerable<IRuntimeMethodInfo>> Methods { get; }
 
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -135,10 +135,10 @@ namespace Kephas.Dynamic
     }
 
     /// <summary>
-    /// Contract class for <see cref="IDynamicTypeInfo"/>.
+    /// Contract class for <see cref="IRuntimeTypeInfo"/>.
     /// </summary>
-    [ContractClassFor(typeof(IDynamicTypeInfo))]
-    internal abstract class DynamicTypeInfoContractClass : IDynamicTypeInfo
+    [ContractClassFor(typeof(IRuntimeTypeInfo))]
+    internal abstract class RuntimeTypeInfoContractClass : IRuntimeTypeInfo
     {
         /// <summary>
         /// Gets the name of the type.
@@ -173,7 +173,7 @@ namespace Kephas.Dynamic
         public IElementInfo DeclaringContainer { get; }
 
         /// <summary>
-        /// Gets the underlying <see cref="IDynamicTypeInfo.Type"/>.
+        /// Gets the underlying <see cref="IRuntimeTypeInfo.Type"/>.
         /// </summary>
         /// <value>
         /// The type.
@@ -188,7 +188,7 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the underlying <see cref="IDynamicTypeInfo.TypeInfo"/>.
+        /// Gets the underlying <see cref="IRuntimeTypeInfo.TypeInfo"/>.
         /// </summary>
         /// <value>
         /// The type.
@@ -208,12 +208,12 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic properties.
         /// </value>
-        public IDictionary<string, IDynamicPropertyInfo> Properties
+        public IDictionary<string, IRuntimePropertyInfo> Properties
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IDynamicPropertyInfo>>>() != null);
-                return Contract.Result<IDictionary<string, IDynamicPropertyInfo>>();
+                Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IRuntimePropertyInfo>>>() != null);
+                return Contract.Result<IDictionary<string, IRuntimePropertyInfo>>();
             }
         }
 
@@ -223,12 +223,12 @@ namespace Kephas.Dynamic
         /// <value>
         /// The dynamic methods.
         /// </value>
-        public IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods
+        public IDictionary<string, IEnumerable<IRuntimeMethodInfo>> Methods
         {
             get
             {
-                Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IEnumerable<IDynamicMethodInfo>>>>() != null);
-                return Contract.Result<IDictionary<string, IEnumerable<IDynamicMethodInfo>>>();
+                Contract.Ensures(Contract.Result<IEnumerable<KeyValuePair<string, IEnumerable<IRuntimeMethodInfo>>>>() != null);
+                return Contract.Result<IDictionary<string, IEnumerable<IRuntimeMethodInfo>>>();
             }
         }
 

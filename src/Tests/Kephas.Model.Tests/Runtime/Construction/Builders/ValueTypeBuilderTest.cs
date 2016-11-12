@@ -37,7 +37,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
                                         new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
                                         new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>())
                               };
-            var dynamicType = typeof(T).AsDynamicTypeInfo();
+            var dynamicType = typeof(T).AsRuntimeTypeInfo();
             return new ValueTypeBuilder(context, dynamicType);
         }
 

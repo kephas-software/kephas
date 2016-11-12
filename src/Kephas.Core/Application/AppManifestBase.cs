@@ -83,7 +83,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assembly.
         /// </summary>
-        public Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetDynamicTypeInfo().TypeInfo.Assembly);
+        public Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetRuntimeTypeInfo().TypeInfo.Assembly);
 
         /// <summary>
         /// Initializes the application manifest from the <see cref="AppManifestAttribute"/> set in the

@@ -15,13 +15,14 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
     /// Runtime factory for model dimension information.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class ModelDimensionConstructor : ModelElementConstructorBase<ModelDimension, IModelDimension, IDynamicTypeInfo>
+    public class ModelDimensionConstructor : ModelElementConstructorBase<ModelDimension, IModelDimension, IRuntimeTypeInfo>
     {
         /// <summary>
         /// The dimension name discriminator.
@@ -48,7 +49,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ModelDimension TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        protected override ModelDimension TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var typeInfo = runtimeElement.TypeInfo;
             if (!typeInfo.IsInterface)

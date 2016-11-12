@@ -12,6 +12,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Classifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicTypeInfo runtimeElement)
+        protected override Classifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             return new Classifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }

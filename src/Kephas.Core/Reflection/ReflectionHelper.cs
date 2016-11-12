@@ -15,7 +15,8 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Runtime.InteropServices.ComTypes;
+
+    using Kephas.Runtime;
 
     /// <summary>
     /// Helper class for reflection.
@@ -147,7 +148,7 @@ namespace Kephas.Reflection
         {
             Contract.Requires(type != null);
 
-            return String.Concat(type.FullName, ", ", type.GetTypeInfo().Assembly.GetName().Name);
+            return string.Concat(type.FullName, ", ", IntrospectionExtensions.GetTypeInfo(type).Assembly.GetName().Name);
         }
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace Kephas.Reflection
         {
             Contract.Requires(type != null);
 
-            return GetNonGenericFullName(type.GetTypeInfo());
+            return GetNonGenericFullName(IntrospectionExtensions.GetTypeInfo(type));
         }
 
         /// <summary>
@@ -244,6 +245,20 @@ namespace Kephas.Reflection
             {
                 throw tie.InnerException;
             }
+        }
+
+        /// <summary>
+        /// Gets the most specific type information out of the provided instance.
+        /// If the object implements <see cref="IInstance"/>, then it returns
+        /// the <see cref="ITypeInfo"/> provided by it, otherwise it returns the <see cref="IRuntimeTypeInfo"/>
+        /// of its runtime type.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>A type information for the provided object.</returns>
+        public static ITypeInfo GetTypeInfo(this object obj)
+        {
+            var typeInfo = (obj as IInstance)?.GetTypeInfo();
+            return typeInfo ?? obj?.GetType().AsRuntimeTypeInfo();
         }
     }
 }

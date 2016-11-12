@@ -18,6 +18,7 @@ namespace Kephas.Model.Elements
 
     using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Helper class for model.
@@ -47,7 +48,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The empty projection.
         /// </summary>
-        private static readonly IReadOnlyList<IDynamicTypeInfo> EmptyProjection = new List<IDynamicTypeInfo>();
+        private static readonly IReadOnlyList<IRuntimeTypeInfo> EmptyProjection = new List<IRuntimeTypeInfo>();
 
         /// <summary>
         /// Gets the member name discriminator for the provided type.
@@ -79,16 +80,16 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The runtime projection.
         /// </returns>
-        public static IReadOnlyList<IDynamicTypeInfo> GetRuntimeProjection(this INamedElement element)
+        public static IReadOnlyList<IRuntimeTypeInfo> GetRuntimeProjection(this INamedElement element)
         {
-            Contract.Ensures(Contract.Result<IReadOnlyList<IDynamicTypeInfo>>() != null);
+            Contract.Ensures(Contract.Result<IReadOnlyList<IRuntimeTypeInfo>>() != null);
 
             if (element == null)
             {
                 return EmptyProjection;
             }
 
-            return (IReadOnlyList<IDynamicTypeInfo>)element["RuntimeProjection"];
+            return (IReadOnlyList<IRuntimeTypeInfo>)element["RuntimeProjection"];
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="element">The element to act on.</param>
         /// <param name="projection">The projection.</param>
-        public static void SetRuntimeProjection(this INamedElement element, IReadOnlyList<IDynamicTypeInfo> projection)
+        public static void SetRuntimeProjection(this INamedElement element, IReadOnlyList<IRuntimeTypeInfo> projection)
         {
             if (element == null)
             {

@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicTypeInfoExtensions.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeTypeInfoExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the dynamic type information extensions class.
+//   Implements the runtime type information extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// Extension methods for <see cref="IDynamicTypeInfo"/>.
+    /// Extension methods for <see cref="IRuntimeTypeInfo"/>.
     /// </summary>
-    public static class DynamicTypeInfoExtensions
+    public static class RuntimeTypeInfoExtensions
     {
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
@@ -25,7 +25,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The new instance.
         /// </returns>
-        public static object CreateInstance(this IDynamicTypeInfo typeInfo, params object[] args)
+        public static object CreateInstance(this IRuntimeTypeInfo typeInfo, params object[] args)
         {
             Contract.Requires(typeInfo != null);
 

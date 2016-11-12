@@ -12,7 +12,7 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
-    using Kephas.Dynamic;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Extension methods for type information.
@@ -20,17 +20,17 @@ namespace Kephas.Reflection
     public static class TypeInfoExtensions
     {
         /// <summary>
-        /// Gets the <see cref="IDynamicTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
+        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
         /// </summary>
         /// <param name="typeInfo">The type information instance.</param>
         /// <returns>
-        /// The provided <see cref="TypeInfo"/>'s associated <see cref="IDynamicTypeInfo"/>.
+        /// The provided <see cref="TypeInfo"/>'s associated <see cref="IRuntimeTypeInfo"/>.
         /// </returns>
-        public static IDynamicTypeInfo AsDynamicTypeInfo(this TypeInfo typeInfo)
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
         {
             Contract.Requires(typeInfo != null);
 
-            return DynamicTypeInfo.GetDynamicType(typeInfo);
+            return RuntimeTypeInfo.GetRuntimeType(typeInfo);
         }
 
         /// <summary>

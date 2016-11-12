@@ -16,6 +16,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base implementation of a named element information provider based on the .NET runtime.
@@ -116,7 +117,7 @@ namespace Kephas.Model.Runtime.Construction
 
             var nameBuilder = new StringBuilder(memberInfo.Name);
 
-            var typeInfo = runtimeElement as IDynamicTypeInfo;
+            var typeInfo = runtimeElement as IRuntimeTypeInfo;
             var isInterface = typeInfo?.TypeInfo.IsInterface;
             if (isInterface.HasValue && isInterface.Value && nameBuilder[0] == 'I')
             {

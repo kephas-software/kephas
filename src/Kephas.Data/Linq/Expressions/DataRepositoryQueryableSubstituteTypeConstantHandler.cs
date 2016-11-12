@@ -42,7 +42,7 @@
                 throw new InvalidOperationException($"Expected a {typeof(IDataRepositoryQueryProvider)} in query {value}.");
             }
 
-            var genericQueryMethod = typeof(IDataRepository).AsDynamicTypeInfo().Methods[nameof(IDataRepository.Query)].FirstOrDefault();
+            var genericQueryMethod = typeof(IDataRepository).AsRuntimeTypeInfo().Methods[nameof(IDataRepository.Query)].FirstOrDefault();
             var queryMethod = genericQueryMethod.MethodInfo.MakeGenericMethod(itemType);
             var convertedObject = queryMethod.Invoke(queryProvider.Repository, new object[] { queryProvider.QueryContext });
 

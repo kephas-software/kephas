@@ -17,6 +17,7 @@ namespace Kephas.Serialization.Json
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Runtime;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Resources;
 
@@ -36,7 +37,7 @@ namespace Kephas.Serialization.Json
         /// <summary>
         /// Information describing the formatter assembly style dynamic property.
         /// </summary>
-        private static readonly IDynamicPropertyInfo FormatterAssemblyStyleDynamicPropertyInfo;
+        private static readonly IRuntimePropertyInfo FormatterAssemblyStyleRuntimePropertyInfo;
 
         /// <summary>
         /// The JSON converters.
@@ -54,9 +55,9 @@ namespace Kephas.Serialization.Json
             };
 
             var dummySettings = new JsonSerializerSettings();
-            FormatterAssemblyStyleDynamicPropertyInfo =
-                dummySettings.GetDynamicTypeInfo().Properties["TypeNameAssemblyFormat"];
-            FormatterAssemblyStyleDefaultValue = Enum.Parse(FormatterAssemblyStyleDynamicPropertyInfo.PropertyInfo.PropertyType, "Simple");
+            FormatterAssemblyStyleRuntimePropertyInfo =
+                dummySettings.GetRuntimeTypeInfo().Properties["TypeNameAssemblyFormat"];
+            FormatterAssemblyStyleDefaultValue = Enum.Parse(FormatterAssemblyStyleRuntimePropertyInfo.PropertyInfo.PropertyType, "Simple");
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace Kephas.Serialization.Json
             // WORAROUND for a PCL problem in Newtonsoft.Json component
             // See http://stackoverflow.com/questions/27080363/missingmethodexception-with-newtonsoft-json-when-using-typenameassemblyformat-wi
             // for more information.
-            FormatterAssemblyStyleDynamicPropertyInfo.SetValue(serializerSettings, FormatterAssemblyStyleDefaultValue);
+            FormatterAssemblyStyleRuntimePropertyInfo.SetValue(serializerSettings, FormatterAssemblyStyleDefaultValue);
             return serializerSettings;
         }
     }

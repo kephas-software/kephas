@@ -18,6 +18,7 @@ namespace Kephas.Composition.Conventions
     using Kephas.Composition.AttributedModel;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Extension methods for <see cref="IConventionsBuilder"/>.
@@ -43,7 +44,7 @@ namespace Kephas.Composition.Conventions
             Contract.Requires(builder != null);
             Contract.Requires(conventionTypes != null);
 
-            return RegisterConventionsCore(builder, () => conventionTypes.Where(IsConventionRegistrar).Select(t => t.AsDynamicTypeInfo()), parts);
+            return RegisterConventionsCore(builder, () => conventionTypes.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace Kephas.Composition.Conventions
             Contract.Requires(assemblies != null);
             Contract.Requires(parts != null);
 
-            return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar).Select(t => t.AsDynamicTypeInfo()), parts);
+            return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IDynamicTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts)
         {
             Contract.Requires(builder != null);
 

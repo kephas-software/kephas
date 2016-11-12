@@ -12,11 +12,12 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Factory class for runtime property information.
     /// </summary>
-    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IDynamicPropertyInfo>
+    public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IRuntimePropertyInfo>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -27,7 +28,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IDynamicPropertyInfo runtimeElement)
+        protected override Property TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimePropertyInfo runtimeElement)
         {
             var property = new Property(constructionContext, this.TryComputeNameCore(runtimeElement))
                                {

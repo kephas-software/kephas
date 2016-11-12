@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicTypeInfo.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeTypeInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Concurrent;
@@ -18,37 +18,38 @@ namespace Kephas.Dynamic
     using System.Reflection;
 
     using Kephas.Collections;
+    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
     /// Provides optimized access to methods and properties at runtime.
     /// </summary>
-    public sealed class DynamicTypeInfo : Expando, IDynamicTypeInfo
+    public sealed class RuntimeTypeInfo : Expando, IRuntimeTypeInfo
     {
         /// <summary>
         /// The cache of dynamic type infos.
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, DynamicTypeInfo> DynamicTypeInfosCache = new ConcurrentDictionary<Type, DynamicTypeInfo>();
+        private static readonly ConcurrentDictionary<Type, RuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, RuntimeTypeInfo>();
 
         /// <summary>
-        /// The <see cref="DynamicPropertyInfo{T,TMember}"/> generic type information.
+        /// The <see cref="RuntimePropertyInfo{T,TMember}"/> generic type information.
         /// </summary>
-        private static readonly TypeInfo DynamicPropertyInfoGenericTypeInfo = typeof(DynamicPropertyInfo<,>).GetTypeInfo();
+        private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
 
         /// <summary>
-        /// The dynamic type of the <see cref="DynamicTypeInfo"/>.
+        /// The runtime type of the <see cref="RuntimeTypeInfo"/>.
         /// </summary>
-        private static readonly DynamicTypeInfo DynamicTypeInfoOfDynamicTypeInfo;
+        private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
 
         /// <summary>
         /// The properties.
         /// </summary>
-        private IDictionary<string, IDynamicPropertyInfo> properties;
+        private IDictionary<string, IRuntimePropertyInfo> properties;
 
         /// <summary>
         /// The methods.
         /// </summary>
-        private IDictionary<string, IEnumerable<IDynamicMethodInfo>> methods;
+        private IDictionary<string, IEnumerable<IRuntimeMethodInfo>> methods;
 
         /// <summary>
         /// The base <see cref="ITypeInfo"/>s.
@@ -71,38 +72,38 @@ namespace Kephas.Dynamic
         private ITypeInfo genericTypeDefinition;
 
         /// <summary>
-        /// Initializes static members of the <see cref="DynamicTypeInfo"/> class.
+        /// Initializes static members of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
-        static DynamicTypeInfo()
+        static RuntimeTypeInfo()
         {
-            DynamicTypeInfoOfDynamicTypeInfo = new DynamicTypeInfo(typeof(DynamicTypeInfo));
-            DynamicTypeInfosCache.TryAdd(typeof(DynamicTypeInfo), DynamicTypeInfoOfDynamicTypeInfo);
+            RuntimeTypeInfoOfRuntimeTypeInfo = new RuntimeTypeInfo(typeof(RuntimeTypeInfo));
+            RuntimeTypeInfosCache.TryAdd(typeof(RuntimeTypeInfo), RuntimeTypeInfoOfRuntimeTypeInfo);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        internal DynamicTypeInfo(Type type)
+        internal RuntimeTypeInfo(Type type)
             : this(type, type.GetTypeInfo())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        internal DynamicTypeInfo(TypeInfo typeInfo)
+        internal RuntimeTypeInfo(TypeInfo typeInfo)
             : this(typeInfo.AsType(), typeInfo)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        private DynamicTypeInfo(Type type, TypeInfo typeInfo)
+        private RuntimeTypeInfo(Type type, TypeInfo typeInfo)
             : base(isThreadSafe: true)
         {
             this.Type = type;
@@ -201,20 +202,20 @@ namespace Kephas.Dynamic
         public TypeInfo TypeInfo { get; }
 
         /// <summary>
-        /// Gets the dynamic properties.
+        /// Gets the runtime properties.
         /// </summary>
         /// <value>
-        /// The dynamic properties.
+        /// The runtime properties.
         /// </value>
-        public IDictionary<string, IDynamicPropertyInfo> Properties => this.GetProperties();
+        public IDictionary<string, IRuntimePropertyInfo> Properties => this.GetProperties();
 
         /// <summary>
-        /// Gets the dynamic methods.
+        /// Gets the runtime methods.
         /// </summary>
         /// <value>
-        /// The dynamic methods.
+        /// The runtime methods.
         /// </value>
-        public IDictionary<string, IEnumerable<IDynamicMethodInfo>> Methods => this.GetMethods();
+        public IDictionary<string, IEnumerable<IRuntimeMethodInfo>> Methods => this.GetMethods();
 
         /// <summary>
         /// Gets the underlying member information.
@@ -377,38 +378,38 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the dynamic type.
+        /// Gets the runtime type.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>A runtime dynamic type.</returns>
-        internal static DynamicTypeInfo GetDynamicType(Type type)
+        /// <returns>A runtime type.</returns>
+        internal static RuntimeTypeInfo GetRuntimeType(Type type)
         {
             Contract.Requires(type != null);
 
-            return DynamicTypeInfosCache.GetOrAdd(type, _ => new DynamicTypeInfo(type));
+            return RuntimeTypeInfosCache.GetOrAdd(type, _ => new RuntimeTypeInfo(type));
         }
 
         /// <summary>
-        /// Gets the dynamic type.
+        /// Gets the runtime type.
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <returns>A runtime dynamic type.</returns>
-        internal static DynamicTypeInfo GetDynamicType(TypeInfo typeInfo)
+        /// <returns>A runtime type.</returns>
+        internal static RuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
         {
             Contract.Requires(typeInfo != null);
 
-            return DynamicTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => new DynamicTypeInfo(typeInfo));
+            return RuntimeTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => new RuntimeTypeInfo(typeInfo));
         }
 
         /// <summary>
-        /// Gets the dynamic type used by the expando in the dynamic behavior.
+        /// Gets the runtime type used by the expando in the dynamic behavior.
         /// </summary>
         /// <returns>
         /// The dynamic type.
         /// </returns>
-        protected override IDynamicTypeInfo GetDynamicTypeInfo()
+        protected override IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            return DynamicTypeInfoOfDynamicTypeInfo;
+            return RuntimeTypeInfoOfRuntimeTypeInfo;
         }
 
         /// <summary>
@@ -416,10 +417,10 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A dictionary of runtime dynamic methods.</returns>
-        private static IDictionary<string, IEnumerable<IDynamicMethodInfo>> CreateMethodInfos(Type type)
+        private static IDictionary<string, IEnumerable<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
         {
-            var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IDynamicMethodInfo>>(name, methods.Select(mi => (IDynamicMethodInfo)new DynamicMethodInfo(mi)).ToList()));
-            return new ReadOnlyDictionary<string, IEnumerable<IDynamicMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IDynamicMethodInfo>)g.Value));
+            var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IRuntimeMethodInfo>>(name, methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList()));
+            return new ReadOnlyDictionary<string, IEnumerable<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IRuntimeMethodInfo>)g.Value));
         }
 
         /// <summary>
@@ -429,9 +430,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of properties.
         /// </returns>
-        private static IDictionary<string, IDynamicPropertyInfo> CreatePropertyInfos(Type type)
+        private static IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type)
         {
-            var dynamicProperties = new Dictionary<string, IDynamicPropertyInfo>();
+            var dynamicProperties = new Dictionary<string, IRuntimePropertyInfo>();
             var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic);
             foreach (var propertyInfo in propertyInfos)
             {
@@ -441,15 +442,15 @@ namespace Kephas.Dynamic
                     continue;
                 }
 
-                var propertyAccessorType = DynamicPropertyInfoGenericTypeInfo.MakeGenericType(
+                var propertyAccessorType = RuntimePropertyInfoGenericTypeInfo.MakeGenericType(
                     type,
                     propertyInfo.PropertyType);
                 var constructor = propertyAccessorType.GetTypeInfo().DeclaredConstructors.First();
-                var propertyAccessor = (IDynamicPropertyInfo)constructor.Invoke(new object[] { propertyInfo });
+                var propertyAccessor = (IRuntimePropertyInfo)constructor.Invoke(new object[] { propertyInfo });
                 dynamicProperties.Add(propertyName, propertyAccessor);
             }
 
-            return new ReadOnlyDictionary<string, IDynamicPropertyInfo>(dynamicProperties);
+            return new ReadOnlyDictionary<string, IRuntimePropertyInfo>(dynamicProperties);
         }
 
         /// <summary>
@@ -464,10 +465,10 @@ namespace Kephas.Dynamic
             var baseTypes = new List<ITypeInfo>();
             if (typeInfo.BaseType != null)
             {
-                baseTypes.Add(typeInfo.BaseType.AsDynamicTypeInfo());
+                baseTypes.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
             }
 
-            typeInfo.ImplementedInterfaces.ForEach(i => baseTypes.Add(i.AsDynamicTypeInfo()));
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypes.Add(i.AsRuntimeTypeInfo()));
 
             return new ReadOnlyCollection<ITypeInfo>(baseTypes);
         }
@@ -483,7 +484,7 @@ namespace Kephas.Dynamic
         {
             if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
             {
-                return GetDynamicType(typeInfo.GetGenericTypeDefinition());
+                return GetRuntimeType(typeInfo.GetGenericTypeDefinition());
             }
 
             return null;
@@ -495,7 +496,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The properties.
         /// </returns>
-        private IDictionary<string, IDynamicPropertyInfo> GetProperties()
+        private IDictionary<string, IRuntimePropertyInfo> GetProperties()
         {
             return this.properties ?? (this.properties = CreatePropertyInfos(this.Type));
         }
@@ -506,7 +507,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The dynamic method.
         /// </returns>
-        private IDictionary<string, IEnumerable<IDynamicMethodInfo>> GetMethods()
+        private IDictionary<string, IEnumerable<IRuntimeMethodInfo>> GetMethods()
         {
             return this.methods ?? (this.methods = CreateMethodInfos(this.Type));
         }
@@ -526,7 +527,7 @@ namespace Kephas.Dynamic
                 return ReflectionHelper.EmptyTypeInfos;
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetDynamicType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetRuntimeType(a)).ToList());
         }
 
         /// <summary>
@@ -544,20 +545,20 @@ namespace Kephas.Dynamic
                 return ReflectionHelper.EmptyTypeInfos;
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetDynamicType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetRuntimeType(a)).ToList());
         }
 
         /// <summary>
-        /// Gets the dynamic property for the provided property name.
+        /// Gets the runtime property for the provided property name.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the property is not found.</param>
         /// <returns>
-        /// The dynamic property.
+        /// The runtime property.
         /// </returns>
-        private IDynamicPropertyInfo GetProperty(string propertyName, bool throwOnNotFound = true)
+        private IRuntimePropertyInfo GetProperty(string propertyName, bool throwOnNotFound = true)
         {
-            IDynamicPropertyInfo propertyInfo;
+            IRuntimePropertyInfo propertyInfo;
             if (!this.GetProperties().TryGetValue(propertyName, out propertyInfo))
             {
                 if (throwOnNotFound)
@@ -572,16 +573,16 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the dynamic methods for the provided method name.
+        /// Gets the runtime methods for the provided method name.
         /// </summary>
         /// <param name="methodName">Name of the property.</param>
         /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the method is not found.</param>
         /// <returns>
-        /// The dynamic method.
+        /// The runtime method.
         /// </returns>
-        private IList<IDynamicMethodInfo> GetMethods(string methodName, bool throwOnNotFound = true)
+        private IList<IRuntimeMethodInfo> GetMethods(string methodName, bool throwOnNotFound = true)
         {
-            IEnumerable<IDynamicMethodInfo> methodInfos;
+            IEnumerable<IRuntimeMethodInfo> methodInfos;
             if (!this.GetMethods().TryGetValue(methodName, out methodInfos))
             {
                 if (throwOnNotFound)
@@ -592,7 +593,7 @@ namespace Kephas.Dynamic
                 return null;
             }
 
-            return (IList<IDynamicMethodInfo>)methodInfos;
+            return (IList<IRuntimeMethodInfo>)methodInfos;
         }
 
         /// <summary>
@@ -604,7 +605,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A mathing method for the provided name and arguments.
         /// </returns>
-        private IDynamicMethodInfo GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
+        private IRuntimeMethodInfo GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
         {
             var methodInfos = this.GetMethods(methodName, throwOnNotFound);
             if (methodInfos == null)

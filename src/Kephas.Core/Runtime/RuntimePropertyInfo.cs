@@ -1,31 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicPropertyInfo.cs" company="Quartz Software SRL">
+// <copyright file="RuntimePropertyInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
+//   Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Dynamic
+namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
-    /// Implementation of <see cref="IDynamicPropertyInfo" /> for runtime properties.
+    /// Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
     /// </summary>
     /// <typeparam name="T">The container type.</typeparam>
     /// <typeparam name="TMember">The member type.</typeparam>
-    public sealed class DynamicPropertyInfo<T, TMember> : Expando, IDynamicPropertyInfo
+    public sealed class RuntimePropertyInfo<T, TMember> : Expando, IRuntimePropertyInfo
     {
         /// <summary>
-        /// The dynamic type of <see cref="DynamicPropertyInfo{T,TMember}"/>.
+        /// The dynamic type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
         /// </summary>
-        private static readonly IDynamicTypeInfo DynamicTypeInfoOfDynamicPropertyInfo = new DynamicTypeInfo(typeof(DynamicPropertyInfo<T, TMember>));
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
 
         /// <summary>
         /// The getter.
@@ -38,12 +39,12 @@ namespace Kephas.Dynamic
         private Action<T, TMember> setter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicPropertyInfo{T,TMember}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="propertyInfo">
         /// The property information.
         /// </param>
-        internal DynamicPropertyInfo(PropertyInfo propertyInfo)
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo)
             : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;
@@ -81,7 +82,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => DynamicTypeInfo.GetDynamicType(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.DeclaringType);
 
         /// <summary>
         /// Gets the property information.
@@ -97,7 +98,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
-        public ITypeInfo PropertyType => DynamicTypeInfo.GetDynamicType(this.PropertyInfo.PropertyType);
+        public ITypeInfo PropertyType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.
@@ -165,9 +166,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The dynamic type.
         /// </returns>
-        protected override IDynamicTypeInfo GetDynamicTypeInfo()
+        protected override IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            return DynamicTypeInfoOfDynamicPropertyInfo;
+            return RuntimeTypeInfoOfRuntimePropertyInfo;
         }
 
         /// <summary>
