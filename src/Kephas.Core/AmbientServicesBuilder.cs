@@ -87,17 +87,17 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the application environment to the ambient services.
+        /// Sets the application runtime to the ambient services.
         /// </summary>
-        /// <param name="appEnvironment">The application environment.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithAppEnvironment(IAppEnvironment appEnvironment)
+        public AmbientServicesBuilder WithAppRuntime(IAppRuntime appRuntime)
         {
-            Contract.Requires(appEnvironment != null);
+            Contract.Requires(appRuntime != null);
 
-            this.AmbientServices.RegisterService(appEnvironment);
+            this.AmbientServices.RegisterService(appRuntime);
 
             return this;
         }

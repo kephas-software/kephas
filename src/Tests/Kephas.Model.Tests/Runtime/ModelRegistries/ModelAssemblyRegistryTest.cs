@@ -52,8 +52,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var platformManager = Mock.Create<IAppEnvironment>();
-            platformManager.Arrange(m => m.GetAppAssembliesAsync(CancellationToken.None))
+            var platformManager = Mock.Create<IAppRuntime>();
+            platformManager.Arrange(m => m.GetAppAssembliesAsync(Arg.IsAny<Func<AssemblyName, bool>>(), CancellationToken.None))
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).Assembly }));
 
             var registry = new ModelAssemblyRegistry(platformManager);

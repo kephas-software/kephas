@@ -30,19 +30,19 @@ namespace Kephas.Model.Runtime.ModelRegistries
     public class ModelAssemblyRegistry : IRuntimeModelRegistry
     {
         /// <summary>
-        /// The application environment.
+        /// The application runtime.
         /// </summary>
-        private readonly IAppEnvironment appEnvironment;
+        private readonly IAppRuntime appRuntime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
-        /// <param name="appEnvironment">The application environment.</param>
-        public ModelAssemblyRegistry(IAppEnvironment appEnvironment)
+        /// <param name="appRuntime">The application runtime.</param>
+        public ModelAssemblyRegistry(IAppRuntime appRuntime)
         {
-            Contract.Requires(appEnvironment != null);
+            Contract.Requires(appRuntime != null);
 
-            this.appEnvironment = appEnvironment;
+            this.appRuntime = appRuntime;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </returns>
         public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            var assemblies = await this.appEnvironment.GetAppAssembliesAsync(cancellationToken).PreserveThreadContext();
+            var assemblies = await this.appRuntime.GetAppAssembliesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
             var eligibleAssemblyPairs =
                 (from kv in 
                     from a in assemblies

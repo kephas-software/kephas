@@ -149,13 +149,13 @@
     <Compile Include="AmbientServicesExtensions.cs" />
     <Compile Include="Application\AppBoostrapperExtensions.cs" />
     <Compile Include="Application\AppContext.cs" />
-    <Compile Include="Application\AppEnvironmentBase.cs" />
+    <Compile Include="Application\AppRuntimeBase.cs" />
     <Compile Include="Application\AppInitializerBase.cs" />
     <Compile Include="Application\AppManifestAttribute.cs" />
     <Compile Include="Application\AppManifestBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
-    <Compile Include="Application\NullAppEnvironment.cs" />
-    <Compile Include="Application\IAppEnvironment.cs" />
+    <Compile Include="Application\NullAppRuntime.cs" />
+    <Compile Include="Application\IAppRuntime.cs" />
     <Compile Include="Application\NullAppManifest.cs" />
     <Compile Include="Application\IAppBootstrapper.cs" />
     <Compile Include="Application\IAppContext.cs" />

@@ -52,7 +52,7 @@ namespace Kephas
         /// </summary>
         public AmbientServices()
         {
-            this.RegisterService<IAppEnvironment>(new NullAppEnvironment())
+            this.RegisterService<IAppRuntime>(new NullAppRuntime())
                 .RegisterService<ILogManager>(new NullLogManager())
                 .RegisterService<IConfigurationManager>(new NullConfigurationManager())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
@@ -76,12 +76,12 @@ namespace Kephas
         public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
 
         /// <summary>
-        /// Gets the application environment.
+        /// Gets the application runtime.
         /// </summary>
         /// <value>
-        /// The application environment.
+        /// The application runtime.
         /// </value>
-        public IAppEnvironment AppEnvironment => this.GetService<IAppEnvironment>();
+        public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
 
         /// <summary>
         /// Gets the application configuration manager.

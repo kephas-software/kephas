@@ -1,11 +1,13 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppEnvironment.cs" company="Quartz Software SRL">
+// <copyright file="IAppRuntime.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Interface for abstracting away the environment for the application.
+//   Interface for abstracting away the runtime for the application.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
 
 namespace Kephas.Application
 {
@@ -20,26 +22,27 @@ namespace Kephas.Application
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Interface for abstracting away the environment for the application.
+    /// Interface for abstracting away the runtime for the application.
     /// </summary>
-    [ContractClass(typeof(AppEnvironmentContractClass))]
-    public interface IAppEnvironment : IExpando
+    [ContractClass(typeof(AppRuntimeContractClass))]
+    public interface IAppRuntime : IExpando
     {
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>
-    /// Code contracts for <see cref="IAppEnvironment"/>.
+    /// Code contracts for <see cref="IAppRuntime"/>.
     /// </summary>
-    [ContractClassFor(typeof(IAppEnvironment))]
-    internal abstract class AppEnvironmentContractClass : IAppEnvironment
+    [ContractClassFor(typeof(IAppRuntime))]
+    internal abstract class AppRuntimeContractClass : IAppRuntime
     {
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
@@ -62,11 +65,12 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Ensures(Contract.Result<Task<IEnumerable<Assembly>>>() != null);
             return Contract.Result<Task<IEnumerable<Assembly>>>();

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullAppEnvironment.cs" company="Quartz Software SRL">
+// <copyright file="NullAppRuntime.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the default application environment class.
+//   Implements the null application runtime class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ namespace Kephas.Application
     using System.Reflection;
 
     /// <summary>
-    /// The <c>null</c> application environment.
+    /// The <c>null</c> application runtime.
     /// </summary>
-    public class NullAppEnvironment : AppEnvironmentBase
+    public class NullAppRuntime : AppRuntimeBase
     {
         /// <summary>
         /// Gets the loaded assemblies.

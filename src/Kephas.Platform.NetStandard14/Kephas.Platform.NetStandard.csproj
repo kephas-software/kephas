@@ -138,7 +138,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\NetStandardAppEnvironment.cs" />
+    <Compile Include="Application\NetStandardAppRuntime.cs" />
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
     <Compile Include="Platform\NetStandard\NetStandardAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

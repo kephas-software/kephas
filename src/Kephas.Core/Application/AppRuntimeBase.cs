@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppEnvironmentBase.cs" company="Quartz Software SRL">
+// <copyright file="AppRuntimeBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the application environment base class.
+//   Implements the application runtime base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,16 +22,16 @@ namespace Kephas.Application
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Base class for the application environment service.
+    /// Base class for the application runtime service.
     /// </summary>
-    public abstract class AppEnvironmentBase : Expando, IAppEnvironment
+    public abstract class AppRuntimeBase : Expando, IAppRuntime
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppEnvironmentBase"/> class.
+        /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
         /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        protected AppEnvironmentBase(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
             : base(isThreadSafe: true)
         {
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
@@ -57,26 +57,28 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
+        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public virtual async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
             var assemblies = this.GetLoadedAssemblies();
 
+            assemblyFilter = assemblyFilter ?? this.AssemblyFilter;
             var loadedAssemblyRefs = new HashSet<string>(assemblies.Select(a => a.GetName().FullName));
-            var assembliesToCheck = assemblies.Where(a => this.AssemblyFilter(a.GetName())).ToList();
+            var assembliesToCheck = assemblies.Where(a => assemblyFilter(a.GetName())).ToList();
 
             while (assembliesToCheck.Count > 0)
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var assembly in assembliesToCheck)
                 {
-                    var referencesToLoad = this.GetReferencedAssemblies(assembly).Where(a => !loadedAssemblyRefs.Contains(a.FullName) && this.AssemblyFilter(a));
+                    var referencesToLoad = this.GetReferencedAssemblies(assembly).Where(a => !loadedAssemblyRefs.Contains(a.FullName) && assemblyFilter(a));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
@@ -85,7 +87,7 @@ namespace Kephas.Application
                 assemblies.AddRange(assembliesToCheck);
             }
 
-            await this.AddAdditionalAssembliesAsync(assemblies, cancellationToken).PreserveThreadContext();
+            await this.AddAdditionalAssembliesAsync(assemblies, assemblyFilter, cancellationToken).PreserveThreadContext();
             return assemblies;
         }
 
@@ -110,13 +112,12 @@ namespace Kephas.Application
         /// Adds additional assemblies to the ones already collected.
         /// </summary>
         /// <param name="assemblies">The collected assemblies.</param>
+        /// <param name="assemblyFilter">A filter for the assemblies.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task AddAdditionalAssembliesAsync(
-            IList<Assembly> assemblies,
-            CancellationToken cancellationToken)
+        protected virtual Task AddAdditionalAssembliesAsync(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter, CancellationToken cancellationToken)
         {
             return TaskHelper.CompletedTask;
         }

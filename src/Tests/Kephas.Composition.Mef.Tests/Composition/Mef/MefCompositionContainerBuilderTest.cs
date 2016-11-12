@@ -43,9 +43,9 @@ namespace Kephas.Tests.Composition.Mef
         public async Task CreateContainerAsync_simple_ambient_services_exported()
         {
             var factory = this.CreateCompositionContainerBuilder();
-            var mockPlatformManager = factory.AppEnvironment;
+            var mockPlatformManager = factory.AppRuntime;
 
-            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(CancellationToken.None))
+            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(Arg.IsAny<Func<AssemblyName, bool>>(), CancellationToken.None))
                 .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(MefCompositionContainer).Assembly }));
 
             var container = await factory
@@ -57,7 +57,7 @@ namespace Kephas.Tests.Composition.Mef
             var configurationManager = container.GetExport<IConfigurationManager>();
             Assert.AreEqual(factory.ConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IAppEnvironment>();
+            var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
         }
 
@@ -82,8 +82,8 @@ namespace Kephas.Tests.Composition.Mef
             var configurationManager = container.GetExport<IConfigurationManager>();
             Assert.AreEqual(factory.ConfigurationManager, configurationManager);
 
-            var platformManager = container.GetExport<IAppEnvironment>();
-            Assert.AreEqual(factory.AppEnvironment, platformManager);
+            var platformManager = container.GetExport<IAppRuntime>();
+            Assert.AreEqual(factory.AppRuntime, platformManager);
         }
 
         [Test]
@@ -332,7 +332,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var mockLoggerManager = Mock.Create<ILogManager>();
             var mockConfigurationManager = Mock.Create<IConfigurationManager>();
-            var mockPlatformManager = Mock.Create<IAppEnvironment>();
+            var mockPlatformManager = Mock.Create<IAppRuntime>();
 
             var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfigurationManager).RegisterService(mockPlatformManager));
             var factory = new MefCompositionContainerBuilder(context);

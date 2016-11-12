@@ -37,12 +37,12 @@ namespace Kephas
         ICompositionContext CompositionContainer { get; }
 
         /// <summary>
-        /// Gets the application environment.
+        /// Gets the application runtime.
         /// </summary>
         /// <value>
-        /// The application environment.
+        /// The application runtime.
         /// </value>
-        IAppEnvironment AppEnvironment { get; }
+        IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the application configuration manager.
@@ -86,12 +86,12 @@ namespace Kephas
         public abstract ICompositionContext CompositionContainer { get; }
 
         /// <summary>
-        /// Gets the application environment.
+        /// Gets the application runtime.
         /// </summary>
         /// <value>
-        /// The application environment.
+        /// The application runtime.
         /// </value>
-        public abstract IAppEnvironment AppEnvironment { get; }
+        public abstract IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the application configuration manager.

@@ -217,7 +217,10 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this AssemblyName assemblyName)
         {
-            return assemblyName.FullName.StartsWith("System") || assemblyName.FullName.StartsWith("mscorlib") || assemblyName.FullName.StartsWith("Microsoft") || assemblyName.FullName.StartsWith("vshost32");
+            var assemblyFullName = assemblyName.FullName;
+            return assemblyFullName.StartsWith("System") || assemblyFullName.StartsWith("mscorlib") ||
+                   assemblyFullName.StartsWith("Microsoft") || assemblyFullName.StartsWith("vshost32") ||
+                   assemblyFullName.StartsWith("Mono");
         }
 
         /// <summary>

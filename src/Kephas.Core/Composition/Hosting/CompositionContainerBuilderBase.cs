@@ -67,8 +67,8 @@ namespace Kephas.Composition.Hosting
             this.ConfigurationManager = context.AmbientServices.GetService<IConfigurationManager>();
             this.AssertRequiredService(this.ConfigurationManager);
 
-            this.AppEnvironment = context.AmbientServices.GetService<IAppEnvironment>();
-            this.AssertRequiredService(this.AppEnvironment);
+            this.AppRuntime = context.AmbientServices.GetService<IAppRuntime>();
+            this.AssertRequiredService(this.AppRuntime);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
@@ -93,12 +93,12 @@ namespace Kephas.Composition.Hosting
         public IConfigurationManager ConfigurationManager { get; }
 
         /// <summary>
-        /// Gets the hosting environment.
+        /// Gets the application runtime.
         /// </summary>
         /// <value>
-        /// The hosting environment.
+        /// The application runtime.
         /// </value>
-        public IAppEnvironment AppEnvironment { get; }
+        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -496,7 +496,7 @@ namespace Kephas.Composition.Hosting
             await Profiler.WithDebugStopwatchAsync(
                 async () =>
                 {
-                    var appAssemblies = await this.AppEnvironment.GetAppAssembliesAsync();
+                    var appAssemblies = await this.AppRuntime.GetAppAssembliesAsync();
                     appAssemblies = this.WhereNotSystemAssemblies(appAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))

@@ -9,8 +9,9 @@
 
 namespace Kephas.Platform.Net45
 {
+    using System;
     using System.Diagnostics.Contracts;
-
+    using System.Reflection;
     using Kephas.Application;
 
     /// <summary>
@@ -19,17 +20,19 @@ namespace Kephas.Platform.Net45
     public static class Net45AmbientServicesBuilderExtensions
     {
         /// <summary>
-        /// Sets the .NET 4.5 application environment to the ambient services.
+        /// Sets the .NET 4.5 application runtime to the ambient services.
         /// </summary>
+        /// <exception cref="ContractException">Thrown when a method Contract has been broken.</exception>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="assemblyFilter">(Optional) a filter specifying the assembly.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNet45AppEnvironment(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithNet45AppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppEnvironment(new Net45AppEnvironment());
+            return ambientServicesBuilder.WithAppRuntime(new Net45AppRuntime(assemblyFilter: assemblyFilter));
         }
     }
 }
