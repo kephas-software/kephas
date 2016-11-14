@@ -36,6 +36,7 @@ namespace Kephas.Services
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.OptionalService = this.GetMetadataValue<OptionalServiceAttribute, bool>(metadata);
+            this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
         }
 
         /// <summary>
