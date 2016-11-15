@@ -38,6 +38,18 @@ namespace Kephas.Logging
         }
 
         /// <summary>
+        /// Indicates whether logging at the indicated level is enabled.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public bool IsEnabled(LogLevel level)
+        {
+            return this.innerLogger.IsEnabled(level);
+        }
+
+        /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
         /// <param name="level">        The logging level.</param>

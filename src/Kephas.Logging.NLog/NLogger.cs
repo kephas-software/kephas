@@ -33,6 +33,48 @@ namespace Kephas.Logging.NLog
         }
 
         /// <summary>
+        /// Indicates whether logging at the indicated level is enabled.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public bool IsEnabled(Logging.LogLevel level)
+        {
+            if (this.logger.IsTraceEnabled)
+            {
+                return level <= Logging.LogLevel.Trace;
+            }
+
+            if (this.logger.IsDebugEnabled)
+            {
+                return level <= Logging.LogLevel.Debug;
+            }
+
+            if (this.logger.IsInfoEnabled)
+            {
+                return level <= Logging.LogLevel.Info;
+            }
+
+            if (this.logger.IsWarnEnabled)
+            {
+                return level <= Logging.LogLevel.Warning;
+            }
+
+            if (this.logger.IsErrorEnabled)
+            {
+                return level <= Logging.LogLevel.Error;
+            }
+
+            if (this.logger.IsFatalEnabled)
+            {
+                return level <= Logging.LogLevel.Fatal;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
         /// <param name="level">        The logging level.</param>

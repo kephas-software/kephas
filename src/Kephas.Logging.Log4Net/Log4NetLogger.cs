@@ -33,6 +33,43 @@ namespace Kephas.Logging.Log4Net
         }
 
         /// <summary>
+        /// Indicates whether logging at the indicated level is enabled.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public bool IsEnabled(LogLevel level)
+        {
+            if (this.logger.IsDebugEnabled)
+            {
+                return level <= LogLevel.Trace;
+            }
+
+            if (this.logger.IsInfoEnabled)
+            {
+                return level <= LogLevel.Info;
+            }
+
+            if (this.logger.IsWarnEnabled)
+            {
+                return level <= LogLevel.Warning;
+            }
+
+            if (this.logger.IsErrorEnabled)
+            {
+                return level <= LogLevel.Error;
+            }
+
+            if (this.logger.IsFatalEnabled)
+            {
+                return level <= LogLevel.Fatal;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
         /// <param name="level">        The logging level.</param>

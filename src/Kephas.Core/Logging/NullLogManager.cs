@@ -51,6 +51,18 @@ namespace Kephas.Logging
             public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
             {
             }
+
+            /// <summary>
+            /// Indicates whether logging at the indicated level is enabled.
+            /// </summary>
+            /// <param name="level">The logging level.</param>
+            /// <returns>
+            /// <c>true</c> if enabled, <c>false</c> if not.
+            /// </returns>
+            public bool IsEnabled(LogLevel level)
+            {
+                return false;
+            }
         }
     }
 }

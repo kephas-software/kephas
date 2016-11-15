@@ -66,6 +66,15 @@ namespace Kephas.Logging
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
         void Log(LogLevel level, Exception exception, string messageFormat, params object[] args);
+
+        /// <summary>
+        /// Indicates whether logging at the indicated level is enabled.
+        /// </summary>
+        /// <param name="level">The logging level.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        bool IsEnabled(LogLevel level);
     }
 
     /// <summary>
@@ -230,6 +239,78 @@ namespace Kephas.Logging
         public static void TraceFormat(this ILogger logger, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Trace, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Fatal"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsFatalEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Fatal) ?? false;
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Error"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsErrorEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Error) ?? false;
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Warning"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsWarningEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Warning) ?? false;
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Info"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsInfoEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Info) ?? false;
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Debug"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsDebugEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Debug) ?? false;
+        }
+
+        /// <summary>
+        /// Indicates whether logging is enabled at the <see cref="LogLevel.Trace"/> level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if enabled, <c>false</c> if not.
+        /// </returns>
+        public static bool IsTraceEnabled(this ILogger logger)
+        {
+            return logger?.IsEnabled(LogLevel.Trace) ?? false;
         }
     }
 }
