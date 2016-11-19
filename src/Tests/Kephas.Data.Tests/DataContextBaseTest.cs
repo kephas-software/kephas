@@ -56,11 +56,11 @@ namespace Kephas.Data.Tests
             /// Gets a query over the entity type for the given query operationContext, if any is provided.
             /// </summary>
             /// <typeparam name="T">The entity type.</typeparam>
-            /// <param name="queryContext">Context for the query.</param>
+            /// <param name="queryOperationContext">Context for the query.</param>
             /// <returns>
             /// A query over the entity type.
             /// </returns>
-            public override IQueryable<T> Query<T>(IQueryContext queryContext = null)
+            public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
             {
                 throw new System.NotImplementedException();
             }

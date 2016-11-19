@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IQueryContext.cs" company="Quartz Software SRL">
+// <copyright file="IQueryOperationContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -12,7 +12,7 @@ namespace Kephas.Data
     /// <summary>
     /// Contract for query contexts.
     /// </summary>
-    public interface IQueryContext : IDataOperationContext
+    public interface IQueryOperationContext : IDataOperationContext
     {
     }
 }

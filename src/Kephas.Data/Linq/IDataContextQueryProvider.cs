@@ -30,6 +30,6 @@ namespace Kephas.Data.Linq
         /// <value>
         /// The query operation context.
         /// </value>
-        IQueryContext QueryContext { get; }
+        IQueryOperationContext QueryOperationContext { get; }
     }
 }

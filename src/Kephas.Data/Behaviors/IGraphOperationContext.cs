@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGraphDataContext.cs" company="Quartz Software SRL">
+// <copyright file="IGraphOperationContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IGraphDataContext interface.
+//   Declares the IGraphOperationContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace Kephas.Data.Behaviors
     /// <summary>
     /// Contract for graph operations contexts.
     /// </summary>
-    public interface IGraphDataContext : IDataOperationContext
+    public interface IGraphOperationContext : IDataOperationContext
     {
         /// <summary>
         /// Gets or sets a value indicating whether the loose parts should be loaded.

@@ -35,7 +35,7 @@ namespace Kephas.Data.Behaviors
         /// The flattened graph asynchronous.
         /// </returns>
         Task<IEnumerable<object>> GetFlattenedGraphAsync(
-          IGraphDataContext operationContext,
+          IGraphOperationContext operationContext,
           CancellationToken cancellationToken = default(CancellationToken));
     }
 }

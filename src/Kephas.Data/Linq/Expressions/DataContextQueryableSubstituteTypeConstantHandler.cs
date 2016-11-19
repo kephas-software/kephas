@@ -53,7 +53,7 @@ namespace Kephas.Data.Linq.Expressions
 
             var genericQueryMethod = typeof(IDataContext).AsRuntimeTypeInfo().Methods[nameof(IDataContext.Query)].FirstOrDefault();
             var queryMethod = genericQueryMethod.MethodInfo.MakeGenericMethod(itemType);
-            var convertedObject = queryMethod.Invoke(queryProvider.DataContext, new object[] { queryProvider.QueryContext });
+            var convertedObject = queryMethod.Invoke(queryProvider.DataContext, new object[] { queryProvider.QueryOperationContext });
 
             return convertedObject;
         }
