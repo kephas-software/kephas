@@ -1,4 +1,13 @@
-﻿namespace Kephas.Data.Behaviors
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IChangeStateTrackable.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Declares the IChangeStateTrackable interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Behaviors
 {
     /// <summary>
     /// Enumerates the entity change state.
