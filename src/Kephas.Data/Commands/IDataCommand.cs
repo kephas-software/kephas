@@ -20,27 +20,27 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        Task<IDataCommandResult> ExecuteAsync(IDataContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>
-    /// Contract for data commands, with typed context and result.
+    /// Contract for data commands, with typed operationContext and result.
     /// </summary>
-    /// <typeparam name="TContext">Type of the context.</typeparam>
+    /// <typeparam name="TContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     public interface IDataCommand<in TContext, TResult> : IDataCommand
-        where TContext : IDataContext
+        where TContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The operationContext.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.

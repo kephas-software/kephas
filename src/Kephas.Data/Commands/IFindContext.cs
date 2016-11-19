@@ -13,7 +13,7 @@ namespace Kephas.Data.Commands
     /// Contract for find contexts.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public interface IFindContext<TEntity> : IDataContext
+    public interface IFindContext<TEntity> : IDataOperationContext
     {
         /// <summary>
         /// Gets the identifier of the entity to find.

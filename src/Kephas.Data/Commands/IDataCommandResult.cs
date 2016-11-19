@@ -10,11 +10,12 @@
 namespace Kephas.Data.Commands
 {
     using System;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Contract for data command results.
     /// </summary>
-    public interface IDataCommandResult
+    public interface IDataCommandResult : IExpando
     {
         /// <summary>
         /// Gets the result message.

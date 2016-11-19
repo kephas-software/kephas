@@ -12,7 +12,7 @@ namespace Kephas.Data.Behaviors
     /// <summary>
     /// Contract for graph operations contexts.
     /// </summary>
-    public interface IGraphDataContext : IDataContext
+    public interface IGraphDataContext : IDataOperationContext
     {
         /// <summary>
         /// Gets or sets a value indicating whether the loose parts should be loaded.

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataRepositoryQueryable.cs" company="Quartz Software SRL">
+// <copyright file="IDataContextQueryable.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDataRepositoryQueryable interface.
+//   Declares the IDataContextQueryable interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ namespace Kephas.Data.Linq
     using System.Linq;
 
     /// <summary>
-    /// Interface for data repository queryable.
+    /// Interface for a queryable object attached to a <see cref="IDataContext"/>.
     /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    public interface IDataRepositoryQueryable<out T> : IQueryable<T>
+    /// <typeparam name="T">The queryable item type.</typeparam>
+    public interface IDataContextQueryable<out T> : IQueryable<T>
     {
         /// <summary>
         /// Gets the provider.
@@ -23,6 +23,6 @@ namespace Kephas.Data.Linq
         /// <value>
         /// The provider.
         /// </value>
-        new IDataRepositoryQueryProvider Provider { get; }
+        new IDataContextQueryProvider Provider { get; }
     }
 }

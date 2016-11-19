@@ -29,13 +29,13 @@ namespace Kephas.Data.Behaviors
         /// <summary>
         /// Gets the flattened graph asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// The flattened graph asynchronous.
         /// </returns>
         Task<IEnumerable<object>> GetFlattenedGraphAsync(
-          IGraphDataContext context,
+          IGraphDataContext operationContext,
           CancellationToken cancellationToken = default(CancellationToken));
     }
 }

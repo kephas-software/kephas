@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataRepositoryTypeAttribute.cs" company="Quartz Software SRL">
+// <copyright file="DataContextTypeAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the data repository type attribute class.
+//   Implements the data context type attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,28 +14,28 @@ namespace Kephas.Data.Commands.Composition
     using Kephas.Composition.Metadata;
 
     /// <summary>
-    /// Attribute for data repository type.
+    /// Attribute indicating the supported.
     /// </summary>
-    public class DataRepositoryTypeAttribute : IMetadataValue<Type>
+    public class DataContextTypeAttribute : IMetadataValue<Type>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataRepositoryTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="DataContextTypeAttribute"/> class.
         /// </summary>
-        /// <param name="dataRepositoryType">Type of the data repository.</param>
-        public DataRepositoryTypeAttribute(Type dataRepositoryType)
+        /// <param name="dataContextType">Type of the data context.</param>
+        public DataContextTypeAttribute(Type dataContextType)
         {
-            Contract.Requires(dataRepositoryType != null);
+            Contract.Requires(dataContextType != null);
 
-            this.Value = dataRepositoryType;
+            this.Value = dataContextType;
         }
 
         /// <summary>
-        /// Gets the associated data repository type.
+        /// Gets the associated data context type.
         /// </summary>
         public Type Value { get; }
 
         /// <summary>
-        /// Gets the associated data repository type.
+        /// Gets the associated data context type.
         /// </summary>
         object IMetadataValue.Value => this.Value;
     }

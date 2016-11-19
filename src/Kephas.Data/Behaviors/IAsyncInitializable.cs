@@ -20,11 +20,11 @@ namespace Kephas.Data.Behaviors
         /// <summary>
         /// Initializes the entity asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task InitializeAsync(IDataContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

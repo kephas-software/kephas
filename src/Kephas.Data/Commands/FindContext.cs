@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The default implementation of a find context.
+//   The default implementation of a find operationContext.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,15 +12,15 @@ namespace Kephas.Data.Commands
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// The default implementation of a find context.
+    /// The default implementation of a find operationContext.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
-    public class FindContext<T> : DataContext, IFindContext<T>
+    public class FindContext<T> : DataOperationContext, IFindContext<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FindContext{T}"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
+        /// <param name="dataContext">The data context.</param>
         /// <param name="id">The identifier of the entity.</param>
         /// <param name="throwIfNotFound"><c>
         ///                               true</c>
@@ -28,10 +28,10 @@ namespace Kephas.Data.Commands
         ///                               otherwise <c>
         ///                               false</c>
         ///                               .</param>
-        public FindContext(IDataRepository repository, Id id, bool throwIfNotFound)
-            : base(repository)
+        public FindContext(IDataContext dataContext, Id id, bool throwIfNotFound)
+            : base(dataContext)
         {
-            Contract.Requires(repository != null);
+            Contract.Requires(dataContext != null);
 
             this.Id = id;
             this.ThrowIfNotFound = throwIfNotFound;

@@ -49,7 +49,9 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Commands\Factory\DataCommandFactoryTest.cs" />
-    <Compile Include="DataRepositoryBaseTest.cs" />
+    <Compile Include="Conversion\DataConversionServiceExtensionsTest.cs" />
+    <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
+    <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

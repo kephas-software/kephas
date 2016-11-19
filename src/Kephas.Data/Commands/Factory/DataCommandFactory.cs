@@ -42,13 +42,13 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// Creates the command.
         /// </summary>
-        /// <param name="dataRepositoryType">Type of the data repository.</param>
+        /// <param name="dataContextType">Type of the data context.</param>
         /// <returns>
         /// The new command.
         /// </returns>
-        public TCommand CreateCommand(Type dataRepositoryType)
+        public TCommand CreateCommand(Type dataContextType)
         {
-            var commandFactory = this.commandFactories.FirstOrDefault(f => f.Metadata.DataRepositoryType == dataRepositoryType);
+            var commandFactory = this.commandFactories.FirstOrDefault(f => f.Metadata.DataContextType == dataContextType);
             if (commandFactory == null)
             {
                 throw new NotSupportedException(string.Format(Strings.DataCommandFactory_CreateCommand_NotSupported_Exception, typeof(TCommand)));

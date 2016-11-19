@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the persist changes context class.
+//   Implements the persist changes operationContext class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,18 +12,18 @@ namespace Kephas.Data.Commands
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// A context for persisting changes.
+    /// A operationContext for persisting changes.
     /// </summary>
-    public class PersistChangesContext : DataContext, IPersistChangesContext
+    public class PersistChangesContext : DataOperationContext, IPersistChangesContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistChangesContext"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        public PersistChangesContext(IDataRepository repository)
-            : base(repository)
+        /// <param name="dataContext">The data context.</param>
+        public PersistChangesContext(IDataContext dataContext)
+            : base(dataContext)
         {
-            Contract.Requires(repository != null);
+            Contract.Requires(dataContext != null);
         }
     }
 }

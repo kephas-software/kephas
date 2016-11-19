@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataRepositoryBaseTest.cs" company="Quartz Software SRL">
+// <copyright file="DataContextBaseTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the data repository base test class.
+//   Implements the data context base test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ namespace Kephas.Data.Tests
     using Telerik.JustMock.Helpers;
 
     [TestFixture]
-    public class DataRepositoryBaseTest
+    public class DataContextBaseTest
     {
         [Test]
         public void CreateCommand()
@@ -31,29 +31,29 @@ namespace Kephas.Data.Tests
             var findCmd = Mock.Create<IFindCommand<string>>();
             var factory = Mock.Create<IDataCommandFactory<IFindCommand<string>>>();
             factory
-                .Arrange(f => f.CreateCommand(typeof(TestDataRepository)))
+                .Arrange(f => f.CreateCommand(typeof(TestDataContext)))
                 .Returns(findCmd);
             container
                 .Arrange(c => c.GetExport<IDataCommandFactory<IFindCommand<string>>>(Arg.AnyString))
                 .Returns(factory);
 
-            var repository = new TestDataRepository(container);
-            var cmd = repository.CreateCommand<IFindCommand<string>>();
+            var dataContext = new TestDataContext(container);
+            var cmd = dataContext.CreateCommand<IFindCommand<string>>();
             Assert.AreSame(findCmd, cmd);
         }
 
-        public class TestDataRepository : DataRepositoryBase
+        public class TestDataContext : DataContextBase
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="DataRepositoryBase"/> class.
+            /// Initializes a new instance of the <see cref="DataContextBase"/> class.
             /// </summary>
-            public TestDataRepository(ICompositionContext compositionContext = null) 
+            public TestDataContext(ICompositionContext compositionContext = null) 
                 : base(compositionContext ?? Mock.Create<ICompositionContext>())
             {
             }
 
             /// <summary>
-            /// Gets a query over the entity type for the given query context, if any is provided.
+            /// Gets a query over the entity type for the given query operationContext, if any is provided.
             /// </summary>
             /// <typeparam name="T">The entity type.</typeparam>
             /// <param name="queryContext">Context for the query.</param>

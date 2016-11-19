@@ -27,31 +27,31 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public override async Task<IFindResult<T>> ExecuteAsync(IFindContext<T> context, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IFindResult<T>> ExecuteAsync(IFindContext<T> operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var entities = await context.Repository.Query<T>()
+            var entities = await operationContext.DataContext.Query<T>()
                                 .Cast<IIdentifiable>()
-                                .Where(e => e.Id == context.Id)
+                                .Where(e => e.Id == operationContext.Id)
                                 .Take(2)
                                 .ToListAsync(cancellationToken: cancellationToken)
                                 .PreserveThreadContext();
             if (entities.Count > 1)
             {
-                throw new AmbiguousMatchDataException(string.Format(Strings.DataRepository_FindOneAsync_AmbiguousMatch_Exception, $"Id == {context.Id}"));
+                throw new AmbiguousMatchDataException(string.Format(Strings.DataContext_FindOneAsync_AmbiguousMatch_Exception, $"Id == {operationContext.Id}"));
             }
 
             Exception exception = null;
             if (entities.Count == 0)
             {
-                exception = new NotFoundDataException(string.Format(Strings.DataRepository_FindAsync_NotFound_Exception, context.Id));
-                if (context.ThrowIfNotFound)
+                exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, operationContext.Id));
+                if (operationContext.ThrowIfNotFound)
                 {
-                    throw new NotFoundDataException(string.Format(Strings.DataRepository_FindAsync_NotFound_Exception, context.Id));
+                    throw new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, operationContext.Id));
                 }
             }
 

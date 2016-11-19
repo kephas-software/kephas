@@ -100,7 +100,7 @@ namespace Kephas.Services
             var value = metadata.TryGetValue(metadataName, defaultValue);
             if (value == null && !typeof(TValue).IsByRef)
             {
-              return defaultValue;
+                return defaultValue;
             }
 
             return (TValue)value;

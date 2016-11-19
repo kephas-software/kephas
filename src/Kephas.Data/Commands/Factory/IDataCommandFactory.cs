@@ -24,10 +24,10 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// Creates the command.
         /// </summary>
-        /// <param name="dataRepositoryType">Type of the data repository.</param>
+        /// <param name="dataContextType">Type of the data context.</param>
         /// <returns>
         /// The new command.
         /// </returns>
-        TCommand CreateCommand(Type dataRepositoryType);
+        TCommand CreateCommand(Type dataContextType);
     }
 }

@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The default implementation of a query context.
+//   The default implementation of a query operationContext.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,18 +12,18 @@ namespace Kephas.Data
     using System.Diagnostics.Contracts;
 
     /// <summary>
-    /// The default implementation of a query context.
+    /// The default implementation of a query operationContext.
     /// </summary>
-    public class QueryContext : DataContext, IQueryContext
+    public class QueryContext : DataOperationContext, IQueryContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryContext"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        public QueryContext(IDataRepository repository)
-            : base(repository)
+        /// <param name="dataContext">The data context.</param>
+        public QueryContext(IDataContext dataContext)
+            : base(dataContext)
         {
-            Contract.Requires(repository != null);
+            Contract.Requires(dataContext != null);
         }
     }
 }

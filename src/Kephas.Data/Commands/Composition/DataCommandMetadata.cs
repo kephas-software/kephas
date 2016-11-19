@@ -32,31 +32,31 @@ namespace Kephas.Data.Commands.Composition
                 return;
             }
 
-            this.DataRepositoryType = this.GetMetadataValue<DataRepositoryTypeAttribute, Type>(metadata);
+            this.DataContextType = this.GetMetadataValue<DataContextTypeAttribute, Type>(metadata);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandMetadata" /> class.
         /// </summary>
-        /// <param name="dataRepositoryType">The type of the supported data repository.</param>
+        /// <param name="dataContextType">The type of the supported data context.</param>
         /// <param name="processingPriority">(Optional) The processing priority.</param>
         /// <param name="overridePriority">(Optional) The override priority.</param>
         /// <param name="optionalService">(Optional) <c>true</c> if the service is optional, <c>false</c>
         ///                               if not.</param>
-        public DataCommandMetadata(Type dataRepositoryType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+        public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(processingPriority, overridePriority, optionalService)
         {
-            Contract.Requires(dataRepositoryType != null);
+            Contract.Requires(dataContextType != null);
 
-            this.DataRepositoryType = dataRepositoryType;
+            this.DataContextType = dataContextType;
         }
 
         /// <summary>
-        /// Gets the type of the supported data repository.
+        /// Gets the type of the supported data context.
         /// </summary>
         /// <value>
-        /// The type of the supported data repository.
+        /// The type of the supported data context.
         /// </value>
-        public Type DataRepositoryType { get; }
+        public Type DataContextType { get; }
     }
 }

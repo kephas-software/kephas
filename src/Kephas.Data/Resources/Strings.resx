@@ -120,14 +120,23 @@
   <data name="DataCommandFactory_CreateCommand_NotSupported_Exception" xml:space="preserve">
     <value>The command {0} is not supported.</value>
   </data>
-  <data name="DataRepository_FindAsync_NotFound_Exception" xml:space="preserve">
+  <data name="DataConverterNotFound_Exception" xml:space="preserve">
+    <value>No data converters were found for source type '{0}' and target type '{1}'.</value>
+  </data>
+  <data name="DataContext_FindAsync_NotFound_Exception" xml:space="preserve">
     <value>No entry was found with the provided ID {0}.</value>
   </data>
-  <data name="DataRepository_FindOneAsync_AmbiguousMatch_Exception" xml:space="preserve">
+  <data name="DataContext_FindOneAsync_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Multiple entries were found with the provided criteria {0}.</value>
   </data>
-  <data name="DataRepository_FindOneAsync_NotFound_Exception" xml:space="preserve">
+  <data name="DataContext_FindOneAsync_NotFound_Exception" xml:space="preserve">
     <value>No entry was found with the provided criteria {0}.</value>
+  </data>
+  <data name="DefaultDataConversionService_NonTypedSourceIsNull_Exception" xml:space="preserve">
+    <value>The provided source object is null and a type information cannot be identified for it. No conversion has been performed.</value>
+  </data>
+  <data name="DefaultDataConversionService_NonTypedTargetIsNull_Exception" xml:space="preserve">
+    <value>The provided target object is null and a type information cannot be identified for it.</value>
   </data>
   <data name="PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception" xml:space="preserve">
     <value>The maximum number of iterations ({0}) was exceeded when saving with activated behaviors. Could not update the changed entities. See the affected entities for more information.</value>

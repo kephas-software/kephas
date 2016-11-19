@@ -151,6 +151,7 @@
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
+    <Compile Include="AttributedModel\ProjectionForAttribute.cs" />
     <Compile Include="AttributedModel\OverrideAttribute.cs" />
     <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
     <Compile Include="Behaviors\IBehavior.cs" />

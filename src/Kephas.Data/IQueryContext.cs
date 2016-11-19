@@ -9,12 +9,10 @@
 
 namespace Kephas.Data
 {
-    using Kephas.Services;
-
     /// <summary>
     /// Contract for query contexts.
     /// </summary>
-    public interface IQueryContext : IDataContext
+    public interface IQueryContext : IDataOperationContext
     {
     }
 }

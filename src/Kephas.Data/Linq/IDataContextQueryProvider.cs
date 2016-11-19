@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataRepositoryQueryProvider.cs" company="Quartz Software SRL">
+// <copyright file="IDataContextQueryProvider.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDataRepositoryQueryProvider interface.
+//   Declares the IDataContextQueryProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,23 +12,23 @@ namespace Kephas.Data.Linq
     using System.Linq;
 
     /// <summary>
-    /// Interface for query providers bound to a data repository.
+    /// Interface for query providers bound to a <see cref="IDataContext"/>.
     /// </summary>
-    public interface IDataRepositoryQueryProvider : IQueryProvider
+    public interface IDataContextQueryProvider : IQueryProvider
     {
         /// <summary>
-        /// Gets the bound data repository.
+        /// Gets the bound data context.
         /// </summary>
         /// <value>
-        /// The bound data repository.
+        /// The bound data context.
         /// </value>
-        IDataRepository Repository { get; }
+        IDataContext DataContext { get; }
 
         /// <summary>
-        /// Gets a context for the query.
+        /// Gets an operation context for the query.
         /// </summary>
         /// <value>
-        /// The query context.
+        /// The query operation context.
         /// </value>
         IQueryContext QueryContext { get; }
     }

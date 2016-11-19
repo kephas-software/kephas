@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataRepositoryBase.cs" company="Quartz Software SRL">
+// <copyright file="DataContextBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Base implementation of a data repository.
+//   Base implementation of a data dataContext.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,9 +20,9 @@ namespace Kephas.Data
     using Kephas.Services;
 
   /// <summary>
-    /// Base implementation of a data repository.
+    /// Base implementation of a <see cref="IDataContext"/>.
     /// </summary>
-    public abstract class DataRepositoryBase : Expando, IDataRepository
+    public abstract class DataContextBase : Expando, IDataContext
     {
         /// <summary>
         /// Context for the composition.
@@ -30,10 +30,10 @@ namespace Kephas.Data
         private readonly ICompositionContext compositionContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataRepositoryBase"/> class.
+        /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
-        protected DataRepositoryBase(ICompositionContext compositionContext)
+        protected DataContextBase(ICompositionContext compositionContext)
         {
             Contract.Requires(compositionContext != null);
 
@@ -50,7 +50,7 @@ namespace Kephas.Data
         public Id Id { get; }
 
         /// <summary>
-        /// Gets a query over the entity type for the given query context, if any is provided.
+        /// Gets a query over the entity type for the given query operationContext, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="queryContext">Context for the query.</param>
@@ -78,7 +78,7 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The operationContext.</param>
         /// <returns>
         /// The capability.
         /// </returns>
@@ -86,6 +86,25 @@ namespace Kephas.Data
             where TCapability : class
         {
             return entity as TCapability;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
         }
     }
 }

@@ -10,11 +10,12 @@
 namespace Kephas.Data.Commands
 {
     using System;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Encapsulates the result of a data command.
     /// </summary>
-    public class DataCommandResult : IDataCommandResult
+    public class DataCommandResult : Expando, IDataCommandResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandResult"/> class.

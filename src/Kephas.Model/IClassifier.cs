@@ -36,7 +36,7 @@ namespace Kephas.Model
         /// <value>
         /// The classifier properties.
         /// </value>
-        IEnumerable<IProperty> Properties { get; }
+        new IEnumerable<IProperty> Properties { get; }
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.

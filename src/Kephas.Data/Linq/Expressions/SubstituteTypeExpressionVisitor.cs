@@ -54,7 +54,7 @@ namespace Kephas.Data.Linq.Expressions
                                   {
                                       new ListSubstituteTypeConstantHandler(), 
                                       new EnumerableQuerySubstituteTypeConstantHandler(), 
-                                      new DataRepositoryQueryableSubstituteTypeConstantHandler(), 
+                                      new DataContextQueryableSubstituteTypeConstantHandler(), 
                                   })
         {
         }

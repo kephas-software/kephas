@@ -73,27 +73,54 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided ID {0}..
         /// </summary>
-        internal static string DataRepository_FindAsync_NotFound_Exception {
+        internal static string DataContext_FindAsync_NotFound_Exception {
             get {
-                return ResourceManager.GetString("DataRepository_FindAsync_NotFound_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindAsync_NotFound_Exception", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Multiple entries were found with the provided criteria {0}..
         /// </summary>
-        internal static string DataRepository_FindOneAsync_AmbiguousMatch_Exception {
+        internal static string DataContext_FindOneAsync_AmbiguousMatch_Exception {
             get {
-                return ResourceManager.GetString("DataRepository_FindOneAsync_AmbiguousMatch_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindOneAsync_AmbiguousMatch_Exception", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided criteria {0}..
         /// </summary>
-        internal static string DataRepository_FindOneAsync_NotFound_Exception {
+        internal static string DataContext_FindOneAsync_NotFound_Exception {
             get {
-                return ResourceManager.GetString("DataRepository_FindOneAsync_NotFound_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindOneAsync_NotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataConverterNotFound_Exception {
+            get {
+                return ResourceManager.GetString("DataConverterNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided source object is null and a type information cannot be identified for it. No conversion has been performed..
+        /// </summary>
+        internal static string DefaultDataConversionService_NonTypedSourceIsNull_Exception {
+            get {
+                return ResourceManager.GetString("DefaultDataConversionService_NonTypedSourceIsNull_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided target object is null and a type information cannot be identified for it..
+        /// </summary>
+        internal static string DefaultDataConversionService_NonTypedTargetIsNull_Exception {
+            get {
+                return ResourceManager.GetString("DefaultDataConversionService_NonTypedTargetIsNull_Exception", resourceCulture);
             }
         }
         

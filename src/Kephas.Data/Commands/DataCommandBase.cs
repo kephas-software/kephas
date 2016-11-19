@@ -17,16 +17,16 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base implementation of a data command.
     /// </summary>
-    /// <typeparam name="TContext">Type of the context.</typeparam>
+    /// <typeparam name="TContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     public abstract class DataCommandBase<TContext, TResult> : IDataCommand<TContext, TResult>
-        where TContext : IDataContext
+        where TContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The operationContext.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
@@ -36,14 +36,14 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public async Task<IDataCommandResult> ExecuteAsync(IDataContext context, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await this.ExecuteAsync((TContext)context, cancellationToken).PreserveThreadContext();
+            var result = await this.ExecuteAsync((TContext)operationContext, cancellationToken).PreserveThreadContext();
             return result;
         }
     }
