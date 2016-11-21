@@ -57,7 +57,8 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public abstract IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null);
+        public abstract IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+            where T : class;
 
         /// <summary>
         /// Creates the command with the provided type.

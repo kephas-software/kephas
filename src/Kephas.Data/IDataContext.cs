@@ -33,7 +33,8 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null);
+        IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+            where T : class;
 
         /// <summary>
         /// Creates the command with the provided type.
@@ -97,6 +98,7 @@ namespace Kephas.Data
         /// A query over the entity type.
         /// </returns>
         public IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+            where T : class
         {
             Contract.Ensures(Contract.Result<IQueryable<T>>() != null);
             return Contract.Result<IQueryable<T>>();

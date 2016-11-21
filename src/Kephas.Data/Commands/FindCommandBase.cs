@@ -23,6 +23,7 @@ namespace Kephas.Data.Commands
     /// </summary>
     /// <typeparam name="T">Generic type parameter.</typeparam>
     public abstract class FindCommandBase<T> : DataCommandBase<IFindContext<T>, IFindResult<T>>, IFindCommand<T>
+        where T : class
     {
         /// <summary>
         /// Executes the data command asynchronously.

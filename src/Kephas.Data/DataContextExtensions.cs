@@ -89,6 +89,7 @@ namespace Kephas.Data
             Expression<Func<T, bool>> criteria,
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
         {
             Contract.Requires(dataContext != null);
             Contract.Requires(criteria != null);
