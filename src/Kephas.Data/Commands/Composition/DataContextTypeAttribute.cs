@@ -16,7 +16,8 @@ namespace Kephas.Data.Commands.Composition
     /// <summary>
     /// Attribute indicating the supported.
     /// </summary>
-    public class DataContextTypeAttribute : IMetadataValue<Type>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public class DataContextTypeAttribute : Attribute, IMetadataValue<Type>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextTypeAttribute"/> class.
