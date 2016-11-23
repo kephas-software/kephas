@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAsyncAggregatable.cs" company="Quartz Software SRL">
+// <copyright file="IAggregatable.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IAsyncAggregatable interface.
+//   Declares the IAggregatable interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace Kephas.Data.Behaviors
     /// <summary>
     /// Contract for an entity's ability of being aggregated within a graph.
     /// </summary>
-    public interface IAsyncAggregatable
+    public interface IAggregatable
     {
         /// <summary>
         /// Gets the root of the entity graph.
@@ -24,7 +24,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The graph root.
         /// </returns>
-        IAsyncAggregatable GetGraphRoot();
+        IAggregatable GetGraphRoot();
 
         /// <summary>
         /// Gets the flattened graph asynchronously.

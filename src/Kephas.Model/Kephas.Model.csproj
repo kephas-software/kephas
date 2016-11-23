@@ -154,12 +154,10 @@
     <Compile Include="AttributedModel\ProjectionForAttribute.cs" />
     <Compile Include="AttributedModel\OverrideAttribute.cs" />
     <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
-    <Compile Include="Behaviors\IBehavior.cs" />
     <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
     <Compile Include="Behaviors\IInstanceContext.cs" />
     <Compile Include="Behaviors\InstanceContext.cs" />
     <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
-    <Compile Include="Behaviors\IValidBehaviorRule.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Construction\ModelConstructionException.cs" />
     <Compile Include="Elements\Annotations\MixinAnnotation.cs" />

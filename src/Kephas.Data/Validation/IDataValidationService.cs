@@ -24,11 +24,11 @@ namespace Kephas.Data.Validation
         /// Validates the provided instance asynchronously.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="operationContext">Context for the operation.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
-        Task<IDataValidationResult> ValidateAsync(object obj, IContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataValidationResult> ValidateAsync(object obj, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

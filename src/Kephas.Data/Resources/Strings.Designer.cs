@@ -107,6 +107,25 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Validation failed for {0}:
+        ///{1}..
+        /// </summary>
+        internal static string DataValidationException_Message {
+            get {
+                return ResourceManager.GetString("DataValidationException_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected an object of type &apos;{0}&apos;, but received one of type &apos;{1}&apos;..
+        /// </summary>
+        internal static string DataValidator_MismatchedEntityType_Exception {
+            get {
+                return ResourceManager.GetString("DataValidator_MismatchedEntityType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided source object is null and a type information cannot be identified for it. No conversion has been performed..
         /// </summary>
         internal static string DefaultDataConversionService_NonTypedSourceIsNull_Exception {

@@ -40,6 +40,7 @@ namespace Kephas.Data
             this IDataContext dataContext,
             IFindContext<T> findContext,
             CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
         {
             Contract.Requires(dataContext != null);
 
@@ -64,6 +65,7 @@ namespace Kephas.Data
             Id id,
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
         {
             Contract.Requires(dataContext != null);
 

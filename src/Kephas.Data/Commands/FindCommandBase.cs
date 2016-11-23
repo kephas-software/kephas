@@ -35,7 +35,8 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override async Task<IFindResult<T>> ExecuteAsync(IFindContext<T> operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var entities = await operationContext.DataContext.Query<T>()
+            var dataContext = operationContext.DataContext;
+            var entities = await dataContext.Query<T>()
                                 .Cast<IIdentifiable>()
                                 .Where(e => e.Id == operationContext.Id)
                                 .Take(2)

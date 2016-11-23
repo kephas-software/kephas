@@ -141,10 +141,16 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="AmbiguousMatchDataException.cs" />
-    <Compile Include="Behaviors\IAsyncAggregatable.cs" />
-    <Compile Include="Behaviors\IAsyncInitializable.cs" />
-    <Compile Include="Behaviors\IAsyncPersistable.cs" />
+    <Compile Include="Behaviors\ChangeState.cs" />
+    <Compile Include="Behaviors\Composition\DataBehaviorMetadata.cs" />
+    <Compile Include="Behaviors\DataBehaviorProviderExtensions.cs" />
+    <Compile Include="Behaviors\DefaultDataBehaviorProvider.cs" />
+    <Compile Include="Behaviors\IAggregatable.cs" />
+    <Compile Include="Behaviors\IOnInitializeBehavior.cs" />
+    <Compile Include="Behaviors\IOnPersistBehavior.cs" />
     <Compile Include="Behaviors\IChangeStateTrackable.cs" />
+    <Compile Include="Behaviors\IDataBehavior.cs" />
+    <Compile Include="Behaviors\IDataBehaviorProvider.cs" />
     <Compile Include="Behaviors\IGraphOperationContext.cs" />
     <Compile Include="Commands\Builders\IDataCommandBuilder.cs" />
     <Compile Include="Commands\DataCommandBase.cs" />
@@ -206,10 +212,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Validation\Composition\DataValidatorMetadata.cs" />
     <Compile Include="Validation\DataValidationResult.cs" />
+    <Compile Include="Validation\DataValidationResultItem.cs" />
+    <Compile Include="Validation\DataValidationSeverity.cs" />
+    <Compile Include="Validation\DataValidatorBase.cs" />
     <Compile Include="Validation\IDataValidationResult.cs" />
+    <Compile Include="Validation\IDataValidationResultItem.cs" />
     <Compile Include="Validation\IDataValidationService.cs" />
-    <Compile Include="Validation\NullDataValidationService.cs" />
+    <Compile Include="Validation\IDataValidator.cs" />
+    <Compile Include="Validation\DefaultDataValidationService.cs" />
     <Compile Include="Validation\DataValidationException.cs" />
   </ItemGroup>
   <ItemGroup>

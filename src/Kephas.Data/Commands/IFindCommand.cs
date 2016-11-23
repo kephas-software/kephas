@@ -18,6 +18,7 @@ namespace Kephas.Data.Commands
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
     [AppServiceContract(AsOpenGeneric = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
     public interface IFindCommand<TEntity> : IDataCommand<IFindContext<TEntity>, IFindResult<TEntity>>
+        where TEntity : class
     {
     }
 }

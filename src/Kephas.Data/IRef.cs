@@ -20,8 +20,8 @@ namespace Kephas.Data
     /// </summary>
     /// <typeparam name="T">Generic type parameter.</typeparam>
     [ContractClass(typeof(RefContractClass<>))]
-    public interface IRef<T>
-        where T : class, IIdentifiable
+    public interface IRef<T> : IIdentifiable
+        where T : class
     {
         /// <summary>
         /// Gets or sets the identifier of the referenced entity.
@@ -29,7 +29,7 @@ namespace Kephas.Data
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        Id Id { get; set; }
+        new Id Id { get; set; }
 
         /// <summary>
         /// Gets the referenced entity asynchronously.
@@ -48,7 +48,7 @@ namespace Kephas.Data
     /// <typeparam name="T">Generic type parameter.</typeparam>
     [ContractClassFor(typeof(IRef<>))]
     internal abstract class RefContractClass<T> : IRef<T>
-        where T : class, IIdentifiable
+        where T : class
     {
         /// <summary>
         /// Gets or sets the identifier of the referenced entity.

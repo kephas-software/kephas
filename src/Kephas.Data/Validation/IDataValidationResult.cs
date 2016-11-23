@@ -14,53 +14,10 @@ namespace Kephas.Data.Validation
     using System.Linq;
 
     /// <summary>
-    /// Values that represent validation severities.
-    /// </summary>
-    public enum DataValidationSeverity
-    {
-        /// <summary>
-        /// The validation resulted in an error.
-        /// </summary>
-        Error,
-
-        /// <summary>
-        /// The validation resulted in a warning.
-        /// </summary>
-        Warning,
-
-        /// <summary>
-        /// The validation resulted in an information.
-        /// </summary>
-        Info,
-    }
-
-    /// <summary>
     /// Interface for validation result.
     /// </summary>
     public interface IDataValidationResult : IEnumerable<IDataValidationResultItem>
     {
-    }
-
-    /// <summary>
-    /// Interface for validation result item.
-    /// </summary>
-    public interface IDataValidationResultItem
-    {
-        /// <summary>
-        /// Gets the validation result severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        DataValidationSeverity Severity { get; }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        string Message { get; }
     }
 
     /// <summary>
@@ -89,7 +46,7 @@ namespace Kephas.Data.Validation
         /// <returns>
         /// An enumration of errors.
         /// </returns>
-        public static IEnumerable<IDataValidationResultItem> Errors(this IDataValidationResult result)
+        public static IEnumerable<IDataValidationResultItem> GetErrors(this IDataValidationResult result)
         {
             Contract.Requires(result != null);
 

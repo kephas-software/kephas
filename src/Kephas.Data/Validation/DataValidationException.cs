@@ -12,6 +12,8 @@ namespace Kephas.Data.Validation
     using System;
     using System.Linq;
 
+    using Kephas.Data.Resources;
+
     /// <summary>
     /// Base class for validation exceptions.
     /// </summary>
@@ -23,7 +25,7 @@ namespace Kephas.Data.Validation
         /// <param name="validatedEntity">The validated entity.</param>
         /// <param name="validationResult">The validation result.</param>
         public DataValidationException(object validatedEntity, IDataValidationResult validationResult)
-          : base($"Validation failed for {validatedEntity}:{Environment.NewLine}" + string.Join(Environment.NewLine, validationResult.Select(e => e.Message)))
+          : base(string.Format(Strings.DataValidationException_Message, validatedEntity, string.Join(Environment.NewLine, validationResult.Select(e => e.Message))))
         {
             this.ValidatedEntity = validatedEntity;
             this.ValidationResult = validationResult;

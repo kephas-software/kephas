@@ -11,6 +11,9 @@ namespace Kephas.Data.Validation
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+
+    using Kephas.Collections;
 
     /// <summary>
     /// Encapsulates the result of a data validation.
@@ -26,6 +29,39 @@ namespace Kephas.Data.Validation
         /// The items.
         /// </summary>
         private readonly IList<IDataValidationResultItem> items = new List<IDataValidationResultItem>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataValidationResult"/> class.
+        /// </summary>
+        public DataValidationResult()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataValidationResult"/>
+        /// class by adding the items to the result.
+        /// </summary>
+        /// <param name="items">The items to add.</param>
+        public DataValidationResult(params IDataValidationResultItem[] items)
+        {
+            Contract.Requires(items != null);
+
+            this.Add(items);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataValidationResult"/> class
+        /// by adding a new item with the provided parameters.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="memberName">(Optional) name of the member.</param>
+        /// <param name="severity">(Optional) the severity.</param>
+        public DataValidationResult(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        {
+            Contract.Requires(message != null);
+
+            this.Add(message, memberName, severity);
+        }
 
         /// <summary>
         /// Gets the enumerator.
@@ -47,6 +83,38 @@ namespace Kephas.Data.Validation
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.items.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Adds the items to the validation result.
+        /// </summary>
+        /// <param name="items">The items to add.</param>
+        /// <returns>
+        /// This <see cref="DataValidationResult"/>.
+        /// </returns>
+        public DataValidationResult Add(params IDataValidationResultItem[] items)
+        {
+            Contract.Requires(items != null);
+
+            this.items.AddRange(items);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a result item to the validation result.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="memberName">(Optional) name of the member.</param>
+        /// <param name="severity">(Optional) the severity.</param>
+        /// <returns>
+        /// This <see cref="DataValidationResult"/>.
+        /// </returns>
+        public DataValidationResult Add(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        {
+            Contract.Requires(message != null);
+
+            this.items.Add(new DataValidationResultItem(message, memberName, severity));
+            return this;
         }
     }
 }

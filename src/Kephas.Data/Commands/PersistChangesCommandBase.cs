@@ -35,11 +35,13 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="PersistChangesCommandBase"/> class.
         /// </summary>
         /// <param name="dataValidationService">The validation service.</param>
-        protected PersistChangesCommandBase(IDataValidationService dataValidationService)
+        /// <param name="behaviorProvider">The behavior provider.</param>
+        protected PersistChangesCommandBase(IDataValidationService dataValidationService, IDataBehaviorProvider behaviorProvider)
         {
             Contract.Requires(dataValidationService != null);
 
             this.DataValidationService = dataValidationService;
+            this.BehaviorProvider = behaviorProvider;
         }
 
         /// <summary>
@@ -50,6 +52,13 @@ namespace Kephas.Data.Commands
         /// </value>
         public IDataValidationService DataValidationService { get; }
 
+        /// <summary>
+        /// Gets the behavior provider.
+        /// </summary>
+        /// <value>
+        /// The behavior provider.
+        /// </value>
+        public IDataBehaviorProvider BehaviorProvider { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -161,10 +170,13 @@ namespace Kephas.Data.Commands
         {
             foreach (var entry in modifiedEntries)
             {
-                var persistableBehavior = operationContext.DataContext.TryGetCapability<IAsyncPersistable>(entry.ModifiedEntity, operationContext);
-                if (persistableBehavior != null)
+                var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.ModifiedEntity).Reverse();
+                if (reversedBehaviors != null)
                 {
-                    await persistableBehavior.AfterPersistAsync(operationContext, cancellationToken).PreserveThreadContext();
+                    foreach (var behavior in reversedBehaviors)
+                    {
+                        await behavior.AfterPersistAsync(entry.ModifiedEntity, operationContext, cancellationToken).PreserveThreadContext();
+                    }
                 }
             }
         }
@@ -182,10 +194,13 @@ namespace Kephas.Data.Commands
         {
             foreach (var entry in modifiedEntries)
             {
-                var persistableBehavior = operationContext.DataContext.TryGetCapability<IAsyncPersistable>(entry.ModifiedEntity, operationContext);
-                if (persistableBehavior != null)
+                var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.ModifiedEntity);
+                if (behaviors != null)
                 {
-                    await persistableBehavior.BeforePersistAsync(operationContext, cancellationToken).PreserveThreadContext();
+                    foreach (var behavior in behaviors)
+                    {
+                        await behavior.BeforePersistAsync(entry.ModifiedEntity, operationContext, cancellationToken).PreserveThreadContext();
+                    }
                 }
             }
         }
@@ -219,7 +234,7 @@ namespace Kephas.Data.Commands
           CancellationToken cancellationToken)
         {
             var modifiedRootEntities =
-              modifiedEntries.Select(e => operationContext.DataContext.TryGetCapability<IAsyncAggregatable>(e.ModifiedEntity, operationContext)?.GetGraphRoot())
+              modifiedEntries.Select(e => operationContext.DataContext.TryGetCapability<IAggregatable>(e.ModifiedEntity, operationContext)?.GetGraphRoot())
                 .Distinct()
                 .ToList();
 
