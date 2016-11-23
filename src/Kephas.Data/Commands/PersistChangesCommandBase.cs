@@ -19,6 +19,7 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Behaviors;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Resources;
     using Kephas.Data.Validation;
     using Kephas.Diagnostics;
@@ -34,23 +35,13 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistChangesCommandBase"/> class.
         /// </summary>
-        /// <param name="dataValidationService">The validation service.</param>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        protected PersistChangesCommandBase(IDataValidationService dataValidationService, IDataBehaviorProvider behaviorProvider)
+        protected PersistChangesCommandBase(IDataBehaviorProvider behaviorProvider)
         {
-            Contract.Requires(dataValidationService != null);
+            Contract.Requires(behaviorProvider != null);
 
-            this.DataValidationService = dataValidationService;
             this.BehaviorProvider = behaviorProvider;
         }
-
-        /// <summary>
-        /// Gets the validation service.
-        /// </summary>
-        /// <value>
-        /// The validation service.
-        /// </value>
-        public IDataValidationService DataValidationService { get; }
 
         /// <summary>
         /// Gets the behavior provider.
@@ -277,13 +268,38 @@ namespace Kephas.Data.Commands
             {
                 foreach (var entityPart in entry.FlattenedEntityGraph)
                 {
-                    var validationErrors = await this.DataValidationService.ValidateAsync(entityPart, operationContext, cancellationToken).PreserveThreadContext();
+                    var validationErrors = await this.ValidateModifiedEntryAsync(entityPart, operationContext, cancellationToken).PreserveThreadContext();
                     if (validationErrors.HasErrors())
                     {
                         throw new DataValidationException(entityPart, validationErrors);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Validates the modified entry asynchronously.
+        /// </summary>
+        /// <param name="entityPart">The entity part.</param>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <returns>
+        /// A <see cref="Task{IDataValidationResult}"/>.
+        /// </returns>
+        protected virtual async Task<IDataValidationResult> ValidateModifiedEntryAsync(
+            object entityPart,
+            IDataOperationContext operationContext,
+            CancellationToken cancellationToken)
+        {
+            var validators = this.BehaviorProvider.GetDataBehaviors<IOnValidateBehavior>(entityPart);
+            var result = new DataValidationResult();
+            foreach (var validator in validators)
+            {
+                var validatorResult = await validator.ValidateAsync(entityPart, operationContext, cancellationToken).PreserveThreadContext();
+                result.Add(validatorResult.ToArray());
+            }
+
+            return result;
         }
 
         /// <summary>

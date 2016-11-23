@@ -11,6 +11,7 @@ namespace Kephas.Data.Commands
 {
     using System.Collections.Generic;
     using Kephas.Data.Behaviors;
+    using Kephas.Data.Capabilities;
     using Kephas.Services;
 
     /// <summary>

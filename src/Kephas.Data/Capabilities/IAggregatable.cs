@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Behaviors
+namespace Kephas.Data.Capabilities
 {
     using System.Collections.Generic;
     using System.Threading;

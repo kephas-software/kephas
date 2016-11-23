@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Behaviors
+namespace Kephas.Data.Capabilities
 {
     /// <summary>
     /// Enumerates the entity change state.

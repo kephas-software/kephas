@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataValidationService.cs" company="Quartz Software SRL">
+// <copyright file="IOnValidateBehavior.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDataValidationService interface.
+//   Declares the IOnValidateBehavior interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,16 +15,15 @@ namespace Kephas.Data.Validation
     using Kephas.Services;
 
     /// <summary>
-    /// Service contract for data validation services.
+    /// Contract for the behavior invoked upon entity validation.
     /// </summary>
-    [SharedAppServiceContract]
-    public interface IDataValidationService
+    public interface IOnValidateBehavior
     {
         /// <summary>
         /// Validates the provided instance asynchronously.
         /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="operationContext">Context for the operation.</param>
+        /// <param name="obj">The object being validated.</param>
+        /// <param name="operationContext">Context for the validation operation.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.

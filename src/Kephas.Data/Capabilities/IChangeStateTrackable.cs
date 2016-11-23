@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Behaviors
+namespace Kephas.Data.Capabilities
 {
     /// <summary>
     /// Contract for an entity's ability of being tracked with respect to its change state.
