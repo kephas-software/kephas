@@ -64,6 +64,7 @@ namespace Kephas.Threading.Tasks
         {
             Contract.Requires(task != null);
 
+            var timeoutOccurred = false;
             var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
             var startTime = DateTime.Now;
             while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
@@ -77,11 +78,16 @@ namespace Kephas.Threading.Tasks
                         throw new TimeoutException($"The allotted time of {timeout} expired. Please try again the operation.");
                     }
 
-                    return false;
+                    timeoutOccurred = true;
                 }
             }
 
-            return true;
+            if (task.IsFaulted)
+            {
+                throw task.Exception;
+            }
+
+            return !timeoutOccurred;
         }
 
         /// <summary>
@@ -101,11 +107,6 @@ namespace Kephas.Threading.Tasks
 
             if (task.WaitNonLocking(timeout, waitMilliseconds, throwOnTimeout))
             {
-                if (task.Exception != null && task.Exception.InnerExceptions.Count == 1)
-                {
-                    throw task.Exception.InnerException;
-                }
-
                 return task.Result;
             }
 
