@@ -38,6 +38,33 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
+        /// if the type is not a nullable type, the type itself.
+        /// </summary>
+        /// <param name="type">The type to be checked.</param>
+        /// <returns>A <see cref="Type"/> instance.</returns>
+        public static Type GetNonNullableType(this Type type)
+        {
+            Contract.Requires(type != null);
+
+            return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
+        }
+
+        /// <summary>
+        /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullableType(this Type type)
+        {
+            Contract.Requires(type != null);
+
+            return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the type implements <see cref="IEnumerable"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>

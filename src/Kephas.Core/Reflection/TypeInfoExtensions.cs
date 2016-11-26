@@ -9,6 +9,7 @@
 
 namespace Kephas.Reflection
 {
+    using System;
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
@@ -31,6 +32,33 @@ namespace Kephas.Reflection
             Contract.Requires(typeInfo != null);
 
             return RuntimeTypeInfo.GetRuntimeType(typeInfo);
+        }
+
+        /// <summary>
+        /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
+        /// if the type is not a nullable type, the type itself.
+        /// </summary>
+        /// <param name="typeInfo">The type to be checked.</param>
+        /// <returns>A <see cref="Type"/> instance.</returns>
+        public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)
+        {
+            Contract.Requires(typeInfo != null);
+
+            return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
+        }
+
+        /// <summary>
+        /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
+        /// </summary>
+        /// <param name="typeInfo">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullableType(this TypeInfo typeInfo)
+        {
+            Contract.Requires(typeInfo != null);
+
+            return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         /// <summary>
