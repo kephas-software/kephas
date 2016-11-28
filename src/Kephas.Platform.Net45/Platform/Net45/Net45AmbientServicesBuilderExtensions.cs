@@ -22,17 +22,17 @@ namespace Kephas.Platform.Net45
         /// <summary>
         /// Sets the .NET 4.5 application runtime to the ambient services.
         /// </summary>
-        /// <exception cref="ContractException">Thrown when a method Contract has been broken.</exception>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="assemblyFilter">(Optional) a filter specifying the assembly.</param>
+        /// <param name="appLocation">(Optional) the application location.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNet45AppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null)
+        public static AmbientServicesBuilder WithNet45AppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppRuntime(new Net45AppRuntime(assemblyFilter: assemblyFilter));
+            return ambientServicesBuilder.WithAppRuntime(new Net45AppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
         }
     }
 }

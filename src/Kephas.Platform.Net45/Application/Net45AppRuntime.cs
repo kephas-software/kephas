@@ -26,13 +26,20 @@ namespace Kephas.Application
     public class Net45AppRuntime : AppRuntimeBase
     {
         /// <summary>
+        /// The application location.
+        /// </summary>
+        private readonly string appLocation;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Net45AppRuntime"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">The assembly loader.</param>
-        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        public Net45AppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+        /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
+        /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
+        /// <param name="appLocation">(Optional) the application location. If not specified, the current application location is considered.</param>
+        public Net45AppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
             : base(assemblyLoader, assemblyFilter)
         {
+            this.appLocation = appLocation;
         }
 
         /// <summary>
@@ -85,8 +92,13 @@ namespace Kephas.Application
         /// <returns>
         /// A path.
         /// </returns>
-        private string GetAppLocation()
+        protected virtual string GetAppLocation()
         {
+            if (!string.IsNullOrEmpty(this.appLocation))
+            {
+                return Path.GetFullPath(this.appLocation);
+            }
+
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
 
             var codebaseUri = new Uri(assembly.CodeBase);

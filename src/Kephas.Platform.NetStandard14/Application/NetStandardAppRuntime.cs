@@ -27,13 +27,20 @@ namespace Kephas.Application
     public class NetStandardAppRuntime : AppRuntimeBase
     {
         /// <summary>
+        /// The application location.
+        /// </summary>
+        private readonly string appLocation;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NetStandardAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
         /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        public NetStandardAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+        /// <param name="appLocation">(Optional) the application location. If not specified, the current application location is considered.</param>
+        public NetStandardAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
             : base(assemblyLoader, assemblyFilter)
         {
+            this.appLocation = appLocation;
         }
 
         /// <summary>
@@ -87,8 +94,13 @@ namespace Kephas.Application
         /// <returns>
         /// A path.
         /// </returns>
-        private string GetAppLocation()
+        protected virtual string GetAppLocation()
         {
+            if (!string.IsNullOrEmpty(this.appLocation))
+            {
+                return Path.GetFullPath(this.appLocation);
+            }
+
             return System.AppContext.BaseDirectory;
         }
 

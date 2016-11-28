@@ -24,14 +24,15 @@ namespace Kephas.Platform.NetStandard
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="assemblyFilter">(Optional) a filter specifying the assembly.</param>
+        /// <param name="appLocation">(Optional) the application location.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNetStandardAppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null)
+        public static AmbientServicesBuilder WithNetStandardAppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppRuntime(new NetStandardAppRuntime(assemblyFilter: assemblyFilter));
+            return ambientServicesBuilder.WithAppRuntime(new NetStandardAppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
         }
     }
 }
