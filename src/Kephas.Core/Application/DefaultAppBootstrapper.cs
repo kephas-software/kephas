@@ -176,6 +176,7 @@ namespace Kephas.Application
                 {
                     var initializerKind = appInitializerMetadata.OptionalService ? "optional" : "required";
                     this.Logger.Error(ex, $"{appInitializerIdentifier} ({initializerKind}) failed to initialize. See the inner exception for more details.");
+
                     // interrupt the bootstrapping if a required initializer failed to start.
                     if (!appInitializerMetadata.OptionalService)
                     {

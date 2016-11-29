@@ -46,7 +46,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The properties.
         /// </value>
-        IDictionary<string, IRuntimePropertyInfo> Properties { get; }
+        new IDictionary<string, IRuntimePropertyInfo> Properties { get; }
 
         /// <summary>
         /// Gets the methods.
