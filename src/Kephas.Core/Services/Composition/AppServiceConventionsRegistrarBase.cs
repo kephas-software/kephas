@@ -69,7 +69,6 @@ namespace Kephas.Services.Composition
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
                 var serviceContract = appServiceContractInfo.Key;
-                var serviceContractType = serviceContract.AsType();
                 var serviceContractMetadata = appServiceContractInfo.Value;
 
                 var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos);
@@ -79,45 +78,7 @@ namespace Kephas.Services.Composition
                     continue;
                 }
 
-                var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
-                var exportedContract = exportedContractType.GetTypeInfo();
-                this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType);
-
-                var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
-                if (exportedContract.IsGenericTypeDefinition)
-                {
-                    if (serviceContractMetadata.AsOpenGeneric)
-                    {
-                        partBuilder.ExportInterfaces(
-                            t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
-                            (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
-                    }
-                    else
-                    {
-                        partBuilder.ExportInterfaces(
-                            t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
-                            (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
-                    }
-                }
-                else
-                {
-                    partBuilder.Export(
-                        b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
-                }
-
-                partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
-
-                partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
-
-                if (serviceContractMetadata.IsShared)
-                {
-                    partBuilder.Shared();
-                }
-                else if (serviceContractMetadata.IsScopeShared)
-                {
-                    var scopeName = ((ScopeSharedAppServiceContractAttribute)serviceContractMetadata).ScopeName;
-                    partBuilder.ScopeShared(scopeName);
-                }
+                this.ConfigurePartBuilder(partBuilder, serviceContract, serviceContractMetadata, appServiceContractInfo, appServiceContractsInfos);
             }
         }
 
@@ -157,6 +118,58 @@ namespace Kephas.Services.Composition
         /// An <see cref="AppServiceContractAttribute"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
         protected abstract AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo);
+
+        /// <summary>
+        /// Configures the part builder.
+        /// </summary>
+        /// <param name="partBuilder">The part builder.</param>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="serviceContractMetadata">The service contract metadata.</param>
+        /// <param name="appServiceContractInfo">Information describing the application service contract.</param>
+        /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
+        protected void ConfigurePartBuilder(IPartConventionsBuilder partBuilder, TypeInfo serviceContract, AppServiceContractAttribute serviceContractMetadata, KeyValuePair<TypeInfo, AppServiceContractAttribute> appServiceContractInfo, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos)
+        {
+            var serviceContractType = serviceContract.AsType();
+            var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
+            var exportedContract = exportedContractType.GetTypeInfo();
+            this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType);
+
+            var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
+            if (exportedContract.IsGenericTypeDefinition)
+            {
+                if (serviceContractMetadata.AsOpenGeneric)
+                {
+                    partBuilder.ExportInterfaces(
+                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
+                }
+                else
+                {
+                    partBuilder.ExportInterfaces(
+                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
+                }
+            }
+            else
+            {
+                partBuilder.Export(
+                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
+            }
+
+            partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
+
+            partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
+
+            if (serviceContractMetadata.IsShared)
+            {
+                partBuilder.Shared();
+            }
+            else if (serviceContractMetadata.IsScopeShared)
+            {
+                var scopeName = ((ScopeSharedAppServiceContractAttribute)serviceContractMetadata).ScopeName;
+                partBuilder.ScopeShared(scopeName);
+            }
+        }
 
         /// <summary>
         /// Gets metadata attributes.
