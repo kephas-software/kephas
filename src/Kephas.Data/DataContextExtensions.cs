@@ -38,7 +38,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<T> FindAsync<T>(
             this IDataContext dataContext,
-            IFindContext<T> findContext,
+            IFindContext findContext,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
