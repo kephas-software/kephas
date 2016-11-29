@@ -105,7 +105,7 @@ namespace Kephas.Services.Composition
                         b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
                 }
 
-                partBuilder.SelectConstructor(this.SelectAppServiceConstructor);
+                partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
 
                 partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
 
@@ -305,35 +305,43 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Selects the application service constructor.
         /// </summary>
+        /// <param name="serviceContract">The service contract.</param>
         /// <param name="constructors">The constructors.</param>
-        /// <returns>The application service constructor.</returns>
-        private ConstructorInfo SelectAppServiceConstructor(IEnumerable<ConstructorInfo> constructors)
+        /// <returns>
+        /// The application service constructor.
+        /// </returns>
+        private ConstructorInfo SelectAppServiceConstructor(TypeInfo serviceContract, IEnumerable<ConstructorInfo> constructors)
         {
-            var constructorsList = constructors.ToList();
+            var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
+
+            if (constructorsList.Count == 0)
+            {
+                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, constructors.FirstOrDefault()?.DeclaringType, serviceContract));
+            }
 
             if (constructorsList.Count == 1)
             {
                 return constructorsList[0];
             }
 
-            var eligibleConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
-            if (eligibleConstructors.Count == 0)
+            var explicitelyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
+            if (explicitelyMarkedConstructors.Count == 0)
             {
-                var publicConstructors = constructorsList.Where(c => c.IsPublic).ToList();
-                if (publicConstructors.Count == 1)
+                var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
+                if (sortedConstructors[0].Value == sortedConstructors[1].Value)
                 {
-                    return publicConstructors[0];
+                    throw new CompositionException(string.Format(Strings.AppServiceAmbiguousCompositionConstructor, constructorsList[0].DeclaringType, serviceContract, typeof(CompositionConstructorAttribute)));
                 }
 
-                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                return sortedConstructors[0].Key;
             }
 
-            if (eligibleConstructors.Count > 1)
+            if (explicitelyMarkedConstructors.Count > 1)
             {
                 throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
             }
 
-            return eligibleConstructors[1];
+            return explicitelyMarkedConstructors[1];
         }
 
         /// <summary>

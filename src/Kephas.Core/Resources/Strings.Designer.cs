@@ -125,6 +125,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple eligible constructors declared for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;. Use &apos;{2}&apos; to disambiguate among them..
+        /// </summary>
+        internal static string AppServiceAmbiguousCompositionConstructor {
+            get {
+                return ResourceManager.GetString("AppServiceAmbiguousCompositionConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified contract type &apos;{0}&apos; is not assignable from the service contract &apos;{1}&apos;..
         /// </summary>
         internal static string AppServiceCompositionContractTypeDoesNotMatchServiceContract {
@@ -134,7 +143,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are no constructors marked with {0} for service {1}..
+        ///   Looks up a localized string similar to There are no constructors defined for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;..
         /// </summary>
         internal static string AppServiceMissingCompositionConstructor {
             get {
@@ -143,7 +152,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service {1}..
+        ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service implementation &apos;{1}&apos; with contract &apos;{2}&apos;..
         /// </summary>
         internal static string AppServiceMultipleCompositionConstructors {
             get {

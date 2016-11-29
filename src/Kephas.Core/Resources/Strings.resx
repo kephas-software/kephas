@@ -132,15 +132,6 @@
   <data name="Application_StartFaulted_Exception" xml:space="preserve">
     <value>The application encountered an exception while starting, at {0:s}.</value>
   </data>
-  <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
-    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
-  </data>
-  <data name="AppServiceMissingCompositionConstructor" xml:space="preserve">
-    <value>There are no constructors marked with {0} for service {1}.</value>
-  </data>
-  <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
-    <value>Multiple constructors marked with {0} are declared for service {1}.</value>
-  </data>
   <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
     <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
   </data>
@@ -188,5 +179,17 @@
   </data>
   <data name="AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Could not load all types from '{0}'. Check the exception for more details.</value>
+  </data>
+  <data name="AppServiceAmbiguousCompositionConstructor" xml:space="preserve">
+    <value>Multiple eligible constructors declared for service implementation '{0}' with contract '{1}'. Use '{2}' to disambiguate among them.</value>
+  </data>
+  <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
+    <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
+  </data>
+  <data name="AppServiceMissingCompositionConstructor" xml:space="preserve">
+    <value>There are no constructors defined for service implementation '{0}' with contract '{1}'.</value>
+  </data>
+  <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
+    <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
   </data>
 </root>
