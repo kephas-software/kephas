@@ -390,15 +390,26 @@ namespace Kephas.Services.Composition
         /// <returns>The metadata value.</returns>
         private object GetMetadataValueFromGenericParameter(Type type, int position, Type serviceContractType)
         {
-            var closedGeneric =
-                type.GetTypeInfo()
-                    .ImplementedInterfaces.Select(i => i.GetTypeInfo())
+            var typeInfo = type.GetTypeInfo();
+            var closedGeneric = typeInfo.ImplementedInterfaces
+                    .Select(i => i.GetTypeInfo())
                     .FirstOrDefault(
                         i =>
                         i.IsGenericType && !i.IsGenericTypeDefinition
                         && i.GetGenericTypeDefinition() == serviceContractType);
 
-            return closedGeneric?.GenericTypeArguments[position];
+            if (closedGeneric == null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == serviceContractType)
+            {
+                closedGeneric = typeInfo;
+            }
+
+            var genericArg = closedGeneric?.GenericTypeArguments[position];
+            if (genericArg?.IsGenericParameter ?? false)
+            {
+                genericArg = genericArg.GetTypeInfo().BaseType;
+            }
+
+            return genericArg;
         }
 
         /// <summary>
