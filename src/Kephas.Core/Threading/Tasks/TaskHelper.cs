@@ -79,6 +79,7 @@ namespace Kephas.Threading.Tasks
                     }
 
                     timeoutOccurred = true;
+                    break;
                 }
             }
 
