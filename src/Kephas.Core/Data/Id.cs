@@ -43,6 +43,12 @@ namespace Kephas.Data
         {
             isUnsetValueTester = value =>
             {
+                var idValue = value as Id;
+                if (idValue != null)
+                {
+                    value = idValue.value;
+                }
+
                 if (value == null || value == Undefined.Value)
                 {
                     return true;
@@ -109,7 +115,7 @@ namespace Kephas.Data
         /// <value>
         ///   <c>true</c> if this instance is considered unset; otherwise, <c>false</c>.
         /// </value>
-        public bool IsUnset => this.value == null || this.value == Undefined.Value;
+        public bool IsUnset => Id.IsUnsetValue(this.value);
 
         /// <summary>
         /// Implicit cast that converts the given int to an ID.
