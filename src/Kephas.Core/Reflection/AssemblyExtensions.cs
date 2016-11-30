@@ -28,8 +28,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="assembly">The assembly to act on.</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the loadable exported types in this
-        /// collection.
+        /// An enumeration of types.
         /// </returns>
         public static IEnumerable<Type> GetLoadableExportedTypes(this Assembly assembly)
         {
@@ -41,27 +40,46 @@ namespace Kephas.Reflection
             {
                 return assembly.ExportedTypes;
             }
-            catch (ReflectionTypeLoadException rtlex)
+            catch (ReflectionTypeLoadException e)
             {
                 var logger = GetLogger();
-                logger.Error(rtlex, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
-
-                return rtlex.Types.Where(t => t != null);
+                logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
+                return e.Types.Where(t => t != null);
             }
-            catch (TypeLoadException tlex)
+            catch (TypeLoadException tle)
             {
                 var logger = GetLogger();
-                logger.Error(tlex, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException, tlex.TypeName, assembly.FullName));
+                logger.Error(tle, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly.FullName));
 
-                try
-                {
-                    return assembly.DefinedTypes.Where(t => t.IsPublic).Select(t => t.AsType());
-                }
-                catch (ReflectionTypeLoadException rtlex)
-                {
-                    logger.Error(rtlex, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
-                    return rtlex.Types.Where(t => t != null);
-                }
+                return GetLoadableDefinedTypes(assembly);
+            }
+            catch (Exception e)
+            {
+                var logger = GetLogger();
+                logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
+
+                return GetLoadableDefinedTypes(assembly);
+            }
+        }
+
+        /// <summary>
+        /// Gets the loadable defined types in the assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to act on.</param>
+        /// <returns>
+        /// An enumeration of types.
+        /// </returns>
+        private static IEnumerable<Type> GetLoadableDefinedTypes(this Assembly assembly)
+        {
+            try
+            {
+                return assembly.DefinedTypes.Where(t => t.IsPublic).Select(t => t.AsType());
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                var logger = GetLogger();
+                logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly.FullName));
+                return e.Types.Where(t => t != null);
             }
         }
 

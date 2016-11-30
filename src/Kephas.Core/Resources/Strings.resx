@@ -175,10 +175,10 @@
     <value>Expected {0} instead of {1} format type in the serialization context.</value>
   </data>
   <data name="AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException" xml:space="preserve">
-    <value>Could not load '{0}' from '{1}'. Check the exception for more details.</value>
+    <value>Cannot load exported type {0} from {1}. Only the loadable types will be considered.</value>
   </data>
   <data name="AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
-    <value>Could not load all types from '{0}'. Check the exception for more details.</value>
+    <value>Cannot load all exported types from {0}. Only the loadable types will be considered.</value>
   </data>
   <data name="AppServiceAmbiguousCompositionConstructor" xml:space="preserve">
     <value>Multiple eligible constructors declared for service implementation '{0}' with contract '{1}'. Use '{2}' to disambiguate among them.</value>
@@ -191,5 +191,8 @@
   </data>
   <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
+  </data>
+  <data name="AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
+    <value>Cannot load all defined types from {0}. Only the loadable types will be considered.</value>
   </data>
 </root>

@@ -161,7 +161,16 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load all types from &apos;{0}&apos;. Check the exception for more details..
+        ///   Looks up a localized string similar to Cannot load all defined types from {0}. Only the loadable types will be considered..
+        /// </summary>
+        internal static string AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException {
+            get {
+                return ResourceManager.GetString("AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot load all exported types from {0}. Only the loadable types will be considered..
         /// </summary>
         internal static string AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException {
             get {
@@ -170,7 +179,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load &apos;{0}&apos; from &apos;{1}&apos;. Check the exception for more details..
+        ///   Looks up a localized string similar to Cannot load exported type {0} from {1}. Only the loadable types will be considered..
         /// </summary>
         internal static string AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException {
             get {
