@@ -90,10 +90,6 @@
       <Project>{f19c5319-4a09-49cd-b7d5-d5f292952723}</Project>
       <Name>Kephas.Testing.Composition.Mef</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj">
-      <Project>{af177881-80c4-4d2f-9d5e-761938918641}</Project>
-      <Name>Kephas.Composition.Mef.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Kephas.Core.Tests\Kephas.Core.Tests.csproj">
       <Project>{6dcfd4c6-26fa-46f0-a959-16d9acb40dd0}</Project>
       <Name>Kephas.Core.Tests</Name>

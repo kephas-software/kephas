@@ -22,7 +22,6 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
     using Kephas.Testing.Composition.Mef;
-    using Kephas.Tests.Composition.Mef;
 
     using NUnit.Framework;
 
