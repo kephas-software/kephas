@@ -11,9 +11,12 @@ namespace Kephas.Reflection
 {
     using System.Reflection;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for loading assemblies.
     /// </summary>
+    [SharedAppServiceContract]
     public interface IAssemblyLoader
     {
         /// <summary>

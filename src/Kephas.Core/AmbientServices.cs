@@ -56,7 +56,8 @@ namespace Kephas
                 .RegisterService<ILogManager>(new NullLogManager())
                 .RegisterService<IConfigurationManager>(new NullConfigurationManager())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
-                .RegisterService<IAssemblyLoader>(new DefaultAssemblyLoader());
+                .RegisterService<IAssemblyLoader>(new DefaultAssemblyLoader())
+                .RegisterService<ITypeLoader>(new DefaultTypeLoader(this));
         }
 
         /// <summary>

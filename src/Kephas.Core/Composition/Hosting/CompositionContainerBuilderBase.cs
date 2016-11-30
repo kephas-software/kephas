@@ -11,6 +11,7 @@ namespace Kephas.Composition.Hosting
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -54,6 +55,7 @@ namespace Kephas.Composition.Hosting
         /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
+        [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the composition context.")]
         protected CompositionContainerBuilderBase(IContext context)
         {
             Contract.Requires(context != null);
@@ -70,10 +72,13 @@ namespace Kephas.Composition.Hosting
             this.AppRuntime = context.AmbientServices.GetService<IAppRuntime>();
             this.AssertRequiredService(this.AppRuntime);
 
+            this.TypeLoader = context.AmbientServices.GetService<ITypeLoader>();
+            this.AssertRequiredService(this.TypeLoader);
+
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
-            // ReSharper disable once VirtualMemberCallInConstructor
             this.WithServiceProviderExportProvider(context.AmbientServices);
+            this.WithFactoryExportProvider(() => context.AmbientServices, isShared: true);
         }
 
         /// <summary>
@@ -83,6 +88,14 @@ namespace Kephas.Composition.Hosting
         /// The log manager.
         /// </value>
         public ILogManager LogManager { get; }
+
+        /// <summary>
+        /// Gets the type loader.
+        /// </summary>
+        /// <value>
+        /// The type loader.
+        /// </value>
+        public ITypeLoader TypeLoader { get; }
 
         /// <summary>
         /// Gets the configuration manager.
@@ -549,7 +562,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>The composition parts.</returns>
         private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
         {
-            var parts = assemblies.SelectMany(a => a.GetLoadableExportedTypes()).ToList();
+            var parts = assemblies.SelectMany(a => this.TypeLoader.GetLoadableExportedTypes(a)).ToList();
             if (this.CompositionParts != null)
             {
                 parts.AddRange(this.CompositionParts);

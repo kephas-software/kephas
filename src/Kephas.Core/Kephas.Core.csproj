@@ -211,6 +211,8 @@
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Reflection\DefaultTypeLoader.cs" />
+    <Compile Include="Reflection\ITypeLoader.cs" />
     <Compile Include="Runtime\RuntimeTypeInfoExtensions.cs" />
     <Compile Include="Dynamic\ExpandoBase.cs" />
     <Compile Include="Runtime\RuntimeMethodInfo.cs" />
@@ -238,7 +240,6 @@
     <Compile Include="Logging\TypedLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\AggregatedElementInfoExtensions.cs" />
-    <Compile Include="Reflection\AssemblyExtensions.cs" />
     <Compile Include="Reflection\DefaultAssemblyLoader.cs" />
     <Compile Include="Reflection\IAggregatedElementInfo.cs" />
     <Compile Include="Reflection\IAssemblyLoader.cs" />
