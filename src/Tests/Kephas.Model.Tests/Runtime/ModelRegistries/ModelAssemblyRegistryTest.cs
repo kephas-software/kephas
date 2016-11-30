@@ -20,6 +20,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Composition;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
+    using Kephas.Reflection;
     using Kephas.Testing.Composition.Mef;
     using Kephas.Tests.Composition.Mef;
 
@@ -56,7 +57,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             platformManager.Arrange(m => m.GetAppAssembliesAsync(Arg.IsAny<Func<AssemblyName, bool>>(), CancellationToken.None))
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).Assembly }));
 
-            var registry = new ModelAssemblyRegistry(platformManager);
+            var registry = new ModelAssemblyRegistry(platformManager, new DefaultTypeLoader());
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
             Assert.IsTrue(types.All(t => t.Name.EndsWith("Dimension") || t.Name.EndsWith("DimensionElement")));

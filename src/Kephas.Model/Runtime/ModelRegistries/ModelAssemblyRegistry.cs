@@ -35,14 +35,21 @@ namespace Kephas.Model.Runtime.ModelRegistries
         private readonly IAppRuntime appRuntime;
 
         /// <summary>
+        /// The type loader.
+        /// </summary>
+        private readonly ITypeLoader typeLoader;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        public ModelAssemblyRegistry(IAppRuntime appRuntime)
+        /// <param name="typeLoader">The type loader.</param>
+        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
             Contract.Requires(appRuntime != null);
 
             this.appRuntime = appRuntime;
+            this.typeLoader = typeLoader;
         }
 
         /// <summary>
@@ -82,12 +89,12 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 {
                     // if no model types or namespaces are indicated, simply add all
                     // exported types from the assembly with no further processing
-                    types.AddRange(assembly.GetLoadableExportedTypes());
+                    types.AddRange(this.typeLoader.GetLoadableExportedTypes(assembly));
                 }
                 else
                 {
                     // add only the types from the provided namespaces
-                    var allTypes = assembly.GetLoadableExportedTypes().ToList();
+                    var allTypes = this.typeLoader.GetLoadableExportedTypes(assembly).ToList();
                     var namespaces = new HashSet<string>(attrs.Where(a => a.ModelNamespaces != null && a.ModelNamespaces.Length > 0).SelectMany(a => a.ModelNamespaces));
                     var namespacePatterns = namespaces.Select(n => n + ".").ToList();
                     types.AddRange(allTypes.Where(t => namespaces.Contains(t.Namespace) || namespacePatterns.Any(p => t.Namespace.StartsWith(p))));
