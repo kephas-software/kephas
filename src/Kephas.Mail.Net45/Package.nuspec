@@ -29,10 +29,10 @@
     <tags>kephas framework mail smtp quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Mail.Net45.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Mail.Net45.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Mail.Net45.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Mail.Net45.dll" target="lib\net452" />
+    <file src="bin\debug\Kephas.Mail.Net45.pdb" target="lib\net452" />
+    <file src="bin\debug\Kephas.Mail.Net45.xml" target="lib\net452" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.dll" target="lib\net452\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.pdb" target="lib\net452\CodeContracts" />
   </files>
 </package>

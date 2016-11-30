@@ -33,10 +33,10 @@
     <tags>kephas framework platform desktop net45 quartz software</tags>
   </metadata>
   <files>
-      <file src="bin\debug\Kephas.Platform.Net45.dll" target="lib\net45" />
-      <file src="bin\debug\Kephas.Platform.Net45.pdb" target="lib\net45" />
-      <file src="bin\debug\Kephas.Platform.Net45.xml" target="lib\net45" />
-      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.dll" target="lib\net45\CodeContracts" />
-      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.pdb" target="lib\net45\CodeContracts" />
+      <file src="bin\debug\Kephas.Platform.Net45.dll" target="lib\net452" />
+      <file src="bin\debug\Kephas.Platform.Net45.pdb" target="lib\net452" />
+      <file src="bin\debug\Kephas.Platform.Net45.xml" target="lib\net452" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.dll" target="lib\net452\CodeContracts" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.pdb" target="lib\net452\CodeContracts" />
   </files>
 </package>

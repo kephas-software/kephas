@@ -15,7 +15,6 @@
 
     using NUnit.Framework;
     using Kephas.Model.Construction.Internal;
-    using Kephas.Tests.Composition.Mef;
 
     [TestFixture]
     public class DefaultModelSpaceProviderTest : ModelTestBase

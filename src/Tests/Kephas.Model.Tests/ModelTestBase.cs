@@ -10,7 +10,6 @@
 namespace Kephas.Model.Tests
 {
     using Kephas.Testing.Composition.Mef;
-    using Kephas.Tests.Composition.Mef;
 
     /// <summary>
     /// A model test base.
