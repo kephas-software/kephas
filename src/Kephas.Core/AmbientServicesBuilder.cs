@@ -36,6 +36,7 @@ namespace Kephas
             Contract.Requires(ambientServices != null);
 
             this.AmbientServices = ambientServices;
+            this.AmbientServices.RegisterService<IAmbientServices>(ambientServices);
         }
 
         /// <summary>
