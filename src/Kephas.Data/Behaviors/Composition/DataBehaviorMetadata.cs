@@ -1,10 +1,19 @@
-﻿namespace Kephas.Data.Behaviors.Composition
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataBehaviorMetadata.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the data behavior metadata class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Behaviors.Composition
 {
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Collections;
     using Kephas.Services;
-    using Collections;
 
     /// <summary>
     /// Metadata for <see cref="IDataBehavior"/> services.

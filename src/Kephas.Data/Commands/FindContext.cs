@@ -7,12 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Data.Commands
 {
+    using System;
     using System.Diagnostics.Contracts;
 
+    /// <summary>
+    /// The default implementation of a <see cref="IFindContext"/>.
+    /// </summary>
     public class FindContext : DataOperationContext, IFindContext
     {
         /// <summary>
@@ -34,7 +36,13 @@ namespace Kephas.Data.Commands
             this.ThrowIfNotFound = throwIfNotFound;
         }
 
-        public Type EntityType { get; }
+        /// <summary>
+        /// Gets or sets the type of the entity to find.
+        /// </summary>
+        /// <value>
+        /// The type of the entity.
+        /// </value>
+        public Type EntityType { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the entity to find.
@@ -54,7 +62,7 @@ namespace Kephas.Data.Commands
     }
 
     /// <summary>
-    /// The default implementation of a find operationContext.
+    /// The default implementation of a <see cref="IFindContext{TEntity}"/>.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
     public class FindContext<T> : FindContext, IFindContext<T>

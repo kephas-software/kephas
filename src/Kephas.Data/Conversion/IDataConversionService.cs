@@ -54,8 +54,11 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target,
-            IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(
+            TSource source,
+            TTarget target,
+            IDataConversionContext conversionContext,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             Contract.Requires(conversionContext != null);
 

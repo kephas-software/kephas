@@ -1,4 +1,13 @@
-﻿namespace Kephas.Data.Linq.Expressions
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SubstituteExpressionExpressionVisitor.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the SubstituteExpressionExpressionVisitor class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Linq.Expressions
 {
     using System.Linq.Expressions;
 

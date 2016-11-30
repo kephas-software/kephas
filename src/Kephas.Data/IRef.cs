@@ -60,7 +60,6 @@ namespace Kephas.Data
         {
             get
             {
-                Contract.Ensures(Contract.Result<Id>() != null);
                 return Contract.Result<Id>();
             }
 
