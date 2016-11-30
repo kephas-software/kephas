@@ -27,6 +27,7 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided name.
         /// </returns>
+        [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, string loggerName)
         {
             Contract.Requires(ambientServices != null);
@@ -43,6 +44,7 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
+        [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, Type type)
         {
             Contract.Requires(ambientServices != null);
@@ -59,6 +61,7 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
+        [Pure]
         public static ILogger<T> GetLogger<T>(this IAmbientServices ambientServices)
         {
             Contract.Requires(ambientServices != null);

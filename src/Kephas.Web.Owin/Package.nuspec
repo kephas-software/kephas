@@ -34,10 +34,10 @@
     <tags>kephas framework web owin quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Web.Owin.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Web.Owin.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Web.Owin.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Web.Owin.dll" target="lib\net461" />
+    <file src="bin\debug\Kephas.Web.Owin.pdb" target="lib\net461" />
+    <file src="bin\debug\Kephas.Web.Owin.xml" target="lib\net461" />
+    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.dll" target="lib\net461\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Web.Owin.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>

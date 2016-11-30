@@ -3,7 +3,6 @@
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
-    "StyleCop.Analyzers": "1.0.0",
     "System.ComponentModel": "4.0.1",
     "System.Diagnostics.Contracts": "4.0.1",
     "System.Dynamic.Runtime": "4.0.11",

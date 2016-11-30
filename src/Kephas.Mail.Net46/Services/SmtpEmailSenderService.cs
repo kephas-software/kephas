@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Mail.Net45.Services
+namespace Kephas.Mail.Net46.Services
 {
     using System.Net.Mail;
     using System.Threading;

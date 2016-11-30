@@ -31,10 +31,10 @@
     <tags>kephas framework data mongo mongodb quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\net461" />
+    <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\net461" />
+    <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\net461" />
+    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.dll" target="lib\net461\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>

@@ -12,5 +12,5 @@ using System.Reflection;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Mail.Net45")]
+[assembly: AssemblyTitle("Kephas.Mail.Net46")]
 [assembly: AssemblyDescription("")]

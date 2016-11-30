@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Mail.Net45.Services
+namespace Kephas.Mail.Net46.Services
 {
     using Kephas.Mail.Services;
     using Kephas.Services;

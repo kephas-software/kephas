@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Net45AppRuntime.cs" company="Quartz Software SRL">
+// <copyright file="Net46AppRuntime.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the .NET 4.5 application runtime class.
+//   Implements the .NET 4.6 application runtime class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,9 +21,9 @@ namespace Kephas.Application
     using Kephas.Reflection;
 
     /// <summary>
-    /// A .NET 4.5 application runtime.
+    /// A .NET 4.6 application runtime.
     /// </summary>
-    public class Net45AppRuntime : AppRuntimeBase
+    public class Net46AppRuntime : AppRuntimeBase
     {
         /// <summary>
         /// The application location.
@@ -31,12 +31,12 @@ namespace Kephas.Application
         private readonly string appLocation;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Net45AppRuntime"/> class.
+        /// Initializes a new instance of the <see cref="Net46AppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
         /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
         /// <param name="appLocation">(Optional) the application location. If not specified, the current application location is considered.</param>
-        public Net45AppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public Net46AppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
             : base(assemblyLoader, assemblyFilter)
         {
             this.appLocation = appLocation;

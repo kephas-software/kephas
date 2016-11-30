@@ -213,6 +213,11 @@
     <Compile Include="DynamicObjectExtensions.cs" />
     <Compile Include="Reflection\DefaultTypeLoader.cs" />
     <Compile Include="Reflection\ITypeLoader.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Runtime\RuntimeTypeInfoExtensions.cs" />
     <Compile Include="Dynamic\ExpandoBase.cs" />
     <Compile Include="Runtime\RuntimeMethodInfo.cs" />
@@ -250,11 +255,6 @@
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="Reflection\TypeInfoExtensions.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
     <Compile Include="Serialization\DefaultSerializationService.cs" />
     <Compile Include="Serialization\IFormat.cs" />
@@ -299,7 +299,9 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="Package.nuspec" />
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
     <None Include="Services\Transitioning\Transitioning.cd" />

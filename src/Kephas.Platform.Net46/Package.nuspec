@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kephas.Platform.Net45</id>
+    <id>Kephas.Platform.Net46</id>
     <version>3.1.0-preview1-rc2</version>
-    <title>Kephas.Platform.Net45</title>
+    <title>Kephas.Platform.Net46</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
     <description>
-        Provides .NET 4.5 and later platform specific infrastructure.
+        Provides .NET 4.6.1 and later platform specific infrastructure.
         Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
         Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
     </description>
     <releaseNotes>
     </releaseNotes>
     <summary>
-        Provides .NET 4.5 and later platform specific infrastructure.
+        Provides .NET 4.6.1 and later platform specific infrastructure.
         Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
         Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
     </summary>
@@ -28,15 +28,15 @@
       <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
     </dependencies>
     <references>
-      <reference file="Kephas.Platform.Net45.dll" />
+      <reference file="Kephas.Platform.Net46.dll" />
     </references>
-    <tags>kephas framework platform desktop net45 quartz software</tags>
+    <tags>kephas framework platform desktop net46 quartz software</tags>
   </metadata>
   <files>
-      <file src="bin\debug\Kephas.Platform.Net45.dll" target="lib\net452" />
-      <file src="bin\debug\Kephas.Platform.Net45.pdb" target="lib\net452" />
-      <file src="bin\debug\Kephas.Platform.Net45.xml" target="lib\net452" />
-      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.dll" target="lib\net452\CodeContracts" />
-      <file src="bin\debug\CodeContracts\Kephas.Platform.Net45.Contracts.pdb" target="lib\net452\CodeContracts" />
+      <file src="bin\debug\Kephas.Platform.Net46.dll" target="lib\net461" />
+      <file src="bin\debug\Kephas.Platform.Net46.pdb" target="lib\net461" />
+      <file src="bin\debug\Kephas.Platform.Net46.xml" target="lib\net461" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.Net46.Contracts.dll" target="lib\net461\CodeContracts" />
+      <file src="bin\debug\CodeContracts\Kephas.Platform.Net46.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>

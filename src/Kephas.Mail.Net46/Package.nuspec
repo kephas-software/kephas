@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kephas.Mail.Net45</id>
+    <id>Kephas.Mail.Net46</id>
     <version>3.1.0-preview1-rc2</version>
-    <title>Kephas.Mail.Net45</title>
+    <title>Kephas.Mail.Net46</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
     <description>
@@ -24,15 +24,15 @@
       <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
     </dependencies>
     <references>
-      <reference file="Kephas.Mail.Net45.dll" />
+      <reference file="Kephas.Mail.Net46.dll" />
     </references>
     <tags>kephas framework mail smtp quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Mail.Net45.dll" target="lib\net452" />
-    <file src="bin\debug\Kephas.Mail.Net45.pdb" target="lib\net452" />
-    <file src="bin\debug\Kephas.Mail.Net45.xml" target="lib\net452" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.dll" target="lib\net452\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net45.Contracts.pdb" target="lib\net452\CodeContracts" />
+    <file src="bin\debug\Kephas.Mail.Net46.dll" target="lib\net461" />
+    <file src="bin\debug\Kephas.Mail.Net46.pdb" target="lib\net461" />
+    <file src="bin\debug\Kephas.Mail.Net46.xml" target="lib\net461" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Net46.Contracts.dll" target="lib\net461\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Mail.Net46.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>

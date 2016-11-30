@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Net45AmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+// <copyright file="Net46AmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,17 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Net45
+namespace Kephas.Platform.Net46
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Reflection;
+
     using Kephas.Application;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    public static class Net45AmbientServicesBuilderExtensions
+    public static class Net46AmbientServicesBuilderExtensions
     {
         /// <summary>
         /// Sets the .NET 4.5 application runtime to the ambient services.
@@ -28,11 +29,11 @@ namespace Kephas.Platform.Net45
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNet45AppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public static AmbientServicesBuilder WithNet46AppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppRuntime(new Net45AppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
+            return ambientServicesBuilder.WithAppRuntime(new Net46AppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
         }
     }
 }

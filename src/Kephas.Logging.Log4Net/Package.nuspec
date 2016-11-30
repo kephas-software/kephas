@@ -34,10 +34,10 @@
     <tags>kephas framework logging log4net quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Logging.Log4net.dll" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.Log4net.pdb" target="lib\net45" />
-    <file src="bin\debug\Kephas.Logging.Log4net.xml" target="lib\net45" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.Log4net.Contracts.dll" target="lib\net45\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.Log4net.Contracts.pdb" target="lib\net45\CodeContracts" />
+    <file src="bin\debug\Kephas.Logging.Log4net.dll" target="lib\net461" />
+    <file src="bin\debug\Kephas.Logging.Log4net.pdb" target="lib\net461" />
+    <file src="bin\debug\Kephas.Logging.Log4net.xml" target="lib\net461" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.Log4net.Contracts.dll" target="lib\net461\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Logging.Log4net.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>
