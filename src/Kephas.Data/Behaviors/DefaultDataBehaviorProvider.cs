@@ -81,7 +81,7 @@ namespace Kephas.Data.Behaviors
                                  let entityTypeInfo = f.Metadata.EntityType.GetTypeInfo()
                                  let serviceTypeInfo = f.Metadata.AppServiceImplementationType.GetTypeInfo()
                                  where
-                                     typeInfo.IsAssignableFrom(entityTypeInfo)
+                                     entityTypeInfo.IsAssignableFrom(typeInfo)
                                      && behaviorTypeInfo.IsAssignableFrom(serviceTypeInfo)
                                  orderby f.Metadata.ProcessingPriority
                                  select f.CreateExport().Value)
