@@ -9,7 +9,6 @@
 
 namespace Kephas.Services
 {
-    using System.Diagnostics.Contracts;
     using System.Security.Principal;
 
     using Kephas;

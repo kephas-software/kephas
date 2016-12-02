@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.Conversion
 {
+    using System.Diagnostics.Contracts;
+
     using Kephas.Services;
 
     /// <summary>
@@ -19,12 +21,14 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.
         /// </summary>
+        /// <param name="conversionService">The conversion service.</param>
         /// <param name="sourceDataContext">The source data context (optional).</param>
         /// <param name="targetDataContext">The target data context (optional).</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public DataConversionContext(IDataContext sourceDataContext = null, IDataContext targetDataContext = null, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        public DataConversionContext(IDataConversionService conversionService, IDataContext sourceDataContext = null, IDataContext targetDataContext = null)
+            : base(conversionService.AmbientServices)
         {
+            Contract.Requires(conversionService != null);
+
             this.SourceDataContext = sourceDataContext;
             this.TargetDataContext = targetDataContext;
             this.ThrowOnError = true;

@@ -24,6 +24,14 @@ namespace Kephas.Messaging.Server
     public interface IMessageProcessingContext : IContext
     {
         /// <summary>
+        /// Gets the message processor.
+        /// </summary>
+        /// <value>
+        /// The message processor.
+        /// </value>
+        IMessageProcessor MessageProcessor { get; }
+
+        /// <summary>
         /// Gets or sets the handler.
         /// </summary>
         /// <value>
@@ -62,6 +70,21 @@ namespace Kephas.Messaging.Server
     [ContractClassFor(typeof(IMessageProcessingContext))]
     internal abstract class MessageProcessingContextContractClass : IMessageProcessingContext
     {
+        /// <summary>
+        /// Gets the message processor.
+        /// </summary>
+        /// <value>
+        /// The message processor.
+        /// </value>
+        public IMessageProcessor MessageProcessor
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IMessageProcessor>() != null);
+                return Contract.Result<IMessageProcessor>();
+            }
+        }
+
         /// <summary>
         /// Gets or sets the handler.
         /// </summary>

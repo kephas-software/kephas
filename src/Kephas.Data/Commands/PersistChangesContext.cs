@@ -20,9 +20,8 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="PersistChangesContext"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public PersistChangesContext(IDataContext dataContext, IAmbientServices ambientServices = null)
-            : base(dataContext, ambientServices)
+        public PersistChangesContext(IDataContext dataContext)
+            : base(dataContext)
         {
             Contract.Requires(dataContext != null);
         }

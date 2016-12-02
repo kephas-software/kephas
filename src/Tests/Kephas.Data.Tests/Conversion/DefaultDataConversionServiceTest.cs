@@ -22,13 +22,13 @@
                 .TaskResult(new DataConversionResult {Target = 5});
 
             var service =
-                new DefaultDataConversionService(new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(int), typeof(int)))
                 });
 
-            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(), CancellationToken.None);
+            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(5, result.Target);
         }
 
@@ -44,7 +44,7 @@
                 .TaskResult(new DataConversionResult { Target = 6 });
 
             var service =
-                new DefaultDataConversionService(new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int))),
@@ -52,7 +52,7 @@
                         new DataConverterMetadata(typeof(int), typeof(int)))
                 });
 
-            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(), CancellationToken.None);
+            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(6, result.Target);
         }
 
@@ -68,7 +68,7 @@
                 .TaskResult(new DataConversionResult { Target = 6 });
 
             var service =
-                new DefaultDataConversionService(new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority:  (int)Priority.Low)),
@@ -76,7 +76,7 @@
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority: (int)Priority.High))
                 });
 
-            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(), CancellationToken.None);
+            var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(5, result.Target);
         }
     }

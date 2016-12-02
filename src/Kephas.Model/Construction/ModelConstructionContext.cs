@@ -10,6 +10,7 @@
 namespace Kephas.Model.Construction
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
@@ -23,10 +24,11 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public ModelConstructionContext(IAmbientServices ambientServices = null)
+        /// <param name="ambientServices">The ambient services.</param>
+        public ModelConstructionContext(IAmbientServices ambientServices)
             : base(ambientServices)
         {
+            Contract.Requires(ambientServices != null);
         }
 
         /// <summary>

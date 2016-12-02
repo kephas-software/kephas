@@ -19,6 +19,14 @@ namespace Kephas.Serialization
     public interface ISerializationContext : IContext
     {
         /// <summary>
+        /// Gets the serialization service.
+        /// </summary>
+        /// <value>
+        /// The serialization service.
+        /// </value>
+        ISerializationService SerializationService { get; }
+
+        /// <summary>
         /// Gets the type of the format.
         /// </summary>
         /// <value>

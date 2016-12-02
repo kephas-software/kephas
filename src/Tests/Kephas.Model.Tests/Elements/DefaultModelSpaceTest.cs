@@ -1,4 +1,13 @@
-﻿namespace Kephas.Model.Tests.Elements
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultModelSpaceTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the default model space test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Tests.Elements
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -10,13 +19,15 @@
 
     using NUnit.Framework;
 
+    using Telerik.JustMock;
+
     [TestFixture]
     public class DefaultModelSpaceTest
     {
         [Test]
         public void ComputeDimensions_2_dims()
         {
-            var context = new ModelConstructionContext();
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -46,7 +57,7 @@
         [Test]
         public void ComputeProjections_2_dims()
         {
-            var context = new ModelConstructionContext();
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 

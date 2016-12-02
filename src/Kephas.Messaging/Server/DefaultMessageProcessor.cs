@@ -36,16 +36,27 @@ namespace Kephas.Messaging.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="filterFactories">The filter factories.</param>
-        public DefaultMessageProcessor(ICompositionContext compositionContext, IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
+        public DefaultMessageProcessor(IAmbientServices ambientServices, ICompositionContext compositionContext, IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(compositionContext != null);
             Contract.Requires(filterFactories != null);
 
+            this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;
             this.filterFactories = filterFactories;
         }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the composition context.
@@ -139,7 +150,7 @@ namespace Kephas.Messaging.Server
         {
             Contract.Ensures(Contract.Result<IMessageProcessingContext>() != null);
 
-            return new MessageProcessingContext(message, handler);
+            return new MessageProcessingContext(this, message, handler);
         }
 
         /// <summary>

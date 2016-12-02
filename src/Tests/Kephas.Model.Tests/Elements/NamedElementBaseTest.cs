@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var context = new ModelConstructionContext { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = modelSpace };
             var element = new TestNamedElement(context, "name");
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
@@ -44,7 +44,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var context = new ModelConstructionContext { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = modelSpace };
 
             var element = new TestNamedElementWithDiscriminator(context, "name");
 
@@ -56,7 +56,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var context = new ModelConstructionContext { ModelSpace = null };
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = null };
             Assert.That(() => new TestNamedElement(context, "name"), Throws.InstanceOf<Exception>());
         }
 
@@ -64,7 +64,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Mock.Create<IModelSpace>();
-            var context = new ModelConstructionContext { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = modelSpace };
             Assert.That(() => new TestNamedElement(context, null), Throws.InstanceOf<Exception>());
         }
 

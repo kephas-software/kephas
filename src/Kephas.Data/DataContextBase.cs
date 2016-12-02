@@ -32,11 +32,14 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
-        protected DataContextBase(ICompositionContext compositionContext)
+        protected DataContextBase(IAmbientServices ambientServices, ICompositionContext compositionContext)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(compositionContext != null);
 
+            this.AmbientServices = ambientServices;
             this.compositionContext = compositionContext;
             this.Id = new Id(Guid.NewGuid());
         }
@@ -48,6 +51,14 @@ namespace Kephas.Data
         /// The identifier.
         /// </value>
         public Id Id { get; }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -102,8 +113,7 @@ namespace Kephas.Data
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to
-        ///                         release only unmanaged resources.</param>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
         }

@@ -29,7 +29,7 @@ namespace Kephas.Model.Services
     /// The default implementation of a model space provider.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultModelSpaceProvider : IModelSpaceProvider
+    public class DefaultModelSpaceProvider : IModelSpaceProvider, IAmbientServicesAware
     {
         /// <summary>
         /// The runtime model element factory.
@@ -49,16 +49,27 @@ namespace Kephas.Model.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="modelInfoProviders">The model information providers.</param>
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
-        public DefaultModelSpaceProvider(ICollection<IModelInfoProvider> modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)
+        public DefaultModelSpaceProvider(IAmbientServices ambientServices, ICollection<IModelInfoProvider> modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(runtimeModelElementFactory != null);
             Contract.Requires(modelInfoProviders != null);
 
+            this.AmbientServices = ambientServices;
             this.ModelInfoProviders = modelInfoProviders;
             this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -101,7 +112,7 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
-            var constructionContext = new ModelConstructionContext { RuntimeModelElementFactory = this.runtimeModelElementFactory };
+            var constructionContext = new ModelConstructionContext(this.AmbientServices) { RuntimeModelElementFactory = this.runtimeModelElementFactory };
             var modelSpace = this.CreateModelSpace(constructionContext);
             constructionContext.ModelSpace = modelSpace;
 

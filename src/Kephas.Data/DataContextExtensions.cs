@@ -154,33 +154,6 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Searches for the entity with the provided ID and returns it asynchronously.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="dataContext">The data context.</param>
-        /// <param name="id">The identifier.</param>
-        /// <param name="throwIfNotFound"><c>true</c> to throw if not found (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// A promise of the found entity.
-        /// </returns>
-        public static async Task<T> FindAsync<T>(
-            this IDataContext dataContext,
-            Id id,
-            bool throwIfNotFound = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : class
-        {
-            Contract.Requires(dataContext != null);
-
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
-            var command = (IDataCommand<IFindContext, IFindResult<T>>)createCommand.Call(dataContext);
-            var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
-            var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
-            return result.Entity;
-        }
-
-        /// <summary>
         /// Searches for the first entity matching the provided criteria and returns it asynchronously.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
@@ -201,7 +174,8 @@ namespace Kephas.Data
             Contract.Requires(dataContext != null);
             Contract.Requires(criteria != null);
 
-            var query = dataContext.Query<T>().Where(criteria).Take(2);
+            var queryContext = new QueryOperationContext(dataContext);
+            var query = dataContext.Query<T>(queryContext).Where(criteria).Take(2);
             var result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
             if (result.Count > 1)
             {

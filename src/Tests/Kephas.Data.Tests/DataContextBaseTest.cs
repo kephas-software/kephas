@@ -37,7 +37,7 @@ namespace Kephas.Data.Tests
                 .Arrange(c => c.GetExport<IDataCommandFactory<IFindCommand<IDataContext, string>>>(Arg.AnyString))
                 .Returns(factory);
 
-            var dataContext = new TestDataContext(container);
+            var dataContext = new TestDataContext(compositionContext: container);
             var cmd = dataContext.CreateCommand<IFindCommand<IDataContext, string>>();
             Assert.AreSame(findCmd, cmd);
         }
@@ -47,8 +47,8 @@ namespace Kephas.Data.Tests
             /// <summary>
             /// Initializes a new instance of the <see cref="DataContextBase"/> class.
             /// </summary>
-            public TestDataContext(ICompositionContext compositionContext = null) 
-                : base(compositionContext ?? Mock.Create<ICompositionContext>())
+            public TestDataContext(IAmbientServices ambientServices = null, ICompositionContext compositionContext = null) 
+                : base(ambientServices ?? Mock.Create<IAmbientServices>(), compositionContext ?? Mock.Create<ICompositionContext>())
             {
             }
 

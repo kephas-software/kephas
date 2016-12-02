@@ -23,10 +23,9 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="dataContext">The data context.</param>
         /// <param name="id">The identifier of the entity.</param>
-        /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c>.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public FindContext(IDataContext dataContext, Id id, bool throwIfNotFound, IAmbientServices ambientServices = null)
-            : base(dataContext, ambientServices)
+        /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c> (optional).</param>
+        public FindContext(IDataContext dataContext, Id id, bool throwIfNotFound = true)
+            : base(dataContext)
         {
             Contract.Requires(dataContext != null);
 

@@ -22,18 +22,28 @@ namespace Kephas.Messaging.Server
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
         /// </summary>
+        /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">The Message.</param>
         /// <param name="handler">The handler.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public MessageProcessingContext(IMessage message, IMessageHandler handler, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message, IMessageHandler handler)
+            : base(messageProcessor.AmbientServices)
         {
+            Contract.Requires(messageProcessor != null);
             Contract.Requires(message != null);
             Contract.Requires(handler != null);
 
+            this.MessageProcessor = messageProcessor;
             this.Message = message;
             this.Handler = handler;
         }
+
+        /// <summary>
+        /// Gets the message processor.
+        /// </summary>
+        /// <value>
+        /// The message processor.
+        /// </value>
+        public IMessageProcessor MessageProcessor { get; }
 
         /// <summary>
         /// Gets or sets the handler.

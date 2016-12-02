@@ -51,7 +51,7 @@ namespace Kephas.Serialization
                 return default(TRootObject);
             }
 
-            context = CheckOrCreateSerializationContext<TFormatType>(context);
+            context = CheckOrCreateSerializationContext<TFormatType>(serializationService, context);
             context.RootObjectType = typeof(TRootObject);
 
             var serializer = serializationService.GetSerializer(context);
@@ -84,7 +84,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((object)null);
             }
 
-            context = CheckOrCreateSerializationContext<TFormatType>(context);
+            context = CheckOrCreateSerializationContext<TFormatType>(serializationService, context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.DeserializeAsync(serializedObj, context, cancellationToken);
@@ -204,7 +204,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((string)null);
             }
 
-            context = CheckOrCreateSerializationContext<TFormatType>(context);
+            context = CheckOrCreateSerializationContext<TFormatType>(serializationService, context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.SerializeAsync(obj, context, cancellationToken);
@@ -318,16 +318,17 @@ namespace Kephas.Serialization
         /// Creates serialization context.
         /// </summary>
         /// <typeparam name="TFormatType">Type of the format type.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
         /// <param name="context">The context.</param>
         /// <returns>
         /// The new serialization context.
         /// </returns>
-        private static ISerializationContext CheckOrCreateSerializationContext<TFormatType>(ISerializationContext context)
+        private static ISerializationContext CheckOrCreateSerializationContext<TFormatType>(ISerializationService serializationService, ISerializationContext context)
             where TFormatType : IFormat
         {
             if (context == null)
             {
-                context = SerializationContext.Create<TFormatType>();
+                context = SerializationContext.Create<TFormatType>(serializationService);
             }
             else
             {

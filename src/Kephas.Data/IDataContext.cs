@@ -23,7 +23,7 @@ namespace Kephas.Data
     /// Contract interface for data contexts.
     /// </summary>
     [ContractClass(typeof(DataContextContractClass))]
-    public interface IDataContext : IExpando, IIdentifiable, IDisposable
+    public interface IDataContext : IExpando, IIdentifiable, IDisposable, IAmbientServicesAware
     {
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -72,6 +72,14 @@ namespace Kephas.Data
         /// The identifier.
         /// </value>
         public abstract Id Id { get; }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public abstract IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer

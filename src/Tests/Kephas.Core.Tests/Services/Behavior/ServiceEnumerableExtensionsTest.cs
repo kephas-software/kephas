@@ -1,4 +1,13 @@
-﻿namespace Kephas.Core.Tests.Services.Behavior
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ServiceEnumerableExtensionsTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the service enumerable extensions test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Core.Tests.Services.Behavior
 {
     using System;
     using System.Collections.Generic;
@@ -19,10 +28,10 @@
         [Test]
         public void WhereEnabled_no_behaviors()
         {
-            var compositionContextMock = this.CreateCompositionContext();
+            var ambientServicesMock = this.CreateAmbientServicesMock();
 
             var services = new List<ITestService> { Mock.Create<ITestService>() };
-            var filteredServices = services.WhereEnabled(compositionContextMock).ToList();
+            var filteredServices = services.WhereEnabled(ambientServicesMock).ToList();
             Assert.AreEqual(services.Count, filteredServices.Count);
             Assert.AreEqual(services[0], filteredServices[0]);
         }
@@ -31,10 +40,10 @@
         public void WhereEnabled_exclude_all_behaviors()
         {
             var excludeAllBehaviorMock = this.CreateEnabledServiceBehaviorRule(canApply: true, isEndRule: false, value: false);
-            var compositionContextMock = this.CreateCompositionContext(excludeAllBehaviorMock);
+            var ambientServicesMock = this.CreateAmbientServicesMock(excludeAllBehaviorMock);
 
             var services = new List<ITestService> { Mock.Create<ITestService>() };
-            var filteredServices = services.WhereEnabled(compositionContextMock).ToList();
+            var filteredServices = services.WhereEnabled(ambientServicesMock).ToList();
             Assert.AreEqual(0, filteredServices.Count);
         }
 
@@ -43,10 +52,10 @@
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRule(canApply: true, isEndRule: false, value: false, processingPriority: 1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRule(canApply: true, isEndRule: true, value: true, processingPriority: 0);
-            var compositionContextMock = this.CreateCompositionContext(excludeBehaviorMock, includeBehaviorMock);
+            var ambientServicesMock = this.CreateAmbientServicesMock(excludeBehaviorMock, includeBehaviorMock);
 
             var services = new List<ITestService> { Mock.Create<ITestService>() };
-            var filteredServices = services.WhereEnabled(compositionContextMock).ToList();
+            var filteredServices = services.WhereEnabled(ambientServicesMock).ToList();
             Assert.AreEqual(services.Count, filteredServices.Count);
             Assert.AreEqual(services[0], filteredServices[0]);
         }
@@ -56,19 +65,22 @@
         {
             var excludeBehaviorMock = this.CreateEnabledServiceBehaviorRule(canApply: true, isEndRule: false, value: false, processingPriority: 1);
             var includeBehaviorMock = this.CreateEnabledServiceBehaviorRule(canApply: true, isEndRule: false, value: true, processingPriority: 0);
-            var compositionContextMock = this.CreateCompositionContext(excludeBehaviorMock, includeBehaviorMock);
+            var ambientServicesMock = this.CreateAmbientServicesMock(excludeBehaviorMock, includeBehaviorMock);
 
             var services = new List<ITestService> { Mock.Create<ITestService>() };
-            var filteredServices = services.WhereEnabled(compositionContextMock).ToList();
+            var filteredServices = services.WhereEnabled(ambientServicesMock).ToList();
             Assert.AreEqual(0, filteredServices.Count);
         }
 
-        private ICompositionContext CreateCompositionContext(params IEnabledServiceBehaviorRule<ITestService>[] rules)
+        private IAmbientServices CreateAmbientServicesMock(params IEnabledServiceBehaviorRule<ITestService>[] rules)
         {
             var compositionContextMock = Mock.Create<ICompositionContext>();
             compositionContextMock.Arrange(c => c.GetExports<IEnabledServiceBehaviorRule<ITestService>>(Arg.IsAny<string>()))
                 .Returns(new List<IEnabledServiceBehaviorRule<ITestService>>(rules));
-            return compositionContextMock;
+
+            var ambientServicesMock = Mock.Create<IAmbientServices>();
+            ambientServicesMock.Arrange(a => a.CompositionContainer).Returns(() => compositionContextMock);
+            return ambientServicesMock;
         }
 
         private IEnabledServiceBehaviorRule<ITestService> CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, int processingPriority = 0)

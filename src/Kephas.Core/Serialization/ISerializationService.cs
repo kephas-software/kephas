@@ -15,7 +15,7 @@ namespace Kephas.Serialization
     /// Contract for serialization services.
     /// </summary>
     [SharedAppServiceContract]
-    public interface ISerializationService
+    public interface ISerializationService : IAmbientServicesAware
     {
         /// <summary>
         /// Gets a serializer for the provided context.

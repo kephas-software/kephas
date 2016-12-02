@@ -113,6 +113,8 @@
         private ISerializationService CreateSerializationServiceMock<TFormat>(ISerializer serializer)
         {
             var serializationService = Mock.Create<ISerializationService>(Behavior.Strict);
+            var ambientServicesMock = Mock.Create<IAmbientServices>();
+            serializationService.Arrange(s => s.AmbientServices).Returns(() => ambientServicesMock);
             serializationService.Arrange(
                 s =>
                 s.GetSerializer(Arg.Matches<ISerializationContext>(ctx => ctx != null && ctx.FormatType == typeof(TFormat))))

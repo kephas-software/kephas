@@ -33,15 +33,26 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppBootstrapper"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public DefaultAppBootstrapper(ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
+        public DefaultAppBootstrapper(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(compositionContext != null);
 
+            this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;
             this.AppIntializerFactories = appIntializerFactories ?? new List<IExportFactory<IAppInitializer, AppServiceMetadata>>();
         }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets a context for the composition.
@@ -145,7 +156,7 @@ namespace Kephas.Application
         {
             var orderedAppInitializerExports = this.AppIntializerFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.CompositionContext)
+                                          .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 

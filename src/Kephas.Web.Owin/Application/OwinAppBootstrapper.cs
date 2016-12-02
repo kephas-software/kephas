@@ -28,10 +28,11 @@ namespace Kephas.Web.Owin.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="OwinAppBootstrapper"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public OwinAppBootstrapper(ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
-            : base(compositionContext, appIntializerFactories)
+        public OwinAppBootstrapper(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
+            : base(ambientServices, compositionContext, appIntializerFactories)
         {
         }
 

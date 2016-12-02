@@ -22,9 +22,8 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="CreateEntityContext{T}"/> class.
         /// </summary>
         /// <param name="dataContext">Context for the data.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public CreateEntityContext(IDataContext dataContext, IAmbientServices ambientServices = null)
-            : base(dataContext, ambientServices)
+        public CreateEntityContext(IDataContext dataContext)
+            : base(dataContext)
         {
             Contract.Requires(dataContext != null);
 

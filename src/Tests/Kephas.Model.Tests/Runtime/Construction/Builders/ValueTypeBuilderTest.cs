@@ -30,8 +30,8 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     {
         public ValueTypeBuilder CreateBuilder<T>()
         {
-            var context = new ModelConstructionContext
-                              {
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>())
+            {
                                   ModelSpace = Mock.Create<IModelSpace>(),
                                   RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(
                                         new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),

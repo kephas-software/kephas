@@ -19,7 +19,7 @@ namespace Kephas.Data.Conversion
     /// </summary>
     [ContractClass(typeof(DataConversionServiceContractClass))]
     [SharedAppServiceContract]
-    public interface IDataConversionService
+    public interface IDataConversionService : IAmbientServicesAware
     {
         /// <summary>
         /// Converts the source object to the target object asynchronously.
@@ -29,7 +29,7 @@ namespace Kephas.Data.Conversion
         /// <param name="source">The source object.</param>
         /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>
@@ -43,6 +43,14 @@ namespace Kephas.Data.Conversion
     internal abstract class DataConversionServiceContractClass : IDataConversionService
     {
         /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public abstract IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Converts the source object to the target object asynchronously.
         /// </summary>
         /// <typeparam name="TSource">The type of the source object.</typeparam>
@@ -50,7 +58,7 @@ namespace Kephas.Data.Conversion
         /// <param name="source">The source object.</param>
         /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>

@@ -26,19 +26,18 @@ namespace Kephas.Services.Behavior
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <param name="services">The services.</param>
-        /// <param name="compositionContext">The composition context where the behaviors for the services
-        ///                                  can be retrieved.</param>
-        /// <param name="appContext">Context for the application.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appContext">Context for the application (optional).</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process where enabled in this collection.
+        /// An enumeration of enabled services.
         /// </returns>
-        public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, ICompositionContext compositionContext, IAppContext appContext = null)
+        public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, IAmbientServices ambientServices, IAppContext appContext = null)
         {
             Contract.Requires(services != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(ambientServices != null);
 
-            var enabledRules = GetEnabledServiceBehaviorRules<TService>(compositionContext);
-            return services.Where(service => IsServiceEnabled(new ServiceBehaviorContext<TService>(service, appContext), enabledRules));
+            var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
+            return services.Where(service => IsServiceEnabled(new ServiceBehaviorContext<TService>(service, ambientServices, appContext), enabledRules));
         }
 
         /// <summary>
@@ -46,19 +45,18 @@ namespace Kephas.Services.Behavior
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <param name="serviceExports">The services.</param>
-        /// <param name="compositionContext">The composition context where the behaviors for the services
-        ///                                  can be retrieved.</param>
-        /// <param name="appContext">Context for the application.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appContext">Context for the application (optional).</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public static IEnumerable<IExport<TService>> WhereEnabled<TService>(this IEnumerable<IExport<TService>> serviceExports, ICompositionContext compositionContext, IAppContext appContext = null)
+        public static IEnumerable<IExport<TService>> WhereEnabled<TService>(this IEnumerable<IExport<TService>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
         {
             Contract.Requires(serviceExports != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(ambientServices != null);
 
-            var enabledRules = GetEnabledServiceBehaviorRules<TService>(compositionContext);
-            return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, appContext), enabledRules));
+            var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
+            return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, ambientServices, appContext), enabledRules));
         }
 
         /// <summary>
@@ -67,19 +65,18 @@ namespace Kephas.Services.Behavior
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <typeparam name="TMetadata">Type of the service metadata.</typeparam>
         /// <param name="serviceExports">The services.</param>
-        /// <param name="compositionContext">The composition context where the behaviors for the services
-        ///                                  can be retrieved.</param>
-        /// <param name="appContext">Context for the application.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appContext">Context for the application (optional).</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public static IEnumerable<IExport<TService, TMetadata>> WhereEnabled<TService, TMetadata>(this IEnumerable<IExport<TService, TMetadata>> serviceExports, ICompositionContext compositionContext, IAppContext appContext = null)
+        public static IEnumerable<IExport<TService, TMetadata>> WhereEnabled<TService, TMetadata>(this IEnumerable<IExport<TService, TMetadata>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
         {
             Contract.Requires(serviceExports != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(ambientServices != null);
 
-            var enabledRules = GetEnabledServiceBehaviorRules<TService>(compositionContext);
-            return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, appContext), enabledRules));
+            var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
+            return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, ambientServices, appContext), enabledRules));
         }
 
         /// <summary>

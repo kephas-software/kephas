@@ -248,7 +248,7 @@ namespace Kephas.Messaging.Tests.Server
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>>();
-            return new DefaultMessageProcessor(compositionContainer, filterFactories);
+            return new DefaultMessageProcessor(Mock.Create<IAmbientServices>(), compositionContainer, filterFactories);
         }
     }
 }

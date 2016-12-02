@@ -46,11 +46,16 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
-        public DefaultDataConversionService(ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories)
+        public DefaultDataConversionService(
+            IAmbientServices ambientServices,
+            ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(converterExportFactories != null);
 
+            this.AmbientServices = ambientServices;
             this.converterExportFactories = converterExportFactories;
         }
 
@@ -61,6 +66,14 @@ namespace Kephas.Data.Conversion
         /// The logger.
         /// </value>
         public ILogger<DefaultDataConversionService> Logger { get; set; }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.

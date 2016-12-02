@@ -23,7 +23,7 @@ namespace Kephas.Messaging.Server
     /// </remarks>
     [SharedAppServiceContract]
     [ContractClass(typeof(MessageProcessorContractClass))]
-    public interface IMessageProcessor
+    public interface IMessageProcessor : IAmbientServicesAware
     {
         /// <summary>
         /// Processes the specified message asynchronously.
@@ -43,6 +43,14 @@ namespace Kephas.Messaging.Server
     [ContractClassFor(typeof(IMessageProcessor))]
     internal abstract class MessageProcessorContractClass : IMessageProcessor
     {
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public abstract IAmbientServices AmbientServices { get; }
+
         /// <summary>
         /// Processes the specified message asynchronously.
         /// </summary>

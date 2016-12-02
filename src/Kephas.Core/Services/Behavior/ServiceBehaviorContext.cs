@@ -24,9 +24,9 @@ namespace Kephas.Services.Behavior
         /// class.
         /// </summary>
         /// <param name="service">The service.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appContext">Context for the application (optional).</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public ServiceBehaviorContext(TServiceContract service, IAppContext appContext = null, IAmbientServices ambientServices = null)
+        public ServiceBehaviorContext(TServiceContract service, IAmbientServices ambientServices, IAppContext appContext = null)
             : base(ambientServices)
         {
             Contract.Requires(service != null);

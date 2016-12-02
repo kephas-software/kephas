@@ -9,6 +9,7 @@
 
 namespace Kephas.Serialization.Json.Tests
 {
+    using System;
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace Kephas.Serialization.Json.Tests
     using NUnit.Framework;
 
     using Kephas.Serialization.Json;
+
+    using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
 
     /// <summary>
     /// Tests for <see cref="JsonSerializer"/>.
@@ -56,7 +60,11 @@ namespace Kephas.Serialization.Json.Tests
         {
             var serializer = new JsonSerializer();
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, SerializationContext.Create<JsonFormat>());
+            var context = Mock.Create<ISerializationContext>(Behavior.Strict);
+            context.Arrange(c => c.FormatType).Returns(() => typeof(JsonFormat));
+            context.Arrange(c => c.RootObjectType).Returns(() => typeof(TestEntity));
+            context.Arrange(c => c.RootObjectFactory).Returns(() => (Func<object>)null);
+            var obj = await serializer.DeserializeAsync(serializedObj, context);
 
             Assert.IsInstanceOf<TestEntity>(obj);
 
@@ -70,7 +78,11 @@ namespace Kephas.Serialization.Json.Tests
         {
             var serializer = new JsonSerializer();
             var serializedObj = @"{""name"":""John Doe""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, SerializationContext.Create<JsonFormat, TestEntity>());
+            var context = Mock.Create<ISerializationContext>(Behavior.Strict);
+            context.Arrange(c => c.FormatType).Returns(() => typeof(JsonFormat));
+            context.Arrange(c => c.RootObjectType).Returns(() => typeof(TestEntity));
+            context.Arrange(c => c.RootObjectFactory).Returns(() => (Func<object>)null);
+            var obj = await serializer.DeserializeAsync(serializedObj, context);
 
             Assert.IsInstanceOf<TestEntity>(obj);
 
@@ -88,7 +100,7 @@ namespace Kephas.Serialization.Json.Tests
                 b.WithAssemblies(new[] { typeof(ISerializationService).Assembly, typeof(JsonSerializer).Assembly }));
             var ambientServices = asBuilder.AmbientServices;
             var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
-            var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonFormat>());
+            var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonFormat>(serializationService));
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

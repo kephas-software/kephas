@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
         public void TryCreateModelElement_success()
         {
             var constructor = new AnnotationConstructor();
-            var context = new ModelConstructionContext { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = Mock.Create<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new NotMultipleAttribute());
 
             Assert.IsInstanceOf<Annotation>(annotation);

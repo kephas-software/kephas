@@ -210,6 +210,7 @@
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="IAmbientServicesAware.cs" />
     <Compile Include="Reflection\DefaultTypeLoader.cs" />
     <Compile Include="Reflection\ITypeLoader.cs" />
     <Compile Include="Resources\Strings.Designer.cs">

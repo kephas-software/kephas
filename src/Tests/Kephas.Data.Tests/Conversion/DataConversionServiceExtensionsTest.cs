@@ -20,7 +20,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Arrange(c => c.ConvertAsync<string, string>(Arg.AnyString, Arg.AnyString, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
                 .TaskResult(DataConversionResult.FromTarget("hello"));
 
-            var result = await DataConversionServiceExtensions.ConvertAsync(conversionService, "sisi", "says", new DataConversionContext(), CancellationToken.None);
+            var result = await DataConversionServiceExtensions.ConvertAsync(conversionService, "sisi", "says", new DataConversionContext(conversionService), CancellationToken.None);
             Assert.AreEqual("hello", result.Target);
         }
 
@@ -32,7 +32,7 @@ namespace Kephas.Data.Tests.Conversion
                 .Arrange(c => c.ConvertAsync<string, string>(Arg.AnyString, Arg.AnyString, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
                 .Throws<InvalidOperationException>();
 
-            Assert.Throws<InvalidOperationException>(() => DataConversionServiceExtensions.ConvertAsync(conversionService, "sisi", "says", new DataConversionContext(), CancellationToken.None));
+            Assert.Throws<InvalidOperationException>(() => DataConversionServiceExtensions.ConvertAsync(conversionService, "sisi", "says", new DataConversionContext(conversionService), CancellationToken.None));
         }
     }
 }

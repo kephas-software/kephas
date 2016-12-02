@@ -134,7 +134,6 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="Behaviors\Behaviors.cd" />
     <None Include="ModelContracts.cd" />
     <None Include="Package.nuspec" />
     <AdditionalFiles Include="stylecop.json" />
@@ -146,18 +145,12 @@
     </Compile>
     <Compile Include="Application\ModelSpaceAppInitializer.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
-    <Compile Include="AttributedModel\Behaviors\RequiredAttribute.cs" />
     <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
     <Compile Include="AttributedModel\ProjectionForAttribute.cs" />
     <Compile Include="AttributedModel\OverrideAttribute.cs" />
-    <Compile Include="Behaviors\IAsyncModelBehaviorRule.cs" />
-    <Compile Include="Behaviors\IDefaultValueBehaviorRule.cs" />
-    <Compile Include="Behaviors\IInstanceContext.cs" />
-    <Compile Include="Behaviors\InstanceContext.cs" />
-    <Compile Include="Behaviors\IRequiredBehaviorRule.cs" />
     <Compile Include="Configuration\IElementConfigurator.cs" />
     <Compile Include="Construction\ModelConstructionException.cs" />
     <Compile Include="Elements\Annotations\MixinAnnotation.cs" />
@@ -177,7 +170,6 @@
     <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
     <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
     <Compile Include="Elements\Annotation.cs" />
-    <Compile Include="Elements\Annotations\RequiredAnnotation.cs" />
     <Compile Include="Elements\Classifier.cs" />
     <Compile Include="Elements\ClassifierBase.cs" />
     <Compile Include="Runtime\AttributedModel\ValueTypeAttribute.cs" />
@@ -224,7 +216,6 @@
     <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
     <Compile Include="Construction\IModelConstructionContext.cs" />
     <Compile Include="Construction\ModelConstructionContext.cs" />
-    <Compile Include="Runtime\Construction\Annotations\RequiredAnnotationConstructor.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
     <Compile Include="Construction\Internal\IWritableNamedElement.cs" />
     <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProvider.cs" />

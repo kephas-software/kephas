@@ -22,9 +22,8 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DataOperationContext"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public DataOperationContext(IDataContext dataContext, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        public DataOperationContext(IDataContext dataContext)
+            : base(dataContext.AmbientServices)
         {
             Contract.Requires(dataContext != null);
 

@@ -22,15 +22,25 @@ namespace Kephas.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="formatType">Type of the format.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public SerializationContext(Type formatType, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        public SerializationContext(ISerializationService serializationService, Type formatType)
+            : base(serializationService.AmbientServices)
         {
+            Contract.Requires(serializationService != null);
             Contract.Requires(formatType != null);
 
+            this.SerializationService = serializationService;
             this.FormatType = formatType;
         }
+
+        /// <summary>
+        /// Gets the serialization service.
+        /// </summary>
+        /// <value>
+        /// The serialization service.
+        /// </value>
+        public ISerializationService SerializationService { get; }
 
         /// <summary>
         /// Gets the type of the format.
@@ -60,14 +70,17 @@ namespace Kephas.Serialization
         /// Creates a new configured <see cref="SerializationContext"/>.
         /// </summary>
         /// <typeparam name="TFormatType">Type of the format type.</typeparam>
-        /// <param name="rootObjectFactory">The root object factory.</param>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="rootObjectFactory">The root object factory (optional).</param>
         /// <returns>
         /// A configured <see cref="SerializationContext"/>.
         /// </returns>
-        public static SerializationContext Create<TFormatType>(Func<object> rootObjectFactory = null)
+        public static SerializationContext Create<TFormatType>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
             where TFormatType : IFormat
         {
-            return new SerializationContext(typeof(TFormatType)) { RootObjectFactory = rootObjectFactory };
+            Contract.Requires(serializationService != null);
+
+            return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectFactory = rootObjectFactory };
         }
 
         /// <summary>
@@ -75,14 +88,17 @@ namespace Kephas.Serialization
         /// </summary>
         /// <typeparam name="TFormatType">The format type.</typeparam>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="rootObjectFactory">The root object factory.</param>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="rootObjectFactory">The root object factory (optional).</param>
         /// <returns>
         /// A configured <see cref="SerializationContext"/>.
         /// </returns>
-        public static SerializationContext Create<TFormatType, TRootObject>(Func<object> rootObjectFactory = null)
+        public static SerializationContext Create<TFormatType, TRootObject>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
             where TFormatType : IFormat
         {
-            return new SerializationContext(typeof(TFormatType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
+            Contract.Requires(serializationService != null);
+
+            return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
         }
     }
 }

@@ -10,6 +10,7 @@
 namespace Kephas.Data.Commands
 {
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
 
     using Kephas.Data.Capabilities;
     using Kephas.Services;
@@ -22,13 +23,15 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistChangesEntry"/> class.
         /// </summary>
+        /// <param name="dataContext">The data context.</param>
         /// <param name="modifiedEntity">The modified entity.</param>
         /// <param name="changeState">The change state.</param>
         /// <param name="flattenedEntityGraph">The flattened entity graph.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public PersistChangesEntry(object modifiedEntity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        public PersistChangesEntry(IDataContext dataContext, object modifiedEntity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
+            : base(dataContext.AmbientServices)
         {
+            Contract.Requires(dataContext != null);
+
             this.ModifiedEntity = modifiedEntity;
             this.ChangeState = changeState;
             this.FlattenedEntityGraph = flattenedEntityGraph;

@@ -37,15 +37,15 @@ namespace Kephas.Core.Tests.Serialization
         [TestCase(typeof(JsonFormat))]
         public void GetSerializer_WithContext_Exception(Type formatType)
         {
-            var serializationService = new DefaultSerializationService(new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            var context = new SerializationContext(formatType);
+            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var context = new SerializationContext(serializationService, formatType);
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
         }
 
         [Test]
         public void GetSerializer_NoContext_Exception()
         {
-            var serializationService = new DefaultSerializationService(new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer());
         }
 
@@ -54,7 +54,7 @@ namespace Kephas.Core.Tests.Serialization
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat)));
-            var serializationService = new DefaultSerializationService(factories);
+            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.IsNotNull(serializer);
         }
@@ -67,7 +67,7 @@ namespace Kephas.Core.Tests.Serialization
             var newSerializer = Mock.Create<ISerializer>();
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat), oldSerializer, Priority.Normal));
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat), newSerializer, Priority.AboveNormal));
-            var serializationService = new DefaultSerializationService(factories);
+            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.AreSame(serializer, newSerializer);
         }

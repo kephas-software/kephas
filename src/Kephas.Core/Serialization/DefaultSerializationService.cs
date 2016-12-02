@@ -33,11 +33,16 @@ namespace Kephas.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(
+            IAmbientServices ambientServices,
+            ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
+            Contract.Requires(ambientServices != null);
             Contract.Requires(serializerFactories != null);
 
+            this.AmbientServices = ambientServices;
             foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
             {
                 if (!this.serializerFactories.ContainsKey(factory.Metadata.FormatType))
@@ -48,6 +53,14 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
         /// Gets a serializer for the provided context.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -56,7 +69,7 @@ namespace Kephas.Serialization
         /// </returns>
         public ISerializer GetSerializer(ISerializationContext context = null)
         {
-            context = context ?? new SerializationContext(typeof(JsonFormat));
+            context = context ?? new SerializationContext(this, typeof(JsonFormat));
             var formatType = context.FormatType ?? typeof(JsonFormat);
 
             var serializer = this.serializerFactories.TryGetValue(formatType);

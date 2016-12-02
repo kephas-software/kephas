@@ -42,8 +42,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace modelSpace = null,
             IRuntimeModelElementFactory factory = null)
         {
-            return new ModelConstructionContext
-                       {
+            return new ModelConstructionContext(Mock.Create<IAmbientServices>())
+            {
                            ModelSpace = modelSpace ?? Mock.Create<IModelSpace>(),
                            RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),
                        };
