@@ -147,7 +147,6 @@
     <Compile Include="AmbientServices.cs" />
     <Compile Include="AmbientServicesBuilder.cs" />
     <Compile Include="AmbientServicesExtensions.cs" />
-    <Compile Include="Application\AppBoostrapperExtensions.cs" />
     <Compile Include="Application\AppContext.cs" />
     <Compile Include="Application\AppRuntimeBase.cs" />
     <Compile Include="Application\AppInitializerBase.cs" />

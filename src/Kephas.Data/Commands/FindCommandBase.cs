@@ -21,8 +21,10 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for find commands.
     /// </summary>
+    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
     /// <typeparam name="T">Generic type parameter.</typeparam>
-    public abstract class FindCommandBase<T> : DataCommandBase<IFindContext, IFindResult<T>>, IFindCommand<T>
+    public abstract class FindCommandBase<TDataContext, T> : DataCommandBase<IFindContext, IFindResult<T>>, IFindCommand<TDataContext, T>
+        where TDataContext : IDataContext
         where T : class
     {
         /// <summary>

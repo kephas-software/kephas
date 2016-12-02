@@ -23,22 +23,10 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextBase"/> class.
         /// </summary>
-        protected ContextBase()
-            : this(Kephas.AmbientServices.Instance)
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        protected ContextBase(IAmbientServices ambientServices = null)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContextBase"/> class.
-        /// </summary>
-        /// <param name="ambientServices">
-        /// The ambient services.
-        /// </param>
-        protected ContextBase(IAmbientServices ambientServices)
-        {
-            Contract.Requires(ambientServices != null);
-
-            this.AmbientServices = ambientServices;
+            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
         }
 
         /// <summary>

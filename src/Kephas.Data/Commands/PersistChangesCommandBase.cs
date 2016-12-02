@@ -29,11 +29,12 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for commands which persist dataContext changes.
     /// </summary>
-    public abstract class PersistChangesCommandBase : DataCommandBase<IPersistChangesContext, IDataCommandResult>,
-                                                      IPersistChangesCommand
+    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
+    public abstract class PersistChangesCommandBase<TDataContext> : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand<TDataContext>
+        where TDataContext : IDataContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PersistChangesCommandBase"/> class.
+        /// Initializes a new instance of the <see cref="PersistChangesCommandBase{TDataContext}"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         protected PersistChangesCommandBase(IDataBehaviorProvider behaviorProvider)
@@ -57,7 +58,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<PersistChangesCommandBase> Logger { get; set; }
+        public ILogger<PersistChangesCommandBase<TDataContext>> Logger { get; set; }
 
         /// <summary>
         /// Executes the data command asynchronously.

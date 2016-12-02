@@ -24,7 +24,9 @@ namespace Kephas.Messaging.Server
         /// </summary>
         /// <param name="message">The Message.</param>
         /// <param name="handler">The handler.</param>
-        public MessageProcessingContext(IMessage message, IMessageHandler handler)
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public MessageProcessingContext(IMessage message, IMessageHandler handler, IAmbientServices ambientServices = null)
+            : base(ambientServices)
         {
             Contract.Requires(message != null);
             Contract.Requires(handler != null);

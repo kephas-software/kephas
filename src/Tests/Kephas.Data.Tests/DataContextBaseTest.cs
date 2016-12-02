@@ -28,17 +28,17 @@ namespace Kephas.Data.Tests
         public void CreateCommand()
         {
             var container = Mock.Create<ICompositionContext>();
-            var findCmd = Mock.Create<IFindCommand<string>>();
-            var factory = Mock.Create<IDataCommandFactory<IFindCommand<string>>>();
+            var findCmd = Mock.Create<IFindCommand<IDataContext, string>>();
+            var factory = Mock.Create<IDataCommandFactory<IFindCommand<IDataContext, string>>>();
             factory
                 .Arrange(f => f.CreateCommand(typeof(TestDataContext)))
                 .Returns(findCmd);
             container
-                .Arrange(c => c.GetExport<IDataCommandFactory<IFindCommand<string>>>(Arg.AnyString))
+                .Arrange(c => c.GetExport<IDataCommandFactory<IFindCommand<IDataContext, string>>>(Arg.AnyString))
                 .Returns(factory);
 
             var dataContext = new TestDataContext(container);
-            var cmd = dataContext.CreateCommand<IFindCommand<string>>();
+            var cmd = dataContext.CreateCommand<IFindCommand<IDataContext, string>>();
             Assert.AreSame(findCmd, cmd);
         }
 

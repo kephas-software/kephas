@@ -17,7 +17,9 @@ namespace Kephas.Data.Conversion
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Composition;
+    using Kephas.Data.Commands;
     using Kephas.Data.Conversion.Composition;
     using Kephas.Data.Resources;
     using Kephas.Logging;
@@ -68,7 +70,7 @@ namespace Kephas.Data.Conversion
         /// <param name="source">The source object.</param>
         /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>
@@ -97,7 +99,7 @@ namespace Kephas.Data.Conversion
         /// <param name="target">The target object.</param>
         /// <param name="targetType">The type of the target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>
@@ -107,6 +109,21 @@ namespace Kephas.Data.Conversion
             var matchingConverters = matchingConvertersDictionary.GetOrAdd(targetType, _ => this.ComputeMatchingConverters(sourceType, targetType));
 
             var result = this.CreateDataConversionResult();
+
+            if (target == null && conversionContext.TargetDataContext != null)
+            {
+                var targetDataContext = conversionContext.TargetDataContext;
+                var sourceId = (source as IIdentifiable)?.Id;
+                if (Id.IsUnsetValue(sourceId))
+                {
+                    target = await targetDataContext.CreateEntityAsync(targetType.AsType(), new CreateEntityContext<object>(targetDataContext) { EntityType = targetType.AsType() }, cancellationToken).PreserveThreadContext();
+                }
+                else
+                {
+                    target = await targetDataContext.FindAsync(targetType.AsType(), new FindContext<object>(targetDataContext, sourceId, throwIfNotFound: true) { EntityType = targetType.AsType() }, cancellationToken).PreserveThreadContext();
+                }
+            }
+
             result.Target = target;
 
             if (matchingConverters.Count == 0)
@@ -140,9 +157,9 @@ namespace Kephas.Data.Conversion
         /// </summary>
         /// <param name="matchingConverters">The matching converters.</param>
         /// <param name="source">The source object.</param>
-        /// <param name="target">[in,out] The target object.</param>
+        /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The list of results from converters.
         /// </returns>

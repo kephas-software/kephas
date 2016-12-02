@@ -13,12 +13,14 @@ namespace Kephas.Data
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -27,12 +29,113 @@ namespace Kephas.Data
     public static class DataContextExtensions
     {
         /// <summary>
+        /// The find asynchronous method.
+        /// </summary>
+        private static readonly MethodInfo FindAsyncMethod;
+
+        /// <summary>
+        /// The create command method.
+        /// </summary>
+        private static readonly MethodInfo CreateCommandMethod;
+
+        /// <summary>
+        /// The create entity asynchronous method.
+        /// </summary>
+        private static readonly MethodInfo CreateEntityAsyncMethod;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="DataContextExtensions"/> class.
+        /// </summary>
+        static DataContextExtensions()
+        {
+            FindAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => DataContextExtensions.FindAsync<string>(null, null, CancellationToken.None));
+            CreateEntityAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => DataContextExtensions.CreateEntityAsync<string>(null, null, CancellationToken.None));
+            CreateCommandMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).CreateCommand<IDataCommand>());
+        }
+
+        /// <summary>
+        /// Searches for the entity with the provided ID and returns it asynchronously.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="operationContext">Context for the create entity operation.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        public static async Task<object> CreateEntityAsync(
+            this IDataContext dataContext,
+            Type entityType,
+            ICreateEntityContext operationContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(dataContext != null);
+
+            var createEntityAsync = CreateEntityAsyncMethod.MakeGenericMethod(entityType);
+            var resultTask = (Task)createEntityAsync.Call(null, dataContext, operationContext, cancellationToken);
+            await resultTask.PreserveThreadContext();
+
+            var result = resultTask.GetPropertyValue(nameof(Task<int>.Result));
+            return result;
+        }
+
+        /// <summary>
+        /// Searches for the entity with the provided ID and returns it asynchronously.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="operationContext">Context for the create entity operation.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        public static async Task<T> CreateEntityAsync<T>(
+            this IDataContext dataContext,
+            ICreateEntityContext operationContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
+        {
+            Contract.Requires(dataContext != null);
+
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(ICreateEntityCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
+            var command = (IDataCommand<ICreateEntityContext, ICreateEntityResult<T>>)createCommand.Call(dataContext);
+            var result = await command.ExecuteAsync(operationContext, cancellationToken).PreserveThreadContext();
+            return result.Entity;
+        }
+
+        /// <summary>
+        /// Searches for the entity with the provided ID and returns it asynchronously.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="findContext">Context for the find operation.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        public static async Task<object> FindAsync(
+            this IDataContext dataContext,
+            Type entityType,
+            IFindContext findContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Contract.Requires(dataContext != null);
+
+            var findAsync = FindAsyncMethod.MakeGenericMethod(entityType);
+            var resultTask = (Task)findAsync.Call(null, dataContext, findContext, cancellationToken);
+            await resultTask.PreserveThreadContext();
+            
+            var result = resultTask.GetPropertyValue(nameof(Task<int>.Result));
+            return result;
+        }
+
+        /// <summary>
         /// Searches for the entity with the provided ID and returns it asynchronously.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataContext">The data context.</param>
         /// <param name="findContext">Context for the find operation.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -44,7 +147,8 @@ namespace Kephas.Data
         {
             Contract.Requires(dataContext != null);
 
-            var command = dataContext.CreateCommand<IFindCommand<T>>();
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
+            var command = (IDataCommand<IFindContext, IFindResult<T>>)createCommand.Call(dataContext);
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
         }
@@ -55,8 +159,8 @@ namespace Kephas.Data
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataContext">The data context.</param>
         /// <param name="id">The identifier.</param>
-        /// <param name="throwIfNotFound">(Optional) true to throw if not found.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="throwIfNotFound"><c>true</c> to throw if not found (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -69,7 +173,8 @@ namespace Kephas.Data
         {
             Contract.Requires(dataContext != null);
 
-            var command = dataContext.CreateCommand<IFindCommand<T>>();
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
+            var command = (IDataCommand<IFindContext, IFindResult<T>>)createCommand.Call(dataContext);
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
@@ -81,8 +186,8 @@ namespace Kephas.Data
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataContext">The data context.</param>
         /// <param name="criteria">The criteria.</param>
-        /// <param name="throwIfNotFound">(Optional) true to throw if not found.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="throwIfNotFound"><c>true</c> to throw if not found (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
@@ -115,7 +220,7 @@ namespace Kephas.Data
         /// Persists the changes in the dataContext asynchronously.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the persist result.
         /// </returns>
@@ -125,7 +230,8 @@ namespace Kephas.Data
         {
             Contract.Requires(dataContext != null);
 
-            var command = dataContext.CreateCommand<IPersistChangesCommand>();
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IPersistChangesCommand<>).MakeGenericType(dataContext.GetType()));
+            var command = (IDataCommand<IPersistChangesContext, IDataCommandResult>)createCommand.Call(dataContext);
             var persistContext = new PersistChangesContext(dataContext);
             var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
             return result;

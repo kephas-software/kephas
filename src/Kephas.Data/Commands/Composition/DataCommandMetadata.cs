@@ -13,6 +13,7 @@ namespace Kephas.Data.Commands.Composition
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Collections;
     using Kephas.Services;
 
     /// <summary>
@@ -32,17 +33,16 @@ namespace Kephas.Data.Commands.Composition
                 return;
             }
 
-            this.DataContextType = this.GetMetadataValue<DataContextTypeAttribute, Type>(metadata);
+            this.DataContextType = (Type)metadata.TryGetValue(nameof(this.DataContextType));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandMetadata" /> class.
         /// </summary>
         /// <param name="dataContextType">The type of the supported data context.</param>
-        /// <param name="processingPriority">(Optional) The processing priority.</param>
-        /// <param name="overridePriority">(Optional) The override priority.</param>
-        /// <param name="optionalService">(Optional) <c>true</c> if the service is optional, <c>false</c>
-        ///                               if not.</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not.</param>
         public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(processingPriority, overridePriority, optionalService)
         {

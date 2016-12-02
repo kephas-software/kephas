@@ -24,7 +24,9 @@ namespace Kephas.Web.Owin.Application
         /// Initializes a new instance of the <see cref="OwinAppContext"/> class.
         /// </summary>
         /// <param name="appBuilder">The application builder.</param>
-        public OwinAppContext(IAppBuilder appBuilder)
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public OwinAppContext(IAppBuilder appBuilder, IAmbientServices ambientServices = null)
+            : base(ambientServices)
         {
             Contract.Requires(appBuilder != null);
 

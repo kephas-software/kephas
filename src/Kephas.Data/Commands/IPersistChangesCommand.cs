@@ -9,14 +9,15 @@
 
 namespace Kephas.Data.Commands
 {
-    using Kephas.Data.Commands.Composition;
     using Kephas.Services;
 
     /// <summary>
     /// Contract for persist changes commands.
     /// </summary>
-    [AppServiceContract(AsOpenGeneric = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
-    public interface IPersistChangesCommand : IDataCommand<IPersistChangesContext, IDataCommandResult>
+    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
+    [AppServiceContract(AsOpenGeneric = true)]
+    public interface IPersistChangesCommand<in TDataContext> : IDataCommand<IPersistChangesContext, IDataCommandResult>
+        where TDataContext : IDataContext
     {
     }
 }

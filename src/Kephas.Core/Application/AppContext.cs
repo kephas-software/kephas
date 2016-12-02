@@ -16,5 +16,13 @@ namespace Kephas.Application
     /// </summary>
     public class AppContext : ContextBase, IAppContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppContext"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public AppContext(IAmbientServices ambientServices = null)
+            : base(ambientServices)
+        {
+        }
     }
 }

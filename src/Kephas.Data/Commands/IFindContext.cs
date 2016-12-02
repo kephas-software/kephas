@@ -25,7 +25,7 @@ namespace Kephas.Data.Commands
         Id Id { get; }
 
         /// <summary>
-        /// Gets the type of the entity to find.
+        /// Gets the type of the entity.
         /// </summary>
         /// <value>
         /// The type of the entity.

@@ -23,7 +23,9 @@ namespace Kephas.Serialization
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
         /// <param name="formatType">Type of the format.</param>
-        public SerializationContext(Type formatType)
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public SerializationContext(Type formatType, IAmbientServices ambientServices = null)
+            : base(ambientServices)
         {
             Contract.Requires(formatType != null);
 

@@ -21,6 +21,15 @@ namespace Kephas.Model.Construction
     public class ModelConstructionContext : ContextBase, IModelConstructionContext
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public ModelConstructionContext(IAmbientServices ambientServices = null)
+            : base(ambientServices)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the model space.
         /// </summary>
         /// <value>

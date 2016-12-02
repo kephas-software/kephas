@@ -9,7 +9,6 @@
 
 namespace Kephas.Data.Conversion
 {
-    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
@@ -20,9 +19,11 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.
         /// </summary>
-        /// <param name="sourceDataContext">The source data context.</param>
-        /// <param name="targetDataContext">The target data context.</param>
-        public DataConversionContext(IDataContext sourceDataContext = null, IDataContext targetDataContext = null)
+        /// <param name="sourceDataContext">The source data context (optional).</param>
+        /// <param name="targetDataContext">The target data context (optional).</param>
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        public DataConversionContext(IDataContext sourceDataContext = null, IDataContext targetDataContext = null, IAmbientServices ambientServices = null)
+            : base(ambientServices)
         {
             this.SourceDataContext = sourceDataContext;
             this.TargetDataContext = targetDataContext;
