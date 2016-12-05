@@ -78,7 +78,6 @@ namespace Kephas.Composition.Hosting
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
             this.WithServiceProviderExportProvider(context.AmbientServices);
-            this.WithFactoryExportProvider(() => context.AmbientServices, isShared: true);
         }
 
         /// <summary>
