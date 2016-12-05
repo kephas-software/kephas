@@ -57,7 +57,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
+        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
@@ -67,11 +67,12 @@ namespace Kephas.Application
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
-            var assemblies = this.GetLoadedAssemblies();
-
+            var loadedAssemblies = this.GetLoadedAssemblies();
             assemblyFilter = assemblyFilter ?? this.AssemblyFilter;
-            var loadedAssemblyRefs = new HashSet<string>(assemblies.Select(a => a.GetName().FullName));
-            var assembliesToCheck = assemblies.Where(a => assemblyFilter(a.GetName())).ToList();
+
+            var assemblies = loadedAssemblies.Where(a => assemblyFilter(a.GetName())).ToList();
+            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().FullName));
+            var assembliesToCheck = new List<Assembly>(assemblies);
 
             while (assembliesToCheck.Count > 0)
             {

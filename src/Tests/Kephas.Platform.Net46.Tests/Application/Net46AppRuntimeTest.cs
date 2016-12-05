@@ -21,10 +21,21 @@ namespace Kephas.Platform.Net46.Tests.Application
     public class Net46AppRuntimeTest
     {
         [Test]
-        public async Task GetAppAssembliesAsync_success()
+        public async Task GetAppAssembliesAsync_filter()
         {
             var appEnv = new Net46AppRuntime();
             var assemblies = await appEnv.GetAppAssembliesAsync(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
+            var assemblyList = assemblies.ToList();
+
+            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
+        }
+
+        [Test]
+        public async Task GetAppAssembliesAsync_no_filter()
+        {
+            var appEnv = new Net46AppRuntime();
+            var assemblies = await appEnv.GetAppAssembliesAsync();
             var assemblyList = assemblies.ToList();
 
             Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
