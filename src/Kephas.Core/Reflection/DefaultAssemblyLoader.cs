@@ -12,9 +12,12 @@ namespace Kephas.Reflection
     using System;
     using System.Reflection;
 
+    using Kephas.Services;
+
     /// <summary>
     /// A default assembly loader.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class DefaultAssemblyLoader : IAssemblyLoader
     {
         /// <summary>
