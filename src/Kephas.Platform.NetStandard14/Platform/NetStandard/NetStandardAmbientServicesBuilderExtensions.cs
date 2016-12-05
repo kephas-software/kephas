@@ -13,6 +13,7 @@ namespace Kephas.Platform.NetStandard
     using System.Diagnostics.Contracts;
     using System.Reflection;
     using Kephas.Application;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
@@ -23,8 +24,8 @@ namespace Kephas.Platform.NetStandard
         /// Sets the .NET Standard 1.4 application runtime to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="assemblyFilter">(Optional) a filter specifying the assembly.</param>
-        /// <param name="appLocation">(Optional) the application location.</param>
+        /// <param name="assemblyFilter">A filter specifying the assembly (optional).</param>
+        /// <param name="appLocation">The application location (optional).</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
@@ -32,7 +33,9 @@ namespace Kephas.Platform.NetStandard
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppRuntime(new NetStandardAppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
+            var assemblyLoader = new NetStandardAssemblyLoader();
+            ambientServicesBuilder.AmbientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
+            return ambientServicesBuilder.WithAppRuntime(new NetStandardAppRuntime(assemblyLoader, assemblyFilter, appLocation));
         }
     }
 }

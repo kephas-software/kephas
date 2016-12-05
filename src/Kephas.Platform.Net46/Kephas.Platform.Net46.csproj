@@ -138,6 +138,7 @@
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
     <Compile Include="Platform\Net46\Net46AmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\Net46AssemblyLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Kephas.snk">

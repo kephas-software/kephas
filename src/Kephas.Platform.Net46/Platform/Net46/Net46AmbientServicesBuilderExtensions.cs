@@ -14,6 +14,7 @@ namespace Kephas.Platform.Net46
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
@@ -33,7 +34,9 @@ namespace Kephas.Platform.Net46
         {
             Contract.Requires(ambientServicesBuilder != null);
 
-            return ambientServicesBuilder.WithAppRuntime(new Net46AppRuntime(assemblyFilter: assemblyFilter, appLocation: appLocation));
+            var assemblyLoader = new Net46AssemblyLoader();
+            ambientServicesBuilder.AmbientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
+            return ambientServicesBuilder.WithAppRuntime(new Net46AppRuntime(assemblyLoader, assemblyFilter: assemblyFilter, appLocation: appLocation));
         }
     }
 }

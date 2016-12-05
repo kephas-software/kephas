@@ -39,5 +39,28 @@ namespace Kephas.Application
         {
             return new AssemblyName[0];
         }
+
+        /// <summary>
+        /// Gets the application location.
+        /// </summary>
+        /// <returns>
+        /// A path indicating the application location.
+        /// </returns>
+        protected override string GetAppLocation()
+        {
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Gets the file name of the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// The assembly file name.
+        /// </returns>
+        protected override string GetFileName(Assembly assembly)
+        {
+            return string.Empty;
+        }
     }
 }

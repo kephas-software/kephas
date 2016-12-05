@@ -11,6 +11,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -26,6 +27,16 @@ namespace Kephas.Application
     /// </summary>
     public abstract class AppRuntimeBase : Expando, IAppRuntime
     {
+        /// <summary>
+        /// A pattern specifying the assembly file search.
+        /// </summary>
+        protected const string AssemblyFileSearchPattern = "*.dll";
+
+        /// <summary>
+        /// The assembly file extension.
+        /// </summary>
+        protected const string AssemblyFileExtension = ".dll";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
@@ -120,7 +131,47 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task AddAdditionalAssembliesAsync(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            // load all the assemblies found in the application directory which are not already loaded.
+            var directory = this.GetAppLocation();
+            var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
+            var assemblyFiles = Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
+            var assemblyFilesToLoad = assemblyFiles
+                                        .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
+                                        .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
+            assemblies.AddRange(assemblyFilesToLoad
+                                    .Select(f => this.AssemblyLoader.LoadAssemblyFromPath(Path.Combine(directory, f)))
+                                    .Where(a => assemblyFilter(a.GetName())));
+
+            return Task.FromResult((IEnumerable<Assembly>)assemblies);
         }
+
+        /// <summary>
+        /// Gets the assembly name from the assembly file name.
+        /// </summary>
+        /// <param name="f">The format string.</param>
+        /// <returns>
+        /// The assembly name.
+        /// </returns>
+        protected AssemblyName GetAssemblyNameFromAssemblyFileName(string f)
+        {
+            return new AssemblyName(f.Substring(0, f.Length - AssemblyFileExtension.Length));
+        }
+
+        /// <summary>
+        /// Gets the application location.
+        /// </summary>
+        /// <returns>
+        /// A path indicating the application location.
+        /// </returns>
+        protected abstract string GetAppLocation();
+
+        /// <summary>
+        /// Gets the file name of the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// The assembly file name.
+        /// </returns>
+        protected abstract string GetFileName(Assembly assembly);
     }
 }

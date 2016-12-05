@@ -142,6 +142,7 @@
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
     <Compile Include="Platform\NetStandard\NetStandardAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\NetStandardAssemblyLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">

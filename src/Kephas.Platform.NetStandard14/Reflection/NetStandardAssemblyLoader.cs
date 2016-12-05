@@ -1,22 +1,35 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAssemblyLoader.cs" company="Quartz Software SRL">
+// <copyright file="NetStandardAssemblyLoader.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the default assembly loader class.
+//   Implements the net standard assembly loader class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Reflection
 {
-    using System;
     using System.Reflection;
+    using System.Runtime.Loader;
 
     /// <summary>
-    /// A default assembly loader.
+    /// The assembly loader for the .NET Standard platform.
     /// </summary>
-    public class DefaultAssemblyLoader : IAssemblyLoader
+    public class NetStandardAssemblyLoader : IAssemblyLoader
     {
+        /// <summary>
+        /// The load context.
+        /// </summary>
+        private readonly AssemblyLoadContext loadContext;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetStandardAssemblyLoader"/> class.
+        /// </summary>
+        public NetStandardAssemblyLoader()
+        {
+            this.loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetEntryAssembly());
+        }
+
         /// <summary>
         /// Attempts to load an assembly.
         /// </summary>
@@ -38,7 +51,7 @@ namespace Kephas.Reflection
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-            throw new NotSupportedException("Please use a more specific assembly loader, which can load from a file path, like Net46AssemblyLoader or NetStandardAssemblyLoader.");
+            return this.loadContext.LoadFromAssemblyPath(assemblyFilePath);
         }
     }
 }

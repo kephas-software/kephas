@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAssemblyLoader.cs" company="Quartz Software SRL">
+// <copyright file="Net46AssemblyLoader.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IAssemblyLoader interface.
+//   Implements the net 46 assembly loader class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,13 +11,10 @@ namespace Kephas.Reflection
 {
     using System.Reflection;
 
-    using Kephas.Services;
-
     /// <summary>
-    /// Interface for loading assemblies.
+    /// The assembly loader for .NET 4.6 and later platform.
     /// </summary>
-    [SharedAppServiceContract]
-    public interface IAssemblyLoader
+    public class Net46AssemblyLoader : IAssemblyLoader
     {
         /// <summary>
         /// Attempts to load an assembly.
@@ -26,7 +23,10 @@ namespace Kephas.Reflection
         /// <returns>
         /// The resolved assembly reference.
         /// </returns>
-        Assembly LoadAssembly(AssemblyName assemblyName);
+        public Assembly LoadAssembly(AssemblyName assemblyName)
+        {
+            return Assembly.Load(assemblyName);
+        }
 
         /// <summary>
         /// Attempts to load an assembly.
@@ -35,6 +35,9 @@ namespace Kephas.Reflection
         /// <returns>
         /// The resolved assembly reference.
         /// </returns>
-        Assembly LoadAssemblyFromPath(string assemblyFilePath);
+        public Assembly LoadAssemblyFromPath(string assemblyFilePath)
+        {
+            return Assembly.LoadFile(assemblyFilePath);
+        }
     }
 }
