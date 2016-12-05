@@ -81,8 +81,12 @@ namespace Kephas.Application
             var loadedAssemblies = this.GetLoadedAssemblies();
             assemblyFilter = assemblyFilter ?? this.AssemblyFilter;
 
+            // when computing the assemblies, use the Name and not the FullName
+            // because for some obscure reasons it is possible to have the same
+            // assembly with different versions loaded.
+            // TODO log when such cases occur.
             var assemblies = loadedAssemblies.Where(a => assemblyFilter(a.GetName())).ToList();
-            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().FullName));
+            var loadedAssemblyRefs = new HashSet<string>(loadedAssemblies.Select(a => a.GetName().Name));
             var assembliesToCheck = new List<Assembly>(assemblies);
 
             while (assembliesToCheck.Count > 0)
@@ -90,11 +94,14 @@ namespace Kephas.Application
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
                 foreach (var assembly in assembliesToCheck)
                 {
-                    var referencesToLoad = this.GetReferencedAssemblies(assembly).Where(a => !loadedAssemblyRefs.Contains(a.FullName) && assemblyFilter(a));
+                    var referencesToLoad =
+                        this.GetReferencedAssemblies(assembly)
+                            .Where(a => !loadedAssemblyRefs.Contains(a.Name) && assemblyFilter(a))
+                            .ToList();
+                    loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
-                loadedAssemblyRefs.AddRange(assemblyRefsToLoad.Select(an => an.FullName));
                 assembliesToCheck = assemblyRefsToLoad.Select(this.AssemblyLoader.LoadAssembly).ToList();
                 assemblies.AddRange(assembliesToCheck);
             }
