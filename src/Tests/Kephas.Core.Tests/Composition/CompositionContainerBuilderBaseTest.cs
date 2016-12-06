@@ -45,8 +45,8 @@ namespace Kephas.Core.Tests.Composition
             Assert.AreEqual(configManager, builder.ConfigurationManager);
             Assert.AreEqual(platformManager, builder.AppRuntime);
 
-            // The IServiceProvider and IAmbientServices export providers.
-            Assert.AreEqual(2, builder.InternalExportProviders.Count);
+            // The IServiceProvider export providers.
+            Assert.AreEqual(1, builder.InternalExportProviders.Count);
         }
 
         [Test]

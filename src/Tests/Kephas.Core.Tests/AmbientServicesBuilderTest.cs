@@ -32,6 +32,15 @@ namespace Kephas.Core.Tests
     public class AmbientServicesBuilderTest
     {
         [Test]
+        public void Constructor_register_ambient_services()
+        {
+            var ambientServices = new AmbientServices();
+            var builder = new AmbientServicesBuilder(ambientServices);
+
+            Assert.AreSame(ambientServices, ambientServices.GetService(typeof(IAmbientServices)));
+        }
+
+        [Test]
         public void WithLogManager_success()
         {
             var ambientServices = new AmbientServices();
