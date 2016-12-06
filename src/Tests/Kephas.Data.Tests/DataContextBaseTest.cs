@@ -10,7 +10,6 @@
 namespace Kephas.Data.Tests
 {
     using System.Linq;
-    using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
     using Kephas.Composition;
     using Kephas.Data.Commands;
