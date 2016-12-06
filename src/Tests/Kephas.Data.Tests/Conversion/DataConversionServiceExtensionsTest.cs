@@ -1,14 +1,26 @@
-﻿using System;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Threading;
-using System.Threading.Tasks;
-using Kephas.Data.Conversion;
-using NUnit.Framework;
-using Telerik.JustMock;
-using Telerik.JustMock.Helpers;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataConversionServiceExtensionsTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the data conversion service extensions test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Tests.Conversion
 {
+    using System;
+    using System.Runtime.Remoting.Metadata.W3cXsd2001;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Data.Conversion;
+
+    using NUnit.Framework;
+
+    using Telerik.JustMock;
+    using Telerik.JustMock.Helpers;
+
     [TestFixture]
     public class DataConversionServiceExtensionsTest
     {

@@ -1,4 +1,13 @@
-﻿namespace Kephas.Data.Tests.Conversion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="defaultdataconversionservicetest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the defaultdataconversionservicetest class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Tests.Conversion
 {
     using System.Threading;
     using System.Threading.Tasks;
