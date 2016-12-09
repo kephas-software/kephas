@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kephas.Testing.Composition.Mef</RootNamespace>
-    <AssemblyName>Kephas.Testing.Composition.Mef.Net46</AssemblyName>
+    <AssemblyName>Kephas.Testing.Composition.Mef</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
