@@ -351,7 +351,7 @@ namespace Kephas.Services.Composition
 
             if (explicitelyMarkedConstructors.Count > 1)
             {
-                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType));
+                throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
             return explicitelyMarkedConstructors[1];
