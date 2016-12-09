@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NetStandardAppRuntime.cs" company="Quartz Software SRL">
+// <copyright file="NetAppRuntime.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the .NET Standard 1.5 application runtime class.
+//   Implements the .NET 4.6 application runtime class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,14 +12,15 @@ namespace Kephas.Application
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Reflection;
 
     /// <summary>
-    /// A .NET Standard 1.5 application runtime.
+    /// A .NET 4.6 application runtime.
     /// </summary>
-    public class NetStandardAppRuntime : AppRuntimeBase
+    public class NetAppRuntime : AppRuntimeBase
     {
         /// <summary>
         /// The application location.
@@ -27,12 +28,12 @@ namespace Kephas.Application
         private readonly string appLocation;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NetStandardAppRuntime"/> class.
+        /// Initializes a new instance of the <see cref="NetAppRuntime"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">The assembly loader.</param>
-        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        /// <param name="appLocation">The application location (optional). If not specified, the current application location is considered.</param>
-        public NetStandardAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
+        /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
+        /// <param name="appLocation">(Optional) the application location. If not specified, the current application location is considered.</param>
+        public NetAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
             : base(assemblyLoader, assemblyFilter)
         {
             this.appLocation = appLocation;
@@ -46,7 +47,7 @@ namespace Kephas.Application
         /// </returns>
         protected override IList<Assembly> GetLoadedAssemblies()
         {
-            return new List<Assembly> { Assembly.GetEntryAssembly() };
+            return AppDomain.CurrentDomain.GetAssemblies().ToList();
         }
 
         /// <summary>
@@ -62,10 +63,10 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the assembly location.
+        /// Gets the application location.
         /// </summary>
         /// <returns>
-        /// A path.
+        /// A path indicating the application location.
         /// </returns>
         protected override string GetAppLocation()
         {
@@ -74,7 +75,11 @@ namespace Kephas.Application
                 return Path.GetFullPath(this.appLocation);
             }
 
-            return System.AppContext.BaseDirectory;
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+
+            var codebaseUri = new Uri(assembly.CodeBase);
+            var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
+            return location;
         }
 
         /// <summary>

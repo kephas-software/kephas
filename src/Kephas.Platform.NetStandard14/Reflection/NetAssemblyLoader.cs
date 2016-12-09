@@ -1,21 +1,35 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Net46AssemblyLoader.cs" company="Quartz Software SRL">
+// <copyright file="NetAssemblyLoader.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the net 46 assembly loader class.
+//   Implements the net standard assembly loader class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Reflection
 {
     using System.Reflection;
+    using System.Runtime.Loader;
 
     /// <summary>
-    /// The assembly loader for .NET 4.6 and later platform.
+    /// The assembly loader for the .NET Standard platform.
     /// </summary>
-    public class Net46AssemblyLoader : IAssemblyLoader
+    public class NetAssemblyLoader : IAssemblyLoader
     {
+        /// <summary>
+        /// The load context.
+        /// </summary>
+        private readonly AssemblyLoadContext loadContext;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NetAssemblyLoader"/> class.
+        /// </summary>
+        public NetAssemblyLoader()
+        {
+            this.loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetEntryAssembly());
+        }
+
         /// <summary>
         /// Attempts to load an assembly.
         /// </summary>
@@ -37,7 +51,7 @@ namespace Kephas.Reflection
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-            return Assembly.LoadFile(assemblyFilePath);
+            return this.loadContext.LoadFromAssemblyPath(assemblyFilePath);
         }
     }
 }

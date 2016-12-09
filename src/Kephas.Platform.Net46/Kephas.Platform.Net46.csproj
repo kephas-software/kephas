@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kephas</RootNamespace>
-    <AssemblyName>Kephas.Platform.Net46</AssemblyName>
+    <AssemblyName>Kephas.Platform.Net</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Kephas.Platform.Net46.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Kephas.Platform.Net.xml</DocumentationFile>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -74,7 +74,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Kephas.Platform.Net46.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Kephas.Platform.Net.xml</DocumentationFile>
     <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
     <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
     <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
@@ -134,18 +134,15 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\Net46AppRuntime.cs" />
+    <Compile Include="Application\NetAppRuntime.cs" />
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
-    <Compile Include="Platform\Net46\Net46AmbientServicesBuilderExtensions.cs" />
+    <Compile Include="Platform\Net\NetAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\Net46AssemblyLoader.cs" />
+    <Compile Include="Reflection\NetAssemblyLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
-    </None>
-    <None Include="Package.nuspec">
-      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <AdditionalFiles Include="stylecop.json" />

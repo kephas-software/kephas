@@ -40,7 +40,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Net46AppRuntimeTest.cs" />
+    <Compile Include="Application\NetAppRuntimeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

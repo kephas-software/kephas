@@ -52,7 +52,8 @@ namespace Kephas
         /// </summary>
         public AmbientServices()
         {
-            this.RegisterService<IAppRuntime>(new NullAppRuntime())
+            this.RegisterService<IAmbientServices>(this)
+                .RegisterService<IAppRuntime>(new NullAppRuntime())
                 .RegisterService<ILogManager>(new NullLogManager())
                 .RegisterService<IConfigurationManager>(new NullConfigurationManager())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())

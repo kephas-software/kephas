@@ -64,7 +64,6 @@ namespace Kephas.Testing.Composition.Mef
 
             var ambientServices = new AmbientServices();
             ambientServices
-                .RegisterService<IAmbientServices>(ambientServices)
                 .RegisterService(logManager)
                 .RegisterService(configurationManager)
                 .RegisterService(appRuntime);

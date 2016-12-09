@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Net46AppRuntimeTest.cs" company="Quartz Software SRL">
+// <copyright file="NetAppRuntimeTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -18,12 +18,12 @@ namespace Kephas.Platform.Net46.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class Net46AppRuntimeTest
+    public class NetAppRuntimeTest
     {
         [Test]
         public async Task GetAppAssembliesAsync_filter()
         {
-            var appEnv = new Net46AppRuntime();
+            var appEnv = new NetAppRuntime();
             var assemblies = await appEnv.GetAppAssembliesAsync(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
@@ -34,7 +34,7 @@ namespace Kephas.Platform.Net46.Tests.Application
         [Test]
         public async Task GetAppAssembliesAsync_no_filter()
         {
-            var appEnv = new Net46AppRuntime();
+            var appEnv = new NetAppRuntime();
             var assemblies = await appEnv.GetAppAssembliesAsync();
             var assemblyList = assemblies.ToList();
 
