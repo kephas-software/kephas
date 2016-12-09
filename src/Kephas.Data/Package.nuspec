@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Data</id>
-        <version>3.1.0-preview1-rc2</version>
+        <version>3.1.0-preview2</version>
         <title>Kephas.Data</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -22,7 +22,7 @@
         <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
         <dependencies>
             <group>
-                <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
+                <dependency id="Kephas.Core" version="3.1.0-preview2" />
             </group>
             <group targetFramework="netstandard1.4">
                 <dependency id="System.Linq.Expressions" version="4.3.0" />

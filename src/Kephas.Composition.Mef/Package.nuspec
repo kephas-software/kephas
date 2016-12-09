@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Composition.Mef</id>
-        <version>3.1.0-preview1-rc2</version>
+        <version>3.1.0-preview2</version>
         <title>Kephas.Composition.Mef</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -25,7 +25,7 @@
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
         <dependencies>
-            <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
+            <dependency id="Kephas.Core" version="3.1.0-preview2" />
             <dependency id="System.Composition" version="1.0.31" />
         </dependencies>
         <references>
@@ -41,10 +41,10 @@
         <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.5" />
         <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
         <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
-        <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\portable-net462+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.dll" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.xml" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\net461\CodeContracts" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\net461\CodeContracts" />
     </files>
 </package>

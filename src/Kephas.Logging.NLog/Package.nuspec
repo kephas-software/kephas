@@ -1,48 +1,55 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Logging.NLog</id>
-    <version>3.1.0-preview1-rc2</version>
-    <title>Kephas.Logging.NLog</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>
-        Provides the NLog 4 (and later) logging services implementation.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-        Provides the NLog 4 (and later) logging services implementation.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
-    <dependencies>
-        <dependency id="Kephas.Core" version="3.1.0-preview1-rc2" />
-        <dependency id="NLog" version="4.4.0-betaV15" />
-    </dependencies>
-    <references>
-      <reference file="Kephas.Logging.NLog.dll" />
-    </references>
-    <tags>kephas framework logging nlog quartz software</tags>
-  </metadata>
-  <files>
-    <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
-      <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-      <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-      <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-      <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-      <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10\CodeContracts" />
-  </files>
+    <metadata>
+        <id>Kephas.Logging.NLog</id>
+        <version>3.1.0-preview2</version>
+        <title>Kephas.Logging.NLog</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides the NLog 4 (and later) logging services implementation.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides the NLog 4 (and later) logging services implementation.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="3.1.0-preview2" />
+            </group>
+            <group targetFramework="net461">
+                <dependency id="NLog" version="4.3.11" />
+            </group>
+            <group targetFramework="netstandard1.4">
+                <dependency id="NLog" version="4.4.0-betaV15" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Logging.NLog.dll" />
+        </references>
+        <tags>kephas framework logging nlog quartz software</tags>
+    </metadata>
+    <files>
+        <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
+        <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.dll" target="lib\net461" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.pdb" target="lib\net461" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.xml" target="lib\net461" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net461\CodeContracts" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net461\CodeContracts" />
+    </files>
 </package>
