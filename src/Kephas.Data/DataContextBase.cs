@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+
 namespace Kephas.Data
 {
     using System;
@@ -18,8 +21,9 @@ namespace Kephas.Data
     using Kephas.Data.Commands.Factory;
     using Kephas.Dynamic;
     using Kephas.Services;
+    using Collections;
 
-  /// <summary>
+    /// <summary>
     /// Base implementation of a <see cref="IDataContext"/>.
     /// </summary>
     public abstract class DataContextBase : Expando, IDataContext
@@ -28,6 +32,11 @@ namespace Kephas.Data
         /// Context for the composition.
         /// </summary>
         private readonly ICompositionContext compositionContext;
+
+        /// <summary>
+        /// The command factories.
+        /// </summary>
+        private IDictionary<Type, Func<IDataCommand>> commandFactories = new Dictionary<Type, Func<IDataCommand>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
@@ -81,8 +90,15 @@ namespace Kephas.Data
         public TCommand CreateCommand<TCommand>()
             where TCommand : IDataCommand
         {
-            var commandFactory = this.compositionContext.GetExport<IDataCommandFactory<TCommand>>();
-            return commandFactory.CreateCommand(this.GetType());
+            var factory = this.commandFactories.TryGetValue(typeof(TCommand));
+            if (factory == null)
+            {
+                var commandFactory = this.compositionContext.GetExport<IDataCommandFactory<TCommand>>();
+                factory = commandFactory.GetCommandFactory(this.GetType());
+                this.commandFactories.Add(typeof(TCommand), factory);
+            }
+
+            return (TCommand)factory();
         }
 
         /// <summary>

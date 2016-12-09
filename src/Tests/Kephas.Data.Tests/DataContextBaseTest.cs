@@ -15,10 +15,9 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DataContextBaseTest
@@ -26,15 +25,11 @@ namespace Kephas.Data.Tests
         [Test]
         public void CreateCommand()
         {
-            var container = Mock.Create<ICompositionContext>();
-            var findCmd = Mock.Create<IFindCommand<IDataContext, string>>();
-            var factory = Mock.Create<IDataCommandFactory<IFindCommand<IDataContext, string>>>();
-            factory
-                .Arrange(f => f.CreateCommand(typeof(TestDataContext)))
-                .Returns(findCmd);
-            container
-                .Arrange(c => c.GetExport<IDataCommandFactory<IFindCommand<IDataContext, string>>>(Arg.AnyString))
-                .Returns(factory);
+            var container = Substitute.For<ICompositionContext>();
+            var findCmd = Substitute.For<IFindCommand<IDataContext, string>>();
+            var factory = Substitute.For<IDataCommandFactory<IFindCommand<IDataContext, string>>>();
+            factory.GetCommandFactory(typeof(TestDataContext)).Returns(() => findCmd);
+            container.GetExport<IDataCommandFactory<IFindCommand<IDataContext, string>>>(Arg.Any<string>()).Returns(factory);
 
             var dataContext = new TestDataContext(compositionContext: container);
             var cmd = dataContext.CreateCommand<IFindCommand<IDataContext, string>>();
@@ -47,7 +42,7 @@ namespace Kephas.Data.Tests
             /// Initializes a new instance of the <see cref="DataContextBase"/> class.
             /// </summary>
             public TestDataContext(IAmbientServices ambientServices = null, ICompositionContext compositionContext = null) 
-                : base(ambientServices ?? Mock.Create<IAmbientServices>(), compositionContext ?? Mock.Create<ICompositionContext>())
+                : base(ambientServices ?? Substitute.For<IAmbientServices>(), compositionContext ?? Substitute.For<ICompositionContext>())
             {
             }
 

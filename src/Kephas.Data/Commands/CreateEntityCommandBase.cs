@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Data.Capabilities;
+using Kephas.Reflection;
+
 namespace Kephas.Data.Commands
 {
     using System.Diagnostics.Contracts;
@@ -56,13 +59,26 @@ namespace Kephas.Data.Commands
         {
             var entity = this.CreateEntity(context);
 
+            // set the change state to Added
+            var dataContext = context.DataContext;
+            var trackableEntity = dataContext.TryGetCapability<IChangeStateTrackable>(entity, context);
+            if (trackableEntity != null)
+            {
+                trackableEntity.ChangeState = ChangeState.Added;
+            }
+
+            // execute initialization behaviors
             var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
             foreach (var initializeBehavior in initializeBehaviors)
             {
                 await initializeBehavior.InitializeAsync(entity, context, cancellationToken).PreserveThreadContext();
             }
 
-            return new CreateEntityResult<T>(entity);
+            // prepare the result
+            var result = new CreateEntityResult<T>(entity);
+            this.PostCreateEntity(context, result);
+
+            return result;
         }
 
         /// <summary>
@@ -72,6 +88,19 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// The new entity.
         /// </returns>
-        protected abstract T CreateEntity(ICreateEntityContext operationContext);
+        protected virtual T CreateEntity(ICreateEntityContext operationContext)
+        {
+            var runtimeTypeInfo = typeof(T).AsRuntimeTypeInfo();
+            return (T) runtimeTypeInfo.CreateInstance();
+        }
+
+        /// <summary>
+        /// Overridable method called just before returning the result.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="result">The result.</param>
+        protected virtual void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult<T> result)
+        {
+        }
     }
 }

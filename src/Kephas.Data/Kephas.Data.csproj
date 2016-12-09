@@ -152,6 +152,11 @@
     <Compile Include="Behaviors\IDataBehavior.cs" />
     <Compile Include="Behaviors\IDataBehaviorProvider.cs" />
     <Compile Include="Capabilities\IGraphOperationContext.cs" />
+    <Compile Include="ClientEntities\ClientDataContext.cs" />
+    <Compile Include="ClientEntities\Commands\ClientCreateEntityCommand.cs" />
+    <Compile Include="ClientEntities\Commands\ClientFindCommand.cs" />
+    <Compile Include="ClientEntities\DefaultClientDataContextProvider.cs" />
+    <Compile Include="ClientEntities\IClientDataContextProvider.cs" />
     <Compile Include="Commands\Builders\IDataCommandBuilder.cs" />
     <Compile Include="Commands\CreateEntityCommandBase.cs" />
     <Compile Include="Commands\CreateEntityContext.cs" />

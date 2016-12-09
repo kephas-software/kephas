@@ -30,11 +30,11 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Gets the created entity or <c>null</c> if no entity could be found.
+        /// Gets or sets the created entity.
         /// </summary>
         /// <value>
-        /// The created entity.
+        /// The created entity or <c>null</c> if no entity could be created.
         /// </value>
-        public T Entity { get; }
+        public T Entity { get; set; }
     }
 }

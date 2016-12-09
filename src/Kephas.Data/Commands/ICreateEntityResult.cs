@@ -13,14 +13,14 @@ namespace Kephas.Data.Commands
     /// Contract for the create entity result.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public interface ICreateEntityResult<out TEntity> : IDataCommandResult
+    public interface ICreateEntityResult<TEntity> : IDataCommandResult
     {
         /// <summary>
-        /// Gets the found entity or <c>null</c> if no entity could be found.
+        /// Gets or sets the found entity or <c>null</c> if no entity could be found.
         /// </summary>
         /// <value>
         /// The found entity.
         /// </value>
-        TEntity Entity { get; }
+        TEntity Entity { get; set; }
     }
 }

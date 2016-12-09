@@ -17,10 +17,10 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base implementation of a data command.
     /// </summary>
-    /// <typeparam name="TContext">Type of the operationContext.</typeparam>
+    /// <typeparam name="TOperationContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public abstract class DataCommandBase<TContext, TResult> : IDataCommand<TContext, TResult>
-        where TContext : IDataOperationContext
+    public abstract class DataCommandBase<TOperationContext, TResult> : IDataCommand<TOperationContext, TResult>
+        where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
         /// <summary>
@@ -31,7 +31,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public abstract Task<TResult> ExecuteAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract Task<TResult> ExecuteAsync(TOperationContext context, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Executes the data command asynchronously.
@@ -43,7 +43,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         public async Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await this.ExecuteAsync((TContext)operationContext, cancellationToken).PreserveThreadContext();
+            var result = await this.ExecuteAsync((TOperationContext)operationContext, cancellationToken).PreserveThreadContext();
             return result;
         }
     }

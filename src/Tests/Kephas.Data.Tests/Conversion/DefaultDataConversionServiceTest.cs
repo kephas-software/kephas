@@ -16,9 +16,10 @@ namespace Kephas.Data.Tests.Conversion
     using Kephas.Data.Conversion.Composition;
     using Kephas.Services;
     using Kephas.Testing.Core.Composition;
+
+    using NSubstitute;
+
     using NUnit.Framework;
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
 
     [TestFixture]
     public class DefaultDataConversionServiceTest
@@ -26,12 +27,12 @@ namespace Kephas.Data.Tests.Conversion
         [Test]
         public async Task ConvertAsync_one_converter_success()
         {
-            var converter = Mock.Create<IDataConverter>();
-            converter.Arrange(c => c.ConvertAsync(Arg.AnyObject, Arg.AnyObject, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
-                .TaskResult(new DataConversionResult {Target = 5});
+            var converter = Substitute.For<IDataConverter>();
+            converter.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult {Target = 5}));
 
             var service =
-                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(int), typeof(int)))
@@ -44,16 +45,16 @@ namespace Kephas.Data.Tests.Conversion
         [Test]
         public async Task ConvertAsync_two_converters_success_last_overrides_target()
         {
-            var converter1 = Mock.Create<IDataConverter>();
-            converter1.Arrange(c => c.ConvertAsync(Arg.AnyObject, Arg.AnyObject, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
-                .TaskResult(new DataConversionResult { Target = 5 });
+            var converter1 = Substitute.For<IDataConverter>();
+            converter1.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 5 }));
 
-            var converter2 = Mock.Create<IDataConverter>();
-            converter2.Arrange(c => c.ConvertAsync(Arg.AnyObject, Arg.AnyObject, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
-                .TaskResult(new DataConversionResult { Target = 6 });
+            var converter2 = Substitute.For<IDataConverter>();
+            converter2.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 6 }));
 
             var service =
-                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int))),
@@ -68,16 +69,16 @@ namespace Kephas.Data.Tests.Conversion
         [Test]
         public async Task ConvertAsync_two_converters_success_respects_processing_priority()
         {
-            var converter1 = Mock.Create<IDataConverter>();
-            converter1.Arrange(c => c.ConvertAsync(Arg.AnyObject, Arg.AnyObject, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
-                .TaskResult(new DataConversionResult { Target = 5 });
+            var converter1 = Substitute.For<IDataConverter>();
+            converter1.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 5 }));
 
-            var converter2 = Mock.Create<IDataConverter>();
-            converter2.Arrange(c => c.ConvertAsync(Arg.AnyObject, Arg.AnyObject, Arg.IsAny<IDataConversionContext>(), Arg.IsAny<CancellationToken>()))
-                .TaskResult(new DataConversionResult { Target = 6 });
+            var converter2 = Substitute.For<IDataConverter>();
+            converter2.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 6 }));
 
             var service =
-                new DefaultDataConversionService(Mock.Create<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
                     new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority:  (int)Priority.Low)),

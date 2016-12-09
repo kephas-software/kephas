@@ -11,6 +11,8 @@ namespace Kephas.Data.Commands.Factory
 {
     using System;
 
+    using Kephas.Composition;
+    using Kephas.Data.Commands.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -22,12 +24,12 @@ namespace Kephas.Data.Commands.Factory
         where TCommand : IDataCommand
     {
         /// <summary>
-        /// Creates the command.
+        /// Gets the command factory for the given data context type.
         /// </summary>
         /// <param name="dataContextType">Type of the data context.</param>
         /// <returns>
-        /// The new command.
+        ///  The command factory for the indicated command.
         /// </returns>
-        TCommand CreateCommand(Type dataContextType);
+        Func<IDataCommand> GetCommandFactory(Type dataContextType);
     }
 }

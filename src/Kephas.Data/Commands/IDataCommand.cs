@@ -31,20 +31,20 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for data commands, with typed operationContext and result.
     /// </summary>
-    /// <typeparam name="TContext">Type of the operationContext.</typeparam>
+    /// <typeparam name="TOperationContext">Type of the operation context.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public interface IDataCommand<in TContext, TResult> : IDataCommand
-        where TContext : IDataOperationContext
+    public interface IDataCommand<in TOperationContext, TResult> : IDataCommand
+        where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The operationContext.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="context">The operation context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        Task<TResult> ExecuteAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResult> ExecuteAsync(TOperationContext context, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

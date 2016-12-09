@@ -13,7 +13,6 @@ namespace Kephas.Data.Commands.Factory
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Data.Commands.Composition;
@@ -40,13 +39,13 @@ namespace Kephas.Data.Commands.Factory
         }
 
         /// <summary>
-        /// Creates the command.
+        /// Gets the command factory for the given data context type.
         /// </summary>
         /// <param name="dataContextType">Type of the data context.</param>
         /// <returns>
-        /// The new command.
+        ///  The command factory for the indicated command.
         /// </returns>
-        public TCommand CreateCommand(Type dataContextType)
+        public Func<IDataCommand> GetCommandFactory(Type dataContextType)
         {
             var commandFactory = this.commandFactories.FirstOrDefault(f => f.Metadata.DataContextType == dataContextType);
             if (commandFactory == null)
@@ -54,7 +53,7 @@ namespace Kephas.Data.Commands.Factory
                 throw new NotSupportedException(string.Format(Strings.DataCommandFactory_CreateCommand_NotSupported_Exception, typeof(TCommand)));
             }
 
-            return commandFactory.CreateExport().Value;
+            return () => commandFactory.CreateExport().Value;
         }
     }
 }

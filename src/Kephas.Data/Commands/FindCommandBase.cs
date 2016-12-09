@@ -22,7 +22,7 @@ namespace Kephas.Data.Commands
     /// Base class for find commands.
     /// </summary>
     /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
+    /// <typeparam name="T">The entity type.</typeparam>
     public abstract class FindCommandBase<TDataContext, T> : DataCommandBase<IFindContext, IFindResult<T>>, IFindCommand<TDataContext, T>
         where TDataContext : IDataContext
         where T : class
@@ -31,7 +31,7 @@ namespace Kephas.Data.Commands
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
@@ -53,11 +53,11 @@ namespace Kephas.Data.Commands
                 exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, operationContext.Id));
                 if (operationContext.ThrowIfNotFound)
                 {
-                    throw new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, operationContext.Id));
+                    throw exception;
                 }
             }
 
-            var result = new FindResult<T>(entities.Count == 0 ? default(T) : (T)entities[0], exception: exception);
+            var result = new FindResult<T>(entities.Count == 0 ? default(T) : entities[0], exception: exception);
             return result;
         }
 
@@ -71,7 +71,7 @@ namespace Kephas.Data.Commands
         protected virtual IQueryable<T> GetEntityQuery(IFindContext operationContext)
         {
             var dataContext = operationContext.DataContext;
-            var query = dataContext.Query<T>().Where(e => ((IIdentifiable)e).Id == operationContext.Id);
+            var query = dataContext.Query<T>(new QueryOperationContext(dataContext)).Where(e => ((IIdentifiable)e).Id == operationContext.Id);
             return query;
         }
     }
