@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using NSubstitute;
+
 namespace Kephas.Testing.Composition.Mef
 {
     using System;
@@ -24,8 +26,6 @@ namespace Kephas.Testing.Composition.Mef
     using Kephas.Logging;
 
     using NUnit.Framework;
-
-    using Telerik.JustMock;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -58,11 +58,17 @@ namespace Kephas.Testing.Composition.Mef
 
         public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IAppRuntime appRuntime = null)
         {
-            logManager = logManager ?? Mock.Create<ILogManager>();
-            configurationManager = configurationManager ?? Mock.Create<IConfigurationManager>();
-            appRuntime = appRuntime ?? Mock.Create<IAppRuntime>();
+            logManager = logManager ?? Substitute.For<ILogManager>();
+            configurationManager = configurationManager ?? Substitute.For<IConfigurationManager>();
+            appRuntime = appRuntime ?? Substitute.For<IAppRuntime>();
 
-            return new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(configurationManager).RegisterService(appRuntime)));
+            var ambientServices = new AmbientServices();
+            ambientServices
+                .RegisterService<IAmbientServices>(ambientServices)
+                .RegisterService(logManager)
+                .RegisterService(configurationManager)
+                .RegisterService(appRuntime);
+            return new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServices));
         }
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
@@ -84,7 +90,7 @@ namespace Kephas.Testing.Composition.Mef
             var configuration = this.WithEmptyConfiguration().WithParts(types);
             return this
                 .WithContainerBuilder()
-                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
                 .WithConfiguration(configuration)
                 .CreateContainer();
         }
@@ -93,8 +99,8 @@ namespace Kephas.Testing.Composition.Mef
         {
             return new List<Assembly>
                        {
-                           typeof(ICompositionContext).Assembly,     /* Kephas.Core*/
-                           typeof(MefCompositionContainer).Assembly, /* Kephas.Composition.Mef */
+                           typeof(ICompositionContext).GetTypeInfo().Assembly,     /* Kephas.Core*/
+                           typeof(MefCompositionContainer).GetTypeInfo().Assembly, /* Kephas.Composition.Mef */
                        };
         }
 
