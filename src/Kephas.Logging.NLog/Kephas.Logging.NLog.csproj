@@ -133,12 +133,17 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="Package.nuspec" />
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="project.json" />
     <AdditionalFiles Include="stylecop.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="NLogAmbientServicesBuilderExtensions.cs" />
     <Compile Include="NLogger.cs" />
     <Compile Include="NLogManager.cs" />
