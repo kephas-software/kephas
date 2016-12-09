@@ -60,7 +60,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		..\nuget.config = ..\nuget.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.NetStandard", "Kephas.Platform.NetStandard14\Kephas.Platform.NetStandard.csproj", "{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net", "Kephas.Platform.Net\Kephas.Platform.Net.csproj", "{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Tests", "Tests\Kephas.Messaging.Tests\Kephas.Messaging.Tests.csproj", "{D86A56DF-A18D-4051-A341-CBCEA5AE5E81}"
 EndProject
