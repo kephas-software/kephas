@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas</RootNamespace>
+    <AssemblyName>Kephas.Composition.Mef.Net46</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.Composition.Convention.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.Composition.Hosting.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.Composition.Runtime.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\IMefConventionBuilderProvider.cs">
+      <Link>Composition\Mef\Conventions\IMefConventionBuilderProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefConventionsBuilder.cs">
+      <Link>Composition\Mef\Conventions\MefConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefConventionsRegistrarBase.cs">
+      <Link>Composition\Mef\Conventions\MefConventionsRegistrarBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefExportConventionsBuilder.cs">
+      <Link>Composition\Mef\Conventions\MefExportConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefImportConventionsBuilder.cs">
+      <Link>Composition\Mef\Conventions\MefImportConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefPartConventionsBuilder.cs">
+      <Link>Composition\Mef\Conventions\MefPartConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportAdapter.cs">
+      <Link>Composition\Mef\ExportAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportFactoryAdapter.cs">
+      <Link>Composition\Mef\ExportFactoryAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs">
+      <Link>Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs">
+      <Link>Composition\Mef\ExportProviders\ExportFactoryWithMetadataExportDescriptorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs">
+      <Link>Composition\Mef\ExportProviders\FactoryExportDescriptorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\Metadata\MetadataViewProvider.cs">
+      <Link>Composition\Mef\ExportProviders\Metadata\MetadataViewProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\ServiceProviderExportDescriptorProvider.cs">
+      <Link>Composition\Mef\ExportProviders\ServiceProviderExportDescriptorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Hosting\MefCompositionContainer.cs">
+      <Link>Composition\Mef\Hosting\MefCompositionContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Hosting\MefCompositionContainerBuilder.cs">
+      <Link>Composition\Mef\Hosting\MefCompositionContainerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Hosting\MefCompositionContextBase.cs">
+      <Link>Composition\Mef\Hosting\MefCompositionContextBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Hosting\MefScopedCompositionContext.cs">
+      <Link>Composition\Mef\Hosting\MefScopedCompositionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Internals\Constants.cs">
+      <Link>Composition\Mef\Internals\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Internals\FormattingHelper.cs">
+      <Link>Composition\Mef\Internals\FormattingHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Resources\Strings.Designer.cs">
+      <Link>Composition\Mef\Resources\Strings.Designer.cs</Link>
+      <DependentUpon>Strings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ScopeFactory\DefaultMefScopeFactory.cs">
+      <Link>Composition\Mef\ScopeFactory\DefaultMefScopeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ScopeFactory\IMefScopeFactory.cs">
+      <Link>Composition\Mef\ScopeFactory\IMefScopeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ScopeFactory\MefScopeFactoryBase.cs">
+      <Link>Composition\Mef\ScopeFactory\MefScopeFactoryBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ScopeFactory\SharingBoundaryScopeAttribute.cs">
+      <Link>Composition\Mef\ScopeFactory\SharingBoundaryScopeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\MefAmbientServicesBuilderExtensions.cs">
+      <Link>MefAmbientServicesBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
+      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
+      <Name>Kephas.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Composition.Mef\Composition\Mef\Resources\Strings.resx">
+      <Link>Composition\Mef\Resources\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
