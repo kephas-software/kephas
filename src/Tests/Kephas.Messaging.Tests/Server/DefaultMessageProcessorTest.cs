@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using NSubstitute.ExceptionExtensions;
+
 namespace Kephas.Messaging.Tests.Server
 {
     using System;
@@ -24,10 +27,9 @@ namespace Kephas.Messaging.Tests.Server
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
 
@@ -70,16 +72,16 @@ namespace Kephas.Messaging.Tests.Server
         [Test]
         public async Task ProcessAsync_result()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
-            var expectedResponse = Mock.Create<IMessage>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
+            var expectedResponse = Substitute.For<IMessage>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
 
             Assert.AreSame(expectedResponse, result);
         }
@@ -87,47 +89,46 @@ namespace Kephas.Messaging.Tests.Server
         [Test]
         public async Task ProcessAsync_exception()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.That(() => processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<InvalidOperationException>());
+            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<InvalidOperationException>());
         }
 
         [Test]
         public async Task ProcessAsync_disposed_handler()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
-            var expectedResponse = Mock.Create<IMessage>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
+            var expectedResponse = Substitute.For<IMessage>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            handler.Arrange(h => h.Dispose()).MustBeCalled();
 
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
 
-            Mock.Assert(handler);
+            Assert.LessOrEqual(1, handler.ReceivedCalls().Count());
         }
 
         [Test]
         public async Task ProcessAsync_ordered_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
-            var expectedResponse = Mock.Create<IMessage>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
+            var expectedResponse = Substitute.For<IMessage>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<int>();
@@ -142,7 +143,7 @@ namespace Kephas.Messaging.Tests.Server
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
 
             Assert.AreEqual(2, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -156,13 +157,13 @@ namespace Kephas.Messaging.Tests.Server
         [Test]
         public async Task ProcessAsync_matching_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
-            var expectedResponse = Mock.Create<IMessage>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
+            var expectedResponse = Substitute.For<IMessage>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<int>();
@@ -176,7 +177,7 @@ namespace Kephas.Messaging.Tests.Server
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
 
             Assert.AreEqual(1, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -188,12 +189,12 @@ namespace Kephas.Messaging.Tests.Server
         [Test]
         public async Task ProcessAsync_exception_with_filter()
         {
-            var compositionContainer = Mock.Create<ICompositionContext>();
-            var handler = Mock.Create<IMessageHandler>();
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
 
-            handler.Arrange(h => h.ProcessAsync(Arg.IsAny<IMessage>(), Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
+            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.Arrange(c => c.GetExport(Arg.IsAny<Type>(), Arg.IsAny<string>()))
+            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<Exception>();
@@ -206,7 +207,7 @@ namespace Kephas.Messaging.Tests.Server
             InvalidOperationException thrownException = null;
             try
             {
-                var result = await processor.ProcessAsync(Mock.Create<IMessage>(), null, default(CancellationToken));
+                var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
             }
             catch (InvalidOperationException ex)
             {
@@ -232,11 +233,11 @@ namespace Kephas.Messaging.Tests.Server
             requestType = requestType ?? typeof(IMessage);
             beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
             afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
-            var filter = Mock.Create<IMessageProcessingFilter>();
-            filter.Arrange(f => f.BeforeProcessAsync(Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
-                .Returns(beforeFunc);
-            filter.Arrange(f => f.AfterProcessAsync(Arg.IsAny<IMessageProcessingContext>(), Arg.IsAny<CancellationToken>()))
-                .Returns(afterFunc);
+            var filter = Substitute.For<IMessageProcessingFilter>();
+            filter.BeforeProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => beforeFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
+            filter.AfterProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => afterFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingFilter, MessageProcessingFilterMetadata>(
                     () => Tuple.Create(filter, (Action)(() => { })), 
@@ -248,7 +249,7 @@ namespace Kephas.Messaging.Tests.Server
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>>();
-            return new DefaultMessageProcessor(Mock.Create<IAmbientServices>(), compositionContainer, filterFactories);
+            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), compositionContainer, filterFactories);
         }
     }
 }

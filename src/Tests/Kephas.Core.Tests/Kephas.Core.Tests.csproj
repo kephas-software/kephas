@@ -94,8 +94,8 @@
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
-      <Project>{4cf8fd28-178f-41a8-8f2f-71377598da41}</Project>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
+      <Project>{a8025c4f-667a-4996-86e1-7a7f6b787447}</Project>
       <Name>Kephas.Testing.Core</Name>
     </ProjectReference>
   </ItemGroup>

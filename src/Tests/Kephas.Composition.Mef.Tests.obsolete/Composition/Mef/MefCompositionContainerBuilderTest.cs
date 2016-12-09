@@ -3,9 +3,6 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
-using NSubstitute;
-
 namespace Kephas.Tests.Composition.Mef
 {
     using System;
@@ -33,6 +30,8 @@ namespace Kephas.Tests.Composition.Mef
 
     using NUnit.Framework;
 
+    using Telerik.JustMock;
+
     /// <summary>
     /// Tests for <see cref="MefCompositionContainerBuilder"/>.
     /// </summary>
@@ -46,9 +45,8 @@ namespace Kephas.Tests.Composition.Mef
             var factory = this.CreateCompositionContainerBuilder();
             var mockPlatformManager = factory.AppRuntime;
 
-
-            mockPlatformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly }));
+            Mock.Arrange(() => mockPlatformManager.GetAppAssembliesAsync(Arg.IsAny<Func<AssemblyName, bool>>(), CancellationToken.None))
+                .Returns(() => Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).Assembly, typeof(MefCompositionContainer).Assembly }));
 
             var container = await factory
                 .CreateContainerAsync();
@@ -93,8 +91,8 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithAssembly(typeof(MefConventionsBuilder).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
+                .WithAssembly(typeof(MefConventionsBuilder).Assembly)
                 .CreateContainer();
 
             var logger = container.GetExport<ILogger<MefCompositionContainerTest.ExportedClass>>();
@@ -106,7 +104,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -121,7 +119,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService) })
                 .CreateContainer();
 
@@ -135,7 +133,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestAppService), typeof(TestAppService), typeof(TestOverrideAppService) })
                 .CreateContainer();
 
@@ -149,7 +147,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -165,7 +163,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(TestMultiAppService1), typeof(TestMultiAppService2) })
                 .CreateContainer();
 
@@ -179,7 +177,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMultiAppService), typeof(ITestMultiAppServiceConsumer), typeof(TestMultiAppService1), typeof(TestMultiAppService2), typeof(TestMultiAppServiceConsumer) })
                 .CreateContainer();
 
@@ -194,7 +192,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestGenericExport<>), typeof(TestGenericExport) })
                 .CreateContainer();
 
@@ -207,7 +205,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
@@ -219,7 +217,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
@@ -245,7 +243,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
                 .WithScopeFactory<MyScopeFactory>()
                 .CreateContainer();
@@ -272,7 +270,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
                 .WithScopeFactory<MyScopeFactory>()
                 .CreateContainer();
@@ -287,32 +285,9 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<CompositionException>(() => builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
                 .CreateContainer());
-        }
-
-        [Test]
-        public void GetExport_AppService_ambiguous_constructor()
-        {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            Assert.Throws<CompositionException>(() => builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousCompositionConstructorAppService) })
-                .CreateContainer());
-        }
-
-        [Test]
-        public void GetExport_AppService_largest_constructor()
-        {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(LargestCompositionConstructorAppService) })
-                .CreateContainer();
-
-            var component = container.GetExport<IConstructorAppService>();
-            Assert.IsNotNull(component);
         }
 
         [Test]
@@ -320,7 +295,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             Assert.Throws<CompositionException>(() => builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(MultipleCompositionConstructorAppService) })
                 .CreateContainer());
         }
@@ -330,7 +305,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(DefaultConstructorAppService) })
                 .CreateContainer();
 
@@ -344,7 +319,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(ICompositionContext).Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(SingleConstructorAppService) })
                 .CreateContainer();
 
@@ -355,9 +330,9 @@ namespace Kephas.Tests.Composition.Mef
 
         private MefCompositionContainerBuilder CreateCompositionContainerBuilder()
         {
-            var mockLoggerManager = Substitute.For<ILogManager>();
-            var mockConfigurationManager = Substitute.For<IConfigurationManager>();
-            var mockPlatformManager = Substitute.For<IAppRuntime>();
+            var mockLoggerManager = Mock.Create<ILogManager>();
+            var mockConfigurationManager = Mock.Create<IConfigurationManager>();
+            var mockPlatformManager = Mock.Create<IAppRuntime>();
 
             var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfigurationManager).RegisterService(mockPlatformManager));
             var factory = new MefCompositionContainerBuilder(context);
@@ -369,7 +344,8 @@ namespace Kephas.Tests.Composition.Mef
             var builder = this.CreateCompositionContainerBuilder();
 
             var mockLoggerManager = builder.LogManager;
-            mockLoggerManager.GetLogger(Arg.Any<string>()).Returns(Substitute.For<ILogger>());
+            Mock.Arrange(() => mockLoggerManager.GetLogger(Arg.IsAny<string>()))
+                .Returns(Mock.Create<ILogger>);
 
             return builder;
         }
@@ -500,54 +476,22 @@ namespace Kephas.Tests.Composition.Mef
             }
         }
 
-        public class AmbiguousCompositionConstructorAppService : IConstructorAppService
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="AmbiguousCompositionConstructorAppService"/>
-            /// class.
-            /// </summary>
-            /// <param name="ambientServices">The ambient services.</param>
-            public AmbiguousCompositionConstructorAppService(IAmbientServices ambientServices)
-            {
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="AmbiguousCompositionConstructorAppService"/> class.
-            /// </summary>
-            /// <param name="compositionContainer">
-            /// The composition container.
-            /// </param>
-            public AmbiguousCompositionConstructorAppService(ICompositionContext compositionContainer)
-            {
-            }
-        }
-
-        public class LargestCompositionConstructorAppService : IConstructorAppService
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
-            /// </summary>
-            public LargestCompositionConstructorAppService()
-            {
-            }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LargestCompositionConstructorAppService"/> class.
-            /// </summary>
-            /// <param name="compositionContainer">
-            /// The composition container.
-            /// </param>
-            public LargestCompositionConstructorAppService(ICompositionContext compositionContainer)
-            {
-            }
-        }
-
         public class NoCompositionConstructorAppService : IConstructorAppService
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="NoCompositionConstructorAppService"/> class.
             /// </summary>
-            private NoCompositionConstructorAppService()
+            public NoCompositionConstructorAppService()
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="NoCompositionConstructorAppService"/> class.
+            /// </summary>
+            /// <param name="compositionContainer">
+            /// The composition container.
+            /// </param>
+            public NoCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
         }

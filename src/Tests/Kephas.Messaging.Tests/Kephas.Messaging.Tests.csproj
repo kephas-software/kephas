@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -59,10 +63,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="Telerik.JustMock, Version=2016.2.426.1, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\JustMock.2016.2.426.1\lib\Net35\Telerik.JustMock.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
@@ -76,9 +76,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
-      <Project>{32fa6130-ddf0-4d2f-8057-a38ef9ed3d49}</Project>
-      <Name>Kephas.Composition.Mef</Name>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef.Net46\Kephas.Composition.Mef.Net46.csproj">
+      <Project>{e086f88c-c9d8-43f0-b6d6-57d8be2cc345}</Project>
+      <Name>Kephas.Composition.Mef.Net46</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
@@ -88,9 +88,13 @@
       <Project>{1b8691e7-c070-4eba-b999-de4989589409}</Project>
       <Name>Kephas.Messaging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj">
-      <Project>{f19c5319-4a09-49cd-b7d5-d5f292952723}</Project>
-      <Name>Kephas.Testing.Composition.Mef</Name>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef.Net46\Kephas.Testing.Composition.Mef.Net46.csproj">
+      <Project>{3ee28636-0818-408d-9409-f70a48479f4f}</Project>
+      <Name>Kephas.Testing.Composition.Mef.Net46</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
+      <Project>{a8025c4f-667a-4996-86e1-7a7f6b787447}</Project>
+      <Name>Kephas.Testing.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
