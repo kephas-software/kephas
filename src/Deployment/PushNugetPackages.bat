@@ -12,7 +12,7 @@ nuget push Kephas.Data.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Serialization.Json.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Messaging.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Mail.%1.nupkg -Source https://www.nuget.org/api/v2/package
-nuget push Kephas.Mail.Net45.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Mail.Net46.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Web.Owin.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
