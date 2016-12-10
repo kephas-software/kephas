@@ -125,6 +125,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot load assembly &apos;{0}&apos;. See the exception for more information..
+        /// </summary>
+        internal static string AppRuntimeBase_CannotLoadAssembly_Exception {
+            get {
+                return ResourceManager.GetString("AppRuntimeBase_CannotLoadAssembly_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple eligible constructors declared for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;. Use &apos;{2}&apos; to disambiguate among them..
         /// </summary>
         internal static string AppServiceAmbiguousCompositionConstructor {

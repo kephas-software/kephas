@@ -1,4 +1,6 @@
-﻿namespace RoleGame.Application
+﻿using Kephas.Reflection;
+
+namespace RoleGame.Application
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +10,7 @@
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Diagnostics;
-    using Kephas.Platform.Net45;
+    using Kephas.Platform.Net;
     using Kephas.Logging.NLog;
 
     using RoleGame.Composition;
@@ -38,9 +40,9 @@
                 {
                     await ambientServicesBuilder
                             .WithNLogManager()
-                            .WithNet45AppEnvironment()
+                            .WithNetAppRuntime()
                             .WithMefCompositionContainerAsync(b => b.WithScopeFactory<UserMefScopeFactory>()
-                                                                    .WithConventions(CompositionHelper.GetConventions()));
+                                                                    .WithConventions(CompositionHelper.GetConventions(ambientServicesBuilder.AmbientServices.GetService<ITypeLoader>())));
 
                     var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
                     var appBootstrapper = compositionContainer.GetExport<IAppBootstrapper>();

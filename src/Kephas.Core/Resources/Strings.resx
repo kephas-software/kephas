@@ -195,4 +195,7 @@
   <data name="AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all defined types from {0}. Only the loadable types will be considered.</value>
   </data>
+  <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
+    <value>Cannot load assembly '{0}'. See the exception for more information.</value>
+  </data>
 </root>

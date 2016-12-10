@@ -12,7 +12,7 @@ namespace SignalRChat.WebApp
     using Kephas;
     using Kephas.Application;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net45;
+    using Kephas.Platform.Net;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
@@ -39,7 +39,7 @@ namespace SignalRChat.WebApp
             var ambientServicesBuilder = new AmbientServicesBuilder();
             await ambientServicesBuilder
                     .WithNLogManager()
-                    .WithNet45AppEnvironment()
+                    .WithNetAppRuntime()
                     .WithMefCompositionContainerAsync();
             return ambientServicesBuilder.AmbientServices;
         }

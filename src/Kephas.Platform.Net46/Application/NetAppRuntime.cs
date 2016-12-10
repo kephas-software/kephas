@@ -15,6 +15,7 @@ namespace Kephas.Application
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Logging;
     using Kephas.Reflection;
 
     /// <summary>
@@ -31,10 +32,12 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="NetAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
+        /// <param name="logManager">(Optional) The log manager.</param>
         /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
-        /// <param name="appLocation">(Optional) the application location. If not specified, the current application location is considered.</param>
-        public NetAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
-            : base(assemblyLoader, assemblyFilter)
+        /// <param name="appLocation">(Optional) the application location. If not specified, the current
+        ///                           application location is considered.</param>
+        public NetAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+            : base(assemblyLoader, logManager, assemblyFilter)
         {
             this.appLocation = appLocation;
         }

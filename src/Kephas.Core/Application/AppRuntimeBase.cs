@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+using Kephas.Resources;
+
 namespace Kephas.Application
 {
     using System;
@@ -28,6 +31,11 @@ namespace Kephas.Application
     public abstract class AppRuntimeBase : Expando, IAppRuntime
     {
         /// <summary>
+        /// The logger.
+        /// </summary>
+        private ILogger logger;
+
+        /// <summary>
         /// A pattern specifying the assembly file search.
         /// </summary>
         protected const string AssemblyFileSearchPattern = "*.dll";
@@ -40,13 +48,15 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">The assembly loader.</param>
-        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null)
+        /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
+        /// <param name="logManager">(Optional) The log manager.</param>
+        /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
+        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> assemblyFilter = null)
             : base(isThreadSafe: true)
         {
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.AssemblyFilter = assemblyFilter ?? (a => !a.IsSystemAssembly());
+            this.logger = logManager?.GetLogger<AppRuntimeBase>();
         }
 
         /// <summary>
@@ -102,7 +112,7 @@ namespace Kephas.Application
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
 
-                assembliesToCheck = assemblyRefsToLoad.Select(this.AssemblyLoader.LoadAssembly).ToList();
+                assembliesToCheck = assemblyRefsToLoad.Select(this.TryLoadAssembly).Where(a => a != null).ToList();
                 assemblies.AddRange(assembliesToCheck);
             }
 
@@ -180,5 +190,25 @@ namespace Kephas.Application
         /// The assembly file name.
         /// </returns>
         protected abstract string GetFileName(Assembly assembly);
+
+        /// <summary>
+        /// Tries to load the assembly.
+        /// </summary>
+        /// <param name="n">The name of the assembly to load.</param>
+        /// <returns>
+        /// An assembly or <c>null</c>.
+        /// </returns>
+        private Assembly TryLoadAssembly(AssemblyName n)
+        {
+            try
+            {
+                return this.AssemblyLoader.LoadAssembly(n);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Warn(ex, string.Format(Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n));
+                return null;
+            }
+        }
     }
 }

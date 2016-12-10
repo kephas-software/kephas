@@ -9,13 +9,12 @@
 
     public static class CompositionHelper
     {
-        public static IConventionsBuilder GetConventions()
+        public static IConventionsBuilder GetConventions(ITypeLoader typeLoader)
         {
             var registrars =
-                Assembly.GetExecutingAssembly()
-                    .GetLoadableExportedTypes()
+                typeLoader.GetLoadableExportedTypes(Assembly.GetExecutingAssembly())
                     .Where(t => typeof(IConventionRegistrar).IsAssignableFrom(t) && t.IsClass)
-                    .Select(t => (IConventionRegistrar)t.AsDynamicTypeInfo().CreateInstance())
+                    .Select(t => (IConventionRegistrar)t.AsRuntimeTypeInfo().CreateInstance())
                     .ToList();
 
             var conventions = new MefConventionsBuilder();

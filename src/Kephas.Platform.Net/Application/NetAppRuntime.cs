@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+
 namespace Kephas.Application
 {
     using System;
@@ -29,11 +31,13 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="NetAppRuntime"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">The assembly loader.</param>
-        /// <param name="assemblyFilter">A filter for loaded assemblies.</param>
-        /// <param name="appLocation">The application location (optional). If not specified, the current application location is considered.</param>
-        public NetAppRuntime(IAssemblyLoader assemblyLoader = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
-            : base(assemblyLoader, assemblyFilter)
+        /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
+        /// <param name="logManager">(Optional) The log manager.</param>
+        /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
+        /// <param name="appLocation">The application location (optional). If not specified, the current
+        ///                           application location is considered.</param>
+        public NetAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+            : base(assemblyLoader, logManager, assemblyFilter)
         {
             this.appLocation = appLocation;
         }
