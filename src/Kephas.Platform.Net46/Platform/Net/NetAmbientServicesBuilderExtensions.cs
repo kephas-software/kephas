@@ -34,9 +34,11 @@ namespace Kephas.Platform.Net
         {
             Contract.Requires(ambientServicesBuilder != null);
 
+            var ambientServices = ambientServicesBuilder.AmbientServices;
             var assemblyLoader = new NetAssemblyLoader();
-            ambientServicesBuilder.AmbientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
-            return ambientServicesBuilder.WithAppRuntime(new NetAppRuntime(assemblyLoader, assemblyFilter: assemblyFilter, appLocation: appLocation));
+            ambientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
+
+            return ambientServicesBuilder.WithAppRuntime(new NetAppRuntime(assemblyLoader, ambientServices.LogManager, assemblyFilter: assemblyFilter, appLocation: appLocation));
         }
     }
 }
