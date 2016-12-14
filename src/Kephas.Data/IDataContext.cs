@@ -14,6 +14,8 @@ namespace Kephas.Data
     using System.Dynamic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
     using Kephas.Dynamic;
@@ -23,7 +25,7 @@ namespace Kephas.Data
     /// Contract interface for data contexts.
     /// </summary>
     [ContractClass(typeof(DataContextContractClass))]
-    public interface IDataContext : IExpando, IIdentifiable, IDisposable, IAmbientServicesAware
+    public interface IDataContext : IExpando, IIdentifiable, IDisposable, IAmbientServicesAware, IAsyncInitializable
     {
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -150,7 +152,20 @@ namespace Kephas.Data
         /// <param name="parameter">The expression tree representation of the runtime value.</param>
         public abstract DynamicMetaObject GetMetaObject(Expression parameter);
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
         public abstract void Dispose();
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        public abstract Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

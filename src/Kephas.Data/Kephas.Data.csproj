@@ -191,11 +191,13 @@
     <Compile Include="Conversion\IDataConversionResult.cs" />
     <Compile Include="Conversion\IDataConversionService.cs" />
     <Compile Include="Conversion\IDataConverter.cs" />
+    <Compile Include="DataContextConfiguration.cs" />
     <Compile Include="DataOperationContext.cs" />
     <Compile Include="DataException.cs" />
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextExtensions.cs" />
     <Compile Include="Commands\FindContext.cs" />
+    <Compile Include="IDataContextConfiguration.cs" />
     <Compile Include="IDataContextProvider.cs" />
     <Compile Include="IDataOperationContext.cs" />
     <Compile Include="IDataContext.cs" />

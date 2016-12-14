@@ -7,21 +7,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-
 namespace Kephas.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Dynamic;
     using Kephas.Services;
-    using Collections;
 
     /// <summary>
     /// Base implementation of a <see cref="IDataContext"/>.
@@ -36,7 +36,7 @@ namespace Kephas.Data
         /// <summary>
         /// The command factories.
         /// </summary>
-        private IDictionary<Type, Func<IDataCommand>> commandFactories = new Dictionary<Type, Func<IDataCommand>>();
+        private readonly IDictionary<Type, Func<IDataCommand>> commandFactories = new Dictionary<Type, Func<IDataCommand>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
@@ -68,6 +68,38 @@ namespace Kephas.Data
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        public virtual Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var config = context as IDataContextConfiguration;
+            if (config == null)
+            {
+                throw new ArgumentException($"The provided context is not a {typeof(IDataContextConfiguration).FullName}.");
+            }
+
+            return this.InitializeCoreAsync(config, cancellationToken);
+        }
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="config">The configuration for the data context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        protected virtual Task InitializeCoreAsync(IDataContextConfiguration config, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
