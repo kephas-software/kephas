@@ -23,7 +23,7 @@
     <dependencies>
       <dependency id="Kephas.Core" version="3.1.0-preview3" />
       <dependency id="Kephas.Data" version="3.1.0-preview3" />
-      <dependency id="MongoDB.Driver.signed-unofficial" version="2.2.3" />
+      <dependency id="MongoDB.Driver.signed" version="2.4.0" />
     </dependencies>
     <references>
       <reference file="Kephas.Data.MongoDB.dll" />
@@ -31,10 +31,10 @@
     <tags>kephas framework data mongo mongodb quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\net461" />
-    <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\net461" />
-    <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\net461" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.dll" target="lib\net461\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.pdb" target="lib\net461\CodeContracts" />
+    <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
+    <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
+    <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
+    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
+    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
   </files>
 </package>

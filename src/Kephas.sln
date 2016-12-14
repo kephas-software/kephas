@@ -49,8 +49,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail", "Kephas.Mail\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.DocumentDB", "Kephas.Data.DocumentDB\Kephas.Data.DocumentDB.csproj", "{40763700-491A-49BE-86BF-D4F28C9C8D9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{1090E4F1-7F99-404B-8F0E-5836E0D66465}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.Owin", "Kephas.Web.Owin\Kephas.Web.Owin.csproj", "{D4A22CB1-1DD0-4C40-A79A-81B939C58059}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingFramework", "TestingFramework", "{EEE1C452-EDDF-47E2-842B-970E33C42FA5}"
@@ -89,6 +87,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45", "Kephas.Platform.Net45\Kephas.Platform.Net45.csproj", "{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net45", "Kephas.Composition.Mef.Net45\Kephas.Composition.Mef.Net45.csproj", "{2F644DAB-EBE5-4548-AF2A-DD43948503DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,10 +152,6 @@ Global
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40763700-491A-49BE-86BF-D4F28C9C8D9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1090E4F1-7F99-404B-8F0E-5836E0D66465}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -220,6 +216,10 @@ Global
 		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
