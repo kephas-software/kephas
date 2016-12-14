@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas</RootNamespace>
+    <AssemblyName>Kephas.Core</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="..\Kephas.Core\Services\Transitioning\Transitioning.cd">
+      <Link>Services\Transitioning\Transitioning.cd</Link>
+    </None>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Core\Activation\ActivationException.cs">
+      <Link>Activation\ActivationException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Activation\ActivatorBase.cs">
+      <Link>Activation\ActivatorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Activation\IActivator.cs">
+      <Link>Activation\IActivator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\AmbientServices.cs">
+      <Link>AmbientServices.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\AmbientServicesBuilder.cs">
+      <Link>AmbientServicesBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\AmbientServicesExtensions.cs">
+      <Link>AmbientServicesExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppContext.cs">
+      <Link>Application\AppContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppInitializerBase.cs">
+      <Link>Application\AppInitializerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppManifestAttribute.cs">
+      <Link>Application\AppManifestAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppManifestBase.cs">
+      <Link>Application\AppManifestBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\DefaultAppBootstrapper.cs">
+      <Link>Application\DefaultAppBootstrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppBootstrapper.cs">
+      <Link>Application\IAppBootstrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppContext.cs">
+      <Link>Application\IAppContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppInitializer.cs">
+      <Link>Application\IAppInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppManifest.cs">
+      <Link>Application\IAppManifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppRuntime.cs">
+      <Link>Application\IAppRuntime.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\NullAppManifest.cs">
+      <Link>Application\NullAppManifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\AsyncBehaviorRuleBase.cs">
+      <Link>Behavior\AsyncBehaviorRuleBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\BehaviorRuleBase.cs">
+      <Link>Behavior\BehaviorRuleBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\BehaviorRuleFlowControlBase.cs">
+      <Link>Behavior\BehaviorRuleFlowControlBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\BehaviorValue.cs">
+      <Link>Behavior\BehaviorValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\EndRuleAttribute.cs">
+      <Link>Behavior\EndRuleAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\IAsyncBehaviorRule.cs">
+      <Link>Behavior\IAsyncBehaviorRule.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\IBehaviorRule.cs">
+      <Link>Behavior\IBehaviorRule.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\IBehaviorRuleFlowControl.cs">
+      <Link>Behavior\IBehaviorRuleFlowControl.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Behavior\IBehaviorValue.cs">
+      <Link>Behavior\IBehaviorValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Collections\CollectionExtensions.cs">
+      <Link>Collections\CollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Collections\DictionaryExtensions.cs">
+      <Link>Collections\DictionaryExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Collections\EnumerableExtensions.cs">
+      <Link>Collections\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\AttributedModel\CompositionConstructorAttribute.cs">
+      <Link>Composition\AttributedModel\CompositionConstructorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\AttributedModel\ExcludeFromCompositionAttribute.cs">
+      <Link>Composition\AttributedModel\ExcludeFromCompositionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\AttributedModel\ImportAttribute.cs">
+      <Link>Composition\AttributedModel\ImportAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\AttributedModel\ImportManyAttribute.cs">
+      <Link>Composition\AttributedModel\ImportManyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\CompositionException.cs">
+      <Link>Composition\CompositionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\ConventionsBuilderExtensions.cs">
+      <Link>Composition\Conventions\ConventionsBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IConventionsBuilder.cs">
+      <Link>Composition\Conventions\IConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IConventionsRegistrar.cs">
+      <Link>Composition\Conventions\IConventionsRegistrar.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IExportConventionsBuilder.cs">
+      <Link>Composition\Conventions\IExportConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IImportConventionsBuilder.cs">
+      <Link>Composition\Conventions\IImportConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IPartConventionsBuilder.cs">
+      <Link>Composition\Conventions\IPartConventionsBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs">
+      <Link>Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactoryImporters\ExportFactoryImporter.cs">
+      <Link>Composition\ExportFactoryImporters\ExportFactoryImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactoryImporters\ICollectionExportFactoryImporter.cs">
+      <Link>Composition\ExportFactoryImporters\ICollectionExportFactoryImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactoryImporters\IExportFactoryImporter.cs">
+      <Link>Composition\ExportFactoryImporters\IExportFactoryImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\CompositionContainerBuilderBase.cs">
+      <Link>Composition\Hosting\CompositionContainerBuilderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\CompositionContainerBuilderContext.cs">
+      <Link>Composition\Hosting\CompositionContainerBuilderContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\ICompositionContainerBuilder.cs">
+      <Link>Composition\Hosting\ICompositionContainerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\NullCompositionContainer.cs">
+      <Link>Composition\Hosting\NullCompositionContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ICompositionContext.cs">
+      <Link>Composition\ICompositionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\IExport.cs">
+      <Link>Composition\IExport.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\IExportFactory.cs">
+      <Link>Composition\IExportFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\IExportProvider.cs">
+      <Link>Composition\IExportProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Internal\CompositionContextServiceProviderAdapter.cs">
+      <Link>Composition\Internal\CompositionContextServiceProviderAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Metadata\ExportMetadataBase.cs">
+      <Link>Composition\Metadata\ExportMetadataBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Metadata\IMetadataValue.cs">
+      <Link>Composition\Metadata\IMetadataValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Metadata\MetadataExtensions.cs">
+      <Link>Composition\Metadata\MetadataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ScopeNames.cs">
+      <Link>Composition\ScopeNames.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\IConfigurationManager.cs">
+      <Link>Configuration\IConfigurationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\IConfigurationProvider.cs">
+      <Link>Configuration\IConfigurationProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\NullConfigurationManager.cs">
+      <Link>Configuration\NullConfigurationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Data\Id.cs">
+      <Link>Data\Id.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Data\IIdentifiable.cs">
+      <Link>Data\IIdentifiable.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugConfigurationManager.cs">
+      <Link>Diagnostics\Logging\DebugConfigurationManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs">
+      <Link>Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugLogManager.cs">
+      <Link>Diagnostics\Logging\DebugLogManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Diagnostics\Profiler.cs">
+      <Link>Diagnostics\Profiler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\DynamicObjectExtensions.cs">
+      <Link>DynamicObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Dynamic\Expando.cs">
+      <Link>Dynamic\Expando.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Dynamic\ExpandoBase.cs">
+      <Link>Dynamic\ExpandoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Dynamic\IExpando.cs">
+      <Link>Dynamic\IExpando.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\Graph.cs">
+      <Link>Graphs\Graph.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\GraphEdge.cs">
+      <Link>Graphs\GraphEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\GraphExtensions.cs">
+      <Link>Graphs\GraphExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\GraphNode.cs">
+      <Link>Graphs\GraphNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\IGraphEdge.cs">
+      <Link>Graphs\IGraphEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\IGraphNode.cs">
+      <Link>Graphs\IGraphNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\UnorientedGraph.cs">
+      <Link>Graphs\UnorientedGraph.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Graphs\UnorientedGraphEdge.cs">
+      <Link>Graphs\UnorientedGraphEdge.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\IAmbientServices.cs">
+      <Link>IAmbientServices.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\IAmbientServicesAware.cs">
+      <Link>IAmbientServicesAware.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\IInstance.cs">
+      <Link>IInstance.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Logging\ILogger.cs">
+      <Link>Logging\ILogger.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Logging\ILogManager.cs">
+      <Link>Logging\ILogManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Logging\NullLogManager.cs">
+      <Link>Logging\NullLogManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Logging\TypedLogger.cs">
+      <Link>Logging\TypedLogger.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\AggregatedElementInfoExtensions.cs">
+      <Link>Reflection\AggregatedElementInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\DefaultAssemblyLoader.cs">
+      <Link>Reflection\DefaultAssemblyLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\DefaultTypeLoader.cs">
+      <Link>Reflection\DefaultTypeLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IAggregatedElementInfo.cs">
+      <Link>Reflection\IAggregatedElementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IAssemblyLoader.cs">
+      <Link>Reflection\IAssemblyLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IElementInfo.cs">
+      <Link>Reflection\IElementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IMethodInfo.cs">
+      <Link>Reflection\IMethodInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IPropertyInfo.cs">
+      <Link>Reflection\IPropertyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ITypeInfo.cs">
+      <Link>Reflection\ITypeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ITypeLoader.cs">
+      <Link>Reflection\ITypeLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ReflectionHelper.cs">
+      <Link>Reflection\ReflectionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\TypeExtensions.cs">
+      <Link>Reflection\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\TypeInfoExtensions.cs">
+      <Link>Reflection\TypeInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeElementInfo.cs">
+      <Link>Runtime\IRuntimeElementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeMethodInfo.cs">
+      <Link>Runtime\IRuntimeMethodInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimePropertyInfo.cs">
+      <Link>Runtime\IRuntimePropertyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeTypeInfo.cs">
+      <Link>Runtime\IRuntimeTypeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeMethodInfo.cs">
+      <Link>Runtime\RuntimeMethodInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimePropertyInfo.cs">
+      <Link>Runtime\RuntimePropertyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeInfo.cs">
+      <Link>Runtime\RuntimeTypeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeInfoExtensions.cs">
+      <Link>Runtime\RuntimeTypeInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
+      <Link>Serialization\Composition\SerializerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\DefaultSerializationService.cs">
+      <Link>Serialization\DefaultSerializationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\IFormat.cs">
+      <Link>Serialization\IFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\ISerializationContext.cs">
+      <Link>Serialization\ISerializationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\ISerializationService.cs">
+      <Link>Serialization\ISerializationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\ISerializer.cs">
+      <Link>Serialization\ISerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\Json\JsonFormat.cs">
+      <Link>Serialization\Json\JsonFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\SerializationContext.cs">
+      <Link>Serialization\SerializationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\SerializationExtensions.cs">
+      <Link>Serialization\SerializationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\Xml\XmlFormat.cs">
+      <Link>Serialization\Xml\XmlFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\AppServiceContractAttribute.cs">
+      <Link>Services\AppServiceContractAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\AppServiceLifetime.cs">
+      <Link>Services\AppServiceLifetime.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\AppServiceMetadata.cs">
+      <Link>Services\AppServiceMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\EnabledServiceBehaviorRuleBase.cs">
+      <Link>Services\Behavior\EnabledServiceBehaviorRuleBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\IEnabledServiceBehaviorRule.cs">
+      <Link>Services\Behavior\IEnabledServiceBehaviorRule.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\IServiceBehaviorContext.cs">
+      <Link>Services\Behavior\IServiceBehaviorContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\ServiceBehaviorContext.cs">
+      <Link>Services\Behavior\ServiceBehaviorContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\ServiceEnumerableExtensions.cs">
+      <Link>Services\Behavior\ServiceEnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Composition\AppServiceConventionsRegistrarBase.cs">
+      <Link>Services\Composition\AppServiceConventionsRegistrarBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Composition\AttributedAppServiceConventionsRegistrar.cs">
+      <Link>Services\Composition\AttributedAppServiceConventionsRegistrar.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\ContextBase.cs">
+      <Link>Services\ContextBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\IAsyncInitializable.cs">
+      <Link>Services\IAsyncInitializable.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\IContext.cs">
+      <Link>Services\IContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\NullServiceException.cs">
+      <Link>Services\NullServiceException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\OptionalServiceAttribute.cs">
+      <Link>Services\OptionalServiceAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\OverridePriorityAttribute.cs">
+      <Link>Services\OverridePriorityAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Priority.cs">
+      <Link>Services\Priority.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\ProcessingPriorityAttribute.cs">
+      <Link>Services\ProcessingPriorityAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\ScopeSharedAppServiceContractAttribute.cs">
+      <Link>Services\ScopeSharedAppServiceContractAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\SharedAppServiceContractAttribute.cs">
+      <Link>Services\SharedAppServiceContractAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Transitioning\InitializationMonitor.cs">
+      <Link>Services\Transitioning\InitializationMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Transitioning\ITransitionState.cs">
+      <Link>Services\Transitioning\ITransitionState.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Transitioning\ServiceTransitioningException.cs">
+      <Link>Services\Transitioning\ServiceTransitioningException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Transitioning\TransitionMonitor.cs">
+      <Link>Services\Transitioning\TransitionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Threading\Tasks\TaskHelper.cs">
+      <Link>Threading\Tasks\TaskHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Threading\Tasks\ThreadContext.cs">
+      <Link>Threading\Tasks\ThreadContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Threading\Tasks\ThreadContextAwaiter.cs">
+      <Link>Threading\Tasks\ThreadContextAwaiter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Threading\Tasks\ThreadContextBuilder.cs">
+      <Link>Threading\Tasks\ThreadContextBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Undefined.cs">
+      <Link>Undefined.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Application\AppRuntimeBase.cs" />
+    <Compile Include="Application\NullAppRuntime.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Core\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

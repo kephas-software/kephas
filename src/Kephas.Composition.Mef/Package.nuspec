@@ -25,8 +25,18 @@
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
         <dependencies>
-            <dependency id="Kephas.Core" version="3.1.0-preview3" />
-            <dependency id="System.Composition" version="1.0.31" />
+            <group targetFramework="net45">
+                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="Microsoft.Composition" version="1.0.30" />
+            </group>
+            <group targetFramework="net461">
+                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="System.Composition" version="1.0.31" />
+            </group>
+            <group targetFramework="netstandard1.5">
+                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="System.Composition" version="1.0.31" />
+            </group>
         </dependencies>
         <references>
             <group>
@@ -46,5 +56,10 @@
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.xml" target="lib\net461" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\net461\CodeContracts" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\net461\CodeContracts" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.dll" target="lib\net45" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net45" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.xml" target="lib\net45" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\net45\CodeContracts" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\net45\CodeContracts" />
     </files>
 </package>

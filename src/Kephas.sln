@@ -84,6 +84,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net46", "Kephas.Logging.NLog.Net46\Kephas.Logging.NLog.Net46.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.PortableLegacy", "Kephas.Core.PortableLegacy\Kephas.Core.PortableLegacy.csproj", "{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45", "Kephas.Platform.Net45\Kephas.Platform.Net45.csproj", "{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net45", "Kephas.Composition.Mef.Net45\Kephas.Composition.Mef.Net45.csproj", "{2F644DAB-EBE5-4548-AF2A-DD43948503DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -202,6 +208,18 @@ Global
 		{52829664-67BD-4E26-B5E4-1D5E1FC5597B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52829664-67BD-4E26-B5E4-1D5E1FC5597B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52829664-67BD-4E26-B5E4-1D5E1FC5597B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F644DAB-EBE5-4548-AF2A-DD43948503DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

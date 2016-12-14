@@ -1,47 +1,54 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Core</id>
-    <version>3.1.0-preview3</version>
-    <title>Kephas.Core</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>
-        Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-        Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others.
-        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-        Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
-    <dependencies>
-        <group targetFramework="netstandard1.4">
-            <dependency id="System.ComponentModel" version="4.0.1" />
-            <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
-            <dependency id="System.Dynamic.Runtime" version="4.0.11" />
-            <dependency id="System.Security.Principal" version="4.0.1" />
-        </group>
-    </dependencies>
-    <references>
-      <reference file="Kephas.Core.dll" />
-    </references>
-    <tags>kephas framework core quartz software</tags>
-  </metadata>
-  <files>
-    <file src="bin\debug\Kephas.Core.dll" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Core.pdb" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Core.xml" target="lib\netstandard1.4" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
-  </files>
+    <metadata>
+        <id>Kephas.Core</id>
+        <version>3.1.0-preview3</version>
+        <title>Kephas.Core</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others.
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2016</copyright>
+        <dependencies>
+            <group targetFramework="net45" />
+            <group targetFramework="netstandard1.4">
+                <dependency id="NETStandard.Library" version="1.6.0" />
+                <dependency id="System.ComponentModel" version="4.0.1" />
+                <dependency id="System.Diagnostics.Contracts" version="4.0.1" />
+                <dependency id="System.Dynamic.Runtime" version="4.0.11" />
+                <dependency id="System.Security.Principal" version="4.0.1" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Core.dll" />
+        </references>
+        <tags>kephas framework core quartz software</tags>
+    </metadata>
+    <files>
+        <file src="bin\debug\Kephas.Core.dll" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Core.pdb" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Core.xml" target="lib\netstandard1.4" />
+        <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
+        <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.dll" target="lib\portable-net45+netcore45+wp81+uap10" />
+        <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wp81+uap10" />
+        <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.xml" target="lib\portable-net45+netcore45+wp81+uap10" />
+        <file src="..\Kephas.Core.PortableLegacy\bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net45+netcore45+wp81+uap10\CodeContracts" />
+        <file src="..\Kephas.Core.PortableLegacy\bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net45+netcore45+wp81+uap10\CodeContracts" />
+    </files>
 </package>
