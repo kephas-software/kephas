@@ -75,7 +75,7 @@ namespace Kephas.Dynamic
         protected ExpandoBase()
         {
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.Initialize(null);
+            this.InitializeExpando(null);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Kephas.Dynamic
             Contract.Requires(instance != null);
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.Initialize(instance);
+            this.InitializeExpando(instance);
         }
 
         /// <summary>
@@ -225,10 +225,10 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// The initialize.
+        /// Initializes the expando with the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        protected virtual void Initialize(object instance)
+        protected virtual void InitializeExpando(object instance)
         {
             this.wrappedInstance = instance;
         }
