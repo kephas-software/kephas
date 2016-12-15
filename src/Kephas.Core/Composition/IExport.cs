@@ -13,11 +13,10 @@ namespace Kephas.Composition
     using System;
 
     /// <summary>
-    /// Contract for a handle allowing the graph of parts associated with an exported instance
+    /// Non-generic contract for a handle allowing the graph of parts associated with an exported instance
     /// to be released.
     /// </summary>
-    /// <typeparam name="T">The contract type of the created parts.</typeparam>    
-    public interface IExport<out T> : IDisposable
+    public interface IExport : IDisposable
     {
         /// <summary>
         /// Gets the exported value.
@@ -25,7 +24,23 @@ namespace Kephas.Composition
         /// <value>
         /// The exported value.
         /// </value>
-        T Value { get; }
+        object Value { get; }
+    }
+
+    /// <summary>
+    /// Contract for a handle allowing the graph of parts associated with an exported instance
+    /// to be released.
+    /// </summary>
+    /// <typeparam name="T">The contract type of the created parts.</typeparam>    
+    public interface IExport<out T> : IExport
+    {
+        /// <summary>
+        /// Gets the exported value.
+        /// </summary>
+        /// <value>
+        /// The exported value.
+        /// </value>
+        new T Value { get; }
     }
 
     /// <summary>

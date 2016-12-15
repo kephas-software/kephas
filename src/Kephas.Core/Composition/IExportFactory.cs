@@ -10,16 +10,28 @@
 namespace Kephas.Composition
 {
     /// <summary>
-    /// Contract used to import parts that wish to dynamically create instances of other parts.
+    /// Non-generic contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>
-    /// <typeparam name="T">The contract type of the created parts.</typeparam>
-    public interface IExportFactory<out T>
+    public interface IExportFactory
     {
         /// <summary>
         /// Create an instance of the exported part.
         /// </summary>
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport<T> CreateExport();
+        IExport CreateExport();
+    }
+
+    /// <summary>
+    /// Contract used to import parts that wish to dynamically create instances of other parts.
+    /// </summary>
+    /// <typeparam name="T">The contract type of the created parts.</typeparam>
+    public interface IExportFactory<out T> : IExportFactory
+    {
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        new IExport<T> CreateExport();
     }
 
     /// <summary>

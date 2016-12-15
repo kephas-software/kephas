@@ -45,6 +45,14 @@ namespace Kephas.Testing.Core.Composition
         public void Dispose()
         {
         }
+
+        /// <summary>
+        /// Gets the exported value.
+        /// </summary>
+        /// <value>
+        /// The exported value.
+        /// </value>
+        object IExport.Value => Value;
     }
 
     /// <summary>
@@ -90,5 +98,13 @@ namespace Kephas.Testing.Core.Composition
         public void Dispose()
         {
         }
+
+        /// <summary>
+        /// Gets the exported value.
+        /// </summary>
+        /// <value>
+        /// The exported value.
+        /// </value>
+        object IExport.Value => Value;
     }
 }

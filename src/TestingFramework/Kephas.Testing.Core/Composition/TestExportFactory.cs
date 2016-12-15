@@ -63,6 +63,12 @@ namespace Kephas.Testing.Core.Composition
         {
             return new TestExport<TService>(this.factory);
         }
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport IExportFactory.CreateExport() => this.CreateExport();
     }
 
     /// <summary>
@@ -117,5 +123,11 @@ namespace Kephas.Testing.Core.Composition
         {
             return new TestExport<TService, TMetadata>(this.factory, this.Metadata);
         }
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport IExportFactory.CreateExport() => this.CreateExport();
     }
 }

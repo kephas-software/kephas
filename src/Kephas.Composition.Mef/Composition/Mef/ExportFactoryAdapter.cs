@@ -46,6 +46,12 @@ namespace Kephas.Composition.Mef
         /// The new inner export.
         /// </returns>
         protected Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
+
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport IExportFactory.CreateExport() => this.CreateExport();
     }
 
     /// <summary>

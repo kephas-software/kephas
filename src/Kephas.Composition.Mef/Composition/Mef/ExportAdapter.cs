@@ -43,6 +43,14 @@ namespace Kephas.Composition.Mef
         {
             this.innerExport.Dispose();
         }
+
+        /// <summary>
+        /// Gets the exported value.
+        /// </summary>
+        /// <value>
+        /// The exported value.
+        /// </value>
+        object IExport.Value => Value;
     }
 
     /// <summary>
