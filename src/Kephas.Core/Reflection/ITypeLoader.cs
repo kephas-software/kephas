@@ -14,12 +14,9 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
-    using Kephas.Services;
-
     /// <summary>
     /// Application service contract for loading types.
     /// </summary>
-    [SharedAppServiceContract]
     [ContractClass(typeof(TypeLoaderContractClass))]
     public interface ITypeLoader
     {
