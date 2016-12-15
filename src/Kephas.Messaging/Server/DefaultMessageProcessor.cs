@@ -146,7 +146,9 @@ namespace Kephas.Messaging.Server
             var messageHandlerFactory = this.handlerFactories.GetOrAdd(messageType, _ =>
             {
                 var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(message.GetType());
-                Func<IMessageHandler> factory = () => (IMessageHandler)this.CompositionContext.TryGetExport(messageHandlerType);
+                var exportFactoryType = typeof(IExportFactory<>).MakeGenericType(messageHandlerType);
+                var exportFactory = (IExportFactory)this.CompositionContext.TryGetExport(exportFactoryType);
+                Func<IMessageHandler> factory = () => (IMessageHandler)exportFactory?.CreateExport().Value;
                 return factory;
             });
 
