@@ -16,7 +16,7 @@ namespace Kephas.Data.MongoDB
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
+    using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Logging;
     using Kephas.Services;
@@ -39,12 +39,12 @@ namespace Kephas.Data.MongoDB
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public MongoDataContext(IAmbientServices ambientServices, ICompositionContext compositionContext)
-            : base(ambientServices, compositionContext)
+        /// <param name="dataCommandProvider">The data command provider.</param>
+        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+            : base(ambientServices, dataCommandProvider)
         {
             Contract.Requires(ambientServices != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(dataCommandProvider != null);
         }
 
         /// <summary>

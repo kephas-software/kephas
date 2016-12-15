@@ -11,17 +11,12 @@ namespace Kephas.Data.Commands.Factory
 {
     using System;
 
-    using Kephas.Composition;
-    using Kephas.Data.Commands.Composition;
     using Kephas.Services;
 
     /// <summary>
-    /// Service contract for data command factory.
+    /// Interface for data command factory.
     /// </summary>
-    /// <typeparam name="TCommand">Type of the command.</typeparam>
-    [SharedAppServiceContract(AsOpenGeneric = true)]
-    public interface IDataCommandFactory<out TCommand>
-        where TCommand : IDataCommand
+    public interface IDataCommandFactory
     {
         /// <summary>
         /// Gets the command factory for the given data context type.
@@ -31,5 +26,15 @@ namespace Kephas.Data.Commands.Factory
         ///  The command factory for the indicated command.
         /// </returns>
         Func<IDataCommand> GetCommandFactory(Type dataContextType);
+    }
+
+    /// <summary>
+    /// Shared application service contract for data command factory.
+    /// </summary>
+    /// <typeparam name="TCommand">Type of the command.</typeparam>
+    [SharedAppServiceContract(AsOpenGeneric = true)]
+    public interface IDataCommandFactory<out TCommand> : IDataCommandFactory
+        where TCommand : IDataCommand
+    {
     }
 }

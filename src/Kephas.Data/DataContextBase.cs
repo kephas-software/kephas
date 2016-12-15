@@ -3,21 +3,18 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Base implementation of a data dataContext.
+//   Base implementation of a data context.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Dynamic;
@@ -29,27 +26,22 @@ namespace Kephas.Data
     public abstract class DataContextBase : Expando, IDataContext
     {
         /// <summary>
-        /// Context for the composition.
+        /// The data command provider.
         /// </summary>
-        private readonly ICompositionContext compositionContext;
-
-        /// <summary>
-        /// The command factories.
-        /// </summary>
-        private readonly IDictionary<Type, Func<IDataCommand>> commandFactories = new Dictionary<Type, Func<IDataCommand>>();
+        private readonly IDataCommandProvider dataCommandProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        protected DataContextBase(IAmbientServices ambientServices, ICompositionContext compositionContext)
+        /// <param name="dataCommandProvider">The data command provider.</param>
+        protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
         {
             Contract.Requires(ambientServices != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(dataCommandProvider != null);
 
             this.AmbientServices = ambientServices;
-            this.compositionContext = compositionContext;
+            this.dataCommandProvider = dataCommandProvider;
             this.Id = new Id(Guid.NewGuid());
         }
 
@@ -122,15 +114,7 @@ namespace Kephas.Data
         public TCommand CreateCommand<TCommand>()
             where TCommand : IDataCommand
         {
-            var factory = this.commandFactories.TryGetValue(typeof(TCommand));
-            if (factory == null)
-            {
-                var commandFactory = this.compositionContext.GetExport<IDataCommandFactory<TCommand>>();
-                factory = commandFactory.GetCommandFactory(this.GetType());
-                this.commandFactories.Add(typeof(TCommand), factory);
-            }
-
-            return (TCommand)factory();
+            return (TCommand)this.dataCommandProvider.CreateCommand(this.GetType(), typeof(TCommand));
         }
 
         /// <summary>
@@ -138,11 +122,11 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="context">The operationContext.</param>
+        /// <param name="operationContext">Context for the operation.</param>
         /// <returns>
         /// The capability.
         /// </returns>
-        public virtual TCapability TryGetCapability<TCapability>(object entity, IContext context)
+        public virtual TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext)
             where TCapability : class
         {
             return entity as TCapability;

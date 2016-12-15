@@ -53,11 +53,11 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="context">The operationContext.</param>
+        /// <param name="operationContext">Context for the operation.</param>
         /// <returns>
         /// The capability.
         /// </returns>
-        TCapability TryGetCapability<TCapability>(object entity, IContext context)
+        TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext)
             where TCapability : class;
     }
 
@@ -133,11 +133,11 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="context">The operationContext.</param>
+        /// <param name="operationContext"></param>
         /// <returns>
         /// The capability.
         /// </returns>
-        public TCapability TryGetCapability<TCapability>(object entity, IContext context)
+        public TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext)
             where TCapability : class
         {
             return default(TCapability);

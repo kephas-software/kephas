@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Data.Tests
 {
     using System.Linq;
@@ -25,13 +27,11 @@ namespace Kephas.Data.Tests
         [Test]
         public void CreateCommand()
         {
-            var container = Substitute.For<ICompositionContext>();
+            var container = Substitute.For<IDataCommandProvider>();
             var findCmd = Substitute.For<IFindCommand<IDataContext, string>>();
-            var factory = Substitute.For<IDataCommandFactory<IFindCommand<IDataContext, string>>>();
-            factory.GetCommandFactory(typeof(TestDataContext)).Returns(() => findCmd);
-            container.GetExport<IDataCommandFactory<IFindCommand<IDataContext, string>>>(Arg.Any<string>()).Returns(factory);
+            container.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand<IDataContext, string>)).Returns(findCmd);
 
-            var dataContext = new TestDataContext(compositionContext: container);
+            var dataContext = new TestDataContext(dataCommandProvider: container);
             var cmd = dataContext.CreateCommand<IFindCommand<IDataContext, string>>();
             Assert.AreSame(findCmd, cmd);
         }
@@ -41,8 +41,8 @@ namespace Kephas.Data.Tests
             /// <summary>
             /// Initializes a new instance of the <see cref="DataContextBase"/> class.
             /// </summary>
-            public TestDataContext(IAmbientServices ambientServices = null, ICompositionContext compositionContext = null) 
-                : base(ambientServices ?? Substitute.For<IAmbientServices>(), compositionContext ?? Substitute.For<ICompositionContext>())
+            public TestDataContext(IAmbientServices ambientServices = null, IDataCommandProvider dataCommandProvider = null) 
+                : base(ambientServices ?? Substitute.For<IAmbientServices>(), dataCommandProvider ?? Substitute.For<IDataCommandProvider>())
             {
             }
 

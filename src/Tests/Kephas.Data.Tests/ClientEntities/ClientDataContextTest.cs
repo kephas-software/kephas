@@ -20,7 +20,7 @@ namespace Kephas.Data.Tests.ClientEntities
         [Test]
         public void Query_of_string()
         {
-            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), Substitute.For<ICompositionContext>());
+            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>());
             clientDataContext.GetOrAddCacheableItem(null, "mama", true);
             clientDataContext.GetOrAddCacheableItem(null, "papa", true);
             clientDataContext.GetOrAddCacheableItem(null, 1, true);
@@ -35,12 +35,10 @@ namespace Kephas.Data.Tests.ClientEntities
         [Test]
         public void CreateCommand_Find()
         {
-            var compositionContext = Substitute.For<ICompositionContext>();
+            var dataCommandProvider = Substitute.For<IDataCommandProvider>();
             var findCommand = Substitute.For<IFindCommand<ClientDataContext, string>>();
-            var findCommandFactory = Substitute.For<IDataCommandFactory<IFindCommand<ClientDataContext, string>>>();
-            findCommandFactory.GetCommandFactory(typeof(ClientDataContext)).Returns(() => findCommand);
-            compositionContext.GetExport<IDataCommandFactory<IFindCommand<ClientDataContext, string>>>().Returns(findCommandFactory);
-            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), compositionContext);
+            dataCommandProvider.CreateCommand(typeof(ClientDataContext), typeof(IFindCommand<ClientDataContext, string>)).Returns(findCommand);
+            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), dataCommandProvider);
 
             var actualCommand = clientDataContext.CreateCommand<IFindCommand<ClientDataContext, string>>();
             Assert.AreSame(findCommand, actualCommand);
@@ -49,7 +47,7 @@ namespace Kephas.Data.Tests.ClientEntities
         [Test]
         public void TryGetCapability_IIdentifiable()
         {
-            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), Substitute.For<ICompositionContext>());
+            var clientDataContext = new ClientDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>());
 
             var entity = Substitute.For<IIdentifiable>();
             var idCapability = clientDataContext.TryGetCapability<IIdentifiable>(entity, null);

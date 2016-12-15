@@ -13,10 +13,10 @@ namespace Kephas.Data.Commands.Factory
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Data.Commands.Composition;
-    using Kephas.Data.Resources;
 
     /// <summary>
     /// A data command factory.
@@ -25,6 +25,9 @@ namespace Kephas.Data.Commands.Factory
     public class DataCommandFactory<TCommand> : IDataCommandFactory<TCommand>
         where TCommand : IDataCommand
     {
+        /// <summary>
+        /// The command factories.
+        /// </summary>
         private readonly ICollection<IExportFactory<TCommand, DataCommandMetadata>> commandFactories;
 
         /// <summary>
@@ -47,10 +50,15 @@ namespace Kephas.Data.Commands.Factory
         /// </returns>
         public Func<IDataCommand> GetCommandFactory(Type dataContextType)
         {
-            var commandFactory = this.commandFactories.FirstOrDefault(f => f.Metadata.DataContextType == dataContextType);
+            var commandFactory = this.commandFactories.SingleOrDefault(f => f.Metadata.DataContextType == dataContextType);
             if (commandFactory == null)
             {
-                throw new NotSupportedException(string.Format(Strings.DataCommandFactory_CreateCommand_NotSupported_Exception, typeof(TCommand)));
+                var dataContextTypeInfo = dataContextType.GetTypeInfo();
+                commandFactory = this.commandFactories.SingleOrDefault(f => f.Metadata.DataContextType.GetTypeInfo().IsAssignableFrom(dataContextTypeInfo));
+                if (commandFactory == null)
+                {
+                    return () => null;
+                }
             }
 
             return () => commandFactory.CreateExport().Value;

@@ -26,12 +26,12 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The operationContext.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public abstract Task<TResult> ExecuteAsync(TOperationContext context, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Executes the data command asynchronously.

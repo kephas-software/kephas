@@ -13,7 +13,7 @@ namespace Kephas.Data.ClientEntities
     using System.Diagnostics.Contracts;
     using System.Linq;
 
-    using Kephas.Composition;
+    using Kephas.Data.Commands.Factory;
     using Kephas.Services;
 
     /// <summary>
@@ -31,12 +31,12 @@ namespace Kephas.Data.ClientEntities
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public ClientDataContext(IAmbientServices ambientServices, ICompositionContext compositionContext)
-            : base(ambientServices, compositionContext)
+        /// <param name="dataCommandProvider">The data command provider.</param>
+        public ClientDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+            : base(ambientServices, dataCommandProvider)
         {
             Contract.Requires(ambientServices != null);
-            Contract.Requires(compositionContext != null);
+            Contract.Requires(dataCommandProvider != null);
         }
 
         /// <summary>

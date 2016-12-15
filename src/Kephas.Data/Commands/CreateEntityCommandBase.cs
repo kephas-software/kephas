@@ -50,18 +50,18 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
-        /// <param name="context">The operationContext.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">(Optional) the cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="ICreateEntityResult{TEntity}" />.
         /// </returns>
-        public override async Task<ICreateEntityResult<T>> ExecuteAsync(ICreateEntityContext context, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<ICreateEntityResult<T>> ExecuteAsync(ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var entity = this.CreateEntity(context);
+            var entity = this.CreateEntity(operationContext);
 
             // set the change state to Added
-            var dataContext = context.DataContext;
-            var trackableEntity = dataContext.TryGetCapability<IChangeStateTrackable>(entity, context);
+            var dataContext = operationContext.DataContext;
+            var trackableEntity = dataContext.TryGetCapability<IChangeStateTrackable>(entity, operationContext);
             if (trackableEntity != null)
             {
                 trackableEntity.ChangeState = ChangeState.Added;
@@ -71,12 +71,12 @@ namespace Kephas.Data.Commands
             var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
             foreach (var initializeBehavior in initializeBehaviors)
             {
-                await initializeBehavior.InitializeAsync(entity, context, cancellationToken).PreserveThreadContext();
+                await initializeBehavior.InitializeAsync(entity, operationContext, cancellationToken).PreserveThreadContext();
             }
 
             // prepare the result
             var result = new CreateEntityResult<T>(entity);
-            this.PostCreateEntity(context, result);
+            this.PostCreateEntity(operationContext, result);
 
             return result;
         }

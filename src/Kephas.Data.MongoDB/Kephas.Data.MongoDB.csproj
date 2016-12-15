@@ -135,6 +135,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Application\MongoAppInitializer.cs" />
     <Compile Include="Commands\MongoCreateEntityCommand.cs" />
     <Compile Include="Commands\MongoFindCommand.cs" />
     <Compile Include="Commands\MongoPersistChangesCommand.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="MongoDataContext.cs" />
     <Compile Include="MongoDataException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\IdBsonSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Kephas.snk">

@@ -165,6 +165,7 @@
     <Compile Include="Commands\DataCommandResult.cs" />
     <Compile Include="Commands\Factory\DataCommandFactory.cs" />
     <Compile Include="Commands\Composition\DataCommandMetadata.cs" />
+    <Compile Include="Commands\Factory\DefaultDataCommandProvider.cs" />
     <Compile Include="Commands\Factory\IDataCommandFactory.cs" />
     <Compile Include="Commands\FindCommandBase.cs" />
     <Compile Include="Commands\FindResult.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Commands\ICreateEntityContext.cs" />
     <Compile Include="Commands\ICreateEntityResult.cs" />
     <Compile Include="Commands\IDataCommand.cs" />
+    <Compile Include="Commands\Factory\IDataCommandProvider.cs" />
     <Compile Include="Commands\IDataCommandResult.cs" />
     <Compile Include="Commands\IFindCommand.cs" />
     <Compile Include="Commands\IFindResult.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Linq\IDataContextQueryable.cs" />
     <Compile Include="Linq\IDataContextQueryProvider.cs" />
     <Compile Include="Linq\QueryableExtensions.cs" />
+    <Compile Include="MissingDataCommandException.cs" />
     <Compile Include="NotFoundDataException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryOperationContext.cs" />
