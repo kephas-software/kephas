@@ -62,11 +62,20 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find a handler for the &apos;{0}&apos; message type..
+        /// </summary>
+        internal static string DefaultMessageProcessor_MissingHandler_Excception {
+            get {
+                return ResourceManager.GetString("DefaultMessageProcessor_MissingHandler_Excception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;..
         /// </summary>
-        internal static string MessageHandlerBadMessageType {
+        internal static string MessageHandler_BadMessageType_Exception {
             get {
-                return ResourceManager.GetString("MessageHandlerBadMessageType", resourceCulture);
+                return ResourceManager.GetString("MessageHandler_BadMessageType_Exception", resourceCulture);
             }
         }
     }

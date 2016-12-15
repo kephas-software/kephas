@@ -10,6 +10,7 @@
 namespace Kephas.Messaging.Server
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -19,6 +20,7 @@ namespace Kephas.Messaging.Server
 
     using Kephas.Composition;
     using Kephas.Logging;
+    using Kephas.Messaging.Resources;
     using Kephas.Messaging.Server.Composition;
     using Kephas.Services;
 
@@ -32,6 +34,11 @@ namespace Kephas.Messaging.Server
         /// The filter factories.
         /// </summary>
         private readonly IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories;
+
+        /// <summary>
+        /// The handler factories.
+        /// </summary>
+        private readonly ConcurrentDictionary<Type, Func<IMessageHandler>> handlerFactories = new ConcurrentDictionary<Type, Func<IMessageHandler>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
@@ -135,9 +142,21 @@ namespace Kephas.Messaging.Server
         /// <returns>The newly created message handler.</returns>
         protected virtual IMessageHandler CreateMessageHandler(IMessage message)
         {
-            var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(message.GetType());
-            var messageHandler = (IMessageHandler)this.CompositionContext.GetExport(messageHandlerType);
-            return messageHandler;
+            var messageType = message.GetType();
+            var messageHandlerFactory = this.handlerFactories.GetOrAdd(messageType, _ =>
+            {
+                var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(message.GetType());
+                Func<IMessageHandler> factory = () => (IMessageHandler)this.CompositionContext.TryGetExport(messageHandlerType);
+                return factory;
+            });
+
+            var handler = messageHandlerFactory();
+            if (handler == null)
+            {
+                throw new MissingHandlerException(string.Format(Strings.DefaultMessageProcessor_MissingHandler_Excception, messageType.FullName));
+            }
+
+            return handler;
         }
 
         /// <summary>

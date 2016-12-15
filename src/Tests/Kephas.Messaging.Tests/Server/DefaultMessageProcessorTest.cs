@@ -78,12 +78,22 @@ namespace Kephas.Messaging.Tests.Server
 
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
             var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
 
             Assert.AreSame(expectedResponse, result);
+        }
+
+        [Test]
+        public async Task ProcessAsync_missing_handler_exception()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
+                .Returns(null);
+            var processor = this.CreateRequestProcessor(compositionContainer);
+            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<MissingHandlerException>());
         }
 
         [Test]
@@ -94,7 +104,7 @@ namespace Kephas.Messaging.Tests.Server
 
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
             Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<InvalidOperationException>());
@@ -110,7 +120,7 @@ namespace Kephas.Messaging.Tests.Server
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var processor = this.CreateRequestProcessor(compositionContainer);
@@ -128,7 +138,7 @@ namespace Kephas.Messaging.Tests.Server
 
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<int>();
@@ -163,7 +173,7 @@ namespace Kephas.Messaging.Tests.Server
 
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<int>();
@@ -194,7 +204,7 @@ namespace Kephas.Messaging.Tests.Server
 
             handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.GetExport(Arg.Any<Type>(), Arg.Any<string>())
+            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(handler);
 
             var beforelist = new List<Exception>();

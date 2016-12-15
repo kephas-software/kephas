@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MessageHandlerBadMessageType" xml:space="preserve">
+  <data name="DefaultMessageProcessor_MissingHandler_Excception" xml:space="preserve">
+    <value>Could not find a handler for the '{0}' message type.</value>
+  </data>
+  <data name="MessageHandler_BadMessageType_Exception" xml:space="preserve">
     <value>The message to process must be of type '{0}'.</value>
   </data>
 </root>

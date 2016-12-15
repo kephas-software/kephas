@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Server
             var typedRequest = message as TMessage;
             if (typedRequest == null)
             {
-                throw new ArgumentException(string.Format(Strings.MessageHandlerBadMessageType, typeof(TMessage)), nameof(message));
+                throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
             }
 
             var response = await this.ProcessAsync(typedRequest, context, token);

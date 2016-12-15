@@ -142,6 +142,8 @@
     </Compile>
     <Compile Include="Client\IClientMessageProcessor.cs" />
     <Compile Include="IMessage.cs" />
+    <Compile Include="MessagingException.cs" />
+    <Compile Include="MissingHandlerException.cs" />
     <Compile Include="Ping\PingBackMessage.cs" />
     <Compile Include="Ping\PingMessage.cs" />
     <Compile Include="Ping\PingMessageHandler.cs" />
