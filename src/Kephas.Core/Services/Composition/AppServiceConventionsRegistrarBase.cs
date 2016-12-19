@@ -354,7 +354,7 @@ namespace Kephas.Services.Composition
                 throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
-            return explicitelyMarkedConstructors[1];
+            return explicitelyMarkedConstructors[0];
         }
 
         /// <summary>
