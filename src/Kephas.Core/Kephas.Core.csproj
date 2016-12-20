@@ -278,6 +278,7 @@
     <Compile Include="Services\ContextBase.cs" />
     <Compile Include="Services\IAsyncInitializable.cs" />
     <Compile Include="Services\IContext.cs" />
+    <Compile Include="Services\IInitializable.cs" />
     <Compile Include="Services\NullServiceException.cs" />
     <Compile Include="Services\OptionalServiceAttribute.cs" />
     <Compile Include="Services\OverridePriorityAttribute.cs" />
