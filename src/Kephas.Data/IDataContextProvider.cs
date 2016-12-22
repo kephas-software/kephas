@@ -19,10 +19,20 @@ namespace Kephas.Data
         /// <summary>
         /// Gets data context for the provided context object.
         /// </summary>
-        /// <param name="context">(Optional) the context.</param>
+        /// <param name="configuration"></param>
         /// <returns>
         /// The new data context.
         /// </returns>
-        IDataContext GetDataContext(IContext context = null);
+        IDataContext GetDataContext(IDataContextConfiguration configuration = null);
+    }
+
+    /// <summary>
+    /// Generic factory service for data contexts.
+    /// </summary>
+    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
+    [SharedAppServiceContract(AsOpenGeneric = true)]
+    public interface IDataContextProvider<TDataContext> : IDataContextProvider
+        where TDataContext : IDataContext
+    {
     }
 }

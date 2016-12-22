@@ -112,11 +112,10 @@ namespace Kephas.Data.MongoDB
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="config">The configuration for the data context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        protected override Task InitializeCoreAsync(IDataContextConfiguration config, CancellationToken cancellationToken)
+        protected override void InitializeCore(IDataContextConfiguration config)
         {
             var mongoUrl = MongoUrl.Create(config.ConnectionString);
             var databaseName = mongoUrl.DatabaseName;
@@ -128,8 +127,6 @@ namespace Kephas.Data.MongoDB
 
             this.Client = this.GetOrCreateMongoClient(mongoUrl);
             this.Database = this.Client.GetDatabase(databaseName);
-
-            return Task.CompletedTask;
         }
 
         /// <summary>

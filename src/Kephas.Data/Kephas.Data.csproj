@@ -152,11 +152,7 @@
     <Compile Include="Behaviors\IDataBehavior.cs" />
     <Compile Include="Behaviors\IDataBehaviorProvider.cs" />
     <Compile Include="Capabilities\IGraphOperationContext.cs" />
-    <Compile Include="ClientEntities\ClientDataContext.cs" />
-    <Compile Include="ClientEntities\Commands\ClientCreateEntityCommand.cs" />
-    <Compile Include="ClientEntities\Commands\ClientFindCommand.cs" />
-    <Compile Include="ClientEntities\DefaultClientDataContextProvider.cs" />
-    <Compile Include="ClientEntities\IClientDataContextProvider.cs" />
+    <Compile Include="AttributedModel\EntityForAttribute.cs" />
     <Compile Include="Commands\Builders\IDataCommandBuilder.cs" />
     <Compile Include="Commands\CreateEntityCommandBase.cs" />
     <Compile Include="Commands\CreateEntityContext.cs" />
@@ -194,6 +190,7 @@
     <Compile Include="Conversion\IDataConversionService.cs" />
     <Compile Include="Conversion\IDataConverter.cs" />
     <Compile Include="DataContextConfiguration.cs" />
+    <Compile Include="DefaultDataContextProvider.cs" />
     <Compile Include="DataOperationContext.cs" />
     <Compile Include="DataException.cs" />
     <Compile Include="DataContextBase.cs" />
@@ -252,6 +249,7 @@
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

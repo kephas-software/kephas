@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ClientFindCommand.cs" company="Quartz Software SRL">
+// <copyright file="InMemoryFindCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,15 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.ClientEntities.Commands
+namespace Kephas.Data.InMemory.Commands
 {
     using Kephas.Data.Commands;
 
     /// <summary>
-    /// Find command implementation for a <see cref="ClientDataContext"/>.
+    /// Find command implementation for a <see cref="InMemoryDataContext"/>.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
-    public class ClientFindCommand<T> : FindCommandBase<ClientDataContext, T>
+    public class InMemoryFindCommand<T> : FindCommandBase<InMemoryDataContext, T>
         where T : class
     {
     }

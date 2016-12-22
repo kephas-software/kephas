@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ClientDataContext.cs" company="Quartz Software SRL">
+// <copyright file="InMemoryDataContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,12 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.ClientEntities
+namespace Kephas.Data.InMemory
 {
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
-
     using Kephas.Data.Commands.Factory;
     using Kephas.Services;
 
@@ -20,7 +19,7 @@ namespace Kephas.Data.ClientEntities
     /// Client data context managing.
     /// </summary>
     [AppServiceContract]
-    public class ClientDataContext : DataContextBase
+    public class InMemoryDataContext : DataContextBase
     {
         /// <summary>
         /// The internal cache.
@@ -32,7 +31,7 @@ namespace Kephas.Data.ClientEntities
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        public ClientDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
             : base(ambientServices, dataCommandProvider)
         {
             Contract.Requires(ambientServices != null);

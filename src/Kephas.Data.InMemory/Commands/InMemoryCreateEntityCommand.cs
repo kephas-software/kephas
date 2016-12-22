@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ClientCreateEntityCommand.cs" company="Quartz Software SRL">
+// <copyright file="InMemoryCreateEntityCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.ClientEntities.Commands
+namespace Kephas.Data.InMemory.Commands
 {
     using System.Diagnostics.Contracts;
 
@@ -15,17 +15,17 @@ namespace Kephas.Data.ClientEntities.Commands
     using Kephas.Data.Commands;
 
     /// <summary>
-    /// Create entity command implementation for a <see cref="ClientDataContext"/>.
+    /// Create entity command implementation for a <see cref="InMemoryDataContext"/>.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
-    public class ClientCreateEntityCommand<T> : CreateEntityCommandBase<ClientDataContext, T>
+    public class InMemoryCreateEntityCommand<T> : CreateEntityCommandBase<InMemoryDataContext, T>
         where T : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateEntityCommandBase{TDataContext,T}"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        public ClientCreateEntityCommand(IDataBehaviorProvider behaviorProvider)
+        public InMemoryCreateEntityCommand(IDataBehaviorProvider behaviorProvider)
             : base(behaviorProvider)
         {
             Contract.Requires(behaviorProvider != null);
@@ -38,7 +38,7 @@ namespace Kephas.Data.ClientEntities.Commands
         /// <param name="result">The result.</param>
         protected override void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult<T> result)
         {
-            var dataContext = (ClientDataContext)operationContext.DataContext;
+            var dataContext = (InMemoryDataContext)operationContext.DataContext;
             result.Entity = (T)dataContext.GetOrAddCacheableItem(operationContext, result.Entity, isNew: true);
         }
     }

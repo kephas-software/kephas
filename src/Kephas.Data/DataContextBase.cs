@@ -65,11 +65,10 @@ namespace Kephas.Data
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public virtual Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual void Initialize(IContext context = null)
         {
             var config = context as IDataContextConfiguration;
             if (config == null)
@@ -77,20 +76,18 @@ namespace Kephas.Data
                 throw new ArgumentException($"The provided context is not a {typeof(IDataContextConfiguration).FullName}.");
             }
 
-            return this.InitializeCoreAsync(config, cancellationToken);
+            this.InitializeCore(config);
         }
 
         /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="config">The configuration for the data context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        protected virtual Task InitializeCoreAsync(IDataContextConfiguration config, CancellationToken cancellationToken)
+        protected virtual void InitializeCore(IDataContextConfiguration config)
         {
-            return Task.CompletedTask;
         }
 
         /// <summary>
