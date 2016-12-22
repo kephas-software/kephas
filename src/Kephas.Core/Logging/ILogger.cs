@@ -219,7 +219,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the debug.
+        /// Logs the trace.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -231,12 +231,12 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the debug format.
+        /// Logs the trace format.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        public static void TraceFormat(this ILogger logger, string messageFormat, params object[] args)
+        public static void Trace(this ILogger logger, string messageFormat, params object[] args)
         {
             logger?.Log(LogLevel.Trace, messageFormat, args);
         }
