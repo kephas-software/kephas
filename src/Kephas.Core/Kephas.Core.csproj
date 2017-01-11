@@ -153,6 +153,9 @@
     <Compile Include="Application\AppManifestAttribute.cs" />
     <Compile Include="Application\AppManifestBase.cs" />
     <Compile Include="Application\DefaultAppBootstrapper.cs" />
+    <Compile Include="Application\DefaultAppDisposer.cs" />
+    <Compile Include="Application\IAppDisposer.cs" />
+    <Compile Include="Application\IAppFinalizer.cs" />
     <Compile Include="Application\NullAppRuntime.cs" />
     <Compile Include="Application\IAppRuntime.cs" />
     <Compile Include="Application\NullAppManifest.cs" />

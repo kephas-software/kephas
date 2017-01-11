@@ -233,6 +233,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The application dispose procedure was canceled, at {0:s}..
+        /// </summary>
+        internal static string DefaultAppDisposer_DisposeCanceled_Exception {
+            get {
+                return ResourceManager.GetString("DefaultAppDisposer_DisposeCanceled_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application disposer encountered an exception while disposing, at {0:s}..
+        /// </summary>
+        internal static string DefaultAppDisposer_DisposeFaulted_Exception {
+            get {
+                return ResourceManager.GetString("DefaultAppDisposer_DisposeFaulted_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A serializer for the format type &apos;{0}&apos; was not found..
         /// </summary>
         internal static string DefaultSerializationService_SerializerNotFound_Exception {

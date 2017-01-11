@@ -170,11 +170,20 @@
     <Compile Include="..\Kephas.Core\Application\DefaultAppBootstrapper.cs">
       <Link>Application\DefaultAppBootstrapper.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\DefaultAppDisposer.cs">
+      <Link>Application\DefaultAppDisposer.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppBootstrapper.cs">
       <Link>Application\IAppBootstrapper.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppContext.cs">
       <Link>Application\IAppContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppDisposer.cs">
+      <Link>Application\IAppDisposer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppFinalizer.cs">
+      <Link>Application\IAppFinalizer.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppInitializer.cs">
       <Link>Application\IAppInitializer.cs</Link>

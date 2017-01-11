@@ -198,4 +198,10 @@
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
     <value>Cannot load assembly '{0}'. See the exception for more information.</value>
   </data>
+  <data name="DefaultAppDisposer_DisposeCanceled_Exception" xml:space="preserve">
+    <value>The application dispose procedure was canceled, at {0:s}.</value>
+  </data>
+  <data name="DefaultAppDisposer_DisposeFaulted_Exception" xml:space="preserve">
+    <value>The application disposer encountered an exception while disposing, at {0:s}.</value>
+  </data>
 </root>
