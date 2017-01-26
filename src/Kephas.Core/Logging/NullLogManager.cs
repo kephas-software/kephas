@@ -20,12 +20,36 @@ namespace Kephas.Logging
     public class NullLogManager : ILogManager
     {
         /// <summary>
-        /// The null logger.
+        /// The default null logger.
         /// </summary>
-        private readonly NullLogger nullLogger = new NullLogger();
+        private static readonly NullLogger DefaultNullLogger = new NullLogger();
 
         /// <summary>
-        /// Gets the logger with the provided name.
+        /// Gets a NULL logger for the provided name.
+        /// </summary>
+        /// <param name="loggerName">Name of the logger.</param>
+        /// <returns>
+        /// A logger for the provided name.
+        /// </returns>
+        public static ILogger GetNullLogger(string loggerName)
+        {
+            return DefaultNullLogger;
+        }
+
+        /// <summary>
+        /// Gets a NULL logger for the provided type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// A logger for the provided type.
+        /// </returns>
+        public static ILogger GetNullLogger(Type type)
+        {
+            return DefaultNullLogger;
+        }
+
+        /// <summary>
+        /// Gets a NULL logger for the provided name.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>
@@ -33,7 +57,7 @@ namespace Kephas.Logging
         /// </returns>
         public ILogger GetLogger(string loggerName)
         {
-            return this.nullLogger;
+            return DefaultNullLogger;
         }
 
         /// <summary>

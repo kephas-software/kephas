@@ -34,7 +34,7 @@ namespace Kephas.Logging
         {
             Contract.Requires(logManager != null);
 
-            this.innerLogger = logManager.GetLogger(typeof(TService));
+            this.innerLogger = logManager.GetLogger(typeof(TService)) ?? NullLogManager.GetNullLogger(typeof(TService));
         }
 
         /// <summary>
