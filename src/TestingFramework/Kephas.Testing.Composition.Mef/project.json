@@ -4,7 +4,7 @@
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
     "NSubstitute": "2.0.0-rc",
-    "NUnit": "3.6.0-dev-03459"
+    "NUnit": "3.6.0"
   },
   "frameworks": {
     "netstandard1.6": {}
