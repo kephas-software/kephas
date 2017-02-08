@@ -95,16 +95,16 @@ namespace Kephas.Logging
         /// Logs the information at the provided level.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="level">        The logging level.</param>
+        /// <param name="level">The logging level.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
+        /// <param name="args">The arguments.</param>
         public static void Log(this ILogger logger, LogLevel level, string messageFormat, params object[] args)
         {
             logger?.Log(level, null, messageFormat, args);
         }
 
         /// <summary>
-        /// Logs fatal exceptions.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -116,7 +116,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the fatal format.
+        /// Logs a formatted message at <see cref="LogLevel.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
@@ -127,7 +127,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the error.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -139,7 +139,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Loes the error format.
+        /// Logs a formatted message at <see cref="LogLevel.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
@@ -150,7 +150,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the warn.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Warning"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -162,7 +162,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the warn format.
+        /// Logs a formatted message at <see cref="LogLevel.Warning"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
@@ -173,7 +173,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the information.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -185,7 +185,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the information format.
+        /// Logs a formatted message at <see cref="LogLevel.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
@@ -196,7 +196,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the debug.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -208,7 +208,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the debug format.
+        /// Logs a formatted message at <see cref="LogLevel.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
@@ -219,7 +219,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the trace.
+        /// Logs the exception with a formatted message at <see cref="LogLevel.Trace"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="exception">The exception.</param>
@@ -231,7 +231,7 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Logs the trace format.
+        /// Logs a formatted message at <see cref="LogLevel.Trace"/> level.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="messageFormat">The message format.</param>
