@@ -60,5 +60,14 @@ namespace Kephas.Data.MongoDB.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No database name is provided in the configuration settings..
+        /// </summary>
+        internal static string Initialize_DatabaseNameEmpty_Exception {
+            get {
+                return ResourceManager.GetString("Initialize_DatabaseNameEmpty_Exception", resourceCulture);
+            }
+        }
     }
 }

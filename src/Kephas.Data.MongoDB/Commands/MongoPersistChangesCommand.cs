@@ -7,25 +7,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using System.Reflection;
-using Kephas.Reflection;
-
 namespace Kephas.Data.MongoDB.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using global::MongoDB.Driver;
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Diagnostics;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
-
-    using global::MongoDB.Driver;
 
     /// <summary>
     /// Command for persisting changes for <see cref="MongoDataContext"/>.
@@ -38,7 +37,7 @@ namespace Kephas.Data.MongoDB.Commands
         private readonly MethodInfo BulkWriteAsyncMethod;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PersistChangesCommandBase{TDataContext}"/> class.
+        /// Initializes a new instance of the <see cref="MongoPersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider)

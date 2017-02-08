@@ -19,7 +19,7 @@ namespace Kephas.Data.MongoDB.Commands
     public class MongoCreateEntityCommand<T> : CreateEntityCommandBase<MongoDataContext, T> where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityCommandBase{TDataContext,T}"/> class.
+        /// Initializes a new instance of the <see cref="MongoCreateEntityCommand{T}"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         public MongoCreateEntityCommand(IDataBehaviorProvider behaviorProvider)

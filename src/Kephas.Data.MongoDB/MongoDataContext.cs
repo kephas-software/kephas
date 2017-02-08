@@ -13,8 +13,6 @@ namespace Kephas.Data.MongoDB
     using System.Collections.Concurrent;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
@@ -22,6 +20,8 @@ namespace Kephas.Data.MongoDB
     using Kephas.Services;
 
     using global::MongoDB.Driver;
+
+    using Kephas.Data.MongoDB.Resources;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -36,7 +36,7 @@ namespace Kephas.Data.MongoDB
           new ConcurrentDictionary<string, MongoClient>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContextBase"/> class.
+        /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
@@ -112,17 +112,13 @@ namespace Kephas.Data.MongoDB
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="config">The configuration for the data context.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
         protected override void InitializeCore(IDataContextConfiguration config)
         {
             var mongoUrl = MongoUrl.Create(config.ConnectionString);
             var databaseName = mongoUrl.DatabaseName;
             if (string.IsNullOrEmpty(databaseName))
             {
-                // TODO localization
-                throw new InvalidOperationException("No database name is provided in the configuration settings.");
+                throw new MongoDataException(Strings.Initialize_DatabaseNameEmpty_Exception);
             }
 
             this.Client = this.GetOrCreateMongoClient(mongoUrl);
