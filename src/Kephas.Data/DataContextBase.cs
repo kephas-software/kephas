@@ -12,8 +12,6 @@ namespace Kephas.Data
     using System;
     using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
@@ -65,9 +63,6 @@ namespace Kephas.Data
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
         public virtual void Initialize(IContext context = null)
         {
             var config = context as IDataContextConfiguration;
@@ -77,17 +72,6 @@ namespace Kephas.Data
             }
 
             this.InitializeCore(config);
-        }
-
-        /// <summary>
-        /// Initializes the service asynchronously.
-        /// </summary>
-        /// <param name="config">The configuration for the data context.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
-        protected virtual void InitializeCore(IDataContextConfiguration config)
-        {
         }
 
         /// <summary>
@@ -136,6 +120,14 @@ namespace Kephas.Data
         public void Dispose()
         {
             this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="config">The configuration for the data context.</param>
+        protected virtual void InitializeCore(IDataContextConfiguration config)
+        {
         }
 
         /// <summary>

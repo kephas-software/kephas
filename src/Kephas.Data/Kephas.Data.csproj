@@ -141,6 +141,7 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="AmbiguousMatchDataException.cs" />
+    <Compile Include="Behaviors\DataBehaviorBase.cs" />
     <Compile Include="Capabilities\ChangeState.cs" />
     <Compile Include="Behaviors\Composition\DataBehaviorMetadata.cs" />
     <Compile Include="Behaviors\DataBehaviorProviderExtensions.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Conversion\DataConversionException.cs" />
     <Compile Include="Conversion\DataConversionResult.cs" />
     <Compile Include="Conversion\DataConversionServiceExtensions.cs" />
+    <Compile Include="Conversion\DataConverterBase.cs" />
     <Compile Include="Conversion\DefaultDataConversionService.cs" />
     <Compile Include="Conversion\IDataConversionContext.cs" />
     <Compile Include="Conversion\IDataConversionResult.cs" />

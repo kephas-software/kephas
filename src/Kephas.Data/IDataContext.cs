@@ -131,7 +131,7 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="operationContext"></param>
+        /// <param name="operationContext">Context for the operation.</param>
         /// <returns>
         /// The capability.
         /// </returns>
@@ -160,9 +160,6 @@ namespace Kephas.Data
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
         public abstract void Initialize(IContext context = null);
     }
 }

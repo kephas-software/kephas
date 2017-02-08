@@ -23,7 +23,7 @@ namespace Kephas.Data.AttributedModel
         /// <param name="modelType">The model type associated to the attributed type.</param>
         public EntityForAttribute(Type modelType)
         {
-            ModelType = modelType;
+            this.ModelType = modelType;
         }
 
         /// <summary>
