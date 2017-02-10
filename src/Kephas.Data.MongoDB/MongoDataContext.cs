@@ -14,14 +14,13 @@ namespace Kephas.Data.MongoDB
     using System.Diagnostics.Contracts;
     using System.Linq;
 
-    using Kephas.Data.Commands.Factory;
-    using Kephas.Data.MongoDB.Diagnostics;
-    using Kephas.Logging;
-    using Kephas.Services;
-
     using global::MongoDB.Driver;
 
+    using Kephas.Data.Commands.Factory;
+    using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Resources;
+    using Kephas.Logging;
+    using Kephas.Services;
 
     /// <summary>
     /// A data context for MongoDB.
