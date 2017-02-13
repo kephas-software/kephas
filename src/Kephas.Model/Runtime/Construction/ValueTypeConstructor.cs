@@ -9,12 +9,8 @@
 
 namespace Kephas.Model.Runtime.Construction
 {
-    using System.Reflection;
-
-    using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
-    using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Runtime;
 
     /// <summary>
@@ -48,6 +44,25 @@ namespace Kephas.Model.Runtime.Construction
         public bool ForceValueType { get; }
 
         /// <summary>
+        /// Determines whether a model element can be created for the provided runtime element.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>
+        /// <c>true</c>true if a model element can be created, <c>false</c> if not.
+        /// </returns>
+        protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            if (this.ForceValueType)
+            {
+                return true;
+            }
+
+            var underlyingType = runtimeElement.TypeInfo;
+            return underlyingType.IsValueType || base.CanCreateModelElement(constructionContext, runtimeElement);
+        }
+
+        /// <summary>
         /// Core implementation of trying to get the element information.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -58,12 +73,6 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            var underlyingType = runtimeElement.TypeInfo;
-            if (underlyingType.GetCustomAttribute<ValueTypeAttribute>() == null && !underlyingType.IsValueType && !this.ForceValueType)
-            {
-                return null;
-            }
-
             return new ValueType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }

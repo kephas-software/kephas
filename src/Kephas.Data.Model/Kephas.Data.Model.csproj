@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{965E1983-D19C-4D22-B6B9-8A3221520542}</ProjectGuid>
+    <ProjectGuid>{F31D9535-1390-4F3A-9D79-912AA01D6CAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Model</RootNamespace>
-    <AssemblyName>Kephas.Model</AssemblyName>
+    <RootNamespace>Kephas.Data.Model</RootNamespace>
+    <AssemblyName>Kephas.Data.Model</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -69,7 +69,6 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Debug\Kephas.Model.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -121,7 +120,6 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Release\Kephas.Model.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -134,131 +132,37 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="ModelContracts.cd" />
-    <None Include="Package.nuspec" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\ModelSpaceAppInitializer.cs" />
-    <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
-    <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
-    <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
-    <Compile Include="AttributedModel\ModelDimensionAttribute.cs" />
-    <Compile Include="AttributedModel\ModelDimensionElementAttribute.cs" />
-    <Compile Include="AttributedModel\ProjectionForAttribute.cs" />
-    <Compile Include="AttributedModel\OverrideAttribute.cs" />
-    <Compile Include="Configuration\IElementConfigurator.cs" />
-    <Compile Include="Construction\ModelConstructionException.cs" />
-    <Compile Include="Elements\Annotations\MixinAnnotation.cs" />
-    <Compile Include="ModelException.cs" />
-    <Compile Include="Reflection\RuntimeTypeInfoExtensions.cs" />
-    <Compile Include="Runtime\AttributedModel\ClassifierKindAttribute.cs" />
-    <Compile Include="Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs" />
-    <Compile Include="Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs" />
-    <Compile Include="Runtime\Configuration\IRuntimeModelElementConfigurator.cs" />
-    <Compile Include="Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs" />
-    <Compile Include="Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs" />
-    <Compile Include="Dimensions\Aspect\IDefaultAspectDimensionElement.cs" />
-    <Compile Include="Dimensions\IAppFamilyDimension.cs" />
-    <Compile Include="Dimensions\IAspectDimension.cs" />
-    <Compile Include="Dimensions\IAppDimension.cs" />
-    <Compile Include="Dimensions\IModuleDimension.cs" />
-    <Compile Include="Dimensions\IScopeDimension.cs" />
-    <Compile Include="Dimensions\App\IKernelAppDimensionElement.cs" />
-    <Compile Include="Dimensions\Module\ICoreModuleDimensionElement.cs" />
-    <Compile Include="Dimensions\Scope\IGlobalScopeDimensionElement.cs" />
-    <Compile Include="Elements\Annotation.cs" />
-    <Compile Include="Elements\Classifier.cs" />
-    <Compile Include="Elements\ClassifierBase.cs" />
-    <Compile Include="Runtime\AttributedModel\ValueTypeAttribute.cs" />
-    <Compile Include="Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs" />
-    <Compile Include="Runtime\Construction\Annotations\MixinAnnotationConstructor.cs" />
-    <Compile Include="Runtime\Construction\Builders\ClassifierBuilderBase.cs" />
-    <Compile Include="Runtime\Construction\Builders\ModelElementBuilderBase.cs" />
-    <Compile Include="Runtime\Construction\Builders\NamedElementBuilderBase.cs" />
-    <Compile Include="Runtime\Construction\Builders\RuntimeProjectionBuilder.cs" />
-    <Compile Include="Runtime\Construction\Builders\ValueTypeBuilder.cs" />
-    <Compile Include="Elements\DefaultModelSpace.cs" />
-    <Compile Include="Elements\ElementNotFoundException.cs" />
-    <Compile Include="Elements\ModelDimension.cs" />
-    <Compile Include="Elements\ModelDimensionElement.cs" />
-    <Compile Include="Elements\ModelElementBase.cs" />
-    <Compile Include="Elements\ModelHelper.cs" />
-    <Compile Include="Elements\ModelProjection.cs" />
-    <Compile Include="Elements\NamedElementBase.cs" />
-    <Compile Include="Elements\Property.cs" />
-    <Compile Include="Elements\ValueType.cs" />
-    <Compile Include="Construction\IModelInfoProvider.cs" />
-    <Compile Include="IAnnotation.cs" />
-    <Compile Include="IClassifier.cs" />
-    <Compile Include="IModelDimension.cs" />
-    <Compile Include="IModelDimensionElement.cs" />
-    <Compile Include="IModelElement.cs" />
-    <Compile Include="IModelProjection.cs" />
-    <Compile Include="IModelSpace.cs" />
-    <Compile Include="IModelSpaceProvider.cs" />
-    <Compile Include="INamedElement.cs" />
-    <Compile Include="IProperty.cs" />
-    <Compile Include="IValueType.cs" />
+    <Compile Include="Dimensions\Scope\IClientScopeDimensionElement.cs" />
+    <Compile Include="Elements\Entity.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Model.AssemblyInfo.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Runtime\AttributedModel\AspectAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\AspectForAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\AbstractAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\MixinAttribute.cs" />
-    <Compile Include="Runtime\AttributedModel\ModelAssemblyAttribute.cs" />
-    <Compile Include="Construction\IModelConstructionContext.cs" />
-    <Compile Include="Construction\ModelConstructionContext.cs" />
-    <Compile Include="Runtime\Construction\ClassifierConstructor.cs" />
-    <Compile Include="Construction\Internal\IWritableNamedElement.cs" />
-    <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProvider.cs" />
-    <Compile Include="Runtime\Construction\ValueTypeConstructor.cs" />
-    <Compile Include="Runtime\DefaultRuntimeModelInfoProvider.cs" />
-    <Compile Include="Runtime\Construction\Annotations\AnnotationConstructor.cs" />
-    <Compile Include="Runtime\Construction\AnnotationConstructorBase.cs" />
-    <Compile Include="Runtime\Construction\Composition\RuntimeModelElementConstructorMetadata.cs" />
-    <Compile Include="Runtime\Construction\DefaultRuntimeModelElementFactory.cs" />
-    <Compile Include="Runtime\Construction\IRuntimeModelElementConstructor.cs" />
-    <Compile Include="Runtime\Construction\IRuntimeModelElementFactory.cs" />
-    <Compile Include="Runtime\Construction\ClassifierConstructorBase.cs" />
-    <Compile Include="Runtime\Construction\ModelDimensionElementConstructor.cs" />
-    <Compile Include="Runtime\Construction\ModelDimensionConstructor.cs" />
-    <Compile Include="Runtime\Construction\ModelElementConstructorBase.cs" />
-    <Compile Include="Runtime\Construction\NamedElementConstructorBase.cs" />
-    <Compile Include="Runtime\Construction\PropertyConstructor.cs" />
-    <Compile Include="Runtime\IRuntimeModelRegistry.cs" />
-    <Compile Include="Runtime\IRuntimeModelProjectionProvider.cs" />
-    <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
-    <Compile Include="Runtime\RuntimeModelInfoProviderBase.cs" />
-    <Compile Include="Services\DefaultModelSpaceProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Compile Include="Runtime\AttributedModel\EntityAssemblyAttribute.cs" />
+    <Compile Include="Runtime\AttributedModel\EntityAttribute.cs" />
+    <Compile Include="Runtime\Construction\EntityConstructor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj">
+      <Project>{8591c924-3c04-413f-a530-7a5575b45966}</Project>
+      <Name>Kephas.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj">
+      <Project>{965e1983-d19c-4d22-b6b9-8a3221520542}</Project>
+      <Name>Kephas.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

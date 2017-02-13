@@ -11,7 +11,6 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Text;
 
-    using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
@@ -58,6 +57,11 @@ namespace Kephas.Model.Runtime.Construction
                 return null;
             }
 
+            if (!this.CanCreateModelElement(constructionContext, runtimeInfo))
+            {
+                return null;
+            }
+
             var element = this.TryCreateModelElementCore(constructionContext, runtimeInfo);
             if (element != null)
             {
@@ -79,6 +83,21 @@ namespace Kephas.Model.Runtime.Construction
         public string TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
         {
             return this.TryComputeNameCore(runtimeElement);
+        }
+
+        /// <summary>
+        /// Determines whether a model element can be created for the provided runtime element.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>
+        /// <c>true</c> if a model element can be created, <c>false</c> if not.
+        /// </returns>
+        protected virtual bool CanCreateModelElement(
+            IModelConstructionContext constructionContext,
+            TRuntime runtimeElement)
+        {
+            return true;
         }
 
         /// <summary>

@@ -15,14 +15,14 @@ using System.Resources;
 // associated with an assembly.
 [assembly: AssemblyCompany("Quartz Software SRL")]
 [assembly: AssemblyProduct("Kephas Framework")]
-[assembly: AssemblyCopyright("Copyright © Quartz Software SRL 2010-2016")]
+[assembly: AssemblyCopyright("Copyright © Quartz Software SRL 2010-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
 
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.10.0")]
-[assembly: AssemblyInformationalVersion("3.0.10.0")]
+[assembly: AssemblyVersion("3.1.0.0")]
+[assembly: AssemblyFileVersion("3.1.0.0")]
+[assembly: AssemblyInformationalVersion("3.1.0.0")]
 
 // Stylecop global rule suppresions.
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1028:Code must not contain trailing whitespace", Justification = "It is OK to leave the trailing spaces.")]

@@ -9,14 +9,15 @@
 
 namespace Kephas.Model.Runtime.Construction
 {
-    using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     /// <summary>
     /// Factory class for runtime property information.
     /// </summary>
+    [ProcessingPriority(Priority.Low)]
     public class PropertyConstructor : ModelElementConstructorBase<Property, IProperty, IRuntimePropertyInfo>
     {
         /// <summary>

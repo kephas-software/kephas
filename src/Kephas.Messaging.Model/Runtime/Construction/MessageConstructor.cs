@@ -1,37 +1,42 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ClassifierConstructor.cs" company="Quartz Software SRL">
+// <copyright file="MessageConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the classifier constructor class.
+//   Implements the message constructor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.Construction
+namespace Kephas.Messaging.Model.Runtime.Construction
 {
+    using System.Reflection;
+
+    using Kephas.Messaging.Model.Elements;
     using Kephas.Model.Construction;
-    using Kephas.Model.Elements;
+    using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     /// <summary>
-    /// A constructor for generic classifiers. This class cannot be inherited.
+    /// Classifier constructor for <see cref="Message"/>.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
-    public sealed class ClassifierConstructor : ClassifierConstructorBase<Classifier, IClassifier>
+    public class MessageConstructor : ClassifierConstructorBase<Message, IMessage>
     {
+        /// <summary>
+        /// The marker interface.
+        /// </summary>
+        private static readonly TypeInfo MarkerInterface = typeof(IMessage).GetTypeInfo();
+
         /// <summary>
         /// Determines whether a model element can be created for the provided runtime element.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>
-        /// <c>true</c>true if a model element can be created, <c>false</c> if not.
+        /// <c>true</c> if a model element can be created, <c>false</c> if not.
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            // fallback everything to classifier.
-            return true;
+            return base.CanCreateModelElement(constructionContext, runtimeElement);
         }
 
         /// <summary>
@@ -43,9 +48,14 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Classifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override Message TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new Classifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            if (!MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo))
+            {
+                return null;
+            }
+
+            return new Message(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
 }

@@ -83,6 +83,19 @@ namespace Kephas.Model.Tests.Runtime.Construction
         private class TestClassifierConstructor : ClassifierConstructorBase<TestClassifier, IClassifier>
         {
             /// <summary>
+            /// Determines whether a model element can be created for the provided runtime element.
+            /// </summary>
+            /// <param name="constructionContext">Context for the construction.</param>
+            /// <param name="runtimeElement">The runtime element.</param>
+            /// <returns>
+            /// <c>true</c>true if a model element can be created, <c>false</c> if not.
+            /// </returns>
+            protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+            {
+                return true;
+            }
+
+            /// <summary>
             /// Core implementation of trying to get the element information.
             /// </summary>
             /// <param name="constructionContext">Context for the construction.</param>

@@ -41,6 +41,19 @@ namespace Kephas.Model.Runtime.Construction
         protected override string ElementNameDiscriminator => DimensionNameDiscriminator;
 
         /// <summary>
+        /// Determines whether a model element can be created for the provided runtime element.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>
+        /// <c>true</c> if a model element can be created, <c>false</c> if not.
+        /// </returns>
+        protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            return runtimeElement.TypeInfo.IsInterface;
+        }
+
+        /// <summary>
         /// Tries to get the model dimension information.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -52,11 +65,6 @@ namespace Kephas.Model.Runtime.Construction
         protected override ModelDimension TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var typeInfo = runtimeElement.TypeInfo;
-            if (!typeInfo.IsInterface)
-            {
-                return null;
-            }
-
             var dimensionAttribute = typeInfo.GetCustomAttribute<ModelDimensionAttribute>();
             if (dimensionAttribute == null)
             {

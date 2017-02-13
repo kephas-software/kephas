@@ -13,7 +13,6 @@ namespace Kephas.Model.Runtime.Construction
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;

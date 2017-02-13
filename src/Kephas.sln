@@ -95,6 +95,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.InMemory", "Kep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.InMemory.Tests", "Tests\Kephas.Data.InMemory.Tests\Kephas.Data.InMemory.Tests.csproj", "{4E119285-ABC4-4890-B758-F64D950B8CF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model", "Kephas.Data.Model\Kephas.Data.Model.csproj", "{F31D9535-1390-4F3A-9D79-912AA01D6CAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Model", "Kephas.Messaging.Model\Kephas.Messaging.Model.csproj", "{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,6 +237,14 @@ Global
 		{4E119285-ABC4-4890-B758-F64D950B8CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E119285-ABC4-4890-B758-F64D950B8CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E119285-ABC4-4890-B758-F64D950B8CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F31D9535-1390-4F3A-9D79-912AA01D6CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F31D9535-1390-4F3A-9D79-912AA01D6CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F31D9535-1390-4F3A-9D79-912AA01D6CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F31D9535-1390-4F3A-9D79-912AA01D6CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
