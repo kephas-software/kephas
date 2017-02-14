@@ -39,6 +39,20 @@ namespace Kephas.Data.Tests.Commands.Factory
         }
 
         [Test]
+        public void CreateCommand_ambiguous_exception()
+        {
+            var cmd = Substitute.For<IDataCommand>();
+            var betterCmd = Substitute.For<IDataCommand>();
+            var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
+                                                                   {
+                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
+                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string)))
+                                                                   });
+
+            Assert.Throws<AmbiguousMatchDataException>(() => factory.GetCommandFactory(typeof(string)));
+        }
+
+        [Test]
         public void CreateCommand_respects_override_priority()
         {
             var cmd = Substitute.For<IDataCommand>();
@@ -62,14 +76,18 @@ namespace Kephas.Data.Tests.Commands.Factory
                                                                        new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string)))
                                                                    });
 
-            Assert.Throws<NotSupportedException>(() => factory.GetCommandFactory(typeof(int)));
+            var cmdFactory = factory.GetCommandFactory(typeof(int));
+            var actualCmd = cmdFactory();
+            Assert.IsNull(actualCmd);
         }
 
         [Test]
         public void CreateCommand_NotSupported_no_exported_commands()
         {
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>());
-            Assert.Throws<NotSupportedException>(() => factory.GetCommandFactory(typeof(int)));
+            var cmdFactory = factory.GetCommandFactory(typeof(int));
+            var actualCmd = cmdFactory();
+            Assert.IsNull(actualCmd);
         }
     }
 }

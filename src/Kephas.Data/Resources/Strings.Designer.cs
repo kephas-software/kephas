@@ -71,6 +71,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ambiguous match for command &apos;{0}&apos; of &apos;{1}&apos;: at least &apos;{2}&apos; and &apos;{3}&apos; found. To disambiguate, please provide an override priority between them..
+        /// </summary>
+        internal static string DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception {
+            get {
+                return ResourceManager.GetString("DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided ID {0}..
         /// </summary>
         internal static string DataContext_FindAsync_NotFound_Exception {

@@ -17,6 +17,7 @@ namespace Kephas.Data.Commands.Factory
 
     using Kephas.Composition;
     using Kephas.Data.Commands.Composition;
+    using Kephas.Data.Resources;
 
     /// <summary>
     /// A data command factory.
@@ -50,7 +51,23 @@ namespace Kephas.Data.Commands.Factory
         /// </returns>
         public Func<IDataCommand> GetCommandFactory(Type dataContextType)
         {
-            var commandFactory = this.commandFactories.SingleOrDefault(f => f.Metadata.DataContextType == dataContextType);
+            var commandFactoriesList = this.commandFactories
+                                        .Where(f => f.Metadata.DataContextType == dataContextType)
+                                        .ToList();
+            if (commandFactoriesList.Count > 1)
+            {
+                if (commandFactoriesList[0].Metadata.OverridePriority == commandFactoriesList[1].Metadata.OverridePriority)
+                {
+                    throw new AmbiguousMatchDataException(string.Format(
+                        Strings.DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception,
+                        typeof(TCommand).FullName,
+                        dataContextType.FullName,
+                        commandFactoriesList[0].Metadata.AppServiceImplementationType?.FullName,
+                        commandFactoriesList[1].Metadata.AppServiceImplementationType?.FullName));
+                }
+            }
+
+            var commandFactory = commandFactoriesList.Count == 0 ? null : commandFactoriesList[0];
             if (commandFactory == null)
             {
                 var dataContextTypeInfo = dataContextType.GetTypeInfo();

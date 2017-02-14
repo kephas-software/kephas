@@ -154,4 +154,7 @@
   <data name="DataValidator_MismatchedEntityType_Exception" xml:space="preserve">
     <value>Expected an object of type '{0}', but received one of type '{1}'.</value>
   </data>
+  <data name="DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception" xml:space="preserve">
+    <value>Ambiguous match for command '{0}' of '{1}': at least '{2}' and '{3}' found. To disambiguate, please provide an override priority between them.</value>
+  </data>
 </root>

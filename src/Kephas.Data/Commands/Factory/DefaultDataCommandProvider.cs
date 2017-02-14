@@ -59,7 +59,7 @@ namespace Kephas.Data.Commands.Factory
             var factory = this.commandFactories.GetOrAdd(key, _ => this.CreateCommandFactory(dataContextType, commandType));
             var dataCommand = factory();
 
-            if(dataCommand == null)
+            if (dataCommand == null)
             {
                 throw new MissingDataCommandException(string.Format(Strings.DataCommandFactory_CreateCommand_NotSupported_Exception, commandType));
             }
