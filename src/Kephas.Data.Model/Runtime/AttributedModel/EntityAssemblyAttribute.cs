@@ -11,7 +11,6 @@ namespace Kephas.Data.Model.Runtime.AttributedModel
 {
     using System;
 
-    using Kephas.Data.Model.Elements;
     using Kephas.Model.Runtime.AttributedModel;
 
     /// <summary>

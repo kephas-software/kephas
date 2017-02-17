@@ -12,11 +12,6 @@ namespace Kephas.Model.Runtime.AttributedModel
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
-
-    using Kephas.Collections;
-    using Kephas.Model.Reflection;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Marks an assembly as exporting model elements.

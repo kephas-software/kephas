@@ -9,4 +9,4 @@
 
 using Kephas.Model.Runtime.AttributedModel;
 
-[assembly: ModelAssembly("Kephas.Messaging.Model.Dimensions")]
+[assembly: ModelAssembly("Kephas.Data.Model.Dimensions")]
