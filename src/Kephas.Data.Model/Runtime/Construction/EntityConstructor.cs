@@ -10,7 +10,6 @@
 namespace Kephas.Data.Model.Runtime.Construction
 {
     using Kephas.Data.Model.Elements;
-    using Kephas.Data.Model.Runtime.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Runtime;

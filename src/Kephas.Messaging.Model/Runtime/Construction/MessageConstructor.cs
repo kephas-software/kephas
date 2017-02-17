@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return base.CanCreateModelElement(constructionContext, runtimeElement);
+            return MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo);
         }
 
         /// <summary>
@@ -50,11 +50,6 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// </returns>
         protected override Message TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            if (!MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo))
-            {
-                return null;
-            }
-
             return new Message(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
