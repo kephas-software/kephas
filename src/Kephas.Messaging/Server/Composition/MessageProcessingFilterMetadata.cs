@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Server.Composition
 
     using Kephas.Collections;
     using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Composition metadata for <see cref="IMessageProcessingFilter"/>.

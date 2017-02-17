@@ -135,6 +135,33 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ambiguous data context for data store &apos;{0}&apos;: at least &apos;{1}&apos; and &apos;{2}&apos; found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate..
+        /// </summary>
+        internal static string DefaultDataContextProvider_AmbiguousDataContext_Exception {
+            get {
+                return ResourceManager.GetString("DefaultDataContextProvider_AmbiguousDataContext_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data context was found for data store &apos;{0}&apos; of kind &apos;{1}&apos;..
+        /// </summary>
+        internal static string DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception {
+            get {
+                return ResourceManager.GetString("DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No data context with type &apos;{0}&apos; was found for data store &apos;{1}&apos;..
+        /// </summary>
+        internal static string DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided source object is null and a type information cannot be identified for it. No conversion has been performed..
         /// </summary>
         internal static string DefaultDataConversionService_NonTypedSourceIsNull_Exception {

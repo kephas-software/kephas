@@ -1,29 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataContextProvider.cs" company="Quartz Software SRL">
+// <copyright file="IDataStoreProvider.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDataContextProvider interface.
+//   Declares the IDataStoreProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data
+namespace Kephas.Data.Store
 {
     using Kephas.Services;
 
     /// <summary>
-    /// Factory service for data contexts.
+    /// Provides the <see cref="GetDataStore"/> method for getting a data store by name.
     /// </summary>
-    [AppServiceContract]
-    public interface IDataContextProvider
+    [SharedAppServiceContract]
+    public interface IDataStoreProvider
     {
         /// <summary>
-        /// Gets a data context for the provided data store name.
+        /// Gets data store with the provided name.
         /// </summary>
         /// <param name="dataStoreName">Name of the data store.</param>
         /// <returns>
-        /// The new data context.
+        /// The data store.
         /// </returns>
-        IDataContext GetDataContext(string dataStoreName);
+        IDataStore GetDataStore(string dataStoreName);
     }
 }

@@ -22,6 +22,7 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Behavior;
+    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>

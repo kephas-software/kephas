@@ -270,7 +270,7 @@
     <Compile Include="Serialization\SerializationContext.cs" />
     <Compile Include="Services\AppServiceContractAttribute.cs" />
     <Compile Include="Services\AppServiceLifetime.cs" />
-    <Compile Include="Services\AppServiceMetadata.cs" />
+    <Compile Include="Services\Composition\AppServiceMetadata.cs" />
     <Compile Include="Services\Behavior\ServiceEnumerableExtensions.cs" />
     <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBase.cs" />
     <Compile Include="Services\Behavior\IEnabledServiceBehaviorRule.cs" />

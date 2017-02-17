@@ -16,6 +16,7 @@ namespace Kephas.Data
     using System.Linq.Expressions;
 
     using Kephas.Data.Commands;
+    using Kephas.Data.Store;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -23,6 +24,7 @@ namespace Kephas.Data
     /// Contract interface for data contexts.
     /// </summary>
     [ContractClass(typeof(DataContextContractClass))]
+    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedDataStoreKindsAttribute) })]
     public interface IDataContext : IExpando, IIdentifiable, IDisposable, IAmbientServicesAware, IInitializable
     {
         /// <summary>

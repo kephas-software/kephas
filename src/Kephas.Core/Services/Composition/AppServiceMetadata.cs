@@ -7,14 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata for application services.

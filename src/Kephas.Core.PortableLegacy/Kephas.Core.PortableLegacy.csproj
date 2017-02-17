@@ -506,9 +506,6 @@
     <Compile Include="..\Kephas.Core\Services\AppServiceLifetime.cs">
       <Link>Services\AppServiceLifetime.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Services\AppServiceMetadata.cs">
-      <Link>Services\AppServiceMetadata.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Services\Behavior\EnabledServiceBehaviorRuleBase.cs">
       <Link>Services\Behavior\EnabledServiceBehaviorRuleBase.cs</Link>
     </Compile>
@@ -526,6 +523,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Composition\AppServiceConventionsRegistrarBase.cs">
       <Link>Services\Composition\AppServiceConventionsRegistrarBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Services\Composition\AppServiceMetadata.cs">
+      <Link>Services\Composition\AppServiceMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Composition\AttributedAppServiceConventionsRegistrar.cs">
       <Link>Services\Composition\AttributedAppServiceConventionsRegistrar.cs</Link>

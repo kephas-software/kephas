@@ -17,6 +17,7 @@ namespace Kephas.Web.Owin.Application
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Web.Owin.Resources;
 
     /// <summary>

@@ -7,18 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services
+namespace Kephas.Core.Tests.Services.Composition
 {
-  using System;
-  using System.Collections.Generic;
-    using System.Security.Principal;
+    using System;
+    using System.Collections.Generic;
 
     using Kephas.Composition.Metadata;
-    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     using NUnit.Framework;
-
-    using Telerik.JustMock;
 
     /// <summary>
     /// Test class for <see cref="AppServiceMetadata"/>.

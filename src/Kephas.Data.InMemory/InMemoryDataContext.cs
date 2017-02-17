@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the client data context class.
+//   Implements the in memory data context class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,12 +13,13 @@ namespace Kephas.Data.InMemory
     using System.Diagnostics.Contracts;
     using System.Linq;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Data.Store;
     using Kephas.Services;
 
     /// <summary>
     /// Client data context managing.
     /// </summary>
-    [AppServiceContract]
+    [SupportedDataStoreKinds(DataStoreKind.InMemory)]
     public class InMemoryDataContext : DataContextBase
     {
         /// <summary>
@@ -27,7 +28,7 @@ namespace Kephas.Data.InMemory
         private readonly List<object> cache = new List<object>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContextBase"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
@@ -56,7 +57,7 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="operationContext">Context for the operation.</param>
         /// <param name="entity">The entity.</param>
-        /// <param name="isNew">true if this object is new.</param>
+        /// <param name="isNew"><c>true</c> if the entity is new.</param>
         /// <returns>
         /// The or add cached item.
         /// </returns>

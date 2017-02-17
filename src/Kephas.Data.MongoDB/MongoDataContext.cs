@@ -19,13 +19,14 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Resources;
+    using Kephas.Data.Store;
     using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// A data context for MongoDB.
     /// </summary>
-    [AppServiceContract]
+    [SupportedDataStoreKinds(DataStoreKind.MongoDB)]
     public class MongoDataContext : DataContextBase
     {
         /// <summary>

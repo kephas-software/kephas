@@ -180,6 +180,7 @@
     <Compile Include="Commands\PersistChangesCommandBase.cs" />
     <Compile Include="Commands\PersistChangesContext.cs" />
     <Compile Include="Commands\PersistChangesEntry.cs" />
+    <Compile Include="Composition\DataContextMetadata.cs" />
     <Compile Include="Conversion\Composition\DataConverterMetadata.cs" />
     <Compile Include="Conversion\DataConversionContext.cs" />
     <Compile Include="Conversion\DataConversionException.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="DataContextExtensions.cs" />
     <Compile Include="Commands\FindContext.cs" />
     <Compile Include="IDataContextConfiguration.cs" />
+    <Compile Include="IDataContextConfigurationProvider.cs" />
     <Compile Include="IDataContextProvider.cs" />
     <Compile Include="IDataOperationContext.cs" />
     <Compile Include="IDataContext.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="MissingDataCommandException.cs" />
     <Compile Include="NotFoundDataException.cs" />
+    <Compile Include="NullDataContextConfigurationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryOperationContext.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
@@ -226,6 +229,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Store\DataStoreKind.cs" />
+    <Compile Include="Store\IDataStore.cs" />
+    <Compile Include="Store\IDataStoreProvider.cs" />
+    <Compile Include="Store\SupportedDataStoreKindsAttribute.cs" />
     <Compile Include="Validation\DataValidationResult.cs" />
     <Compile Include="Validation\DataValidationResultItem.cs" />
     <Compile Include="Validation\DataValidationSeverity.cs" />

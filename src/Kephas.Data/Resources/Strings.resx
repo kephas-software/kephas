@@ -157,4 +157,13 @@
   <data name="DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Ambiguous match for command '{0}' of '{1}': at least '{2}' and '{3}' found. To disambiguate, please provide an override priority between them.</value>
   </data>
+  <data name="DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception" xml:space="preserve">
+    <value>No data context with type '{0}' was found for data store '{1}'.</value>
+  </data>
+  <data name="DefaultDataContextProvider_AmbiguousDataContext_Exception" xml:space="preserve">
+    <value>Ambiguous data context for data store '{0}': at least '{1}' and '{2}' found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate.</value>
+  </data>
+  <data name="DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception" xml:space="preserve">
+    <value>No data context was found for data store '{0}' of kind '{1}'.</value>
+  </data>
 </root>

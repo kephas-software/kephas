@@ -9,45 +9,97 @@
 
 namespace Kephas.Data
 {
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
+    using Kephas.Collections;
     using Kephas.Composition;
+    using Kephas.Data.Composition;
+    using Kephas.Data.Resources;
+    using Kephas.Data.Store;
+    using Kephas.Services;
 
     /// <summary>
-    /// Base implementation of a <see cref="IDataContextProvider"/>.
+    /// Default implementation of a <see cref="IDataContextProvider"/>.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    public class DefaultDataContextProvider<TDataContext> : IDataContextProvider<TDataContext>
-        where TDataContext : IDataContext
+    [OverridePriority(Priority.Low)]
+    public class DefaultDataContextProvider : IDataContextProvider
     {
         /// <summary>
-        /// The data context factory.
+        /// The data store provider.
         /// </summary>
-        private readonly IExportFactory<TDataContext> dataContextFactory;
+        private readonly IDataStoreProvider dataStoreProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDataContextProvider{TDataContext}"/> class.
+        /// Dictionary of data context factories.
         /// </summary>
-        /// <param name="dataContextFactory">The client data context factory.</param>
-        protected DefaultDataContextProvider(IExportFactory<TDataContext> dataContextFactory)
-        {
-            Contract.Requires(dataContextFactory != null);
+        private readonly Dictionary<string, List<IExportFactory<IDataContext, DataContextMetadata>>> dataContextFactoryDictionary;
 
-            this.dataContextFactory = dataContextFactory;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDataContextProvider"/> class.
+        /// </summary>
+        /// <param name="dataContextFactories">The data context factories.</param>
+        /// <param name="dataStoreProvider">The data store provider.</param>
+        protected DefaultDataContextProvider(
+            ICollection<IExportFactory<IDataContext, DataContextMetadata>> dataContextFactories,
+            IDataStoreProvider dataStoreProvider)
+        {
+            Contract.Requires(dataContextFactories != null);
+            Contract.Requires(dataStoreProvider != null);
+
+            var factoriesByDataStoreKind =
+                dataContextFactories.SelectMany(
+                    f =>
+                        f.Metadata.SupportedDataStoreKinds.Any()
+                            ? f.Metadata.SupportedDataStoreKinds.ToDictionary(k => k, k => f)
+                            : new Dictionary<string, IExportFactory<IDataContext, DataContextMetadata>> { { string.Empty, f } });
+
+            this.dataContextFactoryDictionary =
+                (from kv in factoriesByDataStoreKind
+                 group kv by kv.Key into dataStoreGroup
+                 select dataStoreGroup)
+                .ToDictionary(g => g.Key, g => g.OrderBy(i => i.Value.Metadata.ProcessingPriority).Select(i => i.Value).ToList());
+
+            this.dataStoreProvider = dataStoreProvider;
         }
 
         /// <summary>
-        /// Gets data context for the provided context object.
+        /// Gets a data context for the provided data store name.
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="dataStoreName">Name of the data store.</param>
         /// <returns>
         /// The new data context.
         /// </returns>
-        public virtual IDataContext GetDataContext(IDataContextConfiguration configuration = null)
+        public IDataContext GetDataContext(string dataStoreName)
         {
-            var dataContext = this.dataContextFactory.CreateExport().Value;
-            dataContext.Initialize(configuration);
-            return dataContext;
+            var dataStore = this.dataStoreProvider.GetDataStore(dataStoreName);
+            var dataContextFactories = this.dataContextFactoryDictionary.TryGetValue(dataStore.Kind);
+            if (dataStore.DataContextType != null)
+            {
+                var factory =
+                    dataContextFactories.FirstOrDefault(
+                        f => f.Metadata.AppServiceImplementationType == dataStore.DataContextType);
+                if (factory == null)
+                {
+                    throw new DataException(string.Format(Strings.DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception, dataStore.DataContextType, dataStore.Name));
+                }
+
+                return factory.CreateExportedValue();
+            }
+
+            if (dataContextFactories == null)
+            {
+                throw new DataException(string.Format(Strings.DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception, dataStore.Name, dataStore.Kind));
+            }
+
+            if (dataContextFactories.Count > 1 && 
+                dataContextFactories[0].Metadata.ProcessingPriority == dataContextFactories[1].Metadata.ProcessingPriority)
+            {
+                throw new DataException(string.Format(Strings.DefaultDataContextProvider_AmbiguousDataContext_Exception, dataStore.Name, dataContextFactories[0].Metadata.AppServiceImplementationType, dataContextFactories[1].Metadata.AppServiceImplementationType));
+            }
+
+            return dataContextFactories[0].CreateExportedValue();
         }
     }
 }

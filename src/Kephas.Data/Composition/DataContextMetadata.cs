@@ -1,31 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataBehaviorMetadata.cs" company="Quartz Software SRL">
+// <copyright file="DataContextMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the data behavior metadata class.
+//   Implements the data context metadata class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Behaviors.Composition
+namespace Kephas.Data.Composition
 {
-    using System;
     using System.Collections.Generic;
 
-    using Kephas.Collections;
-    using Kephas.Services;
+    using Kephas.Data.Store;
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// Metadata for <see cref="IDataBehavior"/> services.
+    /// Metadata for <see cref="IDataContext"/> services.
     /// </summary>
-    public class DataBehaviorMetadata : AppServiceMetadata
+    public class DataContextMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataBehaviorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="DataContextMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataBehaviorMetadata(IDictionary<string, object> metadata)
+        public DataContextMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -33,15 +31,15 @@ namespace Kephas.Data.Behaviors.Composition
                 return;
             }
 
-            this.EntityType = (Type)metadata.TryGetValue(nameof(this.EntityType));
+            this.SupportedDataStoreKinds = this.GetMetadataValue<SupportedDataStoreKindsAttribute, IEnumerable<string>>(metadata, new string[0]);
         }
 
         /// <summary>
-        /// Gets the type of the entity on which the behavior is applied.
+        /// Gets the kind of the supported data store.
         /// </summary>
         /// <value>
-        /// The type of the entity.
+        /// The data store.
         /// </value>
-        public Type EntityType { get; }
+        public IEnumerable<string> SupportedDataStoreKinds { get; }
     }
 }

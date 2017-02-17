@@ -15,6 +15,7 @@ namespace Kephas.Data.Commands.Composition
 
     using Kephas.Collections;
     using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Metadata information for <see cref="IDataCommand"/>.
