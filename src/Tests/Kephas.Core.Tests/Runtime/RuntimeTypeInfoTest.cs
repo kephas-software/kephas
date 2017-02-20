@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicTypeInfoTest.cs" company="Quartz Software SRL">
+// <copyright file="RuntimeTypeInfoTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -27,10 +27,10 @@ namespace Kephas.Core.Tests.Runtime
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DynamicTypeInfoTest
+    public class RuntimeTypeInfoTest
     {
         [Test]
-        public void DynamicTypeInfo_constructor_test()
+        public void RuntimeTypeInfo_constructor_test()
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             var type = dynamicTypeInfo.Type;
@@ -42,6 +42,20 @@ namespace Kephas.Core.Tests.Runtime
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             Assert.AreEqual("TestClass", dynamicTypeInfo.Name);
+        }
+
+        [Test]
+        public void FullName_test()
+        {
+            var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
+            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass", dynamicTypeInfo.FullName);
+        }
+
+        [Test]
+        public void QualifiedFullName_test()
+        {
+            var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
+            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Core.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50", dynamicTypeInfo.QualifiedFullName);
         }
 
         [Test]

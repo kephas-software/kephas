@@ -35,7 +35,7 @@ namespace Kephas.Data.Tests.Conversion
         }
 
         [Test]
-        public async Task ConvertAsync_exception()
+        public void ConvertAsync_exception()
         {
             var conversionService = Substitute.For<IDataConversionService>();
             conversionService.ConvertAsync<string, string>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())

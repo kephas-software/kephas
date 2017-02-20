@@ -79,7 +79,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public async Task WithCompositionContainerAsync_builder_missing_required_constructor()
+        public void WithCompositionContainerAsync_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);

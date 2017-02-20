@@ -130,6 +130,14 @@ namespace Kephas.Runtime
         public string FullName { get; }
 
         /// <summary>
+        /// Gets the full name qualified with the module where it was defined.
+        /// </summary>
+        /// <value>
+        /// The full name qualified with the module.
+        /// </value>
+        public string QualifiedFullName => this.TypeInfo.AssemblyQualifiedName;
+
+        /// <summary>
         /// Gets the namespace of the type.
         /// </summary>
         /// <value>

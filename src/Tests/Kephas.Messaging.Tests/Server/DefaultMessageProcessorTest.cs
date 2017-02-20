@@ -88,7 +88,7 @@ namespace Kephas.Messaging.Tests.Server
         }
 
         [Test]
-        public async Task ProcessAsync_missing_handler_exception()
+        public void ProcessAsync_missing_handler_exception()
         {
             var compositionContainer = Substitute.For<ICompositionContext>();
             compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Tests.Server
         }
 
         [Test]
-        public async Task ProcessAsync_exception()
+        public void ProcessAsync_exception()
         {
             var compositionContainer = Substitute.For<ICompositionContext>();
             var handler = Substitute.For<IMessageHandler>();

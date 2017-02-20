@@ -33,8 +33,17 @@ namespace Kephas.Data.Store
             this.Value = dataStoreKinds.Select(k => k.ToString()).ToArray();
         }
 
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
         object IMetadataValue.Value => this.Value;
 
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
         public IEnumerable<string> Value { get; }
     }
 }

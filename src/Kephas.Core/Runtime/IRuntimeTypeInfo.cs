@@ -157,6 +157,14 @@ namespace Kephas.Runtime
         public abstract string FullName { get; }
 
         /// <summary>
+        /// Gets the full name qualified with the module where it was defined.
+        /// </summary>
+        /// <value>
+        /// The full name qualified with the module.
+        /// </value>
+        public abstract string QualifiedFullName { get; }
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>

@@ -29,6 +29,14 @@ namespace Kephas.Reflection
         string Namespace { get; }
 
         /// <summary>
+        /// Gets the full name qualified with the module where it was defined.
+        /// </summary>
+        /// <value>
+        /// The full name qualified with the module.
+        /// </value>
+        string QualifiedFullName { get; }
+
+        /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
         /// </summary>
         /// <value>
@@ -114,6 +122,23 @@ namespace Kephas.Reflection
         /// The namespace of the type.
         /// </value>
         public abstract string Namespace { get; }
+
+        /// <summary>
+        /// Gets the full name qualified with the module where it was defined.
+        /// </summary>
+        /// <value>
+        /// The full name qualified with the module.
+        /// </value>
+        public string QualifiedFullName
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<string>() != null);
+                Contract.Ensures(Contract.Result<string>() != string.Empty);
+
+                return Contract.Result<string>();
+            }
+        }
 
         /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
