@@ -145,7 +145,7 @@ namespace Kephas.Model
         /// but others will use a discriminator prefix to avoid name collisions.
         /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
-        public abstract string QualifiedName { get; }
+        public abstract string QualifiedFullName { get; }
 
         /// <summary>
         /// Gets the fully qualified name, starting from the root model space.

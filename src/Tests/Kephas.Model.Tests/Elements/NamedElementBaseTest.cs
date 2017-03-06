@@ -37,7 +37,7 @@ namespace Kephas.Model.Tests.Elements
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
-            Assert.AreEqual("name", element.QualifiedName);
+            Assert.AreEqual("name", element.QualifiedFullName);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Elements
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
             Assert.AreEqual("name", element.Name);
-            Assert.AreEqual("##name", element.QualifiedName);
+            Assert.AreEqual("##name", element.QualifiedFullName);
         }
 
         [Test]

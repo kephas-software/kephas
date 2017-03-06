@@ -34,7 +34,7 @@ namespace Kephas.Model
         /// but others will use a discriminator prefix to avoid name collisions.
         /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
-        string QualifiedName { get; }
+        string QualifiedFullName { get; }
 
         /// <summary>
         /// Gets the fully qualified name, starting from the root model space.
@@ -151,7 +151,7 @@ namespace Kephas.Model
         /// <remarks>
         /// The qualified name is unique within the container's members.
         /// </remarks>
-        public string QualifiedName
+        public string QualifiedFullName
         {
             get
             {
@@ -174,13 +174,7 @@ namespace Kephas.Model
         /// <value>
         /// The container element.
         /// </value>
-        public IModelElement Container
-        {
-            get
-            {
-                return Contract.Result<IModelElement>();
-            }
-        }
+        public IModelElement Container => Contract.Result<IModelElement>();
 
         /// <summary>
         /// Gets the model space.

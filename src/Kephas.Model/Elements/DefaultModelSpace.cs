@@ -245,7 +245,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         private string ComputeProjectionName(IEnumerable<IModelDimensionElement> elements)
         {
-            return string.Concat(elements.Select(e => e.QualifiedName));
+            return string.Concat(elements.Select(e => e.QualifiedFullName));
         }
 
         /// <summary>

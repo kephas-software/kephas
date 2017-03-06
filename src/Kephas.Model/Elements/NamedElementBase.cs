@@ -56,7 +56,7 @@ namespace Kephas.Model.Elements
 
             this.Name = name;
             this.ModelSpace = constructionContext.ModelSpace;
-            this.QualifiedName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
+            this.QualifiedFullName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
 
             this.parts = new List<object>();
 
@@ -116,7 +116,7 @@ namespace Kephas.Model.Elements
         /// but others will use a discriminator prefix to avoid name collisions.
         /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
-        public string QualifiedName { get; protected set; }
+        public string QualifiedFullName { get; protected set; }
 
         /// <summary>
         /// Gets the fully qualified name, starting from the root model space.
@@ -186,7 +186,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         public override string ToString()
         {
-            return this.QualifiedName;
+            return this.QualifiedFullName;
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Kephas.Model.Elements
             this.ConstructionMonitor.AssertIsInProgress();
             try
             {
-                this.FullName = this.Container?.FullName + this.QualifiedName;
+                this.FullName = this.Container?.FullName + this.QualifiedFullName;
                 this.OnCompleteConstruction(constructionContext);
                 this.ConstructionMonitor.Complete();
             }

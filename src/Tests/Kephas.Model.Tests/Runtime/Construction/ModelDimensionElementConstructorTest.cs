@@ -41,7 +41,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
             var dimensionElement = (ModelDimensionElement)dimElement;
             Assert.AreEqual("First", dimElement.Name);
-            Assert.AreEqual(":First", dimElement.QualifiedName);
+            Assert.AreEqual(":First", dimElement.QualifiedFullName);
             Assert.AreEqual("TestDim", dimensionElement.DimensionName);
         }
 

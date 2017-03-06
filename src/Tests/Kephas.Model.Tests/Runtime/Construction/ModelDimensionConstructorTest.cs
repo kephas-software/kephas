@@ -36,7 +36,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var element = constructor.TryCreateModelElement(context, typeof(IHelloDimension).AsRuntimeTypeInfo());
 
             Assert.AreEqual("Hello", element.Name);
-            Assert.AreEqual("^Hello", element.QualifiedName);
+            Assert.AreEqual("^Hello", element.QualifiedFullName);
             Assert.IsInstanceOf<IModelDimension>(element);
 
             var dimension = (IModelDimension)element;

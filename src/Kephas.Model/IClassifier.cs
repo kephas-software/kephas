@@ -132,14 +132,6 @@ namespace Kephas.Model
         public abstract string Name { get; }
 
         /// <summary>
-        /// Gets the full name qualified with the module where it was defined.
-        /// </summary>
-        /// <value>
-        /// The full name qualified with the module.
-        /// </value>
-        public abstract string QualifiedFullName { get; }
-
-        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -167,7 +159,7 @@ namespace Kephas.Model
         /// but others will use a discriminator prefix to avoid name collisions.
         /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
-        public abstract string QualifiedName { get; }
+        public abstract string QualifiedFullName { get; }
 
         /// <summary>
         /// Gets the fully qualified name, starting from the root model space.
