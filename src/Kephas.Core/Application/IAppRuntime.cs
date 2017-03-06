@@ -29,8 +29,8 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
@@ -64,8 +64,8 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">(Optional) A filter for the assemblies.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>

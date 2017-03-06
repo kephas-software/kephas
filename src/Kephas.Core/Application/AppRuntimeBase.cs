@@ -7,12 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-using Kephas.Resources;
-
 namespace Kephas.Application
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -22,7 +20,9 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Resources;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -30,11 +30,6 @@ namespace Kephas.Application
     /// </summary>
     public abstract class AppRuntimeBase : Expando, IAppRuntime
     {
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        private ILogger logger;
-
         /// <summary>
         /// A pattern specifying the assembly file search.
         /// </summary>
@@ -46,16 +41,21 @@ namespace Kephas.Application
         protected const string AssemblyFileExtension = ".dll";
 
         /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">(Optional) The assembly loader.</param>
-        /// <param name="logManager">(Optional) The log manager.</param>
-        /// <param name="assemblyFilter">(Optional) A filter for loaded assemblies.</param>
-        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> assemblyFilter = null)
+        /// <param name="assemblyLoader">The assembly loader (optional).</param>
+        /// <param name="logManager">The log manager (optional).</param>
+        /// <param name="defaultAssemblyFilter">A default filter applied when loading assemblies (optional).</param>
+        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null)
             : base(isThreadSafe: true)
         {
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
-            this.AssemblyFilter = assemblyFilter ?? (a => !a.IsSystemAssembly());
+            this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.logger = logManager?.GetLogger<AppRuntimeBase>();
         }
 
@@ -146,20 +146,21 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task AddAdditionalAssembliesAsync(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter, CancellationToken cancellationToken)
+        protected virtual async Task AddAdditionalAssembliesAsync(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter, CancellationToken cancellationToken)
         {
-            // load all the assemblies found in the application directory which are not already loaded.
-            var directory = this.GetAppLocation();
-            var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
-            var assemblyFiles = Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
-            var assemblyFilesToLoad = assemblyFiles
-                                        .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
-                                        .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
-            assemblies.AddRange(assemblyFilesToLoad
-                                    .Select(f => this.AssemblyLoader.LoadAssemblyFromPath(Path.Combine(directory, f)))
-                                    .Where(a => assemblyFilter(a.GetName())));
-
-            return Task.FromResult((IEnumerable<Assembly>)assemblies);
+            // load all the assemblies found in the application directories which are not already loaded.
+            var directories = await this.GetAppAssemblyDirectoriesAsync().PreserveThreadContext();
+            foreach (var directory in directories)
+            {
+                var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
+                var assemblyFiles = Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
+                var assemblyFilesToLoad = assemblyFiles
+                                            .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
+                                            .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
+                assemblies.AddRange(assemblyFilesToLoad
+                                        .Select(f => this.AssemblyLoader.LoadAssemblyFromPath(Path.Combine(directory, f)))
+                                        .Where(a => assemblyFilter(a.GetName())));
+            }
         }
 
         /// <summary>
@@ -175,7 +176,22 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the application location.
+        /// Gets the directories where the application assemblies can be found.
+        /// </summary>
+        /// <remarks>
+        /// Note for inheritors: This method can be overridden to provide additional directories
+        /// where assemblies can be loaded from, like in the case of plugin architectures.
+        /// </remarks>
+        /// <returns>
+        /// A promise of a directory enumeration.
+        /// </returns>
+        protected virtual Task<IEnumerable<string>> GetAppAssemblyDirectoriesAsync()
+        {
+            return Task.FromResult((IEnumerable<string>)new[] { this.GetAppLocation() });
+        }
+
+        /// <summary>
+        /// Gets the application location (directory where the application lies).
         /// </summary>
         /// <returns>
         /// A path indicating the application location.
