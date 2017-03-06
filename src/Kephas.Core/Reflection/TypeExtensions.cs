@@ -73,7 +73,9 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsEnumerable(this Type type)
         {
-            return type != null && IntrospectionExtensions.GetTypeInfo(typeof(IEnumerable)).IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+            return type != null
+                   && IntrospectionExtensions.GetTypeInfo(typeof(IEnumerable))
+                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
         }
 
         /// <summary>
@@ -85,7 +87,9 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsQueryable(this Type type)
         {
-            return type != null && IntrospectionExtensions.GetTypeInfo(typeof(IQueryable)).IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+            return type != null
+                   && IntrospectionExtensions.GetTypeInfo(typeof(IQueryable))
+                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
         }
 
         /// <summary>
@@ -140,7 +144,8 @@ namespace Kephas.Reflection
                 };
             var enumerableType = isRequestedEnumerable(type)
                                      ? type
-                                     : IntrospectionExtensions.GetTypeInfo(type).ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
+                                     : IntrospectionExtensions.GetTypeInfo(type)
+                                         .ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
 
             return enumerableType == null
                        ? null
@@ -160,6 +165,21 @@ namespace Kephas.Reflection
             Contract.Requires(type != null);
 
             return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
+        }
+
+        /// <summary>
+        /// Gets the qualified full name of a <see cref="Type"/>. Optionally, strips away the version information.
+        /// </summary>
+        /// <param name="type">The type instance.</param>
+        /// <param name="stripVersionInfo"><c>true</c> to strip away the version information (optional).</param>
+        /// <returns>
+        /// The qualified full name.
+        /// </returns>
+        public static string GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
+        {
+            Contract.Requires(type != null);
+
+            return TypeInfoExtensions.GetQualifiedFullName(IntrospectionExtensions.GetTypeInfo(type), stripVersionInfo);
         }
     }
 }

@@ -88,5 +88,41 @@ namespace Kephas.Reflection
 
             return typeInfo.GenericTypeParameters.Count > 0 && typeInfo.GenericTypeDefinition == null;
         }
+
+        /// <summary>
+        /// Gets the qualified full name of a <see cref="TypeInfo"/>. Optionally, strips away the version information.
+        /// </summary>
+        /// <param name="typeInfo">The type information instance.</param>
+        /// <param name="stripVersionInfo"><c>true</c> to strip away the version information (optional).</param>
+        /// <returns>
+        /// The qualified full name.
+        /// </returns>
+        public static string GetQualifiedFullName(this TypeInfo typeInfo, bool stripVersionInfo = true)
+        {
+            Contract.Requires(typeInfo != null);
+
+            var qualifiedFullName = typeInfo.AssemblyQualifiedName;
+            if (string.IsNullOrEmpty(qualifiedFullName))
+            {
+                return qualifiedFullName;
+            }
+
+            if (stripVersionInfo)
+            {
+                // find the second occurance of , and cut there.
+                var index = qualifiedFullName.IndexOf(',');
+                if (index > 0)
+                {
+                    index = qualifiedFullName.IndexOf(',', index + 1);
+                }
+
+                if (index > 0)
+                {
+                    qualifiedFullName = qualifiedFullName.Substring(0, index);
+                }
+            }
+
+            return qualifiedFullName;
+        }
     }
 }
