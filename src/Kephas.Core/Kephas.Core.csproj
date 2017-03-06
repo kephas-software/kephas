@@ -215,7 +215,10 @@
     <Compile Include="DynamicObjectExtensions.cs" />
     <Compile Include="IAmbientServicesAware.cs" />
     <Compile Include="Reflection\DefaultTypeLoader.cs" />
+    <Compile Include="Reflection\DefaultTypeResolver.cs" />
     <Compile Include="Reflection\ITypeLoader.cs" />
+    <Compile Include="Reflection\ITypeResolver.cs" />
+    <Compile Include="Reflection\QualifiedFullName.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

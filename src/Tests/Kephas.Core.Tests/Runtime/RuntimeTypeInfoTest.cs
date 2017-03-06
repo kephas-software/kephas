@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Runtime
         public void QualifiedFullName_test()
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
-            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Core.Tests, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50", dynamicTypeInfo.QualifiedFullName);
+            Assert.AreEqual("Kephas.Core.Tests.Runtime.RuntimeTypeInfoTest+TestClass, Kephas.Core.Tests", dynamicTypeInfo.QualifiedFullName);
         }
 
         [Test]

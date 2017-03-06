@@ -1,6 +1,7 @@
 ﻿namespace Kephas.Core.Tests.Reflection
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -57,6 +58,22 @@
             var typeInfo = new RuntimeTypeInfo(typeof(IEnumerable<string>));
 
             Assert.IsFalse(typeInfo.IsGenericTypeDefinition());
+        }
+
+        [Test]
+        public void GetQualifiedFullName_version_info_stripped()
+        {
+            var typeInfo = typeof(string).GetTypeInfo();
+
+            Assert.AreEqual("System.String, mscorlib", typeInfo.GetQualifiedFullName(stripVersionInfo: true));
+        }
+
+        [Test]
+        public void GetQualifiedFullName_version_info_not_stripped()
+        {
+            var typeInfo = typeof(string).GetTypeInfo();
+
+            Assert.AreEqual(typeInfo.AssemblyQualifiedName, typeInfo.GetQualifiedFullName(stripVersionInfo: false));
         }
     }
 }

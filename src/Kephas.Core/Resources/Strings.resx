@@ -204,4 +204,10 @@
   <data name="DefaultAppDisposer_DisposeFaulted_Exception" xml:space="preserve">
     <value>The application disposer encountered an exception while disposing, at {0:s}.</value>
   </data>
+  <data name="DefaultTypeResolver_ResolveType_NotFound_Exception" xml:space="preserve">
+    <value>The type '{0}' could not be found.</value>
+  </data>
+  <data name="DefaultTypeResolver_ResolveType_AmbiguousMatch_Exception" xml:space="preserve">
+    <value>Multiple types found for '{0}' : {1}.</value>
+  </data>
 </root>

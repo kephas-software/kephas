@@ -410,6 +410,9 @@
     <Compile Include="..\Kephas.Core\Reflection\DefaultTypeLoader.cs">
       <Link>Reflection\DefaultTypeLoader.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\DefaultTypeResolver.cs">
+      <Link>Reflection\DefaultTypeResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\IAggregatedElementInfo.cs">
       <Link>Reflection\IAggregatedElementInfo.cs</Link>
     </Compile>
@@ -430,6 +433,12 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\ITypeLoader.cs">
       <Link>Reflection\ITypeLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ITypeResolver.cs">
+      <Link>Reflection\ITypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\QualifiedFullName.cs">
+      <Link>Reflection\QualifiedFullName.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\ReflectionHelper.cs">
       <Link>Reflection\ReflectionHelper.cs</Link>

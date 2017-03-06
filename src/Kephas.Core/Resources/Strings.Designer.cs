@@ -260,6 +260,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple types found for &apos;{0}&apos; : {1}..
+        /// </summary>
+        internal static string DefaultTypeResolver_ResolveType_AmbiguousMatch_Exception {
+            get {
+                return ResourceManager.GetString("DefaultTypeResolver_ResolveType_AmbiguousMatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; could not be found..
+        /// </summary>
+        internal static string DefaultTypeResolver_ResolveType_NotFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultTypeResolver_ResolveType_NotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple nodes found for value &apos;{0}&apos;..
         /// </summary>
         internal static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
