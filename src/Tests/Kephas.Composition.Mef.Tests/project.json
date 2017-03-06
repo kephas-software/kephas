@@ -3,7 +3,7 @@
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
-    "NSubstitute": "2.0.0-rc",
+    "NSubstitute": "2.0.2",
     "NUnit": "3.6.0"
   },
   "frameworks": {
