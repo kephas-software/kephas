@@ -162,12 +162,12 @@ namespace Kephas.Data.Commands
         {
             foreach (var entry in modifiedEntries)
             {
-                var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.ModifiedEntity).Reverse();
+                var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.Entity).Reverse();
                 if (reversedBehaviors != null)
                 {
                     foreach (var behavior in reversedBehaviors)
                     {
-                        await behavior.AfterPersistAsync(entry.ModifiedEntity, operationContext, cancellationToken).PreserveThreadContext();
+                        await behavior.AfterPersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
                     }
                 }
             }
@@ -186,12 +186,12 @@ namespace Kephas.Data.Commands
         {
             foreach (var entry in modifiedEntries)
             {
-                var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.ModifiedEntity);
+                var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.Entity);
                 if (behaviors != null)
                 {
                     foreach (var behavior in behaviors)
                     {
-                        await behavior.BeforePersistAsync(entry.ModifiedEntity, operationContext, cancellationToken).PreserveThreadContext();
+                        await behavior.BeforePersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
                     }
                 }
             }
@@ -226,7 +226,7 @@ namespace Kephas.Data.Commands
           CancellationToken cancellationToken)
         {
             var modifiedRootEntities =
-              modifiedEntries.Select(e => operationContext.DataContext.TryGetCapability<IAggregatable>(e.ModifiedEntity, operationContext)?.GetGraphRoot())
+              modifiedEntries.Select(e => operationContext.DataContext.TryGetCapability<IAggregatable>(e.Entity, operationContext)?.GetGraphRoot())
                 .Distinct()
                 .ToList();
 

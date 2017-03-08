@@ -72,7 +72,7 @@ namespace Kephas.Data.MongoDB.Commands
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var modifiedMongoDocs =
-              modifiedEntries.Select(e => dataContext.GetGraphRoot(e.ModifiedEntity))
+              modifiedEntries.Select(e => dataContext.GetGraphRoot(e.Entity))
                 .Distinct()
                 .ToList();
 
@@ -114,7 +114,7 @@ namespace Kephas.Data.MongoDB.Commands
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var collection = dataContext.Database.GetCollection<T>(collectionName);
-            var eligibleModifiedEntries = modifiedEntries.Where(e => e.ModifiedEntity is T).ToList();
+            var eligibleModifiedEntries = modifiedEntries.Where(e => e.Entity is T).ToList();
 
             var writeRequests = this.GetBulkWriteRequests<T>(eligibleModifiedEntries);
 
@@ -192,7 +192,7 @@ namespace Kephas.Data.MongoDB.Commands
             foreach (var tuple in eligibleModifiedEntries)
             {
                 var changeState = tuple.ChangeState;
-                var entity = (T)tuple.ModifiedEntity;
+                var entity = (T)tuple.Entity;
                 switch (changeState)
                 {
                     case ChangeState.Added:

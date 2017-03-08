@@ -11,7 +11,6 @@ namespace Kephas.Data.Commands
 {
     using System.Collections.Generic;
 
-    using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Services;
 
@@ -34,7 +33,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The modified entity.
         /// </value>
-        object ModifiedEntity { get; }
+        object Entity { get; }
 
         /// <summary>
         /// Gets the parts of an aggregated entity as a flattened graph.

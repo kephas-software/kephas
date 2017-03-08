@@ -24,15 +24,15 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="PersistChangesEntry"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="modifiedEntity">The modified entity.</param>
+        /// <param name="entity">The modified entity.</param>
         /// <param name="changeState">The change state.</param>
         /// <param name="flattenedEntityGraph">The flattened entity graph.</param>
-        public PersistChangesEntry(IDataContext dataContext, object modifiedEntity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
+        public PersistChangesEntry(IDataContext dataContext, object entity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
             : base(dataContext.AmbientServices)
         {
             Contract.Requires(dataContext != null);
 
-            this.ModifiedEntity = modifiedEntity;
+            this.Entity = entity;
             this.ChangeState = changeState;
             this.FlattenedEntityGraph = flattenedEntityGraph;
         }
@@ -51,7 +51,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The modified entity.
         /// </value>
-        public object ModifiedEntity { get; }
+        public object Entity { get; }
 
         /// <summary>
         /// Gets the parts of an aggregated entity as a flattened graph.
