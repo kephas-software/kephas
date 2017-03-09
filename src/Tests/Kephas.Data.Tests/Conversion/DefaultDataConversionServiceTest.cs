@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Tests.Conversion
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
@@ -18,6 +19,7 @@ namespace Kephas.Data.Tests.Conversion
     using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
+    using NSubstitute.ExceptionExtensions;
 
     using NUnit.Framework;
 
@@ -29,7 +31,7 @@ namespace Kephas.Data.Tests.Conversion
         {
             var converter = Substitute.For<IDataConverter>();
             converter.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult {Target = 5}));
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = 5 }));
 
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
@@ -88,6 +90,71 @@ namespace Kephas.Data.Tests.Conversion
 
             var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(5, result.Target);
+        }
+
+        [Test]
+        public async Task ConvertAsync_object_target_null_but_rootTargetType_provided()
+        {
+            var converter = Substitute.For<IDataConverter>();
+            converter.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = "hello" }));
+
+            var service =
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                {
+                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                        new DataConverterMetadata(typeof(string), typeof(string)))
+                });
+
+            var result = await service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service, rootTargetType: typeof(string)), CancellationToken.None);
+            Assert.AreEqual("hello", result.Target);
+        }
+
+        [Test]
+        public async Task ConvertAsync_object_target_not_null_rootTargetType_not_provided()
+        {
+            var converter = Substitute.For<IDataConverter>();
+            converter.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = "hello" }));
+
+            var service =
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                {
+                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                        new DataConverterMetadata(typeof(string), typeof(string)))
+                });
+
+            var result = await service.ConvertAsync<object, object>("sisi", "queen", new DataConversionContext(service), CancellationToken.None);
+            Assert.AreEqual("hello", result.Target);
+        }
+
+        [Test]
+        public async Task ConvertAsync_object_target_not_null_rootTargetType_override()
+        {
+            var converter = Substitute.For<IDataConverter>();
+            converter.ConvertAsync(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((IDataConversionResult)new DataConversionResult { Target = "hello" }));
+
+            var service =
+                new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
+                {
+                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                        new DataConverterMetadata(typeof(string), typeof(string)))
+                });
+
+            var result = await service.ConvertAsync<object, object>("sisi", 12, new DataConversionContext(service, rootTargetType: typeof(string)), CancellationToken.None);
+            Assert.AreEqual("hello", result.Target);
+        }
+
+        [Test]
+        public void ConvertAsync_object_exception()
+        {
+            var service = new DefaultDataConversionService(
+                Substitute.For<IAmbientServices>(),
+                new IExportFactory<IDataConverter, DataConverterMetadata>[0]);
+
+
+            Assert.Throws<DataConversionException>(() => service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service), CancellationToken.None));
         }
     }
 }
