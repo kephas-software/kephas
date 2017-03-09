@@ -44,14 +44,6 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Gets the full name qualified with the module where it was defined.
-        /// </summary>
-        /// <value>
-        /// The full name qualified with the module.
-        /// </value>
-        public string QualifiedFullName => this.FullName;
-
-        /// <summary>
         /// Gets the projection where the model element is defined.
         /// </summary>
         /// <value>
