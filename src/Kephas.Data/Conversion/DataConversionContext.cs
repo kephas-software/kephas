@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Conversion
 {
+    using System;
     using System.Diagnostics.Contracts;
 
     using Kephas.Services;
@@ -24,13 +25,22 @@ namespace Kephas.Data.Conversion
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="sourceDataContext">The source data context (optional).</param>
         /// <param name="targetDataContext">The target data context (optional).</param>
-        public DataConversionContext(IDataConversionService conversionService, IDataContext sourceDataContext = null, IDataContext targetDataContext = null)
+        /// <param name="rootSourceType">The type of the source root object (optional).</param>
+        /// <param name="rootTargetType">The type of the target root object (optional).</param>
+        public DataConversionContext(
+                IDataConversionService conversionService,
+                IDataContext sourceDataContext = null,
+                IDataContext targetDataContext = null,
+                Type rootSourceType = null,
+                Type rootTargetType = null)
             : base(conversionService.AmbientServices)
         {
             Contract.Requires(conversionService != null);
 
             this.SourceDataContext = sourceDataContext;
             this.TargetDataContext = targetDataContext;
+            this.RootSourceType = rootSourceType;
+            this.RootTargetType = rootTargetType;
             this.ThrowOnError = true;
         }
 
@@ -57,5 +67,21 @@ namespace Kephas.Data.Conversion
         /// The target data context.
         /// </value>
         public IDataContext TargetDataContext { get; }
+
+        /// <summary>
+        /// Gets the type of the source root object.
+        /// </summary>
+        /// <value>
+        /// The type of the source root object.
+        /// </value>
+        public Type RootSourceType { get; }
+
+        /// <summary>
+        /// Gets the type of the target root object.
+        /// </summary>
+        /// <value>
+        /// The type of the target root object.
+        /// </value>
+        public Type RootTargetType { get; }
     }
 }

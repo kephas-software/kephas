@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.Conversion
 {
+    using System;
+
     using Kephas.Services;
 
     /// <summary>
@@ -39,5 +41,21 @@ namespace Kephas.Data.Conversion
         /// The target data context.
         /// </value>
         IDataContext TargetDataContext { get; }
+
+        /// <summary>
+        /// Gets the type of the root source.
+        /// </summary>
+        /// <value>
+        /// The type of the root source.
+        /// </value>
+        Type RootSourceType { get; }
+
+        /// <summary>
+        /// Gets the type of the root target.
+        /// </summary>
+        /// <value>
+        /// The type of the root target.
+        /// </value>
+        Type RootTargetType { get; }
     }
 }

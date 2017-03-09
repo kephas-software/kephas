@@ -89,18 +89,55 @@ namespace Kephas.Data.Conversion
         /// </returns>
         public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var sourceType = typeof(TSource).GetTypeInfo();
-            var targetType = typeof(TTarget).GetTypeInfo();
-
             if (source == null)
             {
-                var noSourceResult = DataConversionResult.FromException(new DataConversionException(Strings.DefaultDataConversionService_NonTypedSourceIsNull_Exception));
+                var exception = new DataConversionException(Strings.DefaultDataConversionService_NonTypedSourceIsNull_Exception);
+                if (conversionContext.ThrowOnError)
+                {
+                    throw exception;
+                }
+
+                var noSourceResult = DataConversionResult.FromException(exception);
                 noSourceResult.Target = target;
                 return Task.FromResult((IDataConversionResult)noSourceResult);
             }
 
+            var sourceType = this.GetInstanceTypeInfo(source, typeof(TSource), conversionContext.RootSourceType);
+            var targetType = this.GetInstanceTypeInfo(target, typeof(TTarget), conversionContext.RootTargetType);
+
+            if (target == null && targetType == null)
+            {
+                var exception = new DataConversionException(Strings.DefaultDataConversionService_NonTypedTargetIsNull_Exception);
+                if (conversionContext.ThrowOnError)
+                {
+                    throw exception;
+                }
+
+                return Task.FromResult((IDataConversionResult)DataConversionResult.FromException(exception));
+            }
+
             var result = this.ConvertCoreAsync(source, sourceType, target, targetType, conversionContext, cancellationToken);
             return result;
+        }
+
+        /// <summary>
+        /// Gets the type information for the instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="declaredType">Type of the declared.</param>
+        /// <param name="providedType">Type of the provided.</param>
+        /// <returns>
+        /// The instance type information.
+        /// </returns>
+        protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType)
+        {
+            var instanceType = declaredType == typeof(object) ? providedType : declaredType;
+            if (instanceType == null || instanceType == typeof(object))
+            {
+                return instance?.GetType().GetTypeInfo();
+            }
+
+            return instanceType.GetTypeInfo();
         }
 
         /// <summary>
