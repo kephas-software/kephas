@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -41,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{B5E8C7E1-C334-4C6C-B7C1-61D4618B21E7}"
 	ProjectSection(SolutionItems) = preProject
 		Deployment\CreateNugetPackages.cmd = Deployment\CreateNugetPackages.cmd
+		Deployment\NuGet.exe = Deployment\NuGet.exe
 		Deployment\PushNugetPackages.bat = Deployment\PushNugetPackages.bat
 	EndProjectSection
 EndProject
@@ -57,6 +58,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{AB144611-DCE3-4DF6-8D58-08A410E7D978}"
 	ProjectSection(SolutionItems) = preProject
 		..\nuget.config = ..\nuget.config
+		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net", "Kephas.Platform.Net\Kephas.Platform.Net.csproj", "{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}"
