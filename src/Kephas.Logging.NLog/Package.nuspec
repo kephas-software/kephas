@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Logging.NLog</id>
-        <version>3.1.0-preview3</version>
+        <version>3.1.0-preview4</version>
         <title>Kephas.Logging.NLog</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -26,7 +26,7 @@
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
             <group>
-                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="Kephas.Core" version="3.1.0-preview4" />
             </group>
             <group targetFramework="net461">
                 <dependency id="NLog" version="4.3.11" />

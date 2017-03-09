@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Composition.Mef</id>
-        <version>3.1.0-preview3</version>
+        <version>3.1.0-preview4</version>
         <title>Kephas.Composition.Mef</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -26,15 +26,15 @@
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
             <group targetFramework="net45">
-                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="Microsoft.Composition" version="1.0.30" />
             </group>
             <group targetFramework="net461">
-                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.Composition" version="1.0.31" />
             </group>
             <group targetFramework="netstandard1.5">
-                <dependency id="Kephas.Core" version="3.1.0-preview3" />
+                <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.Composition" version="1.0.31" />
             </group>
         </dependencies>
