@@ -162,43 +162,6 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
-        public async Task Dynamic_Property_non_concurrent()
-        {
-            var expando = new Expando(isThreadSafe: false);
-            Exception exception = null;
-            Action<int> accessor = offset =>
-            {
-                const int runs = 2000;
-                var start = runs * offset;
-                try
-                {
-                    for (var i = start; i < start + runs; i++)
-                    {
-                        expando["Prop" + i] = i;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    exception = ex;
-                }
-            };
-
-            var tasks = new List<Task>();
-            for (var j = 0; j < 200; j++)
-            {
-                tasks.Add(Task.Factory.StartNew(() => accessor(j)));
-            }
-
-            // normally it should crash
-            await Task.WhenAll(tasks);
-
-            if (exception == null)
-            {
-                Assert.Inconclusive("If the inner dictionary did not crash it doesn't mean it is thread safe.");
-            }
-        }
-
-        [Test]
         [TestCase(12, ExpectedResult = false)]
         [TestCase(80, ExpectedResult = true)]
         public bool TryInvokeMember_Method_with_instance(int age)
