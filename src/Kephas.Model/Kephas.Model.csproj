@@ -240,6 +240,8 @@
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistry.cs" />
     <Compile Include="Runtime\RuntimeModelInfoProviderBase.cs" />
     <Compile Include="Services\DefaultModelSpaceProvider.cs" />
+    <Compile Include="Services\DefaultProjectedTypeResolver.cs" />
+    <Compile Include="Services\IProjectedTypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Strings.resx">

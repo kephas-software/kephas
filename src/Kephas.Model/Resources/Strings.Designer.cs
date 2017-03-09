@@ -80,6 +80,16 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; must be annotated with the &apos;{1}&apos; to be able to resolve the projected type..
+        /// </summary>
+        internal static string DefaultProjectTypeResolver_ResolveProjectedType_MissingProjectionForAttribute_Exception {
+            get {
+                return ResourceManager.GetString("DefaultProjectTypeResolver_ResolveProjectedType_MissingProjectionForAttribute_Exc" +
+                        "eption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The element &apos;{0}&apos; is not a member of &apos;{1}&apos;..
         /// </summary>
         internal static string ElementNotFoundInMembers {
