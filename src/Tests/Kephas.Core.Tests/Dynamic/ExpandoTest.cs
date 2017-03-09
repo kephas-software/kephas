@@ -164,15 +164,17 @@ namespace Kephas.Core.Tests.Dynamic
         [Test]
         public async Task Dynamic_Property_non_concurrent()
         {
-            dynamic expando = new Expando();
+            var expando = new Expando(isThreadSafe: false);
             Exception exception = null;
-            Action accessor = () =>
+            Action<int> accessor = offset =>
             {
+                const int runs = 2000;
+                var start = runs * offset;
                 try
                 {
-                    for (var i = 0; i <= 2000; i++)
+                    for (var i = start; i < start + runs; i++)
                     {
-                        expando["Prop" + Thread.CurrentThread.Name + i] = Thread.CurrentThread.Name + i;
+                        expando["Prop" + i] = i;
                     }
                 }
                 catch (Exception ex)
@@ -184,7 +186,7 @@ namespace Kephas.Core.Tests.Dynamic
             var tasks = new List<Task>();
             for (var j = 0; j < 200; j++)
             {
-                tasks.Add(Task.Factory.StartNew(accessor));
+                tasks.Add(Task.Factory.StartNew(() => accessor(j)));
             }
 
             // normally it should crash
