@@ -19,6 +19,7 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Services.Composition;
 
     using NUnit.Framework;
+    using Kephas.Testing.Core.Services.Composition;
 
     /// <summary>
     /// Test class for <see cref="AttributedAppServiceConventionsRegistrar"/>.
@@ -39,7 +40,8 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(IMultipleTestAppService).GetTypeInfo(), 
                         typeof(MultipleTestService).GetTypeInfo(),
                         typeof(NewMultipleTestService).GetTypeInfo(),
-                    });
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.Single();
@@ -60,7 +62,8 @@ namespace Kephas.Core.Tests.Services.Composition
                     {
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo()
-                    });
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleTestService)));
@@ -79,7 +82,8 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleOverrideTestService).GetTypeInfo(),
-                    });
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleOverrideTestService)));
@@ -98,7 +102,8 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleSameOverrideTestService).GetTypeInfo(),
-                    }));
+                    },
+                new TestRegistrationContext()));
         }
 
         [Test]
@@ -111,8 +116,9 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(IGenericAppService<>).GetTypeInfo(), 
-                    });
+                        typeof(IGenericAppService<>).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var match = conventions.MatchingConventionsBuilders.Keys.First();
@@ -132,7 +138,8 @@ namespace Kephas.Core.Tests.Services.Composition
                     {
                         typeof(ISimpleMetadataAppService).GetTypeInfo(),
                         typeof(SimpleMetadataAppService).GetTypeInfo(),
-                    });
+                    },
+                new TestRegistrationContext());
 
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(SimpleMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -167,8 +174,9 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(IOneGenericAppService<>).GetTypeInfo(), 
-                    });
+                        typeof(IOneGenericAppService<>).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
@@ -185,8 +193,9 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(IOneGenericAppService<>).GetTypeInfo(), 
-                    });
+                        typeof(IOneGenericAppService<>).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
 
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -208,8 +217,9 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(ITwoGenericAppService<,>).GetTypeInfo(), 
-                    });
+                        typeof(ITwoGenericAppService<,>).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
 
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -238,7 +248,8 @@ namespace Kephas.Core.Tests.Services.Composition
                         typeof(IMetadataAppService).GetTypeInfo(),
                         typeof(MetadataAppService).GetTypeInfo(),
                         typeof(NullMetadataAppService).GetTypeInfo(),
-                    });
+                    },
+                new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -266,8 +277,9 @@ namespace Kephas.Core.Tests.Services.Composition
                     conventions,
                     new[] {
                             typeof(IBadAppService).GetTypeInfo(), 
-                            typeof(BadAppService).GetTypeInfo(), 
-                        }));
+                            typeof(BadAppService).GetTypeInfo(),
+                    },
+                    new TestRegistrationContext()));
         }
 
         [SharedAppServiceContract(AllowMultiple = false)]

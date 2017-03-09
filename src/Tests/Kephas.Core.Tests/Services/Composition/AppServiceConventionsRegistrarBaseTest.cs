@@ -14,10 +14,12 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Composition.AttributedModel;
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Testing.Core.Services.Composition;
 
     using NUnit.Framework;
 
@@ -46,7 +48,7 @@ namespace Kephas.Core.Tests.Services.Composition
                                 typeof(TestDerivedImporter).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts);
+            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -80,7 +82,7 @@ namespace Kephas.Core.Tests.Services.Composition
                                 typeof(Generic2).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts);
+            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -109,7 +111,7 @@ namespace Kephas.Core.Tests.Services.Composition
                                 typeof(IntClassifierFactory).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts);
+            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
@@ -140,7 +142,7 @@ namespace Kephas.Core.Tests.Services.Composition
                             {
                             };
 
-            registrar.RegisterConventions(conventions, parts);
+            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             var builderEntry = conventions.TypeConventionsBuilders.First();
@@ -167,7 +169,7 @@ namespace Kephas.Core.Tests.Services.Composition
                                 typeof(ConverterBase<,>).GetTypeInfo(),
                             };
 
-            registrar.RegisterConventions(conventions, parts);
+            registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();

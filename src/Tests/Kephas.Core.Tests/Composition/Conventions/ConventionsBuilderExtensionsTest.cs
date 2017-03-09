@@ -14,9 +14,13 @@ namespace Kephas.Core.Tests.Composition.Conventions
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Composition.Conventions;
+    using Kephas.Services;
 
     using NUnit.Framework;
+
+    using AppContext = Kephas.Application.AppContext;
 
     /// <summary>
     /// The conventions builder extensions test.
@@ -30,7 +34,8 @@ namespace Kephas.Core.Tests.Composition.Conventions
             var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
                 new[] { typeof(CalculatorConventionsRegistrar) },
-                new[] { typeof(ScientificCalculator), typeof(StandardCalculator) });
+                new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
+                new AppContext());
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
@@ -53,7 +58,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
 
     public class CalculatorConventionsRegistrar : IConventionsRegistrar
     {
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes)
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
         {
             builder
                 .ForTypesDerivedFrom(typeof(ICalculator))

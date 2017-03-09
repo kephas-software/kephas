@@ -13,6 +13,8 @@ namespace Kephas.Composition.Conventions
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Registrar for composition conventions.
     /// </summary>
@@ -24,7 +26,8 @@ namespace Kephas.Composition.Conventions
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes);
+        /// <param name="registrationContext">Context for the registration.</param>
+        void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext);
     }
 
     /// <summary>
@@ -38,7 +41,8 @@ namespace Kephas.Composition.Conventions
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes)
+        /// <param name="registrationContext">Context for the registration.</param>
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
         {
             Contract.Requires(builder != null);
             Contract.Requires(candidateTypes != null);

@@ -54,6 +54,7 @@
     <Compile Include="Composition\TestExport.cs" />
     <Compile Include="Composition\TestExportFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Composition\TestRegistrationContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">

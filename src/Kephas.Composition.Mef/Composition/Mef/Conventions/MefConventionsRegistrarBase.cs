@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef.Conventions
 
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Mef.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Base class for MEF conventions registrars.
@@ -25,10 +26,11 @@ namespace Kephas.Composition.Mef.Conventions
         /// <summary>
         /// Registers the conventions.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the provided conventions are not MEF conventions.</exception>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        /// <exception cref="System.InvalidOperationException">The provided conventions must be MEF conventions.</exception>
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes)
+        /// <param name="registrationContext">Context for the registration.</param>
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
         {
             var mefBuilder = builder as IMefConventionBuilderProvider;
             if (mefBuilder == null)

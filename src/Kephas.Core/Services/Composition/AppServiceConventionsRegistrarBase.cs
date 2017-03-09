@@ -18,6 +18,7 @@ namespace Kephas.Services.Composition
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Metadata;
+    using Kephas.Logging;
     using Kephas.Resources;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// The 'T' prefix in generic type arguments.
         /// </summary>
-        private const string TPrefix = "T";
+        private const string TypePrefix = "T";
 
         /// <summary>
         /// The 'Type' suffix in generic type arguments.
@@ -55,8 +56,11 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes)
+        /// <param name="registrationContext">Context for the registration.</param>
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
         {
+            var logger = this.GetLogger(registrationContext);
+
             var conventions = builder;
             var typeInfos = candidateTypes.ToList();
 
@@ -71,14 +75,15 @@ namespace Kephas.Services.Composition
                 var serviceContract = appServiceContractInfo.Key;
                 var serviceContractMetadata = appServiceContractInfo.Value;
 
-                var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos);
+                var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos, logger);
 
                 if (partBuilder == null)
                 {
+                    logger.Warn($"Part builder for {serviceContract} not found.");
                     continue;
                 }
 
-                this.ConfigurePartBuilder(partBuilder, serviceContract, serviceContractMetadata, appServiceContractInfo, appServiceContractsInfos);
+                this.ConfigurePartBuilder(partBuilder, serviceContract, serviceContractMetadata, appServiceContractInfo, appServiceContractsInfos, logger);
             }
         }
 
@@ -127,7 +132,8 @@ namespace Kephas.Services.Composition
         /// <param name="serviceContractMetadata">The service contract metadata.</param>
         /// <param name="appServiceContractInfo">Information describing the application service contract.</param>
         /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
-        protected void ConfigurePartBuilder(IPartConventionsBuilder partBuilder, TypeInfo serviceContract, AppServiceContractAttribute serviceContractMetadata, KeyValuePair<TypeInfo, AppServiceContractAttribute> appServiceContractInfo, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos)
+        /// <param name="logger">The logger.</param>
+        protected void ConfigurePartBuilder(IPartConventionsBuilder partBuilder, TypeInfo serviceContract, AppServiceContractAttribute serviceContractMetadata, KeyValuePair<TypeInfo, AppServiceContractAttribute> appServiceContractInfo, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos, ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
             var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
@@ -169,6 +175,19 @@ namespace Kephas.Services.Composition
                 var scopeName = ((ScopeSharedAppServiceContractAttribute)serviceContractMetadata).ScopeName;
                 partBuilder.ScopeShared(scopeName);
             }
+        }
+
+        /// <summary>
+        /// Gets a logger for the provided registration context.
+        /// </summary>
+        /// <param name="registrationContext">The registration context.</param>
+        /// <returns>
+        /// The logger.
+        /// </returns>
+        private ILogger GetLogger(IContext registrationContext)
+        {
+            var logManager = registrationContext?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
+            return logManager.GetLogger(this.GetType());
         }
 
         /// <summary>
@@ -420,7 +439,7 @@ namespace Kephas.Services.Composition
         private string GetMetadataNameFromGenericTypeParameter(Type genericTypeParameter)
         {
             var name = genericTypeParameter.Name;
-            if (name.StartsWith(TPrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
+            if (name.StartsWith(TypePrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
             {
                 name = name.Substring(1);
             }
@@ -462,18 +481,16 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Tries to get the part builder.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
         /// <param name="serviceContractMetadata">The service contract metadata.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="conventions">The conventions.</param>
         /// <param name="typeInfos">The type infos.</param>
+        /// <param name="logger">The logger.</param>
         /// <returns>
         /// The part builder or <c>null</c>.
         /// </returns>
-        private IPartConventionsBuilder TryGetPartBuilder(
-            AppServiceContractAttribute serviceContractMetadata,
-            TypeInfo serviceContract,
-            IConventionsBuilder conventions,
-            IEnumerable<TypeInfo> typeInfos)
+        private IPartConventionsBuilder TryGetPartBuilder(AppServiceContractAttribute serviceContractMetadata, TypeInfo serviceContract, IConventionsBuilder conventions, IEnumerable<TypeInfo> typeInfos, ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
 

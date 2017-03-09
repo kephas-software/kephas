@@ -42,6 +42,11 @@ namespace Kephas.Composition.Hosting
         public const string AssemblyNamePatternConfigurationKey = "composition:assemblyFileNamePattern";
 
         /// <summary>
+        /// The context.
+        /// </summary>
+        private readonly IContext context;
+
+        /// <summary>
         /// The composition assemblies.
         /// </summary>
         private HashSet<Assembly> compositionAssemblies;
@@ -61,6 +66,7 @@ namespace Kephas.Composition.Hosting
             Contract.Requires(context != null);
             Contract.Requires(context.AmbientServices != null);
 
+            this.context = context;
             this.ExportProviders = new List<IExportProvider>();
 
             this.LogManager = context.AmbientServices.GetService<ILogManager>();
@@ -471,7 +477,7 @@ namespace Kephas.Composition.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    conventions.RegisterConventionsFrom(assemblies, parts);
+                    conventions.RegisterConventionsFrom(assemblies, parts, this.context);
                 },
                 this.Logger);
 
