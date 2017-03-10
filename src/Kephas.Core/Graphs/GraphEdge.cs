@@ -11,6 +11,7 @@ namespace Kephas.Graphs
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -25,8 +26,8 @@ namespace Kephas.Graphs
         /// <param name="to">The node where the edge ends.</param>
         protected internal GraphEdge(GraphNode from, GraphNode to)
         {
-            Contract.Requires(from != null);
-            Contract.Requires(to != null);
+            Requires.NotNull(from, nameof(from));
+            Requires.NotNull(to, nameof(to));
 
             this.From = from;
             this.To = to;

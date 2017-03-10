@@ -15,6 +15,7 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
@@ -33,7 +34,7 @@ namespace Kephas.Model.Runtime
         /// <param name="runtimeModelElementFactory">  The runtime model information factory. </param>
         protected RuntimeModelInfoProviderBase(IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Contract.Requires(runtimeModelElementFactory != null);
+            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
 
             this.RuntimeModelElementFactory = runtimeModelElementFactory;
         }

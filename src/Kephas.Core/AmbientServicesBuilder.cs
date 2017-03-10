@@ -17,6 +17,7 @@ namespace Kephas
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -33,7 +34,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services.</param>
         public AmbientServicesBuilder(AmbientServices ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.AmbientServices = ambientServices;
         }
@@ -63,7 +64,7 @@ namespace Kephas
         /// </returns>
         public AmbientServicesBuilder WithLogManager(ILogManager logManager)
         {
-            Contract.Requires(logManager != null);
+            Requires.NotNull(logManager, nameof(logManager));
 
             this.AmbientServices.RegisterService(logManager);
 
@@ -95,7 +96,7 @@ namespace Kephas
         /// </returns>
         public AmbientServicesBuilder WithAppRuntime(IAppRuntime appRuntime)
         {
-            Contract.Requires(appRuntime != null);
+            Requires.NotNull(appRuntime, nameof(appRuntime));
 
             this.AmbientServices.RegisterService(appRuntime);
 

@@ -23,6 +23,7 @@ namespace Kephas.Composition.Hosting
     using Kephas.Composition.Conventions;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -63,7 +64,7 @@ namespace Kephas.Composition.Hosting
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the composition context.")]
         protected CompositionContainerBuilderBase(IContext context)
         {
-            Contract.Requires(context != null);
+            Requires.NotNull(context, nameof(context));
             Contract.Requires(context.AmbientServices != null);
 
             this.context = context;
@@ -188,7 +189,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithConventionAssembly(Assembly assembly)
         {
-            Contract.Requires(assembly != null);
+            Requires.NotNull(assembly, nameof(assembly));
 
             return this.WithConventionAssemblies(new[] { assembly });
         }
@@ -245,7 +246,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithAssembly(Assembly assembly)
         {
-            Contract.Requires(assembly != null);
+            Requires.NotNull(assembly, nameof(assembly));
 
             return this.WithAssemblies(new[] { assembly });
         }

@@ -12,6 +12,8 @@ namespace Kephas.Data.Commands
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// The default implementation of a find operationContext.
     /// </summary>
@@ -27,7 +29,7 @@ namespace Kephas.Data.Commands
         public FindContext(IDataContext dataContext, Id id, bool throwIfNotFound = true)
             : base(dataContext)
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             this.Id = id;
             this.ThrowIfNotFound = throwIfNotFound;

@@ -13,6 +13,7 @@ namespace Kephas.Platform.Net45
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Platform.Net;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Platform.Net45
         [Obsolete("Use instead the WithNetAppRuntime() extension method.")]
         public static AmbientServicesBuilder WithNet45AppEnvironment(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
-            Contract.Requires(ambientServicesBuilder != null);
+            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             return NetAmbientServicesBuilderExtensions.WithNetAppRuntime(ambientServicesBuilder, assemblyFilter, appLocation);
         }

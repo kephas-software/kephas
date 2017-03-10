@@ -13,6 +13,7 @@ namespace Kephas.Data.InMemory.Commands
 
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Create entity command implementation for a <see cref="InMemoryDataContext"/>.
@@ -28,7 +29,7 @@ namespace Kephas.Data.InMemory.Commands
         public InMemoryCreateEntityCommand(IDataBehaviorProvider behaviorProvider)
             : base(behaviorProvider)
         {
-            Contract.Requires(behaviorProvider != null);
+            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
         }
 
         /// <summary>

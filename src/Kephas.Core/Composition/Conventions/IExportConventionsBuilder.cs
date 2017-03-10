@@ -12,6 +12,8 @@ namespace Kephas.Composition.Conventions
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Contract for export conventions builder.
     /// </summary>
@@ -63,7 +65,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         public IExportConventionsBuilder AsContractType(Type contractType)
         {
-            Contract.Requires(contractType != null);
+            Requires.NotNull(contractType, nameof(contractType));
             Contract.Ensures(Contract.Result<IExportConventionsBuilder>() != null);
             return Contract.Result<IExportConventionsBuilder>();
         }
@@ -78,7 +80,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, object value)
         {
-            Contract.Requires(!string.IsNullOrEmpty(name));
+            Requires.NotNullOrEmpty(name, nameof(name));
             Contract.Ensures(Contract.Result<IExportConventionsBuilder>() != null);
             return Contract.Result<IExportConventionsBuilder>();
         }
@@ -93,7 +95,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
         {
-            Contract.Requires(!string.IsNullOrEmpty(name));
+            Requires.NotNullOrEmpty(name, nameof(name));
             Contract.Requires(getValueFromPartType != null);
             Contract.Ensures(Contract.Result<IExportConventionsBuilder>() != null);
             return Contract.Result<IExportConventionsBuilder>();

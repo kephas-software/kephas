@@ -13,6 +13,8 @@ namespace Kephas.Threading.Tasks
     using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Extension methods for the <see cref="Task"/> and <see cref="Task{TResult}"/> classes.
     /// </summary>
@@ -62,7 +64,7 @@ namespace Kephas.Threading.Tasks
         /// </remarks>
         public static bool WaitNonLocking(this Task task, TimeSpan timeout, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             var timeoutOccurred = false;
             var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
@@ -104,7 +106,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan timeout, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             if (task.WaitNonLocking(timeout, waitMilliseconds, throwOnTimeout))
             {
@@ -129,7 +131,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static ThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this Task<TResult> task)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             return new ThreadContextAwaiter<TResult>(task);
         }
@@ -148,7 +150,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static ThreadContextAwaiter PreserveThreadContext(this Task task)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             return new ThreadContextAwaiter(task);
         }

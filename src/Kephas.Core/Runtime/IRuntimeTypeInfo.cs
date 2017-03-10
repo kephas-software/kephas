@@ -16,6 +16,7 @@ namespace Kephas.Runtime
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -311,7 +312,7 @@ namespace Kephas.Runtime
         /// </returns>
         public object GetValue(object instance, string propertyName)
         {
-            Contract.Requires(instance != null);
+            Requires.NotNull(instance, nameof(instance));
             return Contract.Result<object>();
         }
 
@@ -339,7 +340,7 @@ namespace Kephas.Runtime
         /// </remarks>
         public void SetValue(object instance, string propertyName, object value)
         {
-            Contract.Requires(instance != null);
+            Requires.NotNull(instance, nameof(instance));
         }
 
         /// <summary>
@@ -363,7 +364,7 @@ namespace Kephas.Runtime
         /// <returns>The invocation result.</returns>
         public object Invoke(object instance, string methodName, IEnumerable<object> args)
         {
-            Contract.Requires(instance != null);
+            Requires.NotNull(instance, nameof(instance));
             return Contract.Result<object>();
         }
 

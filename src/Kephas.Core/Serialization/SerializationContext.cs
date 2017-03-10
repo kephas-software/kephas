@@ -12,6 +12,7 @@ namespace Kephas.Serialization
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -27,7 +28,7 @@ namespace Kephas.Serialization
         public SerializationContext(ISerializationService serializationService, Type formatType)
             : base(serializationService.AmbientServices)
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
             Contract.Requires(formatType != null);
 
             this.SerializationService = serializationService;
@@ -78,7 +79,7 @@ namespace Kephas.Serialization
         public static SerializationContext Create<TFormatType>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
             where TFormatType : IFormat
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectFactory = rootObjectFactory };
         }
@@ -96,7 +97,7 @@ namespace Kephas.Serialization
         public static SerializationContext Create<TFormatType, TRootObject>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
             where TFormatType : IFormat
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
         }

@@ -12,6 +12,8 @@ namespace Kephas.Composition.Conventions
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Contract for conventions builder.
     /// </summary>
@@ -55,7 +57,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
         public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
             Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
 
             throw new NotSupportedException();
@@ -83,7 +85,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
         public IPartConventionsBuilder ForType(Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
             Contract.Ensures(Contract.Result<IPartConventionsBuilder>() != null);
 
             throw new NotSupportedException();

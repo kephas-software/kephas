@@ -13,6 +13,8 @@ namespace Kephas.Composition.Metadata
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Helper extension methods for metadata.
     /// </summary>
@@ -30,7 +32,7 @@ namespace Kephas.Composition.Metadata
         public static TValue ExtractMetadataValue<TAttribute, TValue>(this Type type, Func<TAttribute, TValue> valueExtractor, TValue defaultValue = default(TValue))
           where TAttribute : Attribute
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
             Contract.Requires(valueExtractor != null);
 
             var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
@@ -53,7 +55,7 @@ namespace Kephas.Composition.Metadata
         public static TValue ExtractMetadataValue<TAttribute, TValue>(this Type type, TValue defaultValue = default(TValue))
           where TAttribute : Attribute, IMetadataValue<TValue>
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
             if (attr == null)

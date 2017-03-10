@@ -12,6 +12,7 @@ namespace Kephas.Services
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Kephas.Services
         public NullServiceException(Type serviceType)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceType.FullName))
         {
-            Contract.Requires(serviceType != null);
+            Requires.NotNull(serviceType, nameof(serviceType));
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Kephas.Services
         public NullServiceException(Type serviceType, Exception inner)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceType.FullName), inner)
         {
-            Contract.Requires(serviceType != null);
+            Requires.NotNull(serviceType, nameof(serviceType));
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace Kephas.Services
         public NullServiceException(object serviceInstance)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceInstance.GetType().FullName))
         {
-            Contract.Requires(serviceInstance != null);
+            Requires.NotNull(serviceInstance, nameof(serviceInstance));
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Kephas.Services
         public NullServiceException(object serviceInstance, Exception inner)
             : base(string.Format(Strings.NullServiceExceptionMessage, serviceInstance.GetType().FullName), inner)
         {
-            Contract.Requires(serviceInstance != null);
+            Requires.NotNull(serviceInstance, nameof(serviceInstance));
         }
     }
 }

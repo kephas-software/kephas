@@ -12,6 +12,8 @@ namespace Kephas.Data.Behaviors
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Extension methods for <see cref="IDataBehaviorProvider"/>.
     /// </summary>
@@ -30,7 +32,7 @@ namespace Kephas.Data.Behaviors
             this IDataBehaviorProvider behaviorProvider,
             object obj)
         {
-            Contract.Requires(behaviorProvider != null);
+            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
             if (obj == null)
             {

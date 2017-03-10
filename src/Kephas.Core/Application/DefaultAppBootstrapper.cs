@@ -18,6 +18,7 @@ namespace Kephas.Application
 
     using Kephas.Composition;
     using Kephas.Diagnostics;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
@@ -39,8 +40,8 @@ namespace Kephas.Application
         /// <param name="appIntializerFactories">The app intializer factories.</param>
         public DefaultAppBootstrapper(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
         {
-            Contract.Requires(ambientServices != null);
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;

@@ -11,6 +11,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Reflection;
@@ -36,7 +37,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <param name="runtimeElement">The runtime element.</param>
         protected NamedElementBuilderBase(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
-            Contract.Requires(constructionContext != null);
+            Requires.NotNull(constructionContext, nameof(constructionContext));
             Contract.Requires(constructionContext.ModelSpace != null);
             Contract.Requires(runtimeElement != null);
 

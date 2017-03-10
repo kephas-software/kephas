@@ -13,6 +13,7 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
@@ -40,7 +41,7 @@ namespace Kephas.Model.Elements
         protected NamedElementBase(IModelConstructionContext constructionContext, string name)
             : base(isThreadSafe: true)
         {
-            Contract.Requires(constructionContext != null);
+            Requires.NotNull(constructionContext, nameof(constructionContext));
             Contract.Requires(name != null);
 
             if (constructionContext.ModelSpace == null)
@@ -244,7 +245,7 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected virtual void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
-            Contract.Requires(constructionContext != null);
+            Requires.NotNull(constructionContext, nameof(constructionContext));
         }
 
         /// <summary>

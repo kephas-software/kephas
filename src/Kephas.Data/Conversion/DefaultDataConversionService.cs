@@ -22,6 +22,7 @@ namespace Kephas.Data.Conversion
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion.Composition;
     using Kephas.Data.Resources;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace Kephas.Data.Conversion
             IAmbientServices ambientServices,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(converterExportFactories != null);
 
             this.AmbientServices = ambientServices;

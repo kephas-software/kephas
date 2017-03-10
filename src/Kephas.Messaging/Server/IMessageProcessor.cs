@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Server
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -62,7 +63,7 @@ namespace Kephas.Messaging.Server
         /// </returns>
         public Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
             Contract.Ensures(Contract.Result<Task<IMessage>>() != null);
 
             return Contract.Result<Task<IMessage>>();

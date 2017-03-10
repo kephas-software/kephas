@@ -17,6 +17,7 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Behaviors;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -34,7 +35,7 @@ namespace Kephas.Data.Commands
         /// <param name="behaviorProvider">The behavior provider.</param>
         protected CreateEntityCommandBase(IDataBehaviorProvider behaviorProvider)
         {
-            Contract.Requires(behaviorProvider != null);
+            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
             this.BehaviorProvider = behaviorProvider;
         }

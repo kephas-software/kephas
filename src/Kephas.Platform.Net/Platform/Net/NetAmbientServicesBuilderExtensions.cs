@@ -14,6 +14,7 @@ namespace Kephas.Platform.Net
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Platform.Net
         /// </returns>
         public static AmbientServicesBuilder WithNetAppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
-            Contract.Requires(ambientServicesBuilder != null);
+            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             var ambientServices = ambientServicesBuilder.AmbientServices;
             var assemblyLoader = new NetAssemblyLoader();

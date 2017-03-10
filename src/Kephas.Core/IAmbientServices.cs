@@ -18,6 +18,7 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -144,8 +145,8 @@ namespace Kephas
         /// </returns>
         public IAmbientServices RegisterService(Type serviceType, object service)
         {
-            Contract.Requires(serviceType != null);
-            Contract.Requires(service != null);
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(service, nameof(service));
             Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             if (!serviceType.GetTypeInfo().IsAssignableFrom(service.GetType().GetTypeInfo()))

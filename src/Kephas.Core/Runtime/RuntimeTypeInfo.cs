@@ -18,6 +18,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
 
@@ -397,7 +398,7 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         internal static RuntimeTypeInfo GetRuntimeType(Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return RuntimeTypeInfosCache.GetOrAdd(type, _ => new RuntimeTypeInfo(type));
         }
@@ -409,7 +410,7 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         internal static RuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return RuntimeTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => new RuntimeTypeInfo(typeInfo));
         }
@@ -571,8 +572,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IRuntimePropertyInfo GetProperty(string propertyName, bool throwOnNotFound = true)
         {
-            IRuntimePropertyInfo propertyInfo;
-            if (!this.GetProperties().TryGetValue(propertyName, out propertyInfo))
+            if (!this.GetProperties().TryGetValue(propertyName, out IRuntimePropertyInfo propertyInfo))
             {
                 if (throwOnNotFound)
                 {
@@ -595,8 +595,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IList<IRuntimeMethodInfo> GetMethods(string methodName, bool throwOnNotFound = true)
         {
-            IEnumerable<IRuntimeMethodInfo> methodInfos;
-            if (!this.GetMethods().TryGetValue(methodName, out methodInfos))
+            if (!this.GetMethods().TryGetValue(methodName, out IEnumerable<IRuntimeMethodInfo> methodInfos))
             {
                 if (throwOnNotFound)
                 {

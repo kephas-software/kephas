@@ -208,6 +208,7 @@
     <Compile Include="Configuration\NullConfigurationManager.cs" />
     <Compile Include="Data\Id.cs" />
     <Compile Include="Data\IIdentifiable.cs" />
+    <Compile Include="Diagnostics\Contracts\Requires.cs" />
     <Compile Include="Diagnostics\Logging\DebugConfigurationManager.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />

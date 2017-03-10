@@ -14,6 +14,7 @@ namespace Kephas.Data.Validation
     using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Encapsulates the result of a data validation.
@@ -58,7 +59,7 @@ namespace Kephas.Data.Validation
         /// <param name="severity">(Optional) the severity.</param>
         public DataValidationResult(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
 
             this.Add(message, memberName, severity);
         }
@@ -111,7 +112,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public DataValidationResult Add(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
 
             this.items.Add(new DataValidationResultItem(message, memberName, severity));
             return this;

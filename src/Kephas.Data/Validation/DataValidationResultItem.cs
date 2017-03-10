@@ -11,6 +11,8 @@ namespace Kephas.Data.Validation
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// A data validation result item.
     /// </summary>
@@ -24,7 +26,7 @@ namespace Kephas.Data.Validation
         /// <param name="severity">(Optional) the severity.</param>
         public DataValidationResultItem(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
 
             this.Message = message;
             this.MemberName = memberName;

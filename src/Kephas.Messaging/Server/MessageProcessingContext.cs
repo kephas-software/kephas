@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Server
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Kephas.Messaging.Server
             : base(messageProcessor.AmbientServices)
         {
             Contract.Requires(messageProcessor != null);
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
             Contract.Requires(handler != null);
 
             this.MessageProcessor = messageProcessor;

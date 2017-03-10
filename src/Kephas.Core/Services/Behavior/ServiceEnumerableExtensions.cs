@@ -15,6 +15,7 @@ namespace Kephas.Services.Behavior
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IEnumerable{T}"/> regarding services and service behaviors.
@@ -32,9 +33,10 @@ namespace Kephas.Services.Behavior
         /// An enumeration of enabled services.
         /// </returns>
         public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, IAmbientServices ambientServices, IAppContext appContext = null)
+            where TService : class
         {
             Contract.Requires(services != null);
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
             return services.Where(service => IsServiceEnabled(new ServiceBehaviorContext<TService>(service, ambientServices, appContext), enabledRules));
@@ -51,9 +53,10 @@ namespace Kephas.Services.Behavior
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
         public static IEnumerable<IExport<TService>> WhereEnabled<TService>(this IEnumerable<IExport<TService>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
+            where TService : class
         {
             Contract.Requires(serviceExports != null);
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
             return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, ambientServices, appContext), enabledRules));
@@ -71,9 +74,10 @@ namespace Kephas.Services.Behavior
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
         public static IEnumerable<IExport<TService, TMetadata>> WhereEnabled<TService, TMetadata>(this IEnumerable<IExport<TService, TMetadata>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
+            where TService : class
         {
             Contract.Requires(serviceExports != null);
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
             return serviceExports.Where(export => IsServiceEnabled(new ServiceBehaviorContext<TService>(export.Value, ambientServices, appContext), enabledRules));

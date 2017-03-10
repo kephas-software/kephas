@@ -22,6 +22,7 @@ namespace Kephas.Dynamic
     using System.Diagnostics.Contracts;
     using System.Dynamic;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -91,7 +92,7 @@ namespace Kephas.Dynamic
         /// </remarks>
         protected ExpandoBase(object instance)
         {
-            Contract.Requires(instance != null);
+            Requires.NotNull(instance, nameof(instance));
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.InitializeExpando(instance);
@@ -113,8 +114,7 @@ namespace Kephas.Dynamic
         {
             get
             {
-                object value;
-                if (this.TryGetDictionaryValue(key, out value))
+                if (this.TryGetDictionaryValue(key, out object value))
                 {
                     return value;
                 }
@@ -198,8 +198,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            object method;
-            if (this.TryGetDictionaryValue(binder.Name, out method))
+            if (this.TryGetDictionaryValue(binder.Name, out object method))
             {
                 var delegateProperty = (Delegate)method;
                 result = delegateProperty.DynamicInvoke(args);

@@ -334,6 +334,9 @@
     <Compile Include="..\Kephas.Core\Data\IIdentifiable.cs">
       <Link>Data\IIdentifiable.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Diagnostics\Contracts\Requires.cs">
+      <Link>Diagnostics\Contracts\Requires.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugConfigurationManager.cs">
       <Link>Diagnostics\Logging\DebugConfigurationManager.cs</Link>
     </Compile>

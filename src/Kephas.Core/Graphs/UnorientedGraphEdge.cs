@@ -11,6 +11,8 @@ namespace Kephas.Graphs
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Defines an unoriented graph edge.
     /// </summary>
@@ -24,8 +26,8 @@ namespace Kephas.Graphs
         public UnorientedGraphEdge(GraphNode from, GraphNode to)
             : base(from, to)
         {
-            Contract.Requires(from != null);
-            Contract.Requires(to != null);
+            Requires.NotNull(from, nameof(from));
+            Requires.NotNull(to, nameof(to));
 
             from.AddIncomingEdge(this);
             to.AddOutgoingEdge(this);

@@ -14,6 +14,7 @@ namespace Kephas.Threading.Tasks
     using System.Diagnostics.Contracts;
     using System.Globalization;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -41,7 +42,7 @@ namespace Kephas.Threading.Tasks
         public ThreadContext(IAmbientServices ambientServices, IEnumerable<Action<ThreadContext>> storeActions, IEnumerable<Action<ThreadContext>> restoreActions)
             : base(ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.storeActions = storeActions;
             this.restoreActions = restoreActions;

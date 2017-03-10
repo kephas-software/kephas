@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Server
     using System.Linq.Expressions;
     using System.Security.Principal;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -101,7 +102,7 @@ namespace Kephas.Messaging.Server
 
             set
             {
-                Contract.Requires(value != null);
+                Requires.NotNull(value, nameof(value));
             }
         }
 
@@ -121,7 +122,7 @@ namespace Kephas.Messaging.Server
 
             set
             {
-                Contract.Requires(value != null);
+                Requires.NotNull(value, nameof(value));
             }
         }
 

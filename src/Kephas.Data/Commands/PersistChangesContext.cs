@@ -11,6 +11,8 @@ namespace Kephas.Data.Commands
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// A operationContext for persisting changes.
     /// </summary>
@@ -23,7 +25,7 @@ namespace Kephas.Data.Commands
         public PersistChangesContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
         }
     }
 }

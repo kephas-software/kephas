@@ -15,6 +15,8 @@ namespace Kephas.Threading.Tasks
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Awaiter preserving the thread context.
     /// </summary>
@@ -37,7 +39,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="task">The task.</param>
         public ThreadContextAwaiter(Task<TResult> task)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
@@ -118,7 +120,7 @@ namespace Kephas.Threading.Tasks
         /// <param name="task">The task.</param>
         public ThreadContextAwaiter(Task task)
         {
-            Contract.Requires(task != null);
+            Requires.NotNull(task, nameof(task));
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();

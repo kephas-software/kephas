@@ -13,6 +13,7 @@ namespace Kephas.Composition.Conventions
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -44,7 +45,7 @@ namespace Kephas.Composition.Conventions
         /// <param name="registrationContext">Context for the registration.</param>
         public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
         {
-            Contract.Requires(builder != null);
+            Requires.NotNull(builder, nameof(builder));
             Contract.Requires(candidateTypes != null);
         }
     }

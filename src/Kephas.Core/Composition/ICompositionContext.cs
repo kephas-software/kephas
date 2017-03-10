@@ -17,6 +17,7 @@ namespace Kephas.Composition
 
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Internal;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -145,7 +146,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IServiceProvider ToServiceProvider(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             return new CompositionContextServiceProviderAdapter(compositionContext);
         }
@@ -160,7 +161,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IExportFactory<T> GetExportFactory<T>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (IExportFactoryImporter)compositionContext.GetExport(importerType);
@@ -178,7 +179,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IExportFactory<T, TMetadata> GetExportFactory<T, TMetadata>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (IExportFactoryImporter)compositionContext.GetExport(importerType);
@@ -195,7 +196,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IEnumerable<IExportFactory<T>> GetExportFactories<T>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(ICollectionExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (ICollectionExportFactoryImporter)compositionContext.GetExport(importerType);
@@ -213,7 +214,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IEnumerable<IExportFactory<T, TMetadata>> GetExportFactories<T, TMetadata>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(ICollectionExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (ICollectionExportFactoryImporter)compositionContext.GetExport(importerType);
@@ -230,7 +231,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IExportFactory<T> TryGetExportFactory<T>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
@@ -248,7 +249,7 @@ namespace Kephas.Composition
         /// </returns>
         public static IExportFactory<T, TMetadata> TryGetExportFactory<T, TMetadata>(this ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
@@ -265,8 +266,8 @@ namespace Kephas.Composition
         /// </returns>
         public static object GetExportFactory(this ICompositionContext compositionContext, Type contractType)
         {
-            Contract.Requires(compositionContext != null);
-            Contract.Requires(contractType != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contractType, nameof(contractType));
 
             var getExport = GetExportFactory1Method.MakeGenericMethod(contractType);
             return getExport.Call(null, compositionContext);
@@ -283,8 +284,8 @@ namespace Kephas.Composition
         /// </returns>
         public static object GetExportFactory(this ICompositionContext compositionContext, Type contractType, Type metadataType)
         {
-            Contract.Requires(compositionContext != null);
-            Contract.Requires(contractType != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contractType, nameof(contractType));
             Contract.Requires(metadataType != null);
 
             var getExport = GetExportFactory2Method.MakeGenericMethod(contractType, metadataType);
@@ -301,8 +302,8 @@ namespace Kephas.Composition
         /// </returns>
         public static IEnumerable GetExportFactories(this ICompositionContext compositionContext, Type contractType)
         {
-            Contract.Requires(compositionContext != null);
-            Contract.Requires(contractType != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contractType, nameof(contractType));
 
             var getExport = GetExportFactories1Method.MakeGenericMethod(contractType);
             return (IEnumerable)getExport.Call(null, compositionContext);
@@ -319,8 +320,8 @@ namespace Kephas.Composition
         /// </returns>
         public static IEnumerable GetExportFactories(this ICompositionContext compositionContext, Type contractType, Type metadataType)
         {
-            Contract.Requires(compositionContext != null);
-            Contract.Requires(contractType != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contractType, nameof(contractType));
             Contract.Requires(metadataType != null);
 
             var getExport = GetExportFactories2Method.MakeGenericMethod(contractType, metadataType);

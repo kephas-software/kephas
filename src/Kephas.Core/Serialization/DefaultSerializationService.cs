@@ -16,6 +16,7 @@ namespace Kephas.Serialization
 
     using Kephas.Collections;
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Serialization.Composition;
     using Kephas.Serialization.Json;
@@ -39,7 +40,7 @@ namespace Kephas.Serialization
             IAmbientServices ambientServices,
             ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(serializerFactories != null);
 
             this.AmbientServices = ambientServices;

@@ -15,6 +15,7 @@ namespace Kephas.Serialization
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Serialization.Json;
     using Kephas.Serialization.Xml;
@@ -44,7 +45,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default(CancellationToken))
             where TFormatType : IFormat
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -77,7 +78,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default(CancellationToken))
             where TFormatType : IFormat
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             if (serializedObj == null)
             {
@@ -106,7 +107,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<JsonFormat>(serializationService, serializedObj, context, cancellationToken);
         }
@@ -128,7 +129,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<JsonFormat, TRootObject>(serializationService, serializedObj, context, cancellationToken);
         }
@@ -149,7 +150,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<XmlFormat>(serializationService, serializedObj, context, cancellationToken);
         }
@@ -171,7 +172,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<XmlFormat, TRootObject>(serializationService, serializedObj, context, cancellationToken);
         }
@@ -197,7 +198,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default(CancellationToken))
             where TFormatType : IFormat
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             if (obj == null)
             {
@@ -227,7 +228,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return SerializeAsync<JsonFormat>(serializationService, obj, context, cancellationToken);
         }
@@ -249,7 +250,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializationService != null);
+            Requires.NotNull(serializationService, nameof(serializationService));
 
             return SerializeAsync<XmlFormat>(serializationService, obj, context, cancellationToken);
         }

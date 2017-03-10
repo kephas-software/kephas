@@ -11,6 +11,8 @@ namespace Kephas.Data
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// The default implementation of a query operationContext.
     /// </summary>
@@ -23,7 +25,7 @@ namespace Kephas.Data
         public QueryOperationContext(IDataContext dataContext)
             : base(dataContext)
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
         }
     }
 }

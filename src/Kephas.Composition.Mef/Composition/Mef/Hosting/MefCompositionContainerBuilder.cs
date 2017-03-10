@@ -24,6 +24,7 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Composition.Metadata;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -51,7 +52,7 @@ namespace Kephas.Composition.Mef.Hosting
         public MefCompositionContainerBuilder(IContext context)
             : base(context)
         {
-            Contract.Requires(context != null);
+            Requires.NotNull(context, nameof(context));
         }
 
         /// <summary>

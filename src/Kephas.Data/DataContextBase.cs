@@ -15,6 +15,7 @@ namespace Kephas.Data
 
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -35,7 +36,7 @@ namespace Kephas.Data
         /// <param name="dataCommandProvider">The data command provider.</param>
         protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(dataCommandProvider != null);
 
             this.AmbientServices = ambientServices;

@@ -12,6 +12,7 @@ namespace Kephas.Logging
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger(this Type type, IContext context = null)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             var logManager = context?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
             return logManager.GetLogger(type);
@@ -48,7 +49,7 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger GetLogger(this object obj, IContext context = null)
         {
-            Contract.Requires(obj != null);
+            Requires.NotNull(obj, nameof(obj));
 
             var logManager = context?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
             return logManager.GetLogger(obj.GetType());

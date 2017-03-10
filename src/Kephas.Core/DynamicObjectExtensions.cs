@@ -12,6 +12,7 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Dynamic;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -29,7 +30,7 @@ namespace Kephas
         /// <param name="value">The value.</param>
         public static void SetPropertyValue(this object obj, string propertyName, object value)
         {
-            Contract.Requires(obj != null);
+            Requires.NotNull(obj, nameof(obj));
 
             var objectTypeAccessor = obj.GetType().AsRuntimeTypeInfo();
             objectTypeAccessor.SetValue(obj, propertyName, value);
@@ -62,7 +63,7 @@ namespace Kephas
         /// <returns>The property value.</returns>
         public static object GetPropertyValue(this object obj, string propertyName)
         {
-            Contract.Requires(obj != null);
+            Requires.NotNull(obj, nameof(obj));
 
             var dynamicType = obj.GetType().AsRuntimeTypeInfo();
             return dynamicType.GetValue(obj, propertyName);

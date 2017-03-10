@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
 
     using Kephas.Application;
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -45,7 +46,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         /// <param name="typeLoader">The type loader.</param>
         public MessagingModelRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
-            Contract.Requires(appRuntime != null);
+            Requires.NotNull(appRuntime, nameof(appRuntime));
 
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;

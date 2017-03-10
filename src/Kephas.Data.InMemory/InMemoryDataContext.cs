@@ -14,6 +14,7 @@ namespace Kephas.Data.InMemory
     using System.Linq;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -35,7 +36,7 @@ namespace Kephas.Data.InMemory
         public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
             : base(ambientServices, dataCommandProvider)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(dataCommandProvider != null);
         }
 

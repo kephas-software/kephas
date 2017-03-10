@@ -16,6 +16,7 @@ namespace Kephas.Model.Elements
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
@@ -57,7 +58,7 @@ namespace Kephas.Model.Elements
         /// <returns>The member name discriminator.</returns>
         public static string GetMemberNameDiscriminator(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return NameDiscriminators.GetOrAdd(
                 type,

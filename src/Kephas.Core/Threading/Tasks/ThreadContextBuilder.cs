@@ -13,6 +13,8 @@ namespace Kephas.Threading.Tasks
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Provides methods to configure and build <see cref="ThreadContext"/> instances.
     /// </summary>
@@ -41,7 +43,7 @@ namespace Kephas.Threading.Tasks
         /// </param>
         public ThreadContextBuilder(IAmbientServices ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.ambientServices = ambientServices;
         }

@@ -13,6 +13,7 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return RuntimeTypeInfo.GetRuntimeType(typeInfo);
         }
@@ -42,7 +43,7 @@ namespace Kephas.Reflection
         /// <returns>A <see cref="Type"/> instance.</returns>
         public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
         }
@@ -56,7 +57,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsNullableType(this TypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
@@ -70,7 +71,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsGenericType(this ITypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return typeInfo.GenericTypeArguments.Count > 0 || typeInfo.GenericTypeParameters.Count > 0;
         }
@@ -84,7 +85,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsGenericTypeDefinition(this ITypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return typeInfo.GenericTypeParameters.Count > 0 && typeInfo.GenericTypeDefinition == null;
         }
@@ -99,7 +100,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetQualifiedFullName(this TypeInfo typeInfo, bool stripVersionInfo = true)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             var qualifiedFullName = typeInfo.AssemblyQualifiedName;
             if (string.IsNullOrEmpty(qualifiedFullName))

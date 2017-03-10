@@ -23,6 +23,7 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Resources;
     using Kephas.Data.Validation;
     using Kephas.Diagnostics;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace Kephas.Data.Commands
         /// <param name="behaviorProvider">The behavior provider.</param>
         protected PersistChangesCommandBase(IDataBehaviorProvider behaviorProvider)
         {
-            Contract.Requires(behaviorProvider != null);
+            Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
             this.BehaviorProvider = behaviorProvider;
         }

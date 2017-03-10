@@ -16,6 +16,7 @@ namespace Kephas.Model.Services
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
@@ -54,8 +55,8 @@ namespace Kephas.Model.Services
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
         public DefaultModelSpaceProvider(IAmbientServices ambientServices, ICollection<IModelInfoProvider> modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Contract.Requires(ambientServices != null);
-            Contract.Requires(runtimeModelElementFactory != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Contract.Requires(modelInfoProviders != null);
 
             this.AmbientServices = ambientServices;
@@ -144,7 +145,7 @@ namespace Kephas.Model.Services
         /// </returns>
         protected virtual IModelSpace CreateModelSpace(IModelConstructionContext constructionContext)
         {
-            Contract.Requires(constructionContext != null);
+            Requires.NotNull(constructionContext, nameof(constructionContext));
 
             return new DefaultModelSpace(constructionContext);
         }

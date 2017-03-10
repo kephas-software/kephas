@@ -16,6 +16,7 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Composition.AttributedModel;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -44,7 +45,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> conventionTypes, IEnumerable<Type> parts, IContext registrationContext)
         {
-            Contract.Requires(builder != null);
+            Requires.NotNull(builder, nameof(builder));
             Contract.Requires(conventionTypes != null);
 
             return RegisterConventionsCore(builder, () => conventionTypes.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
@@ -63,7 +64,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts, IContext registrationContext)
         {
-            Contract.Requires(builder != null);
+            Requires.NotNull(builder, nameof(builder));
             Contract.Requires(assemblies != null);
             Contract.Requires(parts != null);
 
@@ -82,7 +83,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts, IContext registrationContext)
         {
-            Contract.Requires(builder != null);
+            Requires.NotNull(builder, nameof(builder));
 
             var partInfos = parts.Select(p => p.GetTypeInfo()).ToList();
             var registrarTypes = registrarTypesProvider();

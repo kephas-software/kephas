@@ -18,6 +18,7 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Resources;
@@ -48,7 +49,7 @@ namespace Kephas.Model.Runtime
             ICollection<IRuntimeModelRegistry> modelRegistries)
             : base(runtimeModelElementFactory)
         {
-            Contract.Requires(runtimeModelElementFactory != null);
+            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Contract.Requires(modelRegistries != null);
 
             this.modelRegistries = modelRegistries;

@@ -11,6 +11,8 @@ namespace Kephas.Diagnostics.Logging
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
@@ -25,7 +27,7 @@ namespace Kephas.Diagnostics.Logging
         /// </returns>
         public static AmbientServicesBuilder WithDebugLogManager(this AmbientServicesBuilder ambientServicesBuilder)
         {
-            Contract.Requires(ambientServicesBuilder != null);
+            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             return ambientServicesBuilder.WithLogManager(new DebugLogManager());
         }

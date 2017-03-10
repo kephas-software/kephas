@@ -13,6 +13,8 @@ namespace Kephas.Composition.Mef.Internals
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Helper class for formatting.
     /// </summary>
@@ -25,7 +27,7 @@ namespace Kephas.Composition.Mef.Internals
         /// <returns>A string containing the formatted type.</returns>
         public static string Format(Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             if (type.IsConstructedGenericType)
             {

@@ -12,12 +12,14 @@ namespace Kephas.Services.Behavior
     using System.Diagnostics.Contracts;
 
     using Kephas.Application;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The default implementation of a service behavior context.
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public class ServiceBehaviorContext<TServiceContract> : ContextBase, IServiceBehaviorContext<TServiceContract>
+            where TServiceContract : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
@@ -29,7 +31,7 @@ namespace Kephas.Services.Behavior
         public ServiceBehaviorContext(TServiceContract service, IAmbientServices ambientServices, IAppContext appContext = null)
             : base(ambientServices)
         {
-            Contract.Requires(service != null);
+            Requires.NotNull(service, nameof(service));
 
             this.Service = service;
             this.AppContext = appContext;

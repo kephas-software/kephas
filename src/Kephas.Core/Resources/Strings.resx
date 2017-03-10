@@ -210,4 +210,7 @@
   <data name="DefaultTypeResolver_ResolveType_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Multiple types found for '{0}' : {1}.</value>
   </data>
+  <data name="Requires_NotNullOrEmpty_EmptyArgument_Exception" xml:space="preserve">
+    <value>Argument '{0}' must not be null nor empty.</value>
+  </data>
 </root>

@@ -14,6 +14,8 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Application service contract for loading types.
     /// </summary>
@@ -45,7 +47,7 @@ namespace Kephas.Reflection
         /// </returns>
         public IEnumerable<Type> GetLoadableExportedTypes(Assembly assembly)
         {
-            Contract.Requires(assembly != null);
+            Requires.NotNull(assembly, nameof(assembly));
             Contract.Ensures(Contract.Result<IEnumerable<Type>>() != null);
 
             return Contract.Result<IEnumerable<Type>>();

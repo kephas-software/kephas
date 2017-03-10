@@ -11,6 +11,7 @@ namespace Kephas.Composition.Hosting
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -25,7 +26,7 @@ namespace Kephas.Composition.Hosting
         public CompositionContainerBuilderContext(IAmbientServices ambientServices)
             : base(ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
         }
     }
 }

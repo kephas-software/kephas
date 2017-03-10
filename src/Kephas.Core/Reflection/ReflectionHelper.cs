@@ -16,6 +16,7 @@ namespace Kephas.Reflection
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
     /// <summary>
@@ -75,7 +76,7 @@ namespace Kephas.Reflection
             }
 
             // as before:
-            if (memberExpression == null || !(memberExpression.Member is PropertyInfo))
+            if (!(memberExpression?.Member is PropertyInfo))
             {
                 throw new ArgumentException("Expected property expression.");
             }
@@ -146,7 +147,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetAssemblyQualifiedShortName(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return string.Concat(type.FullName, ", ", IntrospectionExtensions.GetTypeInfo(type).Assembly.GetName().Name);
         }
@@ -158,7 +159,7 @@ namespace Kephas.Reflection
         /// <returns>The full name of the non generic type.</returns>
         public static string GetNonGenericFullName(this TypeInfo typeInfo)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             var fullName = typeInfo.FullName;
             if (!typeInfo.IsGenericType)
@@ -179,7 +180,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetNonGenericFullName(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return GetNonGenericFullName(IntrospectionExtensions.GetTypeInfo(type));
         }

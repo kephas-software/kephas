@@ -296,6 +296,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Argument &apos;{0}&apos; must not be null nor empty..
+        /// </summary>
+        internal static string Requires_NotNullOrEmpty_EmptyArgument_Exception {
+            get {
+                return ResourceManager.GetString("Requires_NotNullOrEmpty_EmptyArgument_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expected {0} instead of {1} format type in the serialization context..
         /// </summary>
         internal static string Serialization_FormatTypeMismatch_Exception {

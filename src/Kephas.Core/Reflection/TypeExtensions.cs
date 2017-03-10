@@ -16,6 +16,7 @@ namespace Kephas.Reflection
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return RuntimeTypeInfo.GetRuntimeType(type);
         }
@@ -45,7 +46,7 @@ namespace Kephas.Reflection
         /// <returns>A <see cref="Type"/> instance.</returns>
         public static Type GetNonNullableType(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
         }
@@ -59,7 +60,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsNullableType(this Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
         }
@@ -162,7 +163,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsConstructedGenericOf(this Type type, Type openGenericType)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
         }
@@ -177,7 +178,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static string GetQualifiedFullName(this Type type, bool stripVersionInfo = true)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
 
             return TypeInfoExtensions.GetQualifiedFullName(IntrospectionExtensions.GetTypeInfo(type), stripVersionInfo);
         }

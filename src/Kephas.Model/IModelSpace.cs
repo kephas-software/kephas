@@ -14,6 +14,7 @@ namespace Kephas.Model
     using System.Dynamic;
     using System.Linq.Expressions;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -260,7 +261,7 @@ namespace Kephas.Model
         /// </returns>
         public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return Contract.Result<IClassifier>();
         }

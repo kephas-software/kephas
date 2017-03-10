@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Server
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Resources;
     using Kephas.Messaging.Server.Composition;
@@ -48,8 +49,8 @@ namespace Kephas.Messaging.Server
         /// <param name="filterFactories">The filter factories.</param>
         public DefaultMessageProcessor(IAmbientServices ambientServices, ICompositionContext compositionContext, IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
         {
-            Contract.Requires(ambientServices != null);
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Contract.Requires(filterFactories != null);
 
             this.AmbientServices = ambientServices;

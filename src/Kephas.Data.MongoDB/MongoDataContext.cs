@@ -20,6 +20,7 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Services;
 
@@ -43,7 +44,7 @@ namespace Kephas.Data.MongoDB
         public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
             : base(ambientServices, dataCommandProvider)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(dataCommandProvider != null);
         }
 

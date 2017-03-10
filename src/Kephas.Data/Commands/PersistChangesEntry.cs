@@ -13,6 +13,7 @@ namespace Kephas.Data.Commands
     using System.Diagnostics.Contracts;
 
     using Kephas.Data.Capabilities;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Kephas.Data.Commands
         public PersistChangesEntry(IDataContext dataContext, object entity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
             : base(dataContext.AmbientServices)
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             this.Entity = entity;
             this.ChangeState = changeState;

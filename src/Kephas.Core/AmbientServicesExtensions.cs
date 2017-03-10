@@ -12,6 +12,7 @@ namespace Kephas
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Kephas
         [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, string loggerName)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(!string.IsNullOrWhiteSpace(loggerName));
 
             return ambientServices.LogManager.GetLogger(loggerName);
@@ -47,8 +48,8 @@ namespace Kephas
         [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, Type type)
         {
-            Contract.Requires(ambientServices != null);
-            Contract.Requires(type != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(type, nameof(type));
 
             return ambientServices.LogManager.GetLogger(type);
         }
@@ -64,7 +65,7 @@ namespace Kephas
         [Pure]
         public static ILogger<T> GetLogger<T>(this IAmbientServices ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             return new TypedLogger<T>(ambientServices.LogManager);
         }
@@ -81,8 +82,8 @@ namespace Kephas
         public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, TService service)
             where TService : class
         {
-            Contract.Requires(ambientServices != null);
-            Contract.Requires(service != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(service, nameof(service));
             Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             return ambientServices.RegisterService(typeof(TService), service);
@@ -100,7 +101,7 @@ namespace Kephas
         public static TService GetService<TService>(this IServiceProvider ambientServices)
             where TService : class
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             return (TService)ambientServices.GetService(typeof(TService));
         }

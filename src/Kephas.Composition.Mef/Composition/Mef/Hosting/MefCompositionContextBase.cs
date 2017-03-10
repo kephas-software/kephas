@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef.Hosting
 
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A MEF composition context.
@@ -180,7 +181,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)
         {
-            Contract.Requires(context != null);
+            Requires.NotNull(context, nameof(context));
 
             this.innerCompositionContext = context;
         }

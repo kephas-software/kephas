@@ -13,6 +13,8 @@ namespace Kephas.Data.Validation
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Interface for validation result.
     /// </summary>
@@ -34,7 +36,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public static bool HasErrors(this IDataValidationResult result)
         {
-            Contract.Requires(result != null);
+            Requires.NotNull(result, nameof(result));
 
             return result.Any(i => i.Severity == DataValidationSeverity.Error);
         }
@@ -48,7 +50,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public static IEnumerable<IDataValidationResultItem> GetErrors(this IDataValidationResult result)
         {
-            Contract.Requires(result != null);
+            Requires.NotNull(result, nameof(result));
 
             return result.Where(i => i.Severity == DataValidationSeverity.Error);
         }

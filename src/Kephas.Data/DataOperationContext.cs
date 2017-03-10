@@ -11,6 +11,7 @@ namespace Kephas.Data
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -25,7 +26,7 @@ namespace Kephas.Data
         public DataOperationContext(IDataContext dataContext)
             : base(dataContext.AmbientServices)
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             this.DataContext = dataContext;
         }

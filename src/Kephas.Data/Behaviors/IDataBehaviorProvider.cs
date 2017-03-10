@@ -13,6 +13,7 @@ namespace Kephas.Data.Behaviors
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -50,7 +51,7 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         public IEnumerable<TBehavior> GetDataBehaviors<TBehavior>(Type type)
         {
-            Contract.Requires(type != null);
+            Requires.NotNull(type, nameof(type));
             return Contract.Result<IEnumerable<TBehavior>>();
         }
     }

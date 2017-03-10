@@ -16,6 +16,7 @@ namespace Kephas.Data.Commands.Factory
     using System.Diagnostics.Contracts;
 
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -40,7 +41,7 @@ namespace Kephas.Data.Commands.Factory
         /// <param name="compositionContext">Context for the composition.</param>
         public DefaultDataCommandProvider(ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             this.compositionContext = compositionContext;
         }

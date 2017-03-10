@@ -13,6 +13,7 @@ namespace Kephas.Composition.Internal
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
     /// <summary>
@@ -29,7 +30,7 @@ namespace Kephas.Composition.Internal
         /// <param name="compositionContext">Context for the composition.</param>
         public CompositionContextServiceProviderAdapter(ICompositionContext compositionContext)
         {
-            Contract.Requires(compositionContext != null);
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             this.compositionContext = compositionContext;
         }

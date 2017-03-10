@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Client
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
     using Kephas.Services;
 
@@ -59,7 +60,7 @@ namespace Kephas.Messaging.Client
         /// </returns>
         public Task<IMessage> ProcessAsync(IMessage message, CancellationToken token)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
             Contract.Ensures(Contract.Result<Task<IMessage>>() != null);
 
             return Contract.Result<Task<IMessage>>();
@@ -71,7 +72,7 @@ namespace Kephas.Messaging.Client
         /// <param name="message">The message.</param>
         public void ProcessOneWay(IMessage message)
         {
-            Contract.Requires(message != null);
+            Requires.NotNull(message, nameof(message));
         }
     }
 }

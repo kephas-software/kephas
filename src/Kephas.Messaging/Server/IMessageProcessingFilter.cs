@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Server
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -71,7 +72,7 @@ namespace Kephas.Messaging.Server
         /// </returns>
         public Task BeforeProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
-            Contract.Requires(context != null);
+            Requires.NotNull(context, nameof(context));
             Contract.Ensures(Contract.Result<Task>() != null);
 
             return Contract.Result<Task>();
@@ -91,7 +92,7 @@ namespace Kephas.Messaging.Server
         /// </remarks>
         public Task AfterProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
-            Contract.Requires(context != null);
+            Requires.NotNull(context, nameof(context));
             Contract.Ensures(Contract.Result<Task>() != null);
 
             return Contract.Result<Task>();

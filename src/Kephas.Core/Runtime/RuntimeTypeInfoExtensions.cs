@@ -12,6 +12,8 @@ namespace Kephas.Runtime
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Extension methods for <see cref="IRuntimeTypeInfo"/>.
     /// </summary>
@@ -27,7 +29,7 @@ namespace Kephas.Runtime
         /// </returns>
         public static object CreateInstance(this IRuntimeTypeInfo typeInfo, params object[] args)
         {
-            Contract.Requires(typeInfo != null);
+            Requires.NotNull(typeInfo, nameof(typeInfo));
 
             return typeInfo.CreateInstance((IEnumerable<object>)args);
         }

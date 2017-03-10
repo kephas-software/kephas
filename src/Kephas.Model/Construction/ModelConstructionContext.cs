@@ -12,6 +12,7 @@ namespace Kephas.Model.Construction
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -28,7 +29,7 @@ namespace Kephas.Model.Construction
         public ModelConstructionContext(IAmbientServices ambientServices)
             : base(ambientServices)
         {
-            Contract.Requires(ambientServices != null);
+            Requires.NotNull(ambientServices, nameof(ambientServices));
         }
 
         /// <summary>

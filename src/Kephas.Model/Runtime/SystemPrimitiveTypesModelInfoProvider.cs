@@ -16,6 +16,7 @@ namespace Kephas.Model.Runtime
     using System.Threading.Tasks;
 
     using Kephas.Data;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Builders;
@@ -33,7 +34,7 @@ namespace Kephas.Model.Runtime
         public SystemPrimitiveTypesModelInfoProvider(IRuntimeModelElementFactory runtimeModelElementFactory)
             : base(runtimeModelElementFactory)
         {
-            Contract.Requires(runtimeModelElementFactory != null);
+            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
         }
 
         /// <summary>

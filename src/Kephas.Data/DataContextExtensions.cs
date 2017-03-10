@@ -20,6 +20,7 @@ namespace Kephas.Data
     using Kephas.Data.Commands;
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -69,7 +70,7 @@ namespace Kephas.Data
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             var createEntityAsync = CreateEntityAsyncMethod.MakeGenericMethod(entityType);
             var resultTask = (Task)createEntityAsync.Call(null, dataContext, operationContext, cancellationToken);
@@ -95,7 +96,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(ICreateEntityCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
             var command = (IDataCommand<ICreateEntityContext, ICreateEntityResult<T>>)createCommand.Call(dataContext);
@@ -119,7 +120,7 @@ namespace Kephas.Data
             IFindContext findContext,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             var findAsync = FindAsyncMethod.MakeGenericMethod(entityType);
             var resultTask = (Task)findAsync.Call(null, dataContext, findContext, cancellationToken);
@@ -145,7 +146,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
             var command = (IDataCommand<IFindContext, IFindResult<T>>)createCommand.Call(dataContext);
@@ -171,7 +172,7 @@ namespace Kephas.Data
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
             Contract.Requires(criteria != null);
 
             var queryContext = new QueryOperationContext(dataContext);
@@ -202,7 +203,7 @@ namespace Kephas.Data
             this IDataContext dataContext,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(dataContext != null);
+            Requires.NotNull(dataContext, nameof(dataContext));
 
             var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IPersistChangesCommand<>).MakeGenericType(dataContext.GetType()));
             var command = (IDataCommand<IPersistChangesContext, IDataCommandResult>)createCommand.Call(dataContext);

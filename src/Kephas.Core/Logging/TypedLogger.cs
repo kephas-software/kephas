@@ -12,6 +12,7 @@ namespace Kephas.Logging
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Logging
         /// <param name="logManager">The log manager.</param>
         public TypedLogger(ILogManager logManager)
         {
-            Contract.Requires(logManager != null);
+            Requires.NotNull(logManager, nameof(logManager));
 
             this.innerLogger = logManager.GetLogger(typeof(TService)) ?? NullLogManager.GetNullLogger(typeof(TService));
         }

@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -49,7 +50,7 @@ namespace Kephas.Application
         /// </returns>
         public Task StartAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(appContext != null);
+            Requires.NotNull(appContext, nameof(appContext));
             Contract.Ensures(Contract.Result<Task>() != null);
             return Contract.Result<Task>();
         }

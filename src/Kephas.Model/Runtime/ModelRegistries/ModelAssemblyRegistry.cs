@@ -19,6 +19,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
 
     using Kephas.Application;
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Reflection;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Reflection;
@@ -47,7 +48,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <param name="typeLoader">The type loader.</param>
         public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
-            Contract.Requires(appRuntime != null);
+            Requires.NotNull(appRuntime, nameof(appRuntime));
 
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;

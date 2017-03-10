@@ -13,6 +13,7 @@ namespace Kephas.Graphs
     using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for graphs.
@@ -31,7 +32,7 @@ namespace Kephas.Graphs
         public static TGraph Merge<TGraph>(this TGraph graph, TGraph sourceGraph)
             where TGraph : Graph
         {
-            Contract.Requires(graph != null);
+            Requires.NotNull(graph, nameof(graph));
 
             if (sourceGraph == null)
             {
@@ -55,7 +56,7 @@ namespace Kephas.Graphs
         public static ICollection<TGraph> GetConnectedSubgraphs<TGraph>(this TGraph graph)
             where TGraph : Graph
         {
-            Contract.Requires(graph != null);
+            Requires.NotNull(graph, nameof(graph));
 
             var subgraphs = new List<TGraph>();
 

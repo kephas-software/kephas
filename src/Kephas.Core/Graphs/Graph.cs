@@ -14,6 +14,7 @@ namespace Kephas.Graphs
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
 
     /// <summary>
@@ -109,7 +110,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal bool AddEdge(IGraphEdge edge)
         {
-            Contract.Requires(edge != null);
+            Requires.NotNull(edge, nameof(edge));
 
             if (this.edges.Contains(edge))
             {

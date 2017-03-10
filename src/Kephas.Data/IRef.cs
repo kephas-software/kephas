@@ -14,6 +14,7 @@ namespace Kephas.Data
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Structure used to define and retrieve a referenced entity.
@@ -65,7 +66,7 @@ namespace Kephas.Data
 
             set
             {
-                Contract.Requires(value != null);
+                Requires.NotNull(value, nameof(value));
             }
         }
 
