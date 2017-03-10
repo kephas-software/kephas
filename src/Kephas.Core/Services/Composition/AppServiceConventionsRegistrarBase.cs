@@ -13,6 +13,7 @@ namespace Kephas.Services.Composition
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
 
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
@@ -138,7 +139,15 @@ namespace Kephas.Services.Composition
             var serviceContractType = serviceContract.AsType();
             var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
             var exportedContract = exportedContractType.GetTypeInfo();
-            this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType);
+            if (!this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType, logger))
+            {
+                return;
+            }
+
+            if (logger.IsDebugEnabled())
+            {
+                logger.Debug(this.SerializeServiceContractMetadata(serviceContract, serviceContractMetadata));
+            }
 
             var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
             if (exportedContract.IsGenericTypeDefinition)
@@ -178,16 +187,30 @@ namespace Kephas.Services.Composition
         }
 
         /// <summary>
-        /// Gets a logger for the provided registration context.
+        /// Serializes the service contract metadata.
         /// </summary>
-        /// <param name="registrationContext">The registration context.</param>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="contractMetadata">The contract metadata.</param>
         /// <returns>
-        /// The logger.
+        /// The serialized service contract information.
         /// </returns>
-        private ILogger GetLogger(IContext registrationContext)
+        private string SerializeServiceContractMetadata(TypeInfo serviceContract, AppServiceContractAttribute contractMetadata)
         {
-            var logManager = registrationContext?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
-            return logManager.GetLogger(this.GetType());
+            var sb = new StringBuilder();
+            sb.Append("{'")
+                .Append(serviceContract.Name)
+                .Append("': { multi: ")
+                .Append(contractMetadata.AllowMultiple)
+                .Append(", lifetime: ")
+                .Append(contractMetadata.Lifetime);
+            if (serviceContract.IsGenericTypeDefinition)
+            {
+                sb.Append(", asOpenGeneric: ").Append(contractMetadata.AsOpenGeneric);
+            }
+
+            sb.Append("}");
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -311,13 +334,15 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Checks the type of the exported contract.
         /// </summary>
+        /// <exception cref="CompositionException">Thrown when a Composition error condition occurs.</exception>
         /// <param name="exportedContractType">Type of the exported contract.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="serviceContractType">Type of the service contract.</param>
-        private void CheckExportedContractType(
-            Type exportedContractType,
-            TypeInfo serviceContract,
-            Type serviceContractType)
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// <c>true</c> if the service contract is valid, false otherwise.
+        /// </returns>
+        private bool CheckExportedContractType(Type exportedContractType, TypeInfo serviceContract, Type serviceContractType, ILogger logger)
         {
             var exportedContract = exportedContractType.GetTypeInfo();
             if (exportedContract.IsGenericTypeDefinition)
@@ -326,12 +351,15 @@ namespace Kephas.Services.Composition
             }
             else if (!exportedContract.IsAssignableFrom(serviceContract))
             {
-                throw new CompositionException(
-                    string.Format(
+                var contractValidationMessage = string.Format(
                         Strings.AppServiceCompositionContractTypeDoesNotMatchServiceContract,
                         exportedContractType,
-                        serviceContractType));
+                        serviceContractType);
+                logger.Error(contractValidationMessage);
+                throw new CompositionException(contractValidationMessage);
             }
+
+            return true;
         }
 
         /// <summary>

@@ -397,6 +397,9 @@
     <Compile Include="..\Kephas.Core\Logging\ILogManager.cs">
       <Link>Logging\ILogManager.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Logging\LoggingExtensions.cs">
+      <Link>Logging\LoggingExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Logging\NullLogManager.cs">
       <Link>Logging\NullLogManager.cs</Link>
     </Compile>

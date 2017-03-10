@@ -16,6 +16,7 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Composition.AttributedModel;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -86,10 +87,16 @@ namespace Kephas.Composition.Conventions
             var partInfos = parts.Select(p => p.GetTypeInfo()).ToList();
             var registrarTypes = registrarTypesProvider();
             var registrars = registrarTypes.Select(t => (IConventionsRegistrar)t.CreateInstance()).ToList();
+            var logger = typeof(ConventionsBuilderExtensions).GetLogger(registrationContext);
 
             // apply the convention builders
             foreach (var registrar in registrars)
             {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Registering conventions from '{registrar.GetType()}...");
+                }
+
                 registrar.RegisterConventions(builder, partInfos, registrationContext);
             }
 

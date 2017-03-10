@@ -38,13 +38,15 @@ namespace Kephas.Composition.Mef.Conventions
                 throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(IMefConventionBuilderProvider)));
             }
 
-            this.RegisterConventions(mefBuilder.GetConventionBuilder());
+            this.RegisterConventions(mefBuilder.GetConventionBuilder(), candidateTypes, registrationContext);
         }
 
         /// <summary>
         /// Registers the conventions.
         /// </summary>
         /// <param name="builder">The registration builder.</param>
-        protected abstract void RegisterConventions(ConventionBuilder builder);
+        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="registrationContext">Context for the registration.</param>
+        protected abstract void RegisterConventions(ConventionBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext);
     }
 }

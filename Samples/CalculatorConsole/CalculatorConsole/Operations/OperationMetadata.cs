@@ -12,7 +12,7 @@ namespace CalculatorConsole.Operations
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// An operation metadata.

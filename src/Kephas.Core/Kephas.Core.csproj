@@ -214,6 +214,7 @@
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
     <Compile Include="IAmbientServicesAware.cs" />
+    <Compile Include="Logging\LoggingExtensions.cs" />
     <Compile Include="Reflection\DefaultTypeLoader.cs" />
     <Compile Include="Reflection\DefaultTypeResolver.cs" />
     <Compile Include="Reflection\ITypeLoader.cs" />
