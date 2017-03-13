@@ -361,6 +361,9 @@
     <Compile Include="..\Kephas.Core\Dynamic\IExpando.cs">
       <Link>Dynamic\IExpando.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\ExceptionHandling\ExceptionData.cs">
+      <Link>ExceptionHandling\ExceptionData.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Graphs\Graph.cs">
       <Link>Graphs\Graph.cs</Link>
     </Compile>
@@ -622,6 +625,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
