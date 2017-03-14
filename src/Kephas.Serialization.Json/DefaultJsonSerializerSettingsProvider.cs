@@ -15,8 +15,8 @@ namespace Kephas.Serialization.Json
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Resources;
@@ -49,9 +49,10 @@ namespace Kephas.Serialization.Json
         /// </summary>
         static DefaultJsonSerializerSettingsProvider()
         {
-            Instance = new DefaultJsonSerializerSettingsProvider
+            var ambientServices = AmbientServices.Instance;
+            Instance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
             {
-                Logger = AmbientServices.Instance.GetLogger<DefaultJsonSerializerSettingsProvider>()
+                Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
             };
 
             var dummySettings = new JsonSerializerSettings();
@@ -63,8 +64,9 @@ namespace Kephas.Serialization.Json
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultJsonSerializerSettingsProvider"/> class.
         /// </summary>
-        /// <param name="jsonConverters">The JSON converters.</param>
-        public DefaultJsonSerializerSettingsProvider(ICollection<IJsonConverter> jsonConverters = null)
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="jsonConverters">The JSON converters (optional).</param>
+        public DefaultJsonSerializerSettingsProvider(ITypeResolver typeResolver, ICollection<IJsonConverter> jsonConverters = null)
         {
             this.jsonConverters = jsonConverters?.OfType<JsonConverter>().ToList()
                                     ?? new List<JsonConverter>
@@ -73,6 +75,7 @@ namespace Kephas.Serialization.Json
                                                      new TimeSpanJsonConverter(),
                                                      new StringEnumJsonConverter(),
                                                  };
+            this.TypeResolver = typeResolver;
         }
 
         /// <summary>
@@ -82,6 +85,14 @@ namespace Kephas.Serialization.Json
         /// The instance.
         /// </value>
         public static DefaultJsonSerializerSettingsProvider Instance { get; }
+
+        /// <summary>
+        /// Gets the type resolver.
+        /// </summary>
+        /// <value>
+        /// The type resolver.
+        /// </value>
+        public ITypeResolver TypeResolver { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -127,6 +138,7 @@ namespace Kephas.Serialization.Json
                                             : MissingMemberHandling.Ignore,
                 Error = this.HandleJsonSerializationError,
                 ContractResolver = this.GetContractResolver(camelCase),
+                Binder = this.GetSerializationBinder(),
             };
 
             serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
@@ -134,6 +146,17 @@ namespace Kephas.Serialization.Json
             this.SetDefaultTypeNameAssemblyFormat(serializerSettings);
 
             return serializerSettings;
+        }
+
+        /// <summary>
+        /// Gets the serialization binder.
+        /// </summary>
+        /// <returns>
+        /// The serialization binder.
+        /// </returns>
+        protected virtual SerializationBinder GetSerializationBinder()
+        {
+            return new TypeResolverSerializationBinder(this.TypeResolver);
         }
 
         /// <summary>
