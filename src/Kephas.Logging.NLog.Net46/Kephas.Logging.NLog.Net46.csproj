@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kephas.Logging.NLog.Net46</RootNamespace>
     <AssemblyName>Kephas.Logging.NLog</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -128,7 +128,6 @@
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\Packages\NLog.4.4.0\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -157,9 +156,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj">
-      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
-      <Name>Kephas.Core</Name>
+    <ProjectReference Include="..\Kephas.Core.PortableLegacy\Kephas.Core.PortableLegacy.csproj">
+      <Project>{849dbe3f-2a99-4eaf-b317-1f09ad0d232c}</Project>
+      <Name>Kephas.Core.PortableLegacy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

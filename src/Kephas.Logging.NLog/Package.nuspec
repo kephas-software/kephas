@@ -28,8 +28,8 @@
             <group>
                 <dependency id="Kephas.Core" version="3.1.0-preview4" />
             </group>
-            <group targetFramework="net461">
-                <dependency id="NLog" version="4.3.11" />
+            <group targetFramework="net45">
+                <dependency id="NLog" version="4.4.0" />
             </group>
             <group targetFramework="netstandard1.4">
                 <dependency id="NLog" version="5.0.0-beta06" />
@@ -46,10 +46,10 @@
         <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
         <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
         <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.dll" target="lib\net461" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.pdb" target="lib\net461" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.xml" target="lib\net461" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net461\CodeContracts" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net461\CodeContracts" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net45\CodeContracts" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net45\CodeContracts" />
     </files>
 </package>
