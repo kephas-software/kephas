@@ -56,6 +56,8 @@ namespace Kephas.Data.MongoDB.Commands
         /// </returns>
         protected override Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
+            var dataContext = (MongoDataContext)operationContext.DataContext;
+
             throw new System.NotImplementedException();
         }
 

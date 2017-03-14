@@ -25,15 +25,13 @@
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
-            <group targetFramework="net45">
+            <group>
                 <dependency id="Kephas.Core" version="3.1.0-preview4" />
             </group>
             <group targetFramework="net461">
-                <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.IO.FileSystem" version="4.0.1" />
             </group>
             <group targetFramework="netstandard1.4">
-                <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.IO.FileSystem" version="4.0.1" />
             </group>
         </dependencies>
