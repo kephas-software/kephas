@@ -58,6 +58,7 @@
     <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
     <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store\ConnectionStringParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Kephas.snk">

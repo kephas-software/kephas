@@ -9,8 +9,6 @@
 
 namespace Kephas.Data.InMemory.Commands
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands;
     using Kephas.Diagnostics.Contracts;
@@ -23,7 +21,7 @@ namespace Kephas.Data.InMemory.Commands
         where T : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityCommandBase{TDataContext,T}"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryCreateEntityCommand{T}"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         public InMemoryCreateEntityCommand(IDataBehaviorProvider behaviorProvider)

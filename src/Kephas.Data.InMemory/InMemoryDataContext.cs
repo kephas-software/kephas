@@ -9,13 +9,19 @@
 
 namespace Kephas.Data.InMemory
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
+
+    using Kephas.Collections;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Client data context managing.
@@ -33,12 +39,24 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+        /// <param name="serializationService">The serialization service.</param>
+        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
             : base(ambientServices, dataCommandProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(dataCommandProvider != null);
+            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            this.SerializationService = serializationService;
         }
+
+        /// <summary>
+        /// Gets the serialization service.
+        /// </summary>
+        /// <value>
+        /// The serialization service.
+        /// </value>
+        public ISerializationService SerializationService { get; }
 
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -64,7 +82,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         internal object GetOrAddCacheableItem(IDataOperationContext operationContext, object entity, bool isNew)
         {
-            Contract.Requires(entity != null);
+            Requires.NotNull(entity, nameof(entity));
 
             if (isNew)
             {
@@ -92,6 +110,22 @@ namespace Kephas.Data.InMemory
         }
 
         /// <summary>
+        /// Initializes the core.
+        /// </summary>
+        /// <param name="config">The configuration.</param>
+        protected override void InitializeCore(IDataContextConfiguration config)
+        {
+            if (string.IsNullOrWhiteSpace(config?.ConnectionString))
+            {
+                return;
+            }
+
+            var connectionStringValues = ConnectionStringParser.Parse(config.ConnectionString);
+
+            this.InitializeData(connectionStringValues);
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
@@ -99,6 +133,33 @@ namespace Kephas.Data.InMemory
         protected override void Dispose(bool disposing)
         {
             this.cache.Clear();
+        }
+
+        /// <summary>
+        /// Initializes the data from the provided connection string.
+        /// </summary>
+        /// <param name="connectionStringValues">The connection string values.</param>
+        private void InitializeData(IDictionary<string, string> connectionStringValues)
+        {
+            var serializedData = connectionStringValues.TryGetValue("Data");
+            if (!string.IsNullOrWhiteSpace(serializedData))
+            {
+                var data =
+                    this.SerializationService.JsonDeserializeAsync(serializedData).GetResultNonLocking(TimeSpan.FromMinutes(1));
+
+                var operationContext = new DataOperationContext(this);
+                if (data is IEnumerable)
+                {
+                    foreach (var entity in (IEnumerable)data)
+                    {
+                        this.GetOrAddCacheableItem(operationContext, entity, isNew: false);
+                    }
+                }
+                else
+                {
+                    this.GetOrAddCacheableItem(operationContext, data, isNew: false);
+                }
+            }
         }
     }
 }

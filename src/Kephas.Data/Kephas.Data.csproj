@@ -226,6 +226,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Store\ConnectionStringParser.cs" />
     <Compile Include="Store\DataStoreKind.cs" />
     <Compile Include="Store\IDataStore.cs" />
     <Compile Include="Store\IDataStoreProvider.cs" />
