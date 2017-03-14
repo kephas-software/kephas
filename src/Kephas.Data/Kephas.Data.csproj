@@ -199,7 +199,6 @@
     <Compile Include="DataContextExtensions.cs" />
     <Compile Include="Commands\FindContext.cs" />
     <Compile Include="IDataContextConfiguration.cs" />
-    <Compile Include="IDataContextConfigurationProvider.cs" />
     <Compile Include="IDataContextProvider.cs" />
     <Compile Include="IDataOperationContext.cs" />
     <Compile Include="IDataContext.cs" />
@@ -220,7 +219,6 @@
     <Compile Include="Linq\QueryableExtensions.cs" />
     <Compile Include="MissingDataCommandException.cs" />
     <Compile Include="NotFoundDataException.cs" />
-    <Compile Include="NullDataContextConfigurationProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryOperationContext.cs" />
     <Compile Include="Resources\Strings.Designer.cs">

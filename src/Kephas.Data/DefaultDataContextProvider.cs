@@ -75,6 +75,7 @@ namespace Kephas.Data
         {
             var dataStore = this.dataStoreProvider.GetDataStore(dataStoreName);
             var dataContextFactories = this.dataContextFactoryDictionary.TryGetValue(dataStore.Kind);
+            IDataContext dataContext = null;
             if (dataStore.DataContextType != null)
             {
                 var factory =
@@ -85,21 +86,30 @@ namespace Kephas.Data
                     throw new DataException(string.Format(Strings.DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception, dataStore.DataContextType, dataStore.Name));
                 }
 
-                return factory.CreateExportedValue();
+                dataContext = factory.CreateExportedValue();
             }
-
-            if (dataContextFactories == null)
+            else if (dataContextFactories == null)
             {
                 throw new DataException(string.Format(Strings.DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception, dataStore.Name, dataStore.Kind));
             }
-
-            if (dataContextFactories.Count > 1 && 
-                dataContextFactories[0].Metadata.ProcessingPriority == dataContextFactories[1].Metadata.ProcessingPriority)
+            else if (dataContextFactories.Count > 1
+                     && dataContextFactories[0].Metadata.ProcessingPriority
+                     == dataContextFactories[1].Metadata.ProcessingPriority)
             {
-                throw new DataException(string.Format(Strings.DefaultDataContextProvider_AmbiguousDataContext_Exception, dataStore.Name, dataContextFactories[0].Metadata.AppServiceImplementationType, dataContextFactories[1].Metadata.AppServiceImplementationType));
+                throw new DataException(
+                    string.Format(
+                        Strings.DefaultDataContextProvider_AmbiguousDataContext_Exception,
+                        dataStore.Name,
+                        dataContextFactories[0].Metadata.AppServiceImplementationType,
+                        dataContextFactories[1].Metadata.AppServiceImplementationType));
+            }
+            else
+            {
+                dataContext = dataContextFactories[0].CreateExportedValue();
             }
 
-            return dataContextFactories[0].CreateExportedValue();
+            dataContext.Initialize(dataStore.DataContextConfiguration);
+            return dataContext;
         }
     }
 }
