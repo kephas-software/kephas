@@ -16,22 +16,7 @@ namespace Kephas.Dynamic
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider
+    public interface IExpando : IDynamicMetaObjectProvider, IIndexable
     {
-        /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
-        /// </summary>
-        /// <value>
-        /// The <see cref="object" /> identified by the key.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        object this[string key] { get; set; }
     }
 }
