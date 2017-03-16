@@ -127,6 +127,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -136,6 +137,7 @@
     </Compile>
     <Compile Include="Application\NetAppRuntime.cs" />
     <Compile Include="Application\PreserveCultureThreadContextAppInitializer.cs" />
+    <Compile Include="Configuration\AppSettingsConfigurationManager.cs" />
     <Compile Include="Platform\Net\NetAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\NetAssemblyLoader.cs" />
