@@ -9,27 +9,26 @@
 
 namespace Kephas.Configuration
 {
+    using System.Collections.Generic;
+
     using Kephas.Services;
 
     /// <summary>
     /// A configuration manager returning no configuration values.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullConfigurationManager : IConfigurationManager
+    public class NullConfigurationManager : ConfigurationManagerBase
     {
         /// <summary>
-        /// Gets the setting with the provided key.
+        /// Gets all available settings for the specified search pattern.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="searchPattern">A pattern specifying the settings to search for (optional).</param>
         /// <returns>
-        /// The setting with the provided key.
+        /// An enumeration of settings.
         /// </returns>
-        /// <remarks>
-        /// If the setting is not found, returns <c>null</c>.
-        /// </remarks>
-        public string GetSetting(string key)
+        protected override IEnumerable<KeyValuePair<string, object>> GetSettings(string searchPattern)
         {
-            return null;
+            return new KeyValuePair<string, object>[0];
         }
     }
 }

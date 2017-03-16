@@ -506,7 +506,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>The assemblies.</returns>
         private async Task<IList<Assembly>> GetAssembliesAsync(string searchPattern = null)
         {
-            searchPattern = searchPattern ?? this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
+            searchPattern = searchPattern ?? (string)this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
 
             this.Logger.Debug($"{nameof(this.GetAssembliesAsync)}. With assemblies matching pattern '{searchPattern}'.");
 

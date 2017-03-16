@@ -14,6 +14,7 @@ namespace Kephas.Platform.Net
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
 
@@ -40,6 +41,21 @@ namespace Kephas.Platform.Net
             ambientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
 
             return ambientServicesBuilder.WithAppRuntime(new NetAppRuntime(assemblyLoader, ambientServices.LogManager, assemblyFilter: assemblyFilter, appLocation: appLocation));
+        }
+
+        /// <summary>
+        /// Sets the <see cref="AppSettingsConfigurationManager"/> to the ambient services.
+        /// </summary>
+        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <returns>
+        /// The provided ambient services builder.
+        /// </returns>
+        public static AmbientServicesBuilder WithAppSettingsConfigurationManager(this AmbientServicesBuilder ambientServicesBuilder)
+        {
+            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
+
+            var configurationManager = new AppSettingsConfigurationManager();
+            return ambientServicesBuilder.WithConfigurationManager(configurationManager);
         }
     }
 }

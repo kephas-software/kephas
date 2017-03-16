@@ -126,12 +126,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Kephas.Platform.Net46\Application\PreserveCultureThreadContextAppInitializer.cs">
       <Link>Application\PreserveCultureThreadContextAppInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Platform.Net46\Configuration\AppSettingsConfigurationManager.cs">
+      <Link>Configuration\AppSettingsConfigurationManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Platform.Net46\Platform\Net\NetAmbientServicesBuilderExtensions.cs">
       <Link>Platform\Net\NetAmbientServicesBuilderExtensions.cs</Link>
@@ -153,9 +157,6 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="Package.nuspec">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core.PortableLegacy\Kephas.Core.PortableLegacy.csproj">
@@ -163,6 +164,7 @@
       <Name>Kephas.Core.PortableLegacy</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
