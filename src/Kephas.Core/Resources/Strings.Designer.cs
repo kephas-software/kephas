@@ -206,6 +206,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Setting a value is not supported by the default implementation of the configuration manager. Override this in a derived class to provide an implementation..
+        /// </summary>
+        internal static string ConfigurationManagerBase_SettingValueNotSupported_Exception {
+            get {
+                return ResourceManager.GetString("ConfigurationManagerBase_SettingValueNotSupported_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead..
         /// </summary>
         internal static string CreateContainerRequiresCompositionAssembliesSet {
