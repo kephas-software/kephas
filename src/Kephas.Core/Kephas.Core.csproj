@@ -203,17 +203,18 @@
     <Compile Include="Composition\Metadata\IMetadataValue.cs" />
     <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
     <Compile Include="Composition\ScopeNames.cs" />
+    <Compile Include="Configuration\ConfigurationManagerBase.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationProvider.cs" />
     <Compile Include="Configuration\NullConfigurationManager.cs" />
     <Compile Include="Data\Id.cs" />
     <Compile Include="Data\IIdentifiable.cs" />
     <Compile Include="Diagnostics\Contracts\Requires.cs" />
-    <Compile Include="Diagnostics\Logging\DebugConfigurationManager.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
     <Compile Include="Diagnostics\Profiler.cs" />
     <Compile Include="DynamicObjectExtensions.cs" />
+    <Compile Include="Dynamic\IIndexable.cs" />
     <Compile Include="ExceptionHandling\ExceptionData.cs" />
     <Compile Include="IAmbientServicesAware.cs" />
     <Compile Include="Logging\LoggingExtensions.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="Reflection\ITypeLoader.cs" />
     <Compile Include="Reflection\ITypeResolver.cs" />
     <Compile Include="Reflection\QualifiedFullName.cs" />
+    <Compile Include="Reflection\ReflectionStringExtensions.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

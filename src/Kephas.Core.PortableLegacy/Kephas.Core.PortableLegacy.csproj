@@ -319,6 +319,9 @@
     <Compile Include="..\Kephas.Core\Composition\ScopeNames.cs">
       <Link>Composition\ScopeNames.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\ConfigurationManagerBase.cs">
+      <Link>Configuration\ConfigurationManagerBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Configuration\IConfigurationManager.cs">
       <Link>Configuration\IConfigurationManager.cs</Link>
     </Compile>
@@ -336,9 +339,6 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Diagnostics\Contracts\Requires.cs">
       <Link>Diagnostics\Contracts\Requires.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugConfigurationManager.cs">
-      <Link>Diagnostics\Logging\DebugConfigurationManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs">
       <Link>Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs</Link>
@@ -360,6 +360,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Dynamic\IExpando.cs">
       <Link>Dynamic\IExpando.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Dynamic\IIndexable.cs">
+      <Link>Dynamic\IIndexable.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\ExceptionHandling\ExceptionData.cs">
       <Link>ExceptionHandling\ExceptionData.cs</Link>
