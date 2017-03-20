@@ -71,7 +71,10 @@ namespace Kephas.Reflection
         /// </returns>
         public static string ToPascalCase(this string value)
         {
-            if (string.IsNullOrEmpty(value)) return value;
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
 
             if (value.IndexOf('_') >= 0)
             {
@@ -89,14 +92,35 @@ namespace Kephas.Reflection
             return char.ToUpper(camelCase[0]) + camelCase.SafeSubstring(1, camelCase.Length);
         }
 
+        /// <summary>
+        /// A string extension method that creates a safe substring from the given index.
+        /// </summary>
+        /// <param name="value">The value to act on.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <returns>
+        /// A string.
+        /// </returns>
         public static string SafeSubstring(this string value, int startIndex)
         {
             return SafeSubstring(value, startIndex, value.Length);
         }
 
+        /// <summary>
+        /// A string extension method that safe substring from the given index with the given length.
+        /// </summary>
+        /// <param name="value">The value to act on.</param>
+        /// <param name="startIndex">The start index.</param>
+        /// <param name="length">The length.</param>
+        /// <returns>
+        /// A string.
+        /// </returns>
         public static string SafeSubstring(this string value, int startIndex, int length)
         {
-            if (string.IsNullOrEmpty(value)) return string.Empty;
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
             if (value.Length >= (startIndex + length))
                 return value.Substring(startIndex, length);
 
