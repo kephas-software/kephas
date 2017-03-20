@@ -16,6 +16,8 @@ namespace Kephas.Serialization.Json.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
 
+    using Kephas.Reflection;
+
     using NUnit.Framework;
 
     using Kephas.Serialization.Json;
@@ -30,7 +32,8 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync()
         {
-            var serializer = new JsonSerializer();
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
                               Name = "John Doe"
@@ -43,7 +46,8 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_serialized_types()
         {
-            var serializer = new JsonSerializer();
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
@@ -57,7 +61,8 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_in_string_provided_type()
         {
-            var serializer = new JsonSerializer();
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
             context.FormatType.Returns(typeof(JsonFormat));
@@ -75,7 +80,8 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_runtime_provided_type()
         {
-            var serializer = new JsonSerializer();
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
             context.FormatType.Returns(typeof(JsonFormat));

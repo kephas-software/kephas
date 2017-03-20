@@ -12,9 +12,11 @@ namespace Kephas.Serialization.Json
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Dynamic;
     using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -30,36 +32,14 @@ namespace Kephas.Serialization.Json
     public class DefaultJsonSerializerSettingsProvider : IJsonSerializerSettingsProvider
     {
         /// <summary>
-        /// The formatter assembly style value.
+        /// The static instance.
         /// </summary>
-        private static readonly object FormatterAssemblyStyleDefaultValue;
-
-        /// <summary>
-        /// Information describing the formatter assembly style dynamic property.
-        /// </summary>
-        private static readonly IRuntimePropertyInfo FormatterAssemblyStyleRuntimePropertyInfo;
+        private static DefaultJsonSerializerSettingsProvider instance;
 
         /// <summary>
         /// The JSON converters.
         /// </summary>
         private readonly ICollection<JsonConverter> jsonConverters;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="DefaultJsonSerializerSettingsProvider"/> class.
-        /// </summary>
-        static DefaultJsonSerializerSettingsProvider()
-        {
-            var ambientServices = AmbientServices.Instance;
-            Instance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
-            {
-                Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
-            };
-
-            var dummySettings = new JsonSerializerSettings();
-            FormatterAssemblyStyleRuntimePropertyInfo =
-                dummySettings.GetRuntimeTypeInfo().Properties["TypeNameAssemblyFormat"];
-            FormatterAssemblyStyleDefaultValue = Enum.Parse(FormatterAssemblyStyleRuntimePropertyInfo.PropertyInfo.PropertyType, "Simple");
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultJsonSerializerSettingsProvider"/> class.
@@ -68,6 +48,8 @@ namespace Kephas.Serialization.Json
         /// <param name="jsonConverters">The JSON converters (optional).</param>
         public DefaultJsonSerializerSettingsProvider(ITypeResolver typeResolver, ICollection<IJsonConverter> jsonConverters = null)
         {
+            Requires.NotNull(typeResolver, nameof(typeResolver));
+
             this.jsonConverters = jsonConverters?.OfType<JsonConverter>().ToList()
                                     ?? new List<JsonConverter>
                                                  {
@@ -84,7 +66,24 @@ namespace Kephas.Serialization.Json
         /// <value>
         /// The instance.
         /// </value>
-        public static DefaultJsonSerializerSettingsProvider Instance { get; }
+        public static DefaultJsonSerializerSettingsProvider Instance => instance ?? (instance = CreateDefaultInstance());
+
+        /// <summary>
+        /// Creates a default instance.
+        /// </summary>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
+        {
+            var ambientServices = AmbientServices.Instance;
+            var instance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
+            {
+                Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
+            };
+
+            return instance;
+        }
 
         /// <summary>
         /// Gets the type resolver.
@@ -133,6 +132,7 @@ namespace Kephas.Serialization.Json
                 ////PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                 ////ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
                 MissingMemberHandling = thrownOnMissingMembers
                                             ? MissingMemberHandling.Error
                                             : MissingMemberHandling.Ignore,
@@ -142,8 +142,6 @@ namespace Kephas.Serialization.Json
             };
 
             serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
-
-            this.SetDefaultTypeNameAssemblyFormat(serializerSettings);
 
             return serializerSettings;
         }
@@ -184,22 +182,6 @@ namespace Kephas.Serialization.Json
                 args.ErrorContext.Error,
                 Strings.DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage,
                 args.CurrentObject?.GetType());
-        }
-
-        /// <summary>
-        /// Sets the default type name assembly format.
-        /// </summary>
-        /// <param name="serializerSettings">The serializer settings.</param>
-        /// <returns>
-        /// The JsonSerializerSettings.
-        /// </returns>
-        private JsonSerializerSettings SetDefaultTypeNameAssemblyFormat(JsonSerializerSettings serializerSettings)
-        {
-            // WORAROUND for a PCL problem in Newtonsoft.Json component
-            // See http://stackoverflow.com/questions/27080363/missingmethodexception-with-newtonsoft-json-when-using-typenameassemblyformat-wi
-            // for more information.
-            FormatterAssemblyStyleRuntimePropertyInfo.SetValue(serializerSettings, FormatterAssemblyStyleDefaultValue);
-            return serializerSettings;
         }
     }
 }
