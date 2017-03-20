@@ -15,9 +15,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     using NUnit.Framework;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
-
     /// <summary>
     /// A runtime property information factory test.
     /// </summary>

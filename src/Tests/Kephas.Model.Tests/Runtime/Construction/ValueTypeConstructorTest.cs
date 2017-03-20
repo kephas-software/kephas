@@ -11,14 +11,11 @@ namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
 
-    using Kephas.Model.Construction;
     using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 
     using NUnit.Framework;
-
-    using Telerik.JustMock;
 
     using ValueType = Kephas.Model.Elements.ValueType;
 

@@ -7,16 +7,16 @@
 
     using Kephas.Composition;
     using Kephas.Model.Construction;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Model.Services;
 
-    using NUnit.Framework;
-    using Kephas.Model.Construction.Internal;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultModelSpaceProviderTest : ModelTestBase
@@ -25,7 +25,7 @@
         public async Task InitializeAsync_Dimensions()
         {
             var provider = new DefaultModelSpaceProvider(
-                Mock.Create<IAmbientServices>(),
+                Substitute.For<IAmbientServices>(),
                 new IModelInfoProvider[0],
                 this.GetRuntimeModelElementFactory());
 

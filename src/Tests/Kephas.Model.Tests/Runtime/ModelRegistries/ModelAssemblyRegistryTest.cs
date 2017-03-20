@@ -23,10 +23,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Testing.Composition.Mef;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="ModelAssemblyRegistry"/>.
@@ -52,8 +51,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var platformManager = Mock.Create<IAppRuntime>();
-            platformManager.Arrange(m => m.GetAppAssembliesAsync(Arg.IsAny<Func<AssemblyName, bool>>(), CancellationToken.None))
+            var platformManager = Substitute.For<IAppRuntime>();
+            platformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).Assembly }));
 
             var registry = new ModelAssemblyRegistry(platformManager, new DefaultTypeLoader());

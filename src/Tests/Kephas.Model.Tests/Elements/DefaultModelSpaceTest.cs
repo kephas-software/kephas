@@ -17,9 +17,9 @@ namespace Kephas.Model.Tests.Elements
     using Kephas.Model.Elements;
     using Kephas.Reflection;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     [TestFixture]
     public class DefaultModelSpaceTest
@@ -27,7 +27,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeDimensions_2_dims()
         {
-            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeProjections_2_dims()
         {
-            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 

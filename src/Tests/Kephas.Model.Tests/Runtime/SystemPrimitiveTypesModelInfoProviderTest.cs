@@ -20,9 +20,9 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Tests.Runtime.Construction;
     using Kephas.Reflection;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="SystemPrimitiveTypesModelInfoProvider"/>
@@ -34,7 +34,7 @@ namespace Kephas.Model.Tests.Runtime
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var provider = new SystemPrimitiveTypesModelInfoProvider(Mock.Create<IRuntimeModelElementFactory>());
+            var provider = new SystemPrimitiveTypesModelInfoProvider(Substitute.For<IRuntimeModelElementFactory>());
             var context = this.GetConstructionContext();
             var elementInfos = (await provider.GetElementInfosAsync(context)).Cast<IValueType>().ToList();
 

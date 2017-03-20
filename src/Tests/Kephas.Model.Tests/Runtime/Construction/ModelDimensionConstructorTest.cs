@@ -12,14 +12,11 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Construction;
     using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 
     using NUnit.Framework;
-
-    using Telerik.JustMock;
 
     /// <summary>
     /// Test class for <see cref="ModelDimensionConstructor"/>.

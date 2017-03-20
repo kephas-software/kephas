@@ -19,10 +19,9 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="DefaultRuntimeModelInfoProvider"/>.
@@ -34,17 +33,17 @@ namespace Kephas.Model.Tests.Runtime
         [Test]
         public async Task GetElementInfosAsync()
         {
-            var registrar = Mock.Create<IRuntimeModelRegistry>();
-            registrar.Arrange(r => r.GetRuntimeElementsAsync(CancellationToken.None)).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo() }));
+            var registrar = Substitute.For<IRuntimeModelRegistry>();
+            registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo() }));
 
-            var stringInfoMock = Mock.Create<INamedElement>();
+            var stringInfoMock = Substitute.For<INamedElement>();
 
-            var factory = Mock.Create<IRuntimeModelElementFactory>();
-            factory.Arrange(f => f.TryCreateModelElement(Arg.IsAny<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo()))).Returns(stringInfoMock);
+            var factory = Substitute.For<IRuntimeModelElementFactory>();
+            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo())).Returns(stringInfoMock);
 
             var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar });
 
-            var elementInfos = (await provider.GetElementInfosAsync(Mock.Create<IModelConstructionContext>())).ToList();
+            var elementInfos = (await provider.GetElementInfosAsync(Substitute.For<IModelConstructionContext>())).ToList();
 
             Assert.AreEqual(1, elementInfos.Count);
             Assert.AreSame(stringInfoMock, elementInfos[0]);

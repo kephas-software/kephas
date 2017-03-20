@@ -21,18 +21,18 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Reflection;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     [TestFixture]
     public class ValueTypeBuilderTest
     {
         public ValueTypeBuilder CreateBuilder<T>()
         {
-            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>())
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>())
             {
-                                  ModelSpace = Mock.Create<IModelSpace>(),
+                                  ModelSpace = Substitute.For<IModelSpace>(),
                                   RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(
                                         new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
                                         new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>())

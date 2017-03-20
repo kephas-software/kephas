@@ -16,9 +16,9 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction.Annotations;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     /// <summary>
     /// A runtime annotation information factory test.
@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
         public void TryCreateModelElement_success()
         {
             var constructor = new AnnotationConstructor();
-            var context = new ModelConstructionContext(Mock.Create<IAmbientServices>()) { ModelSpace = Mock.Create<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new NotMultipleAttribute());
 
             Assert.IsInstanceOf<Annotation>(annotation);

@@ -13,7 +13,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System.Collections.Generic;
 
     using Kephas.Composition;
-    using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
@@ -22,11 +21,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Runtime;
+    using Kephas.Testing.Core.Composition;
 
-    using NUnit.Framework.Constraints;
-
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NSubstitute;
 
     public class ConstructorTestBase
     {
@@ -42,9 +39,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace modelSpace = null,
             IRuntimeModelElementFactory factory = null)
         {
-            return new ModelConstructionContext(Mock.Create<IAmbientServices>())
+            return new ModelConstructionContext(Substitute.For<IAmbientServices>())
             {
-                           ModelSpace = modelSpace ?? Mock.Create<IModelSpace>(),
+                           ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),
                            RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),
                        };
         }
@@ -53,8 +50,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructors = new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>
                                    {
-                                       this.CreateExportFactory((IRuntimeModelElementConstructor)new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
-                                       this.CreateExportFactory((IRuntimeModelElementConstructor)new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
+                                       new TestExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
+                                       new TestExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
                                    };
 
             var configurators = new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>();
@@ -65,22 +62,10 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
         public IRuntimeModelElementFactory GetNullRuntimeModelElementFactory()
         {
-            var factory = Mock.Create<IRuntimeModelElementFactory>();
-            factory.Arrange(f => f.TryCreateModelElement(Arg.IsAny<IModelConstructionContext>(), Arg.AnyObject))
+            var factory = Substitute.For<IRuntimeModelElementFactory>();
+            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Any<object>())
                 .Returns((INamedElement)null);
             return factory;
-        }
-
-        public IExportFactory<T, TMetadata> CreateExportFactory<T, TMetadata>(T service, TMetadata metadata)
-        {
-            var export = Mock.Create<IExport<T, TMetadata>>();
-            export.Arrange(ex => ex.Value).Returns(service);
-
-            var exportFactory = Mock.Create<IExportFactory<T, TMetadata>>();
-            exportFactory.Arrange(ex => ex.Metadata).Returns(metadata);
-            exportFactory.Arrange(ex => ex.CreateExport()).Returns(export);
-
-            return exportFactory;
         }
     }
 }
