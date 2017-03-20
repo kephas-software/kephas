@@ -6,6 +6,7 @@ nuget pack ..\Kephas.Messaging\Package.nuspec -BasePath ..\Kephas.Messaging -Sym
 nuget pack ..\Kephas.Messaging.Model\Package.nuspec -BasePath ..\Kephas.Messaging.Model -Symbols
 nuget pack ..\Kephas.Model\Package.nuspec -BasePath ..\Kephas.Model -Symbols
 nuget pack ..\Kephas.Data\Package.nuspec -BasePath ..\Kephas.Data -Symbols
+nuget pack ..\Kephas.Data.Client\Package.nuspec -BasePath ..\Kephas.Data.Client -Symbols
 nuget pack ..\Kephas.Data.Model\Package.nuspec -BasePath ..\Kephas.Data.Model -Symbols
 nuget pack ..\Kephas.Data.DocumentDB\Package.nuspec -BasePath ..\Kephas.Data.DocumentDB -Symbols
 nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoDB -Symbols
