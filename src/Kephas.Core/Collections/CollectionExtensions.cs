@@ -9,8 +9,12 @@
 
 namespace Kephas.Collections
 {
+    using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+
+    using Kephas.Resources;
 
     /// <summary>
     /// Extension methods for collections.
@@ -24,7 +28,7 @@ namespace Kephas.Collections
         /// <typeparam name="TItem">The type of the item.</typeparam>
         /// <param name="collection">The collection.</param>
         /// <param name="items">The items.</param>
-        /// <returns>The provided collection for methods chaining.</returns>
+        /// <returns>The provided collection for method chaining.</returns>
         public static T AddRange<T, TItem>(this T collection, IEnumerable<TItem> items)
             where T : class, ICollection<TItem>
         {
@@ -42,5 +46,33 @@ namespace Kephas.Collections
 
             return collection;
         }
+
+        /// <summary>
+        /// Adds a range of items to the collection.
+        /// </summary>
+        /// <typeparam name="T">The type of the item.</typeparam>
+        /// <param name="collection">The collection.</param>
+        /// <param name="items">The items.</param>
+        /// <returns>The provided collection for method chaining.</returns>
+        public static IProducerConsumerCollection<T> AddRange<T>(this IProducerConsumerCollection<T> collection, IEnumerable<T> items)
+        {
+            Contract.Requires(collection != null);
+
+            if (items == null)
+            {
+                return collection;
+            }
+
+            foreach (var newItem in items)
+            {
+                if (!collection.TryAdd(newItem))
+                {
+                    throw new InvalidOperationException(string.Format(Strings.ConcurrentCollection_CannotAddItem_Exception, newItem));
+                }
+            }
+
+            return collection;
+        }
     }
+}
 }
