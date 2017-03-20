@@ -42,7 +42,7 @@ namespace Kephas.Model.Elements
             : base(isThreadSafe: true)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
-            Contract.Requires(name != null);
+            Requires.NotNull(name, nameof(name));
 
             if (constructionContext.ModelSpace == null)
             {

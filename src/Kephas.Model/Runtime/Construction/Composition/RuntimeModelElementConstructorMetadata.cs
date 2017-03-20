@@ -14,6 +14,7 @@ namespace Kephas.Model.Runtime.Construction.Composition
     using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -46,9 +47,9 @@ namespace Kephas.Model.Runtime.Construction.Composition
         public RuntimeModelElementConstructorMetadata(Type modelType, Type modelContractType, Type runtimeType, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            Contract.Requires(modelType != null);
-            Contract.Requires(modelContractType != null);
-            Contract.Requires(runtimeType != null);
+            Requires.NotNull(modelType, nameof(modelType));
+            Requires.NotNull(modelContractType, nameof(modelContractType));
+            Requires.NotNull(runtimeType, nameof(runtimeType));
 
             this.ModelType = modelType;
             this.ModelContractType = modelContractType;
