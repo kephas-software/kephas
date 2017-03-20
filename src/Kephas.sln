@@ -102,11 +102,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Model", "Kephas.Messaging.Model\Kephas.Messaging.Model.csproj", "{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net45", "Net45", "{4375A35B-0C26-4994-B947-1BA73DE968EB}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client", "Kephas.Data.Client\Kephas.Data.Client.csproj", "{67D81331-1EB2-47BC-A1C8-9A5A4728B44C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Client", "Kephas.Messaging.Client\Kephas.Messaging.Client.csproj", "{C374DCF4-BE88-47B8-9FAA-6327F333BC91}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client.Tests", "Tests\Kephas.Data.Client.Tests\Kephas.Data.Client.Tests.csproj", "{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.EntityFrameworkCore", "Kephas.Data.EntityFrameworkCore\Kephas.Data.EntityFrameworkCore.csproj", "{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -266,6 +269,10 @@ Global
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
