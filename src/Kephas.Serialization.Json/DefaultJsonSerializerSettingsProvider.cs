@@ -138,7 +138,7 @@ namespace Kephas.Serialization.Json
                                             : MissingMemberHandling.Ignore,
                 Error = this.HandleJsonSerializationError,
                 ContractResolver = this.GetContractResolver(camelCase),
-                Binder = this.GetSerializationBinder(),
+                SerializationBinder = this.GetSerializationBinder(),
             };
 
             serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
@@ -154,7 +154,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The serialization binder.
         /// </returns>
-        protected virtual SerializationBinder GetSerializationBinder()
+        protected virtual ISerializationBinder GetSerializationBinder()
         {
             return new TypeResolverSerializationBinder(this.TypeResolver);
         }
