@@ -4,8 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using NSubstitute;
-
 namespace Kephas.Tests.Composition.Mef
 {
     using System;
@@ -31,6 +29,8 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
