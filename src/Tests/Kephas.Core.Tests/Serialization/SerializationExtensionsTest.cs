@@ -8,10 +8,9 @@
     using Kephas.Serialization.Json;
     using Kephas.Serialization.Xml;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
 
@@ -83,41 +82,34 @@
 
         private ISerializer CreateDeserializerMock(string content)
         {
-            var serializer = Mock.Create<ISerializer>(Behavior.Strict);
-            serializer.Arrange(
-                s =>
-                s.DeserializeAsync(
-                    Arg.Matches<TextReader>(r => r.ReadToEnd() == content),
-                    Arg.Matches<ISerializationContext>(c => c != null),
-                    Arg.IsAny<CancellationToken>()))
-                .Returns(() => Task.FromResult((object)new TestEntity { Name = content }));
+            var serializer = Substitute.For<ISerializer>(/*Behavior.Strict*/);
+            serializer.DeserializeAsync(
+                    Arg.Any<StringReader>(),
+                    Arg.Is<ISerializationContext>(c => c != null),
+                    Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult((object)new TestEntity { Name = content }));
             return serializer;
         }
 
         private ISerializer CreateSerializerMock(string result)
         {
-            var serializer = Mock.Create<ISerializer>(Behavior.Strict);
-            serializer.Arrange(
-                s =>
-                s.SerializeAsync(
-                    Arg.IsAny<object>(),
-                    Arg.Matches<TextWriter>(w => w != null),
-                    Arg.Matches<ISerializationContext>(c => c != null),
-                    Arg.IsAny<CancellationToken>()))
-                .DoInstead<object, TextWriter, ISerializationContext, CancellationToken>((o, w, ctx, c) => w.Write(result))
-                .Returns<object, TextWriter, ISerializationContext, CancellationToken>(
-                    (o, w, ctx, c) => TaskHelper.CompletedTask);
+            var serializer = Substitute.For<ISerializer>(/*Behavior.Strict*/);
+            serializer.SerializeAsync(
+                    Arg.Any<object>(),
+                    Arg.Is<TextWriter>(w => w != null),
+                    Arg.Is<ISerializationContext>(c => c != null),
+                    Arg.Any<CancellationToken>())
+                .Returns(TaskHelper.CompletedTask)
+                .AndDoes(ci => { ci.Arg<TextWriter>().Write(result); });
             return serializer;
         }
 
         private ISerializationService CreateSerializationServiceMock<TFormat>(ISerializer serializer)
         {
-            var serializationService = Mock.Create<ISerializationService>(Behavior.Strict);
-            var ambientServicesMock = Mock.Create<IAmbientServices>();
-            serializationService.Arrange(s => s.AmbientServices).Returns(() => ambientServicesMock);
-            serializationService.Arrange(
-                s =>
-                s.GetSerializer(Arg.Matches<ISerializationContext>(ctx => ctx != null && ctx.FormatType == typeof(TFormat))))
+            var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
+            var ambientServicesMock = Substitute.For<IAmbientServices>();
+            serializationService.AmbientServices.Returns(ambientServicesMock);
+            serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.FormatType == typeof(TFormat)))
                 .Returns(serializer);
             return serializationService;
         }

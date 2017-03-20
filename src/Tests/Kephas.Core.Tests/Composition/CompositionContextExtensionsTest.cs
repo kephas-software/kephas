@@ -16,10 +16,9 @@ namespace Kephas.Core.Tests.Composition
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Testing.Core.Composition;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class CompositionContextExtensionsTest
@@ -27,8 +26,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_generic_1_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(IExportFactoryImporter<string>), Arg.AnyString)).Returns(this.CreateExportFactoryImporter("exported test"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = context.GetExportFactory<string>();
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -37,8 +36,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(IExportFactoryImporter<string>), Arg.AnyString)).Returns(this.CreateExportFactoryImporter("exported test"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
 
             var result = (IExportFactory<string>)context.GetExportFactory(typeof(string));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -47,8 +46,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_generic_2_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.AnyString)).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = context.GetExportFactory<string, string>();
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -58,8 +57,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactory_metadata_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.AnyString)).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
 
             var result = (IExportFactory<string, string>)context.GetExportFactory(typeof(string), typeof(string));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -69,8 +68,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_generic_1_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.AnyString)).Returns(this.CreateExportFactoriesImporter("exported test"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = context.GetExportFactories<string>();
             Assert.AreEqual(1, result.Count());
@@ -80,8 +79,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.AnyString)).Returns(this.CreateExportFactoriesImporter("exported test"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
 
             var result = (IEnumerable<IExportFactory<string>>)context.GetExportFactories(typeof(string));
             Assert.AreEqual(1, result.Count());
@@ -91,8 +90,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_generic_2_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.AnyString)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = context.GetExportFactories<string, string>();
             Assert.AreEqual(1, result.Count());
@@ -103,8 +102,8 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void GetExportFactories_metadata_success()
         {
-            var context = Mock.Create<ICompositionContext>();
-            context.Arrange(c => c.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.AnyString)).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
 
             var result = (IEnumerable<IExportFactory<string, string>>)context.GetExportFactories(typeof(string), typeof(string));
             Assert.AreEqual(1, result.Count());

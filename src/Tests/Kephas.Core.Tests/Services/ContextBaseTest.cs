@@ -13,9 +13,9 @@ namespace Kephas.Core.Tests.Services
 
     using Kephas.Services;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="ContextBase"/>.
@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Services
             context.Value = 12;
             Assert.AreEqual(12, context.Value);
 
-            var mockUser = Mock.Create<IIdentity>();
+            var mockUser = Substitute.For<IIdentity>();
             context.Identity = mockUser;
             Assert.AreSame(mockUser, context.Identity);
 

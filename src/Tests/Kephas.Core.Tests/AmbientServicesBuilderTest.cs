@@ -20,9 +20,9 @@ namespace Kephas.Core.Tests
     using Kephas.Diagnostics.Logging;
     using Kephas.Services;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="AmbientServicesBuilder"/>.
@@ -99,22 +99,22 @@ namespace Kephas.Core.Tests
 
             protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()
             {
-                return Mock.Create<IConventionsBuilder>();
+                return Substitute.For<IConventionsBuilder>();
             }
 
             protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Mock.Create<ICompositionContext>();
+                return Substitute.For<ICompositionContext>();
             }
         }
 
@@ -124,28 +124,28 @@ namespace Kephas.Core.Tests
         public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<BadTestCompositionContainerBuilder>
         {
             public BadTestCompositionContainerBuilder()
-                : base(Mock.Create<IContext>())
+                : base(Substitute.For<IContext>())
             {
             }
 
             protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()
             {
-                return Mock.Create<IConventionsBuilder>();
+                return Substitute.For<IConventionsBuilder>();
             }
 
             protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Mock.Create<ICompositionContext>();
+                return Substitute.For<ICompositionContext>();
             }
         }
     }

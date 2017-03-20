@@ -22,9 +22,9 @@ namespace Kephas.Core.Tests.Composition
     using Kephas.Configuration;
     using Kephas.Logging;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="CompositionContainerBuilderBase{TBuilder}"/>.
@@ -36,9 +36,9 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void Constructor_success()
         {
-            var logManager = Mock.Create<ILogManager>();
-            var configManager = Mock.Create<IConfigurationManager>();
-            var platformManager = Mock.Create<IAppRuntime>();
+            var logManager = Substitute.For<ILogManager>();
+            var configManager = Substitute.For<IConfigurationManager>();
+            var platformManager = Substitute.For<IAppRuntime>();
             var builder = new TestCompositionContainerBuilder(logManager, configManager, platformManager);
 
             Assert.AreEqual(logManager, builder.LogManager);
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Composition
         [Test]
         public void WithConventionsBuilder()
         {
-            var conventions = Mock.Create<IConventionsBuilder>();
+            var conventions = Substitute.For<IConventionsBuilder>();
             var builder = new TestCompositionContainerBuilder()
                 .WithConventions(conventions);
 
@@ -103,22 +103,22 @@ namespace Kephas.Core.Tests.Composition
 
             protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
             {
-                return Mock.Create<IExportProvider>();
+                return Substitute.For<IExportProvider>();
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()
             {
-                return Mock.Create<IConventionsBuilder>();
+                return Substitute.For<IConventionsBuilder>();
             }
 
             protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Mock.Create<ICompositionContext>();
+                return Substitute.For<ICompositionContext>();
             }
         }
 

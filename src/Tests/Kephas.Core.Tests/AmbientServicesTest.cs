@@ -15,10 +15,9 @@ namespace Kephas.Core.Tests
     using Kephas;
     using Kephas.Composition;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     /// <summary>
     /// Test class for <see cref="AmbientServices"/>.
@@ -38,9 +37,9 @@ namespace Kephas.Core.Tests
         public void CompositionContainer_works_fine_when_explicitely_set()
         {
             var ambientServices = new AmbientServices();
-            var mockContainer = Mock.Create<ICompositionContext>();
-            mockContainer.Arrange(c => c.TryGetExport<ICompositionContext>(null)).Returns((ICompositionContext)null);
-            ambientServices.RegisterService(mockContainer);
+            var compositionContextMock = Substitute.For<ICompositionContext>();
+            compositionContextMock.TryGetExport<ICompositionContext>(null).Returns((ICompositionContext)null);
+            ambientServices.RegisterService(compositionContextMock);
             var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
             Assert.IsNull(noService);
         }

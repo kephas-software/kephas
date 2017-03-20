@@ -2,16 +2,15 @@
 {
     using System;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Services.Transitioning;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
 
@@ -23,7 +22,7 @@
         {
             var appInitializer = new TestAppInitializer(new AmbiguousMatchException());
 
-            Assert.That(() => appInitializer.InitializeAsync(Mock.Create<IAppContext>()), Throws.TypeOf<AmbiguousMatchException>());
+            Assert.That(() => appInitializer.InitializeAsync(Substitute.For<IAppContext>()), Throws.TypeOf<AmbiguousMatchException>());
 
             Assert.IsTrue(appInitializer.GetInitializationMonitor().IsFaulted);
         }
@@ -33,7 +32,7 @@
         {
             var appInitializer = new TestAppInitializer();
 
-            await appInitializer.InitializeAsync(Mock.Create<IAppContext>());
+            await appInitializer.InitializeAsync(Substitute.For<IAppContext>());
 
             Assert.IsTrue(appInitializer.GetInitializationMonitor().IsCompletedSuccessfully);
         }

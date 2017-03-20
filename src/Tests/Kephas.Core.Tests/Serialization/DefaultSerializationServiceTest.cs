@@ -20,10 +20,9 @@ namespace Kephas.Core.Tests.Serialization
     using Kephas.Serialization.Xml;
     using Kephas.Services;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     /// <summary>
     /// Tests for <see cref="DefaultSerializationService"/>
@@ -37,7 +36,7 @@ namespace Kephas.Core.Tests.Serialization
         [TestCase(typeof(JsonFormat))]
         public void GetSerializer_WithContext_Exception(Type formatType)
         {
-            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
             var context = new SerializationContext(serializationService, formatType);
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
         }
@@ -45,7 +44,7 @@ namespace Kephas.Core.Tests.Serialization
         [Test]
         public void GetSerializer_NoContext_Exception()
         {
-            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer());
         }
 
@@ -54,7 +53,7 @@ namespace Kephas.Core.Tests.Serialization
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat)));
-            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), factories);
+            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.IsNotNull(serializer);
         }
@@ -63,11 +62,11 @@ namespace Kephas.Core.Tests.Serialization
         public void GetSerializer_WithOverride()
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
-            var oldSerializer = Mock.Create<ISerializer>();
-            var newSerializer = Mock.Create<ISerializer>();
+            var oldSerializer = Substitute.For<ISerializer>();
+            var newSerializer = Substitute.For<ISerializer>();
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat), oldSerializer, Priority.Normal));
             factories.Add(this.GetSerializerFactory(typeof(JsonFormat), newSerializer, Priority.AboveNormal));
-            var serializationService = new DefaultSerializationService(Mock.Create<IAmbientServices>(), factories);
+            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.AreSame(serializer, newSerializer);
         }
@@ -78,14 +77,14 @@ namespace Kephas.Core.Tests.Serialization
             Priority overridePriority = Priority.Normal)
         {
             var metadata = new SerializerMetadata(formatType, overridePriority: (int)overridePriority);
-            serializer = serializer ?? Mock.Create<ISerializer>();
-            var export = Mock.Create<IExport<ISerializer, SerializerMetadata>>();
-            export.Arrange(e => e.Value).Returns(serializer);
-            export.Arrange(e => e.Metadata).Returns(metadata);
+            serializer = serializer ?? Substitute.For<ISerializer>();
+            var export = Substitute.For<IExport<ISerializer, SerializerMetadata>>();
+            export.Value.Returns(serializer);
+            export.Metadata.Returns(metadata);
 
-            var factory = Mock.Create<IExportFactory<ISerializer, SerializerMetadata>>();
-            factory.Arrange(f => f.Metadata).Returns(metadata);
-            factory.Arrange(f => f.CreateExport()).Returns(export);
+            var factory = Substitute.For<IExportFactory<ISerializer, SerializerMetadata>>();
+            factory.Metadata.Returns(metadata);
+            factory.CreateExport().Returns(export);
 
             return factory;
         }

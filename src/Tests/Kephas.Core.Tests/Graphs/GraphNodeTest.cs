@@ -4,10 +4,9 @@
 
     using Kephas.Graphs;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
-    using Telerik.JustMock.Helpers;
+    using NUnit.Framework;
 
     [TestFixture]
     public class GraphNodeTest
@@ -17,9 +16,9 @@
         {
             var node = new GraphNode();
             var fromNode = new GraphNode();
-            var edge = Mock.Create<GraphEdge>();
-            edge.Arrange(e => e.From).Returns(fromNode);
-            node.AddIncomingEdge(edge);
+
+            // AddIncomingEdge called implicitely
+            var edge = new GraphEdge(fromNode, node);
 
             Assert.AreEqual(1, node.IncomingEdges.Count);
             Assert.AreEqual(edge, node.IncomingEdges.First());
@@ -36,9 +35,9 @@
         {
             var node = new GraphNode();
             var toNode = new GraphNode();
-            var edge = Mock.Create<GraphEdge>();
-            edge.Arrange(e => e.To).Returns(toNode);
-            node.AddOutgoingEdge(edge);
+
+            // AddOutgoingEdge called implicitely
+            var edge = new GraphEdge(node, toNode);
 
             Assert.AreEqual(0, node.IncomingEdges.Count);
             Assert.AreEqual(1, node.OutgoingEdges.Count);

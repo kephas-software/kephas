@@ -12,9 +12,9 @@ namespace Kephas.Core.Tests.Services.Behavior
     using Kephas.Behavior;
     using Kephas.Services.Behavior;
 
-    using NUnit.Framework;
+    using NSubstitute;
 
-    using Telerik.JustMock;
+    using NUnit.Framework;
 
     [TestFixture]
     public class EnabledServiceBehaviorRuleBaseTest
@@ -23,7 +23,7 @@ namespace Kephas.Core.Tests.Services.Behavior
         public void CanApply_success()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new TestService(), Mock.Create<IAmbientServices>()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new TestService(), Substitute.For<IAmbientServices>()));
             Assert.IsTrue(canApply);
         }
 
@@ -31,7 +31,7 @@ namespace Kephas.Core.Tests.Services.Behavior
         public void CanApply_failure_mismatched_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new AnotherTestService(), Mock.Create<IAmbientServices>()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new AnotherTestService(), Substitute.For<IAmbientServices>()));
             Assert.IsFalse(canApply);
         }
 
@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Services.Behavior
         public void CanApply_failure_mismatched_derived_type()
         {
             var behavior = new TestEnabledServiceBehaviorRule();
-            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new DerivedTestService(), Mock.Create<IAmbientServices>()));
+            var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(new DerivedTestService(), Substitute.For<IAmbientServices>()));
             Assert.IsFalse(canApply);
         }
 
