@@ -22,7 +22,7 @@
     <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
     <dependencies>
       <dependency id="Kephas.Core" version="3.1.0-preview4" />
-      <dependency id="Newtonsoft.Json" version="9.0.1" />
+      <dependency id="Newtonsoft.Json" version="10.0.1" />
     </dependencies>
     <references>
       <reference file="Kephas.Serialization.Json.dll" />
@@ -30,10 +30,8 @@
     <tags>kephas framework serialization json quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Serialization.Json.dll" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Serialization.Json.pdb" target="lib\netstandard1.4" />
-    <file src="bin\debug\Kephas.Serialization.Json.xml" target="lib\netstandard1.4" />
-    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Serialization.Json.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
+    <file src="bin\debug\netstandard1.4\Kephas.Serialization.Json.dll" target="lib\netstandard1.4" />
+    <file src="bin\debug\netstandard1.4\Kephas.Serialization.Json.pdb" target="lib\netstandard1.4" />
+    <file src="bin\debug\netstandard1.4\Kephas.Serialization.Json.xml" target="lib\netstandard1.4" />
   </files>
 </package>
