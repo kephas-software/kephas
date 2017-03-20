@@ -206,6 +206,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
+        /// </summary>
+        internal static string ConcurrentCollection_CannotAddItem_Exception {
+            get {
+                return ResourceManager.GetString("ConcurrentCollection_CannotAddItem_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Setting a value is not supported by the default implementation of the configuration manager. Override this in a derived class to provide an implementation..
         /// </summary>
         internal static string ConfigurationManagerBase_SettingValueNotSupported_Exception {
