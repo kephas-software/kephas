@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging", "Kephas.Messaging\Kephas.Messaging.csproj", "{1B8691E7-C070-4EBA-B999-DE4989589409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{A1A9CB93-6D34-4912-8544-AA273C19234E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog", "Kephas.Logging.NLog\Kephas.Logging.NLog.csproj", "{8CB50297-39C4-45F5-9195-14A75D699710}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model", "Kephas.Model\Kephas.Model.csproj", "{965E1983-D19C-4D22-B6B9-8A3221520542}"
@@ -75,8 +73,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Core", "TestingFramework\Kephas.Testing.Core\Kephas.Testing.Core.csproj", "{A8025C4F-667A-4996-86E1-7A7F6B787447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Tests", "Tests\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj", "{178F43C4-5A62-4BF5-9173-751B0B25352E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net46", "Kephas.Composition.Mef.Net46\Kephas.Composition.Mef.Net46.csproj", "{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.Mef.Net46", "TestingFramework\Kephas.Testing.Composition.Mef.Net46\Kephas.Testing.Composition.Mef.Net46.csproj", "{3EE28636-0818-408D-9409-F70A48479F4F}"
@@ -111,6 +107,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.EntityFrameworkCore", "Kephas.Data.EntityFrameworkCore\Kephas.Data.EntityFrameworkCore.csproj", "{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Tests", "Tests\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj", "{A2C23A08-523D-4A27-9BD5-5B289E27D646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,10 +133,6 @@ Global
 		{1B8691E7-C070-4EBA-B999-DE4989589409}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B8691E7-C070-4EBA-B999-DE4989589409}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B8691E7-C070-4EBA-B999-DE4989589409}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1A9CB93-6D34-4912-8544-AA273C19234E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CB50297-39C4-45F5-9195-14A75D699710}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -205,10 +201,6 @@ Global
 		{A8025C4F-667A-4996-86E1-7A7F6B787447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8025C4F-667A-4996-86E1-7A7F6B787447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8025C4F-667A-4996-86E1-7A7F6B787447}.Release|Any CPU.Build.0 = Release|Any CPU
-		{178F43C4-5A62-4BF5-9173-751B0B25352E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{178F43C4-5A62-4BF5-9173-751B0B25352E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{178F43C4-5A62-4BF5-9173-751B0B25352E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{178F43C4-5A62-4BF5-9173-751B0B25352E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -273,6 +265,14 @@ Global
 		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,7 +287,6 @@ Global
 		{47D62E55-5A98-466A-BD34-54E1FC6BD8F5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{00BE907B-3852-480F-9ABC-5B4C5D4595B6} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{A8025C4F-667A-4996-86E1-7A7F6B787447} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
-		{178F43C4-5A62-4BF5-9173-751B0B25352E} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{E086F88C-C9D8-43F0-B6D6-57D8BE2CC345} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{3EE28636-0818-408D-9409-F70A48479F4F} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{8994A0CD-F82A-4EFF-BC43-B314CE273238} = {816692E7-24DC-46B5-97FB-D314B52D815D}
@@ -297,5 +296,6 @@ Global
 		{2F644DAB-EBE5-4548-AF2A-DD43948503DE} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{4E119285-ABC4-4890-B758-F64D950B8CF7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{A2C23A08-523D-4A27-9BD5-5B289E27D646} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 EndGlobal
