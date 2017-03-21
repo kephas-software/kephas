@@ -10,20 +10,26 @@
 namespace Kephas.Data
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Services;
+    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base implementation of a <see cref="IDataContext"/>.
     /// </summary>
     public abstract class DataContextBase : Expando, IDataContext
     {
+        /// <summary>
+        /// The initialization monitor.
+        /// </summary>
+        protected readonly InitializationMonitor<DataContextBase> InitializationMonitor;
+
         /// <summary>
         /// The data command provider.
         /// </summary>
@@ -37,11 +43,12 @@ namespace Kephas.Data
         protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(dataCommandProvider != null);
+            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
 
             this.AmbientServices = ambientServices;
             this.dataCommandProvider = dataCommandProvider;
             this.Id = new Id(Guid.NewGuid());
+            this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
         }
 
         /// <summary>
@@ -69,10 +76,20 @@ namespace Kephas.Data
             var config = context as IDataContextConfiguration;
             if (config == null)
             {
-                throw new ArgumentException($"The provided context is not a {typeof(IDataContextConfiguration).FullName}.");
+                throw new ArgumentException(string.Format(Strings.DataContextBase_BadInitializationContext_Exception, typeof(IDataContextConfiguration).FullName));
             }
 
-            this.InitializeCore(config);
+            this.InitializationMonitor.Start();
+            try
+            {
+                this.InitializeCore(config);
+                this.InitializationMonitor.Complete();
+            }
+            catch (Exception ex)
+            {
+                this.InitializationMonitor.Fault(ex);
+                throw;
+            }
         }
 
         /// <summary>

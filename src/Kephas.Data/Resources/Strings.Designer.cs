@@ -107,6 +107,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided context is not a &apos;{0}&apos;..
+        /// </summary>
+        internal static string DataContextBase_BadInitializationContext_Exception {
+            get {
+                return ResourceManager.GetString("DataContextBase_BadInitializationContext_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
         internal static string DataConverterNotFound_Exception {

@@ -11,28 +11,42 @@ namespace Kephas.Data.InMemory
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Data.InMemory.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Serialization;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Client data context managing.
     /// </summary>
+    /// <remarks>
+    /// For the connection string, use something like in the example below:
+    /// ConnectionString=UseSharedCache=true|false;Data=(JSON serialized data).
+    /// </remarks>
     [SupportedDataStoreKinds(DataStoreKind.InMemory)]
     public class InMemoryDataContext : DataContextBase
     {
         /// <summary>
+        /// The shared cache.
+        /// </summary>
+        private static readonly ConcurrentBag<object> SharedCache = new ConcurrentBag<object>();
+
+        /// <summary>
         /// The internal cache.
         /// </summary>
         private readonly List<object> cache = new List<object>();
+
+        /// <summary>
+        /// The working cache.
+        /// </summary>
+        private IEnumerable<object> workingCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
@@ -59,6 +73,29 @@ namespace Kephas.Data.InMemory
         public ISerializationService SerializationService { get; }
 
         /// <summary>
+        /// Gets a value indicating whether to use the shared cache or not.
+        /// </summary>
+        /// <value>
+        /// True if shared cache is used, false if not.
+        /// </value>
+        protected bool UseSharedCache { get; private set; }
+
+        /// <summary>
+        /// Gets the working cache.
+        /// </summary>
+        /// <value>
+        /// The working cache.
+        /// </value>
+        protected IEnumerable<object> WorkingCache
+        {
+            get
+            {
+                this.InitializationMonitor.AssertIsCompletedSuccessfully();
+                return this.workingCache;
+            }
+        }
+
+        /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
@@ -68,7 +105,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.cache.OfType<T>().AsQueryable();
+            return this.WorkingCache.OfType<T>().AsQueryable();
         }
 
         /// <summary>
@@ -86,7 +123,7 @@ namespace Kephas.Data.InMemory
 
             if (isNew)
             {
-                this.cache.Add(entity);
+                this.Add(entity);
                 return entity;
             }
 
@@ -94,18 +131,18 @@ namespace Kephas.Data.InMemory
             var entityId = identifiable?.Id;
             if (identifiable == null || Id.IsUnsetValue(entityId))
             {
-                this.cache.Add(entity);
+                this.Add(entity);
                 return entity;
             }
 
             var entityType = entity.GetType();
-            var existingEntity = this.cache.FirstOrDefault(e => e.GetType() == entityType && entityId.Equals(this.TryGetCapability<IIdentifiable>(e, operationContext)?.Id));
+            var existingEntity = this.WorkingCache.FirstOrDefault(e => e.GetType() == entityType && entityId.Equals(this.TryGetCapability<IIdentifiable>(e, operationContext)?.Id));
             if (existingEntity != null)
             {
                 return existingEntity;
             }
 
-            this.cache.Add(entity);
+            this.Add(entity);
             return entity;
         }
 
@@ -115,14 +152,16 @@ namespace Kephas.Data.InMemory
         /// <param name="config">The configuration.</param>
         protected override void InitializeCore(IDataContextConfiguration config)
         {
-            if (string.IsNullOrWhiteSpace(config?.ConnectionString))
-            {
-                return;
-            }
+            var connectionStringValues = string.IsNullOrWhiteSpace(config?.ConnectionString)
+                                             ? new Dictionary<string, string>()
+                                             : ConnectionStringParser.Parse(config.ConnectionString);
 
-            var connectionStringValues = ConnectionStringParser.Parse(config.ConnectionString);
+            bool.TryParse(connectionStringValues.TryGetValue("UseSharedCache"), out var useSharedCache);
+            this.UseSharedCache = useSharedCache;
+            this.workingCache = useSharedCache ? (IEnumerable<object>)SharedCache : this.cache;
 
-            this.InitializeData(connectionStringValues);
+            var serializedData = connectionStringValues.TryGetValue("Data");
+            this.InitializeData(serializedData);
         }
 
         /// <summary>
@@ -132,33 +171,52 @@ namespace Kephas.Data.InMemory
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            this.cache.Clear();
+            if (!this.UseSharedCache)
+            {
+                this.cache.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Adds an item to the internal cache.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        private void Add(object item)
+        {
+            if (this.UseSharedCache)
+            {
+                SharedCache.Add(item);
+            }
+            else
+            {
+                this.cache.Add(item);
+            }
         }
 
         /// <summary>
         /// Initializes the data from the provided connection string.
         /// </summary>
-        /// <param name="connectionStringValues">The connection string values.</param>
-        private void InitializeData(IDictionary<string, string> connectionStringValues)
+        /// <param name="serializedData">The serialized data.</param>
+        private void InitializeData(string serializedData)
         {
-            var serializedData = connectionStringValues.TryGetValue("Data");
-            if (!string.IsNullOrWhiteSpace(serializedData))
+            if (string.IsNullOrWhiteSpace(serializedData))
             {
-                var data =
-                    this.SerializationService.JsonDeserializeAsync(serializedData).GetResultNonLocking(TimeSpan.FromMinutes(1));
+                return;
+            }
 
-                var operationContext = new DataOperationContext(this);
-                if (data is IEnumerable)
+            var data = this.SerializationService.JsonDeserializeAsync(serializedData).GetResultNonLocking(TimeSpan.FromMinutes(1));
+
+            var operationContext = new DataOperationContext(this);
+            if (data is IEnumerable)
+            {
+                foreach (var entity in (IEnumerable)data)
                 {
-                    foreach (var entity in (IEnumerable)data)
-                    {
-                        this.GetOrAddCacheableItem(operationContext, entity, isNew: false);
-                    }
+                    this.GetOrAddCacheableItem(operationContext, entity, isNew: false);
                 }
-                else
-                {
-                    this.GetOrAddCacheableItem(operationContext, data, isNew: false);
-                }
+            }
+            else
+            {
+                this.GetOrAddCacheableItem(operationContext, data, isNew: false);
             }
         }
     }

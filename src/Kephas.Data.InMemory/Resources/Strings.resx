@@ -117,56 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DataCommandFactory_CreateCommand_NotSupported_Exception" xml:space="preserve">
-    <value>The command {0} is not supported.</value>
-  </data>
-  <data name="DataConverterNotFound_Exception" xml:space="preserve">
-    <value>No data converters were found for source type '{0}' and target type '{1}'.</value>
-  </data>
-  <data name="DataContext_FindAsync_NotFound_Exception" xml:space="preserve">
-    <value>No entry was found with the provided ID {0}.</value>
-  </data>
-  <data name="DataContext_FindOneAsync_AmbiguousMatch_Exception" xml:space="preserve">
-    <value>Multiple entries were found with the provided criteria {0}.</value>
-  </data>
-  <data name="DataContext_FindOneAsync_NotFound_Exception" xml:space="preserve">
-    <value>No entry was found with the provided criteria {0}.</value>
-  </data>
-  <data name="DefaultDataConversionService_NonTypedSourceIsNull_Exception" xml:space="preserve">
-    <value>The provided source object is null and a type information cannot be identified for it. No conversion has been performed.</value>
-  </data>
-  <data name="DefaultDataConversionService_NonTypedTargetIsNull_Exception" xml:space="preserve">
-    <value>The provided target object is null and a type information cannot be identified for it.</value>
-  </data>
-  <data name="PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception" xml:space="preserve">
-    <value>The maximum number of iterations ({0}) was exceeded when saving with activated behaviors. Could not update the changed entities. See the affected entities for more information.</value>
-  </data>
-  <data name="PersistChangesCommand_NoRootEntitiesToSave_Exception" xml:space="preserve">
-    <value>There are no modified root entities to save.</value>
-  </data>
-  <data name="PersistChangesCommand_ResultMessage" xml:space="preserve">
-    <value>Persisted {0} changes.</value>
-  </data>
-  <data name="DataValidationException_Message" xml:space="preserve">
-    <value>Validation failed for {0}:
-{1}.</value>
-  </data>
-  <data name="DataValidator_MismatchedEntityType_Exception" xml:space="preserve">
-    <value>Expected an object of type '{0}', but received one of type '{1}'.</value>
-  </data>
-  <data name="DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception" xml:space="preserve">
-    <value>Ambiguous match for command '{0}' of '{1}': at least '{2}' and '{3}' found. To disambiguate, please provide an override priority between them.</value>
-  </data>
-  <data name="DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception" xml:space="preserve">
-    <value>No data context with type '{0}' was found for data store '{1}'.</value>
-  </data>
-  <data name="DefaultDataContextProvider_AmbiguousDataContext_Exception" xml:space="preserve">
-    <value>Ambiguous data context for data store '{0}': at least '{1}' and '{2}' found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate.</value>
-  </data>
-  <data name="DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception" xml:space="preserve">
-    <value>No data context was found for data store '{0}' of kind '{1}'.</value>
-  </data>
-  <data name="DataContextBase_BadInitializationContext_Exception" xml:space="preserve">
-    <value>The provided context is not a '{0}'.</value>
+  <data name="InMemoryDataContext_NotInitialized_Exception" xml:space="preserve">
+    <value>The '{0}' must be initialized before working with entities.</value>
   </data>
 </root>

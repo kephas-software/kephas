@@ -18,6 +18,7 @@ namespace Kephas.Data.InMemory.Tests
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Serialization;
+    using Kephas.Services.Transitioning;
 
     using NSubstitute;
 
@@ -27,9 +28,23 @@ namespace Kephas.Data.InMemory.Tests
     public class InMemoryDataContextTest
     {
         [Test]
+        public void Query_not_initialized_exception()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+
+            Assert.Throws<ServiceTransitioningException>(
+                () =>
+                    {
+                        var query = dataContext.Query<string>();
+                    });
+        }
+
+        [Test]
         public void Query_of_string()
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+            dataContext.Initialize(new DataContextConfiguration(string.Empty));
+
             dataContext.GetOrAddCacheableItem(null, "mama", true);
             dataContext.GetOrAddCacheableItem(null, "papa", true);
             dataContext.GetOrAddCacheableItem(null, 1, true);
@@ -88,5 +103,37 @@ namespace Kephas.Data.InMemory.Tests
             Assert.AreEqual("papa", list[1]);
         }
 
+        [Test]
+        public void Initialize_shared_cache()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+            dataContext.Initialize(new DataContextConfiguration("UseSharedCache=true"));
+
+            var dataContext2 = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+            dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=true"));
+
+            var sharedItem = Substitute.For<IIdentifiable>();
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, isNew: true);
+            var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
+
+            Assert.AreSame(sharedItem, sharedItemActual);
+        }
+
+        [Test]
+        public void Initialize_non_shared_cache()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+            dataContext.Initialize(new DataContextConfiguration("UseSharedCache=false"));
+
+            var dataContext2 = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+            dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=false"));
+
+            var sharedItem = Substitute.For<IIdentifiable>();
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, isNew: true);
+            var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
+
+            Assert.AreNotSame(sharedItem, sharedItemActual);
+            Assert.IsNull(sharedItemActual);
+        }
     }
 }
