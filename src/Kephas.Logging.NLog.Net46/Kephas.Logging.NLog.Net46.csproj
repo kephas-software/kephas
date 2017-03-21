@@ -152,7 +152,6 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

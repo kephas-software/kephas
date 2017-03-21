@@ -314,7 +314,6 @@
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
     <None Include="Services\Transitioning\Transitioning.cd" />
   </ItemGroup>

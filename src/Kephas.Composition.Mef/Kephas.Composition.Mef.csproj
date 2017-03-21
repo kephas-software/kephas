@@ -176,7 +176,6 @@
       <Link>Kephas.snk</Link>
     </None>
     <None Include="Package.nuspec" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

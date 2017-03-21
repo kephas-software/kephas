@@ -174,7 +174,6 @@
       <Link>Kephas.snk</Link>
     </None>
     <None Include="Package.nuspec" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

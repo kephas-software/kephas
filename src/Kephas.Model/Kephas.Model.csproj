@@ -136,7 +136,6 @@
     </None>
     <None Include="ModelContracts.cd" />
     <None Include="Package.nuspec" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

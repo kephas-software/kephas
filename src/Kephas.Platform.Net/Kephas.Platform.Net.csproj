@@ -131,7 +131,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="project.json" />
-    <AdditionalFiles Include="stylecop.json" />
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
