@@ -31,7 +31,7 @@
             <group targetFramework="net461">
                 <dependency id="System.IO.FileSystem" version="4.3.0" />
             </group>
-            <group targetFramework="netstandard1.4">
+            <group targetFramework="netstandard1.5">
                 <dependency id="System.IO.FileSystem" version="4.3.0" />
             </group>
         </dependencies>
@@ -42,7 +42,7 @@
             <group targetFramework="net461">
                 <reference file="Kephas.Platform.Net.dll" />
             </group>
-            <group targetFramework="netstandard1.4">
+            <group targetFramework="netstandard1.5">
                 <reference file="Kephas.Platform.Net.dll" />
             </group>
         </references>
