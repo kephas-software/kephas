@@ -80,6 +80,20 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsCollection(this Type type)
+        {
+            return type != null
+                   && IntrospectionExtensions.GetTypeInfo(typeof(ICollection))
+                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the type implements <see cref="IQueryable"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>
