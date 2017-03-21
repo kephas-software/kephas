@@ -33,7 +33,7 @@
                 <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.Composition" version="1.0.31" />
             </group>
-            <group targetFramework="netstandard1.5">
+            <group targetFramework="netstandard1.4">
                 <dependency id="Kephas.Core" version="3.1.0-preview4" />
                 <dependency id="System.Composition" version="1.0.31" />
             </group>
@@ -46,11 +46,11 @@
         <tags>kephas framework composition mef quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\netstandard1.5" />
-        <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\netstandard1.5" />
-        <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.5" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
+        <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\netstandard1.4" />
+        <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.4" />
+        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
+        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.dll" target="lib\net461" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net461" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.xml" target="lib\net461" />

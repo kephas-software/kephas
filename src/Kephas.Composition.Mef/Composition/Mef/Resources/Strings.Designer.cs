@@ -8,10 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace Kephas.Composition.Mef.Resources {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
