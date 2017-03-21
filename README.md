@@ -17,3 +17,4 @@ For more details, please visit the [Kephas Framework](http://kephas-framework.co
 
 
 [![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)
+[![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)
