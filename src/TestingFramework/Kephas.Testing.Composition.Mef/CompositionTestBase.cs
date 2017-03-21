@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using NSubstitute;
-
 namespace Kephas.Testing.Composition.Mef
 {
     using System;
@@ -24,6 +22,8 @@ namespace Kephas.Testing.Composition.Mef
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Configuration;
     using Kephas.Logging;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
