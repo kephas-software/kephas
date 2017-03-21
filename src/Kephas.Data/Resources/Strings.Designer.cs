@@ -80,6 +80,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation completed successfully..
+        /// </summary>
+        internal static string DataCommandResult_Successful_Message {
+            get {
+                return ResourceManager.GetString("DataCommandResult_Successful_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided ID {0}..
         /// </summary>
         internal static string DataContext_FindAsync_NotFound_Exception {

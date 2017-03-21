@@ -211,5 +211,19 @@ namespace Kephas.Data
             var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
             return result;
         }
+
+        /// <summary>
+        /// Discards the changes in the data context.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        public static void DiscardChanges(this IDataContext dataContext)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IDiscardChangesCommand<>).MakeGenericType(dataContext.GetType()));
+            var command = (IDataCommand<IDataOperationContext, IDataCommandResult>)createCommand.Call(dataContext);
+            var persistContext = new DataOperationContext(dataContext);
+            command.ExecuteAsync(persistContext).WaitNonLocking(TimeSpan.FromSeconds(1));
+        }
     }
 }

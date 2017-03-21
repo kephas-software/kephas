@@ -169,4 +169,7 @@
   <data name="DataContextBase_BadInitializationContext_Exception" xml:space="preserve">
     <value>The provided context is not a '{0}'.</value>
   </data>
+  <data name="DataCommandResult_Successful_Message" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
 </root>

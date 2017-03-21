@@ -160,6 +160,7 @@
     <Compile Include="Commands\CreateEntityResult.cs" />
     <Compile Include="Commands\DataCommandBase.cs" />
     <Compile Include="Commands\DataCommandResult.cs" />
+    <Compile Include="Commands\DiscardChangesCommandBase.cs" />
     <Compile Include="Commands\Factory\DataCommandFactory.cs" />
     <Compile Include="Commands\Composition\DataCommandMetadata.cs" />
     <Compile Include="Commands\Factory\DefaultDataCommandProvider.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Commands\IDataCommand.cs" />
     <Compile Include="Commands\Factory\IDataCommandProvider.cs" />
     <Compile Include="Commands\IDataCommandResult.cs" />
+    <Compile Include="Commands\IDiscardChangesCommand.cs" />
     <Compile Include="Commands\IFindCommand.cs" />
     <Compile Include="Commands\IFindResult.cs" />
     <Compile Include="Commands\IPersistChangesCommand.cs" />

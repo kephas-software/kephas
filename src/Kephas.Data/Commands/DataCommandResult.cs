@@ -10,6 +10,8 @@
 namespace Kephas.Data.Commands
 {
     using System;
+
+    using Kephas.Data.Resources;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -18,10 +20,15 @@ namespace Kephas.Data.Commands
     public class DataCommandResult : Expando, IDataCommandResult
     {
         /// <summary>
+        /// The result representing a successful operation.
+        /// </summary>
+        public static readonly DataCommandResult Success = new DataCommandResult(Strings.DataCommandResult_Successful_Message);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandResult"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="exception">(Optional) The exception.</param>
+        /// <param name="exception">The exception (optional).</param>
         public DataCommandResult(string message, Exception exception = null)
         {
             this.Message = message;

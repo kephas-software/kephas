@@ -27,7 +27,7 @@ namespace Kephas.Data.Commands
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
@@ -37,11 +37,11 @@ namespace Kephas.Data.Commands
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public async Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        async Task<IDataCommandResult> IDataCommand.ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             var result = await this.ExecuteAsync((TOperationContext)operationContext, cancellationToken).PreserveThreadContext();
             return result;
