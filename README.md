@@ -16,5 +16,5 @@ Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deli
 For more details, please visit the [Kephas Framework](http://kephas-framework.com/) web site.
 
 
-[![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)
-[![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)
+[Kephas Runtime ![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)
+[Kephas Samples ![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)
