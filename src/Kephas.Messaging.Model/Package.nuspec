@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Messaging.Model</id>
-        <version>3.1.0-preview4</version>
+        <version>3.1.0</version>
         <title>Kephas.Messaging.Model</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -21,8 +21,8 @@
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
-            <dependency id="Kephas.Messaging" version="3.1.0-preview4" />
-            <dependency id="Kephas.Model" version="3.1.0-preview4" />
+            <dependency id="Kephas.Messaging" version="3.1.0" />
+            <dependency id="Kephas.Model" version="3.1.0" />
         </dependencies>
         <references>
             <reference file="Kephas.Messaging.Model.dll" />

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Kephas.Data.MongoDB</id>
-    <version>3.1.0-preview4</version>
+    <version>3.1.0</version>
     <title>Kephas.Data.MongoDB</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
@@ -21,8 +21,8 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
     <dependencies>
-      <dependency id="Kephas.Core" version="3.1.0-preview4" />
-      <dependency id="Kephas.Data" version="3.1.0-preview4" />
+      <dependency id="Kephas.Core" version="3.1.0" />
+      <dependency id="Kephas.Data" version="3.1.0" />
       <dependency id="MongoDB.Driver.signed" version="2.4.0" />
     </dependencies>
     <references>

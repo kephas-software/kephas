@@ -14,13 +14,14 @@
     <Description>This package contains the client classes of Kephas.Data.
 Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
 </Description>
-    <Version>3.1.0-preview4</Version>
+    <Version>3.1.0</Version>
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
     <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
     <PackageTags>kephas framework data client quartz software</PackageTags>
     <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
