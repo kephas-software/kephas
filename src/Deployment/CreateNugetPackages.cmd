@@ -10,6 +10,7 @@ nuget pack ..\Kephas.Data.Client\Package.nuspec -BasePath ..\Kephas.Data.Client 
 nuget pack ..\Kephas.Data.Model\Package.nuspec -BasePath ..\Kephas.Data.Model -Symbols
 nuget pack ..\Kephas.Data.DocumentDB\Package.nuspec -BasePath ..\Kephas.Data.DocumentDB -Symbols
 nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoDB -Symbols
+nuget pack ..\Kephas.Data.InMemory\Package.nuspec -BasePath ..\Kephas.Data.InMemory -Symbols
 nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols
 nuget pack ..\Kephas.Platform.Net\Package.nuspec -BasePath ..\Kephas.Platform.Net -Symbols
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols

@@ -69,6 +69,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Data.InMemory.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -120,6 +121,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Data.InMemory.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -131,6 +133,8 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Commands\InMemoryDiscardChangesCommand.cs" />
+    <Compile Include="Commands\InMemoryPersistChangesCommand.cs" />
     <Compile Include="InMemoryDataContext.cs" />
     <Compile Include="Commands\InMemoryCreateEntityCommand.cs" />
     <Compile Include="Commands\InMemoryFindCommand.cs" />
@@ -144,6 +148,9 @@
   <ItemGroup>
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
+    </None>
+    <None Include="Package.nuspec">
+      <SubType>Designer</SubType>
     </None>
     <None Include="project.json" />
   </ItemGroup>
