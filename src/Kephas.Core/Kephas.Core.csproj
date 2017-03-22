@@ -17,7 +17,7 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>kephas framework core quartz software</PackageTags>
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>D:\github\kephas\src\Kephas.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>Kephas</RootNamespace>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageReleaseNotes>Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
