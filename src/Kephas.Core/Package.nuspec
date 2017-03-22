@@ -41,11 +41,9 @@
         <tags>kephas framework core quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Core.dll" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Core.pdb" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Core.xml" target="lib\netstandard1.4" />
-        <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
+        <file src="bin\debug\netstandard1.4\Kephas.Core.dll" target="lib\netstandard1.4" />
+        <file src="bin\debug\netstandard1.4\Kephas.Core.pdb" target="lib\netstandard1.4" />
+        <file src="bin\debug\netstandard1.4\Kephas.Core.xml" target="lib\netstandard1.4" />
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.dll" target="lib\portable-net45+netcore45+wp81+uap10" />
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wp81+uap10" />
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.xml" target="lib\portable-net45+netcore45+wp81+uap10" />

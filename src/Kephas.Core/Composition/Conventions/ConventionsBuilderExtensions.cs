@@ -65,8 +65,8 @@ namespace Kephas.Composition.Conventions
         public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts, IContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
-            Contract.Requires(assemblies != null);
-            Contract.Requires(parts != null);
+            Requires.NotNull(assemblies, nameof(assemblies));
+            Requires.NotNull(parts, nameof(parts));
 
             return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
         }

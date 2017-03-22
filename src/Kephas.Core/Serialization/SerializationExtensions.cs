@@ -271,7 +271,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializer != null);
+            Requires.NotNull(serializer, nameof(serializer));
 
             var writer = new StringWriter();
             try
@@ -301,7 +301,7 @@ namespace Kephas.Serialization
             ISerializationContext context = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Contract.Requires(serializer != null);
+            Requires.NotNull(serializer, nameof(serializer));
 
             var reader = new StringReader(serializedObj);
             try

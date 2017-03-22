@@ -12,6 +12,8 @@ namespace Kephas.Application
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Attribute for providing information for the application manifest.
     /// </summary>
@@ -25,7 +27,7 @@ namespace Kephas.Application
         /// <param name="appVersion">The application version.</param>
         public AppManifestAttribute(string appId, string appVersion = null)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Requires.NotNullOrEmpty(appId, nameof(appId));
 
             this.AppId = appId;
             this.AppVersion = appVersion;

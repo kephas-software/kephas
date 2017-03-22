@@ -163,7 +163,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithConventionAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Contract.Requires(assemblies != null);
+            Requires.NotNull(assemblies, nameof(assemblies));
 
             if (this.conventionAssemblies == null)
             {
@@ -220,7 +220,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithAssemblies(IEnumerable<Assembly> assemblies)
         {
-            Contract.Requires(assemblies != null);
+            Requires.NotNull(assemblies, nameof(assemblies));
 
             if (this.compositionAssemblies == null)
             {
@@ -263,7 +263,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithParts(IEnumerable<Type> parts)
         {
-            Contract.Requires(parts != null);
+            Requires.NotNull(parts, nameof(parts));
 
             if (this.CompositionParts == null)
             {

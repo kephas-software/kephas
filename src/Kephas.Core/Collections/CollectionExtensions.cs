@@ -14,6 +14,7 @@ namespace Kephas.Collections
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Collections
         public static T AddRange<T, TItem>(this T collection, IEnumerable<TItem> items)
             where T : class, ICollection<TItem>
         {
-            Contract.Requires(collection != null);
+            Requires.NotNull(collection, nameof(collection));
 
             if (items == null)
             {
@@ -56,7 +57,7 @@ namespace Kephas.Collections
         /// <returns>The provided collection for method chaining.</returns>
         public static IProducerConsumerCollection<T> AddRange<T>(this IProducerConsumerCollection<T> collection, IEnumerable<T> items)
         {
-            Contract.Requires(collection != null);
+            Requires.NotNull(collection, nameof(collection));
 
             if (items == null)
             {

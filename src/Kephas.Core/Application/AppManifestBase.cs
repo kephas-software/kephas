@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Resources;
 
@@ -45,7 +46,7 @@ namespace Kephas.Application
         /// <param name="appAssembly">The application assembly containing the <see cref="AppManifestAttribute"/>.</param>
         protected AppManifestBase(Assembly appAssembly)
         {
-            Contract.Requires(appAssembly != null);
+            Requires.NotNull(appAssembly, nameof(appAssembly));
 
             this.appAssembly = appAssembly;
             this.Initialize(appAssembly);
@@ -59,7 +60,7 @@ namespace Kephas.Application
         protected AppManifestBase(string appId, Version appVersion = null)
             : base(isThreadSafe: true)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Requires.NotNullOrEmpty(appId, nameof(appId));
 
             this.Initialize(appId, appVersion);
         }
@@ -89,11 +90,10 @@ namespace Kephas.Application
         /// Initializes the application manifest from the <see cref="AppManifestAttribute"/> set in the
         /// provided application assembly.
         /// </summary>
-        /// <param name="appAssembly">The application assembly containing the
-        ///                           <see cref="AppManifestAttribute"/>.</param>
+        /// <param name="appAssembly">The application assembly containing the <see cref="AppManifestAttribute"/>.</param>
         protected virtual void Initialize(Assembly appAssembly)
         {
-            Contract.Requires(appAssembly != null);
+            Requires.NotNull(appAssembly, nameof(appAssembly));
 
             this.Initialize(this.GetAppId(appAssembly), this.GetAppVersion(appAssembly), appAssembly);
         }
@@ -107,7 +107,7 @@ namespace Kephas.Application
         ///                           <see cref="AppManifestAttribute"/>.</param>
         protected virtual void Initialize(string appId, Version appVersion = null, Assembly appAssembly = null)
         {
-            Contract.Requires(!string.IsNullOrEmpty(appId));
+            Requires.NotNullOrEmpty(appId, nameof(appId));
 
             this.AppId = appId;
             this.AppVersion = appVersion ?? this.GetAppVersion(appAssembly ?? this.AppAssembly);
