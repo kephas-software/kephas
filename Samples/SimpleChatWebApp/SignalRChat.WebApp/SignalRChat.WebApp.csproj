@@ -45,25 +45,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kephas.Composition.Mef, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.1.0-preview4\lib\net461\Kephas.Composition.Mef.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.1.0\lib\net461\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.3.1.0-preview4\lib\netstandard1.4\Kephas.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Core.3.1.0\lib\netstandard1.4\Kephas.Core.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.1.0-preview4\lib\net461\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.1.0\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Messaging, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Messaging.3.1.0-preview4\lib\netstandard1.4\Kephas.Messaging.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Messaging.3.1.0\lib\netstandard1.4\Kephas.Messaging.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Platform.Net, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Platform.Net.3.1.0-preview4\lib\net461\Kephas.Platform.Net.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Platform.Net.3.1.0\lib\net461\Kephas.Platform.Net.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Serialization.Json, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.3.1.0-preview4\lib\netstandard1.4\Kephas.Serialization.Json.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.3.1.0\lib\netstandard1.4\Kephas.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Web.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Web.Owin.3.1.0-preview4\lib\net461\Kephas.Web.Owin.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Web.Owin.3.1.0\lib\net461\Kephas.Web.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -90,13 +90,11 @@
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\Packages\NLog.4.4.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -124,11 +122,11 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.IO.FileSystem.4.0.1\lib\net46\System.IO.FileSystem.dll</HintPath>
+    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -150,7 +148,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <AdditionalFiles Include="stylecop.json" />
     <None Include="Properties\PublishProfiles\WebDeployment.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -178,11 +175,6 @@
     <Compile Include="Middleware\ChatAppApiMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
-    <Analyzer Include="..\..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\Packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
