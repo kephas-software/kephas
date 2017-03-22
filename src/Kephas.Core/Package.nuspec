@@ -47,7 +47,5 @@
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.dll" target="lib\portable-net45+netcore45+wp81+uap10" />
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wp81+uap10" />
         <file src="..\Kephas.Core.PortableLegacy\bin\debug\Kephas.Core.xml" target="lib\portable-net45+netcore45+wp81+uap10" />
-        <file src="..\Kephas.Core.PortableLegacy\bin\debug\CodeContracts\Kephas.Core.Contracts.dll" target="lib\portable-net45+netcore45+wp81+uap10\CodeContracts" />
-        <file src="..\Kephas.Core.PortableLegacy\bin\debug\CodeContracts\Kephas.Core.Contracts.pdb" target="lib\portable-net45+netcore45+wp81+uap10\CodeContracts" />
     </files>
 </package>

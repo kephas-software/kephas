@@ -44,12 +44,8 @@
         <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
         <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
         <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
-        <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
         <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
         <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
         <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.dll" target="lib\net45\CodeContracts" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\CodeContracts\Kephas.Logging.NLog.Contracts.pdb" target="lib\net45\CodeContracts" />
     </files>
 </package>

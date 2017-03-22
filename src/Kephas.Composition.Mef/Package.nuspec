@@ -49,17 +49,11 @@
         <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\netstandard1.4" />
         <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\netstandard1.4" />
         <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.4" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\netstandard1.4\CodeContracts" />
-        <file src="bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\netstandard1.4\CodeContracts" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.dll" target="lib\net461" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net461" />
         <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.xml" target="lib\net461" />
-        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\net461\CodeContracts" />
-        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\net461\CodeContracts" />
         <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.dll" target="lib\net45" />
         <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net45" />
         <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.xml" target="lib\net45" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.dll" target="lib\net45\CodeContracts" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\CodeContracts\Kephas.Composition.Mef.Contracts.pdb" target="lib\net45\CodeContracts" />
     </files>
 </package>

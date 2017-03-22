@@ -32,7 +32,5 @@
     <file src="bin\debug\Kephas.Mail.Net46.dll" target="lib\net461" />
     <file src="bin\debug\Kephas.Mail.Net46.pdb" target="lib\net461" />
     <file src="bin\debug\Kephas.Mail.Net46.xml" target="lib\net461" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net46.Contracts.dll" target="lib\net461\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Mail.Net46.Contracts.pdb" target="lib\net461\CodeContracts" />
   </files>
 </package>

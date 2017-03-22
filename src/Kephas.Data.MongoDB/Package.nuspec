@@ -34,7 +34,5 @@
     <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
     <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
     <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.dll" target="lib\netstandard1.5\CodeContracts" />
-    <file src="bin\debug\CodeContracts\Kephas.Data.MongoDB.Contracts.pdb" target="lib\netstandard1.5\CodeContracts" />
   </files>
 </package>
