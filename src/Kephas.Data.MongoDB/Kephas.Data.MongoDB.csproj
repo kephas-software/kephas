@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Application\MongoAppInitializer.cs" />
     <Compile Include="Commands\MongoCreateEntityCommand.cs" />
+    <Compile Include="Commands\MongoDiscardChangesCommand.cs" />
     <Compile Include="Commands\MongoFindCommand.cs" />
     <Compile Include="Commands\MongoPersistChangesCommand.cs" />
     <Compile Include="Diagnostics\MongoDataContextLogEventSubscriber.cs" />

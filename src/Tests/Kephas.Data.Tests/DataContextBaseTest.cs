@@ -28,11 +28,11 @@ namespace Kephas.Data.Tests
         public void CreateCommand()
         {
             var container = Substitute.For<IDataCommandProvider>();
-            var findCmd = Substitute.For<IFindCommand<IDataContext, string>>();
-            container.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand<IDataContext, string>)).Returns(findCmd);
+            var findCmd = Substitute.For<IFindCommand>();
+            container.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand)).Returns(findCmd);
 
             var dataContext = new TestDataContext(dataCommandProvider: container);
-            var cmd = dataContext.CreateCommand<IFindCommand<IDataContext, string>>();
+            var cmd = dataContext.CreateCommand<IFindCommand>();
             Assert.AreSame(findCmd, cmd);
         }
 

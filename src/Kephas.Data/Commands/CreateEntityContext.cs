@@ -10,26 +10,26 @@
 namespace Kephas.Data.Commands
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A create entity context.
     /// </summary>
-    /// <typeparam name="T">The type of the entity.</typeparam>
-    public class CreateEntityContext<T> : DataOperationContext, ICreateEntityContext<T>
+    public class CreateEntityContext : DataOperationContext, ICreateEntityContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityContext{T}"/> class.
+        /// Initializes a new instance of the <see cref="CreateEntityContext"/> class.
         /// </summary>
         /// <param name="dataContext">Context for the data.</param>
-        public CreateEntityContext(IDataContext dataContext)
+        /// <param name="entityType">Type of the entity.</param>
+        public CreateEntityContext(IDataContext dataContext, Type entityType)
             : base(dataContext)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(entityType, nameof(entityType));
 
-            this.EntityType = typeof(T);
+            this.EntityType = entityType;
         }
 
         /// <summary>
@@ -39,5 +39,22 @@ namespace Kephas.Data.Commands
         /// The type of the entity.
         /// </value>
         public Type EntityType { get; set; }
+    }
+
+    /// <summary>
+    /// A create entity context.
+    /// </summary>
+    /// <typeparam name="T">The type of the entity.</typeparam>
+    public class CreateEntityContext<T> : CreateEntityContext, ICreateEntityContext<T>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateEntityContext{T}"/> class.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        public CreateEntityContext(IDataContext dataContext)
+            : base(dataContext, typeof(T))
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+        }
     }
 }

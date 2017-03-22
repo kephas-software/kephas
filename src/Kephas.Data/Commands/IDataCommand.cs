@@ -21,7 +21,7 @@ namespace Kephas.Data.Commands
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>

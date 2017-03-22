@@ -14,6 +14,7 @@ namespace Kephas.Data.InMemory.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
@@ -45,9 +46,9 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
             dataContext.Initialize(new DataContextConfiguration(string.Empty));
 
-            dataContext.GetOrAddCacheableItem(null, "mama", true);
-            dataContext.GetOrAddCacheableItem(null, "papa", true);
-            dataContext.GetOrAddCacheableItem(null, 1, true);
+            dataContext.GetOrAddCacheableItem(null, "mama", ChangeState.Added);
+            dataContext.GetOrAddCacheableItem(null, "papa", ChangeState.Added);
+            dataContext.GetOrAddCacheableItem(null, 1, ChangeState.Added);
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -60,11 +61,11 @@ namespace Kephas.Data.InMemory.Tests
         public void CreateCommand_Find()
         {
             var dataCommandProvider = Substitute.For<IDataCommandProvider>();
-            var findCommand = Substitute.For<IFindCommand<InMemoryDataContext, string>>();
-            dataCommandProvider.CreateCommand(typeof(InMemoryDataContext), typeof(IFindCommand<InMemoryDataContext, string>)).Returns(findCommand);
+            var findCommand = Substitute.For<IFindCommand>();
+            dataCommandProvider.CreateCommand(typeof(InMemoryDataContext), typeof(IFindCommand)).Returns(findCommand);
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), dataCommandProvider, Substitute.For<ISerializationService>());
 
-            var actualCommand = dataContext.CreateCommand<IFindCommand<InMemoryDataContext, string>>();
+            var actualCommand = dataContext.CreateCommand<IFindCommand>();
             Assert.AreSame(findCommand, actualCommand);
         }
 
@@ -113,7 +114,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=true"));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, isNew: true);
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, ChangeState.Added);
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreSame(sharedItem, sharedItemActual);
@@ -129,7 +130,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=false"));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, isNew: true);
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, ChangeState.Added);
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreNotSame(sharedItem, sharedItemActual);

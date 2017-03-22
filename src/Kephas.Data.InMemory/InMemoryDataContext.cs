@@ -16,8 +16,8 @@ namespace Kephas.Data.InMemory
     using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands.Factory;
-    using Kephas.Data.InMemory.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Serialization;
@@ -113,15 +113,15 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="operationContext">Context for the operation.</param>
         /// <param name="entity">The entity.</param>
-        /// <param name="isNew"><c>true</c> if the entity is new.</param>
+        /// <param name="changeState">The entity change state.</param>
         /// <returns>
         /// The or add cached item.
         /// </returns>
-        internal object GetOrAddCacheableItem(IDataOperationContext operationContext, object entity, bool isNew)
+        internal object GetOrAddCacheableItem(IDataOperationContext operationContext, object entity, ChangeState changeState)
         {
             Requires.NotNull(entity, nameof(entity));
 
-            if (isNew)
+            if (changeState == ChangeState.Added || changeState == ChangeState.AddedOrChanged)
             {
                 this.Add(entity);
                 return entity;
@@ -211,12 +211,12 @@ namespace Kephas.Data.InMemory
             {
                 foreach (var entity in (IEnumerable)data)
                 {
-                    this.GetOrAddCacheableItem(operationContext, entity, isNew: false);
+                    this.GetOrAddCacheableItem(operationContext, entity, ChangeState.NotChanged);
                 }
             }
             else
             {
-                this.GetOrAddCacheableItem(operationContext, data, isNew: false);
+                this.GetOrAddCacheableItem(operationContext, data, ChangeState.NotChanged);
             }
         }
     }

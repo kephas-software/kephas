@@ -7,30 +7,24 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Data.Capabilities;
-using Kephas.Reflection;
-
 namespace Kephas.Data.Commands
 {
-    using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Behaviors;
+    using Kephas.Data.Capabilities;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for create entity commands.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    public abstract class CreateEntityCommandBase<TDataContext, T> : DataCommandBase<ICreateEntityContext, ICreateEntityResult<T>>, ICreateEntityCommand<TDataContext, T>
-        where TDataContext : IDataContext
-        where T : class
+    public abstract class CreateEntityCommandBase : DataCommandBase<ICreateEntityContext, ICreateEntityResult>, ICreateEntityCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityCommandBase{TDataContext,T}"/> class.
+        /// Initializes a new instance of the <see cref="CreateEntityCommandBase"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         protected CreateEntityCommandBase(IDataBehaviorProvider behaviorProvider)
@@ -52,11 +46,11 @@ namespace Kephas.Data.Commands
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="ICreateEntityResult{TEntity}" />.
+        /// A promise of a <see cref="ICreateEntityResult" />.
         /// </returns>
-        public override async Task<ICreateEntityResult<T>> ExecuteAsync(ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<ICreateEntityResult> ExecuteAsync(ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             var entity = this.CreateEntity(operationContext);
 
@@ -76,7 +70,7 @@ namespace Kephas.Data.Commands
             }
 
             // prepare the result
-            var result = new CreateEntityResult<T>(entity);
+            var result = new CreateEntityResult(entity);
             this.PostCreateEntity(operationContext, result);
 
             return result;
@@ -89,10 +83,10 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// The new entity.
         /// </returns>
-        protected virtual T CreateEntity(ICreateEntityContext operationContext)
+        protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
-            var runtimeTypeInfo = typeof(T).AsRuntimeTypeInfo();
-            return (T) runtimeTypeInfo.CreateInstance();
+            var runtimeTypeInfo = operationContext.EntityType.AsRuntimeTypeInfo();
+            return runtimeTypeInfo.CreateInstance();
         }
 
         /// <summary>
@@ -100,7 +94,7 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="result">The result.</param>
-        protected virtual void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult<T> result)
+        protected virtual void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult result)
         {
         }
     }

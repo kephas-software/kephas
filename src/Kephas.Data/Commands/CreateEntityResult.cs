@@ -14,16 +14,15 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a create entity command.
     /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    public class CreateEntityResult<T> : DataCommandResult, ICreateEntityResult<T>
+    public class CreateEntityResult : DataCommandResult, ICreateEntityResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityResult{T}"/> class.
+        /// Initializes a new instance of the <see cref="CreateEntityResult"/> class.
         /// </summary>
         /// <param name="entity">The created entity.</param>
-        /// <param name="message">(Optional) The message.</param>
-        /// <param name="exception">(Optional) the exception.</param>
-        public CreateEntityResult(T entity, string message = null, Exception exception = null)
+        /// <param name="message">The message (optional).</param>
+        /// <param name="exception">The exception (optional).</param>
+        public CreateEntityResult(object entity, string message = null, Exception exception = null)
             : base(message, exception)
         {
             this.Entity = entity;
@@ -35,6 +34,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The created entity or <c>null</c> if no entity could be created.
         /// </value>
-        public T Entity { get; set; }
+        public object Entity { get; set; }
     }
 }

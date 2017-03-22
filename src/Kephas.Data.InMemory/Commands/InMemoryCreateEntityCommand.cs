@@ -10,18 +10,18 @@
 namespace Kephas.Data.InMemory.Commands
 {
     using Kephas.Data.Behaviors;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Create entity command implementation for a <see cref="InMemoryDataContext"/>.
     /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    public class InMemoryCreateEntityCommand<T> : CreateEntityCommandBase<InMemoryDataContext, T>
-        where T : class
+    [DataContextType(typeof(InMemoryDataContext))]
+    public class InMemoryCreateEntityCommand : CreateEntityCommandBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryCreateEntityCommand{T}"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryCreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         public InMemoryCreateEntityCommand(IDataBehaviorProvider behaviorProvider)
@@ -35,10 +35,10 @@ namespace Kephas.Data.InMemory.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="result">The result.</param>
-        protected override void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult<T> result)
+        protected override void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult result)
         {
             var dataContext = (InMemoryDataContext)operationContext.DataContext;
-            result.Entity = (T)dataContext.GetOrAddCacheableItem(operationContext, result.Entity, isNew: true);
+            result.Entity = dataContext.GetOrAddCacheableItem(operationContext, result.Entity, ChangeState.Added);
         }
     }
 }

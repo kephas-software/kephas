@@ -10,23 +10,27 @@
 namespace Kephas.Data.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for find commands.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    /// <typeparam name="T">The entity type.</typeparam>
-    public abstract class FindCommandBase<TDataContext, T> : DataCommandBase<IFindContext, IFindResult<T>>, IFindCommand<TDataContext, T>
-        where TDataContext : IDataContext
-        where T : class
+    public abstract class FindCommandBase : DataCommandBase<IFindContext, IFindResult>, IFindCommand
     {
+        /// <summary>
+        /// The query method.
+        /// </summary>
+        private static readonly MethodInfo GetMatchingEntitiesMethod = ReflectionHelper.GetGenericMethodOf(_ => ((FindCommandBase)null).GetMatchingEntities<string>(null, CancellationToken.None));
+
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
@@ -35,13 +39,11 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public override async Task<IFindResult<T>> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var dataContext = operationContext.DataContext;
-            var entities = await this.GetEntityQuery(operationContext)
-                                .Take(2)
-                                .ToListAsync(cancellationToken: cancellationToken)
-                                .PreserveThreadContext();
+            var getMatchingEntities = GetMatchingEntitiesMethod.MakeGenericMethod(operationContext.EntityType);
+            var entitiesPromise = (Task<IEnumerable<object>>)getMatchingEntities.Call(this, operationContext, cancellationToken);
+            var entities = (await entitiesPromise.PreserveThreadContext()).ToList();
             if (entities.Count > 1)
             {
                 throw new AmbiguousMatchDataException(string.Format(Strings.DataContext_FindOneAsync_AmbiguousMatch_Exception, $"Id == {operationContext.Id}"));
@@ -57,21 +59,44 @@ namespace Kephas.Data.Commands
                 }
             }
 
-            var result = new FindResult<T>(entities.Count == 0 ? default(T) : entities[0], exception: exception);
+            var result = new FindResult(entities.Count == 0 ? null : entities[0], exception: exception);
             return result;
+        }
+
+        /// <summary>
+        /// Gets the matching entities.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The matching entities.
+        /// </returns>
+        public virtual async Task<IEnumerable<object>> GetMatchingEntities<T>(IFindContext operationContext, CancellationToken cancellationToken)
+            where T : class
+        {
+            var entities = await this.GetEntityQuery<T>(operationContext)
+                                    .ToListAsync(cancellationToken: cancellationToken)
+                                    .PreserveThreadContext();
+            return entities;
         }
 
         /// <summary>
         /// Gets the entity query for filtering out the required entity.
         /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
         /// The entity query.
         /// </returns>
-        protected virtual IQueryable<T> GetEntityQuery(IFindContext operationContext)
+        protected virtual IQueryable<T> GetEntityQuery<T>(IFindContext operationContext)
+            where T : class
         {
             var dataContext = operationContext.DataContext;
-            var query = dataContext.Query<T>(new QueryOperationContext(dataContext)).Where(e => ((IIdentifiable)e).Id == operationContext.Id);
+            var query = dataContext
+                            .Query<T>(new QueryOperationContext(dataContext))
+                            .Where(e => ((IIdentifiable)e).Id == operationContext.Id)
+                            .Take(2);
             return query;
         }
     }

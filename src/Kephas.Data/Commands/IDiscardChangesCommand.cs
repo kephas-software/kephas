@@ -14,10 +14,8 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for discard changes commands.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    [AppServiceContract(AsOpenGeneric = true)]
-    public interface IDiscardChangesCommand<in TDataContext> : IDataCommand<IDataOperationContext, IDataCommandResult>
-        where TDataContext : IDataContext
+    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    public interface IDiscardChangesCommand : IDataCommand<IDataOperationContext, IDataCommandResult>
     {
     }
 }

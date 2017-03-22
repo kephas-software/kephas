@@ -15,11 +15,11 @@ namespace Kephas.Data.MongoDB.Commands
     /// <summary>
     /// Command for creating an entity for <see cref="MongoDataContext"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the entity to be created.</typeparam>
-    public class MongoCreateEntityCommand<T> : CreateEntityCommandBase<MongoDataContext, T> where T : class
+    [DataContextType(typeof(MongoDataContext))]
+    public class MongoCreateEntityCommand : CreateEntityCommandBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MongoCreateEntityCommand{T}"/> class.
+        /// Initializes a new instance of the <see cref="MongoCreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         public MongoCreateEntityCommand(IDataBehaviorProvider behaviorProvider)

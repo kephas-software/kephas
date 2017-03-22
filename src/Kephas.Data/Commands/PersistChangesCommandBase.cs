@@ -11,7 +11,6 @@ namespace Kephas.Data.Commands
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -30,12 +29,10 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for commands which persist dataContext changes.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    public abstract class PersistChangesCommandBase<TDataContext> : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand<TDataContext>
-        where TDataContext : IDataContext
+    public abstract class PersistChangesCommandBase : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PersistChangesCommandBase{TDataContext}"/> class.
+        /// Initializes a new instance of the <see cref="PersistChangesCommandBase"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         protected PersistChangesCommandBase(IDataBehaviorProvider behaviorProvider)
@@ -59,13 +56,13 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<PersistChangesCommandBase<TDataContext>> Logger { get; set; }
+        public ILogger<PersistChangesCommandBase> Logger { get; set; }
 
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
@@ -284,7 +281,7 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="entityPart">The entity part.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A <see cref="Task{IDataValidationResult}"/>.
         /// </returns>

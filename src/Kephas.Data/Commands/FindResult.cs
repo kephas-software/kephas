@@ -14,16 +14,15 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Encapsulates the result of a find.
     /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    public class FindResult<T> : DataCommandResult, IFindResult<T>
+    public class FindResult : DataCommandResult, IFindResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FindResult{T}"/> class.
+        /// Initializes a new instance of the <see cref="FindResult"/> class.
         /// </summary>
         /// <param name="entity">The found entity.</param>
-        /// <param name="message">(Optional) The message.</param>
-        /// <param name="exception">(Optional) the exception.</param>
-        public FindResult(T entity, string message = null, Exception exception = null)
+        /// <param name="message">The message (optional).</param>
+        /// <param name="exception">The exception (optional).</param>
+        public FindResult(object entity, string message = null, Exception exception = null)
             : base(message, exception)
         {
             this.Entity = entity;
@@ -35,6 +34,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The found entity.
         /// </value>
-        public T Entity { get; }
+        public object Entity { get; }
     }
 }

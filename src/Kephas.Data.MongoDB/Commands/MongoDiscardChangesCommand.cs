@@ -1,26 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryDiscardChangesCommand.cs" company="Quartz Software SRL">
+// <copyright file="MongoDiscardChangesCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the in memory discard changes command class.
+//   Implements the mongo discard changes command class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.InMemory.Commands
+namespace Kephas.Data.MongoDB.Commands
 {
     using Kephas.Data.Commands;
 
     /// <summary>
-    /// Discard changes command for <see cref="InMemoryDataContext"/>.
+    /// Discard changes command for <see cref="MongoDataContext"/>.
     /// </summary>
-    [DataContextType(typeof(InMemoryDataContext))]
-    public class InMemoryDiscardChangesCommand : DiscardChangesCommandBase
+    [DataContextType(typeof(MongoDataContext))]
+    public class MongoDiscardChangesCommand : DiscardChangesCommandBase
     {
         /// <summary>
         /// Discards the changes in the data context.
         /// </summary>
-        /// <param name="operationContext">The operation context.</param>
+        /// <param name="operationContext">Context for the operation.</param>
         public override void Execute(IDataOperationContext operationContext)
         {
         }

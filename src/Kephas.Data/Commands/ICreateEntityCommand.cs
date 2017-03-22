@@ -14,12 +14,8 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Application service contract for commands creating an entity.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    [AppServiceContract(AsOpenGeneric = true)]
-    public interface ICreateEntityCommand<in TDataContext, TEntity> : IDataCommand<ICreateEntityContext, ICreateEntityResult<TEntity>>
-        where TDataContext : IDataContext
-        where TEntity : class
+    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
+    public interface ICreateEntityCommand : IDataCommand<ICreateEntityContext, ICreateEntityResult>
     {
     }
 }

@@ -10,7 +10,6 @@
 namespace Kephas.Data
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -98,10 +97,10 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(ICreateEntityCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
-            var command = (IDataCommand<ICreateEntityContext, ICreateEntityResult<T>>)createCommand.Call(dataContext);
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(ICreateEntityCommand));
+            var command = (IDataCommand<ICreateEntityContext, ICreateEntityResult>)createCommand.Call(dataContext);
             var result = await command.ExecuteAsync(operationContext, cancellationToken).PreserveThreadContext();
-            return result.Entity;
+            return (T)result.Entity;
         }
 
         /// <summary>
@@ -148,10 +147,10 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand<,>).MakeGenericType(dataContext.GetType(), typeof(T)));
-            var command = (IDataCommand<IFindContext, IFindResult<T>>)createCommand.Call(dataContext);
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand));
+            var command = (IDataCommand<IFindContext, IFindResult>)createCommand.Call(dataContext);
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
-            return result.Entity;
+            return (T)result.Entity;
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace Kephas.Data
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
-            Contract.Requires(criteria != null);
+            Requires.NotNull(criteria, nameof(criteria));
 
             var queryContext = new QueryOperationContext(dataContext);
             var query = dataContext.Query<T>(queryContext).Where(criteria).Take(2);
@@ -205,7 +204,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IPersistChangesCommand<>).MakeGenericType(dataContext.GetType()));
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IPersistChangesCommand));
             var command = (IDataCommand<IPersistChangesContext, IDataCommandResult>)createCommand.Call(dataContext);
             var persistContext = new PersistChangesContext(dataContext);
             var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
@@ -220,7 +219,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IDiscardChangesCommand<>).MakeGenericType(dataContext.GetType()));
+            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IDiscardChangesCommand));
             var command = (IDataCommand<IDataOperationContext, IDataCommandResult>)createCommand.Call(dataContext);
             var persistContext = new DataOperationContext(dataContext);
             command.ExecuteAsync(persistContext).WaitNonLocking(TimeSpan.FromSeconds(1));

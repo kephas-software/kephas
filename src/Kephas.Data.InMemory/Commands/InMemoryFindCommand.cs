@@ -14,9 +14,8 @@ namespace Kephas.Data.InMemory.Commands
     /// <summary>
     /// Find command implementation for a <see cref="InMemoryDataContext"/>.
     /// </summary>
-    /// <typeparam name="T">The entity type.</typeparam>
-    public class InMemoryFindCommand<T> : FindCommandBase<InMemoryDataContext, T>
-        where T : class
+    [DataContextType(typeof(InMemoryDataContext))]
+    public class InMemoryFindCommand : FindCommandBase
     {
     }
 }

@@ -160,6 +160,7 @@
     <Compile Include="Commands\CreateEntityResult.cs" />
     <Compile Include="Commands\DataCommandBase.cs" />
     <Compile Include="Commands\DataCommandResult.cs" />
+    <Compile Include="Commands\DataContextTypeAttribute.cs" />
     <Compile Include="Commands\DiscardChangesCommandBase.cs" />
     <Compile Include="Commands\Factory\DataCommandFactory.cs" />
     <Compile Include="Commands\Composition\DataCommandMetadata.cs" />

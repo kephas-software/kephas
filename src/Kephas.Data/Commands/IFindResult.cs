@@ -12,8 +12,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for the find result.
     /// </summary>
-    /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public interface IFindResult<out TEntity> : IDataCommandResult
+    public interface IFindResult : IDataCommandResult
     {
         /// <summary>
         /// Gets the found entity or <c>null</c> if no entity could be found.
@@ -21,6 +20,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The found entity.
         /// </value>
-        TEntity Entity { get; }
+        object Entity { get; }
     }
 }

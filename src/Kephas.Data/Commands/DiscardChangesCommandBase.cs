@@ -13,11 +13,9 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Base implementation of a <see cref="IDiscardChangesCommand{TDataContext}"/>.
+    /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
     /// </summary>
-    /// <typeparam name="TDataContext">Type of the data context.</typeparam>
-    public abstract class DiscardChangesCommandBase<TDataContext> : DataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand<TDataContext>
-        where TDataContext : IDataContext
+    public abstract class DiscardChangesCommandBase : DataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
     {
         /// <summary>
         /// Executes the data command asynchronously.
@@ -34,7 +32,7 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Executes the data command asynchronously.
+        /// Discards the changes in the data context.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         public abstract void Execute(IDataOperationContext operationContext);

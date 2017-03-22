@@ -19,7 +19,8 @@ namespace Kephas.Data.InMemory.Commands
     /// <summary>
     /// Persist changes command for <see cref="InMemoryDataContext"/>.
     /// </summary>
-    public class InMemoryPersistChangesCommand : PersistChangesCommandBase<InMemoryDataContext>
+    [DataContextType(typeof(InMemoryDataContext))]
+    public class InMemoryPersistChangesCommand : PersistChangesCommandBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryPersistChangesCommand"/> class.

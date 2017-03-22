@@ -14,9 +14,8 @@ namespace Kephas.Data.MongoDB.Commands
     /// <summary>
     /// Command for finding an entity for <see cref="MongoDataContext"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the entity to be found.</typeparam>
-    public class MongoFindCommand<T> : FindCommandBase<MongoDataContext, T>
-        where T : class
+    [DataContextType(typeof(MongoDataContext))]
+    public class MongoFindCommand : FindCommandBase
     {
     }
 }

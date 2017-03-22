@@ -29,12 +29,13 @@ namespace Kephas.Data.MongoDB.Commands
     /// <summary>
     /// Command for persisting changes for <see cref="MongoDataContext"/>.
     /// </summary>
-    public class MongoPersistChangesCommand : PersistChangesCommandBase<MongoDataContext>
+    [DataContextType(typeof(MongoDataContext))]
+    public class MongoPersistChangesCommand : PersistChangesCommandBase
     {
         /// <summary>
         /// The bulk write asynchronous method.
         /// </summary>
-        private readonly MethodInfo BulkWriteAsyncMethod;
+        private static readonly MethodInfo BulkWriteAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((MongoPersistChangesCommand)null).BulkWriteAsync<IIdentifiable>(null, null, null, CancellationToken.None));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoPersistChangesCommand"/> class.
@@ -43,7 +44,6 @@ namespace Kephas.Data.MongoDB.Commands
         public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider)
             : base(behaviorProvider)
         {
-            this.BulkWriteAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => this.BulkWriteAsync<IIdentifiable>(null, null, null, CancellationToken.None));
         }
 
         /// <summary>
@@ -88,9 +88,7 @@ namespace Kephas.Data.MongoDB.Commands
             foreach (var mongoDocType in mongoDocTypes)
             {
                 var collectionName = dataContext.GetCollectionName(mongoDocType);
-                    await
-                      ((Task)
-                       this.BulkWriteAsyncMethod.Call(
+                    await((Task)BulkWriteAsyncMethod.Call(
                          this,
                          new object[] { operationContext, modifiedEntries, collectionName, cancellationToken }))
                         .PreserveThreadContext();
@@ -199,6 +197,9 @@ namespace Kephas.Data.MongoDB.Commands
                 {
                     case ChangeState.Added:
                         writeModel.Add(new InsertOneModel<T>(entity));
+                        break;
+                    case ChangeState.AddedOrChanged:
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(t => t.Id == entity.Id), entity) { IsUpsert = true });
                         break;
                     case ChangeState.Changed:
                         writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(t => t.Id == entity.Id), entity));
