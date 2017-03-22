@@ -165,8 +165,8 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
-        /// <param name="result"></param>
-        /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
         public abstract bool TryInvoke(object instance, IEnumerable<object> args, out object result);
 
         /// <summary>
@@ -175,9 +175,6 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract MemberInfo GetUnderlyingMemberInfo();
     }
 }

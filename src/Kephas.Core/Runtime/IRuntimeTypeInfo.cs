@@ -387,8 +387,8 @@ namespace Kephas.Runtime
         /// <param name="instance">The instance.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
-        /// <param name="result"></param>
-        /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
         public abstract bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result);
 
         /// <summary>
