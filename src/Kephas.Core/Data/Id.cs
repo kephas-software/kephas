@@ -49,7 +49,7 @@ namespace Kephas.Data
                     value = idValue.value;
                 }
 
-                if (value == null || value == Undefined.Value)
+                if (value == null)
                 {
                     return true;
                 }

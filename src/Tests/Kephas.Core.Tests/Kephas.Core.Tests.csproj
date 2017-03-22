@@ -87,7 +87,6 @@
     <Compile Include="Services\ContextBaseTest.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
     <Compile Include="Threading\Tasks\TaskHelperTest.cs" />
-    <Compile Include="UndefinedTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">

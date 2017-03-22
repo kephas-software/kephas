@@ -4,13 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using Kephas.Application;
-
-[assembly: AssemblyTitle("Kephas.Core")]
-[assembly: AssemblyDescription("Kephas Framework: core artifacts")]
 
 [assembly: AppManifest(appId: "kephas", appVersion: "3.0")]
 

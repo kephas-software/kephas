@@ -13,14 +13,24 @@ namespace Kephas.Runtime
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.Contracts;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Resources;
+
+    /// <summary>
+    /// An object activator delegate.
+    /// </summary>
+    /// <param name="args">A variable-length parameters list containing arguments.</param>
+    /// <returns>
+    /// An object.
+    /// </returns>
+    internal delegate object InstanceActivator(params object[] args);
 
     /// <summary>
     /// Provides optimized access to methods and properties at runtime.
@@ -71,6 +81,21 @@ namespace Kephas.Runtime
         /// The generic type definition.
         /// </summary>
         private ITypeInfo genericTypeDefinition;
+
+        /// <summary>
+        /// The default value.
+        /// </summary>
+        private object defaultValue;
+
+        /// <summary>
+        /// True if default value created.
+        /// </summary>
+        private bool defaultValueCreated;
+
+        /// <summary>
+        /// The instance activator.
+        /// </summary>
+        private InstanceActivator instanceActivator;
 
         /// <summary>
         /// Initializes static members of the <see cref="RuntimeTypeInfo"/> class.
@@ -145,6 +170,26 @@ namespace Kephas.Runtime
         /// The namespace of the type.
         /// </value>
         public string Namespace { get; }
+
+        /// <summary>
+        /// Gets the default value of the type.
+        /// </summary>
+        /// <value>
+        /// The default value.
+        /// </value>
+        public object DefaultValue
+        {
+            get
+            {
+                if (!this.defaultValueCreated && this.TypeInfo.IsValueType && this.Type != typeof(void))
+                {
+                    this.defaultValue = Activator.CreateInstance(this.Type);
+                    this.defaultValueCreated = true;
+                }
+
+                return this.defaultValue;
+            }
+        }
 
         /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
@@ -261,21 +306,17 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The property value.</param>
         /// <returns>
-        /// The value of the specified property.
+        /// A boolean value indicating whether the property is found.
         /// </returns>
-        /// <remarks>
-        /// If a property with the provided name is not found, the <see cref="Undefined.Value" /> is returned.
-        /// </remarks>
-        public object TryGetValue(object instance, string propertyName)
+        public bool TryGetValue(object instance, string propertyName, out object value)
         {
-            if (instance == null)
-            {
-                return Undefined.Value;
-            }
+            Requires.NotNull(instance, nameof(instance));
 
             var dynamicProperty = this.GetProperty(propertyName, throwOnNotFound: false);
-            return dynamicProperty == null ? Undefined.Value : dynamicProperty.GetValue(instance);
+            value = dynamicProperty?.GetValue(instance);
+            return dynamicProperty != null;
         }
 
         /// <summary>
@@ -343,23 +384,15 @@ namespace Kephas.Runtime
         /// <param name="instance">The instance.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// The invocation result, if the method exists, otherwise <see cref="Undefined.Value" />.
-        /// </returns>
-        public object TryInvoke(object instance, string methodName, IEnumerable<object> args)
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
+        public bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result)
         {
-            if (instance == null)
-            {
-                return Undefined.Value;
-            }
+            Requires.NotNull(instance, nameof(instance));
 
             var matchingMethod = this.GetMatchingMethod(methodName, args, throwOnNotFound: false);
-            if (matchingMethod != null)
-            {
-                return matchingMethod.TryInvoke(instance, args);
-            }
-
-            return Undefined.Value;
+            result = matchingMethod?.ReturnType.DefaultValue;
+            return matchingMethod == null ? false : matchingMethod.TryInvoke(instance, args, out result);
         }
 
         /// <summary>
@@ -371,13 +404,12 @@ namespace Kephas.Runtime
         /// </returns>
         public object CreateInstance(IEnumerable<object> args = null)
         {
-            // TODO optimize
-            if (args == null)
+            if (this.instanceActivator == null)
             {
-                return Activator.CreateInstance(this.Type);
+                this.instanceActivator = this.CreateInstanceActivator();
             }
 
-            return Activator.CreateInstance(this.Type, args.ToArray());
+            return args == null ? this.instanceActivator() : this.instanceActivator(args.ToArray());
         }
 
         /// <summary>
@@ -651,6 +683,46 @@ namespace Kephas.Runtime
             }
 
             return matchingMethods[0];
+        }
+
+        /// <summary>
+        /// Creates an optimized instance activator.
+        /// </summary>
+        /// <returns>
+        /// The new instance activator.
+        /// </returns>
+        private InstanceActivator CreateInstanceActivator()
+        {
+            var constructors = this.TypeInfo.DeclaredConstructors.ToList();
+
+            if (constructors.Count == 0)
+            {
+                return args => { throw new InvalidOperationException(string.Format(Strings.RuntimeTypeInfo_NoPublicConstructorDefined_Exception, this.Type)); };
+            }
+
+            if (constructors.Count > 1)
+            {
+                return args => args == null ? Activator.CreateInstance(this.Type) : Activator.CreateInstance(this.Type, args);
+            }
+
+            var constructor = constructors[0];
+            var parameters = constructor.GetParameters();
+            var argsParam = Expression.Parameter(typeof(object[]), "args");
+
+            var argex = new Expression[parameters.Length];
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                var index = Expression.Constant(i);
+                var paramType = parameters[i].ParameterType;
+                var accessor = Expression.ArrayIndex(argsParam, index);
+                var cast = Expression.Convert(accessor, paramType);
+                argex[i] = cast;
+            }
+
+            var newex = Expression.New(constructor, argex);
+            var lambda = Expression.Lambda(typeof(InstanceActivator), newex, argsParam);
+            var activator = (InstanceActivator)lambda.Compile();
+            return activator;
         }
     }
 }

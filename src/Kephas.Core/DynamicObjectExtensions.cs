@@ -74,12 +74,16 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="propertyName">Name of the property.</param>
-        /// <returns>The property value.</returns>
-        /// <remarks>If the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
-        public static object TryGetPropertyValue(this object obj, string propertyName)
+        /// <param name="value">The property value.</param>
+        /// <returns>
+        /// A boolean value indicating whether the property is found.
+        /// </returns>
+        public static bool TryGetPropertyValue(this object obj, string propertyName, out object value)
         {
-            var dynamicType = obj?.GetType().AsRuntimeTypeInfo();
-            return dynamicType?.TryGetValue(obj, propertyName);
+            Requires.NotNull(obj, nameof(obj));
+
+            var dynamicType = obj.GetType().AsRuntimeTypeInfo();
+            return dynamicType.TryGetValue(obj, propertyName, out value);
         }
 
         /// <summary>

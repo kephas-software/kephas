@@ -78,8 +78,7 @@ namespace Kephas.Core.Tests.Runtime
         public void TryGetValue_instance_null_returns_undefined()
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
-            var result = dynamicTypeInfo.TryGetValue(null, string.Empty);
-            Assert.AreEqual(Undefined.Value, result);
+            Assert.Throws<ArgumentNullException>(() => dynamicTypeInfo.TryGetValue(null, string.Empty, out var result));
         }
 
         [Test]
@@ -87,8 +86,9 @@ namespace Kephas.Core.Tests.Runtime
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
-            var result = dynamicTypeInfo.TryGetValue(instance, "Name");
+            var success = dynamicTypeInfo.TryGetValue(instance, "Name", out var result);
             Assert.AreEqual(instance.Name, result);
+            Assert.IsTrue(success);
         }
 
         [Test]
@@ -96,8 +96,9 @@ namespace Kephas.Core.Tests.Runtime
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             var instance = new TestClass { Name = "NoName" };
-            var result = dynamicTypeInfo.TryGetValue(instance, "nothing");
-            Assert.AreEqual(Undefined.Value, result);
+            var success = dynamicTypeInfo.TryGetValue(instance, "nothing", out var result);
+            Assert.IsNull(result);
+            Assert.IsFalse(success);
         }
 
         [Test]
@@ -151,8 +152,7 @@ namespace Kephas.Core.Tests.Runtime
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             var list = new List<string>();
             var ienum = (IEnumerable<object>)list;
-            var result = dynamicTypeInfo.TryInvoke(null, string.Empty, ienum);
-            Assert.AreEqual(Undefined.Value, result);
+            Assert.Throws<ArgumentNullException>(() => dynamicTypeInfo.TryInvoke(null, string.Empty, ienum, out var result));
         }
 
         [Test]
@@ -162,15 +162,16 @@ namespace Kephas.Core.Tests.Runtime
             var list = new List<string>();
             object instance = new TestClass();
             var ienum = (IEnumerable<object>)list;
-            var result = dynamicTypeInfo.TryInvoke(instance, "blah-blah", ienum);
-            Assert.AreEqual(Undefined.Value, result);
+            var success = dynamicTypeInfo.TryInvoke(instance, "blah-blah", ienum, out var result);
+            Assert.IsNull(result);
+            Assert.IsFalse(success);
         }
 
         [Test]
         public void CreateInstance_exception_interface()
         {
             var dynamicTypeInfo = new RuntimeTypeInfo(typeof(IActivator));
-            Assert.Throws<MissingMethodException>(() => dynamicTypeInfo.CreateInstance());
+            Assert.Throws<InvalidOperationException>(() => dynamicTypeInfo.CreateInstance());
         }
 
         [Test]

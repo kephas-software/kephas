@@ -64,9 +64,6 @@ namespace Kephas.Core.Tests.Data
             id = new Id(null);
             Assert.AreEqual(null, id.Value);
 
-            id = new Id(Undefined.Value);
-            Assert.AreEqual(null, id.Value);
-
             id = new Id(new Id(null));
             Assert.AreEqual(null, id.Value);
         }
@@ -104,7 +101,6 @@ namespace Kephas.Core.Tests.Data
             {
                 Assert.IsTrue(new Id().IsUnset);
                 Assert.IsTrue(new Id(null).IsUnset);
-                Assert.IsTrue(new Id(Undefined.Value).IsUnset);
                 Assert.IsTrue(new Id(0).IsUnset);
                 Assert.IsTrue(new Id(0L).IsUnset);
                 Assert.IsTrue(new Id(string.Empty).IsUnset);

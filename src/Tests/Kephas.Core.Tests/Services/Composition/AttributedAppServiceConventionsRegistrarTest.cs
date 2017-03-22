@@ -152,7 +152,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
             var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.AppServiceImplementationType)];
             Assert.AreEqual(typeof(ISimpleMetadataAppService), valueGetter(typeof(ISimpleMetadataAppService)));
-            Assert.AreEqual(typeof(Undefined), valueGetter(null));
+            Assert.AreEqual(null, valueGetter(null));
 
             valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
             Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));

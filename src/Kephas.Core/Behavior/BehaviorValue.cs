@@ -84,7 +84,7 @@ namespace Kephas.Behavior
                 return reason;
             }
 
-            return value == Undefined.Value ? null : value.ToString();
+            return value?.ToString();
         }
     }
 

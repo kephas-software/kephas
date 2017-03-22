@@ -219,4 +219,7 @@
   <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
     <value>Could not add the item {0} to the concurrent collection.</value>
   </data>
+  <data name="RuntimeTypeInfo_NoPublicConstructorDefined_Exception" xml:space="preserve">
+    <value>No public constructor defined for '{0}', cannot create instances.</value>
+  </data>
 </root>

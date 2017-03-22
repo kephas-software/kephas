@@ -24,6 +24,14 @@ namespace Kephas.Runtime
     public interface IRuntimeMethodInfo : IMethodInfo, IRuntimeElementInfo
     {
         /// <summary>
+        /// Gets the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The return type of the method.
+        /// </value>
+        new IRuntimeTypeInfo ReturnType { get; }
+
+        /// <summary>
         /// Gets the method information.
         /// </summary>
         /// <value>
@@ -44,8 +52,9 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
-        object TryInvoke(object instance, IEnumerable<object> args);
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
+        bool TryInvoke(object instance, IEnumerable<object> args, out object result);
     }
 
     /// <summary>
@@ -108,7 +117,15 @@ namespace Kephas.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public abstract ITypeInfo ReturnType { get; }
+        public abstract IRuntimeTypeInfo ReturnType { get; }
+
+        /// <summary>
+        /// Gets the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The return type of the method.
+        /// </value>
+        ITypeInfo IMethodInfo.ReturnType { get; }
 
         /// <summary>
         /// Convenience method that provides a string Indexer
@@ -148,8 +165,9 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
+        /// <param name="result"></param>
         /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
-        public abstract object TryInvoke(object instance, IEnumerable<object> args);
+        public abstract bool TryInvoke(object instance, IEnumerable<object> args, out object result);
 
         /// <summary>
         /// Gets the underlying member information.

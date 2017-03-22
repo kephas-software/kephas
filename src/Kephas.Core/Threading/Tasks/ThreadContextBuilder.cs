@@ -139,7 +139,7 @@ namespace Kephas.Threading.Tasks
 
             var actions = rawActions as IList<Action<ThreadContext>>;
 
-            if (rawActions != Undefined.Value && rawActions != null && actions == null)
+            if (rawActions != null && actions == null)
             {
                 throw new InvalidOperationException($"The ambient services are corrupt. The {nameof(ThreadContext)} actions ({actionsKey}) cannot be converted to a list anymore.");
             }

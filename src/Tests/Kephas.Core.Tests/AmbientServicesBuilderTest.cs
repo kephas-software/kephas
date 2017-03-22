@@ -65,7 +65,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            Assert.Throws<MissingMethodException>(() => builder.WithCompositionContainer<BadTestCompositionContainerBuilder>());
+            Assert.Throws<InvalidOperationException>(() => builder.WithCompositionContainer<BadTestCompositionContainerBuilder>());
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            Assert.That(() => builder.WithCompositionContainerAsync<BadTestCompositionContainerBuilder>(), Throws.TypeOf<MissingMethodException>());
+            Assert.That(() => builder.WithCompositionContainerAsync<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
         }
 
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>

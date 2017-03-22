@@ -42,6 +42,14 @@ namespace Kephas.Runtime
         TypeInfo TypeInfo { get; }
 
         /// <summary>
+        /// Gets the default value of the type.
+        /// </summary>
+        /// <value>
+        /// The default value.
+        /// </value>
+        object DefaultValue { get; }
+
+        /// <summary>
         /// Gets the properties.
         /// </summary>
         /// <value>
@@ -75,13 +83,11 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The property value.</param>
         /// <returns>
-        /// The value of the specified property.
+        /// A boolean value indicating whether the property is found.
         /// </returns>
-        /// <remarks>
-        /// If a property with the provided name is not found, the <see cref="Undefined.Value"/> is returned.
-        /// Also, if the object passed is <c>null</c>, then <see cref="Undefined.Value"/> is returned.</remarks>
-        object TryGetValue(object instance, string propertyName);
+        bool TryGetValue(object instance, string propertyName, out object value);
 
         /// <summary>
         /// Sets the value of the property with the specified name.
@@ -122,8 +128,9 @@ namespace Kephas.Runtime
         /// <param name="instance">The instance.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
-        /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
-        object TryInvoke(object instance, string methodName, IEnumerable<object> args);
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
+        bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result);
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
@@ -139,7 +146,7 @@ namespace Kephas.Runtime
     /// Contract class for <see cref="IRuntimeTypeInfo"/>.
     /// </summary>
     [ContractClassFor(typeof(IRuntimeTypeInfo))]
-    internal abstract class RuntimeTypeInfoContractClass : IRuntimeTypeInfo
+    internal abstract class RuntimeTypeInfoContractClass : IRuntimeTypeInfo 
     {
         /// <summary>
         /// Gets the name of the type.
@@ -179,7 +186,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer { get; }
+        public abstract IElementInfo DeclaringContainer { get; }
 
         /// <summary>
         /// Gets the underlying <see cref="IRuntimeTypeInfo.Type"/>.
@@ -282,6 +289,14 @@ namespace Kephas.Runtime
         public abstract ITypeInfo GenericTypeDefinition { get; }
 
         /// <summary>
+        /// Gets the default value of the type.
+        /// </summary>
+        /// <value>
+        /// The default value.
+        /// </value>
+        public abstract object DefaultValue { get; }
+
+        /// <summary>
         /// Gets an enumeration of properties.
         /// </summary>
         IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties.Values;
@@ -321,13 +336,11 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
         /// <returns>
-        /// The value of the specified property.
+        /// A boolean value indicating whether the property is found.
         /// </returns>
-        /// <remarks>
-        /// If a property with the provided name is not found, the <see cref="Undefined.Value"/> is returned.
-        /// </remarks>
-        public abstract object TryGetValue(object instance, string propertyName);
+        public abstract bool TryGetValue(object instance, string propertyName, out object value);
 
         /// <summary>
         /// Sets the value of the property with the specified name.
@@ -374,8 +387,9 @@ namespace Kephas.Runtime
         /// <param name="instance">The instance.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
+        /// <param name="result"></param>
         /// <returns>The invocation result, if the method exists, otherwise <see cref="Undefined.Value"/>.</returns>
-        public abstract object TryInvoke(object instance, string methodName, IEnumerable<object> args);
+        public abstract bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result);
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
@@ -405,9 +419,6 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract MemberInfo GetUnderlyingMemberInfo();
     }
 }

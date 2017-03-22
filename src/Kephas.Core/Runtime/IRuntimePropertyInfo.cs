@@ -24,6 +24,14 @@ namespace Kephas.Runtime
     public interface IRuntimePropertyInfo : IPropertyInfo, IRuntimeElementInfo
     {
         /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>
+        /// The type of the property.
+        /// </value>
+        new IRuntimeTypeInfo PropertyType { get; }
+
+        /// <summary>
         /// Gets the property information.
         /// </summary>
         /// <value>
@@ -108,7 +116,15 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        public abstract ITypeInfo PropertyType { get; }
+        public abstract IRuntimeTypeInfo PropertyType { get; }
+
+        /// <summary>
+        /// Gets the type of the property.
+        /// </summary>
+        /// <value>
+        /// The type of the property.
+        /// </value>
+        ITypeInfo IPropertyInfo.PropertyType { get; }
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.

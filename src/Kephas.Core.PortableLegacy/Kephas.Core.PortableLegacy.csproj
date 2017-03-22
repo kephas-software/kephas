@@ -609,9 +609,6 @@
     <Compile Include="..\Kephas.Core\Threading\Tasks\ThreadContextBuilder.cs">
       <Link>Threading\Tasks\ThreadContextBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Undefined.cs">
-      <Link>Undefined.cs</Link>
-    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>

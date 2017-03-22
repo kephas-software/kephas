@@ -1,333 +1,61 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{42523208-F30B-46C1-99FB-A1A1E079614C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>3.1.0-preview4</Version>
+    <Authors>Quartz Software SRL</Authors>
+    <Company>Quartz Software SRL</Company>
+    <Product>Kephas Framework</Product>
+    <Description>Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others. Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</Description>
+    <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
+    <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+    <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>kephas framework core quartz software</PackageTags>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>D:\github\kephas\src\Kephas.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>Kephas</RootNamespace>
-    <AssemblyName>Kephas.Core</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
-    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
-    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
-    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
-    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
-    <CodeContractsInferRequires>True</CodeContractsInferRequires>
-    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
-    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
-    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
-    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
-    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
-    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
-    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
-    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsSQLServerOption />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
-    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
-    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Debug\Kephas.Core.XML</DocumentationFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.4\Kephas.Core.xml</DocumentationFile>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
-    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
-    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
-    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
-    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
-    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
-    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
-    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
-    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
-    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
-    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
-    <CodeContractsInferRequires>True</CodeContractsInferRequires>
-    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
-    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
-    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
-    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
-    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
-    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
-    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
-    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
-    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-    <CodeContractsEmitXMLDocs>True</CodeContractsEmitXMLDocs>
-    <CodeContractsCustomRewriterAssembly />
-    <CodeContractsCustomRewriterClass />
-    <CodeContractsLibPaths />
-    <CodeContractsExtraRewriteOptions />
-    <CodeContractsExtraAnalysisOptions />
-    <CodeContractsSQLServerOption />
-    <CodeContractsBaseLineFile />
-    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
-    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
-    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
-    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
-    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <DocumentationFile>bin\Release\Kephas.Core.XML</DocumentationFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\Kephas.Core.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <EmbeddedResource Include="Resources\Strings.resx">
+    <None Include="..\Kephas.snk" Link="Kephas.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
-      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
-    </Compile>
-    <Compile Include="Activation\ActivationException.cs" />
-    <Compile Include="Activation\ActivatorBase.cs" />
-    <Compile Include="Activation\IActivator.cs" />
-    <Compile Include="AmbientServices.cs" />
-    <Compile Include="AmbientServicesBuilder.cs" />
-    <Compile Include="AmbientServicesExtensions.cs" />
-    <Compile Include="Application\AppContext.cs" />
-    <Compile Include="Application\AppRuntimeBase.cs" />
-    <Compile Include="Application\AppInitializerBase.cs" />
-    <Compile Include="Application\AppManifestAttribute.cs" />
-    <Compile Include="Application\AppManifestBase.cs" />
-    <Compile Include="Application\DefaultAppBootstrapper.cs" />
-    <Compile Include="Application\DefaultAppDisposer.cs" />
-    <Compile Include="Application\IAppDisposer.cs" />
-    <Compile Include="Application\IAppFinalizer.cs" />
-    <Compile Include="Application\NullAppRuntime.cs" />
-    <Compile Include="Application\IAppRuntime.cs" />
-    <Compile Include="Application\NullAppManifest.cs" />
-    <Compile Include="Application\IAppBootstrapper.cs" />
-    <Compile Include="Application\IAppContext.cs" />
-    <Compile Include="Application\IAppInitializer.cs" />
-    <Compile Include="Application\IAppManifest.cs" />
-    <Compile Include="Behavior\AsyncBehaviorRuleBase.cs" />
-    <Compile Include="Behavior\BehaviorRuleBase.cs" />
-    <Compile Include="Behavior\BehaviorRuleFlowControlBase.cs" />
-    <Compile Include="Behavior\BehaviorValue.cs" />
-    <Compile Include="Behavior\EndRuleAttribute.cs" />
-    <Compile Include="Behavior\IAsyncBehaviorRule.cs" />
-    <Compile Include="Behavior\IBehaviorRule.cs" />
-    <Compile Include="Behavior\IBehaviorRuleFlowControl.cs" />
-    <Compile Include="Behavior\IBehaviorValue.cs" />
-    <Compile Include="Collections\CollectionExtensions.cs" />
-    <Compile Include="Collections\DictionaryExtensions.cs" />
-    <Compile Include="Collections\EnumerableExtensions.cs" />
-    <Compile Include="Composition\AttributedModel\CompositionConstructorAttribute.cs" />
-    <Compile Include="Composition\AttributedModel\ExcludeFromCompositionAttribute.cs" />
-    <Compile Include="Composition\AttributedModel\ImportAttribute.cs" />
-    <Compile Include="Composition\AttributedModel\ImportManyAttribute.cs" />
-    <Compile Include="Composition\CompositionException.cs" />
-    <Compile Include="Composition\Conventions\ConventionsBuilderExtensions.cs" />
-    <Compile Include="Composition\Conventions\IConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IConventionsRegistrar.cs" />
-    <Compile Include="Composition\Conventions\IExportConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IImportConventionsBuilder.cs" />
-    <Compile Include="Composition\Conventions\IPartConventionsBuilder.cs" />
-    <Compile Include="Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs" />
-    <Compile Include="Composition\ExportFactoryImporters\ExportFactoryImporter.cs" />
-    <Compile Include="Composition\ExportFactoryImporters\ICollectionExportFactoryImporter.cs" />
-    <Compile Include="Composition\ExportFactoryImporters\IExportFactoryImporter.cs" />
-    <Compile Include="Composition\Hosting\CompositionContainerBuilderBase.cs" />
-    <Compile Include="Composition\Hosting\CompositionContainerBuilderContext.cs" />
-    <Compile Include="Composition\Hosting\ICompositionContainerBuilder.cs" />
-    <Compile Include="Composition\Hosting\NullCompositionContainer.cs" />
-    <Compile Include="Composition\ICompositionContext.cs" />
-    <Compile Include="Composition\IExport.cs" />
-    <Compile Include="Composition\IExportFactory.cs" />
-    <Compile Include="Composition\IExportProvider.cs" />
-    <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapter.cs" />
-    <Compile Include="Composition\Metadata\ExportMetadataBase.cs" />
-    <Compile Include="Composition\Metadata\IMetadataValue.cs" />
-    <Compile Include="Composition\Metadata\MetadataExtensions.cs" />
-    <Compile Include="Composition\ScopeNames.cs" />
-    <Compile Include="Configuration\ConfigurationManagerBase.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
-    <Compile Include="Configuration\IConfigurationProvider.cs" />
-    <Compile Include="Configuration\NullConfigurationManager.cs" />
-    <Compile Include="Data\Id.cs" />
-    <Compile Include="Data\IIdentifiable.cs" />
-    <Compile Include="Diagnostics\Contracts\Requires.cs" />
-    <Compile Include="Diagnostics\Logging\DebugLogAmbientServicesBuilderExtensions.cs" />
-    <Compile Include="Diagnostics\Logging\DebugLogManager.cs" />
-    <Compile Include="Diagnostics\Profiler.cs" />
-    <Compile Include="DynamicObjectExtensions.cs" />
-    <Compile Include="Dynamic\IIndexable.cs" />
-    <Compile Include="ExceptionHandling\ExceptionData.cs" />
-    <Compile Include="IAmbientServicesAware.cs" />
-    <Compile Include="Logging\LoggingExtensions.cs" />
-    <Compile Include="Reflection\DefaultTypeLoader.cs" />
-    <Compile Include="Reflection\DefaultTypeResolver.cs" />
-    <Compile Include="Reflection\ITypeLoader.cs" />
-    <Compile Include="Reflection\ITypeResolver.cs" />
-    <Compile Include="Reflection\QualifiedFullName.cs" />
-    <Compile Include="Reflection\ReflectionStringExtensions.cs" />
-    <Compile Include="Resources\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Runtime\RuntimeTypeInfoExtensions.cs" />
-    <Compile Include="Dynamic\ExpandoBase.cs" />
-    <Compile Include="Runtime\RuntimeMethodInfo.cs" />
-    <Compile Include="Runtime\RuntimePropertyInfo.cs" />
-    <Compile Include="Runtime\RuntimeTypeInfo.cs" />
-    <Compile Include="Dynamic\Expando.cs" />
-    <Compile Include="Runtime\IRuntimeElementInfo.cs" />
-    <Compile Include="Runtime\IRuntimeMethodInfo.cs" />
-    <Compile Include="Runtime\IRuntimePropertyInfo.cs" />
-    <Compile Include="Runtime\IRuntimeTypeInfo.cs" />
-    <Compile Include="Dynamic\IExpando.cs" />
-    <Compile Include="Graphs\Graph.cs" />
-    <Compile Include="Graphs\GraphEdge.cs" />
-    <Compile Include="Graphs\GraphExtensions.cs" />
-    <Compile Include="Graphs\GraphNode.cs" />
-    <Compile Include="Graphs\IGraphEdge.cs" />
-    <Compile Include="Graphs\IGraphNode.cs" />
-    <Compile Include="Graphs\UnorientedGraph.cs" />
-    <Compile Include="Graphs\UnorientedGraphEdge.cs" />
-    <Compile Include="IAmbientServices.cs" />
-    <Compile Include="IInstance.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\ILogManager.cs" />
-    <Compile Include="Logging\NullLogManager.cs" />
-    <Compile Include="Logging\TypedLogger.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\AggregatedElementInfoExtensions.cs" />
-    <Compile Include="Reflection\DefaultAssemblyLoader.cs" />
-    <Compile Include="Reflection\IAggregatedElementInfo.cs" />
-    <Compile Include="Reflection\IAssemblyLoader.cs" />
-    <Compile Include="Reflection\IElementInfo.cs" />
-    <Compile Include="Reflection\IMethodInfo.cs" />
-    <Compile Include="Reflection\IPropertyInfo.cs" />
-    <Compile Include="Reflection\ITypeInfo.cs" />
-    <Compile Include="Reflection\ReflectionHelper.cs" />
-    <Compile Include="Reflection\TypeExtensions.cs" />
-    <Compile Include="Reflection\TypeInfoExtensions.cs" />
-    <Compile Include="Serialization\Composition\SerializerMetadata.cs" />
-    <Compile Include="Serialization\DefaultSerializationService.cs" />
-    <Compile Include="Serialization\IFormat.cs" />
-    <Compile Include="Serialization\Json\JsonFormat.cs" />
-    <Compile Include="Serialization\SerializationExtensions.cs" />
-    <Compile Include="Serialization\Xml\XmlFormat.cs" />
-    <Compile Include="Serialization\ISerializationContext.cs" />
-    <Compile Include="Serialization\ISerializationService.cs" />
-    <Compile Include="Serialization\ISerializer.cs" />
-    <Compile Include="Serialization\SerializationContext.cs" />
-    <Compile Include="Services\AppServiceContractAttribute.cs" />
-    <Compile Include="Services\AppServiceLifetime.cs" />
-    <Compile Include="Services\Composition\AppServiceMetadata.cs" />
-    <Compile Include="Services\Behavior\ServiceEnumerableExtensions.cs" />
-    <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBase.cs" />
-    <Compile Include="Services\Behavior\IEnabledServiceBehaviorRule.cs" />
-    <Compile Include="Services\Behavior\IServiceBehaviorContext.cs" />
-    <Compile Include="Services\Behavior\ServiceBehaviorContext.cs" />
-    <Compile Include="Services\Composition\AppServiceConventionsRegistrarBase.cs" />
-    <Compile Include="Services\Composition\AttributedAppServiceConventionsRegistrar.cs" />
-    <Compile Include="Services\ContextBase.cs" />
-    <Compile Include="Services\IAsyncInitializable.cs" />
-    <Compile Include="Services\IContext.cs" />
-    <Compile Include="Services\IInitializable.cs" />
-    <Compile Include="Services\NullServiceException.cs" />
-    <Compile Include="Services\OptionalServiceAttribute.cs" />
-    <Compile Include="Services\OverridePriorityAttribute.cs" />
-    <Compile Include="Services\Priority.cs" />
-    <Compile Include="Services\ProcessingPriorityAttribute.cs" />
-    <Compile Include="Services\ScopeSharedAppServiceContractAttribute.cs" />
-    <Compile Include="Services\SharedAppServiceContractAttribute.cs" />
-    <Compile Include="Services\Transitioning\InitializationMonitor.cs" />
-    <Compile Include="Services\Transitioning\ITransitionState.cs" />
-    <Compile Include="Services\Transitioning\ServiceTransitioningException.cs" />
-    <Compile Include="Services\Transitioning\TransitionMonitor.cs" />
-    <Compile Include="Threading\Tasks\ThreadContextAwaiter.cs" />
-    <Compile Include="Threading\Tasks\ThreadContextBuilder.cs" />
-    <Compile Include="Threading\Tasks\TaskHelper.cs" />
-    <Compile Include="Threading\Tasks\ThreadContext.cs" />
-    <Compile Include="Undefined.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Kephas.snk">
-      <Link>Kephas.snk</Link>
-    </None>
-    <None Include="Package.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="project.json" />
-    <None Include="Services\Transitioning\Transitioning.cd" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

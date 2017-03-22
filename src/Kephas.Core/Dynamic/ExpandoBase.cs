@@ -121,7 +121,7 @@ namespace Kephas.Dynamic
 
                 // try reflection on instanceType
                 var instance = this.wrappedInstance ?? this;
-                return this.GetRuntimeTypeInfo().TryGetValue(instance, key);
+                return this.GetRuntimeTypeInfo().TryGetValue(instance, key, out value) ? value : null;
             }
 
             set
@@ -159,9 +159,7 @@ namespace Kephas.Dynamic
 
             // Next check for Public properties via Reflection
             var instance = this.wrappedInstance ?? this;
-            result = this.GetRuntimeTypeInfo().TryGetValue(instance, binder.Name);
-
-            return result != Undefined.Value;
+            return this.GetRuntimeTypeInfo().TryGetValue(instance, binder.Name, out result);
         }
 
         /// <summary>
@@ -206,8 +204,7 @@ namespace Kephas.Dynamic
             }
 
             var instance = this.wrappedInstance ?? this;
-            result = this.GetRuntimeTypeInfo().TryInvoke(instance, binder.Name, args);
-            return result != Undefined.Value;
+            return this.GetRuntimeTypeInfo().TryInvoke(instance, binder.Name, args, out result);
         }
 
         /// <summary>

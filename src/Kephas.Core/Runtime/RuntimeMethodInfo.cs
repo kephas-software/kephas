@@ -87,7 +87,15 @@ namespace Kephas.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        ITypeInfo IMethodInfo.ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+
+        /// <summary>
+        /// Gets the return type of the method.
+        /// </summary>
+        /// <value>
+        /// The return type of the method.
+        /// </value>
+        public IRuntimeTypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the underlying member information.
@@ -111,22 +119,23 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// The try invoke.
+        /// Tries to invokes the specified method on the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        /// <param name="args">The args.</param>
-        /// <returns>
-        /// The <see cref="object" />.
-        /// </returns>
-        public object TryInvoke(object instance, IEnumerable<object> args)
+        /// <param name="args">The arguments.</param>
+        /// <param name="result">The invocation result.</param>
+        /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
+        public bool TryInvoke(object instance, IEnumerable<object> args, out object result)
         {
             try
             {
-                return this.MethodInfo.Invoke(instance, args.ToArray());
+                result = this.MethodInfo.Invoke(instance, args.ToArray());
+                return true;
             }
             catch (Exception)
             {
-                return Undefined.Value;
+                result = this.ReturnType.DefaultValue;
+                return false;
             }
         }
 
