@@ -157,6 +157,11 @@ namespace Kephas.Services.Composition
                     partBuilder.ExportInterfaces(
                         t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
                         (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
+
+                    if (metadataAttributes.Length > 0)
+                    {
+                        logger.Warn(string.Format(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract));
+                    }
                 }
                 else
                 {

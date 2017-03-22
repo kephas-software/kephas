@@ -222,4 +222,7 @@
   <data name="RuntimeTypeInfo_NoPublicConstructorDefined_Exception" xml:space="preserve">
     <value>No public constructor defined for '{0}', cannot create instances.</value>
   </data>
+  <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
+    <value>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{0}'). Instead, try to pass metadata through generic parameter types.</value>
+  </data>
 </root>
