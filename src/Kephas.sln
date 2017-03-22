@@ -79,7 +79,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net46.Tests", "Tests\Kephas.Composition.Mef.Net46.Tests\Kephas.Composition.Mef.Net46.Tests.csproj", "{8994A0CD-F82A-4EFF-BC43-B314CE273238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net46", "Kephas.Logging.NLog.Net46\Kephas.Logging.NLog.Net46.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net45", "Kephas.Logging.NLog.Net46\Kephas.Logging.NLog.Net45.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.PortableLegacy", "Kephas.Core.PortableLegacy\Kephas.Core.PortableLegacy.csproj", "{849DBE3F-2A99-4EAF-B317-1F09AD0D232C}"
 EndProject
