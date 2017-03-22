@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Attribute indicating the supported.
+    /// Attribute indicating the supported data context.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class DataContextTypeAttribute : Attribute, IMetadataValue<Type>
