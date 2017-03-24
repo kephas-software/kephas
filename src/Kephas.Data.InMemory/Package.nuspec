@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Data.InMemory</id>
-        <version>3.1.0</version>
+        <version>$version$</version>
         <title>Kephas.Data.InMemory</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -22,8 +22,8 @@
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
             <group>
-                <dependency id="Kephas.Core" version="3.1.0" />
-                <dependency id="Kephas.Data" version="3.1.0" />
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Data" version="$refversion$" />
             </group>
             <group targetFramework="netstandard1.4">
                 <dependency id="NETStandard.Library" version="1.6.0" />

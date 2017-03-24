@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Kephas.Data.Client</id>
-        <version>3.1.0</version>
+        <version>$version$</version>
         <title>Kephas.Data.Client</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
@@ -22,7 +22,7 @@
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
             <group>
-                <dependency id="Kephas.Data" version="3.1.0" />
+                <dependency id="Kephas.Data" version="$refversion$" />
             </group>
         </dependencies>
         <references>
