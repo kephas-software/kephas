@@ -41,11 +41,11 @@
         <tags>kephas framework logging nlog quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.dll" target="lib\net45" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.pdb" target="lib\net45" />
-        <file src="..\Kephas.Logging.NLog.Net46\bin\debug\Kephas.Logging.NLog.xml" target="lib\net45" />
+        <file src="bin\$configuration$\Kephas.Logging.NLog.dll" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\Kephas.Logging.NLog.pdb" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\Kephas.Logging.NLog.xml" target="lib\netstandard1.4" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\$configuration$\Kephas.Logging.NLog.dll" target="lib\net45" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\$configuration$\Kephas.Logging.NLog.pdb" target="lib\net45" />
+        <file src="..\Kephas.Logging.NLog.Net46\bin\$configuration$\Kephas.Logging.NLog.xml" target="lib\net45" />
     </files>
 </package>

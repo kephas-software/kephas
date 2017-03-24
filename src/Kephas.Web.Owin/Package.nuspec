@@ -34,8 +34,8 @@
     <tags>kephas framework web owin quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Web.Owin.dll" target="lib\net461" />
-    <file src="bin\debug\Kephas.Web.Owin.pdb" target="lib\net461" />
-    <file src="bin\debug\Kephas.Web.Owin.xml" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Web.Owin.dll" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Web.Owin.pdb" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Web.Owin.xml" target="lib\net461" />
   </files>
 </package>

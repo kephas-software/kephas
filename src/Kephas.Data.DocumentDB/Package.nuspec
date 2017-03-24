@@ -31,8 +31,8 @@
     <tags>kephas framework data mongo DocumentDB quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Data.DocumentDB.dll" target="lib\net461" />
-    <file src="bin\debug\Kephas.Data.DocumentDB.pdb" target="lib\net461" />
-    <file src="bin\debug\Kephas.Data.DocumentDB.xml" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Data.DocumentDB.dll" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Data.DocumentDB.pdb" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Data.DocumentDB.xml" target="lib\net461" />
   </files>
 </package>

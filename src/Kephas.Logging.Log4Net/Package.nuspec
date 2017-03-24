@@ -34,8 +34,8 @@
     <tags>kephas framework logging log4net quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Logging.Log4net.dll" target="lib\net461" />
-    <file src="bin\debug\Kephas.Logging.Log4net.pdb" target="lib\net461" />
-    <file src="bin\debug\Kephas.Logging.Log4net.xml" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Logging.Log4net.dll" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Logging.Log4net.pdb" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Logging.Log4net.xml" target="lib\net461" />
   </files>
 </package>

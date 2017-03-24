@@ -31,11 +31,11 @@
         <tags>kephas framework data client quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.dll" target="lib\netstandard1.4" />
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.pdb" target="lib\netstandard1.4" />
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.xml" target="lib\netstandard1.4" />
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\debug\netstandard1.4\Kephas.Data.Client.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.dll" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.pdb" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.xml" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\$configuration$\netstandard1.4\Kephas.Data.Client.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
     </files>
 </package>

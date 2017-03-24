@@ -29,8 +29,8 @@
     <tags>kephas framework mail smtp quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Mail.Net46.dll" target="lib\net461" />
-    <file src="bin\debug\Kephas.Mail.Net46.pdb" target="lib\net461" />
-    <file src="bin\debug\Kephas.Mail.Net46.xml" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Mail.Net46.dll" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Mail.Net46.pdb" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Mail.Net46.xml" target="lib\net461" />
   </files>
 </package>

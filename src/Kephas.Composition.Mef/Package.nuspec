@@ -46,14 +46,14 @@
         <tags>kephas framework composition mef quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Composition.Mef.dll" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Composition.Mef.pdb" target="lib\netstandard1.4" />
-        <file src="bin\debug\Kephas.Composition.Mef.xml" target="lib\netstandard1.4" />
-        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.dll" target="lib\net461" />
-        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net461" />
-        <file src="..\Kephas.Composition.Mef.Net46\bin\debug\Kephas.Composition.Mef.xml" target="lib\net461" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.dll" target="lib\net45" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.pdb" target="lib\net45" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\debug\Kephas.Composition.Mef.xml" target="lib\net45" />
+        <file src="bin\$configuration$\Kephas.Composition.Mef.dll" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\Kephas.Composition.Mef.pdb" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\Kephas.Composition.Mef.xml" target="lib\netstandard1.4" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\$configuration$\Kephas.Composition.Mef.dll" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\$configuration$\Kephas.Composition.Mef.pdb" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net46\bin\$configuration$\Kephas.Composition.Mef.xml" target="lib\net461" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.dll" target="lib\net45" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.pdb" target="lib\net45" />
+        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.xml" target="lib\net45" />
     </files>
 </package>

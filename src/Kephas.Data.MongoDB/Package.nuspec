@@ -31,8 +31,8 @@
     <tags>kephas framework data mongo mongodb quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\debug\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
-    <file src="bin\debug\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
-    <file src="bin\debug\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
+    <file src="bin\$configuration$\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
+    <file src="bin\$configuration$\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
+    <file src="bin\$configuration$\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
   </files>
 </package>

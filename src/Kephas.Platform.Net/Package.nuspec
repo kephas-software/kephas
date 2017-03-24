@@ -49,14 +49,14 @@
         <tags>kephas framework platform net quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\debug\Kephas.Platform.Net.dll" target="lib\netstandard1.5" />
-        <file src="bin\debug\Kephas.Platform.Net.pdb" target="lib\netstandard1.5" />
-        <file src="bin\debug\Kephas.Platform.Net.xml" target="lib\netstandard1.5" />
-        <file src="..\Kephas.Platform.Net46\bin\debug\Kephas.Platform.Net.dll" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net46\bin\debug\Kephas.Platform.Net.pdb" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net46\bin\debug\Kephas.Platform.Net.xml" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net45\bin\debug\Kephas.Platform.Net45.dll" target="lib\net45" />
-        <file src="..\Kephas.Platform.Net45\bin\debug\Kephas.Platform.Net45.pdb" target="lib\net45" />
-        <file src="..\Kephas.Platform.Net45\bin\debug\Kephas.Platform.Net45.xml" target="lib\net45" />
+        <file src="bin\$configuration$\Kephas.Platform.Net.dll" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\Kephas.Platform.Net.pdb" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\Kephas.Platform.Net.xml" target="lib\netstandard1.5" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.dll" target="lib\net461" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.pdb" target="lib\net461" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.xml" target="lib\net461" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.dll" target="lib\net45" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.pdb" target="lib\net45" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.xml" target="lib\net45" />
     </files>
 </package>
