@@ -14,6 +14,7 @@ namespace Kephas.Data.Tests
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
 

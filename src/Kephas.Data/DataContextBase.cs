@@ -12,6 +12,7 @@ namespace Kephas.Data
     using System;
     using System.Linq;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Resources;
@@ -121,14 +122,39 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="operationContext">Context for the operation.</param>
+        /// <param name="operationContext">Context for the operation (optional).</param>
         /// <returns>
         /// The capability.
         /// </returns>
-        public virtual TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext)
+        public virtual TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext = null)
             where TCapability : class
         {
-            return entity as TCapability;
+            var entityCapability = entity as TCapability;
+            if (entityCapability != null)
+            {
+                return entityCapability;
+            }
+
+            return this.GetEntityInfo(entity) as TCapability;
+        }
+
+        /// <summary>
+        /// Gets the entity extended information.
+        /// </summary>
+        /// <remarks>
+        /// Note to inheritors: it is a good practice to override this method
+        /// and provide a custom implementation, because, by default,
+        /// the framework implementation returns each time a new <see cref="EntityInfo"/>.
+        /// </remarks>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public virtual IEntityInfo GetEntityInfo(object entity)
+        {
+            Requires.NotNull(entity, nameof(entity));
+
+            return this.CreateEntityInfo(entity);
         }
 
         /// <summary>
@@ -138,6 +164,19 @@ namespace Kephas.Data
         public void Dispose()
         {
             this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Creates a new entity information.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="changeState">The entity's change state.</param>
+        /// <returns>
+        /// The new entity information.
+        /// </returns>
+        protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState changeState = ChangeState.NotChanged)
+        {
+            return new EntityInfo(entity, changeState);
         }
 
         /// <summary>

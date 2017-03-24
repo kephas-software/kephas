@@ -46,9 +46,9 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
             dataContext.Initialize(new DataContextConfiguration(string.Empty));
 
-            dataContext.GetOrAddCacheableItem(null, "mama", ChangeState.Added);
-            dataContext.GetOrAddCacheableItem(null, "papa", ChangeState.Added);
-            dataContext.GetOrAddCacheableItem(null, 1, ChangeState.Added);
+            dataContext.GetOrAddCacheableItem(null, new EntityInfo("mama", ChangeState.Added));
+            dataContext.GetOrAddCacheableItem(null, new EntityInfo("papa", ChangeState.Added));
+            dataContext.GetOrAddCacheableItem(null, new EntityInfo(1, ChangeState.Added));
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -114,7 +114,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=true"));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, ChangeState.Added);
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreSame(sharedItem, sharedItemActual);
@@ -130,7 +130,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=false"));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), sharedItem, ChangeState.Added);
+            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreNotSame(sharedItem, sharedItemActual);

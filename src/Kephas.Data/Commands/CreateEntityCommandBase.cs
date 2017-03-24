@@ -85,6 +85,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
+            // TODO involve an activator, for the case of interfaces.
             var runtimeTypeInfo = operationContext.EntityType.AsRuntimeTypeInfo();
             return runtimeTypeInfo.CreateInstance();
         }

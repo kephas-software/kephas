@@ -10,10 +10,12 @@
 namespace Kephas.Data.InMemory.Commands
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Behaviors;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
 
     /// <summary>
@@ -41,7 +43,18 @@ namespace Kephas.Data.InMemory.Commands
         /// </returns>
         protected override Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IList<IPersistChangesEntry>>(null);
+            var dataContext = operationContext.DataContext as InMemoryDataContext;
+            if (dataContext == null)
+            {
+                return Task.FromResult<IList<IPersistChangesEntry>>(null);
+            }
+
+            var modifiedEntries =
+                dataContext.WorkingCache
+                    .Where(e => e.ChangeState != ChangeState.NotChanged)
+                    .Select(e => (IPersistChangesEntry)new PersistChangesEntry(e.Entity, e.ChangeState, new[] { e.Entity }))
+                    .ToList();
+            return Task.FromResult<IList<IPersistChangesEntry>>(modifiedEntries);
         }
 
         /// <summary>
@@ -58,6 +71,15 @@ namespace Kephas.Data.InMemory.Commands
             IPersistChangesContext operationContext,
             CancellationToken cancellationToken)
         {
+            var dataContext = operationContext.DataContext as InMemoryDataContext;
+            if (dataContext == null)
+            {
+                return Task.FromResult<IList<IPersistChangesEntry>>(null);
+            }
+
+            // TODO remove all deleted from memory.
+            // dataContext.WorkingCache.RemoveAll(ei => ei.ChangeState == ChangeState.Deleted);
+
             return Task.FromResult(0);
         }
     }

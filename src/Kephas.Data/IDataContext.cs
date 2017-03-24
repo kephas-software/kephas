@@ -15,6 +15,7 @@ namespace Kephas.Data
     using System.Linq;
     using System.Linq.Expressions;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Store;
     using Kephas.Dynamic;
@@ -53,12 +54,21 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="TCapability">Type of the capability.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <param name="operationContext">Context for the operation.</param>
+        /// <param name="operationContext">Context for the operation (optional).</param>
         /// <returns>
         /// The capability.
         /// </returns>
-        TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext)
+        TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext = null)
             where TCapability : class;
+
+        /// <summary>
+        /// Gets the entity extended information.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        IEntityInfo GetEntityInfo(object entity);
     }
 
     /// <summary>
@@ -163,5 +173,18 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
         public abstract void Initialize(IContext context = null);
+
+        /// <summary>
+        /// Gets the entity extended information.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public IEntityInfo GetEntityInfo(object entity)
+        {
+            Contract.Requires(entity != null);
+            return Contract.Result<IEntityInfo>();
+        }
     }
 }

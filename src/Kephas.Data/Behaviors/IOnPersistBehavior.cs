@@ -22,7 +22,7 @@ namespace Kephas.Data.Behaviors
         /// </summary>
         /// <param name="obj">The object to be persisted.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -33,7 +33,7 @@ namespace Kephas.Data.Behaviors
         /// </summary>
         /// <param name="obj">The persisted object.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>

@@ -20,6 +20,7 @@ namespace Kephas.Data.InMemory
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace Kephas.Data.InMemory
     /// </summary>
     /// <remarks>
     /// For the connection string, use something like in the example below:
-    /// ConnectionString=UseSharedCache=true|false;Data=(JSON serialized data).
+    /// ConnectionString=UseSharedCache=true|false;InitialData=(JSON serialized data).
     /// </remarks>
     [SupportedDataStoreKinds(DataStoreKind.InMemory)]
     public class InMemoryDataContext : DataContextBase
@@ -36,17 +37,17 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// The shared cache.
         /// </summary>
-        private static readonly ConcurrentBag<object> SharedCache = new ConcurrentBag<object>();
+        private static readonly ConcurrentBag<IEntityInfo> SharedCache = new ConcurrentBag<IEntityInfo>();
 
         /// <summary>
         /// The internal cache.
         /// </summary>
-        private readonly List<object> cache = new List<object>();
+        private readonly List<IEntityInfo> cache = new List<IEntityInfo>();
 
         /// <summary>
         /// The working cache.
         /// </summary>
-        private IEnumerable<object> workingCache;
+        private IEnumerable<IEntityInfo> workingCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
@@ -73,20 +74,12 @@ namespace Kephas.Data.InMemory
         public ISerializationService SerializationService { get; }
 
         /// <summary>
-        /// Gets a value indicating whether to use the shared cache or not.
-        /// </summary>
-        /// <value>
-        /// True if shared cache is used, false if not.
-        /// </value>
-        protected bool UseSharedCache { get; private set; }
-
-        /// <summary>
         /// Gets the working cache.
         /// </summary>
         /// <value>
         /// The working cache.
         /// </value>
-        protected IEnumerable<object> WorkingCache
+        protected internal IEnumerable<IEntityInfo> WorkingCache
         {
             get
             {
@@ -94,6 +87,14 @@ namespace Kephas.Data.InMemory
                 return this.workingCache;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether to use the shared cache or not.
+        /// </summary>
+        /// <value>
+        /// True if shared cache is used, false if not.
+        /// </value>
+        protected bool UseSharedCache { get; private set; }
 
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -105,45 +106,65 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.WorkingCache.OfType<T>().AsQueryable();
+            return this.WorkingCache.Select(ei => ei.Entity).OfType<T>().AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets the entity extended information.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public override IEntityInfo GetEntityInfo(object entity)
+        {
+            var entityInfo = this.WorkingCache.FirstOrDefault(ei => ei.Entity == entity);
+            return entityInfo;
         }
 
         /// <summary>
         /// Gets or add a cacheable item.
         /// </summary>
         /// <param name="operationContext">Context for the operation.</param>
-        /// <param name="entity">The entity.</param>
-        /// <param name="changeState">The entity change state.</param>
+        /// <param name="entityInfo">The entity information.</param>
         /// <returns>
         /// The or add cached item.
         /// </returns>
-        internal object GetOrAddCacheableItem(IDataOperationContext operationContext, object entity, ChangeState changeState)
+        internal IEntityInfo GetOrAddCacheableItem(IDataOperationContext operationContext, IEntityInfo entityInfo)
         {
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(entityInfo, nameof(entityInfo));
+
+            var entity = entityInfo.Entity;
+            var changeState = entityInfo.ChangeState;
 
             if (changeState == ChangeState.Added || changeState == ChangeState.AddedOrChanged)
             {
-                this.Add(entity);
-                return entity;
+                this.Add(entityInfo);
+                return entityInfo;
             }
 
             var identifiable = this.TryGetCapability<IIdentifiable>(entity, operationContext);
             var entityId = identifiable?.Id;
             if (identifiable == null || Id.IsUnsetValue(entityId))
             {
-                this.Add(entity);
-                return entity;
+                this.Add(entityInfo);
+                return entityInfo;
             }
 
             var entityType = entity.GetType();
-            var existingEntity = this.WorkingCache.FirstOrDefault(e => e.GetType() == entityType && entityId.Equals(this.TryGetCapability<IIdentifiable>(e, operationContext)?.Id));
-            if (existingEntity != null)
+            var existingEntry =
+                this.WorkingCache.FirstOrDefault(
+                    e =>
+                        e.Entity == entity
+                        || (e.Entity.GetType() == entityType
+                            && entityId.Equals(this.TryGetCapability<IIdentifiable>(e.Entity, operationContext)?.Id)));
+            if (existingEntry != null)
             {
-                return existingEntity;
+                return existingEntry;
             }
 
-            this.Add(entity);
-            return entity;
+            this.Add(entityInfo);
+            return entityInfo;
         }
 
         /// <summary>
@@ -158,10 +179,12 @@ namespace Kephas.Data.InMemory
 
             bool.TryParse(connectionStringValues.TryGetValue("UseSharedCache"), out var useSharedCache);
             this.UseSharedCache = useSharedCache;
-            this.workingCache = useSharedCache ? (IEnumerable<object>)SharedCache : this.cache;
+            this.workingCache = useSharedCache ? (IEnumerable<IEntityInfo>)SharedCache : this.cache;
 
-            var serializedData = connectionStringValues.TryGetValue("Data");
+            var serializedData = connectionStringValues.TryGetValue("InitialData");
             this.InitializeData(serializedData);
+
+            this.InitializeData((config as InMemoryDataContextConfiguration)?.InitialData);
         }
 
         /// <summary>
@@ -181,7 +204,7 @@ namespace Kephas.Data.InMemory
         /// Adds an item to the internal cache.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        private void Add(object item)
+        private void Add(IEntityInfo item)
         {
             if (this.UseSharedCache)
             {
@@ -190,6 +213,24 @@ namespace Kephas.Data.InMemory
             else
             {
                 this.cache.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the data.
+        /// </summary>
+        /// <param name="initialData">The initial data.</param>
+        private void InitializeData(IEnumerable<IEntityInfo> initialData)
+        {
+            if (initialData == null)
+            {
+                return;
+            }
+
+            var operationContext = new DataOperationContext(this);
+            foreach (var entityInfo in initialData)
+            {
+                this.GetOrAddCacheableItem(operationContext, entityInfo);
             }
         }
 
@@ -207,16 +248,16 @@ namespace Kephas.Data.InMemory
             var data = this.SerializationService.JsonDeserializeAsync(serializedData).GetResultNonLocking(TimeSpan.FromMinutes(1));
 
             var operationContext = new DataOperationContext(this);
-            if (data is IEnumerable)
+            if (data.GetType().IsCollection())
             {
                 foreach (var entity in (IEnumerable)data)
                 {
-                    this.GetOrAddCacheableItem(operationContext, entity, ChangeState.NotChanged);
+                    this.GetOrAddCacheableItem(operationContext, this.CreateEntityInfo(entity));
                 }
             }
             else
             {
-                this.GetOrAddCacheableItem(operationContext, data, ChangeState.NotChanged);
+                this.GetOrAddCacheableItem(operationContext, this.CreateEntityInfo(data));
             }
         }
     }

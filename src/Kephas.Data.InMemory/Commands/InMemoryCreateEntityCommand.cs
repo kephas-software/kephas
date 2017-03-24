@@ -38,7 +38,7 @@ namespace Kephas.Data.InMemory.Commands
         protected override void PostCreateEntity(ICreateEntityContext operationContext, ICreateEntityResult result)
         {
             var dataContext = (InMemoryDataContext)operationContext.DataContext;
-            result.Entity = dataContext.GetOrAddCacheableItem(operationContext, result.Entity, ChangeState.Added);
+            result.Entity = dataContext.GetOrAddCacheableItem(operationContext, new EntityInfo(result.Entity, ChangeState.Added));
         }
     }
 }

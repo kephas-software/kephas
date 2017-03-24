@@ -96,6 +96,8 @@ namespace Kephas.Data.Commands
 
                                 changes = await this.ValidateAndPersistModifiedEntriesAsync(modifiedEntries, changes, operationContext, sb, cancellationToken).PreserveThreadContext();
 
+                                this.ResetChangeState(operationContext, modifiedEntries);
+
                                 await this.ExecuteAfterSaveBehaviorsAsync(operationContext, modifiedEntries, cancellationToken).PreserveThreadContext();
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
@@ -145,6 +147,22 @@ namespace Kephas.Data.Commands
             }
 
             return new DataCommandResult(string.Format(Strings.PersistChangesCommand_ResultMessage, changes));
+        }
+
+        /// <summary>
+        /// Resets the change state of the entities after the persistance.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="modifiedEntries">The modified entries.</param>
+        protected virtual void ResetChangeState(IPersistChangesContext operationContext, IList<IPersistChangesEntry> modifiedEntries)
+        {
+            foreach (var entry in modifiedEntries)
+            {
+                if (entry.ChangeState != ChangeState.Deleted)
+                {
+                    entry.ChangeState = ChangeState.NotChanged;
+                }
+            }
         }
 
         /// <summary>

@@ -12,29 +12,12 @@ namespace Kephas.Data.Commands
     using System.Collections.Generic;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Services;
 
     /// <summary>
     /// Interface for an entry in the persist changes flow.
     /// </summary>
-    public interface IPersistChangesEntry : IContext
+    public interface IPersistChangesEntry : IEntityInfo
     {
-        /// <summary>
-        /// Gets the change state.
-        /// </summary>
-        /// <value>
-        /// The change state.
-        /// </value>
-        ChangeState ChangeState { get; }
-
-        /// <summary>
-        /// Gets the modified entity.
-        /// </summary>
-        /// <value>
-        /// The modified entity.
-        /// </value>
-        object Entity { get; }
-
         /// <summary>
         /// Gets the parts of an aggregated entity as a flattened graph.
         /// </summary>
