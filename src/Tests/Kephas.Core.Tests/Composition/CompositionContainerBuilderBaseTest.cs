@@ -106,7 +106,7 @@ namespace Kephas.Core.Tests.Composition
                 return Substitute.For<IExportProvider>();
             }
 
-            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
+            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
             {
                 return Substitute.For<IExportProvider>();
             }

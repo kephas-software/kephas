@@ -78,6 +78,15 @@ namespace Kephas
         /// The IAmbientServices.
         /// </returns>
         IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory);
+
+        /// <summary>
+        /// Gets a value indicating whether the service with the provided contract is registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// <c>true</c> if the service is registered, <c>false</c> if not.
+        /// </returns>
+        bool IsRegistered(Type serviceType);
     }
 
     /// <summary>
@@ -185,5 +194,14 @@ namespace Kephas
         /// </returns>
         /// <param name="serviceType">An object that specifies the type of service object to get. </param>
         public abstract object GetService(Type serviceType);
+
+        /// <summary>
+        /// Gets a value indicating whether the service with the provided contract is registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// <c>true</c> if the service is registered, <c>false</c> if not.
+        /// </returns>
+        public abstract bool IsRegistered(Type serviceType);
     }
 }

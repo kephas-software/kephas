@@ -10,10 +10,10 @@
 namespace Kephas.Composition.Mef.ExportProviders
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Composition.Hosting.Core;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Factory export descriptor provider based on a <see cref="IServiceProvider"/>.
@@ -26,23 +26,23 @@ namespace Kephas.Composition.Mef.ExportProviders
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
-        /// Stores information about the support for services.
+        /// Function used to query whether the service provider registers a specific service.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, bool> servicesSupport = new ConcurrentDictionary<Type, bool>();
+        private readonly Func<IServiceProvider, Type, bool> isServiceRegisteredFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceProviderExportDescriptorProvider" />
         /// class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        public ServiceProviderExportDescriptorProvider(IServiceProvider serviceProvider)
+        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
+        public ServiceProviderExportDescriptorProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
         {
-            Contract.Requires(serviceProvider != null);
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(isServiceRegisteredFunc, nameof(isServiceRegisteredFunc));
 
             this.serviceProvider = serviceProvider;
-
-            // exclude the ICompositionContext service, this will be registered by the respective container.
-            this.servicesSupport[typeof(ICompositionContext)] = false;
+            this.isServiceRegisteredFunc = isServiceRegisteredFunc;
         }
 
         /// <summary>
@@ -61,11 +61,9 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// </remarks>
         public override IEnumerable<ExportDescriptorPromise> GetExportDescriptors(CompositionContract contract, DependencyAccessor descriptorAccessor)
         {
-            var isSupported = this.servicesSupport.GetOrAdd(
-                contract.ContractType,
-                type => this.serviceProvider.GetService(type) != null);
-
-            if (!isSupported)
+            // exclude the ICompositionContext service, this will be registered by the respective container.
+            if (contract.ContractType == typeof(ICompositionContext) ||
+                !this.isServiceRegisteredFunc(this.serviceProvider, contract.ContractType))
             {
                 return ExportDescriptorProvider.NoExportDescriptors;
             }
@@ -75,20 +73,20 @@ namespace Kephas.Composition.Mef.ExportProviders
                  new ExportDescriptorPromise(
                    contract,
                    contract.ContractType.Name,
-                   true, // is shared
+                   false, // is not shared, make it each time query for the service, because of the service factory registration.
                    ExportDescriptorProvider.NoDependencies,
                    dependencies => ExportDescriptor.Create(
                      (c, o) =>
-                       {
-                       var instance = this.serviceProvider.GetService(contract.ContractType);
-                       var disposable = instance as IDisposable;
-                       if (disposable != null)
-                       {
-                         c.AddBoundInstance(disposable);
-                       }
+                        {
+                            var instance = this.serviceProvider.GetService(contract.ContractType);
+                            var disposable = instance as IDisposable;
+                            if (disposable != null)
+                            {
+                                c.AddBoundInstance(disposable);
+                            }
 
-                       return instance;
-                     }, 
+                            return instance;
+                        },
                      ExportDescriptorProvider.NoMetadata))
                };
         }

@@ -56,13 +56,13 @@ namespace Kephas.Testing.Composition.Mef
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(ILogManager logManager = null, IConfigurationManager configurationManager = null, IAppRuntime appRuntime = null)
+        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IConfigurationManager configurationManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? Substitute.For<ILogManager>();
             configurationManager = configurationManager ?? Substitute.For<IConfigurationManager>();
             appRuntime = appRuntime ?? Substitute.For<IAppRuntime>();
 
-            var ambientServices = new AmbientServices();
+            ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .RegisterService(logManager)
                 .RegisterService(configurationManager)
@@ -77,8 +77,7 @@ namespace Kephas.Testing.Composition.Mef
 
         public virtual ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
         {
-            return
-                this.WithContainerBuilder()
+            return this.WithContainerBuilder()
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .CreateContainer();
@@ -87,8 +86,16 @@ namespace Kephas.Testing.Composition.Mef
         public ICompositionContext CreateContainerWithBuilder(params Type[] types)
         {
             var configuration = this.WithEmptyConfiguration().WithParts(types);
-            return this
-                .WithContainerBuilder()
+            return this.WithContainerBuilder()
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithConfiguration(configuration)
+                .CreateContainer();
+        }
+
+        public ICompositionContext CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
+        {
+            var configuration = this.WithEmptyConfiguration().WithParts(types);
+            return this.WithContainerBuilder(ambientServices)
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
                 .WithConfiguration(configuration)
                 .CreateContainer();

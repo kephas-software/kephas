@@ -60,6 +60,16 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void RegisterService_service_factory_non_shared()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(ILogManager), () => Substitute.For<ILogManager>());
+            var logManager1 = ambientServices.GetService(typeof(ILogManager));
+            var logManager2 = ambientServices.GetService(typeof(ILogManager));
+            Assert.AreNotSame(logManager1, logManager2);
+        }
+
+        [Test]
         public void CompositionContainer_works_fine_when_explicitely_set()
         {
             var ambientServices = new AmbientServices();

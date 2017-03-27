@@ -22,6 +22,8 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
 
+    using NSubstitute;
+
     using NUnit.Framework;
 
     /// <summary>
@@ -201,6 +203,49 @@ namespace Kephas.Tests.Composition.Mef
                 var otherScopedInstance = otherScopedContext.GetExport<ScopeExportedClass>();
                 Assert.AreNotSame(scopedInstance1, otherScopedInstance);
             }
+        }
+
+        [Test]
+        public void GetExport_ambient_services()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+
+            var service = Substitute.For<IAsyncInitializable>();
+            ambientServices.RegisterService(typeof(IAsyncInitializable), service);
+
+            var actualService = container.GetExport<IAsyncInitializable>();
+            Assert.AreSame(service, actualService);
+        }
+
+        [Test]
+        public void GetExport_ambient_services_factory()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+
+            ambientServices.RegisterService(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+
+            var service1 = container.GetExport<IAsyncInitializable>();
+            var service2 = container.GetExport<IAsyncInitializable>();
+            Assert.AreNotSame(service1, service2);
+        }
+
+        [Test]
+        public void GetExport_ambient_services_not_available_after_first_failed_request()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+
+            var service = container.TryGetExport<IAsyncInitializable>();
+            Assert.IsNull(service);
+
+            ambientServices.RegisterService(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+
+            // This is null because the composition container caches the export providers, and after a first request
+            // when the export was not available, will cache the empty export providers.
+            service = container.TryGetExport<IAsyncInitializable>();
+            Assert.IsNull(service);
         }
 
         private class ContainerServicesImporter

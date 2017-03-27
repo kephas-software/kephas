@@ -84,7 +84,7 @@ namespace Kephas.Composition.Hosting
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
-            this.WithServiceProviderExportProvider(context.AmbientServices);
+            this.WithServiceProviderExportProvider(context.AmbientServices, (a, t) => ((IAmbientServices)a).IsRegistered(t));
         }
 
         /// <summary>
@@ -324,15 +324,17 @@ namespace Kephas.Composition.Hosting
         /// Can be used multiple times, the factories are added to the existing ones.
         /// </remarks>
         /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
         /// <returns>
         /// This builder.
         /// </returns>
-        public virtual TBuilder WithServiceProviderExportProvider(IServiceProvider serviceProvider)
+        public virtual TBuilder WithServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
         {
-            Contract.Requires(serviceProvider != null);
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+            Requires.NotNull(isServiceRegisteredFunc, nameof(isServiceRegisteredFunc));
             Contract.Ensures(Contract.Result<TBuilder>() != null);
 
-            var exportProvider = this.CreateServiceProviderExportProvider(serviceProvider);
+            var exportProvider = this.CreateServiceProviderExportProvider(serviceProvider, isServiceRegisteredFunc);
             this.ExportProviders.Add(exportProvider);
 
             return (TBuilder)this;
@@ -414,11 +416,16 @@ namespace Kephas.Composition.Hosting
         /// <summary>
         /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
         /// </summary>
+        /// <remarks>
+        /// This allows for the services registered in the <see cref="IAmbientServices"/> before the composition container was created
+        /// to be registered also in the composition container.
+        /// </remarks>
         /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
         /// <returns>
         /// The export provider.
         /// </returns>
-        protected abstract IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider);
+        protected abstract IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc);
 
         /// <summary>
         /// Factory method for creating the conventions builder.

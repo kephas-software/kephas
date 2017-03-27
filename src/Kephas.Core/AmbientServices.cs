@@ -159,6 +159,18 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Gets a value indicating whether the service with the provided contract is registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// <c>true</c> if the service is registered, <c>false</c> if not.
+        /// </returns>
+        public bool IsRegistered(Type serviceType)
+        {
+            return serviceType != null && this.services.ContainsKey(serviceType);
+        }
+
+        /// <summary>
         /// Gets the service object of the specified type.
         /// </summary>
         /// <returns>

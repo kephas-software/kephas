@@ -161,12 +161,13 @@ namespace Kephas.Composition.Mef.Hosting
         /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
         /// <returns>
         /// The export provider.
         /// </returns>
-        protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider)
+        protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
         {
-            var provider = new ServiceProviderExportDescriptorProvider(serviceProvider);
+            var provider = new ServiceProviderExportDescriptorProvider(serviceProvider, isServiceRegisteredFunc);
             return provider;
         }
 
