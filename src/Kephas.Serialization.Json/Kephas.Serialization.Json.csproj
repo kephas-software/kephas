@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
