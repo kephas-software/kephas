@@ -14,6 +14,7 @@ namespace Kephas.Core.Tests
 
     using Kephas;
     using Kephas.Composition;
+    using Kephas.Logging;
 
     using NSubstitute;
 
@@ -27,10 +28,35 @@ namespace Kephas.Core.Tests
     public class AmbientServicesTest
     {
         [Test]
-        public void CompositionContainer_cannot_set_null()
+        public void RegisterService_instance_cannot_set_null()
         {
             var ambientServices = new AmbientServices();
-            Assert.That(() => ambientServices.RegisterService<ICompositionContext>(null), Throws.InstanceOf<Exception>());
+            Assert.That(() => ambientServices.RegisterService(typeof(ICompositionContext), (object)null), Throws.InstanceOf<Exception>());
+        }
+
+        [Test]
+        public void RegisterService_factory_cannot_set_null()
+        {
+            var ambientServices = new AmbientServices();
+            Assert.That(() => ambientServices.RegisterService(typeof(ICompositionContext), (Func<object>)null), Throws.InstanceOf<Exception>());
+        }
+
+        [Test]
+        public void RegisterService_service_instance()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.RegisterService(typeof(ILogManager), logManager);
+            Assert.AreSame(logManager, ambientServices.GetService(typeof(ILogManager)));
+        }
+
+        [Test]
+        public void RegisterService_service_factory()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.RegisterService(typeof(ILogManager), () => logManager);
+            Assert.AreSame(logManager, ambientServices.GetService(typeof(ILogManager)));
         }
 
         [Test]

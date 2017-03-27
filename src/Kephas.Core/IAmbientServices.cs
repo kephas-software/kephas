@@ -13,7 +13,6 @@ namespace Kephas
     using System.Diagnostics.Contracts;
     using System.Dynamic;
     using System.Linq.Expressions;
-    using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Composition;
@@ -21,7 +20,6 @@ namespace Kephas
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
-    using Kephas.Resources;
 
     /// <summary>
     /// Contract interface for ambient services.
@@ -70,6 +68,16 @@ namespace Kephas
         /// The IAmbientServices.
         /// </returns>
         IAmbientServices RegisterService(Type serviceType, object service);
+
+        /// <summary>
+        /// Registers the provided service factory.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory);
     }
 
     /// <summary>
@@ -149,10 +157,22 @@ namespace Kephas
             Requires.NotNull(service, nameof(service));
             Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
-            if (!serviceType.GetTypeInfo().IsAssignableFrom(service.GetType().GetTypeInfo()))
-            {
-                throw new InvalidOperationException(string.Format(Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception, service.GetType(), serviceType));
-            }
+            return Contract.Result<IAmbientServices>();
+        }
+
+        /// <summary>
+        /// Registers the provided service factory.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory)
+        {
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             return Contract.Result<IAmbientServices>();
         }

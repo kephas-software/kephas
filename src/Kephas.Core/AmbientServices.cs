@@ -11,15 +11,18 @@ namespace Kephas
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Resources;
 
     /// <summary>
     /// Provides the global ambient services.
@@ -37,7 +40,7 @@ namespace Kephas
         /// <summary>
         /// The services.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, object> services = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, ServiceRegistration> services = new ConcurrentDictionary<Type, ServiceRegistration>();
 
         /// <summary>
         /// Initializes static members of the <see cref="AmbientServices"/> class.
@@ -111,8 +114,47 @@ namespace Kephas
         /// </returns>
         public IAmbientServices RegisterService(Type serviceType, object service)
         {
-            this.services[serviceType] = service;
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(service, nameof(service));
 
+            var declaredServiceTypeInfo = IntrospectionExtensions.GetTypeInfo(serviceType);
+            var serviceTypeInfo = IntrospectionExtensions.GetTypeInfo(service.GetType());
+            if (!declaredServiceTypeInfo.IsAssignableFrom(serviceTypeInfo))
+            {
+                throw new InvalidOperationException(
+                      string.Format(
+                          Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
+                          service.GetType(),
+                          serviceType));
+            }
+
+            this.services[serviceType] = new ServiceRegistration
+            {
+                ServiceContract = serviceType,
+                ServiceFactory = () => service
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the provided service factory.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory)
+        {
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            this.services[serviceType] = new ServiceRegistration
+            {
+                ServiceContract = serviceType,
+                ServiceFactory = serviceFactory
+            };
             return this;
         }
 
@@ -125,8 +167,30 @@ namespace Kephas
         /// <param name="serviceType">An object that specifies the type of service object to get. </param>
         public object GetService(Type serviceType)
         {
-            var service = this.services.TryGetValue(serviceType);
-            return service;
+            var serviceRegistration = this.services.TryGetValue(serviceType);
+            return serviceRegistration.ServiceFactory();
+        }
+
+        /// <summary>
+        /// A service registration.
+        /// </summary>
+        private class ServiceRegistration
+        {
+            /// <summary>
+            /// Gets or sets the service contract.
+            /// </summary>
+            /// <value>
+            /// The service contract.
+            /// </value>
+            public Type ServiceContract { get; set; }
+
+            /// <summary>
+            /// Gets or sets the service factory.
+            /// </summary>
+            /// <value>
+            /// The service factory.
+            /// </value>
+            public Func<object> ServiceFactory { get; set; }
         }
     }
 }

@@ -90,6 +90,25 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, Func<TService> serviceFactory)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
+
+            return ambientServices.RegisterService(typeof(TService), serviceFactory);
+        }
+
+        /// <summary>
         /// Gets the service with the provided type.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
