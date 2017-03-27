@@ -22,7 +22,7 @@ namespace Kephas.Data
         /// <param name="connectionString">The connection string.</param>
         public DataContextConfiguration(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.ConnectionString = connectionString;
         }
 
         /// <summary>

@@ -118,7 +118,9 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public override IEntityInfo GetEntityInfo(object entity)
         {
-            var entityInfo = this.WorkingCache.FirstOrDefault(ei => ei.Entity == entity);
+            // do not use here the WorkingCache property, because during initialization
+            // the InitializationMonitor is not in the Completed state yet.
+            var entityInfo = this.workingCache?.FirstOrDefault(ei => ei.Entity == entity);
             return entityInfo;
         }
 

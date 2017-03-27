@@ -83,7 +83,7 @@ namespace Kephas.Data.InMemory.Tests
         }
 
         [Test]
-        public void Initialize_initial_data()
+        public void Initialize_initial_data_from_connection_string()
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
 
@@ -95,7 +95,29 @@ namespace Kephas.Data.InMemory.Tests
 
             dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            dataContext.Initialize(new DataContextConfiguration("Data=dummy-will-be-mocked"));
+            dataContext.Initialize(new DataContextConfiguration("InitialData=dummy-will-be-mocked"));
+
+            var query = dataContext.Query<string>();
+            var list = query.ToList();
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual("mama", list[0]);
+            Assert.AreEqual("papa", list[1]);
+        }
+
+        [Test]
+        public void Initialize_initial_data_from_configuration_context()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+
+            var serializer = Substitute.For<ISerializer>();
+            serializer.DeserializeAsync(
+                Arg.Any<TextReader>(),
+                Arg.Any<ISerializationContext>(),
+                Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
+
+            dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+
+            dataContext.Initialize(new InMemoryDataContextConfiguration(string.Empty) { InitialData = new[] { new EntityInfo("mama"), new EntityInfo("papa") } });
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
