@@ -168,7 +168,7 @@ namespace Kephas
         public object GetService(Type serviceType)
         {
             var serviceRegistration = this.services.TryGetValue(serviceType);
-            return serviceRegistration.ServiceFactory();
+            return serviceRegistration?.ServiceFactory();
         }
 
         /// <summary>
