@@ -22,6 +22,46 @@ namespace Kephas.Configuration
     public class AppSettingsConfigurationManager : ConfigurationManagerBase
     {
         /// <summary>
+        /// The application settings.
+        /// </summary>
+        private readonly IDictionary<string, object> appSettings;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppSettingsConfigurationManager"/> class.
+        /// </summary>
+        public AppSettingsConfigurationManager()
+        {
+            var configAppSettings = ConfigurationManager.AppSettings;
+            this.appSettings = configAppSettings.AllKeys.ToDictionary(k => k, k => (object)configAppSettings[k]);
+        }
+
+        /// <summary>
+        /// Convenience method that provides a string Indexer
+        /// to the Properties collection AND the strongly typed
+        /// properties of the object by name.
+        /// // dynamic
+        /// exp["Address"] = "112 nowhere lane";
+        /// // strong
+        /// var name = exp["StronglyTypedProperty"] as string;.
+        /// </summary>
+        /// <value>
+        /// The <see cref="object" /> identified by the key.
+        /// </value>
+        /// <param name="key">The key.</param>
+        /// <returns>The requested property value.</returns>
+        public override object this[string key]
+        {
+            get
+            {
+                return base[key];
+            }
+            set
+            {
+                this.appSettings[key] = value;
+            }
+        }
+
+        /// <summary>
         /// Gets all available settings for the specified search pattern.
         /// </summary>
         /// <param name="searchPattern">A pattern specifying the settings to search for (optional).</param>
@@ -30,15 +70,14 @@ namespace Kephas.Configuration
         /// </returns>
         protected override IEnumerable<KeyValuePair<string, object>> GetSettings(string searchPattern)
         {
-            var appSettings = ConfigurationManager.AppSettings;
             if (searchPattern[searchPattern.Length - 1] == '*')
             {
                 var start = searchPattern.Substring(0, searchPattern.Length - 1);
-                var keys = appSettings.AllKeys.Where(k => k.StartsWith(start));
-                return keys.Select(k => new KeyValuePair<string, object>(k, appSettings.Get(k)));
+                var keys = this.appSettings.Where(kv => kv.Key.StartsWith(start));
+                return keys;
             }
 
-            return new[] { new KeyValuePair<string, object>(searchPattern, appSettings.Get(searchPattern)) };
+            return new[] { new KeyValuePair<string, object>(searchPattern, this.appSettings[searchPattern]) };
         }
     }
 }
