@@ -92,6 +92,9 @@ namespace Kephas.Application
         {
             try
             {
+                // registers the application context as a global service, so that other services can benefit from it.
+                this.AmbientServices.RegisterService<IAppContext>(appContext);
+
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
                         {
