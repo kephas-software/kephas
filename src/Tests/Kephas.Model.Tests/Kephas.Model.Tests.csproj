@@ -169,10 +169,6 @@
       <Project>{a8025c4f-667a-4996-86e1-7a7f6b787447}</Project>
       <Name>Kephas.Testing.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kephas.Core.Tests\Kephas.Core.Tests.csproj">
-      <Project>{6dcfd4c6-26fa-46f0-a959-16d9acb40dd0}</Project>
-      <Name>Kephas.Core.Tests</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
