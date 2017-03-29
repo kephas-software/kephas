@@ -11,6 +11,8 @@ namespace Kephas.Composition
 {
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Non-generic contract used to import parts that wish to dynamically create instances of other parts.
     /// </summary>
@@ -73,7 +75,7 @@ namespace Kephas.Composition
         /// </returns>
         public static T CreateExportedValue<T>(this IExportFactory<T> exportFactory)
         {
-            Contract.Requires(exportFactory != null);
+            Requires.NotNull(exportFactory, nameof(exportFactory));
 
             return exportFactory.CreateExport().Value;
         }
