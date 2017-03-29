@@ -68,7 +68,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// An enumeration of settings.
         /// </returns>
-        protected override IEnumerable<KeyValuePair<string, object>> GetSettings(string searchPattern)
+        protected override IEnumerable<KeyValuePair<string, object>> GetSettingsCore(string searchPattern)
         {
             if (searchPattern[searchPattern.Length - 1] == '*')
             {

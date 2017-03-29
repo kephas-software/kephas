@@ -37,7 +37,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// The settings.
         /// </returns>
-        object GetSettings(string searchPattern, Type settingsType);
+        object GetSettings(string searchPattern, Type settingsType = null);
     }
 
     /// <summary>

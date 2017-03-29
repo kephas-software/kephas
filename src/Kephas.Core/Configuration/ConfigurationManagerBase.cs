@@ -56,7 +56,7 @@ namespace Kephas.Configuration
         /// <returns>The setting with the provided key.</returns>
         public virtual object GetSetting(string key)
         {
-            var settings = this.GetSettings(key);
+            var settings = this.GetSettingsCore(key);
             return settings.FirstOrDefault().Value;
         }
 
@@ -64,14 +64,14 @@ namespace Kephas.Configuration
         /// Gets the settings with the provided pattern and returns an object representing these settings.
         /// </summary>
         /// <param name="searchPattern">A pattern specifying the settings to be retrieved.</param>
-        /// <param name="settingsType">Type of the returned settings object. If not provided (<c>null</c>), an <see cref="Expando"/> object will be returned.</param>
+        /// <param name="settingsType">Type of the returned settings object (optional). If not provided (<c>null</c>), an <see cref="Expando"/> object will be returned.</param>
         /// <returns>
         /// The settings.
         /// </returns>
-        public virtual object GetSettings(string searchPattern, Type settingsType)
+        public virtual object GetSettings(string searchPattern, Type settingsType = null)
         {
-            var settingsList = this.GetSettings(searchPattern);
-            if (settingsType == typeof(IExpando) || settingsType == typeof(Expando))
+            var settingsList = this.GetSettingsCore(searchPattern);
+            if (settingsType == typeof(IIndexable) || settingsType == typeof(IExpando) || settingsType == typeof(Expando))
             {
                 settingsType = null;
             }
@@ -95,6 +95,6 @@ namespace Kephas.Configuration
         /// <returns>
         /// An enumeration of settings.
         /// </returns>
-        protected abstract IEnumerable<KeyValuePair<string, object>> GetSettings(string searchPattern);
+        protected abstract IEnumerable<KeyValuePair<string, object>> GetSettingsCore(string searchPattern);
     }
 }

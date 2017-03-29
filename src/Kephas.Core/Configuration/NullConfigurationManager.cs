@@ -26,7 +26,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// An enumeration of settings.
         /// </returns>
-        protected override IEnumerable<KeyValuePair<string, object>> GetSettings(string searchPattern)
+        protected override IEnumerable<KeyValuePair<string, object>> GetSettingsCore(string searchPattern)
         {
             return new KeyValuePair<string, object>[0];
         }
