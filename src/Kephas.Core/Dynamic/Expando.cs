@@ -85,6 +85,17 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Converts this expando object to a dictionary.
+        /// </summary>
+        /// <returns>
+        /// This object as an <see cref="IDictionary{TKey,TValue}"/>.
+        /// </returns>
+        public IDictionary<string, object> ToDictionary()
+        {
+            return new Dictionary<string, object>(this.properties);
+        }
+
+        /// <summary>
         /// Attempts to get dictionary value from the given data.
         /// </summary>
         /// <param name="key">The key.</param>
