@@ -324,9 +324,6 @@
     <Compile Include="..\Kephas.Core\Configuration\IConfigurationManager.cs">
       <Link>Configuration\IConfigurationManager.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\IConfigurationProvider.cs">
-      <Link>Configuration\IConfigurationProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Configuration\NullConfigurationManager.cs">
       <Link>Configuration\NullConfigurationManager.cs</Link>
     </Compile>

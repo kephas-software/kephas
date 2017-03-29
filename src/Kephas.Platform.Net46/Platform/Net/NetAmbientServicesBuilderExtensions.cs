@@ -27,8 +27,8 @@ namespace Kephas.Platform.Net
         /// Sets the .NET 4.6 application runtime to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="assemblyFilter">(Optional) a filter specifying the assembly.</param>
-        /// <param name="appLocation">(Optional) the application location.</param>
+        /// <param name="assemblyFilter">A filter specifying the assembly (optional).</param>
+        /// <param name="appLocation">The application location (optional). If not specified, the assembly location is used.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>

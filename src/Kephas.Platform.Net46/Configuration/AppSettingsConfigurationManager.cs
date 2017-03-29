@@ -18,7 +18,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// Configuration manager based on the AppSettings found in the app.config/web.config file.
     /// </summary>
-    [OverridePriority(Priority.Low)]
+    [OverridePriority(Priority.BelowNormal)]
     public class AppSettingsConfigurationManager : ConfigurationManagerBase
     {
         /// <summary>
