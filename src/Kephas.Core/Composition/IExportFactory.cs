@@ -61,7 +61,7 @@ namespace Kephas.Composition
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IExportFactory"/>.
+    /// Extension methods for <see cref="IExportFactory{T}"/>.
     /// </summary>
     public static class ExportFactoryExtensions
     {

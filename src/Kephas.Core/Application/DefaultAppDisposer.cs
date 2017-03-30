@@ -11,7 +11,6 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -38,7 +37,12 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appFinalizerFactories">The app finalizer factories.</param>
-        public DefaultAppDisposer(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppFinalizer, AppServiceMetadata>> appFinalizerFactories)
+        /// <param name="appFinalizerBehaviorFactories">The application finalizer behavior factories.</param>
+        public DefaultAppDisposer(
+            IAmbientServices ambientServices, 
+            ICompositionContext compositionContext, 
+            ICollection<IExportFactory<IAppFinalizer, AppServiceMetadata>> appFinalizerFactories,
+            ICollection<IExportFactory<IAppFinalizerBehavior, AppServiceMetadata>> appFinalizerBehaviorFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(compositionContext, nameof(compositionContext));
@@ -46,6 +50,7 @@ namespace Kephas.Application
             this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;
             this.AppFinalizerFactories = appFinalizerFactories ?? new List<IExportFactory<IAppFinalizer, AppServiceMetadata>>();
+            this.AppFinalizerBehaviorFactories = appFinalizerBehaviorFactories ?? new List<IExportFactory<IAppFinalizerBehavior, AppServiceMetadata>>();
         }
 
         /// <summary>
@@ -79,6 +84,14 @@ namespace Kephas.Application
         /// The application finalizer factories.
         /// </value>
         public ICollection<IExportFactory<IAppFinalizer, AppServiceMetadata>> AppFinalizerFactories { get; }
+
+        /// <summary>
+        /// Gets the application finalizer behavior factories.
+        /// </summary>
+        /// <value>
+        /// The application finalizer behavior factories.
+        /// </value>
+        public ICollection<IExportFactory<IAppFinalizerBehavior, AppServiceMetadata>> AppFinalizerBehaviorFactories { get; }
 
         /// <summary>
         /// Disposes the application asynchronously.
@@ -160,6 +173,16 @@ namespace Kephas.Application
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
+            var orderedBehaviors = this.AppFinalizerBehaviorFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            var reverseOrderedBehaviors = orderedBehaviors
+                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
             cancellationToken.ThrowIfCancellationRequested();
 
             foreach (var appFinalizerFactory in orderedAppFinalizerExports)
@@ -174,7 +197,12 @@ namespace Kephas.Application
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
-                        () => appFinalizer.FinalizeAsync(appContext, cancellationToken),
+                        async () =>
+                            {
+                                await this.RunBeforeFinalizerBehaviorsAsync(orderedBehaviors, appContext, appFinalizerMetadata, cancellationToken).PreserveThreadContext();
+                                await appFinalizer.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                                await this.RunAfterFinalizerBehaviorsAsync(reverseOrderedBehaviors, appContext, appFinalizerMetadata, cancellationToken).PreserveThreadContext();
+                            },
                         this.Logger,
                         appFinalizerIdentifier).PreserveThreadContext();
                 }
@@ -192,6 +220,50 @@ namespace Kephas.Application
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
+            }
+        }
+
+        /// <summary>
+        /// Executes the before finalization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task RunBeforeFinalizerBehaviorsAsync(
+            ICollection<IExport<IAppFinalizerBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            AppServiceMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Executes the after finalization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task RunAfterFinalizerBehaviorsAsync(
+            ICollection<IExport<IAppFinalizerBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            AppServiceMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
             }
         }
     }

@@ -186,8 +186,14 @@
     <Compile Include="..\Kephas.Core\Application\IAppFinalizer.cs">
       <Link>Application\IAppFinalizer.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppFinalizerBehavior.cs">
+      <Link>Application\IAppFinalizerBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppInitializer.cs">
       <Link>Application\IAppInitializer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IAppInitializerBehavior.cs">
+      <Link>Application\IAppInitializerBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppManifest.cs">
       <Link>Application\IAppManifest.cs</Link>

@@ -32,8 +32,13 @@ namespace Kephas.Web.Owin.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public OwinAppBootstrapper(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
-            : base(ambientServices, compositionContext, appIntializerFactories)
+        /// <param name="appInitializerBehaviorFactories">The application initializer behavior factories.</param>
+        public OwinAppBootstrapper(
+            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
+            ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories,
+            ICollection<IExportFactory<IAppInitializerBehavior, AppServiceMetadata>> appInitializerBehaviorFactories)
+            : base(ambientServices, compositionContext, appIntializerFactories, appInitializerBehaviorFactories)
         {
         }
 

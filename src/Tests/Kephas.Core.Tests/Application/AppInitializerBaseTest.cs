@@ -55,14 +55,6 @@
                 return this.InitializationMonitor;
             }
 
-            /// <summary>
-            /// Initializes the application asynchronously.
-            /// </summary>
-            /// <param name="appContext">Context for the application.</param>
-            /// <param name="cancellationToken">The cancellation token.</param>
-            /// <returns>
-            /// A Task.
-            /// </returns>
             protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
             {
                 if (this.exception != null)

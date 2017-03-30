@@ -11,7 +11,6 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -38,7 +37,12 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="appIntializerFactories">The app intializer factories.</param>
-        public DefaultAppBootstrapper(IAmbientServices ambientServices, ICompositionContext compositionContext, ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories)
+        /// <param name="appInitializerBehaviorFactories">The application initializer behavior factories.</param>
+        public DefaultAppBootstrapper(
+            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
+            ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories,
+            ICollection<IExportFactory<IAppInitializerBehavior, AppServiceMetadata>> appInitializerBehaviorFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(compositionContext, nameof(compositionContext));
@@ -46,6 +50,7 @@ namespace Kephas.Application
             this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;
             this.AppIntializerFactories = appIntializerFactories ?? new List<IExportFactory<IAppInitializer, AppServiceMetadata>>();
+            this.AppInitializerBehaviorFactories = appInitializerBehaviorFactories ?? new List<IExportFactory<IAppInitializerBehavior, AppServiceMetadata>>();
         }
 
         /// <summary>
@@ -79,6 +84,14 @@ namespace Kephas.Application
         /// The application intializer factories.
         /// </value>
         public ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> AppIntializerFactories { get; }
+
+        /// <summary>
+        /// Gets the application initializer behavior factories.
+        /// </summary>
+        /// <value>
+        /// The application initializer behavior factories.
+        /// </value>
+        public ICollection<IExportFactory<IAppInitializerBehavior, AppServiceMetadata>> AppInitializerBehaviorFactories { get; }
 
         /// <summary>
         /// Starts the application asynchronously.
@@ -126,7 +139,7 @@ namespace Kephas.Application
         /// <summary>
         /// Overridable method called before actually starting the application.
         /// </summary>
-        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -152,22 +165,32 @@ namespace Kephas.Application
         /// <summary>
         /// Executes the initializers asynchronously.
         /// </summary>
-        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
         protected virtual async Task RunInitializersAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var orderedAppInitializerExports = this.AppIntializerFactories
+            var orderedAppInitializers = this.AppIntializerFactories
                                           .Select(factory => factory.CreateExport())
                                           .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
+            var orderedBehaviors = this.AppInitializerBehaviorFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            var reverseOrderedBehaviors = orderedBehaviors
+                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
             cancellationToken.ThrowIfCancellationRequested();
 
-            foreach (var appInitializerFactory in orderedAppInitializerExports)
+            foreach (var appInitializerFactory in orderedAppInitializers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -179,7 +202,12 @@ namespace Kephas.Application
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
-                        () => appInitializer.InitializeAsync(appContext, cancellationToken),
+                        async () =>
+                            {
+                                await this.RunBeforeInitializerBehaviorsAsync(orderedBehaviors, appContext, appInitializerMetadata, cancellationToken).PreserveThreadContext();
+                                await appInitializer.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+                                await this.RunAfterInitializerBehaviorsAsync(reverseOrderedBehaviors, appContext, appInitializerMetadata, cancellationToken).PreserveThreadContext();
+                            },
                         this.Logger,
                         appInitializerIdentifier).PreserveThreadContext();
                 }
@@ -201,6 +229,50 @@ namespace Kephas.Application
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
+            }
+        }
+
+        /// <summary>
+        /// Executes the before initialization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task RunBeforeInitializerBehaviorsAsync(
+            ICollection<IExport<IAppInitializerBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            AppServiceMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Executes the after initialization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task RunAfterInitializerBehaviorsAsync(
+            ICollection<IExport<IAppInitializerBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            AppServiceMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
             }
         }
     }
