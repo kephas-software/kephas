@@ -2,7 +2,7 @@
   "supports": {},
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-    "NETStandard.Library": "1.6.0",
+    "NETStandard.Library": "1.6.1",
     "System.Linq.Expressions": "4.3.0",
     "System.Linq.Queryable": "4.3.0"
   },
