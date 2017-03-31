@@ -103,8 +103,9 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appId">The identifier of the application.</param>
         /// <param name="appVersion">The application version.</param>
-        /// <param name="appAssembly">The application assembly containing the
-        ///                           <see cref="AppManifestAttribute"/>.</param>
+        /// <param name="appAssembly">
+        /// The application assembly containing the <see cref="AppManifestAttribute"/>.
+        /// </param>
         protected virtual void Initialize(string appId, Version appVersion = null, Assembly appAssembly = null)
         {
             Requires.NotNullOrEmpty(appId, nameof(appId));

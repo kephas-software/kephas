@@ -225,4 +225,10 @@
   <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
     <value>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{0}'). Instead, try to pass metadata through generic parameter types.</value>
   </data>
+  <data name="RuntimeTypeInfo_PropertyNotFound_Exception" xml:space="preserve">
+    <value>Property {0} not found or is not accessible in {1}.</value>
+  </data>
+  <data name="ExpandoBase_CannotInvokeNonDelegate_Exception" xml:space="preserve">
+    <value>Cannot invoke non-delegate value of {0}; it has a type of {1}.</value>
+  </data>
 </root>

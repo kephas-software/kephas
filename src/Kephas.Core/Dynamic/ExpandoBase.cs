@@ -19,11 +19,11 @@ namespace Kephas.Dynamic
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Dynamic;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Resources;
     using Kephas.Runtime;
 
     /// <summary>
@@ -57,45 +57,60 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Value of object passed in.
         /// </summary>
-        private object wrappedInstance;
+        private object innerObject;
 
         /// <summary>
-        /// Cached dynamic type of the instance.
+        /// The inner dictionary for dynamic values.
+        /// </summary>
+        private IDictionary<string, object> innerDictionary;
+
+        /// <summary>
+        /// Cached dynamic type of the inner object.
         /// </summary>
         /// <remarks>
-        /// Do not use directly this field, instead use the <see cref="GetRuntimeTypeInfo"/> method
+        /// Do not use directly this field, instead use the <see cref="GetInnerObjectTypeInfo"/> method
         /// which knows how to late-initialize it.
         /// </remarks>
-        private IRuntimeTypeInfo dynamicTypeInfo;
+        private IRuntimeTypeInfo innerObjectTypeInfo;
+
+        /// <summary>
+        /// Cached dynamic type of this instance.
+        /// </summary>
+        /// <remarks>
+        /// Do not use directly this field, instead use the <see cref="GetThisTypeInfo"/> method
+        /// which knows how to late-initialize it.
+        /// </remarks>
+        private IRuntimeTypeInfo thisTypeInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
-        /// This constructor just works off the internal dictionary and any 
-        /// public properties of this object.
+        /// This constructor just works off the internal dictionary.
         /// </summary>
-        protected ExpandoBase()
+        /// <param name="innerDictionary">
+        /// The inner dictionary for holding dynamic values (optional).
+        /// If not provided, a new dictionary will be created.
+        /// </param>
+        protected ExpandoBase(IDictionary<string, object> innerDictionary = null)
         {
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.InitializeExpando(null);
+            this.InitializeExpando(null, innerDictionary);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
-        /// Allows passing in an existing instance variable to 'extend'.
+        /// Initializes a new instance of the <see cref="ExpandoBase"/> class. Allows passing in an
+        /// existing instance variable to 'extend'.
         /// </summary>
-        /// <param name="instance">
-        /// The instance which sould be extended.
+        /// <param name="innerObject">The instance to be extended.</param>
+        /// <param name="innerDictionary">
+        /// The inner dictionary for holding dynamic values (optional).
+        /// If not provided, a new dictionary will be created.
         /// </param>
-        /// <remarks>
-        /// You can pass in null here if you don't want to
-        /// check native properties and only check the Dictionary!.
-        /// </remarks>
-        protected ExpandoBase(object instance)
+        protected ExpandoBase(object innerObject, IDictionary<string, object> innerDictionary = null)
         {
-            Requires.NotNull(instance, nameof(instance));
+            Requires.NotNull(innerObject, nameof(innerObject));
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            this.InitializeExpando(instance);
+            this.InitializeExpando(innerObject, innerDictionary);
         }
 
         /// <summary>
@@ -114,29 +129,14 @@ namespace Kephas.Dynamic
         {
             get
             {
-                if (this.TryGetDictionaryValue(key, out object value))
-                {
-                    return value;
-                }
-
-                // try reflection on instanceType
-                var instance = this.wrappedInstance ?? this;
-                return this.GetRuntimeTypeInfo().TryGetValue(instance, key, out value) ? value : null;
+                object value;
+                this.TryGetValue(key, out value);
+                return value;
             }
 
             set
             {
-                if (this.TrySetDictionaryValue(key, value, addIfNonExisting: false))
-                {
-                    return;
-                }
-
-                // check instance for existance of type first
-                var instance = this.wrappedInstance ?? this;
-                if (!this.GetRuntimeTypeInfo().TrySetValue(instance, key, value))
-                {
-                    this.TrySetDictionaryValue(key, value, addIfNonExisting: true);
-                }
+                this.TrySetValue(key, value);
             }
         }
 
@@ -151,15 +151,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            // first check the Properties collection for member
-            if (this.TryGetDictionaryValue(binder.Name, out result))
-            {
-                return true;
-            }
-
-            // Next check for Public properties via Reflection
-            var instance = this.wrappedInstance ?? this;
-            return this.GetRuntimeTypeInfo().TryGetValue(instance, binder.Name, out result);
+            return this.TryGetValue(binder.Name, out result);
         }
 
         /// <summary>
@@ -173,15 +165,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            // first check to see if there's a native property to set
-            var instance = this.wrappedInstance ?? this;
-            if (this.GetRuntimeTypeInfo().TrySetValue(instance, binder.Name, value))
-            {
-                return true;
-            }
-
-            // no match - set or add to dictionary
-            return this.TrySetDictionaryValue(binder.Name, value, addIfNonExisting: true);
+            return this.TrySetValue(binder.Name, value);
         }
 
         /// <summary>
@@ -196,61 +180,86 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            if (this.TryGetDictionaryValue(binder.Name, out object method))
+            if (this.innerObject != null
+                && this.GetInnerObjectTypeInfo().TryInvoke(this.innerObject, binder.Name, args, out result))
             {
-                var delegateProperty = (Delegate)method;
+                return true;
+            }
+
+            if (this.GetThisTypeInfo().TryInvoke(this, binder.Name, args, out result))
+            {
+                return true;
+            }
+
+            object method;
+            if (this.innerDictionary.TryGetValue(binder.Name, out method))
+            {
+                var delegateProperty = method as Delegate;
+                if (delegateProperty == null)
+                {
+                    throw new MemberAccessException(string.Format(Strings.ExpandoBase_CannotInvokeNonDelegate_Exception, binder.Name, delegateProperty?.GetType()));
+                }
+
                 result = delegateProperty.DynamicInvoke(args);
                 return true;
             }
 
-            var instance = this.wrappedInstance ?? this;
-            return this.GetRuntimeTypeInfo().TryInvoke(instance, binder.Name, args, out result);
+            result = null;
+            return false;
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> used by the expando in the dynamic behavior.
+        /// Converts the expando to a dictionary having as keys the property names and as values the respective properties' values.
         /// </summary>
         /// <returns>
-        /// The dynamic type.
+        /// A dictionary of property values with their associated names.
         /// </returns>
-        protected virtual IRuntimeTypeInfo GetRuntimeTypeInfo()
+        public Dictionary<string, object> ToDictionary()
         {
-            Contract.Ensures(Contract.Result<IRuntimeTypeInfo>() != null);
+            // add the properties in their overwrite order:
+            // first, the values in the dictionary
+            var dictionary = new Dictionary<string, object>(this.innerDictionary);
 
-            return this.dynamicTypeInfo ?? (this.dynamicTypeInfo = (this.wrappedInstance ?? this).GetType().AsRuntimeTypeInfo());
-        }
-
-        /// <summary>
-        /// Initializes the expando with the provided instance.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        protected virtual void InitializeExpando(object instance)
-        {
-            this.wrappedInstance = instance;
-        }
-
-        /// <summary>
-        /// Returns and the properties of.
-        /// </summary>
-        /// <param name="includeInstanceProperties">If set to <c>true</c> the instance properties are
-        ///                                         also returned.</param>
-        /// <returns>
-        /// An enumeration of property (name, value) pairs.
-        /// </returns>
-        protected IEnumerable<KeyValuePair<string, object>> GetProperties(bool includeInstanceProperties = false)
-        {
-            if (includeInstanceProperties)
+            // second, the values in this expando's properties
+            foreach (var prop in this.GetThisTypeInfo().Properties)
             {
-                foreach (var prop in this.GetRuntimeTypeInfo().Properties)
+                dictionary.Add(prop.Key, prop.Value.GetValue(this.innerObject));
+            }
+
+            // last, the values in the inner object
+            if (this.innerObject != null)
+            {
+                foreach (var prop in this.GetInnerObjectTypeInfo().Properties)
                 {
-                    yield return new KeyValuePair<string, object>(prop.Key, prop.Value.GetValue(this.wrappedInstance));
+                    dictionary.Add(prop.Key, prop.Value.GetValue(this.innerObject));
                 }
             }
 
-            foreach (var item in this.GetDictionaryEntries())
-            {
-                yield return item;
-            }
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of the inner object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IRuntimeTypeInfo"/> of the inner object.
+        /// </returns>
+        protected virtual IRuntimeTypeInfo GetInnerObjectTypeInfo()
+        {
+            return this.innerObject == null
+                       ? null
+                       : this.innerObjectTypeInfo ?? (this.innerObjectTypeInfo = this.innerObject.GetType().AsRuntimeTypeInfo());
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </returns>
+        protected virtual IRuntimeTypeInfo GetThisTypeInfo()
+        {
+            return this.thisTypeInfo ?? (this.thisTypeInfo = this.GetType().AsRuntimeTypeInfo());
         }
 
         /// <summary>
@@ -261,26 +270,79 @@ namespace Kephas.Dynamic
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
-        protected abstract bool TryGetDictionaryValue(string key, out object value);
+        protected virtual bool TryGetValue(string key, out object value)
+        {
+            IRuntimePropertyInfo propInfo;
+
+            // First check for public properties via reflection
+            if (this.innerObject != null)
+            {
+                if (this.GetInnerObjectTypeInfo().Properties.TryGetValue(key, out propInfo))
+                {
+                    value = propInfo.GetValue(this.innerObject);
+                    return true;
+                }
+            }
+
+            // then, check the properties in this object
+            if (this.GetThisTypeInfo().Properties.TryGetValue(key, out propInfo))
+            {
+                value = propInfo.GetValue(this);
+                return true;
+            }
+
+            // last, check the dictionary for member
+            if (this.innerDictionary.TryGetValue(key, out value))
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Attempts to set the gived data in the dictionary.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value to set into the dictionary.</param>
-        /// <param name="addIfNonExisting"><c>true</c> to add the item if it is not existing.</param>
         /// <returns>
         /// <c>true</c> if the value could be set, <c>false</c> otherwise.
         /// </returns>
-        protected abstract bool TrySetDictionaryValue(string key, object value, bool addIfNonExisting);
+        protected virtual bool TrySetValue(string key, object value)
+        {
+            IRuntimePropertyInfo propInfo;
+
+            // First check for public properties via reflection
+            if (this.innerObject != null)
+            {
+                if (this.GetInnerObjectTypeInfo().Properties.TryGetValue(key, out propInfo))
+                {
+                    propInfo.SetValue(this.innerObject, value);
+                    return true;
+                }
+            }
+
+            // then, check the properties in this object
+            if (this.GetThisTypeInfo().Properties.TryGetValue(key, out propInfo))
+            {
+                propInfo.SetValue(this, value);
+                return true;
+            }
+
+            // last, check the dictionary for member
+            this.innerDictionary[key] = value;
+            return true;
+        }
 
         /// <summary>
-        /// Gets the dictionary entries.
+        /// Initializes the expando with the provided instance.
         /// </summary>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process the dictionary entries in this
-        /// collection.
-        /// </returns>
-        protected abstract IEnumerable<KeyValuePair<string, object>> GetDictionaryEntries();
+        /// <param name="instance">The instance.</param>
+        /// <param name="dictionary">The inner dictionary.</param>
+        private void InitializeExpando(object instance, IDictionary<string, object> dictionary)
+        {
+            this.innerObject = instance;
+            this.innerDictionary = dictionary ?? new Dictionary<string, object>();
+        }
     }
 }

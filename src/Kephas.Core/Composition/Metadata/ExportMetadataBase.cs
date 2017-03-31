@@ -11,26 +11,20 @@ namespace Kephas.Composition.Metadata
 {
     using System.Collections.Generic;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Base class for export metadata.
     /// </summary>
-    public abstract class ExportMetadataBase
+    public abstract class ExportMetadataBase : Expando
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExportMetadataBase"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
         protected ExportMetadataBase(IDictionary<string, object> metadata)
+            : base(metadata ?? new Dictionary<string, object>())
         {
-            this.Metadata = metadata;
         }
-
-        /// <summary>
-        /// Gets the metadata.
-        /// </summary>
-        /// <value>
-        /// The metadata.
-        /// </value>
-        public IDictionary<string, object> Metadata { get; private set; }
     }
 }

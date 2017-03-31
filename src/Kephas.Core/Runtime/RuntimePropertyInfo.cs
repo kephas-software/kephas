@@ -169,12 +169,12 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the dynamic type used by the expando in the dynamic behavior.
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
-        /// The dynamic type.
+        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
-        protected override IRuntimeTypeInfo GetRuntimeTypeInfo()
+        protected override IRuntimeTypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimePropertyInfo;
         }

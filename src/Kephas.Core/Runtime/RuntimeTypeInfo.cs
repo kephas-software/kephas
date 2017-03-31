@@ -391,8 +391,14 @@ namespace Kephas.Runtime
             Requires.NotNull(instance, nameof(instance));
 
             var matchingMethod = this.GetMatchingMethod(methodName, args, throwOnNotFound: false);
-            result = matchingMethod?.ReturnType.DefaultValue;
-            return matchingMethod == null ? false : matchingMethod.TryInvoke(instance, args, out result);
+            if (matchingMethod == null)
+            {
+                result = null;
+                return false;
+            }
+
+            result = matchingMethod.Invoke(instance, args);
+            return true;
         }
 
         /// <summary>
@@ -448,12 +454,12 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the runtime type used by the expando in the dynamic behavior.
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
-        /// The dynamic type.
+        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
-        protected override IRuntimeTypeInfo GetRuntimeTypeInfo()
+        protected override IRuntimeTypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeTypeInfo;
         }
@@ -608,7 +614,7 @@ namespace Kephas.Runtime
             {
                 if (throwOnNotFound)
                 {
-                    throw new MemberAccessException($"Property {propertyName} not found or is not accessible in {this.Type}.");
+                    throw new MemberAccessException(string.Format(Strings.RuntimeTypeInfo_PropertyNotFound_Exception, propertyName, this.Type));
                 }
 
                 return null;

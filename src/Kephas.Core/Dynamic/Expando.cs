@@ -19,7 +19,6 @@ namespace Kephas.Dynamic
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 
@@ -52,9 +51,15 @@ namespace Kephas.Dynamic
     public class Expando : ExpandoBase
     {
         /// <summary>
-        /// The properties.
+        /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
+        /// off the internal dictionary and any public properties of this object.
         /// </summary>
-        private IDictionary<string, object> properties;
+        /// <param name="dictionary">The properties.</param>
+        public Expando(IDictionary<string, object> dictionary)
+            : base(dictionary)
+        {
+            Requires.NotNull(dictionary, nameof(dictionary));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
@@ -62,8 +67,8 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
         public Expando(bool isThreadSafe = false)
+            : base(GetDictionary(isThreadSafe))
         {
-            this.InitializeDictionary(isThreadSafe);
         }
 
         /// <summary>
@@ -74,81 +79,26 @@ namespace Kephas.Dynamic
         /// You can pass in null here if you don't want to check native properties and only check the
         /// Dictionary!.
         /// </remarks>
-        /// <param name="instance">The instance which sould be extended.</param>
+        /// <param name="innerObject">The instance to be extended.</param>
         /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
-        public Expando(object instance, bool isThreadSafe = false)
-            : base(instance)
+        public Expando(object innerObject, bool isThreadSafe = false)
+            : base(innerObject, GetDictionary(isThreadSafe))
         {
-            Requires.NotNull(instance, nameof(instance));
-
-            this.InitializeDictionary(isThreadSafe);
+            Requires.NotNull(innerObject, nameof(innerObject));
         }
 
         /// <summary>
-        /// Converts this expando object to a dictionary.
+        /// Gets a dictionary baed on the <paramref name="isThreadSafe"/> flag.
         /// </summary>
+        /// <param name="isThreadSafe"><c>true</c> if the internal dictionary should be thread safe, <c>false</c> otherwise.</param>
         /// <returns>
-        /// This object as an <see cref="IDictionary{TKey,TValue}"/>.
+        /// The dictionary.
         /// </returns>
-        public IDictionary<string, object> ToDictionary()
+        private static IDictionary<string, object> GetDictionary(bool isThreadSafe)
         {
-            return new Dictionary<string, object>(this.properties);
-        }
-
-        /// <summary>
-        /// Attempts to get dictionary value from the given data.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value to get from the dictionary.</param>
-        /// <returns>
-        /// <c>true</c> if a value is found, <c>false</c> otherwise.
-        /// </returns>
-        protected override bool TryGetDictionaryValue(string key, out object value)
-        {
-            return this.properties.TryGetValue(key, out value);
-        }
-
-        /// <summary>
-        /// Attempts to set the gived data in the dictionary.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value to set into the dictionary.</param>
-        /// <param name="addIfNonExisting"><c>true</c> to add the item if it is not existing.</param>
-        /// <returns>
-        /// <c>true</c> if the value could be set, <c>false</c> otherwise.
-        /// </returns>
-        protected override bool TrySetDictionaryValue(string key, object value, bool addIfNonExisting)
-        {
-            if (!addIfNonExisting && !this.properties.ContainsKey(key))
-            {
-                return false;
-            }
-
-            this.properties[key] = value;
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the dictionary entries.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process the dictionary entries in this
-        /// collection.
-        /// </returns>
-        protected override IEnumerable<KeyValuePair<string, object>> GetDictionaryEntries()
-        {
-            return this.properties;
-        }
-
-        /// <summary>
-        /// Initializes the dictionary.
-        /// </summary>
-        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
-        private void InitializeDictionary(bool isThreadSafe)
-        {
-            this.properties = isThreadSafe
-                                  ? (IDictionary<string, object>)new ConcurrentDictionary<string, object>()
-                                  : new Dictionary<string, object>();
+            return isThreadSafe
+                       ? (IDictionary<string, object>)new ConcurrentDictionary<string, object>()
+                       : new Dictionary<string, object>();
         }
     }
 }

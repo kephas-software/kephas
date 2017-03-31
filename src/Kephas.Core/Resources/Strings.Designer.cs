@@ -306,6 +306,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot invoke non-delegate value of {0}; it has a type of {1}..
+        /// </summary>
+        internal static string ExpandoBase_CannotInvokeNonDelegate_Exception {
+            get {
+                return ResourceManager.GetString("ExpandoBase_CannotInvokeNonDelegate_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple nodes found for value &apos;{0}&apos;..
         /// </summary>
         internal static string GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception {
@@ -338,6 +347,15 @@ namespace Kephas.Resources {
         internal static string RuntimeTypeInfo_NoPublicConstructorDefined_Exception {
             get {
                 return ResourceManager.GetString("RuntimeTypeInfo_NoPublicConstructorDefined_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Property {0} not found or is not accessible in {1}..
+        /// </summary>
+        internal static string RuntimeTypeInfo_PropertyNotFound_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeTypeInfo_PropertyNotFound_Exception", resourceCulture);
             }
         }
         
