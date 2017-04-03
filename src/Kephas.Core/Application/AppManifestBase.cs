@@ -10,7 +10,6 @@
 namespace Kephas.Application
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
