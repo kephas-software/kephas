@@ -52,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
-      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
-      <Name>Kephas.Core</Name>
+    <ProjectReference Include="..\..\Kephas.Core.PortableLegacy\Kephas.Core.PortableLegacy.csproj">
+      <Project>{849dbe3f-2a99-4eaf-b317-1f09ad0d232c}</Project>
+      <Name>Kephas.Core.PortableLegacy</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Platform.Net46\Kephas.Platform.Net46.csproj">
       <Project>{e4c34864-2654-4dd3-992c-aa56ab141016}</Project>

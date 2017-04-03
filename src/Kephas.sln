@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net.Tests", "Tests\Kephas.Platform.Net.Tests\Kephas.Platform.Net.Tests.csproj", "{7CA7847B-27D5-40B8-8701-E11CC73AD878}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -273,6 +275,10 @@ Global
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -297,5 +303,6 @@ Global
 		{4E119285-ABC4-4890-B758-F64D950B8CF7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{A2C23A08-523D-4A27-9BD5-5B289E27D646} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{7CA7847B-27D5-40B8-8701-E11CC73AD878} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 EndGlobal
