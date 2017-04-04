@@ -133,7 +133,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\MongoAppInitializer.cs" />
+    <Compile Include="Application\MongoFeatureManager.cs" />
     <Compile Include="Commands\MongoCreateEntityCommand.cs" />
     <Compile Include="Commands\MongoDiscardChangesCommand.cs" />
     <Compile Include="Commands\MongoFindCommand.cs" />

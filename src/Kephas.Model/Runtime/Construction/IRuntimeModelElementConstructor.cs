@@ -52,8 +52,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <typeparam name="TRuntime">The runtime type.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true, 
-        ContractType = typeof(IRuntimeModelElementConstructor),
-        MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        ContractType = typeof(IRuntimeModelElementConstructor))]
     public interface IRuntimeModelElementConstructor<TModel, TModelContract, TRuntime> : IRuntimeModelElementConstructor
         where TModel : class, INamedElement
         where TModelContract : class, INamedElement

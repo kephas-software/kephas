@@ -16,5 +16,9 @@ namespace Kephas.Application
     /// </summary>
     public interface IAppContext : IContext
     {
+        /// <summary>
+        /// Gets the application manifest.
+        /// </summary>
+        IAppManifest AppManifest { get; }
     }
 }

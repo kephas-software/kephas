@@ -71,6 +71,19 @@ namespace Kephas.Graphs
         }
 
         /// <summary>
+        /// Indicates whether the graph has an edge with the indicated nodes.
+        /// </summary>
+        /// <param name="from">The starting node.</param>
+        /// <param name="to">The ending node.</param>
+        /// <returns>
+        /// <c>true</c> if an edge exists, <c>false</c> if not.
+        /// </returns>
+        public bool HasEdge(IGraphNode from, IGraphNode to)
+        {
+            return this.edges.Any(e => object.Equals(e.From, from) && object.Equals(e.To, to));
+        }
+
+        /// <summary>
         /// Creates a subgraph.
         /// </summary>
         /// <returns>

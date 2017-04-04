@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelSpaceAppInitializer.cs" company="Quartz Software SRL">
+// <copyright file="ModelFeatureManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -9,18 +9,18 @@
 
 namespace Kephas.Model.Application
 {
-    using System.Diagnostics.Contracts;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
-    /// Application initializer for the model space.
+    /// Feature manager for the model.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class ModelSpaceAppInitializer : AppInitializerBase
+    public class ModelFeatureManager : FeatureManagerBase
     {
         /// <summary>
         /// The model space provider.
@@ -28,18 +28,18 @@ namespace Kephas.Model.Application
         private readonly IModelSpaceProvider modelSpaceProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelSpaceAppInitializer"/> class.
+        /// Initializes a new instance of the <see cref="ModelFeatureManager"/> class.
         /// </summary>
         /// <param name="modelSpaceProvider">The model space provider.</param>
-        public ModelSpaceAppInitializer(IModelSpaceProvider modelSpaceProvider)
+        public ModelFeatureManager(IModelSpaceProvider modelSpaceProvider)
         {
-            Contract.Requires(modelSpaceProvider != null);
+            Requires.NotNull(modelSpaceProvider, nameof(modelSpaceProvider));
 
             this.modelSpaceProvider = modelSpaceProvider;
         }
 
         /// <summary>
-        /// Initializes the application asynchronously.
+        /// Initializes the model infrastructure asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

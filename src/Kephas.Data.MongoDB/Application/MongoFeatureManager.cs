@@ -1,33 +1,40 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppFinalizer.cs" company="Quartz Software SRL">
+// <copyright file="MongoFeatureManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IAppFinalizer interface.
+//   Implements the mongo application initializer class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application
+namespace Kephas.Data.MongoDB.Application
 {
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Services;
+    using Kephas.Application;
+    using Kephas.Data.MongoDB.Serialization;
+
+    using global::MongoDB.Bson.Serialization;
 
     /// <summary>
-    /// Contract for services which are used to finalize the application.
+    /// Feature manager for MongoDB.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
-    public interface IAppFinalizer
+    public class MongoFeatureManager : FeatureManagerBase
     {
         /// <summary>
-        /// Finalizes the application asynchronously.
+        /// Initializes the MongoDB infrastructure asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        {
+            BsonSerializer.RegisterSerializer(typeof(Id), new IdBsonSerializer());
+
+            return Task.CompletedTask;
+        }
     }
 }

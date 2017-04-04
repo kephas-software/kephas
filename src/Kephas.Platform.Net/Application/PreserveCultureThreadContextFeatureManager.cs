@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PreserveCultureThreadContextAppInitializer.cs" company="Quartz Software SRL">
+// <copyright file="PreserveCultureThreadContextFeatureManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   A server application initializer.
+//   Implements the preserve culture thread context feature manager class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,13 +17,13 @@ namespace Kephas.Application
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Application initializer configuring the <see cref="ThreadContextAwaiter"/> to preserve the thread culture.
+    /// Feature manager configuring the <see cref="ThreadContextAwaiter"/> to preserve the thread culture.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    public class PreserveCultureThreadContextAppInitializer : AppInitializerBase
+    public class PreserveCultureThreadContextFeatureManager : FeatureManagerBase
     {
         /// <summary>
-        /// Initializes the application asynchronously.
+        /// Initializes the <see cref="ThreadContextAwaiter"/> asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

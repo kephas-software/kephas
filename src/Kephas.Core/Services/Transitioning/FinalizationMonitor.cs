@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitializationMonitor.cs" company="Quartz Software SRL">
+// <copyright file="FinalizationMonitor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Class monitoring the initialization state for the service <typeparamref name="TContract" /> with the implementation <typeparamref name="TServiceImplementation" />.
+//   Implements the finalization monitor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,34 +15,34 @@ namespace Kephas.Services.Transitioning
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Class monitoring the initialization state for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TServiceImplementation"/>.
+    /// Class monitoring the finalization state for the service <typeparamref name="TContract"/> with the implementation <typeparamref name="TServiceImplementation"/>.
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
     /// <typeparam name="TServiceImplementation">The service implementation type.</typeparam>
-    public class InitializationMonitor<TContract, TServiceImplementation> : TransitionMonitor<TContract, TServiceImplementation>
+    public class FinalizationMonitor<TContract, TServiceImplementation> : TransitionMonitor<TContract, TServiceImplementation>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitializationMonitor{TContract, TServiceImplementation}"/> class.
+        /// Initializes a new instance of the <see cref="FinalizationMonitor{TContract, TServiceImplementation}"/> class.
         /// </summary>
-        public InitializationMonitor()
-            : base("initialization")
+        public FinalizationMonitor()
+            : base("finalization")
         {
         }
     }
 
     /// <summary>
-    /// Class monitoring the initialization state for the service <typeparamref name="TContract"/> with the implementation type provided in constructor.
+    /// Class monitoring the finalization state for the service <typeparamref name="TContract"/> with the implementation type provided in constructor.
     /// </summary>
     /// <typeparam name="TContract">The contract type.</typeparam>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
-    public class InitializationMonitor<TContract> : TransitionMonitor<TContract>
+    public class FinalizationMonitor<TContract> : TransitionMonitor<TContract>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitializationMonitor{TContract}"/> class.
+        /// Initializes a new instance of the <see cref="FinalizationMonitor{TContract}"/> class.
         /// </summary>
         /// <param name="serviceImplementationType">Type of the service implementation.</param>
-        public InitializationMonitor(Type serviceImplementationType)
-            : base("initialization", serviceImplementationType)
+        public FinalizationMonitor(Type serviceImplementationType)
+            : base("finalization", serviceImplementationType)
         {
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
         }

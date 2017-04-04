@@ -26,8 +26,7 @@ namespace Kephas.Model.Runtime.Configuration
     /// <typeparam name="TRuntimeElement">The type of the runtime element.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true,
-        ContractType = typeof(IRuntimeModelElementConfigurator),
-        MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        ContractType = typeof(IRuntimeModelElementConfigurator))]
     public interface IRuntimeModelElementConfigurator<TElement, TRuntimeElement> : IRuntimeModelElementConfigurator
     {
     }

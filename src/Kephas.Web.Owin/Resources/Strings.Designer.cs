@@ -63,9 +63,9 @@ namespace Kephas.Web.Owin.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided application context ({0}) is not an OWIN context (must implement {1})..
         /// </summary>
-        internal static string OwinAppBootstrapper_InvalidOwinAppContext_Exception {
+        internal static string OwinFeatureManager_InvalidOwinAppContext_Exception {
             get {
-                return ResourceManager.GetString("OwinAppBootstrapper_InvalidOwinAppContext_Exception", resourceCulture);
+                return ResourceManager.GetString("OwinFeatureManager_InvalidOwinAppContext_Exception", resourceCulture);
             }
         }
     }

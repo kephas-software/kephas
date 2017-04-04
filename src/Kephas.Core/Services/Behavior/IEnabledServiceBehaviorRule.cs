@@ -15,9 +15,7 @@ namespace Kephas.Services.Behavior
     /// Behavior rule contract for controlling the enabled state of services.
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    [SharedAppServiceContract(
-        AllowMultiple = true, 
-        MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+    [SharedAppServiceContract(AllowMultiple = true)]
     public interface IEnabledServiceBehaviorRule<in TServiceContract> : IBehaviorRule<IServiceBehaviorContext<TServiceContract>, bool>
     {
     }

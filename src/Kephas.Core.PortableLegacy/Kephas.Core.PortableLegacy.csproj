@@ -159,14 +159,17 @@
     <Compile Include="..\Kephas.Core\Application\AppContext.cs">
       <Link>Application\AppContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\AppInitializerBase.cs">
-      <Link>Application\AppInitializerBase.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Application\AppManifestAttribute.cs">
       <Link>Application\AppManifestAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\AppManifestBase.cs">
       <Link>Application\AppManifestBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\AttributedModel\FeatureInfoAttribute.cs">
+      <Link>Application\AttributedModel\FeatureInfoAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
+      <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\DefaultAppBootstrapper.cs">
       <Link>Application\DefaultAppBootstrapper.cs</Link>
@@ -174,32 +177,35 @@
     <Compile Include="..\Kephas.Core\Application\DefaultAppDisposer.cs">
       <Link>Application\DefaultAppDisposer.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppBootstrapper.cs">
-      <Link>Application\IAppBootstrapper.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\DefaultAppManager.cs">
+      <Link>Application\DefaultAppManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\FeatureInfo.cs">
+      <Link>Application\FeatureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\FeatureManagerBase.cs">
+      <Link>Application\FeatureManagerBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppContext.cs">
       <Link>Application\IAppContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppDisposer.cs">
-      <Link>Application\IAppDisposer.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\IAppLifecycleBehavior.cs">
+      <Link>Application\IAppLifecycleBehavior.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppFinalizer.cs">
-      <Link>Application\IAppFinalizer.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppFinalizerBehavior.cs">
-      <Link>Application\IAppFinalizerBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppInitializer.cs">
-      <Link>Application\IAppInitializer.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Application\IAppInitializerBehavior.cs">
-      <Link>Application\IAppInitializerBehavior.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\IAppManager.cs">
+      <Link>Application\IAppManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppManifest.cs">
       <Link>Application\IAppManifest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppRuntime.cs">
       <Link>Application\IAppRuntime.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IFeatureLifecycleBehavior.cs">
+      <Link>Application\IFeatureLifecycleBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\IFeatureManager.cs">
+      <Link>Application\IFeatureManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\NullAppManifest.cs">
       <Link>Application\NullAppManifest.cs</Link>
@@ -588,6 +594,9 @@
     <Compile Include="..\Kephas.Core\Services\SharedAppServiceContractAttribute.cs">
       <Link>Services\SharedAppServiceContractAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\Transitioning\FinalizationMonitor.cs">
+      <Link>Services\Transitioning\FinalizationMonitor.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\Transitioning\InitializationMonitor.cs">
       <Link>Services\Transitioning\InitializationMonitor.cs</Link>
     </Compile>
@@ -599,6 +608,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Transitioning\TransitionMonitor.cs">
       <Link>Services\Transitioning\TransitionMonitor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Sets\PartialOrderedSet.cs">
+      <Link>Sets\PartialOrderedSet.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Threading\Tasks\TaskHelper.cs">
       <Link>Threading\Tasks\TaskHelper.cs</Link>

@@ -55,7 +55,7 @@ namespace Kephas.Web.Owin.Application
             var owinAppContext = appContext as IOwinAppContext;
             if (owinAppContext == null)
             {
-                throw new InvalidOperationException(string.Format(Strings.OwinAppBootstrapper_InvalidOwinAppContext_Exception, appContext?.GetType().FullName, typeof(IOwinAppContext).FullName));
+                throw new InvalidOperationException(string.Format(Strings.OwinFeatureManager_InvalidOwinAppContext_Exception, appContext?.GetType().FullName, typeof(IOwinAppContext).FullName));
             }
 
             return base.StartAsync(appContext, cancellationToken);

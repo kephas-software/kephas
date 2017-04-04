@@ -131,8 +131,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Platform.Net46\Application\PreserveCultureThreadContextAppInitializer.cs">
-      <Link>Application\PreserveCultureThreadContextAppInitializer.cs</Link>
+    <Compile Include="..\Kephas.Platform.Net46\Application\PreserveCultureThreadContextFeatureManager.cs">
+      <Link>Application\PreserveCultureThreadContextFeatureManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Platform.Net46\Configuration\AppSettingsConfigurationManager.cs">
       <Link>Configuration\AppSettingsConfigurationManager.cs</Link>

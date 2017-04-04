@@ -142,7 +142,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="Application\ModelSpaceAppInitializer.cs" />
+    <Compile Include="Application\ModelFeatureManager.cs" />
     <Compile Include="AttributedModel\AggregatableModelDimensionAttribute.cs" />
     <Compile Include="AttributedModel\ExcludeFromModelAttribute.cs" />
     <Compile Include="AttributedModel\MemberNameDiscriminatorAttribute.cs" />
