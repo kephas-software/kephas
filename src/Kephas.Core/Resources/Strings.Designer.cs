@@ -333,6 +333,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set..
+        /// </summary>
+        internal static string PartialOrderedSet_BadComparer_ProducesCycles_Exception {
+            get {
+                return ResourceManager.GetString("PartialOrderedSet_BadComparer_ProducesCycles_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Argument &apos;{0}&apos; must not be null nor empty..
         /// </summary>
         internal static string Requires_NotNullOrEmpty_EmptyArgument_Exception {

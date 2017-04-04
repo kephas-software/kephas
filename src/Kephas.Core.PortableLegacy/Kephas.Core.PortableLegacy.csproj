@@ -171,12 +171,6 @@
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
       <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\DefaultAppBootstrapper.cs">
-      <Link>Application\DefaultAppBootstrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Application\DefaultAppDisposer.cs">
-      <Link>Application\DefaultAppDisposer.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Application\DefaultAppManager.cs">
       <Link>Application\DefaultAppManager.cs</Link>
     </Compile>

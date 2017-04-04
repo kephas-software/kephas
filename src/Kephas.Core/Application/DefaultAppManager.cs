@@ -20,19 +20,18 @@ namespace Kephas.Application
     using Kephas.Composition;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Graphs;
     using Kephas.Logging;
     using Kephas.Resources;
+    using Kephas.Services;
     using Kephas.Services.Behavior;
     using Kephas.Services.Composition;
     using Kephas.Sets;
     using Kephas.Threading.Tasks;
 
-    using FeatureManagerFactoryNode = Kephas.Graphs.GraphNode<Kephas.Composition.IExportFactory<IFeatureManager, Composition.FeatureManagerMetadata>>;
-
     /// <summary>
     /// The default application manager.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class DefaultAppManager : IAppManager
     {
         /// <summary>
@@ -113,7 +112,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -156,9 +155,36 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                await Profiler.WithInfoStopwatchAsync(
+                    async () =>
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await this.BeforeAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await this.FinalizeFeatureManagersAsync(appContext, cancellationToken).PreserveThreadContext();
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await this.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        cancellationToken.ThrowIfCancellationRequested();
+                    },
+                    this.Logger).PreserveThreadContext();
+            }
+            catch (OperationCanceledException)
+            {
+                this.Logger.Error(Strings.DefaultAppBootstrapper_StartCanceled_Exception, DateTimeOffset.Now);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, Strings.DefaultAppBootstrapper_StartFaulted_Exception, DateTimeOffset.Now);
+                throw;
+            }
         }
 
         /// <summary>
@@ -218,7 +244,6 @@ namespace Kephas.Application
             var orderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
                                           .WhereEnabled(this.AmbientServices)
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
             var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
@@ -241,7 +266,7 @@ namespace Kephas.Application
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
                 var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"Feature manager '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.FeatureName})";
+                var featureManagerIdentifier = $"Feature manager '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
@@ -264,7 +289,7 @@ namespace Kephas.Application
                     var initializerKind = featureManagerMetadata.OptionalService ? "optional" : "required";
                     this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to initialize. See the inner exception for more details.");
 
-                    // interrupt the bootstrapping if a required initializer failed to start.
+                    // interrupt the initialization if a required feature manager failed to initialize.
                     if (!featureManagerMetadata.OptionalService)
                     {
                         throw;
@@ -316,6 +341,164 @@ namespace Kephas.Application
             foreach (var behavior in behaviors)
             {
                 await behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Overridable method called before actually finalizing the application.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        {
+            var orderedBehaviors = this.AppLifecycleBehaviorFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            foreach (var behavior in orderedBehaviors)
+            {
+                await behavior.Value.BeforeAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Overridable method called after the application was finalized.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        {
+            var orderedBehaviors = this.AppLifecycleBehaviorFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            foreach (var behavior in orderedBehaviors)
+            {
+                await behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Invokes the finalization of feature managers asynchronously.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task FinalizeFeatureManagersAsync(IAppContext appContext, CancellationToken cancellationToken)
+        {
+            var orderedFeatureManagers = this.FeatureManagerFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .ToList();
+            orderedFeatureManagers.Reverse();
+
+            var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
+                                          .Select(factory => factory.CreateExport())
+                                          .WhereEnabled(this.AmbientServices)
+                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            var reverseOrderedBehaviors = orderedBehaviors
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
+                                          .ToList();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            foreach (var featureManagerFactory in orderedFeatureManagers)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var featureManager = featureManagerFactory.Value;
+                var featureManagerMetadata = featureManagerFactory.Metadata;
+
+                var featureManagerType = featureManager.GetType();
+                var featureManagerIdentifier = $"Feature manager '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
+                try
+                {
+                    await Profiler.WithInfoStopwatchAsync(
+                        async () =>
+                        {
+                            await this.InvokeBeforeFinalizeBehaviorsAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await featureManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                            await this.InvokeAfterFinalizeBehaviorsAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                        },
+                        this.Logger,
+                        featureManagerIdentifier).PreserveThreadContext();
+                }
+                catch (OperationCanceledException cex)
+                {
+                    this.Logger.Error(cex, $"{featureManagerIdentifier} was canceled during finalization. The current operation will be interrupted.");
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    var initializerKind = featureManagerMetadata.OptionalService ? "optional" : "required";
+                    this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to finalize. See the inner exception for more details.");
+
+                    // interrupt the finalization if a required feature manager failed to finalize.
+                    if (!featureManagerMetadata.OptionalService)
+                    {
+                        throw;
+                    }
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+        }
+
+        /// <summary>
+        /// Executes the before finalization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task InvokeBeforeFinalizeBehaviorsAsync(
+            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            FeatureManagerMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Executes the after finalization behaviors.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appServiceMetadata">The application service metadata.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        protected virtual async Task InvokeAfterFinalizeBehaviorsAsync(
+            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            FeatureManagerMetadata appServiceMetadata,
+            CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -392,12 +575,12 @@ namespace Kephas.Application
         {
             var fm1Info = fm1.Metadata.FeatureInfo;
             var fm2Info = fm2.Metadata.FeatureInfo;
-            if (fm2Info.Dependencies.Contains(fm1Info.FeatureName))
+            if (fm2Info.Dependencies.Contains(fm1Info.Name))
             {
                 return -1;
             }
 
-            if (fm1Info.Dependencies.Contains(fm2Info.FeatureName))
+            if (fm1Info.Dependencies.Contains(fm2Info.Name))
             {
                 return 1;
             }

@@ -231,4 +231,7 @@
   <data name="ExpandoBase_CannotInvokeNonDelegate_Exception" xml:space="preserve">
     <value>Cannot invoke non-delegate value of {0}; it has a type of {1}.</value>
   </data>
+  <data name="PartialOrderedSet_BadComparer_ProducesCycles_Exception" xml:space="preserve">
+    <value>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set.</value>
+  </data>
 </root>

@@ -13,10 +13,10 @@ namespace Kephas.Sets
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Graphs;
+    using Kephas.Resources;
 
     /// <summary>
     /// A partial ordered set.
@@ -81,10 +81,33 @@ namespace Kephas.Sets
             }
         }
 
-        private IEnumerable<TValue> GetOrderedValues(Graph<TValue> connexGraph)
+        /// <summary>
+        /// Gets the ordered values from the nodes of the connected graph.
+        /// </summary>
+        /// <param name="connectedGraph">The connected graph.</param>
+        /// <returns>
+        /// An enumeration of values, ordered.
+        /// </returns>
+        private IEnumerable<TValue> GetOrderedValues(Graph<TValue> connectedGraph)
         {
             var orderedNodes = new List<IGraphNode<TValue>>();
-            throw new NotImplementedException();
+            var eligibleNodes = new List<IGraphNode<TValue>>(connectedGraph.Nodes.OfType<IGraphNode<TValue>>());
+
+            while (eligibleNodes.Count > 0)
+            {
+                var minNodes = eligibleNodes.Where(n => n.OutgoingEdges.All(e => orderedNodes.Contains(e.To))).ToList();
+                if (minNodes.Count == 0)
+                {
+                    // it means that there are cycles in the graph, which indicate
+                    // an unsound graph
+                    throw new InvalidOperationException(Strings.PartialOrderedSet_BadComparer_ProducesCycles_Exception);
+                }
+
+                orderedNodes.AddRange(minNodes);
+                eligibleNodes.RemoveAll(n => minNodes.Contains(n));
+            }
+
+            return orderedNodes.Select(n => n.Value);
         }
 
         /// <summary>

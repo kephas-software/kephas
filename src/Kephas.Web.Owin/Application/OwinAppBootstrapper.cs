@@ -15,6 +15,7 @@ namespace Kephas.Web.Owin.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Composition;
     using Kephas.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -24,33 +25,30 @@ namespace Kephas.Web.Owin.Application
     /// An OWIN application bootstrapper.
     /// </summary>
     [OverridePriority(Priority.BelowNormal)]
-    public class OwinAppBootstrapper : DefaultAppBootstrapper
+    public class OwinAppBootstrapper : DefaultAppManager
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OwinAppBootstrapper"/> class.
         /// </summary>
+        /// <param name="appManifest">The application manifest.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        /// <param name="appIntializerFactories">The app intializer factories.</param>
-        /// <param name="appInitializerBehaviorFactories">The application initializer behavior factories.</param>
-        public OwinAppBootstrapper(
-            IAmbientServices ambientServices,
-            ICompositionContext compositionContext,
-            ICollection<IExportFactory<IAppInitializer, AppServiceMetadata>> appIntializerFactories,
-            ICollection<IExportFactory<IAppInitializerBehavior, AppServiceMetadata>> appInitializerBehaviorFactories)
-            : base(ambientServices, compositionContext, appIntializerFactories, appInitializerBehaviorFactories)
+        /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
+        /// <param name="featureManagerFactories">The feature manager factories.</param>
+        /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
+        public OwinAppBootstrapper(IAppManifest appManifest, IAmbientServices ambientServices, ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories, ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories, ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories) 
+            : base(appManifest, ambientServices, appLifecycleBehaviorFactories, featureManagerFactories, featureLifecycleBehaviorFactories)
         {
         }
 
         /// <summary>
-        /// Starts the application asynchronously.
+        /// Initializes the application asynchronously.
         /// </summary>
         /// <param name="appContext">       Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task StartAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             var owinAppContext = appContext as IOwinAppContext;
             if (owinAppContext == null)
@@ -58,7 +56,26 @@ namespace Kephas.Web.Owin.Application
                 throw new InvalidOperationException(string.Format(Strings.OwinFeatureManager_InvalidOwinAppContext_Exception, appContext?.GetType().FullName, typeof(IOwinAppContext).FullName));
             }
 
-            return base.StartAsync(appContext, cancellationToken);
+            return base.InitializeAppAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Finaliyes the application asynchronously.
+        /// </summary>
+        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        public override Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var owinAppContext = appContext as IOwinAppContext;
+            if (owinAppContext == null)
+            {
+                throw new InvalidOperationException(string.Format(Strings.OwinFeatureManager_InvalidOwinAppContext_Exception, appContext?.GetType().FullName, typeof(IOwinAppContext).FullName));
+            }
+
+            return base.FinalizeAppAsync(appContext, cancellationToken);
         }
     }
 }

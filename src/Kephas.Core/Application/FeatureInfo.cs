@@ -9,23 +9,27 @@
 
 namespace Kephas.Application
 {
+    using System.Collections.Generic;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Provides information about an application feature.
     /// </summary>
-    public class FeatureInfo
+    public class FeatureInfo : Expando, IElementInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureInfo"/> class.
         /// </summary>
-        /// <param name="featureName">The feature name.</param>
+        /// <param name="name">The feature name.</param>
         /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfo(string featureName, string[] dependencies = null)
+        public FeatureInfo(string name, string[] dependencies = null)
         {
-            Requires.NotNullOrEmpty(featureName, nameof(featureName));
+            Requires.NotNullOrEmpty(name, nameof(name));
 
-            this.FeatureName = featureName;
+            this.Name = name;
             this.Dependencies = dependencies ?? new string[0];
         }
 
@@ -35,7 +39,7 @@ namespace Kephas.Application
         /// <value>
         /// The feature.
         /// </value>
-        public string FeatureName { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the feature dependencies.
@@ -44,5 +48,20 @@ namespace Kephas.Application
         /// The dependencies.
         /// </value>
         public string[] Dependencies { get; }
+
+        /// <summary>
+        /// Full name of the <see cref="FeatureInfo"/>.
+        /// </summary>
+        string IElementInfo.FullName => this.Name;
+
+        /// <summary>
+        /// Annotations of the <see cref="FeatureInfo"/>.
+        /// </summary>
+        IEnumerable<object> IElementInfo.Annotations => null;
+
+        /// <summary>
+        /// Declaring container of the <see cref="FeatureInfo"/>.
+        /// </summary>
+        IElementInfo IElementInfo.DeclaringContainer => null;
     }
 }
