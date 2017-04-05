@@ -56,7 +56,7 @@
         {
             var task = new Task<string>(() => { Thread.Sleep(50); return "test"; });
             task.Start();
-            var result = task.GetResultNonLocking(TimeSpan.FromMilliseconds(100));
+            var result = task.GetResultNonLocking(TimeSpan.FromMilliseconds(500));
 
             Assert.AreEqual("test", result);
             Assert.IsTrue(task.IsCompleted);
