@@ -10,7 +10,6 @@
 namespace Kephas
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
     using Kephas.Application;
@@ -72,17 +71,17 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Sets the application configuration manager to the ambient services.
+        /// Sets the application configuration to the ambient services.
         /// </summary>
-        /// <param name="configurationManager">The configuration manager.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithConfigurationManager(IConfigurationManager configurationManager)
+        public AmbientServicesBuilder WithConfiguration(IConfiguration configuration)
         {
-            Contract.Requires(configurationManager != null);
+            Requires.NotNull(configuration, nameof(configuration));
 
-            this.AmbientServices.RegisterService(configurationManager);
+            this.AmbientServices.RegisterService(configuration);
 
             return this;
         }
@@ -112,7 +111,7 @@ namespace Kephas
         /// </returns>
         public AmbientServicesBuilder WithCompositionContainer(ICompositionContext compositionContainer)
         {
-            Contract.Requires(compositionContainer != null);
+            Requires.NotNull(compositionContainer, nameof(compositionContainer));
 
             this.AmbientServices.RegisterService(compositionContainer);
 

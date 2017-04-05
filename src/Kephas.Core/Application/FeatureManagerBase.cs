@@ -74,7 +74,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = new CancellationToken())
+        public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
             this.FinalizationMonitor.Start();
 

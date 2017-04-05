@@ -30,6 +30,11 @@ namespace Kephas.Sets
         private readonly Graph<TValue> orderGraph = new Graph<TValue>();
 
         /// <summary>
+        /// The ordered values.
+        /// </summary>
+        private List<TValue> orderedValues;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PartialOrderedSet{TValue}"/> class.
         /// </summary>
         /// <param name="values">The values.</param>
@@ -55,7 +60,7 @@ namespace Kephas.Sets
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<TValue> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.orderedValues.GetEnumerator();
         }
 
         /// <summary>
@@ -72,12 +77,12 @@ namespace Kephas.Sets
 
             this.InitializeOrderGraphEdges(values, partialComparer);
 
-            var orderedValues = new List<TValue>();
+            this.orderedValues = new List<TValue>();
             var subgraphs = this.orderGraph.GetConnectedSubgraphs();
             foreach (var subgraph in subgraphs)
             {
                 this.AddMissingOrderEdges(subgraph);
-                orderedValues.AddRange(this.GetOrderedValues(subgraph));
+                this.orderedValues.AddRange(this.GetOrderedValues(subgraph));
             }
         }
 
@@ -136,13 +141,13 @@ namespace Kephas.Sets
 
                     if (comparisonResult < 0)
                     {
-                        // node < otherNode
-                        this.orderGraph.AddEdge(node, otherNode);
+                        // otherNode > node
+                        this.orderGraph.AddEdge(otherNode, node);
                     }
                     else
                     {
-                        // otherNode < node
-                        this.orderGraph.AddEdge(otherNode, node);
+                        // node > otherNode
+                        this.orderGraph.AddEdge(node, otherNode);
                     }
                 }
             }

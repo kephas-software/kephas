@@ -398,25 +398,25 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task FinalizeFeatureManagersAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var orderedFeatureManagers = this.FeatureManagerFactories
+            var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
                                           .WhereEnabled(this.AmbientServices)
                                           .ToList();
-            orderedFeatureManagers.Reverse();
+            reversedOrderedFeatureManagers.Reverse();
 
             var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
                                           .WhereEnabled(this.AmbientServices)
-                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
             var reverseOrderedBehaviors = orderedBehaviors
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
+                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            foreach (var featureManagerFactory in orderedFeatureManagers)
+            foreach (var featureManagerFactory in reversedOrderedFeatureManagers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -430,9 +430,9 @@ namespace Kephas.Application
                     await Profiler.WithInfoStopwatchAsync(
                         async () =>
                         {
-                            await this.InvokeBeforeFinalizeBehaviorsAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.InvokeBeforeFinalizeBehaviorsAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                             await featureManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
-                            await this.InvokeAfterFinalizeBehaviorsAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.InvokeAfterFinalizeBehaviorsAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
                         featureManagerIdentifier).PreserveThreadContext();

@@ -44,12 +44,12 @@ namespace Kephas
         IAppRuntime AppRuntime { get; }
 
         /// <summary>
-        /// Gets the application configuration manager.
+        /// Gets the application configuration.
         /// </summary>
         /// <value>
-        /// The application configuration manager.
+        /// The application configuration.
         /// </value>
-        IConfigurationManager ConfigurationManager { get; }
+        IConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the log manager.
@@ -112,12 +112,12 @@ namespace Kephas
         public abstract IAppRuntime AppRuntime { get; }
 
         /// <summary>
-        /// Gets the application configuration manager.
+        /// Gets the application configuration.
         /// </summary>
         /// <value>
-        /// The application configuration manager.
+        /// The application configuration.
         /// </value>
-        public abstract IConfigurationManager ConfigurationManager { get; }
+        public abstract IConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the log manager.

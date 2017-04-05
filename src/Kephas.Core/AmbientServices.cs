@@ -58,7 +58,7 @@ namespace Kephas
             this.RegisterService<IAmbientServices>(this)
                 .RegisterService<IAppRuntime>(new NullAppRuntime())
                 .RegisterService<ILogManager>(new NullLogManager())
-                .RegisterService<IConfigurationManager>(new NullConfigurationManager())
+                .RegisterService<IConfiguration>(new NullConfiguration())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
                 .RegisterService<IAssemblyLoader>(new DefaultAssemblyLoader())
                 .RegisterService<ITypeLoader>(new DefaultTypeLoader(this));
@@ -89,12 +89,12 @@ namespace Kephas
         public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
 
         /// <summary>
-        /// Gets the application configuration manager.
+        /// Gets the application configuration.
         /// </summary>
         /// <value>
-        /// The application configuration manager.
+        /// The application configuration.
         /// </value>
-        public IConfigurationManager ConfigurationManager => this.GetService<IConfigurationManager>();
+        public IConfiguration Configuration => this.GetService<IConfiguration>();
 
         /// <summary>
         /// Gets the log manager.

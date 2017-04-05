@@ -24,7 +24,7 @@ namespace Kephas.Application.Composition
         /// </summary>
         /// <param name="metadata">The metadata.</param>
         public FeatureManagerMetadata(IDictionary<string, object> metadata)
-            : base(metadata)
+        : base(metadata)
         {
             if (metadata == null)
             {
@@ -32,6 +32,19 @@ namespace Kephas.Application.Composition
             }
 
             this.FeatureInfo = this.GetMetadataValue<FeatureInfoAttribute, FeatureInfo>(metadata);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureManagerMetadata" /> class.
+        /// </summary>
+        /// <param name="featureInfo">Information describing the feature (optional).</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
+        public FeatureManagerMetadata(FeatureInfo featureInfo = null, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+            : base(processingPriority, overridePriority, optionalService)
+        {
+            this.FeatureInfo = featureInfo;
         }
 
         /// <summary>
