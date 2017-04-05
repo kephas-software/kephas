@@ -127,11 +127,11 @@ namespace Kephas.Configuration
             }
 
             var settingsDictionary = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, string> kv in settings)
+            foreach (var key in settings.AllKeys)
             {
-                if (kv.Key.StartsWith(searchPattern))
+                if (key.StartsWith(searchPattern))
                 {
-                    settingsDictionary[kv.Key] = kv.Value;
+                    settingsDictionary[key] = settings[key];
                 }
             }
 
