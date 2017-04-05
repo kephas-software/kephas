@@ -10,6 +10,7 @@
 namespace Kephas.Configuration
 {
     using System.Collections.Generic;
+    using System.Collections.Specialized;
     using System.Configuration;
     using System.Linq;
 
@@ -51,14 +52,8 @@ namespace Kephas.Configuration
         /// <returns>The requested property value.</returns>
         public override object this[string key]
         {
-            get
-            {
-                return base[key];
-            }
-            set
-            {
-                this.appSettings[key] = value;
-            }
+            get => base[key];
+            set => this.appSettings[key] = value;
         }
 
         /// <summary>
@@ -70,14 +65,78 @@ namespace Kephas.Configuration
         /// </returns>
         protected override IEnumerable<KeyValuePair<string, object>> GetSettingsCore(string searchPattern)
         {
-            if (searchPattern[searchPattern.Length - 1] == '*')
+            IEnumerable<KeyValuePair<string, object>> sectionSettings;
+            if (TryGetSectionSettings(searchPattern, out sectionSettings))
+            {
+                return sectionSettings;
+            }
+
+            if (searchPattern.EndsWith("*"))
             {
                 var start = searchPattern.Substring(0, searchPattern.Length - 1);
                 var keys = this.appSettings.Where(kv => kv.Key.StartsWith(start));
                 return keys;
             }
 
-            return new[] { new KeyValuePair<string, object>(searchPattern, this.appSettings[searchPattern]) };
+            object setting;
+            this.appSettings.TryGetValue(searchPattern, out setting);
+            return new[] { new KeyValuePair<string, object>(searchPattern, setting) };
+        }
+
+        /// <summary>
+        /// Attempts to get section settings from the given data.
+        /// </summary>
+        /// <param name="searchPattern">A pattern specifying the settings to search for (optional).</param>
+        /// <param name="sectionSettings">The section settings.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        private static bool TryGetSectionSettings(string searchPattern, out IEnumerable<KeyValuePair<string, object>> sectionSettings)
+        {
+            if (!searchPattern.StartsWith(":"))
+            {
+                sectionSettings = null;
+                return false;
+            }
+
+            string section;
+            var nextSectionSeparatorIndex = searchPattern.IndexOf(":", 1);
+            if (nextSectionSeparatorIndex > 0)
+            {
+                section = searchPattern.Substring(1, nextSectionSeparatorIndex - 1);
+                searchPattern = searchPattern.Substring(nextSectionSeparatorIndex + 1);
+            }
+            else
+            {
+                section = searchPattern.Substring(1);
+                searchPattern = "*";
+            }
+
+            var isWildCard = string.IsNullOrEmpty(searchPattern) || searchPattern.EndsWith("*");
+            if (searchPattern.EndsWith("*"))
+            {
+                searchPattern = searchPattern.Substring(0, searchPattern.Length - 1);
+            }
+
+            var settings = (NameValueCollection)ConfigurationManager.GetSection(section);
+            if (!isWildCard)
+            {
+                object setting = settings[searchPattern];
+                sectionSettings = new[] { new KeyValuePair<string, object>(searchPattern, setting) };
+                return true;
+            }
+
+            var settingsDictionary = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, string> kv in settings)
+            {
+                if (kv.Key.StartsWith(searchPattern))
+                {
+                    settingsDictionary[kv.Key] = kv.Value;
+                }
+            }
+
+            sectionSettings = settingsDictionary;
+            return true;
         }
     }
 }

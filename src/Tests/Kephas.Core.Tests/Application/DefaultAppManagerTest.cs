@@ -185,8 +185,8 @@ namespace Kephas.Core.Tests.Application
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
             Assert.AreEqual(2, order.Count);
-            Assert.AreEqual(2, order[0]);
-            Assert.AreEqual(1, order[1]);
+            Assert.AreEqual(1, order[0]);
+            Assert.AreEqual(2, order[1]);
         }
 
         [Test]

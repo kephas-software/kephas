@@ -38,14 +38,8 @@ namespace Kephas.Configuration
         /// <returns>The requested property value.</returns>
         public virtual object this[string key]
         {
-            get
-            {
-                return this.GetSetting(key);
-            }
-            set
-            {
-                throw new NotSupportedException(Strings.ConfigurationBase_SettingValueNotSupported_Exception);
-            }
+            get => this.GetSetting(key);
+            set => throw new NotSupportedException(Strings.ConfigurationBase_SettingValueNotSupported_Exception);
         }
 
         /// <summary>
@@ -70,14 +64,19 @@ namespace Kephas.Configuration
         /// </returns>
         public virtual object GetSettings(string searchPattern, Type settingsType = null)
         {
-            var settingsList = this.GetSettingsCore(searchPattern);
+            var settingsList = this.CollectSettings(searchPattern);
+
             if (settingsType == typeof(IIndexable) || settingsType == typeof(IExpando) || settingsType == typeof(Expando))
             {
                 settingsType = null;
             }
 
             var settings = settingsType?.AsRuntimeTypeInfo().CreateInstance();
-            var expando = settings == null ? new Expando() : new Expando(settings);
+            var expando = settings == null
+                              ? new Expando()
+                              : settings is IExpando
+                                  ? (IExpando)settings
+                                  : new Expando(settings);
 
             // TODO implement a better value setting, taking into consideration the "dot syntax"
             foreach (var setting in settingsList)
@@ -96,5 +95,34 @@ namespace Kephas.Configuration
         /// An enumeration of settings.
         /// </returns>
         protected abstract IEnumerable<KeyValuePair<string, object>> GetSettingsCore(string searchPattern);
+
+        /// <summary>
+        /// Collects the settings based on the search pattern.
+        /// </summary>
+        /// <param name="searchPattern">A pattern specifying the settings to search for (optional).</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process collect settings in this collection.
+        /// </returns>
+        private IEnumerable<KeyValuePair<string, object>> CollectSettings(string searchPattern)
+        {
+            IEnumerable<KeyValuePair<string, object>> settingsList;
+            if (!string.IsNullOrEmpty(searchPattern))
+            {
+                var searchPatternItems = searchPattern.Split(';');
+                var allSettings = new List<KeyValuePair<string, object>>();
+                foreach (var searchPatternItem in searchPatternItems)
+                {
+                    allSettings.AddRange(this.GetSettingsCore(searchPatternItem));
+                }
+
+                settingsList = allSettings;
+            }
+            else
+            {
+                settingsList = this.GetSettingsCore(searchPattern);
+            }
+
+            return settingsList;
+        }
     }
 }
