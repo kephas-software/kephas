@@ -27,5 +27,25 @@ namespace Kephas.Core.Tests.Sets
             Assert.AreEqual(2, orderedValues[1]);
             Assert.AreEqual(3, orderedValues[2]);
         }
+
+        [Test]
+        public void GetEnumerator_not_ordered()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => null);
+            var orderedValues = orderedSet.ToList();
+            Assert.AreEqual(2, orderedValues[0]);
+            Assert.AreEqual(3, orderedValues[1]);
+            Assert.AreEqual(1, orderedValues[2]);
+        }
+
+        [Test]
+        public void GetEnumerator_partially_ordered()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => i1 + i2 == 5 ? (int?)i2 - i1 : null);
+            var orderedValues = orderedSet.ToList();
+            Assert.AreEqual(3, orderedValues[0]);
+            Assert.AreEqual(2, orderedValues[1]);
+            Assert.AreEqual(1, orderedValues[2]);
+        }
     }
 }
