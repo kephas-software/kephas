@@ -159,6 +159,9 @@
     <Compile Include="..\Kephas.Core\Application\AppContext.cs">
       <Link>Application\AppContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppLifecycleBehaviorBase.cs">
+      <Link>Application\AppLifecycleBehaviorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\AppManifestAttribute.cs">
       <Link>Application\AppManifestAttribute.cs</Link>
     </Compile>
@@ -176,6 +179,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureInfo.cs">
       <Link>Application\FeatureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\FeatureLifecycleBehaviorBase.cs">
+      <Link>Application\FeatureLifecycleBehaviorBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureManagerBase.cs">
       <Link>Application\FeatureManagerBase.cs</Link>
@@ -327,8 +333,14 @@
     <Compile Include="..\Kephas.Core\Configuration\AppConfigurationBase.cs">
       <Link>Configuration\AppConfigurationBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\ConfigurationBase.cs">
+      <Link>Configuration\ConfigurationBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Configuration\IAppConfiguration.cs">
       <Link>Configuration\IAppConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Configuration\IConfiguration.cs">
+      <Link>Configuration\IConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Configuration\NullAppConfiguration.cs">
       <Link>Configuration\NullAppConfiguration.cs</Link>
