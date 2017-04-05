@@ -37,12 +37,12 @@ namespace Kephas.Core.Tests.Composition
         public void Constructor_success()
         {
             var logManager = Substitute.For<ILogManager>();
-            var configManager = Substitute.For<IConfigurationManager>();
+            var configuration = Substitute.For<IConfiguration>();
             var platformManager = Substitute.For<IAppRuntime>();
-            var builder = new TestCompositionContainerBuilder(logManager, configManager, platformManager);
+            var builder = new TestCompositionContainerBuilder(logManager, configuration, platformManager);
 
             Assert.AreEqual(logManager, builder.LogManager);
-            Assert.AreEqual(configManager, builder.ConfigurationManager);
+            Assert.AreEqual(configuration, builder.Configuration);
             Assert.AreEqual(platformManager, builder.AppRuntime);
 
             // The IServiceProvider export providers.
@@ -86,8 +86,8 @@ namespace Kephas.Core.Tests.Composition
             {
             }
 
-            public TestCompositionContainerBuilder(ILogManager logManager, IConfigurationManager configurationManager, IAppRuntime appRuntime)
-                : base(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(configurationManager).RegisterService(appRuntime)))
+            public TestCompositionContainerBuilder(ILogManager logManager, IConfiguration configuration, IAppRuntime appRuntime)
+                : base(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(configuration).RegisterService(appRuntime)))
             {
             }
 

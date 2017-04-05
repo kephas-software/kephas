@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppSettingsConfigurationManager.cs" company="Quartz Software SRL">
+// <copyright file="AppSettingsConfiguration.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the application settings configuration manager class.
+//   Implements the application settings configuration class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ namespace Kephas.Configuration
     using Kephas.Services;
 
     /// <summary>
-    /// Configuration manager based on the AppSettings found in the app.config/web.config file.
+    /// Configuration based on the AppSettings found in the app.config/web.config file.
     /// </summary>
     [OverridePriority(Priority.BelowNormal)]
-    public class AppSettingsConfigurationManager : ConfigurationManagerBase
+    public class AppSettingsConfiguration : ConfigurationBase
     {
         /// <summary>
         /// The application settings.
@@ -27,9 +27,9 @@ namespace Kephas.Configuration
         private readonly IDictionary<string, object> appSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppSettingsConfigurationManager"/> class.
+        /// Initializes a new instance of the <see cref="AppSettingsConfiguration"/> class.
         /// </summary>
-        public AppSettingsConfigurationManager()
+        public AppSettingsConfiguration()
         {
             var configAppSettings = ConfigurationManager.AppSettings;
             this.appSettings = configAppSettings.AllKeys.ToDictionary(k => k, k => (object)configAppSettings[k]);

@@ -1,4 +1,13 @@
-﻿namespace Kephas.Platform.Net46.Tests.Configuration
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AppSettingsConfigurationTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the application settings configuration test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Platform.Net46.Tests.Configuration
 {
     using Kephas.Configuration;
     using Kephas.Dynamic;
@@ -6,12 +15,12 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppSettingsConfigurationManagerTest
+    public class AppSettingsConfigurationTest
     {
         [Test]
         public void Indexer_setter()
         {
-            var service = new AppSettingsConfigurationManager();
+            var service = new AppSettingsConfiguration();
             var value = new object();
             service["hello"] = value;
 
@@ -21,7 +30,7 @@
         [Test]
         public void GetSettings_with_pattern()
         {
-            var service = new AppSettingsConfigurationManager();
+            var service = new AppSettingsConfiguration();
             var settings = service.GetSettings<Expando>("My*");
             Assert.AreEqual("myValue", settings["MySetting"]);
             Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
@@ -30,7 +39,7 @@
         [Test]
         public void GetSettings_typed_with_pattern()
         {
-            var service = new AppSettingsConfigurationManager();
+            var service = new AppSettingsConfiguration();
             var settings = service.GetSettings<MySettings>("My*");
             Assert.AreEqual("myValue", settings.MySetting);
             Assert.AreEqual("myOtherValue", settings.MyOtherSetting);

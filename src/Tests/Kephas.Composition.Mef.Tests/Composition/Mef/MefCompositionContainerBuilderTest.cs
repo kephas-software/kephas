@@ -57,8 +57,8 @@ namespace Kephas.Tests.Composition.Mef
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
 
-            var configurationManager = container.GetExport<IConfigurationManager>();
-            Assert.AreEqual(factory.ConfigurationManager, configurationManager);
+            var configuration = container.GetExport<IConfiguration>();
+            Assert.AreEqual(factory.Configuration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
@@ -82,8 +82,8 @@ namespace Kephas.Tests.Composition.Mef
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
 
-            var configurationManager = container.GetExport<IConfigurationManager>();
-            Assert.AreEqual(factory.ConfigurationManager, configurationManager);
+            var configuration = container.GetExport<IConfiguration>();
+            Assert.AreEqual(factory.Configuration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(factory.AppRuntime, platformManager);
@@ -357,10 +357,10 @@ namespace Kephas.Tests.Composition.Mef
         private MefCompositionContainerBuilder CreateCompositionContainerBuilder()
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
-            var mockConfigurationManager = Substitute.For<IConfigurationManager>();
+            var mockConfiguration = Substitute.For<IConfiguration>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfigurationManager).RegisterService(mockPlatformManager));
+            var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfiguration).RegisterService(mockPlatformManager));
             var factory = new MefCompositionContainerBuilder(context);
             return factory;
         }

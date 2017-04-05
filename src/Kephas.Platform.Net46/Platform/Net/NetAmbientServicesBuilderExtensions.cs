@@ -44,18 +44,18 @@ namespace Kephas.Platform.Net
         }
 
         /// <summary>
-        /// Sets the <see cref="AppSettingsConfigurationManager"/> to the ambient services.
+        /// Sets the <see cref="AppSettingsConfiguration"/> to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithAppSettingsConfigurationManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithAppSettingsConfiguration(this AmbientServicesBuilder ambientServicesBuilder)
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
-            var configurationManager = new AppSettingsConfigurationManager();
-            return ambientServicesBuilder.WithConfigurationManager(configurationManager);
+            var configuration = new AppSettingsConfiguration();
+            return ambientServicesBuilder.WithConfiguration(configuration);
         }
     }
 }

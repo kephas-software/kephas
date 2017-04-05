@@ -213,8 +213,8 @@
   <data name="Requires_NotNullOrEmpty_EmptyArgument_Exception" xml:space="preserve">
     <value>Argument '{0}' must not be null nor empty.</value>
   </data>
-  <data name="ConfigurationManagerBase_SettingValueNotSupported_Exception" xml:space="preserve">
-    <value>Setting a value is not supported by the default implementation of the configuration manager. Override this in a derived class to provide an implementation.</value>
+  <data name="ConfigurationBase_SettingValueNotSupported_Exception" xml:space="preserve">
+    <value>Setting a value is not supported by the default implementation of the configuration. Override this in a derived class to provide an implementation.</value>
   </data>
   <data name="ConcurrentCollection_CannotAddItem_Exception" xml:space="preserve">
     <value>Could not add the item {0} to the concurrent collection.</value>

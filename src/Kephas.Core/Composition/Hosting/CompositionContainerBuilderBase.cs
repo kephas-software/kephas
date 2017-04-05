@@ -73,8 +73,8 @@ namespace Kephas.Composition.Hosting
             this.LogManager = context.AmbientServices.GetService<ILogManager>();
             this.AssertRequiredService(this.LogManager);
 
-            this.ConfigurationManager = context.AmbientServices.GetService<IConfigurationManager>();
-            this.AssertRequiredService(this.ConfigurationManager);
+            this.Configuration = context.AmbientServices.GetService<IConfiguration>();
+            this.AssertRequiredService(this.Configuration);
 
             this.AppRuntime = context.AmbientServices.GetService<IAppRuntime>();
             this.AssertRequiredService(this.AppRuntime);
@@ -104,12 +104,12 @@ namespace Kephas.Composition.Hosting
         public ITypeLoader TypeLoader { get; }
 
         /// <summary>
-        /// Gets the configuration manager.
+        /// Gets the configuration.
         /// </summary>
         /// <value>
-        /// The configuration manager.
+        /// The configuration.
         /// </value>
-        public IConfigurationManager ConfigurationManager { get; }
+        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -513,7 +513,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>The assemblies.</returns>
         private async Task<IList<Assembly>> GetAssembliesAsync(string searchPattern = null)
         {
-            searchPattern = searchPattern ?? (string)this.ConfigurationManager.GetSetting(AssemblyNamePatternConfigurationKey);
+            searchPattern = searchPattern ?? (string)this.Configuration.GetSetting(AssemblyNamePatternConfigurationKey);
 
             this.Logger.Debug($"{nameof(this.GetAssembliesAsync)}. With assemblies matching pattern '{searchPattern}'.");
 

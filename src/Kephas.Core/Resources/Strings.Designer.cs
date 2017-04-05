@@ -225,11 +225,11 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setting a value is not supported by the default implementation of the configuration manager. Override this in a derived class to provide an implementation..
+        ///   Looks up a localized string similar to Setting a value is not supported by the default implementation of the configuration. Override this in a derived class to provide an implementation..
         /// </summary>
-        internal static string ConfigurationManagerBase_SettingValueNotSupported_Exception {
+        internal static string ConfigurationBase_SettingValueNotSupported_Exception {
             get {
-                return ResourceManager.GetString("ConfigurationManagerBase_SettingValueNotSupported_Exception", resourceCulture);
+                return ResourceManager.GetString("ConfigurationBase_SettingValueNotSupported_Exception", resourceCulture);
             }
         }
         
