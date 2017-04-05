@@ -17,7 +17,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// Manager for application configuration.
     /// </summary>
-    public interface IConfiguration : IIndexable
+    public interface IAppConfiguration : IIndexable
     {
         /// <summary>
         /// Gets the setting with the provided key.
@@ -39,7 +39,7 @@ namespace Kephas.Configuration
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IConfiguration"/>.
+    /// Extension methods for <see cref="IAppConfiguration"/>.
     /// </summary>
     public static class ConfigurationExtensions
     {
@@ -47,16 +47,16 @@ namespace Kephas.Configuration
         /// Gets the settings with the provided pattern and returns an object representing these settings.
         /// </summary>
         /// <typeparam name="TSettings">Type of the settings.</typeparam>
-        /// <param name="configuration">The configuration to act on.</param>
+        /// <param name="appConfiguration">The configuration to act on.</param>
         /// <param name="searchPattern">A pattern specifying the settings to be retrieved.</param>
         /// <returns>
         /// The settings.
         /// </returns>
-        public static TSettings GetSettings<TSettings>(this IConfiguration configuration, string searchPattern)
+        public static TSettings GetSettings<TSettings>(this IAppConfiguration appConfiguration, string searchPattern)
         {
-            Requires.NotNull(configuration, nameof(configuration));
+            Requires.NotNull(appConfiguration, nameof(appConfiguration));
 
-            return (TSettings)configuration.GetSettings(searchPattern, typeof(TSettings));
+            return (TSettings)appConfiguration.GetSettings(searchPattern, typeof(TSettings));
         }
     }
 }

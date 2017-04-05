@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConfigurationBase.cs" company="Quartz Software SRL">
+// <copyright file="AppConfigurationBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -20,7 +20,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// Base class for configurations.
     /// </summary>
-    public abstract class ConfigurationBase : IConfiguration
+    public abstract class AppConfigurationBase : IAppConfiguration
     {
         /// <summary>
         /// Convenience method that provides a string Indexer

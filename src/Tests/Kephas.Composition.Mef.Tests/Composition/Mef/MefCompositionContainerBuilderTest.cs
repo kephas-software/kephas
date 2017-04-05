@@ -57,8 +57,8 @@ namespace Kephas.Tests.Composition.Mef
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
 
-            var configuration = container.GetExport<IConfiguration>();
-            Assert.AreEqual(factory.Configuration, configuration);
+            var configuration = container.GetExport<IAppConfiguration>();
+            Assert.AreEqual(factory.AppConfiguration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
@@ -82,8 +82,8 @@ namespace Kephas.Tests.Composition.Mef
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
 
-            var configuration = container.GetExport<IConfiguration>();
-            Assert.AreEqual(factory.Configuration, configuration);
+            var configuration = container.GetExport<IAppConfiguration>();
+            Assert.AreEqual(factory.AppConfiguration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(factory.AppRuntime, platformManager);
@@ -357,7 +357,7 @@ namespace Kephas.Tests.Composition.Mef
         private MefCompositionContainerBuilder CreateCompositionContainerBuilder()
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
-            var mockConfiguration = Substitute.For<IConfiguration>();
+            var mockConfiguration = Substitute.For<IAppConfiguration>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
             var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfiguration).RegisterService(mockPlatformManager));

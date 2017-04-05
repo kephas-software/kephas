@@ -56,16 +56,16 @@ namespace Kephas.Testing.Composition.Mef
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IConfiguration configuration = null, IAppRuntime appRuntime = null)
+        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppConfiguration appConfiguration = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? Substitute.For<ILogManager>();
-            configuration = configuration ?? Substitute.For<IConfiguration>();
+            appConfiguration = appConfiguration ?? Substitute.For<IAppConfiguration>();
             appRuntime = appRuntime ?? Substitute.For<IAppRuntime>();
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .RegisterService(logManager)
-                .RegisterService(configuration)
+                .RegisterService(appConfiguration)
                 .RegisterService(appRuntime);
             return new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServices));
         }

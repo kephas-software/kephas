@@ -55,7 +55,7 @@ namespace Kephas.Platform.Net
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             var configuration = new AppSettingsConfiguration();
-            return ambientServicesBuilder.WithConfiguration(configuration);
+            return ambientServicesBuilder.WithAppConfiguration(configuration);
         }
     }
 }

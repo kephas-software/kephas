@@ -73,15 +73,15 @@ namespace Kephas
         /// <summary>
         /// Sets the application configuration to the ambient services.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="appConfiguration">The application configuration.</param>
         /// <returns>
         /// The ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithConfiguration(IConfiguration configuration)
+        public AmbientServicesBuilder WithAppConfiguration(IAppConfiguration appConfiguration)
         {
-            Requires.NotNull(configuration, nameof(configuration));
+            Requires.NotNull(appConfiguration, nameof(appConfiguration));
 
-            this.AmbientServices.RegisterService(configuration);
+            this.AmbientServices.RegisterService(appConfiguration);
 
             return this;
         }

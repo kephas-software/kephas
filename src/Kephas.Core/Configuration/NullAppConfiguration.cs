@@ -17,7 +17,7 @@ namespace Kephas.Configuration
     /// A configuration returning no configuration values.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullConfiguration : ConfigurationBase
+    public class NullAppConfiguration : AppConfigurationBase
     {
         /// <summary>
         /// Gets all available settings for the specified search pattern.
