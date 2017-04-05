@@ -471,6 +471,9 @@
     <Compile Include="..\Kephas.Core\Reflection\ReflectionHelper.cs">
       <Link>Reflection\ReflectionHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ReflectionStringExtensions.cs">
+      <Link>Reflection\ReflectionStringExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\TypeExtensions.cs">
       <Link>Reflection\TypeExtensions.cs</Link>
     </Compile>
