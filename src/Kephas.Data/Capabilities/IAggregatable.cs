@@ -30,7 +30,7 @@ namespace Kephas.Data.Capabilities
         /// Gets the flattened graph asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The flattened graph asynchronous.
         /// </returns>

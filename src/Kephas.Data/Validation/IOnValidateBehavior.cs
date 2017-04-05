@@ -24,7 +24,7 @@ namespace Kephas.Data.Validation
         /// </summary>
         /// <param name="obj">The object being validated.</param>
         /// <param name="operationContext">Context for the validation operation.</param>
-        /// <param name="cancellationToken">(Optional) the cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
