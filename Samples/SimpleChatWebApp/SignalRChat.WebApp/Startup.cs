@@ -30,8 +30,8 @@ namespace SignalRChat.WebApp
             var ambientServices = await this.InitializeAmbientServicesAsync().PreserveThreadContext();
 
             var appContext = new OwinAppContext(app);
-            var bootstrapper = ambientServices.CompositionContainer.GetExport<IAppBootstrapper>();
-            await bootstrapper.StartAsync(appContext).PreserveThreadContext();
+            var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
+            await appManager.InitializeAppAsync(appContext).PreserveThreadContext();
         }
 
         private async Task<IAmbientServices> InitializeAmbientServicesAsync()

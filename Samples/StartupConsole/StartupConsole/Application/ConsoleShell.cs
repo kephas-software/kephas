@@ -8,6 +8,7 @@
     using Kephas.Diagnostics;
     using Kephas.Platform.Net;
     using Kephas.Logging.NLog;
+    using Kephas.Threading.Tasks;
 
     using AppContext = Kephas.Application.AppContext;
 
@@ -27,6 +28,8 @@
             Console.WriteLine("Application starting...");
 
             var ambientServicesBuilder = new AmbientServicesBuilder();
+            IAppManager appManager = null;
+            var appContext = new AppContext();
             var elapsed = await Profiler.WithStopwatchAsync(
                 async () =>
                     {
@@ -35,8 +38,8 @@
                                 .WithNetAppRuntime()
                                 .WithMefCompositionContainerAsync();
 
-                        var appBootstrapper = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppBootstrapper>();
-                        await appBootstrapper.StartAsync(new AppContext());
+                        appManager = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManager>();
+                        await appManager.InitializeAppAsync(appContext);
                     });
 
             var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
@@ -45,6 +48,8 @@
 
             Console.WriteLine();
             Console.WriteLine("Press any key to end the program.");
+
+            await appManager.FinalizeAppAsync(appContext).PreserveThreadContext();
         }
     }
 }

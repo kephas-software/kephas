@@ -33,8 +33,8 @@
                             .WithMefCompositionContainerAsync();
 
                     var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
-                    var appBootstrapper = compositionContainer.GetExport<IAppBootstrapper>();
-                    await appBootstrapper.StartAsync(new AppContext());
+                    var appBootstrapper = compositionContainer.GetExport<IAppManager>();
+                    await appBootstrapper.InitializeAppAsync(new AppContext());
                 });
 
             var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();

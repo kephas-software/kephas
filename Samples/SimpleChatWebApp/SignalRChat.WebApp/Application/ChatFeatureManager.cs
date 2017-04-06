@@ -3,6 +3,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application.AttributedModel;
     using Kephas.Messaging.Server;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
@@ -12,18 +13,19 @@
 
     using SignalRChat.WebApp.Middleware;
 
-    public class ApiAppInitializer : OwinAppInitializerBase
+    [FeatureInfo(AppFeature.Chat, dependencies: new[] { AppFeature.SignalR })]
+    public class ChatFeatureManager : OwinFeatureManagerBase
     {
         private readonly IMessageProcessor messageProcessor;
 
         private readonly ISerializationService serializationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApiAppInitializer"/> class.
+        /// Initializes a new instance of the <see cref="ChatFeatureManager"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public ApiAppInitializer(IMessageProcessor messageProcessor, ISerializationService serializationService)
+        public ChatFeatureManager(IMessageProcessor messageProcessor, ISerializationService serializationService)
         {
             this.messageProcessor = messageProcessor;
             this.serializationService = serializationService;

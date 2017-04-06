@@ -5,20 +5,22 @@
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Services;
 
-    public class YellowConsoleAppInitializer : IAppInitializer
+    [ProcessingPriority(Priority.High)]
+    public class GreenConsoleFeatureManager : FeatureManagerBase
     {
         /// <summary>
-        /// Initializes the application asynchronously.
+        /// Initializes the feature asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The <see cref="Task"/>.
         /// </returns>
-        public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected override async Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Green;
         }
     }
 }

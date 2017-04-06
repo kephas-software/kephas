@@ -45,8 +45,8 @@ namespace RoleGame.Application
                                                                     .WithConventions(CompositionHelper.GetConventions(ambientServicesBuilder.AmbientServices.GetService<ITypeLoader>())));
 
                     var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
-                    var appBootstrapper = compositionContainer.GetExport<IAppBootstrapper>();
-                    await appBootstrapper.StartAsync(new AppContext());
+                    var appManager = compositionContainer.GetExport<IAppManager>();
+                    await appManager.InitializeAppAsync(new AppContext());
                 });
 
             var container = ambientServicesBuilder.AmbientServices.CompositionContainer;

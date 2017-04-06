@@ -3,17 +3,17 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Services;
+    using Kephas.Application.AttributedModel;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
     using Owin;
 
     /// <summary>
-    /// A SignalR application initializer.
+    /// A SignalR feature manager.
     /// </summary>
-    [ProcessingPriority(Priority.High)]
-    public class SignalRAppInitializer : OwinAppInitializerBase
+    [FeatureInfo(AppFeature.SignalR)]
+    public class SignalRFeatureManager : OwinFeatureManagerBase
     {
         /// <summary>Initializes the application asynchronously.</summary>
         /// <param name="appContext">Context for the application.</param>

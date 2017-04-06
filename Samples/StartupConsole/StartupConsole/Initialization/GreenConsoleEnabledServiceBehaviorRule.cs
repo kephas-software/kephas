@@ -4,7 +4,7 @@
     using Kephas.Behavior;
     using Kephas.Services.Behavior;
 
-    public class GreenConsoleEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<IAppInitializer, GreenConsoleAppInitializer>
+    public class GreenConsoleEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<IFeatureManager, GreenConsoleFeatureManager>
     {
         /// <summary>
         /// Gets the behavior value.
@@ -13,7 +13,7 @@
         /// <returns>
         /// The behavior value.
         /// </returns>
-        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IAppInitializer> context)
+        public override IBehaviorValue<bool> GetValue(IServiceBehaviorContext<IFeatureManager> context)
         {
             //TODO uncomment the next line and see how the application initialization changes
             //return BehaviorValue.True;
