@@ -263,10 +263,15 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Attempts to get the dictionary value from the given data.
+        /// Attempts to get the dynamic value with the given key.
         /// </summary>
+        /// <remarks>
+        /// First of all, it is tried to get a property value from the inner object, if one is set.
+        /// The next try is to retrieve the property value from the expando object itself.
+        /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is searched by the provided key.
+        /// </remarks>
         /// <param name="key">The key.</param>
-        /// <param name="value">The value to get from the dictionary.</param>
+        /// <param name="value">The value to get.</param>
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
@@ -301,10 +306,15 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Attempts to set the gived data in the dictionary.
+        /// Attempts to set the value with the given key.
         /// </summary>
+        /// <remarks>
+        /// First of all, it is tried to set the property value to the inner object, if one is set.
+        /// The next try is to set the property value to the expando object itself.
+        /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is used to set the value with the provided key.
+        /// </remarks>
         /// <param name="key">The key.</param>
-        /// <param name="value">The value to set into the dictionary.</param>
+        /// <param name="value">The value to set.</param>
         /// <returns>
         /// <c>true</c> if the value could be set, <c>false</c> otherwise.
         /// </returns>
