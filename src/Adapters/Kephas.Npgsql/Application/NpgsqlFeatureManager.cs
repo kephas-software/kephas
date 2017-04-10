@@ -13,6 +13,7 @@ namespace Kephas.Npgsql.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.AttributedModel;
     using Kephas.Npgsql.Logging;
     using Kephas.Services;
 
@@ -22,6 +23,7 @@ namespace Kephas.Npgsql.Application
     /// A Npgsql feature manager.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
+    [FeatureInfo(NpgsqlFeature.Driver)]
     public class NpgsqlFeatureManager : FeatureManagerBase
     {
         /// <summary>
