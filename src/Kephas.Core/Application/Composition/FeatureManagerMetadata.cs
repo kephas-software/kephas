@@ -24,7 +24,7 @@ namespace Kephas.Application.Composition
         /// </summary>
         /// <param name="metadata">The metadata.</param>
         public FeatureManagerMetadata(IDictionary<string, object> metadata)
-        : base(metadata)
+            : base(metadata)
         {
             if (metadata == null)
             {
@@ -54,5 +54,18 @@ namespace Kephas.Application.Composition
         /// Information describing the feature.
         /// </value>
         public FeatureInfo FeatureInfo { get; internal set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var deps = string.Join(",", this.FeatureInfo?.Dependencies ?? new string[0]);
+            var feature = $"{this.FeatureInfo?.Name}({deps})";
+            return $"{base.ToString()}, {feature}";
+        }
     }
 }

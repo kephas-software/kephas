@@ -85,6 +85,18 @@ namespace Kephas.Services.Composition
         public Type AppServiceImplementationType { get; set; }
 
         /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var optional = this.OptionalService ? "Optional, " : string.Empty;
+            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {optional}Impl: {this.AppServiceImplementationType}";
+        }
+
+        /// <summary>
         /// Gets the metadata value for the specific attribute.
         /// </summary>
         /// <param name="metadata">The metadata.</param>

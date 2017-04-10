@@ -40,18 +40,29 @@ namespace Kephas.Composition.Mef
         public virtual IExport<T> CreateExport() => new ExportAdapter<T>(this.CreateInnerExport());
 
         /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>A handle allowing the created part to be accessed then released.</returns>
+        IExport IExportFactory.CreateExport() => this.CreateExport();
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export<{typeof(T)}>";
+        }
+
+        /// <summary>
         /// Creates the inner export.
         /// </summary>
         /// <returns>
         /// The new inner export.
         /// </returns>
         protected Export<T> CreateInnerExport() => this.innerExportFactory.CreateExport();
-
-        /// <summary>
-        /// Create an instance of the exported part.
-        /// </summary>
-        /// <returns>A handle allowing the created part to be accessed then released.</returns>
-        IExport IExportFactory.CreateExport() => this.CreateExport();
     }
 
     /// <summary>
@@ -91,5 +102,16 @@ namespace Kephas.Composition.Mef
         /// <returns>A handle allowing the created part to be accessed then released.</returns>
         IExport<T, TMetadata> IExportFactory<T, TMetadata>.CreateExport()
             => new ExportAdapter<T, TMetadata>(this.CreateInnerExport(), this.Metadata);
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{base.ToString()} ({this.Metadata})";
+        }
     }
 }
