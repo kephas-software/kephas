@@ -519,6 +519,9 @@
     <Compile Include="..\Kephas.Core\Serialization\IFormat.cs">
       <Link>Serialization\IFormat.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\Ini\IniFormat.cs">
+      <Link>Serialization\Ini\IniFormat.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\ISerializationContext.cs">
       <Link>Serialization\ISerializationContext.cs</Link>
     </Compile>
