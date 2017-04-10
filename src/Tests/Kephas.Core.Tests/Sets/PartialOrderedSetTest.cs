@@ -9,6 +9,7 @@
 
 namespace Kephas.Core.Tests.Sets
 {
+    using System;
     using System.Linq;
 
     using Kephas.Sets;
@@ -46,6 +47,16 @@ namespace Kephas.Core.Tests.Sets
             Assert.AreEqual(3, orderedValues[0]);
             Assert.AreEqual(2, orderedValues[1]);
             Assert.AreEqual(1, orderedValues[2]);
+        }
+
+        [Test]
+        public void GetEnumerator_cyclic_graph_exception()
+        {
+            Assert.Throws<InvalidOperationException>(
+                () =>
+                    {
+                        var orderedSet = new PartialOrderedSet<int>(new[] { 1, 2 }, (i1, i2) => Math.Abs(i1 - i2));
+                    });
         }
     }
 }
