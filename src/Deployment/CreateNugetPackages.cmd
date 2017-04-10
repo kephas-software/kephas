@@ -1,5 +1,5 @@
 set BuildConfiguration=Debug
-set PackageVersion=3.3.0-preview1
+set PackageVersion=3.3.0-preview2
 set PackageRefVersion=3.3.0
 
 nuget pack ..\Kephas.Core\Package.nuspec -BasePath ..\Kephas.Core -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
@@ -20,3 +20,4 @@ nuget pack ..\Kephas.Platform.Net\Package.nuspec -BasePath ..\Kephas.Platform.Ne
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Mail.Net46\Package.nuspec -BasePath ..\Kephas.Mail.Net46 -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas.Npgsql -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%

@@ -47,5 +47,4 @@ namespace Kephas.Application.AttributedModel
         /// </value>
         public FeatureInfo Value { get; }
     }
-
 }
