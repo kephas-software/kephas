@@ -9,6 +9,7 @@
 
 namespace Kephas.Configuration
 {
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
 
@@ -20,11 +21,6 @@ namespace Kephas.Configuration
         where TSettings : class
     {
         /// <summary>
-        /// The application configuration.
-        /// </summary>
-        private readonly IAppConfiguration appConfiguration;
-
-        /// <summary>
         /// The settings.
         /// </summary>
         private TSettings settings;
@@ -35,8 +31,15 @@ namespace Kephas.Configuration
         /// <param name="appConfiguration">The application configuration.</param>
         protected ConfigurationBase(IAppConfiguration appConfiguration)
         {
-            this.appConfiguration = appConfiguration;
+            Requires.NotNull(appConfiguration, nameof(appConfiguration));
+
+            this.AppConfiguration = appConfiguration;
         }
+
+        /// <summary>
+        /// Gets the application configuration.
+        /// </summary>
+        public IAppConfiguration AppConfiguration { get; }
 
         /// <summary>
         /// Gets the settings associated to this configuration.
@@ -44,7 +47,7 @@ namespace Kephas.Configuration
         /// <value>
         /// The settings.
         /// </value>
-        public TSettings Settings => this.settings ?? (this.settings = (TSettings)this.appConfiguration.GetSettings(this.GetSettingsPattern(), typeof(TSettings)));
+        public TSettings Settings => this.settings ?? (this.settings = (TSettings)this.AppConfiguration.GetSettings(this.GetSettingsPattern(), typeof(TSettings)));
 
         /// <summary>
         /// Gets the settings pattern.
