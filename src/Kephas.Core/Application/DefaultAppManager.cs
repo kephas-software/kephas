@@ -586,7 +586,8 @@ namespace Kephas.Application
             }
 
             // Note: do not perform arithmetic operations because this will probably end
-            // in overflows, taking into consideration that we can have int.MinValue and int.MaxValue values.
+            // in overflows, taking into consideration that we can have int.MinValue and int.MaxValue values
+            // and therefore in bad comparisons.
             if (fm1.Metadata.ProcessingPriority < fm2.Metadata.ProcessingPriority)
             {
                 return -1;
