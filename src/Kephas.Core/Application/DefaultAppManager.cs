@@ -585,8 +585,19 @@ namespace Kephas.Application
                 return 1;
             }
 
-            var priorityComparison = fm1.Metadata.ProcessingPriority - fm2.Metadata.ProcessingPriority;
-            return priorityComparison != 0 ? (int?)priorityComparison : null;
+            // Note: do not perform arithmetic operations because this will probably end
+            // in overflows, taking into consideration that we can have int.MinValue and int.MaxValue values.
+            if (fm1.Metadata.ProcessingPriority < fm2.Metadata.ProcessingPriority)
+            {
+                return -1;
+            }
+
+            if (fm1.Metadata.ProcessingPriority > fm2.Metadata.ProcessingPriority)
+            {
+                return 1;
+            }
+
+            return null;
         }
     }
 }
