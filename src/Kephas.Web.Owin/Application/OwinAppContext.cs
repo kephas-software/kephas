@@ -11,9 +11,9 @@ namespace Kephas.Web.Owin.Application
 {
     using System.Diagnostics.Contracts;
 
-    using global::Owin;
-
     using Kephas.Application;
+
+    using global::Owin;
 
     /// <summary>
     /// The OWIN web application context.
