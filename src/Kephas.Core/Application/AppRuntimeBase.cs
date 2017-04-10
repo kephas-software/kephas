@@ -152,8 +152,8 @@ namespace Kephas.Application
             var directories = await this.GetAppAssemblyDirectoriesAsync().PreserveThreadContext();
             foreach (var directory in directories)
             {
-                var loadedAssemblyFiles = assemblies.Select(this.GetFileName).Select(f => f.ToLowerInvariant());
-                var assemblyFiles = Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly).Select(Path.GetFileName);
+                var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
+                var assemblyFiles = this.EnumerateFiles(directory, AssemblyFileSearchPattern).Select(Path.GetFileName);
                 var assemblyFilesToLoad = assemblyFiles
                                             .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
                                             .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
@@ -173,6 +173,19 @@ namespace Kephas.Application
         protected AssemblyName GetAssemblyNameFromAssemblyFileName(string f)
         {
             return new AssemblyName(f.Substring(0, f.Length - AssemblyFileExtension.Length));
+        }
+
+        /// <summary>
+        /// Enumerates the files in the provided directory.
+        /// </summary>
+        /// <param name="directory">Pathname of the directory.</param>
+        /// <param name="filePattern">A pattern specifying the files to retrieve.</param>
+        /// <returns>
+        /// An enumeration of file names.
+        /// </returns>
+        protected virtual IEnumerable<string> EnumerateFiles(string directory, string filePattern)
+        {
+            return Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly);
         }
 
         /// <summary>
