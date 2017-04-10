@@ -15,10 +15,12 @@ namespace Kephas.Reflection
     using System.Diagnostics.Contracts;
 
     using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// A default service implementation of the <see cref="ITypeResolver"/> service contract.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class DefaultTypeResolver : ITypeResolver
     {
         /// <summary>
