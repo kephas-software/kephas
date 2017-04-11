@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Net46.Tests.Application
+namespace Kephas.Platform.Tests.Application
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -23,7 +23,7 @@ namespace Kephas.Platform.Net46.Tests.Application
         [Test]
         public async Task GetAppAssembliesAsync_filter()
         {
-            var appEnv = new NetAppRuntime();
+            var appEnv = new NetAppRuntime(assemblyLoader: new NetAssemblyLoader());
             var assemblies = await appEnv.GetAppAssembliesAsync(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
@@ -34,7 +34,7 @@ namespace Kephas.Platform.Net46.Tests.Application
         [Test]
         public async Task GetAppAssembliesAsync_no_filter()
         {
-            var appEnv = new NetAppRuntime();
+            var appEnv = new NetAppRuntime(assemblyLoader: new NetAssemblyLoader());
             var assemblies = await appEnv.GetAppAssembliesAsync();
             var assemblyList = assemblies.ToList();
 

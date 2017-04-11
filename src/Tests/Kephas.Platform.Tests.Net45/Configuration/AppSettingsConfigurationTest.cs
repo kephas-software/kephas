@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Net46.Tests.Configuration
+namespace Kephas.Platform.Tests.Configuration
 {
     using Kephas.Configuration;
     using Kephas.Dynamic;
