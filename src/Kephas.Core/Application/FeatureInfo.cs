@@ -18,7 +18,7 @@ namespace Kephas.Application
     /// <summary>
     /// Provides information about an application feature.
     /// </summary>
-    public class FeatureInfo : Expando, IElementInfo
+    public class FeatureInfo : Expando, IFeatureInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureInfo"/> class.

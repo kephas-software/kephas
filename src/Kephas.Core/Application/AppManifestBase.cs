@@ -10,6 +10,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
@@ -34,21 +35,23 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppManifestBase"/> class.
         /// </summary>
-        protected AppManifestBase()
+        /// <param name="features">The application features.</param>
+        protected AppManifestBase(IEnumerable<IFeatureInfo> features = null)
         {
-            this.Initialize(this.AppAssembly);
+            this.Initialize(this.AppAssembly, features);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppManifestBase"/> class.
         /// </summary>
         /// <param name="appAssembly">The application assembly containing the <see cref="AppManifestAttribute"/>.</param>
-        protected AppManifestBase(Assembly appAssembly)
+        /// <param name="features">The application features.</param>
+        protected AppManifestBase(Assembly appAssembly, IEnumerable<IFeatureInfo> features = null)
         {
             Requires.NotNull(appAssembly, nameof(appAssembly));
 
             this.appAssembly = appAssembly;
-            this.Initialize(appAssembly);
+            this.Initialize(appAssembly, features);
         }
 
         /// <summary>
@@ -56,7 +59,8 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appId">The identifier of the application.</param>
         /// <param name="appVersion">The application version.</param>
-        protected AppManifestBase(string appId, Version appVersion = null)
+        /// <param name="features">The application features.</param>
+        protected AppManifestBase(string appId, Version appVersion = null, IEnumerable<IFeatureInfo> features = null)
             : base(isThreadSafe: true)
         {
             Requires.NotNullOrEmpty(appId, nameof(appId));
@@ -81,6 +85,14 @@ namespace Kephas.Application
         public Version AppVersion { get; private set; }
 
         /// <summary>
+        /// Gets the features provided by the application.
+        /// </summary>
+        /// <value>
+        /// The application features.
+        /// </value>
+        public IEnumerable<IFeatureInfo> Features { get; internal set; }
+
+        /// <summary>
         /// Gets the application assembly.
         /// </summary>
         public Assembly AppAssembly => this.appAssembly ?? (this.appAssembly = this.GetRuntimeTypeInfo().TypeInfo.Assembly);
@@ -90,11 +102,12 @@ namespace Kephas.Application
         /// provided application assembly.
         /// </summary>
         /// <param name="appAssembly">The application assembly containing the <see cref="AppManifestAttribute"/>.</param>
-        protected virtual void Initialize(Assembly appAssembly)
+        /// <param name="features">The application features.</param>
+        protected virtual void Initialize(Assembly appAssembly, IEnumerable<IFeatureInfo> features)
         {
             Requires.NotNull(appAssembly, nameof(appAssembly));
 
-            this.Initialize(this.GetAppId(appAssembly), this.GetAppVersion(appAssembly), appAssembly);
+            this.Initialize(this.GetAppId(appAssembly), this.GetAppVersion(appAssembly), appAssembly, features);
         }
 
         /// <summary>
@@ -105,12 +118,14 @@ namespace Kephas.Application
         /// <param name="appAssembly">
         /// The application assembly containing the <see cref="AppManifestAttribute"/>.
         /// </param>
-        protected virtual void Initialize(string appId, Version appVersion = null, Assembly appAssembly = null)
+        /// <param name="features">The application features.</param>
+        protected virtual void Initialize(string appId, Version appVersion = null, Assembly appAssembly = null, IEnumerable<IFeatureInfo> features = null)
         {
             Requires.NotNullOrEmpty(appId, nameof(appId));
 
             this.AppId = appId;
             this.AppVersion = appVersion ?? this.GetAppVersion(appAssembly ?? this.AppAssembly);
+            this.Features = features ?? new IFeatureInfo[0];
         }
 
         /// <summary>

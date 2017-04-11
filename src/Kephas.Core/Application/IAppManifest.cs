@@ -10,6 +10,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Dynamic;
     using Kephas.Services;
@@ -35,5 +36,13 @@ namespace Kephas.Application
         /// The application version.
         /// </value>
         Version AppVersion { get; }
+
+        /// <summary>
+        /// Gets the features provided by the application.
+        /// </summary>
+        /// <value>
+        /// The application features.
+        /// </value>
+        IEnumerable<IFeatureInfo> Features { get; }
     }
 }

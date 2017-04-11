@@ -54,9 +54,11 @@ namespace Kephas.Application
 
             this.AppManifest = appManifest;
             this.AmbientServices = ambientServices;
-            this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories ?? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>();
-            this.FeatureManagerFactories = this.SortFeatureManagerFactories(featureManagerFactories);
-            this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories ?? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>();
+            this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
+                                                        ?? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>();
+            this.FeatureManagerFactories = this.SortEnabledFeatureManagerFactories(featureManagerFactories?.WhereEnabled(ambientServices).ToList());
+            this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
+                                                        ?? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>();
         }
 
         /// <summary>
@@ -116,6 +118,16 @@ namespace Kephas.Application
         {
             try
             {
+                // set the features in the app manifest.
+                var features = this.FeatureManagerFactories
+                    .Select(f => f.Metadata.FeatureInfo)
+                    .ToList();
+                var appManifest = this.AppManifest as AppManifestBase;
+                if (appManifest != null)
+                {
+                    appManifest.Features = features;
+                }
+
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.RegisterService(appContext);
 
@@ -199,7 +211,6 @@ namespace Kephas.Application
         {
             var orderedBehaviors = this.AppLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -221,7 +232,6 @@ namespace Kephas.Application
         {
             var orderedBehaviors = this.AppLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderByDescending(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -243,12 +253,10 @@ namespace Kephas.Application
         {
             var orderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .ToList();
 
             var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -356,7 +364,6 @@ namespace Kephas.Application
         {
             var orderedBehaviors = this.AppLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderByDescending(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -378,7 +385,6 @@ namespace Kephas.Application
         {
             var orderedBehaviors = this.AppLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -400,13 +406,11 @@ namespace Kephas.Application
         {
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .ToList();
             reversedOrderedFeatureManagers.Reverse();
 
             var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .WhereEnabled(this.AmbientServices)
                                           .OrderBy(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -510,7 +514,7 @@ namespace Kephas.Application
         /// The sorted feature manager factories.
         /// </returns>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
-        protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortFeatureManagerFactories(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
+        protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
         {
             if (featureManagerFactories == null)
             {

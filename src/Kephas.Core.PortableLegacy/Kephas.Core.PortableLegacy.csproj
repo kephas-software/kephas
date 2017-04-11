@@ -201,6 +201,9 @@
     <Compile Include="..\Kephas.Core\Application\IAppRuntime.cs">
       <Link>Application\IAppRuntime.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\IFeatureInfo.cs">
+      <Link>Application\IFeatureInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\IFeatureLifecycleBehavior.cs">
       <Link>Application\IFeatureLifecycleBehavior.cs</Link>
     </Compile>
