@@ -17,7 +17,7 @@ namespace Kephas.Platform.Net46.Tests.Configuration
     [TestFixture]
     public class AppSettingsConfigurationTest
     {
-        //[Test, Ignore("Something is crashing with NUnit, try with a newer version of NUnit.")]
+        [Test]
         public void Indexer_setter()
         {
             var service = new AppSettingsConfiguration();
@@ -27,7 +27,7 @@ namespace Kephas.Platform.Net46.Tests.Configuration
             Assert.AreSame(value, service["hello"]);
         }
 
-        //[Test, Ignore("Something is crashing with NUnit, try with a newer version of NUnit.")]
+        [Test]
         public void GetSettings_with_pattern()
         {
             var service = new AppSettingsConfiguration();
@@ -36,7 +36,7 @@ namespace Kephas.Platform.Net46.Tests.Configuration
             Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
         }
 
-        //[Test, Ignore("Something is crashing with NUnit, try with a newer version of NUnit.")]
+        [Test]
         public void GetSettings_typed_with_pattern()
         {
             var service = new AppSettingsConfiguration();
@@ -45,7 +45,7 @@ namespace Kephas.Platform.Net46.Tests.Configuration
             Assert.AreEqual("myOtherValue", settings.MyOtherSetting);
         }
 
-        //[Test, Ignore("Something is crashing with NUnit, try with a newer version of NUnit.")]
+        [Test]
         public void GetSettings_typed_with_section_pattern()
         {
             var service = new AppSettingsConfiguration();

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\..\Kephas.Platform.Net\Kephas.Platform.Net.csproj" />
+    <ProjectReference Include="..\..\Kephas.Platform\Kephas.Platform.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -59,8 +59,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net", "Kephas.Platform.Net\Kephas.Platform.Net.csproj", "{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Tests", "Tests\Kephas.Messaging.Tests\Kephas.Messaging.Tests.csproj", "{D86A56DF-A18D-4051-A341-CBCEA5AE5E81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net46", "Kephas.Platform.Net46\Kephas.Platform.Net46.csproj", "{E4C34864-2654-4DD3-992C-AA56AB141016}"
@@ -77,7 +75,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net46.Tests", "Tests\Kephas.Composition.Mef.Net46.Tests\Kephas.Composition.Mef.Net46.Tests.csproj", "{8994A0CD-F82A-4EFF-BC43-B314CE273238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net45", "Kephas.Logging.NLog.Net46\Kephas.Logging.NLog.Net45.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net45", "Kephas.Logging.NLog.Net45\Kephas.Logging.NLog.Net45.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45", "Kephas.Platform.Net45\Kephas.Platform.Net45.csproj", "{29C653AB-FE45-4629-8FAE-5BD2D956AFAF}"
 EndProject
@@ -107,8 +105,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net.Tests", "Tests\Kephas.Platform.Net.Tests\Kephas.Platform.Net.Tests.csproj", "{7CA7847B-27D5-40B8-8701-E11CC73AD878}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45.Tests", "Tests\Kephas.Platform.Net45.Tests\Kephas.Platform.Net45.Tests.csproj", "{7402D884-2DFB-4069-9449-8F6A4E0A589F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{C7EE16CC-1BBA-4BE2-971E-39B0E90C62A3}"
@@ -120,6 +116,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{658FF5E4-1802-48B1-BF77-C011B7CF08E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Net45", "Kephas.Core.Net45\Kephas.Core.Net45.csproj", "{82F31B59-1FA4-4451-A2CA-356F546501CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform", "Kephas.Platform\Kephas.Platform.csproj", "{C0FF1F2E-6077-46F3-877D-5FD916EE5031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Tests", "Tests\Kephas.Platform.Tests\Kephas.Platform.Tests.csproj", "{157E2BFB-1ECC-499E-9993-5205D374BEBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,10 +183,6 @@ Global
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4A22CB1-1DD0-4C40-A79A-81B939C58059}.Release|Any CPU.Build.0 = Release|Any CPU
-		{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{978E5D74-A18F-48D0-8D69-678DF2FB0C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D86A56DF-A18D-4051-A341-CBCEA5AE5E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D86A56DF-A18D-4051-A341-CBCEA5AE5E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D86A56DF-A18D-4051-A341-CBCEA5AE5E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -275,10 +271,6 @@ Global
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6994B12D-3937-4A94-865D-9C2B7A7B797C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7CA7847B-27D5-40B8-8701-E11CC73AD878}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7402D884-2DFB-4069-9449-8F6A4E0A589F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7402D884-2DFB-4069-9449-8F6A4E0A589F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7402D884-2DFB-4069-9449-8F6A4E0A589F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -295,6 +287,14 @@ Global
 		{82F31B59-1FA4-4451-A2CA-356F546501CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82F31B59-1FA4-4451-A2CA-356F546501CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82F31B59-1FA4-4451-A2CA-356F546501CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0FF1F2E-6077-46F3-877D-5FD916EE5031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0FF1F2E-6077-46F3-877D-5FD916EE5031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0FF1F2E-6077-46F3-877D-5FD916EE5031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0FF1F2E-6077-46F3-877D-5FD916EE5031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157E2BFB-1ECC-499E-9993-5205D374BEBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157E2BFB-1ECC-499E-9993-5205D374BEBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157E2BFB-1ECC-499E-9993-5205D374BEBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157E2BFB-1ECC-499E-9993-5205D374BEBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -317,11 +317,11 @@ Global
 		{4E119285-ABC4-4890-B758-F64D950B8CF7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{A2C23A08-523D-4A27-9BD5-5B289E27D646} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{7CA7847B-27D5-40B8-8701-E11CC73AD878} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{7402D884-2DFB-4069-9449-8F6A4E0A589F} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{23B9F754-5FFC-47B1-9956-1CDFC6019627} = {658FF5E4-1802-48B1-BF77-C011B7CF08E3}
 		{7CDCA54A-3816-44CC-B709-4EC790ADC534} = {C7EE16CC-1BBA-4BE2-971E-39B0E90C62A3}
 		{658FF5E4-1802-48B1-BF77-C011B7CF08E3} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{82F31B59-1FA4-4451-A2CA-356F546501CF} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{157E2BFB-1ECC-499E-9993-5205D374BEBC} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 EndGlobal

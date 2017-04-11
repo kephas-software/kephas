@@ -6,7 +6,7 @@ nuget push Kephas.Core.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Logging.NLog.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Logging.Log4Net.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Composition.Mef.%1.nupkg -Source https://www.nuget.org/api/v2/package
-nuget push Kephas.Platform.Net.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Platform.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Model.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Client.%1.nupkg -Source https://www.nuget.org/api/v2/package

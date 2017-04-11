@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Kephas.Platform.Net</id>
+        <id>Kephas.Platform</id>
         <version>$version$</version>
-        <title>Kephas.Platform.Net</title>
+        <title>Kephas.Platform</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
         <description>
-            Provides .NET Standard 1.5/4.5/4.6 and later platform specific infrastructure.
+            Provides platform specific infrastructure: assembly loaders, application runtime services, other.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </description>
         <releaseNotes>
         </releaseNotes>
         <summary>
-            Provides .NET Standard 1.5/4.5/4.6 and later platform specific infrastructure.
+            Provides platform specific infrastructure: assembly loaders, application runtime services, other.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </summary>
@@ -28,7 +28,7 @@
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
-            <group targetFramework="net461">
+            <group targetFramework="net46">
                 <dependency id="System.IO.FileSystem" version="4.3.0" />
             </group>
             <group targetFramework="netstandard1.5">
@@ -36,27 +36,19 @@
             </group>
         </dependencies>
         <references>
-            <group targetFramework="net45">
-                <reference file="Kephas.Platform.Net45.dll" />
-            </group>
-            <group targetFramework="net461">
-                <reference file="Kephas.Platform.Net.dll" />
-            </group>
-            <group targetFramework="netstandard1.5">
-                <reference file="Kephas.Platform.Net.dll" />
-            </group>
+            <reference file="Kephas.Platform.dll" />
         </references>
         <tags>kephas framework platform net quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\Kephas.Platform.Net.dll" target="lib\netstandard1.5" />
-        <file src="bin\$configuration$\Kephas.Platform.Net.pdb" target="lib\netstandard1.5" />
-        <file src="bin\$configuration$\Kephas.Platform.Net.xml" target="lib\netstandard1.5" />
-        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.dll" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.pdb" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.Net.xml" target="lib\net461" />
-        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.dll" target="lib\net45" />
-        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.pdb" target="lib\net45" />
-        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.Net45.xml" target="lib\net45" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.dll" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.pdb" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.xml" target="lib\netstandard1.5" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.dll" target="lib\net46" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.pdb" target="lib\net46" />
+        <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.xml" target="lib\net46" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.dll" target="lib\net45" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.pdb" target="lib\net45" />
+        <file src="..\Kephas.Platform.Net45\bin\$configuration$\Kephas.Platform.xml" target="lib\net45" />
     </files>
 </package>
