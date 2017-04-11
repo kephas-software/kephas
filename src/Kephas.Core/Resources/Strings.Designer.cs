@@ -11,8 +11,7 @@
 namespace Kephas.Resources {
     using System;
     using System.Reflection;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -275,6 +274,15 @@ namespace Kephas.Resources {
         internal static string DefaultAppDisposer_DisposeFaulted_Exception {
             get {
                 return ResourceManager.GetString("DefaultAppDisposer_DisposeFaulted_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please use a more specific assembly loader, which can load from a file path, like NetAssemblyLoader..
+        /// </summary>
+        internal static string DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception {
+            get {
+                return ResourceManager.GetString("DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception", resourceCulture);
             }
         }
         

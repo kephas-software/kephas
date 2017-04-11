@@ -12,6 +12,7 @@ namespace Kephas.Reflection
     using System;
     using System.Reflection;
 
+    using Kephas.Resources;
     using Kephas.Services;
 
     /// <summary>
@@ -41,7 +42,7 @@ namespace Kephas.Reflection
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-            throw new NotSupportedException("Please use a more specific assembly loader, which can load from a file path, like Net46AssemblyLoader or NetStandardAssemblyLoader.");
+            throw new NotSupportedException(Strings.DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception);
         }
     }
 }

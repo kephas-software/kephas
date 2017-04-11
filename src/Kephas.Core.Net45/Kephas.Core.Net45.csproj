@@ -401,6 +401,8 @@
     <Compile Include="..\Kephas.Core\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
       <DependentUpon>Strings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeElementInfo.cs">
       <Link>Runtime\IRuntimeElementInfo.cs</Link>
