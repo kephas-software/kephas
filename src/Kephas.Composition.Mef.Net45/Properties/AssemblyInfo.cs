@@ -1,7 +1,16 @@
-﻿using System.Reflection;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the assembly information class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System.Reflection;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Composition.Mef.Net45")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Kephas.Composition.Mef")]
+[assembly: AssemblyDescription("Provides the composition services implementation using the System.Composition framework.")]

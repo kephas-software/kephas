@@ -1,20 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Quartz Software SRL">
+// <copyright file="AssemblyInfo.Manifest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   Implements the assembly info. manifest class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
 using System.Runtime.CompilerServices;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Composition.Mef")]
-[assembly: AssemblyDescription("Kephas Framework: composition implementation using Managed Extensibility Framework (MEF).")]
 
 [assembly: InternalsVisibleTo("Kephas.Composition.Mef.Tests, PublicKey=" +
 "0024000004800000940000000602000000240000525341310004000001000100fdab739edd4ea5" +

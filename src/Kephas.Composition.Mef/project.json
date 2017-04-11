@@ -1,9 +1,0 @@
-{
-  "supports": {},
-  "dependencies": {
-    "System.Composition": "1.0.31"
-  },
-  "frameworks": {
-    "netstandard1.4": {}
-  }
-}
