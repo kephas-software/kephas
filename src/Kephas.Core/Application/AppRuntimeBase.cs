@@ -150,7 +150,7 @@ namespace Kephas.Application
         {
             // load all the assemblies found in the application directories which are not already loaded.
             var directories = await this.GetAppAssemblyDirectoriesAsync().PreserveThreadContext();
-            foreach (var directory in directories)
+            foreach (var directory in directories.Where(d => !string.IsNullOrEmpty(d)))
             {
                 var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
                 var assemblyFiles = this.EnumerateFiles(directory, AssemblyFileSearchPattern).Select(Path.GetFileName);

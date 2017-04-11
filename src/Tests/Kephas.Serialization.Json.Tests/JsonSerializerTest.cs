@@ -7,20 +7,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using NSubstitute;
-
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
-    using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using Kephas.Reflection;
+    using Kephas.Serialization.Json;
+
+    using NSubstitute;
 
     using NUnit.Framework;
-
-    using Kephas.Serialization.Json;
 
     /// <summary>
     /// Tests for <see cref="JsonSerializer"/>.
@@ -102,7 +101,7 @@ namespace Kephas.Serialization.Json.Tests
             var asBuilder = new AmbientServicesBuilder();
             await asBuilder.WithMefCompositionContainerAsync(
                 b =>
-                b.WithAssemblies(new[] { typeof(ISerializationService).Assembly, typeof(JsonSerializer).Assembly }));
+                b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
             var ambientServices = asBuilder.AmbientServices;
             var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
             var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonFormat>(serializationService));

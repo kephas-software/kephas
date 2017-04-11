@@ -23,26 +23,12 @@ namespace Kephas.Testing.Composition.Mef
     using Kephas.Configuration;
     using Kephas.Logging;
 
-    using NSubstitute;
-
-    using NUnit.Framework;
-
     /// <summary>
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionTestBase
     {
-        [OneTimeSetUp]
-        public void TestSetup()
-        {
-            this.OnTestSetup();
-        }
-
-        public virtual void OnTestSetup()
-        {
-        }
-
         public virtual ContainerConfiguration WithEmptyConfiguration()
         {
             var configuration = new ContainerConfiguration();
@@ -58,9 +44,9 @@ namespace Kephas.Testing.Composition.Mef
 
         public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppConfiguration appConfiguration = null, IAppRuntime appRuntime = null)
         {
-            logManager = logManager ?? Substitute.For<ILogManager>();
-            appConfiguration = appConfiguration ?? Substitute.For<IAppConfiguration>();
-            appRuntime = appRuntime ?? Substitute.For<IAppRuntime>();
+            logManager = logManager ?? new NullLogManager();
+            appConfiguration = appConfiguration ?? new NullAppConfiguration();
+            appRuntime = appRuntime ?? new NullAppRuntime();
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices

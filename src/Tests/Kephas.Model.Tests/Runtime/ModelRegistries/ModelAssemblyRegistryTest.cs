@@ -36,7 +36,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(ModelAssemblyRegistry).Assembly); /* Kephas.Model */
+            assemblyList.Add(typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
             return base.CreateContainer(assemblyList);
         }
 
@@ -53,7 +53,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         {
             var platformManager = Substitute.For<IAppRuntime>();
             platformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).Assembly }));
+                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly }));
 
             var registry = new ModelAssemblyRegistry(platformManager, new DefaultTypeLoader());
             var elements = await registry.GetRuntimeElementsAsync();

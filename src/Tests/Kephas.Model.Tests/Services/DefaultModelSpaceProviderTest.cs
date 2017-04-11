@@ -39,7 +39,7 @@
         [Test]
         public async Task InitializeAsync_using_composition()
         {
-            var container = this.CreateContainer(typeof(IModelSpace).Assembly);
+            var container = this.CreateContainer(typeof(IModelSpace).GetTypeInfo().Assembly);
             var provider = container.GetExport<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
@@ -52,7 +52,7 @@
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
             var baseAssemblies = base.GetDefaultConventionAssemblies().ToList();
-            baseAssemblies.Add(typeof(IModelSpace).Assembly);
+            baseAssemblies.Add(typeof(IModelSpace).GetTypeInfo().Assembly);
             return baseAssemblies;
         }
 

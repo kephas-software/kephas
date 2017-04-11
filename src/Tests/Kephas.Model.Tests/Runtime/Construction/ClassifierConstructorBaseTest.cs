@@ -18,6 +18,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     using NUnit.Framework;
 
@@ -110,7 +111,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             }
         }
 
-        [Serializable]
+        [AppServiceContract]
         private class TestContact
         {
             public string Name { get; set; }
