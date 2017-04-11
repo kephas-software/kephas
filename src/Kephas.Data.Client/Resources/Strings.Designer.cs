@@ -11,8 +11,8 @@
 namespace Kephas.Data.Client.Resources {
     using System;
     using System.Reflection;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>

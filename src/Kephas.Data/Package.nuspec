@@ -7,7 +7,7 @@
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
         <description>
-            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+            Provides abstractions for managing data: retrieving, persisting, querying, so on.
         </description>
         <releaseNotes>
         </releaseNotes>
@@ -24,7 +24,7 @@
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
-            <group targetFramework="netstandard1.4">
+            <group targetFramework="netstandard1.3">
                 <dependency id="System.Linq.Expressions" version="4.3.0" />
                 <dependency id="System.Linq.Queryable" version="4.3.0" />
             </group>
@@ -35,11 +35,11 @@
         <tags>kephas framework data quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\Kephas.Data.dll" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Data.pdb" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Data.xml" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Data.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\$configuration$\Kephas.Data.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\$configuration$\Kephas.Data.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.dll" target="lib\net45" />
+        <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.pdb" target="lib\net45" />
+        <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.xml" target="lib\net45" />
     </files>
 </package>

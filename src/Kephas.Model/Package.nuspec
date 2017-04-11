@@ -29,9 +29,9 @@
         <tags>kephas framework abstract modeling multi-dimensional quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\netstandard1.4\Kephas.Model.dll" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\netstandard1.4\Kephas.Model.pdb" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\netstandard1.4\Kephas.Model.xml" target="lib\netstandard1.4" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Model.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Model.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Model.xml" target="lib\netstandard1.3" />
         <file src="..\Kephas.Model.Net45\bin\$configuration$\Kephas.Model.dll" target="lib\net45" />
         <file src="..\Kephas.Model.Net45\bin\$configuration$\Kephas.Model.pdb" target="lib\net45" />
         <file src="..\Kephas.Model.Net45\bin\$configuration$\Kephas.Model.xml" target="lib\net45" />

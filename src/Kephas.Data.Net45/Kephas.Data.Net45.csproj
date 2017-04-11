@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{27926B67-08CE-4FE4-9338-0B11DA98E930}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Data</RootNamespace>
+    <AssemblyName>Kephas.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Data\AmbiguousMatchDataException.cs">
+      <Link>AmbiguousMatchDataException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\AttributedModel\EntityForAttribute.cs">
+      <Link>AttributedModel\EntityForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\Composition\DataBehaviorMetadata.cs">
+      <Link>Behaviors\Composition\DataBehaviorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\DataBehaviorBase.cs">
+      <Link>Behaviors\DataBehaviorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\DataBehaviorProviderExtensions.cs">
+      <Link>Behaviors\DataBehaviorProviderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\DefaultDataBehaviorProvider.cs">
+      <Link>Behaviors\DefaultDataBehaviorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\IDataBehavior.cs">
+      <Link>Behaviors\IDataBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\IDataBehaviorProvider.cs">
+      <Link>Behaviors\IDataBehaviorProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\IOnInitializeBehavior.cs">
+      <Link>Behaviors\IOnInitializeBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\IOnPersistBehavior.cs">
+      <Link>Behaviors\IOnPersistBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\ChangeState.cs">
+      <Link>Capabilities\ChangeState.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\EntityInfo.cs">
+      <Link>Capabilities\EntityInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IAggregatable.cs">
+      <Link>Capabilities\IAggregatable.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IChangeStateTrackable.cs">
+      <Link>Capabilities\IChangeStateTrackable.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IEntityInfo.cs">
+      <Link>Capabilities\IEntityInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IGraphOperationContext.cs">
+      <Link>Capabilities\IGraphOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Builders\IDataCommandBuilder.cs">
+      <Link>Commands\Builders\IDataCommandBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Composition\DataCommandMetadata.cs">
+      <Link>Commands\Composition\DataCommandMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\CreateEntityCommandBase.cs">
+      <Link>Commands\CreateEntityCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\CreateEntityContext.cs">
+      <Link>Commands\CreateEntityContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\CreateEntityResult.cs">
+      <Link>Commands\CreateEntityResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DataCommandBase.cs">
+      <Link>Commands\DataCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DataCommandResult.cs">
+      <Link>Commands\DataCommandResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DataContextTypeAttribute.cs">
+      <Link>Commands\DataContextTypeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DiscardChangesCommandBase.cs">
+      <Link>Commands\DiscardChangesCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Factory\DataCommandFactory.cs">
+      <Link>Commands\Factory\DataCommandFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Factory\DefaultDataCommandProvider.cs">
+      <Link>Commands\Factory\DefaultDataCommandProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Factory\IDataCommandFactory.cs">
+      <Link>Commands\Factory\IDataCommandFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\Factory\IDataCommandProvider.cs">
+      <Link>Commands\Factory\IDataCommandProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\FindCommandBase.cs">
+      <Link>Commands\FindCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\FindContext.cs">
+      <Link>Commands\FindContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\FindResult.cs">
+      <Link>Commands\FindResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ICreateEntityCommand.cs">
+      <Link>Commands\ICreateEntityCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ICreateEntityContext.cs">
+      <Link>Commands\ICreateEntityContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ICreateEntityResult.cs">
+      <Link>Commands\ICreateEntityResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IDataCommand.cs">
+      <Link>Commands\IDataCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IDataCommandResult.cs">
+      <Link>Commands\IDataCommandResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IDiscardChangesCommand.cs">
+      <Link>Commands\IDiscardChangesCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IFindCommand.cs">
+      <Link>Commands\IFindCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IFindContext.cs">
+      <Link>Commands\IFindContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IFindResult.cs">
+      <Link>Commands\IFindResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IPersistChangesCommand.cs">
+      <Link>Commands\IPersistChangesCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IPersistChangesContext.cs">
+      <Link>Commands\IPersistChangesContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IPersistChangesEntry.cs">
+      <Link>Commands\IPersistChangesEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\PersistChangesCommandBase.cs">
+      <Link>Commands\PersistChangesCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\PersistChangesContext.cs">
+      <Link>Commands\PersistChangesContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\PersistChangesEntry.cs">
+      <Link>Commands\PersistChangesEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Composition\DataContextMetadata.cs">
+      <Link>Composition\DataContextMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\Composition\DataConverterMetadata.cs">
+      <Link>Conversion\Composition\DataConverterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DataConversionContext.cs">
+      <Link>Conversion\DataConversionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DataConversionException.cs">
+      <Link>Conversion\DataConversionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DataConversionResult.cs">
+      <Link>Conversion\DataConversionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DataConverterBase.cs">
+      <Link>Conversion\DataConverterBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DefaultDataConversionService.cs">
+      <Link>Conversion\DefaultDataConversionService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\IDataConversionContext.cs">
+      <Link>Conversion\IDataConversionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\IDataConversionResult.cs">
+      <Link>Conversion\IDataConversionResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\IDataConversionService.cs">
+      <Link>Conversion\IDataConversionService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\IDataConverter.cs">
+      <Link>Conversion\IDataConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DataContextBase.cs">
+      <Link>DataContextBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DataContextConfiguration.cs">
+      <Link>DataContextConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DataContextExtensions.cs">
+      <Link>DataContextExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DataException.cs">
+      <Link>DataException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DataOperationContext.cs">
+      <Link>DataOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\DefaultDataContextProvider.cs">
+      <Link>DefaultDataContextProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataContext.cs">
+      <Link>IDataContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataContextConfiguration.cs">
+      <Link>IDataContextConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataContextProvider.cs">
+      <Link>IDataContextProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataOperationContext.cs">
+      <Link>IDataOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IQueryOperationContext.cs">
+      <Link>IQueryOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IRef.cs">
+      <Link>IRef.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\DataContextQueryableSubstituteTypeConstantHandler.cs">
+      <Link>Linq\Expressions\DataContextQueryableSubstituteTypeConstantHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\EnumerableMethods.cs">
+      <Link>Linq\Expressions\EnumerableMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\EnumerableQuerySubstituteTypeConstantHandler.cs">
+      <Link>Linq\Expressions\EnumerableQuerySubstituteTypeConstantHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\ISubstituteTypeConstantHandler.cs">
+      <Link>Linq\Expressions\ISubstituteTypeConstantHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\ListSubstituteTypeConstantHandler.cs">
+      <Link>Linq\Expressions\ListSubstituteTypeConstantHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\QueryableMethods.cs">
+      <Link>Linq\Expressions\QueryableMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\SubstituteExpressionExpressionVisitor.cs">
+      <Link>Linq\Expressions\SubstituteExpressionExpressionVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\Expressions\SubstituteTypeExpressionVisitor.cs">
+      <Link>Linq\Expressions\SubstituteTypeExpressionVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\IAsyncQueryProvider.cs">
+      <Link>Linq\IAsyncQueryProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\IDataContextQueryable.cs">
+      <Link>Linq\IDataContextQueryable.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\IDataContextQueryProvider.cs">
+      <Link>Linq\IDataContextQueryProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\QueryableExtensions.cs">
+      <Link>Linq\QueryableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\MissingDataCommandException.cs">
+      <Link>MissingDataCommandException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\NotFoundDataException.cs">
+      <Link>NotFoundDataException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Properties\AssemblyInfo.Manifest.cs">
+      <Link>Properties\AssemblyInfo.Manifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\QueryOperationContext.cs">
+      <Link>QueryOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Store\ConnectionStringParser.cs">
+      <Link>Store\ConnectionStringParser.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Store\DataStoreKind.cs">
+      <Link>Store\DataStoreKind.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Store\IDataStore.cs">
+      <Link>Store\IDataStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Store\IDataStoreProvider.cs">
+      <Link>Store\IDataStoreProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Store\SupportedDataStoreKindsAttribute.cs">
+      <Link>Store\SupportedDataStoreKindsAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\DataValidationException.cs">
+      <Link>Validation\DataValidationException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\DataValidationResult.cs">
+      <Link>Validation\DataValidationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\DataValidationResultItem.cs">
+      <Link>Validation\DataValidationResultItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\DataValidationSeverity.cs">
+      <Link>Validation\DataValidationSeverity.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\IDataValidationResult.cs">
+      <Link>Validation\IDataValidationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\IDataValidationResultItem.cs">
+      <Link>Validation\IDataValidationResultItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Validation\IOnValidateBehavior.cs">
+      <Link>Validation\IOnValidateBehavior.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Data\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

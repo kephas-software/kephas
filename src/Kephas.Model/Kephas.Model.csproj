@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
     <Description>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</Description>
     <Version>3.3.0-preview2</Version>
     <Authors>Quartz Software SRL</Authors>
@@ -22,11 +22,11 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.4\Kephas.Model.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Model.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.4\Kephas.Model.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Model.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
