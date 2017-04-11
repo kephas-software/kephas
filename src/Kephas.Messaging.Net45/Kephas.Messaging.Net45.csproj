@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Messaging</RootNamespace>
+    <AssemblyName>Kephas.Messaging</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Messaging.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Messaging.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Messaging\IMessage.cs">
+      <Link>IMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\MessagingException.cs">
+      <Link>MessagingException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\MissingHandlerException.cs">
+      <Link>MissingHandlerException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Ping\PingBackMessage.cs">
+      <Link>Ping\PingBackMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Ping\PingMessage.cs">
+      <Link>Ping\PingMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Ping\PingMessageHandler.cs">
+      <Link>Ping\PingMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\Composition\MessageHandlerMetadata.cs">
+      <Link>Server\Composition\MessageHandlerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\Composition\MessageProcessingFilterMetadata.cs">
+      <Link>Server\Composition\MessageProcessingFilterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\DefaultMessageProcessor.cs">
+      <Link>Server\DefaultMessageProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\IMessageHandler.cs">
+      <Link>Server\IMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessingContext.cs">
+      <Link>Server\IMessageProcessingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessingFilter.cs">
+      <Link>Server\IMessageProcessingFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessor.cs">
+      <Link>Server\IMessageProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\MessageHandlerBase.cs">
+      <Link>Server\MessageHandlerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\MessageProcessingContext.cs">
+      <Link>Server\MessageProcessingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Server\MessageProcessingFilterBase.cs">
+      <Link>Server\MessageProcessingFilterBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Messaging\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

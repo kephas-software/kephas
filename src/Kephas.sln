@@ -99,8 +99,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Client", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client.Tests", "Tests\Kephas.Data.Client.Tests\Kephas.Data.Client.Tests.csproj", "{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.EntityFrameworkCore", "Kephas.Data.EntityFrameworkCore\Kephas.Data.EntityFrameworkCore.csproj", "{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Tests", "Tests\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj", "{A2C23A08-523D-4A27-9BD5-5B289E27D646}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
@@ -126,6 +124,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Net45", "Kephas.Data.Net45\Kephas.Data.Net45.csproj", "{27926B67-08CE-4FE4-9338-0B11DA98E930}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client.Net45", "Kephas.Data.Client.Net45\Kephas.Data.Client.Net45.csproj", "{47CA5FAE-2C28-431F-B41E-DB9CF8293545}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Net45", "Kephas.Messaging.Net45\Kephas.Messaging.Net45.csproj", "{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,10 +265,6 @@ Global
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8F51369-CF03-4588-9ACC-3BEB7805ECBC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2C23A08-523D-4A27-9BD5-5B289E27D646}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -313,6 +309,10 @@ Global
 		{47CA5FAE-2C28-431F-B41E-DB9CF8293545}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47CA5FAE-2C28-431F-B41E-DB9CF8293545}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47CA5FAE-2C28-431F-B41E-DB9CF8293545}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -345,5 +345,6 @@ Global
 		{0E4D7EB1-19F1-4344-89BD-402455C398C4} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{27926B67-08CE-4FE4-9338-0B11DA98E930} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{47CA5FAE-2C28-431F-B41E-DB9CF8293545} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{DEA2CC67-DED4-4AC7-85E1-BB1C6D9D4378} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 	EndGlobalSection
 EndGlobal

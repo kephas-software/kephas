@@ -3,14 +3,14 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   AssemblyInfo.cs
+//   Implements the assembly information class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
 
-// General Information about an assembly is controlled through the following 
+// General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Kephas.Messaging")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Provides composable messaging infrastructure in form of request/response service layer.")]

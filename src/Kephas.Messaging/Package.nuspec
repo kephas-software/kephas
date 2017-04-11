@@ -7,7 +7,7 @@
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
         <description>
-            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+            Provides composable messaging infrastructure in form of request/response service layer.
         </description>
         <releaseNotes>
         </releaseNotes>
@@ -26,14 +26,14 @@
         <references>
             <reference file="Kephas.Messaging.dll" />
         </references>
-        <tags>kephas framework messaging quartz software</tags>
+        <tags>kephas framework messaging request response service layer quartz software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\Kephas.Messaging.dll" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Messaging.pdb" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Messaging.xml" target="lib\netstandard1.4" />
-        <file src="bin\$configuration$\Kephas.Messaging.dll" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\$configuration$\Kephas.Messaging.pdb" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
-        <file src="bin\$configuration$\Kephas.Messaging.xml" target="lib\portable-net461+netcoreapp1.0+uap10+MonoAndroid10+MonoTouch10" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Messaging.Net45\bin\$configuration$\Kephas.Messaging.dll" target="lib\net45" />
+        <file src="..\Kephas.Messaging.Net45\bin\$configuration$\Kephas.Messaging.pdb" target="lib\net45" />
+        <file src="..\Kephas.Messaging.Net45\bin\$configuration$\Kephas.Messaging.xml" target="lib\net45" />
     </files>
 </package>
