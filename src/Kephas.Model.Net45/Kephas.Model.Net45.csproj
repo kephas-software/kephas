@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E4D7EB1-19F1-4344-89BD-402455C398C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Model</RootNamespace>
+    <AssemblyName>Kephas.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Model.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Model.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Model\Application\ModelFeatureManager.cs">
+      <Link>Application\ModelFeatureManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\AggregatableModelDimensionAttribute.cs">
+      <Link>AttributedModel\AggregatableModelDimensionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ExcludeFromModelAttribute.cs">
+      <Link>AttributedModel\ExcludeFromModelAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\MemberNameDiscriminatorAttribute.cs">
+      <Link>AttributedModel\MemberNameDiscriminatorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ModelDimensionAttribute.cs">
+      <Link>AttributedModel\ModelDimensionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ModelDimensionElementAttribute.cs">
+      <Link>AttributedModel\ModelDimensionElementAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\OverrideAttribute.cs">
+      <Link>AttributedModel\OverrideAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ProjectionForAttribute.cs">
+      <Link>AttributedModel\ProjectionForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Configuration\IElementConfigurator.cs">
+      <Link>Configuration\IElementConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\IModelConstructionContext.cs">
+      <Link>Construction\IModelConstructionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\IModelInfoProvider.cs">
+      <Link>Construction\IModelInfoProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\Internal\IWritableNamedElement.cs">
+      <Link>Construction\Internal\IWritableNamedElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\ModelConstructionContext.cs">
+      <Link>Construction\ModelConstructionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\ModelConstructionException.cs">
+      <Link>Construction\ModelConstructionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs">
+      <Link>Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs">
+      <Link>Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\App\IKernelAppDimensionElement.cs">
+      <Link>Dimensions\App\IKernelAppDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\Aspect\IDefaultAspectDimensionElement.cs">
+      <Link>Dimensions\Aspect\IDefaultAspectDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IAppDimension.cs">
+      <Link>Dimensions\IAppDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IAppFamilyDimension.cs">
+      <Link>Dimensions\IAppFamilyDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IAspectDimension.cs">
+      <Link>Dimensions\IAspectDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IModuleDimension.cs">
+      <Link>Dimensions\IModuleDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IScopeDimension.cs">
+      <Link>Dimensions\IScopeDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\Module\ICoreModuleDimensionElement.cs">
+      <Link>Dimensions\Module\ICoreModuleDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\Scope\IGlobalScopeDimensionElement.cs">
+      <Link>Dimensions\Scope\IGlobalScopeDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Annotation.cs">
+      <Link>Elements\Annotation.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Annotations\MixinAnnotation.cs">
+      <Link>Elements\Annotations\MixinAnnotation.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Classifier.cs">
+      <Link>Elements\Classifier.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ClassifierBase.cs">
+      <Link>Elements\ClassifierBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\DefaultModelSpace.cs">
+      <Link>Elements\DefaultModelSpace.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ElementNotFoundException.cs">
+      <Link>Elements\ElementNotFoundException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ModelDimension.cs">
+      <Link>Elements\ModelDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ModelDimensionElement.cs">
+      <Link>Elements\ModelDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ModelElementBase.cs">
+      <Link>Elements\ModelElementBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ModelHelper.cs">
+      <Link>Elements\ModelHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ModelProjection.cs">
+      <Link>Elements\ModelProjection.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\NamedElementBase.cs">
+      <Link>Elements\NamedElementBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Property.cs">
+      <Link>Elements\Property.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Elements\ValueType.cs">
+      <Link>Elements\ValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IAnnotation.cs">
+      <Link>IAnnotation.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IClassifier.cs">
+      <Link>IClassifier.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelDimension.cs">
+      <Link>IModelDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelDimensionElement.cs">
+      <Link>IModelDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelElement.cs">
+      <Link>IModelElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelProjection.cs">
+      <Link>IModelProjection.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelSpace.cs">
+      <Link>IModelSpace.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IModelSpaceProvider.cs">
+      <Link>IModelSpaceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\INamedElement.cs">
+      <Link>INamedElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IProperty.cs">
+      <Link>IProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IValueType.cs">
+      <Link>IValueType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\ModelException.cs">
+      <Link>ModelException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Properties\AssemblyInfo.Manifest.cs">
+      <Link>Properties\AssemblyInfo.Manifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Reflection\RuntimeTypeInfoExtensions.cs">
+      <Link>Reflection\RuntimeTypeInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AbstractAttribute.cs">
+      <Link>Runtime\AttributedModel\AbstractAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AspectAttribute.cs">
+      <Link>Runtime\AttributedModel\AspectAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AspectForAttribute.cs">
+      <Link>Runtime\AttributedModel\AspectForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ClassifierKindAttribute.cs">
+      <Link>Runtime\AttributedModel\ClassifierKindAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\MixinAttribute.cs">
+      <Link>Runtime\AttributedModel\MixinAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ModelAssemblyAttribute.cs">
+      <Link>Runtime\AttributedModel\ModelAssemblyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ValueTypeAttribute.cs">
+      <Link>Runtime\AttributedModel\ValueTypeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs">
+      <Link>Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\IRuntimeModelElementConfigurator.cs">
+      <Link>Runtime\Configuration\IRuntimeModelElementConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs">
+      <Link>Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs">
+      <Link>Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\AnnotationConstructorBase.cs">
+      <Link>Runtime\Construction\AnnotationConstructorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\AnnotationConstructor.cs">
+      <Link>Runtime\Construction\Annotations\AnnotationConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\MixinAnnotationConstructor.cs">
+      <Link>Runtime\Construction\Annotations\MixinAnnotationConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\ClassifierBuilderBase.cs">
+      <Link>Runtime\Construction\Builders\ClassifierBuilderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\ModelElementBuilderBase.cs">
+      <Link>Runtime\Construction\Builders\ModelElementBuilderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\NamedElementBuilderBase.cs">
+      <Link>Runtime\Construction\Builders\NamedElementBuilderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\RuntimeProjectionBuilder.cs">
+      <Link>Runtime\Construction\Builders\RuntimeProjectionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\ValueTypeBuilder.cs">
+      <Link>Runtime\Construction\Builders\ValueTypeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ClassifierConstructor.cs">
+      <Link>Runtime\Construction\ClassifierConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ClassifierConstructorBase.cs">
+      <Link>Runtime\Construction\ClassifierConstructorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Composition\RuntimeModelElementConstructorMetadata.cs">
+      <Link>Runtime\Construction\Composition\RuntimeModelElementConstructorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\DefaultRuntimeModelElementFactory.cs">
+      <Link>Runtime\Construction\DefaultRuntimeModelElementFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\IRuntimeModelElementConstructor.cs">
+      <Link>Runtime\Construction\IRuntimeModelElementConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\IRuntimeModelElementFactory.cs">
+      <Link>Runtime\Construction\IRuntimeModelElementFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ModelDimensionConstructor.cs">
+      <Link>Runtime\Construction\ModelDimensionConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ModelDimensionElementConstructor.cs">
+      <Link>Runtime\Construction\ModelDimensionElementConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ModelElementConstructorBase.cs">
+      <Link>Runtime\Construction\ModelElementConstructorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\NamedElementConstructorBase.cs">
+      <Link>Runtime\Construction\NamedElementConstructorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\PropertyConstructor.cs">
+      <Link>Runtime\Construction\PropertyConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ValueTypeConstructor.cs">
+      <Link>Runtime\Construction\ValueTypeConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\DefaultRuntimeModelInfoProvider.cs">
+      <Link>Runtime\DefaultRuntimeModelInfoProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\IRuntimeModelProjectionProvider.cs">
+      <Link>Runtime\IRuntimeModelProjectionProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\IRuntimeModelRegistry.cs">
+      <Link>Runtime\IRuntimeModelRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\ModelRegistries\ModelAssemblyRegistry.cs">
+      <Link>Runtime\ModelRegistries\ModelAssemblyRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\RuntimeModelInfoProviderBase.cs">
+      <Link>Runtime\RuntimeModelInfoProviderBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\SystemPrimitiveTypesModelInfoProvider.cs">
+      <Link>Runtime\SystemPrimitiveTypesModelInfoProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Services\DefaultModelSpaceProvider.cs">
+      <Link>Services\DefaultModelSpaceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Services\DefaultProjectedTypeResolver.cs">
+      <Link>Services\DefaultProjectedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Services\IProjectedTypeResolver.cs">
+      <Link>Services\IProjectedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Model\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Kephas.snk">
+      <Link>Kephas.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
