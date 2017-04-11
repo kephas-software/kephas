@@ -7,7 +7,7 @@
     <ProjectGuid>{52829664-67BD-4E26-B5E4-1D5E1FC5597B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Logging.NLog.Net46</RootNamespace>
+    <RootNamespace>Kephas.Logging.NLog</RootNamespace>
     <AssemblyName>Kephas.Logging.NLog</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

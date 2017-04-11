@@ -151,9 +151,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Kephas.snk">
-      <Link>Kephas.snk</Link>
-    </None>
     <None Include="Package.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
