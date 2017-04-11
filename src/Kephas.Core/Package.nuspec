@@ -44,8 +44,8 @@
         <file src="bin\$configuration$\netstandard1.4\Kephas.Core.dll" target="lib\netstandard1.4" />
         <file src="bin\$configuration$\netstandard1.4\Kephas.Core.pdb" target="lib\netstandard1.4" />
         <file src="bin\$configuration$\netstandard1.4\Kephas.Core.xml" target="lib\netstandard1.4" />
-        <file src="..\Kephas.Core.PortableLegacy\bin\$configuration$\Kephas.Core.dll" target="lib\portable-net45+netcore45+wp81+uap10" />
-        <file src="..\Kephas.Core.PortableLegacy\bin\$configuration$\Kephas.Core.pdb" target="lib\portable-net45+netcore45+wp81+uap10" />
-        <file src="..\Kephas.Core.PortableLegacy\bin\$configuration$\Kephas.Core.xml" target="lib\portable-net45+netcore45+wp81+uap10" />
+        <file src="..\Kephas.Core.Net45\bin\$configuration$\Kephas.Core.dll" target="lib\net45" />
+        <file src="..\Kephas.Core.Net45\bin\$configuration$\Kephas.Core.pdb" target="lib\net45" />
+        <file src="..\Kephas.Core.Net45\bin\$configuration$\Kephas.Core.xml" target="lib\net45" />
     </files>
 </package>
