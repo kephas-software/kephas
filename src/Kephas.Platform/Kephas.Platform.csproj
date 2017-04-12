@@ -5,9 +5,9 @@
     <RootNamespace>Kephas</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>3.3.1</Version>
+    <Version>3.3.2</Version>
     <AssemblyVersion>3.3.0.0</AssemblyVersion>
-    <FileVersion>3.3.1.0</FileVersion>
+    <FileVersion>3.3.2.0</FileVersion>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
