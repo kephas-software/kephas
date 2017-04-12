@@ -12,13 +12,13 @@ namespace Kephas.Data.Conversion
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion.Composition;
     using Kephas.Data.Resources;
@@ -54,7 +54,7 @@ namespace Kephas.Data.Conversion
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(converterExportFactories != null);
+            Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
 
             this.AmbientServices = ambientServices;
             this.converterExportFactories = converterExportFactories;
@@ -144,7 +144,6 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Converts the source object to the target object asynchronously.
         /// </summary>
-        /// <exception cref="DataConversionException">Thrown when a Data Conversion error condition occurs.</exception>
         /// <param name="source">The source object.</param>
         /// <param name="sourceType">The type of the source object.</param>
         /// <param name="target">The target object.</param>
@@ -161,19 +160,7 @@ namespace Kephas.Data.Conversion
 
             var result = this.CreateDataConversionResult();
 
-            if (target == null && conversionContext.TargetDataContext != null)
-            {
-                var targetDataContext = conversionContext.TargetDataContext;
-                var sourceId = (source as IIdentifiable)?.Id;
-                if (Id.IsUnsetValue(sourceId))
-                {
-                    target = await targetDataContext.CreateEntityAsync(targetType.AsType(), new CreateEntityContext<object>(targetDataContext) { EntityType = targetType.AsType() }, cancellationToken).PreserveThreadContext();
-                }
-                else
-                {
-                    target = await targetDataContext.FindAsync(targetType.AsType(), new FindContext<object>(targetDataContext, sourceId, throwIfNotFound: true) { EntityType = targetType.AsType() }, cancellationToken).PreserveThreadContext();
-                }
-            }
+            target = await this.EnsureTargetEntity(source, target, targetType, conversionContext, cancellationToken).PreserveThreadContext();
 
             result.Target = target;
 
@@ -201,6 +188,109 @@ namespace Kephas.Data.Conversion
 
             this.AddConverterResultsToOverallResult(result, convertersResult);
             return result;
+        }
+
+        /// <summary>
+        /// Ensures that a target entity is retrieved or created.
+        /// </summary>
+        /// <param name="source">The source object.</param>
+        /// <param name="target">The target object.</param>
+        /// <param name="targetType">The type of the target object.</param>
+        /// <param name="conversionContext">The conversion context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the target entity.
+        /// </returns>
+        protected virtual async Task<object> EnsureTargetEntity(
+            object source,
+            object target,
+            TypeInfo targetType,
+            IDataConversionContext conversionContext,
+            CancellationToken cancellationToken)
+        {
+            if (target != null || conversionContext.TargetDataContext == null)
+            {
+                return target;
+            }
+
+            var targetDataContext = conversionContext.TargetDataContext;
+            var sourceOpContext = new DataOperationContext(conversionContext.SourceDataContext);
+            var identifiableSource = conversionContext.SourceDataContext.TryGetCapability<IIdentifiable>(source, sourceOpContext);
+            var sourceId = identifiableSource?.Id;
+            var changeStateTrackable = conversionContext.SourceDataContext.TryGetCapability<IChangeStateTrackable>(source, sourceOpContext);
+
+            if (changeStateTrackable.ChangeState == ChangeState.Added)
+            {
+                target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
+            }
+            else if (changeStateTrackable.ChangeState == ChangeState.AddedOrChanged)
+            {
+                target = await this.FindTargetEntityAsync(
+                        targetDataContext,
+                        targetType,
+                        sourceId,
+                        throwIfNotFound: false,
+                        cancellationToken: cancellationToken).PreserveThreadContext();
+                if (target == null)
+                {
+                    target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
+                }
+            }
+            else
+            {
+                target = await this.FindTargetEntityAsync(
+                        targetDataContext,
+                        targetType,
+                        sourceId,
+                        throwIfNotFound: true,
+                        cancellationToken: cancellationToken).PreserveThreadContext();
+            }
+
+            return target;
+        }
+
+        /// <summary>
+        /// Searches for the target entity asynchronously.
+        /// </summary>
+        /// <param name="targetDataContext">Context for the target data.</param>
+        /// <param name="targetType">The type of the target object.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="throwIfNotFound">True to throw if not found.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the target entity.
+        /// </returns>
+        protected virtual async Task<object> FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, Id id, bool throwIfNotFound, CancellationToken cancellationToken)
+        {
+            var target = await targetDataContext.FindAsync(
+                             targetType.AsType(),
+                             new FindContext<object>(targetDataContext, id, throwIfNotFound)
+                             {
+                                 EntityType = targetType.AsType()
+                             },
+                             cancellationToken).PreserveThreadContext();
+            return target;
+        }
+
+        /// <summary>
+        /// Creates the target entity asynchronously.
+        /// </summary>
+        /// <param name="targetDataContext">Context for the target data.</param>
+        /// <param name="targetType">The type of the target object.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the new target entity.
+        /// </returns>
+        protected virtual async Task<object> CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, CancellationToken cancellationToken)
+        {
+            var target = await targetDataContext.CreateEntityAsync(
+                             targetType.AsType(),
+                             new CreateEntityContext<object>(targetDataContext)
+                             {
+                                 EntityType = targetType.AsType()
+                             },
+                             cancellationToken).PreserveThreadContext();
+            return target;
         }
 
         /// <summary>
@@ -245,9 +335,7 @@ namespace Kephas.Data.Conversion
         /// <returns><c>true</c> if the converter metadata type matches the tested type; otherwise <c>false</c>.</returns>
         private static bool IsConverterTypeMatch(TypeInfo metadataType, TypeInfo checkType)
         {
-            return metadataType.IsInterface
-                        ? metadataType.IsAssignableFrom(checkType)
-                        : metadataType == checkType;
+            return metadataType.IsAssignableFrom(checkType);
         }
 
         /// <summary>
