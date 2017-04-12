@@ -12,5 +12,5 @@ using System.Reflection;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Data.Client.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Kephas.Messaging.Model")]
+[assembly: AssemblyDescription("Provides the model for messaging, including the Message classifier and Messaging scope dimension.")]

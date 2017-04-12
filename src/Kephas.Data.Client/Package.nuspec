@@ -6,9 +6,7 @@
         <title>Kephas.Data.Client</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
-        <description>
-            Provides artifacts for data access on the client side.
-        </description>
+        <description>Provides the client infrastructure for the data flow.</description>
         <releaseNotes>
         </releaseNotes>
         <summary>

@@ -1,4 +1,13 @@
-﻿namespace Kephas.Data.Client.Tests.Queries.Conversion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultClientQueryConverterTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the default client query converter test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.Client.Tests.Queries.Conversion
 {
     using System;
     using System.Collections.Generic;
