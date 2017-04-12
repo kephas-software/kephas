@@ -35,9 +35,9 @@
     <tags>kephas framework npgsql postgresql adapter quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\$configuration$\netstandard1.4\Kephas.Npgsql.dll" target="lib\netstandard1.4" />
-    <file src="bin\$configuration$\netstandard1.4\Kephas.Npgsql.pdb" target="lib\netstandard1.4" />
-    <file src="bin\$configuration$\netstandard1.4\Kephas.Npgsql.xml" target="lib\netstandard1.4" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.dll" target="lib\netstandard1.3" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.pdb" target="lib\netstandard1.3" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.xml" target="lib\netstandard1.3" />
     <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.dll" target="lib\net45" />
     <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.pdb" target="lib\net45" />
     <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.xml" target="lib\net45" />
