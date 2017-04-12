@@ -90,7 +90,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             var queryContext = new QueryOperationContext(context.DataContext);
             var queryable = (IQueryable)queryMethod.Call(context.DataContext, queryContext);
 
-            var whereLambdaExpression = this.ConvertWhere(queryItemType, queryClientItemType, clientQuery.Where);
+            var whereLambdaExpression = this.ConvertWhere(queryItemType, queryClientItemType, clientQuery.Filter);
             if (whereLambdaExpression != null)
             {
                 var whereMethod = QueryableMethods.QueryableWhereGeneric.MakeGenericMethod(queryItemType);
@@ -125,7 +125,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         protected virtual Type GetQueryClientItemType(ClientQuery clientQuery)
         {
-            return this.typeResolver.ResolveType(clientQuery.ItemType);
+            return this.typeResolver.ResolveType(clientQuery.EntityType);
         }
 
         /// <summary>

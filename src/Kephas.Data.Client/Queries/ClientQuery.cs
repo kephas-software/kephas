@@ -15,19 +15,19 @@ namespace Kephas.Data.Client.Queries
     public class ClientQuery
     {
         /// <summary>
-        /// Gets or sets the selected item type.
+        /// Gets or sets the selected entity type.
         /// </summary>
         /// <value>
-        /// The selected item type.
+        /// The selected entity type.
         /// </value>
-        public string ItemType { get; set; }
+        public string EntityType { get; set; }
 
         /// <summary>
-        /// Gets or sets the where condition.
+        /// Gets or sets the filter condition.
         /// </summary>
         /// <value>
-        /// The where condition.
+        /// The filter condition.
         /// </value>
-        public Expression Where { get; set; }
+        public Expression Filter { get; set; }
     }
 }
