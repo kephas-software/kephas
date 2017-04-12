@@ -34,6 +34,18 @@ namespace Kephas.Data.Store
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SupportedDataStoreKindsAttribute"/> class.
+        /// </summary>
+        /// <param name="dataStoreKinds">A variable-length parameters list containing data store kinds.</param>
+        public SupportedDataStoreKindsAttribute(params string[] dataStoreKinds)
+        {
+            Contract.Requires(dataStoreKinds != null);
+            Contract.Requires(dataStoreKinds.Length > 0);
+
+            this.Value = dataStoreKinds;
+        }
+
+        /// <summary>
         /// Gets the metadata value.
         /// </summary>
         object IMetadataValue.Value => this.Value;
