@@ -151,6 +151,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.Services.Net45"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB.Net45", "Kephas.Data.MongoDB.Net45\Kephas.Data.MongoDB.Net45.csproj", "{4317F518-AA3E-4926-9B91-85DA0EB7C2AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Tests.Net45", "Tests\Kephas.Data.Tests.Net45\Kephas.Data.Tests.Net45.csproj", "{73122BB6-D992-44EB-9106-63F34CCF2723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -377,6 +379,10 @@ Global
 		{4317F518-AA3E-4926-9B91-85DA0EB7C2AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4317F518-AA3E-4926-9B91-85DA0EB7C2AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4317F518-AA3E-4926-9B91-85DA0EB7C2AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73122BB6-D992-44EB-9106-63F34CCF2723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73122BB6-D992-44EB-9106-63F34CCF2723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73122BB6-D992-44EB-9106-63F34CCF2723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73122BB6-D992-44EB-9106-63F34CCF2723}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -423,5 +429,6 @@ Global
 		{089302EF-8FB3-4B5E-8F0B-92F78E06B36C} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{DF71B360-02A2-4BE3-9702-816A6366907C} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{4317F518-AA3E-4926-9B91-85DA0EB7C2AC} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{73122BB6-D992-44EB-9106-63F34CCF2723} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 EndGlobal
