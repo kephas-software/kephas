@@ -15,6 +15,7 @@ namespace Kephas.Data.Tests
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.Composition;
     using Kephas.Data.Store;
+    using Kephas.Services;
 
     using NSubstitute;
 
@@ -39,6 +40,29 @@ namespace Kephas.Data.Tests
 
             var dataContext = provider.GetDataContext("test-store");
             Assert.AreSame(dataContext1, dataContext);
+        }
+
+        [Test]
+        public void GetDataContext_proper_initialized()
+        {
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            var dcConfig = Substitute.For<IDataContextConfiguration>();
+            dataStoreProvider.GetDataStore("test-store").Returns(new DataStore("test-store", "kind1", dataContextConfiguration: dcConfig));
+            IDataInitializationContext initContext = null;
+            var dataContext1 = Substitute.For<IDataContext>();
+            dataContext1.When(ctx => ctx.Initialize(Arg.Any<IContext>())).Do(ci => initContext = ci.Arg<IContext>() as IDataInitializationContext);
+
+            var provider = new DefaultDataContextProvider(
+                new List<IExportFactory<IDataContext, DataContextMetadata>>
+                    {
+                        new ExportFactory<IDataContext, DataContextMetadata>(() => dataContext1, new DataContextMetadata(new[] { "kind1" }))
+                    },
+                dataStoreProvider);
+
+            var initData = Substitute.For<IContext>();
+            var dataContext = provider.GetDataContext("test-store", initData);
+            Assert.AreSame(dcConfig, initContext.Configuration);
+            Assert.AreSame(initData, initContext.InitializationContext);
         }
 
         [Test]
