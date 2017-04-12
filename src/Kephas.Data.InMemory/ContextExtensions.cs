@@ -29,9 +29,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public static IEnumerable<IEntityInfo> GetInitialData(this IContext context)
         {
-            Requires.NotNull(context, nameof(context));
-
-            return context[nameof(InMemoryDataContextConfiguration.InitialData)] as IEnumerable<IEntityInfo>;
+            return context?[nameof(InMemoryDataContextConfiguration.InitialData)] as IEnumerable<IEntityInfo>;
         }
 
         /// <summary>
