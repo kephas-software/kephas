@@ -143,7 +143,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext.Initialize(
                 new DataInitializationContext(
                     dataContext,
-                    new InMemoryDataContextConfiguration(string.Empty),
+                    null,
                     initializationContext));
 
             var query = dataContext.Query<string>();
