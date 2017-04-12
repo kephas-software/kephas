@@ -44,7 +44,7 @@ namespace Kephas.Data.InMemory.Tests
         public void Query_of_string()
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-            dataContext.Initialize(new DataContextConfiguration(string.Empty));
+            dataContext.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration(string.Empty)));
 
             dataContext.GetOrAddCacheableItem(null, new EntityInfo("mama", ChangeState.Added));
             dataContext.GetOrAddCacheableItem(null, new EntityInfo("papa", ChangeState.Added));
@@ -95,7 +95,7 @@ namespace Kephas.Data.InMemory.Tests
 
             dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            dataContext.Initialize(new DataContextConfiguration("InitialData=dummy-will-be-mocked"));
+            dataContext.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("InitialData=dummy-will-be-mocked")));
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -109,15 +109,73 @@ namespace Kephas.Data.InMemory.Tests
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
 
-            var serializer = Substitute.For<ISerializer>();
-            serializer.DeserializeAsync(
-                Arg.Any<TextReader>(),
-                Arg.Any<ISerializationContext>(),
-                Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
+            dataContext.Initialize(
+                new DataInitializationContext(
+                    dataContext,
+                    new InMemoryDataContextConfiguration(string.Empty)
+                        {
+                            InitialData =
+                                new[]
+                                    {
+                                        new EntityInfo("mama"),
+                                        new EntityInfo("papa")
+                                    }
+                        }));
 
-            dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var query = dataContext.Query<string>();
+            var list = query.ToList();
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual("mama", list[0]);
+            Assert.AreEqual("papa", list[1]);
+        }
 
-            dataContext.Initialize(new InMemoryDataContextConfiguration(string.Empty) { InitialData = new[] { new EntityInfo("mama"), new EntityInfo("papa") } });
+        [Test]
+        public void Initialize_initial_data_from_initialization_context()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+
+            var initializationContext = new DataOperationContext(dataContext);
+            initializationContext.SetInitialData(new[]
+                                                     {
+                                                         new EntityInfo("mama"),
+                                                         new EntityInfo("papa")
+                                                     });
+            dataContext.Initialize(
+                new DataInitializationContext(
+                    dataContext,
+                    new InMemoryDataContextConfiguration(string.Empty),
+                    initializationContext));
+
+            var query = dataContext.Query<string>();
+            var list = query.ToList();
+            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual("mama", list[0]);
+            Assert.AreEqual("papa", list[1]);
+        }
+
+
+        [Test]
+        public void Initialize_initial_data_from_config_and_initialization_context()
+        {
+            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
+
+            var initializationContext = new DataOperationContext(dataContext);
+            initializationContext.SetInitialData(new[]
+                                                     {
+                                                         new EntityInfo("papa")
+                                                     });
+            dataContext.Initialize(
+                new DataInitializationContext(
+                    dataContext,
+                    new InMemoryDataContextConfiguration(string.Empty)
+                        {
+                            InitialData =
+                                new[]
+                                    {
+                                        new EntityInfo("mama"),
+                                    }
+                        },
+                    initializationContext));
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -130,10 +188,10 @@ namespace Kephas.Data.InMemory.Tests
         public void Initialize_shared_cache()
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-            dataContext.Initialize(new DataContextConfiguration("UseSharedCache=true"));
+            dataContext.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=true")));
 
             var dataContext2 = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-            dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=true"));
+            dataContext2.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=true")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
             dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));
@@ -146,10 +204,10 @@ namespace Kephas.Data.InMemory.Tests
         public void Initialize_non_shared_cache()
         {
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-            dataContext.Initialize(new DataContextConfiguration("UseSharedCache=false"));
+            dataContext.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=false")));
 
             var dataContext2 = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-            dataContext2.Initialize(new DataContextConfiguration("UseSharedCache=false"));
+            dataContext2.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=false")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
             dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));

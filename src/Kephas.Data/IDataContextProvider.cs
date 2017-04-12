@@ -21,9 +21,10 @@ namespace Kephas.Data
         /// Gets a data context for the provided data store name.
         /// </summary>
         /// <param name="dataStoreName">Name of the data store.</param>
+        /// <param name="initializationContext">An initialization context (optional).</param>
         /// <returns>
         /// The new data context.
         /// </returns>
-        IDataContext GetDataContext(string dataStoreName);
+        IDataContext GetDataContext(string dataStoreName, IContext initializationContext = null);
     }
 }

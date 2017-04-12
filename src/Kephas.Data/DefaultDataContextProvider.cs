@@ -68,10 +68,11 @@ namespace Kephas.Data
         /// Gets a data context for the provided data store name.
         /// </summary>
         /// <param name="dataStoreName">Name of the data store.</param>
+        /// <param name="initializationContext">An initialization context (optional).</param>
         /// <returns>
         /// The new data context.
         /// </returns>
-        public IDataContext GetDataContext(string dataStoreName)
+        public IDataContext GetDataContext(string dataStoreName, IContext initializationContext = null)
         {
             var dataStore = this.dataStoreProvider.GetDataStore(dataStoreName);
             var dataContextFactories = this.dataContextFactoryDictionary.TryGetValue(dataStore.Kind);
@@ -108,8 +109,25 @@ namespace Kephas.Data
                 dataContext = dataContextFactories[0].CreateExportedValue();
             }
 
-            dataContext.Initialize(dataStore.DataContextConfiguration);
+            dataContext.Initialize(this.CreateDataInitializationContext(dataContext, dataStore.DataContextConfiguration, initializationContext));
             return dataContext;
+        }
+
+        /// <summary>
+        /// Creates the data initialization context.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="initializationContext">An initialization context (optional).</param>
+        /// <returns>
+        /// The new data initialization context.
+        /// </returns>
+        protected virtual IDataInitializationContext CreateDataInitializationContext(
+            IDataContext dataContext,
+            IDataContextConfiguration configuration,
+            IContext initializationContext)
+        {
+            return new DataInitializationContext(dataContext, configuration, initializationContext);
         }
     }
 }

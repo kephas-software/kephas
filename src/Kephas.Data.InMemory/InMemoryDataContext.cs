@@ -170,11 +170,25 @@ namespace Kephas.Data.InMemory
         }
 
         /// <summary>
-        /// Initializes the core.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
         /// </summary>
-        /// <param name="config">The configuration.</param>
-        protected override void InitializeCore(IDataContextConfiguration config)
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
+            if (!this.UseSharedCache)
+            {
+                this.cache.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="InMemoryDataContext"/>.
+        /// </summary>
+        /// <param name="dataInitializationContext">The data initialization context.</param>
+        protected override void Initialize(IDataInitializationContext dataInitializationContext)
+        {
+            var config = dataInitializationContext?.Configuration;
             var connectionStringValues = string.IsNullOrWhiteSpace(config?.ConnectionString)
                                              ? new Dictionary<string, string>()
                                              : ConnectionStringParser.Parse(config.ConnectionString);
@@ -186,20 +200,8 @@ namespace Kephas.Data.InMemory
             var serializedData = connectionStringValues.TryGetValue("InitialData");
             this.InitializeData(serializedData);
 
-            this.InitializeData((config as InMemoryDataContextConfiguration)?.InitialData);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (!this.UseSharedCache)
-            {
-                this.cache.Clear();
-            }
+            this.InitializeData(config.GetInitialData());
+            this.InitializeData(dataInitializationContext?.InitializationContext?.GetInitialData());
         }
 
         /// <summary>

@@ -229,6 +229,9 @@
     <Compile Include="..\Kephas.Data\DataException.cs">
       <Link>DataException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\DataInitializationContext.cs">
+      <Link>DataInitializationContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\DataOperationContext.cs">
       <Link>DataOperationContext.cs</Link>
     </Compile>
@@ -243,6 +246,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data\IDataContextProvider.cs">
       <Link>IDataContextProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataInitializationContext.cs">
+      <Link>IDataInitializationContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\IDataOperationContext.cs">
       <Link>IDataOperationContext.cs</Link>

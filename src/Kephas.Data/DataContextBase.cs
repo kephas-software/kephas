@@ -71,19 +71,19 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
-        /// <param name="context">An optional context for initialization.</param>
-        public virtual void Initialize(IContext context = null)
+        /// <param name="context">The initialization context.</param>
+        public void Initialize(IContext context)
         {
-            var config = context as IDataContextConfiguration;
-            if (config == null)
+            var dataInitializationContext = context as IDataInitializationContext;
+            if (dataInitializationContext == null)
             {
-                throw new ArgumentException(string.Format(Strings.DataContextBase_BadInitializationContext_Exception, typeof(IDataContextConfiguration).FullName));
+                throw new ArgumentException(string.Format(Strings.DataContextBase_BadInitializationContext_Exception, typeof(IDataInitializationContext).FullName), nameof(context));
             }
 
             this.InitializationMonitor.Start();
             try
             {
-                this.InitializeCore(config);
+                this.Initialize(dataInitializationContext);
                 this.InitializationMonitor.Complete();
             }
             catch (Exception ex)
@@ -167,6 +167,14 @@ namespace Kephas.Data
         }
 
         /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="dataInitializationContext">The data initialization context.</param>
+        protected virtual void Initialize(IDataInitializationContext dataInitializationContext)
+        {
+        }
+
+        /// <summary>
         /// Creates a new entity information.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -177,14 +185,6 @@ namespace Kephas.Data
         protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState changeState = ChangeState.NotChanged)
         {
             return new EntityInfo(entity, changeState);
-        }
-
-        /// <summary>
-        /// Initializes the service asynchronously.
-        /// </summary>
-        /// <param name="config">The configuration for the data context.</param>
-        protected virtual void InitializeCore(IDataContextConfiguration config)
-        {
         }
 
         /// <summary>

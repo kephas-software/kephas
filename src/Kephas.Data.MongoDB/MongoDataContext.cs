@@ -110,11 +110,14 @@ namespace Kephas.Data.MongoDB
         }
 
         /// <summary>
-        /// Initializes the service asynchronously.
+        /// Initializes the <see cref="MongoDataContext"/>.
         /// </summary>
-        /// <param name="config">The configuration for the data context.</param>
-        protected override void InitializeCore(IDataContextConfiguration config)
+        /// <param name="dataInitializationContext">The data initialization context.</param>
+        protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
+            Requires.NotNull(dataInitializationContext.Configuration, nameof(dataInitializationContext.Configuration));
+
+            var config = dataInitializationContext.Configuration;
             var mongoUrl = MongoUrl.Create(config.ConnectionString);
             var databaseName = mongoUrl.DatabaseName;
             if (string.IsNullOrEmpty(databaseName))
