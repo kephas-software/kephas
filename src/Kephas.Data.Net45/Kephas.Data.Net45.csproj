@@ -322,6 +322,9 @@
     <Compile Include="..\Kephas.Data\Store\IDataStoreProvider.cs">
       <Link>Store\IDataStoreProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Store\NullDataStoreProvider.cs">
+      <Link>Store\NullDataStoreProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Store\SupportedDataStoreKindsAttribute.cs">
       <Link>Store\SupportedDataStoreKindsAttribute.cs</Link>
     </Compile>
