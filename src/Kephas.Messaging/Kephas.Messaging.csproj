@@ -6,7 +6,7 @@
     <RootNamespace>Kephas.Messaging</RootNamespace>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-    <Version>3.3.0-preview2</Version>
+    <Version>3.3.0</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Authors>Quartz Software SRL</Authors>

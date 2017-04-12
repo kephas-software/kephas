@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Description>Provides the NLog implementation of logging abstractions.</Description>
-    <Version>3.3.0-preview2</Version>
+    <Version>3.3.0</Version>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Description>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</Description>
-    <Version>3.3.0-preview2</Version>
+    <Version>3.3.0</Version>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
