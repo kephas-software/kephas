@@ -6,14 +6,10 @@
         <title>Kephas.Messaging.Model</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
-        <description>
-            Provides the model for messaging, including the Message classifier and Messaging scope dimension.
-        </description>
+        <description>Provides the model for messaging, including the Message classifier and Messaging scope dimension.</description>
         <releaseNotes>
         </releaseNotes>
-        <summary>
-            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-        </summary>
+        <summary>Provides the model for messaging, including the Message classifier and Messaging scope dimension.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>

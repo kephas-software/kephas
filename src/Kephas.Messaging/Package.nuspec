@@ -13,9 +13,7 @@
         </description>
         <releaseNotes>
         </releaseNotes>
-        <summary>
-            Provides composable messaging infrastructure in form of request/response service layer.
-        </summary>
+        <summary>Provides composable messaging infrastructure in form of request/response service layer.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>

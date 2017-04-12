@@ -13,9 +13,7 @@
         </description>
         <releaseNotes>
         </releaseNotes>
-        <summary>
-            Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.
-        </summary>
+        <summary>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
