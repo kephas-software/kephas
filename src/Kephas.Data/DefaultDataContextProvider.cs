@@ -41,7 +41,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="dataContextFactories">The data context factories.</param>
         /// <param name="dataStoreProvider">The data store provider.</param>
-        protected DefaultDataContextProvider(
+        public DefaultDataContextProvider(
             ICollection<IExportFactory<IDataContext, DataContextMetadata>> dataContextFactories,
             IDataStoreProvider dataStoreProvider)
         {
@@ -97,7 +97,7 @@ namespace Kephas.Data
                      && dataContextFactories[0].Metadata.ProcessingPriority
                      == dataContextFactories[1].Metadata.ProcessingPriority)
             {
-                throw new DataException(
+                throw new AmbiguousMatchDataException(
                     string.Format(
                         Strings.DefaultDataContextProvider_AmbiguousDataContext_Exception,
                         dataStore.Name,

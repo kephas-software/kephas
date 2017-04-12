@@ -29,8 +29,6 @@ namespace Kephas.Data
             IContext initializationContext = null)
             : base(dataContext)
         {
-            Requires.NotNull(configuration, nameof(configuration));
-
             this.Configuration = configuration;
             this.InitializationContext = initializationContext;
         }

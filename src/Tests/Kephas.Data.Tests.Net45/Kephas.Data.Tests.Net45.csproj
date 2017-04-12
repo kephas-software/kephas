@@ -67,6 +67,9 @@
     <Compile Include="..\Kephas.Data.Tests\DataContextBaseTest.cs">
       <Link>DataContextBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\DefaultDataContextProviderTest.cs">
+      <Link>DefaultDataContextProviderTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Store\ConnectionStringParserTest.cs">
       <Link>Store\ConnectionStringParserTest.cs</Link>
     </Compile>

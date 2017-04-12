@@ -313,6 +313,9 @@
     <Compile Include="..\Kephas.Data\Store\ConnectionStringParser.cs">
       <Link>Store\ConnectionStringParser.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Store\DataStore.cs">
+      <Link>Store\DataStore.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Store\DataStoreKind.cs">
       <Link>Store\DataStoreKind.cs</Link>
     </Compile>

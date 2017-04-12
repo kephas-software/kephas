@@ -7,10 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Data.Tests
 {
+    using System;
     using System.Linq;
 
     using Kephas.Composition;
