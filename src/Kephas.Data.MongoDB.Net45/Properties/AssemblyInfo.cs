@@ -9,8 +9,8 @@
 
 using System.Reflection;
 
-// General Information about an assembly is controlled through the following 
+// General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Mail")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Kephas.Data.MongoDB")]
+[assembly: AssemblyDescription("Provides the MongoDB implementation for data context and associated commands.")]

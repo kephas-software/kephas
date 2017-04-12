@@ -14,6 +14,7 @@ namespace Kephas.Data.MongoDB.Application
 
     using Kephas.Application;
     using Kephas.Data.MongoDB.Serialization;
+    using Kephas.Threading.Tasks;
 
     using global::MongoDB.Bson.Serialization;
 
@@ -34,7 +35,7 @@ namespace Kephas.Data.MongoDB.Application
         {
             BsonSerializer.RegisterSerializer(typeof(Id), new IdBsonSerializer());
 
-            return Task.CompletedTask;
+            return TaskHelper.CompletedTask;
         }
     }
 }

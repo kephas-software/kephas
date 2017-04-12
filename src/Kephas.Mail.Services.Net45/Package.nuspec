@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kephas.Mail.Net46</id>
+    <id>Kephas.Mail.Services</id>
     <version>$version$</version>
-    <title>Kephas.Mail.Net46</title>
+    <title>Kephas.Mail.Services</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
-    <description>
-      Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
-    </description>
+    <description>Provides mail services implementation using the System.Net classes.</description>
     <releaseNotes>
     </releaseNotes>
     <summary>
@@ -22,15 +20,16 @@
     <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
     <dependencies>
       <dependency id="Kephas.Core" version="$refversion$" />
+      <dependency id="Kephas.Mail" version="$refversion$" />
     </dependencies>
     <references>
-      <reference file="Kephas.Mail.Net46.dll" />
+      <reference file="Kephas.Mail.Services.dll" />
     </references>
     <tags>kephas framework mail smtp quartz software</tags>
   </metadata>
   <files>
-    <file src="bin\$configuration$\Kephas.Mail.Net46.dll" target="lib\net461" />
-    <file src="bin\$configuration$\Kephas.Mail.Net46.pdb" target="lib\net461" />
-    <file src="bin\$configuration$\Kephas.Mail.Net46.xml" target="lib\net461" />
+    <file src="bin\$configuration$\Kephas.Mail.Services.dll" target="lib\net45" />
+    <file src="bin\$configuration$\Kephas.Mail.Services.pdb" target="lib\net45" />
+    <file src="bin\$configuration$\Kephas.Mail.Services.xml" target="lib\net45" />
   </files>
 </package>
