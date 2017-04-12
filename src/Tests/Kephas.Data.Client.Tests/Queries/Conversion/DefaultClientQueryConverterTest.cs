@@ -41,8 +41,8 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
             {
-                ItemType = "item-type",
-                Where = new Expression { Op = "=", Args = new List<object> { 1, 2 } }
+                EntityType = "item-type",
+                Filter = new Expression { Op = "=", Args = new List<object> { 1, 2 } }
             };
 
             var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
@@ -62,8 +62,8 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
             {
-                ItemType = "item-type",
-                Where = new Expression { Op = ">", Args = new List<object> { ".Length", 3 } }
+                EntityType = "item-type",
+                Filter = new Expression { Op = ">", Args = new List<object> { ".Length", 3 } }
             };
 
             var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
@@ -81,8 +81,8 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
             {
-                ItemType = "item-type",
-                Where = new Expression { Op = "=", Args = new List<object> { ".Length", 3 } }
+                EntityType = "item-type",
+                Filter = new Expression { Op = "=", Args = new List<object> { ".Length", 3 } }
             };
 
             // supported operator >, not =.
