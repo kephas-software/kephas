@@ -6,8 +6,8 @@
     using Kephas;
     using Kephas.Application;
     using Kephas.Diagnostics;
-    using Kephas.Platform.Net;
     using Kephas.Logging.NLog;
+    using Kephas.Platform.Net;
     using Kephas.Threading.Tasks;
 
     using AppContext = Kephas.Application.AppContext;
