@@ -9,14 +9,13 @@
 
 namespace Kephas.Data.Tests.Commands.Factory
 {
-    using System;
     using System.Collections.Generic;
 
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Composition;
     using Kephas.Data.Commands.Factory;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -31,7 +30,7 @@ namespace Kephas.Data.Tests.Commands.Factory
             var cmd = Substitute.For<IDataCommand>();
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
                                                                    {
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string)))
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string)))
                                                                    });
 
             var actualCmd = factory.GetCommandFactory(typeof(string));
@@ -45,8 +44,8 @@ namespace Kephas.Data.Tests.Commands.Factory
             var betterCmd = Substitute.For<IDataCommand>();
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
                                                                    {
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string)))
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string)))
                                                                    });
 
             Assert.Throws<AmbiguousMatchDataException>(() => factory.GetCommandFactory(typeof(string)));
@@ -59,8 +58,8 @@ namespace Kephas.Data.Tests.Commands.Factory
             var betterCmd = Substitute.For<IDataCommand>();
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
                                                                    {
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string), overridePriority: -100))
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string))),
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => betterCmd, new DataCommandMetadata(typeof(string), overridePriority: -100))
                                                                    });
 
             var actualCmd = factory.GetCommandFactory(typeof(string));
@@ -73,7 +72,7 @@ namespace Kephas.Data.Tests.Commands.Factory
             var cmd = Substitute.For<IDataCommand>();
             var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
                                                                    {
-                                                                       new TestExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string)))
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(string)))
                                                                    });
 
             var cmdFactory = factory.GetCommandFactory(typeof(int));

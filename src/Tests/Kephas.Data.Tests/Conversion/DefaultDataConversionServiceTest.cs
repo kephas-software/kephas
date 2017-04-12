@@ -9,17 +9,15 @@
 
 namespace Kephas.Data.Tests.Conversion
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.Conversion;
     using Kephas.Data.Conversion.Composition;
     using Kephas.Services;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
-    using NSubstitute.ExceptionExtensions;
 
     using NUnit.Framework;
 
@@ -36,7 +34,7 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(int), typeof(int)))
                 });
 
@@ -58,9 +56,9 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int))),
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
                         new DataConverterMetadata(typeof(int), typeof(int)))
                 });
 
@@ -82,9 +80,9 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter1,
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority:  (int)Priority.Low)),
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority: (int)Priority.High))
                 });
 
@@ -102,7 +100,7 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
                 });
 
@@ -120,7 +118,7 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
                 });
 
@@ -138,7 +136,7 @@ namespace Kephas.Data.Tests.Conversion
             var service =
                 new DefaultDataConversionService(Substitute.For<IAmbientServices>(), new IExportFactory<IDataConverter, DataConverterMetadata>[]
                 {
-                    new TestExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
+                    new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
                 });
 

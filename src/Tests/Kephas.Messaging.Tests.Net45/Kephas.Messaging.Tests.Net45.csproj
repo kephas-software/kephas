@@ -100,10 +100,6 @@
       <Project>{5e6c23b7-191a-40c1-9aab-326d190cafa3}</Project>
       <Name>Kephas.Testing.Composition.Mef.Net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Core.Net45\Kephas.Testing.Core.Net45.csproj">
-      <Project>{0f6e21b9-91fc-414a-ae9a-08a82ca2f137}</Project>
-      <Name>Kephas.Testing.Core.Net45</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

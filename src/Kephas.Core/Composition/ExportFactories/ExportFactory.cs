@@ -1,23 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestExportFactory.cs" company="Quartz Software SRL">
+// <copyright file="ExportFactory.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   A test export factory.
+//   Implements the export factory class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Core.Composition
+namespace Kephas.Composition.ExportFactories
 {
     using System;
 
-    using Kephas.Composition;
-
     /// <summary>
-    /// A test export factory.
+    /// An export factory.
     /// </summary>
     /// <typeparam name="TService">Type of the service.</typeparam>
-    public class TestExportFactory<TService> : IExportFactory<TService>
+    public class ExportFactory<TService> : IExportFactory<TService>
     {
         /// <summary>
         /// The factory.
@@ -25,19 +23,19 @@ namespace Kephas.Testing.Core.Composition
         private readonly Func<Tuple<TService, Action>> factory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestExportFactory{TService}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactory{TService}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public TestExportFactory(Func<TService> factory)
+        public ExportFactory(Func<TService> factory)
         {
             this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestExportFactory{TService}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactory{TService}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public TestExportFactory(Func<Tuple<TService, Action>> factory)
+        public ExportFactory(Func<Tuple<TService, Action>> factory)
         {
             this.factory = factory;
         }
@@ -61,7 +59,7 @@ namespace Kephas.Testing.Core.Composition
         /// </returns>
         public IExport<TService> CreateExport()
         {
-            return new TestExport<TService>(this.factory);
+            return new Export<TService>(this.factory);
         }
 
         /// <summary>
@@ -72,11 +70,11 @@ namespace Kephas.Testing.Core.Composition
     }
 
     /// <summary>
-    /// A test export factory with metadata.
+    /// An export factory with metadata.
     /// </summary>
     /// <typeparam name="TService">Type of the service.</typeparam>
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
-    public class TestExportFactory<TService, TMetadata> : IExportFactory<TService, TMetadata>
+    public class ExportFactory<TService, TMetadata> : IExportFactory<TService, TMetadata>
     {
         /// <summary>
         /// The factory.
@@ -84,11 +82,11 @@ namespace Kephas.Testing.Core.Composition
         private readonly Func<Tuple<TService, Action>> factory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TestExportFactory{TService, TMetadata}"/> class.
+        /// Initializes a new instance of the <see cref="ExportFactory{TService, TMetadata}"/> class.
         /// </summary>
         /// <param name="factory">The factory.</param>
         /// <param name="metadata">The metadata.</param>
-        public TestExportFactory(Func<TService> factory, TMetadata metadata)
+        public ExportFactory(Func<TService> factory, TMetadata metadata)
         {
             this.factory = () => Tuple.Create(factory(), (Action)(() => { }));
             this.Metadata = metadata;
@@ -121,7 +119,7 @@ namespace Kephas.Testing.Core.Composition
         /// </returns>
         public IExport<TService, TMetadata> CreateExport()
         {
-            return new TestExport<TService, TMetadata>(this.factory, this.Metadata);
+            return new Export<TService, TMetadata>(this.factory, this.Metadata);
         }
 
         /// <summary>

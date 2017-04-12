@@ -14,11 +14,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Client.Queries.Conversion.Composition;
     using Kephas.Reflection;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -128,7 +128,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             var converter = Substitute.For<IExpressionConverter>();
             converter.ConvertExpression(Arg.Any<IList<LinqExpression>>())
                 .Returns((ci) => conversionFunc(ci.Arg<IList<LinqExpression>>()));
-            return new TestExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => converter, new ExpressionConverterMetadata(op));
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => converter, new ExpressionConverterMetadata(op));
         }
     }
 }

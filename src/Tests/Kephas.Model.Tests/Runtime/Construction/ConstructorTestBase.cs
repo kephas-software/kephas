@@ -13,6 +13,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System.Collections.Generic;
 
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Configuration;
@@ -21,7 +22,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Runtime;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -50,8 +50,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructors = new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>
                                    {
-                                       new TestExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
-                                       new TestExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
+                                       new ExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
+                                       new ExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
                                    };
 
             var configurators = new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>();

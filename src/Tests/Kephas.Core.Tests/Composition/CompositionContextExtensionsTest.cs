@@ -13,8 +13,8 @@ namespace Kephas.Core.Tests.Composition
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -113,22 +113,22 @@ namespace Kephas.Core.Tests.Composition
 
         private IExportFactoryImporter<T> CreateExportFactoryImporter<T>(T value)
         {
-            return new ExportFactoryImporter<T>(new TestExportFactory<T>(() => value));
+            return new ExportFactoryImporter<T>(new ExportFactory<T>(() => value));
         }
 
         private IExportFactoryImporter<T, TMetadata> CreateExportFactoryImporter<T, TMetadata>(T value, TMetadata metadata)
         {
-            return new ExportFactoryImporter<T, TMetadata>(new TestExportFactory<T, TMetadata>(() => value, metadata));
+            return new ExportFactoryImporter<T, TMetadata>(new ExportFactory<T, TMetadata>(() => value, metadata));
         }
 
         private ICollectionExportFactoryImporter<T> CreateExportFactoriesImporter<T>(T value)
         {
-            return new CollectionExportFactoryImporter<T>(new[] { new TestExportFactory<T>(() => value) });
+            return new CollectionExportFactoryImporter<T>(new[] { new ExportFactory<T>(() => value) });
         }
 
         private ICollectionExportFactoryImporter<T, TMetadata> CreateExportFactoriesImporter<T, TMetadata>(T value, TMetadata metadata)
         {
-            return new CollectionExportFactoryImporter<T, TMetadata>(new[] { new TestExportFactory<T, TMetadata>(() => value, metadata) });
+            return new CollectionExportFactoryImporter<T, TMetadata>(new[] { new ExportFactory<T, TMetadata>(() => value, metadata) });
         }
     }
 }

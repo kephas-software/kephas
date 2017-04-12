@@ -13,9 +13,9 @@ namespace Kephas.Core.Tests.Composition.Internal
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Internal;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -144,12 +144,12 @@ namespace Kephas.Core.Tests.Composition.Internal
 
         private IExportFactoryImporter<T> CreateExportFactoryImporter<T>(T value)
         {
-            return new ExportFactoryImporter<T>(new TestExportFactory<T>(() => value));
+            return new ExportFactoryImporter<T>(new ExportFactory<T>(() => value));
         }
 
         private IExportFactoryImporter<T, TMetadata> CreateExportFactoryImporter<T, TMetadata>(T value, TMetadata metadata)
         {
-            return new ExportFactoryImporter<T, TMetadata>(new TestExportFactory<T, TMetadata>(() => value, metadata));
+            return new ExportFactoryImporter<T, TMetadata>(new ExportFactory<T, TMetadata>(() => value, metadata));
         }
 
         private ICollectionExportFactoryImporter<T> CreateExportFactoriesImporter<T>(T value)
@@ -159,7 +159,7 @@ namespace Kephas.Core.Tests.Composition.Internal
 
         IEnumerable<IExportFactory<T>> GetEnumeration<T>(T value)
         {
-            yield return new TestExportFactory<T>(() => value);
+            yield return new ExportFactory<T>(() => value);
         }
 
         private ICollectionExportFactoryImporter<T, TMetadata> CreateExportFactoriesImporter<T, TMetadata>(T value, TMetadata metadata)
@@ -169,7 +169,7 @@ namespace Kephas.Core.Tests.Composition.Internal
 
         IEnumerable<IExportFactory<T, TMetadata>> GetEnumeration<T, TMetadata>(T value, TMetadata metadata)
         {
-            yield return new TestExportFactory<T, TMetadata>(() => value, metadata);
+            yield return new ExportFactory<T, TMetadata>(() => value, metadata);
         }
     }
 }

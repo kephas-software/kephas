@@ -71,6 +71,7 @@
     <Compile Include="Composition\CompositionContextExtensionsTest.cs" />
     <Compile Include="Composition\Conventions\ConventionsBuilderExtensionsTest.cs" />
     <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapterTest.cs" />
+    <Compile Include="Composition\TestRegistrationContext.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
@@ -108,10 +109,6 @@
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
-      <Project>{a8025c4f-667a-4996-86e1-7a7f6b787447}</Project>
-      <Name>Kephas.Testing.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

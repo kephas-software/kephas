@@ -15,8 +15,6 @@
         </releaseNotes>
         <summary>
             Provides platform specific infrastructure: assembly loaders, application runtime services, other.
-            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
-            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </summary>
         <language>en-US</language>
         <projectUrl>https://github.com/quartz-software/kephas</projectUrl>

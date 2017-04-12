@@ -67,10 +67,6 @@
       <Project>{8591c924-3c04-413f-a530-7a5575b45966}</Project>
       <Name>Kephas.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Core\Kephas.Testing.Core.csproj">
-      <Project>{a8025c4f-667a-4996-86e1-7a7f6b787447}</Project>
-      <Name>Kephas.Testing.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Kephas.snk">

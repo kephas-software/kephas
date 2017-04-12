@@ -194,6 +194,12 @@
     <Compile Include="..\Kephas.Core\Composition\Conventions\IPartConventionsBuilder.cs">
       <Link>Composition\Conventions\IPartConventionsBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactories\Export.cs">
+      <Link>Composition\ExportFactories\Export.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ExportFactories\ExportFactory.cs">
+      <Link>Composition\ExportFactories\ExportFactory.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs">
       <Link>Composition\ExportFactoryImporters\CollectionExportFactoryImporter.cs</Link>
     </Compile>

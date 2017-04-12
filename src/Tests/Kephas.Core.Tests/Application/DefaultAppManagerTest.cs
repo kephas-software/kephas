@@ -16,8 +16,8 @@ namespace Kephas.Core.Tests.Application
     using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Services.Composition;
-    using Kephas.Testing.Core.Composition;
 
     using NSubstitute;
 
@@ -47,8 +47,8 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: 2)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: 1)),
                     },
                 null);
 
@@ -85,9 +85,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: 0)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: int.MaxValue)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(processingPriority: int.MinValue)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(processingPriority: 0)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(processingPriority: int.MaxValue)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(processingPriority: int.MinValue)),
                     },
                 null);
 
@@ -125,9 +125,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "3" }))),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(new FeatureInfo("3"))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(new FeatureInfo("3"))),
                     },
                 null);
 
@@ -174,13 +174,13 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
                     },
                 new[]
                     {
-                        new TestExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
-                        new TestExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
                     });
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -217,8 +217,8 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: 2)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: 1)),
                     },
                 null);
 
@@ -256,9 +256,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: 0)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: int.MaxValue)),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(processingPriority: int.MinValue)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(processingPriority: 0)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(processingPriority: int.MaxValue)),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(processingPriority: int.MinValue)),
                     },
                 null);
 
@@ -296,9 +296,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "1" }))),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3"))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "1" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3"))),
                     },
                 null);
 
@@ -345,13 +345,13 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
-                        new TestExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata()),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata()),
                     },
                 new[]
                     {
-                        new TestExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
-                        new TestExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
                     });
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
