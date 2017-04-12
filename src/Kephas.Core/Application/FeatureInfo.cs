@@ -63,5 +63,17 @@ namespace Kephas.Application
         /// Declaring container of the <see cref="FeatureInfo"/>.
         /// </summary>
         IElementInfo IElementInfo.DeclaringContainer => null;
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var deps = string.Join(", ", this.Dependencies ?? new string[0]);
+            return $"{this.Name}({deps})";
+        }
     }
 }

@@ -187,7 +187,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         public override string ToString()
         {
-            return this.QualifiedFullName;
+            return this.QualifiedFullName ?? this.FullName ?? this.Name ?? base.ToString();
         }
 
         /// <summary>
