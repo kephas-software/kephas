@@ -1,5 +1,5 @@
 set BuildConfiguration=Debug
-set PackageVersion=3.3.5
+set PackageVersion=3.3.6
 set PackageRefVersion=3.3.0
 
 nuget pack ..\Kephas.Core\Package.nuspec -BasePath ..\Kephas.Core -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
