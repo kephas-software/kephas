@@ -138,11 +138,8 @@ namespace Kephas.Data.Client.Queries.Conversion
         }
 
         /// <summary>
-        /// Gets the query entity type.
+        /// Gets the query entity type based on the client entity type.
         /// </summary>
-        /// <remarks>
-        /// When overridden, it could also convert the resolved item type with a server side entity type.
-        /// </remarks>
         /// <param name="clientQuery">The client query.</param>
         /// <param name="clientEntityType">The client entity type.</param>
         /// <returns>
@@ -150,7 +147,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         protected virtual Type GetQueryEntityType(ClientQuery clientQuery, Type clientEntityType)
         {
-            return this.entityTypeResolver.ResolveEntityType(clientEntityType, throwOnNotFound: true);
+            return this.entityTypeResolver.ResolveEntityType(clientEntityType);
         }
 
         /// <summary>
@@ -172,16 +169,19 @@ namespace Kephas.Data.Client.Queries.Conversion
 
             var args = new List<LinqExpression>();
             var exprArgs = expression.Args;
-            for (var i = 0; i < exprArgs.Count; i++)
+            if (exprArgs != null && exprArgs.Count > 0)
             {
-                var arg = exprArgs[i];
-                var argExpression = arg as Expression;
-                args.Add(
-                    argExpression != null
-                        ? this.ConvertExpression(argExpression, clientItemType, lambdaArg)
-                        : this.IsMemberAccess(arg, i) 
-                            ? this.MakeMemberAccessExpression(arg, clientItemType, lambdaArg) 
-                            : this.MakeConstantExpression(arg));
+                for (var i = 0; i < exprArgs.Count; i++)
+                {
+                    var arg = exprArgs[i];
+                    var argExpression = arg as Expression;
+                    args.Add(
+                        argExpression != null
+                            ? this.ConvertExpression(argExpression, clientItemType, lambdaArg)
+                            : this.IsMemberAccess(arg, i)
+                                ? this.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
+                                : this.MakeConstantExpression(arg));
+                }
             }
 
             return converter.ConvertExpression(args);
