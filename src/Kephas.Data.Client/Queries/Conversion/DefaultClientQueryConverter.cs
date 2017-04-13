@@ -44,6 +44,11 @@ namespace Kephas.Data.Client.Queries.Conversion
         private readonly ITypeResolver typeResolver;
 
         /// <summary>
+        /// The entity type resolver.
+        /// </summary>
+        private readonly IEntityTypeResolver entityTypeResolver;
+
+        /// <summary>
         /// The expression converters.
         /// </summary>
         private readonly IDictionary<string, IExpressionConverter> expressionConverters = new Dictionary<string, IExpressionConverter>();
@@ -52,15 +57,19 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// Initializes a new instance of the <see cref="DefaultClientQueryConverter"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="entityTypeResolver">The entity type resolver.</param>
         /// <param name="converterFactories">The expression converters.</param>
         public DefaultClientQueryConverter(
             ITypeResolver typeResolver,
+            IEntityTypeResolver entityTypeResolver,
             ICollection<IExportFactory<IExpressionConverter, ExpressionConverterMetadata>> converterFactories)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
+            Requires.NotNull(entityTypeResolver, nameof(entityTypeResolver));
             Requires.NotNull(converterFactories, nameof(converterFactories));
 
             this.typeResolver = typeResolver;
+            this.entityTypeResolver = entityTypeResolver;
 
             foreach (
                 var converterFactory in
@@ -83,18 +92,18 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         public IQueryable ConvertQuery(ClientQuery clientQuery, IClientQueryConversionContext context)
         {
-            var queryClientItemType = this.GetQueryClientItemType(clientQuery);
-            var queryItemType = this.GetQueryItemType(clientQuery, queryClientItemType);
+            var queryClientEntityType = this.GetQueryClientEntityType(clientQuery);
+            var queryEntityType = this.GetQueryEntityType(clientQuery, queryClientEntityType);
 
-            var queryMethod = DataContextQueryMethod.MakeGenericMethod(queryItemType);
+            var queryMethod = DataContextQueryMethod.MakeGenericMethod(queryEntityType);
             var queryContext = new QueryOperationContext(context.DataContext);
             var queryable = (IQueryable)queryMethod.Call(context.DataContext, queryContext);
 
-            var whereLambdaExpression = this.ConvertWhere(queryItemType, queryClientItemType, clientQuery.Filter);
-            if (whereLambdaExpression != null)
+            var filterLambdaExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter);
+            if (filterLambdaExpression != null)
             {
-                var whereMethod = QueryableMethods.QueryableWhereGeneric.MakeGenericMethod(queryItemType);
-                queryable = (IQueryable)whereMethod.Call(null, queryable, whereLambdaExpression);
+                var whereMethod = QueryableMethods.QueryableWhereGeneric.MakeGenericMethod(queryEntityType);
+                queryable = (IQueryable)whereMethod.Call(null, queryable, filterLambdaExpression);
             }
 
             return queryable;
@@ -109,7 +118,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <returns>
         /// The converted where clause.
         /// </returns>
-        protected virtual LinqExpression ConvertWhere(Type itemType, Type clientItemType, Expression where)
+        protected virtual LinqExpression ConvertFilter(Type itemType, Type clientItemType, Expression where)
         {
             var lambdaArg = LinqExpression.Parameter(itemType, "e");
             var body = this.ConvertExpression(where, clientItemType, lambdaArg);
@@ -117,31 +126,31 @@ namespace Kephas.Data.Client.Queries.Conversion
         }
 
         /// <summary>
-        /// Gets the query client item type.
+        /// Gets the query client entity type.
         /// </summary>
         /// <param name="clientQuery">The client query.</param>
         /// <returns>
-        /// The query client item type.
+        /// The query client entity type.
         /// </returns>
-        protected virtual Type GetQueryClientItemType(ClientQuery clientQuery)
+        protected virtual Type GetQueryClientEntityType(ClientQuery clientQuery)
         {
             return this.typeResolver.ResolveType(clientQuery.EntityType);
         }
 
         /// <summary>
-        /// Gets the query item type.
+        /// Gets the query entity type.
         /// </summary>
         /// <remarks>
         /// When overridden, it could also convert the resolved item type with a server side entity type.
         /// </remarks>
         /// <param name="clientQuery">The client query.</param>
-        /// <param name="clientItemType">The client item type.</param>
+        /// <param name="clientEntityType">The client entity type.</param>
         /// <returns>
-        /// The query item type.
+        /// The query entity type.
         /// </returns>
-        protected virtual Type GetQueryItemType(ClientQuery clientQuery, Type clientItemType)
+        protected virtual Type GetQueryEntityType(ClientQuery clientQuery, Type clientEntityType)
         {
-            return clientItemType;
+            return this.entityTypeResolver.ResolveEntityType(clientEntityType, throwOnNotFound: true);
         }
 
         /// <summary>

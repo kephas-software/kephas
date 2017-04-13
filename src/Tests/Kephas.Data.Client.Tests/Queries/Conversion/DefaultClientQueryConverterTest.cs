@@ -36,7 +36,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConverQuery_int_constants(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new[] { this.EqConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.EqConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -57,7 +57,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConverQuery_member_access(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -76,7 +76,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConverQuery_operator_not_supported(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
