@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EqExpressionConverter.cs" company="Quartz Software SRL">
+// <copyright file="NeqExpressionConverter.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the eq expression converter class.
+//   Implements the neq expression converter class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,16 +12,16 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Expression converter for the equals operator.
+    /// Expression converter for the not-equals operator.
     /// </summary>
-    [Operator("$eq")]
-    public class EqExpressionConverter : BinaryExpressionConverterBase
+    [Operator("$neq")]
+    public class NeqExpressionConverter : BinaryExpressionConverterBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EqExpressionConverter"/> class.
+        /// Initializes a new instance of the <see cref="NeqExpressionConverter"/> class.
         /// </summary>
-        public EqExpressionConverter()
-            : base(Expression.Equal)
+        public NeqExpressionConverter()
+            : base(Expression.NotEqual)
         {
         }
     }
