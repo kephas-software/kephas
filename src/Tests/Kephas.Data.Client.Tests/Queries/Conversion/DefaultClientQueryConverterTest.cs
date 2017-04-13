@@ -18,6 +18,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Client.Queries.Conversion.Composition;
+    using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
     using Kephas.Reflection;
 
     using NSubstitute;
@@ -33,7 +34,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         [Test]
         [TestCase(arg: new string[] { "I", "saw", "the", "film", "Heidi" })]
         [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
-        public void ConverQuery_int_constants(string[] data)
+        public void ConvertQuery_int_constants(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
             var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.EqConverter() });
@@ -50,11 +51,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             Assert.AreEqual(0, result.Count);
         }
 
-
         [Test]
         [TestCase(arg: new string[] { "I", "saw", "the", "film", "Heidi" })]
         [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
-        public void ConverQuery_member_access(string[] data)
+        public void ConvertQuery_member_access(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
             var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
@@ -72,8 +72,30 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         }
 
         [Test]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
+        [TestCase(arg: new string[] { "hi", "all" })]
+        [TestCase(arg: new string[] { "hi" })]
+        public void ConvertQuery_nary_operator_without_arguments(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.AndConverter() });
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+                            {
+                                EntityType = "item-type",
+                                Filter = new Expression { Op = "&&", Args = null }
+                            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
+            var result = queryable.ToList();
+            Assert.AreEqual(data.Length, result.Count);
+        }
+
+        [Test]
         [TestCase(arg: new string[] { "doesn't matter" })]
-        public void ConverQuery_operator_not_supported(string[] data)
+        public void ConvertQuery_operator_not_supported(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
             var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
@@ -104,6 +126,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             dataContext.Query<TValue>(Arg.Any<IQueryOperationContext>())
                 .Returns(data.AsQueryable());
             return dataContext;
+        }
+
+        private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> AndConverter()
+        {
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new AndExpressionConverter(), new ExpressionConverterMetadata("&&"));
         }
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> EqConverter()
