@@ -12,10 +12,12 @@ namespace Kephas.Data.Client.Queries.Conversion
     using System;
 
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// Interface for entity type resolver.
     /// </summary>
+    [SharedAppServiceContract]
     public interface IEntityTypeResolver
     {
         /// <summary>
