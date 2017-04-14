@@ -73,9 +73,13 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Server\Composition\MessageHandlerMetadataTest.cs">
+      <Link>Server\Composition\MessageHandlerMetadataTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Server\DefaultMessageProcessorTest.cs">
+      <Link>Server\DefaultMessageProcessorTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Composition\MessageHandlerMetadataTest.cs" />
-    <Compile Include="Server\DefaultMessageProcessorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Kephas.snk">
