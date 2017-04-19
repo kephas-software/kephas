@@ -10,12 +10,14 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Attribute for indicating that a classifier is a projection of another classifier.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
     public sealed class ProjectionForAttribute : Attribute
     {
         /// <summary>
@@ -24,9 +26,10 @@ namespace Kephas.Model.AttributedModel
         /// <param name="projectedType">Type of the projected.</param>
         public ProjectionForAttribute(Type projectedType)
         {
-            Contract.Requires(projectedType != null);
+            Requires.NotNull(projectedType, nameof(projectedType));
 
             this.ProjectedType = projectedType;
+            this.ProjectedTypeName = projectedType.GetAssemblyQualifiedShortName();
         }
 
         /// <summary>
@@ -35,7 +38,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="projectedTypeName">The name of the projected type.</param>
         public ProjectionForAttribute(string projectedTypeName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(projectedTypeName));
+            Requires.NotNullOrEmpty(projectedTypeName, nameof(projectedTypeName));
 
             this.ProjectedTypeName = projectedTypeName;
         }
