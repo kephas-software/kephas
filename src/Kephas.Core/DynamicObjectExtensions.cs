@@ -110,5 +110,20 @@ namespace Kephas
 
             return new Expando(obj);
         }
+
+        /// <summary>
+        /// Gets an <see cref="IExpando"/> object out of the provided instance.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>An <see cref="IExpando"/> wrapping the provided object. If the provided object is an expando, that object is returned.</returns>
+        public static IExpando ToExpando(this object obj)
+        {
+            if (obj == null || obj is IExpando)
+            {
+                return (IExpando)obj;
+            }
+
+            return new Expando(obj);
+        }
     }
 }
