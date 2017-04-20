@@ -21,8 +21,12 @@ namespace Kephas.Data.MongoDB.Commands
         /// Discards the changes in the data context.
         /// </summary>
         /// <param name="operationContext">Context for the operation.</param>
-        public override void Execute(IDataOperationContext operationContext)
+        /// <returns>
+        /// A <see cref="IDataCommandResult"/>.
+        /// </returns>
+        public override IDataCommandResult Execute(IDataOperationContext operationContext)
         {
+            return DataCommandResult.Success;
         }
     }
 }

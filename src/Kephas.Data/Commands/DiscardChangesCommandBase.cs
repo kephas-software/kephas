@@ -27,14 +27,17 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.Execute(operationContext);
-            return Task.FromResult<IDataCommandResult>(DataCommandResult.Success);
+            var result = this.Execute(operationContext);
+            return Task.FromResult(result);
         }
 
         /// <summary>
         /// Discards the changes in the data context.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        public abstract void Execute(IDataOperationContext operationContext);
+        /// <returns>
+        /// A <see cref="IDataCommandResult"/>.
+        /// </returns>
+        public abstract IDataCommandResult Execute(IDataOperationContext operationContext);
     }
 }

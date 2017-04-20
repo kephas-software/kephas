@@ -21,8 +21,12 @@ namespace Kephas.Data.InMemory.Commands
         /// Discards the changes in the data context.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        public override void Execute(IDataOperationContext operationContext)
+        /// <returns>
+        /// A <see cref="IDataCommandResult"/>.
+        /// </returns>
+        public override IDataCommandResult Execute(IDataOperationContext operationContext)
         {
+            return DataCommandResult.Success;
         }
     }
 }
