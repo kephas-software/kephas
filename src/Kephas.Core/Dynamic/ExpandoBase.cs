@@ -129,15 +129,11 @@ namespace Kephas.Dynamic
         {
             get
             {
-                object value;
-                this.TryGetValue(key, out value);
+                this.TryGetValue(key, out object value);
                 return value;
             }
 
-            set
-            {
-                this.TrySetValue(key, value);
-            }
+            set => this.TrySetValue(key, value);
         }
 
         /// <summary>
