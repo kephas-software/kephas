@@ -9,35 +9,37 @@
 
 namespace Kephas.Data.Commands
 {
-    using System.Threading;
-    using System.Threading.Tasks;
+    using System.Linq;
+
+    using Kephas.Data.Capabilities;
 
     /// <summary>
     /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
     /// </summary>
-    public abstract class DiscardChangesCommandBase : DataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
+    public abstract class DiscardChangesCommandBase : SyncDataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
     {
         /// <summary>
-        /// Executes the data command asynchronously.
-        /// </summary>
-        /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
-        /// </returns>
-        public override Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var result = this.Execute(operationContext);
-            return Task.FromResult(result);
-        }
-
-        /// <summary>
-        /// Discards the changes in the data context.
+        /// Executes the data command.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
         /// A <see cref="IDataCommandResult"/>.
         /// </returns>
-        public abstract IDataCommandResult Execute(IDataOperationContext operationContext);
+        public override IDataCommandResult Execute(IDataOperationContext operationContext)
+        {
+            var localCache = this.TryGetLocalCache(operationContext.DataContext);
+            if (localCache == null)
+            {
+                return DataCommandResult.Success;
+            }
+
+            var changes = localCache.Values.Where(e => e.ChangeState != ChangeState.NotChanged).ToList();
+            foreach (var change in changes)
+            {
+                localCache.Remove(change.Id);
+            }
+
+            return DataCommandResult.Success;
+        }
     }
 }

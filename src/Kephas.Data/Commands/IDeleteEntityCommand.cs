@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDiscardChangesCommand.cs" company="Quartz Software SRL">
+// <copyright file="IDeleteEntityCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDiscardChangesCommand interface.
+//   Declares the IDeleteEntityCommand interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ namespace Kephas.Data.Commands
     using Kephas.Services;
 
     /// <summary>
-    /// Contract for discard changes commands.
+    /// Contract for delete entity commands.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
-    public interface IDiscardChangesCommand : IDataCommand<IDataOperationContext, IDataCommandResult>, ISyncDataCommand<IDataOperationContext, IDataCommandResult>
+    public interface IDeleteEntityCommand : IDataCommand<IDeleteEntityContext, IDataCommandResult>, ISyncDataCommand
     {
     }
 }

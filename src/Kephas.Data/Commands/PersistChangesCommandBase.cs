@@ -156,11 +156,16 @@ namespace Kephas.Data.Commands
         /// <param name="modifiedEntries">The modified entries.</param>
         protected virtual void ResetChangeState(IPersistChangesContext operationContext, IList<IPersistChangesEntry> modifiedEntries)
         {
+            var localCache = this.TryGetLocalCache(operationContext.DataContext);
             foreach (var entry in modifiedEntries)
             {
                 if (entry.ChangeState != ChangeState.Deleted)
                 {
                     entry.ChangeState = ChangeState.NotChanged;
+                }
+                else
+                {
+                    localCache?.Remove(entry.Id);
                 }
             }
         }
@@ -179,12 +184,9 @@ namespace Kephas.Data.Commands
             foreach (var entry in modifiedEntries)
             {
                 var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.Entity).Reverse();
-                if (reversedBehaviors != null)
+                foreach (var behavior in reversedBehaviors)
                 {
-                    foreach (var behavior in reversedBehaviors)
-                    {
-                        await behavior.AfterPersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
-                    }
+                    await behavior.AfterPersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
                 }
             }
         }
@@ -203,12 +205,9 @@ namespace Kephas.Data.Commands
             foreach (var entry in modifiedEntries)
             {
                 var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entry.Entity);
-                if (behaviors != null)
+                foreach (var behavior in behaviors)
                 {
-                    foreach (var behavior in behaviors)
-                    {
-                        await behavior.BeforePersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
-                    }
+                    await behavior.BeforePersistAsync(entry.Entity, operationContext, cancellationToken).PreserveThreadContext();
                 }
             }
         }
@@ -216,12 +215,28 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Detects the modified entries and returns them.
         /// </summary>
-        /// <param name="operationContext">The entity operationContext.</param>
+        /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A list of modified entries tuples.
         /// </returns>
-        protected abstract Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(IPersistChangesContext operationContext, CancellationToken cancellationToken);
+        protected virtual Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(
+            IPersistChangesContext operationContext,
+            CancellationToken cancellationToken)
+        {
+            var localCache = this.TryGetLocalCache(operationContext.DataContext);
+            if (localCache == null)
+            {
+                return Task.FromResult<IList<IPersistChangesEntry>>(new List<IPersistChangesEntry>());
+            }
+
+            var changes = localCache.Values
+                .Where(e => e.ChangeState != ChangeState.NotChanged)
+                .Select(e => (IPersistChangesEntry)new PersistChangesEntry(e.Entity, e))
+                .ToList();
+
+            return Task.FromResult<IList<IPersistChangesEntry>>(changes);
+        }
 
         /// <summary>
         /// Saves the modified entries.

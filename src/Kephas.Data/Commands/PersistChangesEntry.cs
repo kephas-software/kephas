@@ -23,14 +23,18 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="PersistChangesEntry"/> class.
         /// </summary>
         /// <param name="entity">The modified entity.</param>
-        /// <param name="changeState">The change state.</param>
-        /// <param name="flattenedEntityGraph">The flattened entity graph.</param>
-        public PersistChangesEntry(object entity, ChangeState changeState, IEnumerable<object> flattenedEntityGraph)
-            : base(entity, changeState)
+        /// <param name="changeStateTracker">The entity's change state tracker.</param>
+        /// <param name="flattenedEntityGraph">The flattened entity graph (optional). If not provided, the entity's graph consists only of the entity.</param>
+        public PersistChangesEntry(object entity, IEntityInfo changeStateTracker, IEnumerable<object> flattenedEntityGraph = null)
+            : base(entity, changeStateTracker)
         {
             Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(changeStateTracker, nameof(changeStateTracker));
 
-            this.FlattenedEntityGraph = flattenedEntityGraph;
+            this.FlattenedEntityGraph = flattenedEntityGraph ?? new[] { entity };
+
+            // take over the ID from the entity info, to identify it easily later.
+            this.Id = changeStateTracker.Id;
         }
 
         /// <summary>

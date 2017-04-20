@@ -12,6 +12,7 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Caching;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -45,6 +46,18 @@ namespace Kephas.Data.Commands
         {
             var result = await this.ExecuteAsync((TOperationContext)operationContext, cancellationToken).PreserveThreadContext();
             return result;
+        }
+
+        /// <summary>
+        /// Tries to get the data context's local cache.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <returns>
+        /// An IDataContextCache.
+        /// </returns>
+        protected virtual IDataContextCache TryGetLocalCache(IDataContext dataContext)
+        {
+            return (dataContext as DataContextBase)?.LocalCache;
         }
     }
 }

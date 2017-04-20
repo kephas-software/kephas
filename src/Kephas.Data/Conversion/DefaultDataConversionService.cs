@@ -263,11 +263,7 @@ namespace Kephas.Data.Conversion
         protected virtual async Task<object> FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, Id id, bool throwIfNotFound, CancellationToken cancellationToken)
         {
             var target = await targetDataContext.FindAsync(
-                             targetType.AsType(),
-                             new FindContext<object>(targetDataContext, id, throwIfNotFound)
-                             {
-                                 EntityType = targetType.AsType()
-                             },
+                             new FindContext(targetDataContext, targetType.AsType(), id, throwIfNotFound),
                              cancellationToken).PreserveThreadContext();
             return target;
         }

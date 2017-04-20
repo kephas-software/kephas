@@ -12,6 +12,7 @@ namespace Kephas.Data
     using System;
     using System.Linq;
 
+    using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
@@ -41,13 +42,18 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+        /// <param name="localCache">The local cache (optional). If not provided, a default one will be created.</param>
+        protected DataContextBase(
+            IAmbientServices ambientServices,
+            IDataCommandProvider dataCommandProvider,
+            IDataContextCache localCache = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
 
             this.AmbientServices = ambientServices;
             this.dataCommandProvider = dataCommandProvider;
+            this.LocalCache = localCache ?? new DataContextCache();
             this.Id = new Id(Guid.NewGuid());
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
         }
@@ -67,6 +73,14 @@ namespace Kephas.Data
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
+        /// Gets the local cache where the session entities are stored.
+        /// </summary>
+        /// <value>
+        /// The local cache.
+        /// </value>
+        protected internal IDataContextCache LocalCache { get; }
 
         /// <summary>
         /// Initializes the service asynchronously.
@@ -154,7 +168,12 @@ namespace Kephas.Data
         {
             Requires.NotNull(entity, nameof(entity));
 
-            return this.CreateEntityInfo(entity);
+            // TODO optimize, maybe set the entity info in the entity
+            // if it is an expando.
+            // Try to get the entity info from the local cache.
+            var entityInfo = this.LocalCache.Values.FirstOrDefault(ei => ei.Entity == entity);
+
+            return entityInfo ?? this.CreateEntityInfo(entity);
         }
 
         /// <summary>
@@ -182,9 +201,20 @@ namespace Kephas.Data
         /// <returns>
         /// The new entity information.
         /// </returns>
-        protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState changeState = ChangeState.NotChanged)
+        protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = null)
         {
-            return new EntityInfo(entity, changeState);
+            var changeStateTracker = entity as IChangeStateTrackable;
+            if (changeStateTracker != null)
+            {
+                if (changeState.HasValue)
+                {
+                    changeStateTracker.ChangeState = changeState.Value;
+                }
+
+                return new EntityInfo(entity, changeStateTracker);
+            }
+
+            return new EntityInfo(entity, changeState ?? ChangeState.NotChanged);
         }
 
         /// <summary>

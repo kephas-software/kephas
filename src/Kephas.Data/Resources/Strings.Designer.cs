@@ -11,8 +11,7 @@
 namespace Kephas.Data.Resources {
     using System;
     using System.Reflection;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -194,6 +193,15 @@ namespace Kephas.Data.Resources {
         internal static string DefaultDataConversionService_NonTypedTargetIsNull_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataConversionService_NonTypedTargetIsNull_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided entity does not support change state tracking..
+        /// </summary>
+        internal static string DeleteEntityCommandBase_ChangeStateNotSupported_Exception {
+            get {
+                return ResourceManager.GetString("DeleteEntityCommandBase_ChangeStateNotSupported_Exception", resourceCulture);
             }
         }
         

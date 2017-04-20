@@ -1,26 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityInfo.cs" company="Quartz Software SRL">
+// <copyright file="IDeleteEntityContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IEntityInfo interface.
+//   Declares the IDeleteEntityContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Capabilities
+namespace Kephas.Data.Commands
 {
-    using Kephas.Dynamic;
-
     /// <summary>
-    /// Provides extended entity information like the <see cref="ChangeState"/>.
+    /// Interface for delete entity context.
     /// </summary>
-    public interface IEntityInfo : IExpando, IChangeStateTrackable, IIdentifiable
+    public interface IDeleteEntityContext : IDataOperationContext
     {
         /// <summary>
-        /// Gets the entity.
+        /// Gets the entity to delete.
         /// </summary>
         /// <value>
-        /// The entity.
+        /// The entity to delete.
         /// </value>
         object Entity { get; }
     }

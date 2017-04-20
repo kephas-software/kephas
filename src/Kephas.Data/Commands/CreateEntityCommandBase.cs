@@ -69,6 +69,13 @@ namespace Kephas.Data.Commands
                 await initializeBehavior.InitializeAsync(entity, operationContext, cancellationToken).PreserveThreadContext();
             }
 
+            var localCache = this.TryGetLocalCache(dataContext);
+            if (localCache != null)
+            {
+                var entityInfo = dataContext.GetEntityInfo(entity);
+                localCache.Add(entityInfo.Id, entityInfo);
+            }
+
             // prepare the result
             var result = new CreateEntityResult(entity);
             this.PostCreateEntity(operationContext, result);

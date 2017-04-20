@@ -172,4 +172,7 @@
   <data name="DataCommandResult_Successful_Message" xml:space="preserve">
     <value>Operation completed successfully.</value>
   </data>
+  <data name="DeleteEntityCommandBase_ChangeStateNotSupported_Exception" xml:space="preserve">
+    <value>The provided entity does not support change state tracking.</value>
+  </data>
 </root>
