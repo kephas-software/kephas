@@ -9,20 +9,16 @@
 
 namespace Kephas.Data
 {
-    using System.Diagnostics.Contracts;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Structure used to define and retrieve a referenced entity.
+    /// Contract used to define and retrieve a referenced entity.
     /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    [ContractClass(typeof(RefContractClass<>))]
-    public interface IRef<T> : IIdentifiable
-        where T : class
+    public interface IRef : IIdentifiable
     {
         /// <summary>
         /// Gets or sets the identifier of the referenced entity.
@@ -33,6 +29,32 @@ namespace Kephas.Data
         new Id Id { get; set; }
 
         /// <summary>
+        /// Gets the type of the referenced entity.
+        /// </summary>
+        /// <value>
+        /// The type of the referenced entity.
+        /// </value>
+        Type EntityType { get; }
+
+        /// <summary>
+        /// Gets the referenced entity asynchronously.
+        /// </summary>
+        /// <param name="operationContext">The context for finding the entity (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A task promising the referenced entity.
+        /// </returns>
+        Task<object> GetAsync(IFindContext operationContext = null, CancellationToken cancellationToken = default(CancellationToken));
+    }
+
+    /// <summary>
+    /// Generic contract used to define and retrieve a referenced entity.
+    /// </summary>
+    /// <typeparam name="T">The referenced entity type.</typeparam>
+    public interface IRef<T> : IRef
+        where T : class
+    {
+        /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>
         /// <param name="operationContext">The operationContext for finding the entity (optional).</param>
@@ -41,48 +63,5 @@ namespace Kephas.Data
         /// A task promising the referenced entity.
         /// </returns>
         Task<T> GetAsync(IFindContext<T> operationContext = null, CancellationToken cancellationToken = default(CancellationToken));
-    }
-
-    /// <summary>
-    /// Contract class for <see cref="IRef{T}"/>.
-    /// </summary>
-    /// <typeparam name="T">Generic type parameter.</typeparam>
-    [ContractClassFor(typeof(IRef<>))]
-    internal abstract class RefContractClass<T> : IRef<T>
-        where T : class
-    {
-        /// <summary>
-        /// Gets or sets the identifier of the referenced entity.
-        /// </summary>
-        /// <value>
-        /// The identifier of the referenced entity.
-        /// </value>
-        public Id Id
-        {
-            get
-            {
-                return Contract.Result<Id>();
-            }
-
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-            }
-        }
-
-        /// <summary>
-        /// Gets the referenced entity asynchronously.
-        /// </summary>
-        /// <param name="operationContext">The operationContext for finding the entity (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// A task promising the referenced entity.
-        /// </returns>
-        public Task<T> GetAsync(IFindContext<T> operationContext = null, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Contract.Ensures(Contract.Result<Task<T>>() != null);
-
-            return Contract.Result<Task<T>>();
-        }
     }
 }
