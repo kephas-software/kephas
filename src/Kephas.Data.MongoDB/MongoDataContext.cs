@@ -18,6 +18,7 @@ namespace Kephas.Data.MongoDB
 
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
+    using Kephas.Data.MongoDB.Linq;
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
@@ -82,7 +83,10 @@ namespace Kephas.Data.MongoDB
         /// </returns>
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
+            var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
+            var provider = new MongoQueryProvider(this, nativeQuery.Provider);
+            var query = new MongoQuery<T>(provider, nativeQuery);
+            return query;
         }
 
         /// <summary>

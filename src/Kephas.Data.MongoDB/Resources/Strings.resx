@@ -120,4 +120,7 @@
   <data name="Initialize_DatabaseNameEmpty_Exception" xml:space="preserve">
     <value>No database name is provided in the configuration settings.</value>
   </data>
+  <data name="MongoPersistChangesCommand_NoDocumentsToPersist_Exception" xml:space="preserve">
+    <value>There are no Mongo documents to persist in the modified entities.</value>
+  </data>
 </root>

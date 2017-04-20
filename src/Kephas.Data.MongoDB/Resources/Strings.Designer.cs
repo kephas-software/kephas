@@ -11,8 +11,7 @@
 namespace Kephas.Data.MongoDB.Resources {
     using System;
     using System.Reflection;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -67,6 +66,15 @@ namespace Kephas.Data.MongoDB.Resources {
         internal static string Initialize_DatabaseNameEmpty_Exception {
             get {
                 return ResourceManager.GetString("Initialize_DatabaseNameEmpty_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no Mongo documents to persist in the modified entities..
+        /// </summary>
+        internal static string MongoPersistChangesCommand_NoDocumentsToPersist_Exception {
+            get {
+                return ResourceManager.GetString("MongoPersistChangesCommand_NoDocumentsToPersist_Exception", resourceCulture);
             }
         }
     }

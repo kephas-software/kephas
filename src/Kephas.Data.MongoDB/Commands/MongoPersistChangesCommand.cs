@@ -16,15 +16,16 @@ namespace Kephas.Data.MongoDB.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using global::MongoDB.Driver;
-
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
+    using Kephas.Data.MongoDB.Resources;
     using Kephas.Diagnostics;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
+
+    using global::MongoDB.Driver;
 
     /// <summary>
     /// Command for persisting changes for <see cref="MongoDataContext"/>.
@@ -47,21 +48,6 @@ namespace Kephas.Data.MongoDB.Commands
         }
 
         /// <summary>
-        /// Detects the modified entries and returns them.
-        /// </summary>
-        /// <param name="operationContext">The entity operationContext.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A list of modified entries tuples.
-        /// </returns>
-        protected override Task<IList<IPersistChangesEntry>> DetectModifiedEntriesAsync(IPersistChangesContext operationContext, CancellationToken cancellationToken)
-        {
-            var dataContext = (MongoDataContext)operationContext.DataContext;
-
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
         /// Persists the modified entries asynchronously.
         /// </summary>
         /// <param name="modifiedEntries">The modified entries.</param>
@@ -80,8 +66,7 @@ namespace Kephas.Data.MongoDB.Commands
 
             if (modifiedMongoDocs.Count == 0 && modifiedEntries.Count > 0)
             {
-                // TODO localization
-                throw new MongoDataException("There are no Mongo documents to save in the modified entities.");
+                throw new MongoDataException(Strings.MongoPersistChangesCommand_NoDocumentsToPersist_Exception);
             }
 
             var mongoDocTypes = modifiedMongoDocs.Select(e => e.GetType()).Distinct().ToList();

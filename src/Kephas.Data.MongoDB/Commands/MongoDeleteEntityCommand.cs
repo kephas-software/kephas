@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MongoDiscardChangesCommand.cs" company="Quartz Software SRL">
+// <copyright file="MongoDeleteEntityCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the mongo discard changes command class.
+//   Implements the mongo delete entity command class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ namespace Kephas.Data.MongoDB.Commands
     using Kephas.Data.Commands;
 
     /// <summary>
-    /// Discard changes command for <see cref="MongoDataContext"/>.
+    /// Command for creating an entity for <see cref="MongoDataContext"/>.
     /// </summary>
     [DataContextType(typeof(MongoDataContext))]
-    public class MongoDiscardChangesCommand : DiscardChangesCommandBase
+    public class MongoDeleteEntityCommand : DeleteEntityCommandBase
     {
     }
 }
