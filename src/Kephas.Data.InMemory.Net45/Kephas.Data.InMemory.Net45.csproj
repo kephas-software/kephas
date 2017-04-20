@@ -43,6 +43,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.InMemory\Caching\SharedDataContextCache.cs">
+      <Link>Caching\SharedDataContextCache.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.InMemory\Commands\InMemoryCreateEntityCommand.cs">
       <Link>Commands\InMemoryCreateEntityCommand.cs</Link>
     </Compile>

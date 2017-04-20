@@ -73,6 +73,12 @@
     <Compile Include="..\Kephas.Data\Behaviors\IOnPersistBehavior.cs">
       <Link>Behaviors\IOnPersistBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Caching\DataContextCache.cs">
+      <Link>Caching\DataContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Caching\IDataContextCache.cs">
+      <Link>Caching\IDataContextCache.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Capabilities\ChangeState.cs">
       <Link>Capabilities\ChangeState.cs</Link>
     </Compile>
@@ -115,6 +121,12 @@
     <Compile Include="..\Kephas.Data\Commands\DataContextTypeAttribute.cs">
       <Link>Commands\DataContextTypeAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DeleteEntityCommandBase.cs">
+      <Link>Commands\DeleteEntityCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\DeleteEntityContext.cs">
+      <Link>Commands\DeleteEntityContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Commands\DiscardChangesCommandBase.cs">
       <Link>Commands\DiscardChangesCommandBase.cs</Link>
     </Compile>
@@ -154,6 +166,12 @@
     <Compile Include="..\Kephas.Data\Commands\IDataCommandResult.cs">
       <Link>Commands\IDataCommandResult.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IDeleteEntityCommand.cs">
+      <Link>Commands\IDeleteEntityCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IDeleteEntityContext.cs">
+      <Link>Commands\IDeleteEntityContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Commands\IDiscardChangesCommand.cs">
       <Link>Commands\IDiscardChangesCommand.cs</Link>
     </Compile>
@@ -175,6 +193,9 @@
     <Compile Include="..\Kephas.Data\Commands\IPersistChangesEntry.cs">
       <Link>Commands\IPersistChangesEntry.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ISyncDataCommand.cs">
+      <Link>ISyncDataCommand.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Commands\PersistChangesCommandBase.cs">
       <Link>Commands\PersistChangesCommandBase.cs</Link>
     </Compile>
@@ -183,6 +204,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\PersistChangesEntry.cs">
       <Link>Commands\PersistChangesEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\SyncDataCommandBase.cs">
+      <Link>Commands\SyncDataCommandBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Composition\DataContextMetadata.cs">
       <Link>Composition\DataContextMetadata.cs</Link>

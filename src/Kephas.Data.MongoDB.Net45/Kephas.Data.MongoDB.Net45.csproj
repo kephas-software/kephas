@@ -73,6 +73,12 @@
     <Compile Include="..\Kephas.Data.MongoDB\Diagnostics\MongoDataContextLogEventSubscriber.cs">
       <Link>Diagnostics\MongoDataContextLogEventSubscriber.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.MongoDB\Linq\MongoQuery.cs">
+      <Link>Linq\MongoQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.MongoDB\Linq\MongoQueryProvider.cs">
+      <Link>Linq\MongoQueryProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.MongoDB\MongoDataContext.cs">
       <Link>MongoDataContext.cs</Link>
     </Compile>
