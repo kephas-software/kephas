@@ -11,13 +11,14 @@ namespace Kephas.Data.InMemory
 {
     using System;
     using System.Collections;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Data.InMemory.Caching;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
@@ -37,17 +38,12 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// The shared cache.
         /// </summary>
-        private static readonly ConcurrentBag<IEntityInfo> SharedCache = new ConcurrentBag<IEntityInfo>();
-
-        /// <summary>
-        /// The internal cache.
-        /// </summary>
-        private readonly List<IEntityInfo> cache = new List<IEntityInfo>();
+        private static readonly SharedDataContextCache SharedCache = new SharedDataContextCache();
 
         /// <summary>
         /// The working cache.
         /// </summary>
-        private IEnumerable<IEntityInfo> workingCache;
+        private IDataContextCache workingCache;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
@@ -79,7 +75,7 @@ namespace Kephas.Data.InMemory
         /// <value>
         /// The working cache.
         /// </value>
-        protected internal IEnumerable<IEntityInfo> WorkingCache
+        protected internal IDataContextCache WorkingCache
         {
             get
             {
@@ -106,7 +102,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.WorkingCache.Select(ei => ei.Entity).OfType<T>().AsQueryable();
+            return this.WorkingCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
 
         /// <summary>
@@ -120,7 +116,7 @@ namespace Kephas.Data.InMemory
         {
             // do not use here the WorkingCache property, because during initialization
             // the InitializationMonitor is not in the Completed state yet.
-            var entityInfo = this.workingCache?.FirstOrDefault(ei => ei.Entity == entity);
+            var entityInfo = this.workingCache?.Values.FirstOrDefault(ei => ei.Entity == entity);
             return entityInfo;
         }
 
@@ -155,7 +151,7 @@ namespace Kephas.Data.InMemory
 
             var entityType = entity.GetType();
             var existingEntry =
-                this.WorkingCache.FirstOrDefault(
+                this.WorkingCache.Values.FirstOrDefault(
                     e =>
                         e.Entity == entity
                         || (e.Entity.GetType() == entityType
@@ -178,7 +174,7 @@ namespace Kephas.Data.InMemory
         {
             if (!this.UseSharedCache)
             {
-                this.cache.Clear();
+                this.LocalCache.Clear();
             }
         }
 
@@ -195,7 +191,7 @@ namespace Kephas.Data.InMemory
 
             bool.TryParse(connectionStringValues.TryGetValue("UseSharedCache"), out var useSharedCache);
             this.UseSharedCache = useSharedCache;
-            this.workingCache = useSharedCache ? (IEnumerable<IEntityInfo>)SharedCache : this.cache;
+            this.workingCache = useSharedCache ? SharedCache : this.LocalCache;
 
             var serializedData = connectionStringValues.TryGetValue("InitialData");
             this.InitializeData(serializedData);
@@ -212,11 +208,11 @@ namespace Kephas.Data.InMemory
         {
             if (this.UseSharedCache)
             {
-                SharedCache.Add(item);
+                SharedCache.TryAdd(item.Id, item);
             }
             else
             {
-                this.cache.Add(item);
+                this.LocalCache.Add(item.Id, item);
             }
         }
 
