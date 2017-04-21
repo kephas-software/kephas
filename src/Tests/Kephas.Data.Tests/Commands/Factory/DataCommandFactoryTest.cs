@@ -88,5 +88,41 @@ namespace Kephas.Data.Tests.Commands.Factory
             var actualCmd = cmdFactory();
             Assert.IsNull(actualCmd);
         }
+
+        [Test]
+        public void CreateCommand_respects_most_specific_data_context_type()
+        {
+            var cmdBase = Substitute.For<ITestCommandBase>();
+            var cmd = Substitute.For<ITestCommand>();
+            var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
+                                                                   {
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmdBase, new DataCommandMetadata(typeof(ITestDataContextBase))),
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmd, new DataCommandMetadata(typeof(ITestDataContext)))
+                                                                   });
+
+            var actualCmd = factory.GetCommandFactory(typeof(ITestDataContext));
+            Assert.AreSame(cmd, actualCmd());
+        }
+
+        [Test]
+        public void CreateCommand_finds_for_base_data_context()
+        {
+            var cmdBase = Substitute.For<ITestCommandBase>();
+            var factory = new DataCommandFactory<IDataCommand>(new List<IExportFactory<IDataCommand, DataCommandMetadata>>
+                                                                   {
+                                                                       new ExportFactory<IDataCommand, DataCommandMetadata>(() => cmdBase, new DataCommandMetadata(typeof(ITestDataContextBase))),
+                                                                   });
+
+            var actualCmd = factory.GetCommandFactory(typeof(ITestDataContext));
+            Assert.AreSame(cmdBase, actualCmd());
+        }
+
+        public interface ITestCommandBase : IDataCommand {}
+
+        public interface ITestCommand : ITestCommandBase {}
+
+        public interface ITestDataContextBase {}
+
+        public interface ITestDataContext: ITestDataContextBase {}
     }
 }
