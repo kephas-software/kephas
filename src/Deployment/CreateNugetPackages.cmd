@@ -1,6 +1,13 @@
-set BuildConfiguration=Debug
-set PackageVersion=3.3.6
-set PackageRefVersion=3.3.0
+@echo off
+if [%1]==[] goto usage
+if [%2]==[] goto usage
+set BuildConfiguration=%3
+if [BuildConfiguration]==[] set BuildConfiguration=Debug
+
+set PackageVersion=%1
+set PackageRefVersion=%2
+
+@echo on
 
 nuget pack ..\Kephas.Core\Package.nuspec -BasePath ..\Kephas.Core -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Logging.NLog\Package.nuspec -BasePath ..\Kephas.Logging.NLog -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
@@ -20,3 +27,17 @@ nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols -prop
 nuget pack ..\Kephas.Mail.Services.Net45\Package.nuspec -BasePath ..\Kephas.Mail.Services.Net45 -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas.Npgsql -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+
+@echo Done.
+pause
+
+goto :eof
+:usage
+@echo Usage: %0 ^<version^> ^<ref-version^> [^<build-configuration^> = Debug]
+@echo version is the package version number
+@echo ref-version is the version of the other referenced Kephas packages
+@echo build-configuration is the build configuration used for packaging (default is Debug)
+
+:eof
+pause
+exit /B 1

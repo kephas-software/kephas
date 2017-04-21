@@ -26,5 +26,7 @@ pause
 goto :eof
 :usage
 @echo Usage: %0 ^<version-number^>
+
+:eof
 pause
 exit /B 1
