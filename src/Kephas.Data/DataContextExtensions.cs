@@ -12,16 +12,13 @@ namespace Kephas.Data
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -30,16 +27,19 @@ namespace Kephas.Data
     public static class DataContextExtensions
     {
         /// <summary>
-        /// The create command method.
+        /// Creates the command with the provided type.
         /// </summary>
-        private static readonly MethodInfo CreateCommandMethod;
-
-        /// <summary>
-        /// Initializes static members of the <see cref="DataContextExtensions"/> class.
-        /// </summary>
-        static DataContextExtensions()
+        /// <typeparam name="TCommand">The type of the command to be created.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <returns>
+        /// The new command.
+        /// </returns>
+        public static TCommand CreateCommand<TCommand>(this IDataContext dataContext)
+            where TCommand : IDataCommand
         {
-            CreateCommandMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).CreateCommand<IDataCommand>());
+            Requires.NotNull(dataContext, nameof(dataContext));
+
+            return (TCommand)dataContext.CreateCommand(typeof(TCommand));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Kephas.Data
                 operationContext = new CreateEntityContext(dataContext, entityType);
             }
 
-            return CreateEntityAsyncCore(dataContext, operationContext, cancellationToken);
+            return CreateEntityCoreAsync(dataContext, operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Kephas.Data
                 operationContext = new CreateEntityContext<T>(dataContext);
             }
 
-            return (T)await CreateEntityAsyncCore(dataContext, operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await CreateEntityCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -237,8 +237,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IPersistChangesCommand));
-            var command = (IDataCommand<IPersistChangesContext, IDataCommandResult>)createCommand.Call(dataContext);
+            var command = (IPersistChangesCommand)dataContext.CreateCommand(typeof(IPersistChangesCommand));
             var persistContext = new PersistChangesContext(dataContext);
             var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
             return result;
@@ -255,8 +254,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IDiscardChangesCommand));
-            var command = (IDiscardChangesCommand)createCommand.Call(dataContext);
+            var command = (IDiscardChangesCommand)dataContext.CreateCommand(typeof(IDiscardChangesCommand));
             var persistContext = new DataOperationContext(dataContext);
             var result = command.Execute(persistContext);
             return result;
@@ -274,8 +272,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entity, nameof(entity));
 
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IDeleteEntityCommand));
-            var command = (IDeleteEntityCommand)createCommand.Call(dataContext);
+            var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
             var deleteContext = new DeleteEntityContext(dataContext, entity);
             command.Execute(deleteContext);
         }
@@ -289,13 +286,12 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        private static async Task<object> CreateEntityAsyncCore(
+        private static async Task<object> CreateEntityCoreAsync(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken)
         {
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(ICreateEntityCommand));
-            var command = (IDataCommand<ICreateEntityContext, ICreateEntityResult>)createCommand.Call(dataContext);
+            var command = (ICreateEntityCommand)dataContext.CreateCommand(typeof(ICreateEntityCommand));
             var result = await command.ExecuteAsync(operationContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
         }
@@ -314,8 +310,7 @@ namespace Kephas.Data
             IFindContext findContext,
             CancellationToken cancellationToken)
         {
-            var createCommand = CreateCommandMethod.MakeGenericMethod(typeof(IFindCommand));
-            var command = (IDataCommand<IFindContext, IFindResult>)createCommand.Call(dataContext);
+            var command = (IFindCommand)dataContext.CreateCommand(typeof(IFindCommand));
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
         }

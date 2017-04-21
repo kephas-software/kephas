@@ -124,6 +124,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The command type parameter &apos;{0}&apos; must inherit {1}..
+        /// </summary>
+        internal static string DataContextBase_CreateCommand_BadCommandType_Exception {
+            get {
+                return ResourceManager.GetString("DataContextBase_CreateCommand_BadCommandType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
         internal static string DataConverterNotFound_Exception {

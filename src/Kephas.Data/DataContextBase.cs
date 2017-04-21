@@ -11,6 +11,7 @@ namespace Kephas.Data
 {
     using System;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
@@ -121,14 +122,20 @@ namespace Kephas.Data
         /// <summary>
         /// Creates the command with the provided type.
         /// </summary>
-        /// <typeparam name="TCommand">Type of the command.</typeparam>
+        /// <param name="commandType">The type of the command to be created.</param>
         /// <returns>
         /// The new command.
         /// </returns>
-        public TCommand CreateCommand<TCommand>()
-            where TCommand : IDataCommand
+        public IDataCommand CreateCommand(Type commandType)
         {
-            return (TCommand)this.dataCommandProvider.CreateCommand(this.GetType(), typeof(TCommand));
+            Requires.NotNull(commandType, nameof(commandType));
+
+            if (!typeof(IDataCommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
+            {
+                throw new ArgumentException(string.Format(Strings.DataContextBase_CreateCommand_BadCommandType_Exception, commandType, typeof(IDataCommand)), nameof(commandType));
+            }
+
+            return this.dataCommandProvider.CreateCommand(this.GetType(), commandType);
         }
 
         /// <summary>

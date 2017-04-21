@@ -175,4 +175,7 @@
   <data name="DeleteEntityCommandBase_ChangeStateNotSupported_Exception" xml:space="preserve">
     <value>The provided entity does not support change state tracking.</value>
   </data>
+  <data name="DataContextBase_CreateCommand_BadCommandType_Exception" xml:space="preserve">
+    <value>The command type parameter '{0}' must inherit {1}.</value>
+  </data>
 </root>
