@@ -64,5 +64,23 @@ namespace Kephas.Data
         /// The entity extended information.
         /// </returns>
         IEntityInfo GetEntityInfo(object entity);
+
+        /// <summary>
+        /// Attaches the entity to the data context.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        IEntityInfo AttachEntity(object entity);
+
+        /// <summary>
+        /// Detaches the entity from the data context.
+        /// </summary>
+        /// <param name="entityInfo">The entity information.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        IEntityInfo DetachEntity(IEntityInfo entityInfo);
     }
 }

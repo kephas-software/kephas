@@ -15,6 +15,7 @@ namespace Kephas.Data
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
@@ -26,6 +27,28 @@ namespace Kephas.Data
     /// </summary>
     public static class DataContextExtensions
     {
+        /// <summary>
+        /// Detaches the entity from the data context.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public static IEntityInfo DetachEntity(this IDataContext dataContext, object entity)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(entity, nameof(entity));
+
+            var entityInfo = dataContext.GetEntityInfo(entity);
+            if (entityInfo == null)
+            {
+                throw new InvalidOperationException(string.Format(Strings.DataContextBase_EntityNotAttached_Exception, entity));
+            }
+
+            return dataContext.DetachEntity(entityInfo);
+        }
+
         /// <summary>
         /// Creates the command with the provided type.
         /// </summary>

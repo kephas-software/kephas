@@ -96,7 +96,7 @@ namespace Kephas.Data.Commands
             var dataContext = operationContext.DataContext;
             var query = dataContext
                             .Query<T>(new QueryOperationContext(dataContext))
-                            .Where(e => ((IIdentifiable)e).Id == operationContext.Id)
+                            .Where(e => operationContext.Id.Equals(((IIdentifiable)e).Id))
                             .Take(2);
             return query;
         }

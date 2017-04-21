@@ -180,7 +180,43 @@ namespace Kephas.Data
             // Try to get the entity info from the local cache.
             var entityInfo = this.LocalCache.Values.FirstOrDefault(ei => ei.Entity == entity);
 
-            return entityInfo ?? this.CreateEntityInfo(entity);
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// Attaches the entity to the data context.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public virtual IEntityInfo AttachEntity(object entity)
+        {
+            Requires.NotNull(entity, nameof(entity));
+
+            var entityInfo = this.GetEntityInfo(entity);
+            if (entityInfo == null)
+            {
+                entityInfo = this.CreateEntityInfo(entity);
+                this.LocalCache.Add(entityInfo.Id, entityInfo);
+            }
+
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// Detaches the entity from the data context.
+        /// </summary>
+        /// <param name="entityInfo">The entity information.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        public virtual IEntityInfo DetachEntity(IEntityInfo entityInfo)
+        {
+            Requires.NotNull(entityInfo, nameof(entityInfo));
+
+            this.LocalCache.Remove(entityInfo.Id);
+            return entityInfo;
         }
 
         /// <summary>

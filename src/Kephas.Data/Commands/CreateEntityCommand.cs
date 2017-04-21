@@ -28,7 +28,7 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="CreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        protected CreateEntityCommand(IDataBehaviorProvider behaviorProvider)
+        public CreateEntityCommand(IDataBehaviorProvider behaviorProvider)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
@@ -55,33 +55,37 @@ namespace Kephas.Data.Commands
         {
             var entity = this.CreateEntity(operationContext);
 
-            // set the change state to Added
             var dataContext = operationContext.DataContext;
-            var trackableEntity = dataContext.TryGetCapability<IChangeStateTrackable>(entity, operationContext);
-            if (trackableEntity != null)
+            IEntityInfo entityInfo = null;
+            try
             {
-                trackableEntity.ChangeState = ChangeState.Added;
-            }
+                entityInfo = dataContext.AttachEntity(entity);
 
-            // execute initialization behaviors
-            var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
-            foreach (var initializeBehavior in initializeBehaviors)
+                // set the change state to Added
+                entityInfo.ChangeState = ChangeState.Added;
+
+                // execute initialization behaviors
+                var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
+                foreach (var initializeBehavior in initializeBehaviors)
+                {
+                    await initializeBehavior.InitializeAsync(entity, operationContext, cancellationToken).PreserveThreadContext();
+                }
+
+                // prepare the result
+                var result = new CreateEntityResult(entity, entityInfo);
+                this.PostCreateEntity(operationContext, result);
+
+                return result;
+            }
+            catch
             {
-                await initializeBehavior.InitializeAsync(entity, operationContext, cancellationToken).PreserveThreadContext();
+                if (entityInfo != null)
+                {
+                    dataContext.DetachEntity(entityInfo);
+                }
+
+                throw;
             }
-
-            var localCache = this.TryGetLocalCache(dataContext);
-            if (localCache != null)
-            {
-                var entityInfo = dataContext.GetEntityInfo(entity);
-                localCache.Add(entityInfo.Id, entityInfo);
-            }
-
-            // prepare the result
-            var result = new CreateEntityResult(entity);
-            this.PostCreateEntity(operationContext, result);
-
-            return result;
         }
 
         /// <summary>

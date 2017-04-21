@@ -9,17 +9,27 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Data.Capabilities;
+
     /// <summary>
     /// Contract for the create entity result.
     /// </summary>
     public interface ICreateEntityResult : IDataCommandResult
     {
         /// <summary>
-        /// Gets or sets the found entity or <c>null</c> if no entity could be found.
+        /// Gets the newly created entity.
         /// </summary>
         /// <value>
-        /// The found entity.
+        /// The new entity.
         /// </value>
-        object Entity { get; set; }
+        object Entity { get; }
+
+        /// <summary>
+        /// Gets information describing the newly created entity.
+        /// </summary>
+        /// <value>
+        /// Information describing the new entity.
+        /// </value>
+        IEntityInfo EntityInfo { get; }
     }
 }

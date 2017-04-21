@@ -20,7 +20,7 @@ namespace Kephas.Data.Commands
     public class DiscardChangesCommand : SyncDataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
     {
         /// <summary>
-        /// Executes the data command.
+        /// Removes all the changed entity infos from the cache.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>

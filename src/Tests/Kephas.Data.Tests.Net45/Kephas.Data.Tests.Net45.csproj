@@ -58,8 +58,20 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\CreateEntityCommandTest.cs">
+      <Link>Commands\CreateEntityCommandTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\DeleteEntityCommandTest.cs">
+      <Link>Commands\DeleteEntityCommandTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\DiscardChangesCommandTest.cs">
+      <Link>Commands\DiscardChangesCommandTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Commands\Factory\DataCommandFactoryTest.cs">
       <Link>Commands\Factory\DataCommandFactoryTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\FindCommandTest.cs">
+      <Link>Commands\FindCommandTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Conversion\DefaultDataConversionServiceTest.cs">
       <Link>Conversion\DefaultDataConversionServiceTest.cs</Link>
@@ -72,6 +84,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Store\ConnectionStringParserTest.cs">
       <Link>Store\ConnectionStringParserTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\TestDataContext.cs">
+      <Link>TestDataContext.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

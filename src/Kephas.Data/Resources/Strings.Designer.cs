@@ -133,6 +133,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided entity &apos;{0}&apos; is not attached to the data context..
+        /// </summary>
+        internal static string DataContextBase_EntityNotAttached_Exception {
+            get {
+                return ResourceManager.GetString("DataContextBase_EntityNotAttached_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
         internal static string DataConverterNotFound_Exception {
@@ -202,15 +211,6 @@ namespace Kephas.Data.Resources {
         internal static string DefaultDataConversionService_NonTypedTargetIsNull_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataConversionService_NonTypedTargetIsNull_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The provided entity does not support change state tracking..
-        /// </summary>
-        internal static string DeleteEntityCommandBase_ChangeStateNotSupported_Exception {
-            get {
-                return ResourceManager.GetString("DeleteEntityCommandBase_ChangeStateNotSupported_Exception", resourceCulture);
             }
         }
         

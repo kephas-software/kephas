@@ -31,22 +31,19 @@ namespace Kephas.Data.Commands
         {
             var dataContext = operationContext.DataContext;
             var entity = operationContext.Entity;
-            var changeStateTrackable = dataContext.TryGetCapability<IChangeStateTrackable>(entity);
-            if (changeStateTrackable == null)
+            var entityInfo = dataContext.GetEntityInfo(entity);
+            if (entityInfo == null)
             {
-                throw new InvalidOperationException(Strings.DeleteEntityCommandBase_ChangeStateNotSupported_Exception);
+                throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception);
             }
 
-            if (changeStateTrackable.ChangeState == ChangeState.Added)
+            if (entityInfo.ChangeState == ChangeState.Added)
             {
-                var entityInfo = dataContext.GetEntityInfo(entity);
                 var localCache = this.TryGetLocalCache(dataContext);
                 localCache?.Remove(entityInfo.Id);
             }
-            else
-            {
-                changeStateTrackable.ChangeState = ChangeState.Deleted;
-            }
+
+            entityInfo.ChangeState = ChangeState.Deleted;
 
             return DataCommandResult.Success;
         }
