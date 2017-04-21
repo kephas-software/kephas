@@ -65,7 +65,7 @@ namespace Kephas.Data.InMemory.Tests
             dataCommandProvider.CreateCommand(typeof(InMemoryDataContext), typeof(IFindCommand)).Returns(findCommand);
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), dataCommandProvider, Substitute.For<ISerializationService>());
 
-            var actualCommand = dataContext.CreateCommand<IFindCommand>();
+            var actualCommand = dataContext.CreateCommand(typeof(IFindCommand));
             Assert.AreSame(findCommand, actualCommand);
         }
 
