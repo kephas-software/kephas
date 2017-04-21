@@ -81,7 +81,7 @@ namespace Kephas.Data
         /// <value>
         /// The local cache.
         /// </value>
-        protected internal IDataContextCache LocalCache { get; }
+        protected internal virtual IDataContextCache LocalCache { get; }
 
         /// <summary>
         /// Initializes the service asynchronously.

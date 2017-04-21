@@ -58,15 +58,6 @@
     <Compile Include="..\Kephas.Data.MongoDB\Application\MongoFeatureManager.cs">
       <Link>Application\MongoFeatureManager.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.MongoDB\Commands\MongoCreateEntityCommand.cs">
-      <Link>Commands\MongoCreateEntityCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.MongoDB\Commands\MongoDiscardChangesCommand.cs">
-      <Link>Commands\MongoDiscardChangesCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.MongoDB\Commands\MongoFindCommand.cs">
-      <Link>Commands\MongoFindCommand.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.MongoDB\Commands\MongoPersistChangesCommand.cs">
       <Link>Commands\MongoPersistChangesCommand.cs</Link>
     </Compile>

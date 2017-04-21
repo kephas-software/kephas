@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DeleteEntityCommandBase.cs" company="Quartz Software SRL">
+// <copyright file="DeleteEntityCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,7 +17,8 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base implementation of a <see cref="IDeleteEntityCommand"/>.
     /// </summary>
-    public abstract class DeleteEntityCommandBase : SyncDataCommandBase<IDeleteEntityContext, IDataCommandResult>, IDeleteEntityCommand
+    [DataContextType(typeof(DataContextBase))]
+    public class DeleteEntityCommand : SyncDataCommandBase<IDeleteEntityContext, IDataCommandResult>, IDeleteEntityCommand
     {
         /// <summary>
         /// Discards the changes in the data context.

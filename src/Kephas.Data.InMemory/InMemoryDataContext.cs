@@ -70,12 +70,20 @@ namespace Kephas.Data.InMemory
         public ISerializationService SerializationService { get; }
 
         /// <summary>
-        /// Gets the working cache.
+        /// Gets a value indicating whether to use the shared cache or not.
         /// </summary>
         /// <value>
-        /// The working cache.
+        /// True if shared cache is used, false if not.
         /// </value>
-        protected internal IDataContextCache WorkingCache
+        protected bool UseSharedCache { get; private set; }
+
+        /// <summary>
+        /// Gets the local cache where the session entities are stored.
+        /// </summary>
+        /// <value>
+        /// The local cache.
+        /// </value>
+        protected override IDataContextCache LocalCache
         {
             get
             {
@@ -83,14 +91,6 @@ namespace Kephas.Data.InMemory
                 return this.workingCache;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether to use the shared cache or not.
-        /// </summary>
-        /// <value>
-        /// True if shared cache is used, false if not.
-        /// </value>
-        protected bool UseSharedCache { get; private set; }
 
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.
@@ -102,7 +102,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.WorkingCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
+            return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Kephas.Data.InMemory
 
             var entityType = entity.GetType();
             var existingEntry =
-                this.WorkingCache.Values.FirstOrDefault(
+                this.LocalCache.Values.FirstOrDefault(
                     e =>
                         e.Entity == entity
                         || (e.Entity.GetType() == entityType
@@ -191,7 +191,7 @@ namespace Kephas.Data.InMemory
 
             bool.TryParse(connectionStringValues.TryGetValue("UseSharedCache"), out var useSharedCache);
             this.UseSharedCache = useSharedCache;
-            this.workingCache = useSharedCache ? SharedCache : this.LocalCache;
+            this.workingCache = useSharedCache ? SharedCache : base.LocalCache;
 
             var serializedData = connectionStringValues.TryGetValue("InitialData");
             this.InitializeData(serializedData);

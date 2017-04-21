@@ -46,17 +46,8 @@
     <Compile Include="..\Kephas.Data.InMemory\Caching\SharedDataContextCache.cs">
       <Link>Caching\SharedDataContextCache.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.InMemory\Commands\InMemoryCreateEntityCommand.cs">
-      <Link>Commands\InMemoryCreateEntityCommand.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.InMemory\Commands\InMemoryDiscardChangesCommand.cs">
       <Link>Commands\InMemoryDiscardChangesCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.InMemory\Commands\InMemoryFindCommand.cs">
-      <Link>Commands\InMemoryFindCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.InMemory\Commands\InMemoryPersistChangesCommand.cs">
-      <Link>Commands\InMemoryPersistChangesCommand.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.InMemory\ContextExtensions.cs">
       <Link>ContextExtensions.cs</Link>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FindCommandBase.cs" company="Quartz Software SRL">
+// <copyright file="FindCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -24,12 +24,13 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for find commands.
     /// </summary>
-    public abstract class FindCommandBase : DataCommandBase<IFindContext, IFindResult>, IFindCommand
+    [DataContextType(typeof(DataContextBase))]
+    public class FindCommand : DataCommandBase<IFindContext, IFindResult>, IFindCommand
     {
         /// <summary>
         /// The query method.
         /// </summary>
-        private static readonly MethodInfo GetMatchingEntitiesMethod = ReflectionHelper.GetGenericMethodOf(_ => ((FindCommandBase)null).GetMatchingEntities<string>(null, CancellationToken.None));
+        private static readonly MethodInfo GetMatchingEntitiesMethod = ReflectionHelper.GetGenericMethodOf(_ => ((FindCommand)null).GetMatchingEntities<string>(null, CancellationToken.None));
 
         /// <summary>
         /// Executes the data command asynchronously.

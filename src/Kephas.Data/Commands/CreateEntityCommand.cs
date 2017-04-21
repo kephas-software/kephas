@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CreateEntityCommandBase.cs" company="Quartz Software SRL">
+// <copyright file="CreateEntityCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -21,13 +21,14 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for create entity commands.
     /// </summary>
-    public abstract class CreateEntityCommandBase : DataCommandBase<ICreateEntityContext, ICreateEntityResult>, ICreateEntityCommand
+    [DataContextType(typeof(DataContextBase))]
+    public class CreateEntityCommand : DataCommandBase<ICreateEntityContext, ICreateEntityResult>, ICreateEntityCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateEntityCommandBase"/> class.
+        /// Initializes a new instance of the <see cref="CreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        protected CreateEntityCommandBase(IDataBehaviorProvider behaviorProvider)
+        protected CreateEntityCommand(IDataBehaviorProvider behaviorProvider)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 

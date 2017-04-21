@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DiscardChangesCommandBase.cs" company="Quartz Software SRL">
+// <copyright file="DiscardChangesCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -16,7 +16,8 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
     /// </summary>
-    public abstract class DiscardChangesCommandBase : SyncDataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
+    [DataContextType(typeof(DataContextBase))]
+    public class DiscardChangesCommand : SyncDataCommandBase<IDataOperationContext, IDataCommandResult>, IDiscardChangesCommand
     {
         /// <summary>
         /// Executes the data command.

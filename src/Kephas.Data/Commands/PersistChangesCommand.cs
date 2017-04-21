@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PersistChangesCommandBase.cs" company="Quartz Software SRL">
+// <copyright file="PersistChangesCommand.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -29,13 +29,14 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Base class for commands which persist dataContext changes.
     /// </summary>
-    public abstract class PersistChangesCommandBase : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand
+    [DataContextType(typeof(DataContextBase))]
+    public class PersistChangesCommand : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PersistChangesCommandBase"/> class.
+        /// Initializes a new instance of the <see cref="PersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        protected PersistChangesCommandBase(IDataBehaviorProvider behaviorProvider)
+        protected PersistChangesCommand(IDataBehaviorProvider behaviorProvider)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
@@ -56,7 +57,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<PersistChangesCommandBase> Logger { get; set; }
+        public ILogger<PersistChangesCommand> Logger { get; set; }
 
         /// <summary>
         /// Executes the data command asynchronously.
@@ -276,7 +277,7 @@ namespace Kephas.Data.Commands
             }
             catch (TargetInvocationException tie)
             {
-                throw tie.InnerException;
+                throw tie.InnerException ?? tie;
             }
 
             await this.PostProcessModifiedEntriesAsync(modifiedEntries, operationContext, cancellationToken).PreserveThreadContext();
@@ -371,9 +372,12 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected abstract Task PersistModifiedEntriesAsync(
+        protected virtual Task PersistModifiedEntriesAsync(
             IList<IPersistChangesEntry> modifiedEntries,
             IPersistChangesContext operationContext,
-            CancellationToken cancellationToken);
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(0);
+        }
     }
 }

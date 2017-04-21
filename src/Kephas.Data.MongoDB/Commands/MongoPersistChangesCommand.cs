@@ -31,7 +31,7 @@ namespace Kephas.Data.MongoDB.Commands
     /// Command for persisting changes for <see cref="MongoDataContext"/>.
     /// </summary>
     [DataContextType(typeof(MongoDataContext))]
-    public class MongoPersistChangesCommand : PersistChangesCommandBase
+    public class MongoPersistChangesCommand : PersistChangesCommand
     {
         /// <summary>
         /// The bulk write asynchronous method.
