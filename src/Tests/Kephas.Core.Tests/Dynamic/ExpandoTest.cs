@@ -14,7 +14,10 @@ namespace Kephas.Core.Tests.Dynamic
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data;
     using Kephas.Dynamic;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -159,6 +162,59 @@ namespace Kephas.Core.Tests.Dynamic
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        [Test]
+        public void Dynamic_Property_non_existing()
+        {
+            dynamic expando = new Expando();
+            var age = expando.Age;
+            Assert.IsNull(age);
+        }
+
+        [Test]
+        public void Indexer_Property_non_existing()
+        {
+            var expando = new Expando();
+            var age = expando["Age"];
+            Assert.IsNull(age);
+        }
+
+        [Test]
+        public void IsDefined_Property_existing_in_dictionary()
+        {
+            var expando = new Expando();
+            expando["Age"] = 12;
+            Assert.IsTrue(expando.IsDefined("Age"));
+        }
+
+        [Test]
+        public void IsDefined_Property_existing_in_object()
+        {
+            var expando = new Expando(Substitute.For<IIdentifiable>());
+            Assert.IsTrue(expando.IsDefined(nameof(IIdentifiable.Id)));
+        }
+
+        [Test]
+        public void IsDefined_Property_existing_in_dictionary_not_object()
+        {
+            var expando = new Expando(Substitute.For<IIdentifiable>());
+            expando["Age"] = 12;
+            Assert.IsTrue(expando.IsDefined("Age"));
+        }
+
+        [Test]
+        public void IsDefined_Property_non_existing()
+        {
+            var expando = new Expando();
+            Assert.IsFalse(expando.IsDefined("Age"));
+        }
+
+        [Test]
+        public void IsDefined_Property_non_existing_in_object()
+        {
+            var expando = new Expando(Substitute.For<IIdentifiable>());
+            Assert.IsFalse(expando.IsDefined("Age"));
         }
 
         [Test]

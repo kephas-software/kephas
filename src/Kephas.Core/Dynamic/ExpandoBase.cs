@@ -137,6 +137,39 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// </summary>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// True if defined, false if not.
+        /// </returns>
+        public virtual bool IsDefined(string memberName)
+        {
+            // First check for public properties via reflection
+            if (this.innerObject != null)
+            {
+                if (this.GetInnerObjectTypeInfo().Properties.ContainsKey(memberName))
+                {
+                    return true;
+                }
+            }
+
+            // then, check the properties in this object
+            if (this.GetThisTypeInfo().Properties.ContainsKey(memberName))
+            {
+                return true;
+            }
+
+            // last, check the dictionary for member
+            if (this.innerDictionary.ContainsKey(memberName))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Try to retrieve a member by name first from instance properties
         /// followed by the collection entries.
         /// </summary>
@@ -147,7 +180,8 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            return this.TryGetValue(binder.Name, out result);
+            this.TryGetValue(binder.Name, out result);
+            return true;
         }
 
         /// <summary>

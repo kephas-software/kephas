@@ -18,5 +18,13 @@ namespace Kephas.Dynamic
     /// </summary>
     public interface IExpando : IDynamicMetaObjectProvider, IIndexable
     {
+        /// <summary>
+        /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
+        /// </summary>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// True if defined, false if not.
+        /// </returns>
+        bool IsDefined(string memberName);
     }
 }
