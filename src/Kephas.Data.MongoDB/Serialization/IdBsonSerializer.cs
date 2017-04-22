@@ -17,13 +17,18 @@ namespace Kephas.Data.MongoDB.Serialization
     /// </summary>
     public class IdBsonSerializer : IBsonSerializer<Id>
     {
+        /// <summary>
+        /// Gets the type of the value.
+        /// </summary>
+        public Type ValueType => typeof(Id);
+
         /// <summary>Deserializes a value.</summary>
         /// <param name="context">The deserialization context.</param>
         /// <param name="args">The deserialization args.</param>
         /// <returns>A deserialized value.</returns>
         object IBsonSerializer.Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            return Deserialize(context, args);
+            return this.Deserialize(context, args);
         }
 
         /// <summary>Serializes a value.</summary>
@@ -32,6 +37,7 @@ namespace Kephas.Data.MongoDB.Serialization
         /// <param name="value">The value.</param>
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, Id value)
         {
+            // TODO
             throw new NotImplementedException();
         }
 
@@ -41,6 +47,7 @@ namespace Kephas.Data.MongoDB.Serialization
         /// <returns>A deserialized value.</returns>
         public Id Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
+            // TODO
             throw new NotImplementedException();
         }
 
@@ -50,12 +57,7 @@ namespace Kephas.Data.MongoDB.Serialization
         /// <param name="value">The value.</param>
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
         {
-            this.Serialize(context, args, (Id)value);
+            this.Serialize(context, args, value as Id ?? new Id(value));
         }
-
-        /// <summary>
-        /// Gets the type of the value.
-        /// </summary>
-        public Type ValueType => typeof(Id);
     }
 }
