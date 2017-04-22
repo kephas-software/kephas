@@ -16,7 +16,8 @@ namespace Kephas.Data.Behaviors
     /// </summary>
     /// <remarks>
     /// This contract is used only to collect the data behaviors for a certain type.
-    /// The data behavior will then implement the 
+    /// The data behavior will then implement the <see cref="IDataBehavior{TEntity}"/>
+    /// with the specific entity.
     /// </remarks>
     public interface IDataBehavior
     {
