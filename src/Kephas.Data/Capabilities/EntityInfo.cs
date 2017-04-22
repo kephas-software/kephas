@@ -10,6 +10,9 @@
 namespace Kephas.Data.Capabilities
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -20,41 +23,24 @@ namespace Kephas.Data.Capabilities
     public class EntityInfo : Expando, IEntityInfo
     {
         /// <summary>
-        /// The change state tracker.
-        /// </summary>
-        private readonly IChangeStateTrackable changeStateTracker;
-
-        /// <summary>
         /// The change state.
         /// </summary>
         private ChangeState changeState;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityInfo"/> class.
+        /// The dynamic entity.
         /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <param name="changeState">The entity's change state.</param>
-        public EntityInfo(object entity, ChangeState changeState = ChangeState.NotChanged)
-        {
-            Requires.NotNull(entity, nameof(entity));
-
-            this.Entity = entity;
-            this.changeState = changeState;
-            this.Id = new Id(Guid.NewGuid());
-        }
+        private IIndexable dynamicEntity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityInfo"/> class.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <param name="changeStateTracker">The entity's change state tracker.</param>
-        public EntityInfo(object entity, IChangeStateTrackable changeStateTracker)
+        public EntityInfo(object entity)
         {
             Requires.NotNull(entity, nameof(entity));
-            Requires.NotNull(changeStateTracker, nameof(changeStateTracker));
 
             this.Entity = entity;
-            this.changeStateTracker = changeStateTracker;
             this.Id = new Id(Guid.NewGuid());
         }
 
@@ -67,6 +53,14 @@ namespace Kephas.Data.Capabilities
         public object Entity { get; }
 
         /// <summary>
+        /// Gets the identifier of the entity.
+        /// </summary>
+        /// <value>
+        /// The identifier of the entity.
+        /// </value>
+        public Id EntityId => this.TryGetEntityId() ?? this.Id;
+
+        /// <summary>
         /// Gets or sets the change state of the entity.
         /// </summary>
         /// <value>
@@ -74,12 +68,18 @@ namespace Kephas.Data.Capabilities
         /// </value>
         public ChangeState ChangeState
         {
-            get => this.changeStateTracker?.ChangeState ?? this.changeState;
+            get
+            {
+                var tracker = this.TryGetChangeStateTracker();
+                return tracker?.ChangeState ?? this.changeState;
+            }
+
             set
             {
-                if (this.changeStateTracker != null)
+                var tracker = this.TryGetChangeStateTracker();
+                if (tracker != null)
                 {
-                    this.changeStateTracker.ChangeState = value;
+                    tracker.ChangeState = value;
                 }
                 else
                 {
@@ -95,5 +95,90 @@ namespace Kephas.Data.Capabilities
         /// The identifier.
         /// </value>
         public Id Id { get; protected set; }
+
+        /// <summary>
+        /// Gets a wrapper expando object over the entity, to access dynamic values from it.
+        /// </summary>
+        protected IIndexable ExpandoEntity => this.dynamicEntity ?? (this.dynamicEntity = this.Entity as IIndexable ?? new Expando(this.Entity));
+
+        /// <summary>
+        /// Gets the root of the entity graph.
+        /// </summary>
+        /// <returns>
+        /// The graph root.
+        /// </returns>
+        public IAggregatable GetGraphRoot()
+        {
+            var entityGraph = this.TryGetEntityGraph();
+            return entityGraph?.GetGraphRoot();
+        }
+
+        /// <summary>
+        /// Gets the flattened graph asynchronously.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The flattened graph asynchronous.
+        /// </returns>
+        public Task<IEnumerable<object>> GetFlattenedGraphAsync(
+            IGraphOperationContext operationContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var entityGraph = this.TryGetEntityGraph();
+            if (entityGraph == null)
+            {
+                return Task.FromResult<IEnumerable<object>>(new[] { this.Entity });
+            }
+
+            return entityGraph.GetFlattenedGraphAsync(operationContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the entity identifier.
+        /// </summary>
+        /// <returns>
+        /// The entity identifier.
+        /// </returns>
+        protected virtual Id TryGetEntityId()
+        {
+            // first of all get the ID from an Identifiable interface
+            var identifiable = this.Entity as IIdentifiable;
+            if (identifiable != null)
+            {
+                return identifiable.Id;
+            }
+
+            // then try to access the ID dynamically.
+            var id = this.ExpandoEntity[nameof(IIdentifiable.Id)];
+            if (id != null)
+            {
+                return id as Id ?? new Id(id);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the change state tracker.
+        /// </summary>
+        /// <returns>
+        /// The change state tracker.
+        /// </returns>
+        protected virtual IChangeStateTrackable TryGetChangeStateTracker()
+        {
+            return this.Entity as IChangeStateTrackable;
+        }
+
+        /// <summary>
+        /// Gets the entity graph.
+        /// </summary>
+        /// <returns>
+        /// The entity graph.
+        /// </returns>
+        protected virtual IAggregatable TryGetEntityGraph()
+        {
+            return this.Entity as IAggregatable;
+        }
     }
 }

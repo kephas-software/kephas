@@ -14,7 +14,7 @@ namespace Kephas.Data.Capabilities
     /// <summary>
     /// Provides extended entity information like the <see cref="ChangeState"/>.
     /// </summary>
-    public interface IEntityInfo : IExpando, IChangeStateTrackable, IIdentifiable
+    public interface IEntityInfo : IExpando, IChangeStateTrackable, IIdentifiable, IAggregatable
     {
         /// <summary>
         /// Gets the entity.
@@ -23,5 +23,13 @@ namespace Kephas.Data.Capabilities
         /// The entity.
         /// </value>
         object Entity { get; }
+
+        /// <summary>
+        /// Gets the identifier of the entity.
+        /// </summary>
+        /// <value>
+        /// The identifier of the entity.
+        /// </value>
+        Id EntityId { get; }
     }
 }
