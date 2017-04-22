@@ -10,16 +10,12 @@
 namespace Kephas.Model
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
-    using System.Dynamic;
-    using System.Linq.Expressions;
 
     using Kephas.Reflection;
 
     /// <summary>
     /// Contract for named elements.
     /// </summary>
-    [ContractClass(typeof(NamedElementContractClass))]
     public interface INamedElement : IAggregatedElementInfo
     {
         /// <summary>
@@ -87,133 +83,5 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         IModelSpace ModelSpace { get; }
-    }
-
-    /// <summary>
-    /// Contract class for <see cref="INamedElement"/>.
-    /// </summary>
-    [ContractClassFor(typeof(INamedElement))]
-    internal abstract class NamedElementContractClass : INamedElement
-    {
-        /// <summary>
-        /// Gets the name of the element.
-        /// </summary>
-        /// <value>
-        /// The name of the element.
-        /// </value>
-        public abstract string Name { get; }
-
-        /// <summary>
-        /// Gets the annotations of this model element.
-        /// </summary>
-        /// <value>
-        /// The model element annotations.
-        /// </value>
-        public IEnumerable<IAnnotation> Annotations
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IEnumerable<IAnnotation>>() != null);
-                return Contract.Result<IEnumerable<IAnnotation>>();
-            }
-        }
-
-        /// <summary>
-        /// Gets the parent element declaring this element.
-        /// </summary>
-        /// <value>
-        /// The declaring element.
-        /// </value>
-        public IElementInfo DeclaringContainer { get; }
-
-        /// <summary>
-        /// Gets the element annotations.
-        /// </summary>
-        /// <value>
-        /// The element annotations.
-        /// </value>
-        IEnumerable<object> IElementInfo.Annotations { get; }
-
-        /// <summary>
-        /// Gets the parts of an aggregated element.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        public abstract IEnumerable<object> Parts { get; }
-
-        /// <summary>
-        /// Gets the qualified name of the element.
-        /// </summary>
-        /// <value>
-        /// The qualified name of the element.
-        /// </value>
-        /// <remarks>
-        /// The qualified name is unique within the container's members.
-        /// </remarks>
-        public string QualifiedFullName
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<string>() != null);
-                return Contract.Result<string>();
-            }
-        }
-
-        /// <summary>
-        /// Gets the fully qualified name, starting from the root model space.
-        /// </summary>
-        /// <value>
-        /// The fully qualified name.
-        /// </value>
-        public abstract string FullName { get; }
-
-        /// <summary>
-        /// Gets the container element.
-        /// </summary>
-        /// <value>
-        /// The container element.
-        /// </value>
-        public IModelElement Container => Contract.Result<IModelElement>();
-
-        /// <summary>
-        /// Gets the model space.
-        /// </summary>
-        /// <value>
-        /// The model space.
-        /// </value>
-        public IModelSpace ModelSpace
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<IModelSpace>() != null);
-                return Contract.Result<IModelSpace>();
-            }
-        }
-
-        /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
-        /// </summary>
-        /// <value>
-        /// The <see cref="object" />.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        public abstract object this[string key] { get; set; }
-
-        /// <summary>
-        /// Returns the <see cref="T:System.Dynamic.DynamicMetaObject" /> responsible for binding operations performed on this object.
-        /// </summary>
-        /// <param name="parameter">The expression tree representation of the runtime value.</param>
-        /// <returns>
-        /// The <see cref="T:System.Dynamic.DynamicMetaObject" /> to bind this object.
-        /// </returns>
-        public abstract DynamicMetaObject GetMetaObject(Expression parameter);
     }
 }
