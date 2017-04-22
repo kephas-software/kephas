@@ -79,7 +79,7 @@ namespace Kephas.Model.Runtime.Construction
         public INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
-            Contract.Requires(runtimeElement != null);
+            Requires.NotNull(runtimeElement, nameof(runtimeElement));
 
             return Contract.Result<INamedElement>();
         }
@@ -95,7 +95,7 @@ namespace Kephas.Model.Runtime.Construction
         public string TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
-            Contract.Requires(runtimeElement != null);
+            Requires.NotNull(runtimeElement, nameof(runtimeElement));
 
             return Contract.Result<string>();
         }

@@ -12,7 +12,6 @@ namespace Kephas.Composition
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Composition.ExportFactoryImporters;
@@ -142,7 +141,7 @@ namespace Kephas.Composition
         /// </summary>
         /// <param name="compositionContext">The compositionContext to act on.</param>
         /// <returns>
-        /// compositionContext as an IServiceProvider.
+        /// The composition context as an IServiceProvider.
         /// </returns>
         public static IServiceProvider ToServiceProvider(this ICompositionContext compositionContext)
         {
@@ -286,7 +285,7 @@ namespace Kephas.Composition
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(contractType, nameof(contractType));
-            Contract.Requires(metadataType != null);
+            Requires.NotNull(metadataType, nameof(metadataType));
 
             var getExport = GetExportFactory2Method.MakeGenericMethod(contractType, metadataType);
             return getExport.Call(null, compositionContext);
@@ -322,7 +321,7 @@ namespace Kephas.Composition
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(contractType, nameof(contractType));
-            Contract.Requires(metadataType != null);
+            Requires.NotNull(metadataType, nameof(metadataType));
 
             var getExport = GetExportFactories2Method.MakeGenericMethod(contractType, metadataType);
             return (IEnumerable)getExport.Call(null, compositionContext);

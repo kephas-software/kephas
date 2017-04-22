@@ -9,8 +9,6 @@
 
 namespace Kephas.Model.Runtime.Construction.Builders
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -38,8 +36,8 @@ namespace Kephas.Model.Runtime.Construction.Builders
         protected NamedElementBuilderBase(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
-            Contract.Requires(constructionContext.ModelSpace != null);
-            Contract.Requires(runtimeElement != null);
+            Requires.NotNull(constructionContext.ModelSpace, nameof(constructionContext.ModelSpace));
+            Requires.NotNull(runtimeElement, nameof(runtimeElement));
 
             this.ConstructionContext = constructionContext;
 
