@@ -58,6 +58,9 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Capabilities\EntityInfoTest.cs">
+      <Link>Capabilities\EntityInfoTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Commands\CreateEntityCommandTest.cs">
       <Link>Commands\CreateEntityCommandTest.cs</Link>
     </Compile>
@@ -72,6 +75,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Commands\FindCommandTest.cs">
       <Link>Commands\FindCommandTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\PersistChangesCommandTest.cs">
+      <Link>Commands\PersistChangesCommandTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Conversion\DefaultDataConversionServiceTest.cs">
       <Link>Conversion\DefaultDataConversionServiceTest.cs</Link>

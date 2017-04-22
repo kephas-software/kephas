@@ -45,18 +45,6 @@ namespace Kephas.Data
         IDataCommand CreateCommand(Type commandType);
 
         /// <summary>
-        /// Tries to get a capability of the provided entity.
-        /// </summary>
-        /// <typeparam name="TCapability">Type of the capability.</typeparam>
-        /// <param name="entity">The entity.</param>
-        /// <param name="operationContext">Context for the operation (optional).</param>
-        /// <returns>
-        /// The capability.
-        /// </returns>
-        TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext = null)
-            where TCapability : class;
-
-        /// <summary>
         /// Gets the entity extended information.
         /// </summary>
         /// <param name="entity">The entity.</param>

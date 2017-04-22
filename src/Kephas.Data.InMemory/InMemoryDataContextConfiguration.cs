@@ -34,5 +34,13 @@ namespace Kephas.Data.InMemory
         /// The initial data.
         /// </value>
         public IEnumerable<IEntityInfo> InitialData { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the shared cache or not.
+        /// </summary>
+        /// <value>
+        /// True if shared cache is used, false if not.
+        /// </value>
+        public bool? UseSharedCache { get; set; }
     }
 }

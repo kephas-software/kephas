@@ -14,8 +14,6 @@ namespace Kephas.Data.MongoDB
     using System.Diagnostics.Contracts;
     using System.Linq;
 
-    using global::MongoDB.Driver;
-
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Linq;
@@ -23,7 +21,8 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Services;
+
+    using global::MongoDB.Driver;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -99,18 +98,6 @@ namespace Kephas.Data.MongoDB
         protected internal virtual string GetCollectionName(Type entityType)
         {
             return entityType.Name;
-        }
-
-        /// <summary>
-        /// Gets the graph root for the provided entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns>
-        /// The graph root.
-        /// </returns>
-        protected internal virtual object GetGraphRoot(object entity)
-        {
-            return entity;
         }
 
         /// <summary>

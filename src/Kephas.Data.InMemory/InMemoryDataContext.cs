@@ -121,51 +121,6 @@ namespace Kephas.Data.InMemory
         }
 
         /// <summary>
-        /// Gets or add a cacheable item.
-        /// </summary>
-        /// <param name="operationContext">Context for the operation.</param>
-        /// <param name="entityInfo">The entity information.</param>
-        /// <returns>
-        /// The or add cached item.
-        /// </returns>
-        internal IEntityInfo GetOrAddCacheableItem(IDataOperationContext operationContext, IEntityInfo entityInfo)
-        {
-            Requires.NotNull(entityInfo, nameof(entityInfo));
-
-            var entity = entityInfo.Entity;
-            var changeState = entityInfo.ChangeState;
-
-            if (changeState == ChangeState.Added || changeState == ChangeState.AddedOrChanged)
-            {
-                this.Add(entityInfo);
-                return entityInfo;
-            }
-
-            var identifiable = this.TryGetCapability<IIdentifiable>(entity, operationContext);
-            var entityId = identifiable?.Id;
-            if (identifiable == null || Id.IsUnsetValue(entityId))
-            {
-                this.Add(entityInfo);
-                return entityInfo;
-            }
-
-            var entityType = entity.GetType();
-            var existingEntry =
-                this.LocalCache.Values.FirstOrDefault(
-                    e =>
-                        e.Entity == entity
-                        || (e.Entity.GetType() == entityType
-                            && entityId.Equals(this.TryGetCapability<IIdentifiable>(e.Entity, operationContext)?.Id)));
-            if (existingEntry != null)
-            {
-                return existingEntry;
-            }
-
-            this.Add(entityInfo);
-            return entityInfo;
-        }
-
-        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
@@ -189,31 +144,49 @@ namespace Kephas.Data.InMemory
                                              ? new Dictionary<string, string>()
                                              : ConnectionStringParser.Parse(config.ConnectionString);
 
-            bool.TryParse(connectionStringValues.TryGetValue("UseSharedCache"), out var useSharedCache);
-            this.UseSharedCache = useSharedCache;
-            this.workingCache = useSharedCache ? SharedCache : base.LocalCache;
+            this.InitializeLocalCache(config as InMemoryDataContextConfiguration, connectionStringValues);
 
-            var serializedData = connectionStringValues.TryGetValue("InitialData");
+            this.InitializeData(config as InMemoryDataContextConfiguration, connectionStringValues, dataInitializationContext);
+        }
+
+        /// <summary>
+        /// Initializes the data.
+        /// </summary>
+        /// <param name="config">The configuration.</param>
+        /// <param name="connectionStringValues">The connection string values.</param>
+        /// <param name="dataInitializationContext">The data initialization context.</param>
+        private void InitializeData(InMemoryDataContextConfiguration config, IDictionary<string, string> connectionStringValues, IDataInitializationContext dataInitializationContext)
+        {
+            var serializedData = connectionStringValues.TryGetValue(nameof(InMemoryDataContextConfiguration.InitialData));
             this.InitializeData(serializedData);
 
-            this.InitializeData(config.GetInitialData());
+            this.InitializeData(config?.InitialData);
             this.InitializeData(dataInitializationContext?.InitializationContext?.GetInitialData());
         }
 
         /// <summary>
-        /// Adds an item to the internal cache.
+        /// Initializes the local cache possibly using the shared cache if so configured.
         /// </summary>
-        /// <param name="item">The item to add.</param>
-        private void Add(IEntityInfo item)
+        /// <param name="config">The configuration.</param>
+        /// <param name="connectionStringValues">The connection string values.</param>
+        private void InitializeLocalCache(
+            InMemoryDataContextConfiguration config,
+            IDictionary<string, string> connectionStringValues)
         {
-            if (this.UseSharedCache)
+            bool useSharedCache;
+            if (config?.UseSharedCache.HasValue ?? false)
             {
-                SharedCache.TryAdd(item.Id, item);
+                useSharedCache = config.UseSharedCache.Value;
             }
             else
             {
-                this.LocalCache.Add(item.Id, item);
+                bool.TryParse(
+                    connectionStringValues.TryGetValue(nameof(InMemoryDataContextConfiguration.UseSharedCache)),
+                    out useSharedCache);
             }
+
+            this.UseSharedCache = useSharedCache;
+            this.workingCache = useSharedCache ? SharedCache : base.LocalCache;
         }
 
         /// <summary>
@@ -227,37 +200,38 @@ namespace Kephas.Data.InMemory
                 return;
             }
 
-            var operationContext = new DataOperationContext(this);
             foreach (var entityInfo in initialData)
             {
-                this.GetOrAddCacheableItem(operationContext, entityInfo);
+                var ownEntityInfo = this.CreateEntityInfo(entityInfo.Entity, entityInfo.ChangeState);
+                this.workingCache[ownEntityInfo.Id] = ownEntityInfo;
             }
         }
 
         /// <summary>
         /// Initializes the data from the provided connection string.
         /// </summary>
-        /// <param name="serializedData">The serialized data.</param>
-        private void InitializeData(string serializedData)
+        /// <param name="serializedInitialData">The serialized initial data.</param>
+        private void InitializeData(string serializedInitialData)
         {
-            if (string.IsNullOrWhiteSpace(serializedData))
+            if (string.IsNullOrWhiteSpace(serializedInitialData))
             {
                 return;
             }
 
-            var data = this.SerializationService.JsonDeserializeAsync(serializedData).GetResultNonLocking(TimeSpan.FromMinutes(1));
+            var data = this.SerializationService.JsonDeserializeAsync(serializedInitialData).GetResultNonLocking(TimeSpan.FromMinutes(1));
 
-            var operationContext = new DataOperationContext(this);
             if (data.GetType().IsCollection())
             {
                 foreach (var entity in (IEnumerable)data)
                 {
-                    this.GetOrAddCacheableItem(operationContext, this.CreateEntityInfo(entity));
+                    var entityInfo = this.CreateEntityInfo(entity);
+                    this.workingCache.Add(entityInfo.Id, entityInfo);
                 }
             }
             else
             {
-                this.GetOrAddCacheableItem(operationContext, this.CreateEntityInfo(data));
+                var entityInfo = this.CreateEntityInfo(data);
+                this.workingCache.Add(entityInfo.Id, entityInfo);
             }
         }
     }

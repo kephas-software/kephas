@@ -59,7 +59,7 @@ namespace Kephas.Data.Tests.Commands
             var initCalls = 0;
             var onInitBehavior = Substitute.For<IOnInitializeBehavior>();
             onInitBehavior
-                .InitializeAsync(Arg.Any<object>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
+                .InitializeAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
                 .Returns((Task)Task.FromResult(0))
                 .AndDoes(
                     ci =>

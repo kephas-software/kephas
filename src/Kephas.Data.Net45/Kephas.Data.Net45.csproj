@@ -85,6 +85,9 @@
     <Compile Include="..\Kephas.Data\Capabilities\EntityInfo.cs">
       <Link>Capabilities\EntityInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\GraphOperationContext.cs">
+      <Link>Capabilities\GraphOperationContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Capabilities\IAggregatable.cs">
       <Link>Capabilities\IAggregatable.cs</Link>
     </Compile>
@@ -190,9 +193,6 @@
     <Compile Include="..\Kephas.Data\Commands\IPersistChangesContext.cs">
       <Link>Commands\IPersistChangesContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\Commands\IPersistChangesEntry.cs">
-      <Link>Commands\IPersistChangesEntry.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data\Commands\ISyncDataCommand.cs">
       <Link>ISyncDataCommand.cs</Link>
     </Compile>
@@ -201,9 +201,6 @@
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\PersistChangesContext.cs">
       <Link>Commands\PersistChangesContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Commands\PersistChangesEntry.cs">
-      <Link>Commands\PersistChangesEntry.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\SyncDataCommandBase.cs">
       <Link>Commands\SyncDataCommandBase.cs</Link>

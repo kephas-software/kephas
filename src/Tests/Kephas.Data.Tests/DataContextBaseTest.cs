@@ -12,8 +12,7 @@ namespace Kephas.Data.Tests
     using System;
     using System.Linq;
 
-    using Kephas.Composition;
-    using Kephas.Data.Capabilities;
+    using Kephas.Data.Caching;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
 
@@ -27,37 +26,40 @@ namespace Kephas.Data.Tests
         [Test]
         public void CreateCommand()
         {
-            var container = Substitute.For<IDataCommandProvider>();
+            var dataCommandProvider = Substitute.For<IDataCommandProvider>();
             var findCmd = Substitute.For<IFindCommand>();
-            container.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand)).Returns(findCmd);
+            dataCommandProvider.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand)).Returns(findCmd);
 
-            var dataContext = new TestDataContext(dataCommandProvider: container);
+            var dataContext = new TestDataContext(dataCommandProvider: dataCommandProvider);
             var cmd = dataContext.CreateCommand<IFindCommand>();
             Assert.AreSame(findCmd, cmd);
         }
 
-        public class TestDataContext : DataContextBase
+        [Test]
+        public void AttachEntity_object()
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DataContextBase"/> class.
-            /// </summary>
-            public TestDataContext(IAmbientServices ambientServices = null, IDataCommandProvider dataCommandProvider = null) 
-                : base(ambientServices ?? Substitute.For<IAmbientServices>(), dataCommandProvider ?? Substitute.For<IDataCommandProvider>())
-            {
-            }
+            var localCache = new DataContextCache();
+            var dataContext = new TestDataContext(localCache: localCache);
 
-            /// <summary>
-            /// Gets a query over the entity type for the given query operationContext, if any is provided.
-            /// </summary>
-            /// <typeparam name="T">The entity type.</typeparam>
-            /// <param name="queryOperationContext">Context for the query.</param>
-            /// <returns>
-            /// A query over the entity type.
-            /// </returns>
-            public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
-            {
-                throw new System.NotImplementedException();
-            }
+            var entity = "hello";
+            var entityInfo = dataContext.AttachEntity(entity);
+            Assert.AreEqual(1, localCache.Count);
+            Assert.AreSame(entityInfo, localCache.First().Value);
+            Assert.AreSame(entity, entityInfo.Entity);
+        }
+
+        [Test]
+        public void DetachEntity_object()
+        {
+            var localCache = new DataContextCache();
+            var dataContext = new TestDataContext(localCache: localCache);
+
+            var entity = "hello";
+            var entityInfo = dataContext.AttachEntity(entity);
+
+            var detachedEntityInfo = dataContext.DetachEntity(entity);
+            Assert.AreSame(entityInfo, detachedEntityInfo);
+            Assert.AreEqual(0, localCache.Count);
         }
     }
 }

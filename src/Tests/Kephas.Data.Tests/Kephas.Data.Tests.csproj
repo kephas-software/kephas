@@ -53,11 +53,13 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Capabilities\EntityInfoTest.cs" />
     <Compile Include="Commands\CreateEntityCommandTest.cs" />
     <Compile Include="Commands\DeleteEntityCommandTest.cs" />
     <Compile Include="Commands\DiscardChangesCommandTest.cs" />
     <Compile Include="Commands\Factory\DataCommandFactoryTest.cs" />
     <Compile Include="Commands\FindCommandTest.cs" />
+    <Compile Include="Commands\PersistChangesCommandTest.cs" />
     <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
     <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="DefaultDataContextProviderTest.cs" />

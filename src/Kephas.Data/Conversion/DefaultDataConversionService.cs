@@ -214,16 +214,14 @@ namespace Kephas.Data.Conversion
             }
 
             var targetDataContext = conversionContext.TargetDataContext;
-            var sourceOpContext = new DataOperationContext(conversionContext.SourceDataContext);
-            var identifiableSource = conversionContext.SourceDataContext.TryGetCapability<IIdentifiable>(source, sourceOpContext);
-            var sourceId = identifiableSource?.Id;
-            var changeStateTrackable = conversionContext.SourceDataContext.TryGetCapability<IChangeStateTrackable>(source, sourceOpContext);
+            var sourceEntityInfo = conversionContext.SourceDataContext.GetEntityInfo(source);
+            var sourceId = sourceEntityInfo?.EntityId;
 
-            if (changeStateTrackable.ChangeState == ChangeState.Added)
+            if (sourceEntityInfo?.ChangeState == ChangeState.Added)
             {
                 target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
             }
-            else if (changeStateTrackable.ChangeState == ChangeState.AddedOrChanged)
+            else if (sourceEntityInfo?.ChangeState == ChangeState.AddedOrChanged)
             {
                 target = await this.FindTargetEntityAsync(
                         targetDataContext,

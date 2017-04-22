@@ -58,6 +58,9 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.InMemory.Tests\ContextExtensionsTest.cs">
+      <Link>ContextExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.InMemory.Tests\InMemoryDataContextTest.cs">
       <Link>InMemoryDataContextTest.cs</Link>
     </Compile>

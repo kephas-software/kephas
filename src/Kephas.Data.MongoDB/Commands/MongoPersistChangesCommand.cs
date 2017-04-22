@@ -56,11 +56,11 @@ namespace Kephas.Data.MongoDB.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override async Task PersistModifiedEntriesAsync(IList<IPersistChangesEntry> modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected override async Task PersistModifiedEntriesAsync(IList<IEntityInfo> modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var modifiedMongoDocs =
-              modifiedEntries.Select(e => dataContext.GetGraphRoot(e.Entity))
+              modifiedEntries.Select(e => e.GetGraphRoot() ?? e.Entity)
                 .Distinct()
                 .ToList();
 
@@ -75,7 +75,10 @@ namespace Kephas.Data.MongoDB.Commands
                 var collectionName = dataContext.GetCollectionName(mongoDocType);
                     await((Task)BulkWriteAsyncMethod.Call(
                          this,
-                         new object[] { operationContext, modifiedEntries, collectionName, cancellationToken }))
+                         operationContext,
+                         modifiedEntries,
+                         collectionName,
+                         cancellationToken))
                         .PreserveThreadContext();
             }
         }
@@ -93,7 +96,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// </returns>
         protected virtual async Task BulkWriteAsync<T>(
             IPersistChangesContext operationContext,
-            IList<IPersistChangesEntry> modifiedEntries,
+            IList<IEntityInfo> modifiedEntries,
             string collectionName,
             CancellationToken cancellationToken) where T : IIdentifiable
         {
@@ -101,7 +104,7 @@ namespace Kephas.Data.MongoDB.Commands
             var collection = dataContext.Database.GetCollection<T>(collectionName);
             var eligibleModifiedEntries = modifiedEntries.Where(e => e.Entity is T).ToList();
 
-            var writeRequests = this.GetBulkWriteRequests<T>(eligibleModifiedEntries);
+            var writeRequests = this.GetBulkWriteRequests<T>(operationContext, eligibleModifiedEntries);
 
             await this.NativeBulkWriteAsync(operationContext, collection, writeRequests, cancellationToken).PreserveThreadContext();
         }
@@ -167,30 +170,31 @@ namespace Kephas.Data.MongoDB.Commands
         /// Gets the write requests for the bulk operation.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="eligibleModifiedEntries">The eligible modified entries.</param>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="eligibleEntityInfos">The eligible modified entries.</param>
         /// <returns>
         /// The write requests for the bulk operation.
         /// </returns>
-        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IEnumerable<IPersistChangesEntry> eligibleModifiedEntries) where T : IIdentifiable
+        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityInfo> eligibleEntityInfos)
         {
             var writeModel = new List<WriteModel<T>>();
-            foreach (var tuple in eligibleModifiedEntries)
+            foreach (var entityInfo in eligibleEntityInfos)
             {
-                var changeState = tuple.ChangeState;
-                var entity = (T)tuple.Entity;
+                var changeState = entityInfo.ChangeState;
+                var entity = (T)entityInfo.Entity;
                 switch (changeState)
                 {
                     case ChangeState.Added:
                         writeModel.Add(new InsertOneModel<T>(entity));
                         break;
                     case ChangeState.AddedOrChanged:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(t => t.Id == entity.Id), entity) { IsUpsert = true });
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId)), entity) { IsUpsert = true });
                         break;
                     case ChangeState.Changed:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(t => t.Id == entity.Id), entity));
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId)), entity));
                         break;
                     case ChangeState.Deleted:
-                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(t => t.Id == entity.Id)));
+                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId))));
                         break;
                 }
             }

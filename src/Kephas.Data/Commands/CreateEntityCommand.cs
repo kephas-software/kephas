@@ -68,7 +68,7 @@ namespace Kephas.Data.Commands
                 var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
                 foreach (var initializeBehavior in initializeBehaviors)
                 {
-                    await initializeBehavior.InitializeAsync(entity, operationContext, cancellationToken).PreserveThreadContext();
+                    await initializeBehavior.InitializeAsync(entity, entityInfo, operationContext, cancellationToken).PreserveThreadContext();
                 }
 
                 // prepare the result

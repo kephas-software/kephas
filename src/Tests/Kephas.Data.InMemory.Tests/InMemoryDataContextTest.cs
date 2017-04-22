@@ -46,9 +46,9 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
             dataContext.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration(string.Empty)));
 
-            dataContext.GetOrAddCacheableItem(null, new EntityInfo("mama", ChangeState.Added));
-            dataContext.GetOrAddCacheableItem(null, new EntityInfo("papa", ChangeState.Added));
-            dataContext.GetOrAddCacheableItem(null, new EntityInfo(1, ChangeState.Added));
+            dataContext.AttachEntity("mama").ChangeState = ChangeState.Added;
+            dataContext.AttachEntity("papa").ChangeState = ChangeState.Added;
+            dataContext.AttachEntity(1).ChangeState = ChangeState.Added;
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -67,19 +67,6 @@ namespace Kephas.Data.InMemory.Tests
 
             var actualCommand = dataContext.CreateCommand(typeof(IFindCommand));
             Assert.AreSame(findCommand, actualCommand);
-        }
-
-        [Test]
-        public void TryGetCapability_IIdentifiable()
-        {
-            var dataContext = new InMemoryDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), Substitute.For<ISerializationService>());
-
-            var entity = Substitute.For<IIdentifiable>();
-            var idCapability = dataContext.TryGetCapability<IIdentifiable>(entity, null);
-            Assert.AreSame(idCapability, entity);
-
-            idCapability = dataContext.TryGetCapability<IIdentifiable>("a string", null);
-            Assert.IsNull(idCapability);
         }
 
         [Test]
@@ -137,8 +124,8 @@ namespace Kephas.Data.InMemory.Tests
             var initializationContext = new DataOperationContext(dataContext);
             initializationContext.SetInitialData(new[]
                                                      {
-                                                         new EntityInfo("mama"),
-                                                         new EntityInfo("papa")
+                                                         "mama",
+                                                         "papa"
                                                      });
             dataContext.Initialize(
                 new DataInitializationContext(
@@ -194,7 +181,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=true")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));
+            dataContext.AttachEntity(sharedItem).ChangeState = ChangeState.Added;
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreSame(sharedItem, sharedItemActual);
@@ -210,7 +197,7 @@ namespace Kephas.Data.InMemory.Tests
             dataContext2.Initialize(new DataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=false")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.GetOrAddCacheableItem(new DataOperationContext(dataContext), new EntityInfo(sharedItem, ChangeState.Added));
+            dataContext.AttachEntity(sharedItem).ChangeState = ChangeState.Added;
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreNotSame(sharedItem, sharedItemActual);

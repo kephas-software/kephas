@@ -11,6 +11,7 @@ namespace Kephas.Data
 {
     using System;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
 
     using Kephas.Data.Caching;
@@ -139,27 +140,6 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Tries to get a capability.
-        /// </summary>
-        /// <typeparam name="TCapability">Type of the capability.</typeparam>
-        /// <param name="entity">The entity.</param>
-        /// <param name="operationContext">Context for the operation (optional).</param>
-        /// <returns>
-        /// The capability.
-        /// </returns>
-        public virtual TCapability TryGetCapability<TCapability>(object entity, IDataOperationContext operationContext = null)
-            where TCapability : class
-        {
-            var entityCapability = entity as TCapability;
-            if (entityCapability != null)
-            {
-                return entityCapability;
-            }
-
-            return this.GetEntityInfo(entity) as TCapability;
-        }
-
-        /// <summary>
         /// Gets the entity extended information.
         /// </summary>
         /// <remarks>
@@ -229,6 +209,19 @@ namespace Kephas.Data
         }
 
         /// <summary>
+        /// Gets the equality expression for of: t =&gt; t.Id == entityInfo.Id.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="entityId">The entity ID.</param>
+        /// <returns>
+        /// The equality expression.
+        /// </returns>
+        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(Id entityId)
+        {
+            return t => ((IIdentifiable)t).Id == entityId;
+        }
+
+        /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="dataInitializationContext">The data initialization context.</param>
@@ -246,18 +239,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = null)
         {
-            var changeStateTracker = entity as IChangeStateTrackable;
-            if (changeStateTracker != null)
-            {
-                if (changeState.HasValue)
-                {
-                    changeStateTracker.ChangeState = changeState.Value;
-                }
-
-                return new EntityInfo(entity, changeStateTracker);
-            }
-
-            return new EntityInfo(entity, changeState ?? ChangeState.NotChanged);
+            return new EntityInfo(entity);
         }
 
         /// <summary>

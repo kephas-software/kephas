@@ -14,16 +14,27 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Caching;
     using Kephas.Data.Commands.Factory;
 
+    using NSubstitute;
+
     public class TestDataContext : DataContextBase
     {
-        public TestDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IDataContextCache localCache = null)
-            : base(ambientServices, dataCommandProvider, localCache)
+        public TestDataContext(
+            IAmbientServices ambientServices = null,
+            IDataCommandProvider dataCommandProvider = null,
+            IDataContextCache localCache = null)
+            : base(GetTestAmbientServices(ambientServices), GetTestDataCommandProvider(dataCommandProvider), localCache)
         {
         }
 
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
-            return this.LocalCache.Values.OfType<T>().AsQueryable();
+            return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
+
+        private static IAmbientServices GetTestAmbientServices(IAmbientServices ambientServices)
+            => ambientServices ?? Substitute.For<IAmbientServices>();
+
+        private static IDataCommandProvider GetTestDataCommandProvider(IDataCommandProvider dataCommandProvider)
+            => dataCommandProvider ?? Substitute.For<IDataCommandProvider>();
     }
 }

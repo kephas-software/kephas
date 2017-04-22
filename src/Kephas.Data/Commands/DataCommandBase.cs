@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.Commands
 {
+    using System;
+    using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -46,6 +48,21 @@ namespace Kephas.Data.Commands
         {
             var result = await this.ExecuteAsync((TOperationContext)operationContext, cancellationToken).PreserveThreadContext();
             return result;
+        }
+
+        /// <summary>
+        /// Gets the equality expression for of: t =&gt; t.Id == entityInfo.Id.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="entityId">The entity ID.</param>
+        /// <returns>
+        /// The equality expression.
+        /// </returns>
+        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(IDataContext dataContext, Id entityId)
+        {
+            return (dataContext as DataContextBase)?.GetIdEqualityExpression<T>(entityId) 
+                ?? (t => ((IIdentifiable)t).Id == entityId);
         }
 
         /// <summary>

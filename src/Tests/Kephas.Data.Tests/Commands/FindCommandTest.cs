@@ -42,7 +42,7 @@ namespace Kephas.Data.Tests.Commands
             var result = await cmd.ExecuteAsync(findContext);
             var foundEntity = result.Entity;
 
-            Assert.AreSame(localCache.Values.First(e => new Id(2) == e.Entity.GetPropertyValue("Id")).Entity, foundEntity);
+            Assert.AreSame(localCache.Values.First(e => new Id(2) == e.EntityId).Entity, foundEntity);
         }
 
         public class TestEntity : IIdentifiable
