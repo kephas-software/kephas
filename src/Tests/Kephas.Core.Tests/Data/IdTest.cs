@@ -95,6 +95,26 @@ namespace Kephas.Core.Tests.Data
         }
 
         [Test]
+        public void Op_Equals()
+        {
+            var id1 = new Id(1);
+            Assert.IsTrue(id1 == 1);
+            Assert.IsFalse(id1 == 2);
+            Assert.IsFalse(id1 == "abc");
+            Assert.IsFalse(id1 == null);
+        }
+
+        [Test]
+        public void Op_NotEquals()
+        {
+            var id1 = new Id(1);
+            Assert.IsFalse(id1 != 1);
+            Assert.IsTrue(id1 != 2);
+            Assert.IsTrue(id1 != "abc");
+            Assert.IsTrue(id1 != null);
+        }
+
+        [Test]
         public void IsUnset_default()
         {
             lock (SyncObject)

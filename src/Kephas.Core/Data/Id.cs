@@ -44,12 +44,12 @@ namespace Kephas.Data
             isUnsetValueTester = value =>
             {
                 var idValue = value as Id;
-                if (idValue != null)
+                if (!ReferenceEquals(idValue, null))
                 {
                     value = idValue.value;
                 }
 
-                if (value == null)
+                if (ReferenceEquals(value, null))
                 {
                     return true;
                 }
@@ -88,10 +88,7 @@ namespace Kephas.Data
         /// </summary>
         public static Func<object, bool> IsUnsetValue
         {
-            get
-            {
-                return isUnsetValueTester;
-            }
+            get => isUnsetValueTester;
 
             set
             {
@@ -105,7 +102,7 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets the IDs underlzing value.
+        /// Gets the IDs underlying value.
         /// </summary>
         public object Value => this.value;
 
@@ -115,7 +112,7 @@ namespace Kephas.Data
         /// <value>
         ///   <c>true</c> if this instance is considered unset; otherwise, <c>false</c>.
         /// </value>
-        public bool IsUnset => Id.IsUnsetValue(this.value);
+        public bool IsUnset => IsUnsetValue(this.value);
 
         /// <summary>
         /// Implicit cast that converts the given int to an ID.
@@ -202,33 +199,69 @@ namespace Kephas.Data
         }
 
         /// <summary>
+        /// Implicit cast that converts the given string to an ID.
+        /// </summary>
+        /// <param name="value1">The first value to compare.</param>
+        /// <param name="value2">The second value to compare.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static bool operator ==(Id value1, Id value2)
+        {
+            if (ReferenceEquals(value1, null))
+            {
+                return ReferenceEquals(value2, null) || IsUnsetValue(value2);
+            }
+
+            return value1.Equals(value2);
+        }
+
+        /// <summary>
+        /// Implicit cast that converts the given string to an ID.
+        /// </summary>
+        /// <param name="value1">The first value to compare.</param>
+        /// <param name="value2">The second value to compare.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static bool operator !=(Id value1, Id value2)
+        {
+            if (ReferenceEquals(value1, null))
+            {
+                return !ReferenceEquals(value2, null) && !IsUnsetValue(value2);
+            }
+
+            return !value1.Equals(value2);
+        }
+
+        /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
         /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// True if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(Id other)
         {
             if (this.IsUnset)
             {
-                return other.IsUnset;
+                return other?.IsUnset ?? true;
             }
 
-            return this.value.Equals(other.value);
+            return this.value.Equals(other?.value);
         }
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>
         /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
+        /// True if the specified object  is equal to the current object; otherwise, false.
         /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
+        /// <param name="obj">The object to compare with the current object.</param>
         public override bool Equals(object obj)
         {
             var idObj = obj as Id;
-            if (idObj != null)
+            if (!ReferenceEquals(idObj, null))
             {
                 return this.Equals(idObj);
             }
@@ -238,12 +271,7 @@ namespace Kephas.Data
                 return this.IsUnset;
             }
 
-            if (this.IsUnset)
-            {
-                return false;
-            }
-
-            return this.value.Equals(obj);
+            return !this.IsUnset && this.value.Equals(obj);
         }
 
         /// <summary>
