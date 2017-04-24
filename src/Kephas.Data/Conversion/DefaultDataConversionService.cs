@@ -217,18 +217,23 @@ namespace Kephas.Data.Conversion
             var sourceEntityInfo = conversionContext.SourceDataContext.GetEntityInfo(source);
             var sourceId = sourceEntityInfo?.EntityId;
 
-            if (sourceEntityInfo?.ChangeState == ChangeState.Added)
+            var sourceChangeState = sourceEntityInfo?.ChangeState;
+            if (sourceChangeState == ChangeState.Added)
             {
                 target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
             }
-            else if (sourceEntityInfo?.ChangeState == ChangeState.AddedOrChanged)
+            else if (sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
-                target = await this.FindTargetEntityAsync(
-                        targetDataContext,
-                        targetType,
-                        sourceId,
-                        throwIfNotFound: false,
-                        cancellationToken: cancellationToken).PreserveThreadContext();
+                if (!(sourceId?.IsUnset ?? true))
+                {
+                    target = await this.FindTargetEntityAsync(
+                                 targetDataContext,
+                                 targetType,
+                                 sourceId,
+                                 throwIfNotFound: false,
+                                 cancellationToken: cancellationToken).PreserveThreadContext();
+                }
+
                 if (target == null)
                 {
                     target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
