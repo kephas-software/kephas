@@ -27,14 +27,24 @@ namespace Kephas.Data.Capabilities
         IAggregatable GetGraphRoot();
 
         /// <summary>
-        /// Gets the flattened graph asynchronously.
+        /// Gets the flattened structural entity graph excluding the loose parts (only the internal structure).
+        /// </summary>
+        /// <returns>
+        /// The flattened structural entity graph.
+        /// </returns>
+        IEnumerable<object> GetStructuralEntityGraph();
+
+        /// <summary>
+        /// Gets the flattened entity graph asynchronously.
+        /// This may include also loose parts which are asynchronously loaded.
+        /// If no loose parts must be loaded, then the result is the same with <see cref="GetStructuralEntityGraph"/>.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// The flattened graph asynchronous.
+        /// A promise of the flattened entity graph.
         /// </returns>
-        Task<IEnumerable<object>> GetFlattenedGraphAsync(
+        Task<IEnumerable<object>> GetFlattenedEntityGraphAsync(
           IGraphOperationContext operationContext,
           CancellationToken cancellationToken = default(CancellationToken));
     }
