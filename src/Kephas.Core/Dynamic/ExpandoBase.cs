@@ -244,7 +244,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public Dictionary<string, object> ToDictionary()
+        public IDictionary<string, object> ToDictionary()
         {
             // add the properties in their overwrite order:
             // first, the values in the dictionary

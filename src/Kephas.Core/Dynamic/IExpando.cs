@@ -10,6 +10,7 @@
 
 namespace Kephas.Dynamic
 {
+    using System.Collections.Generic;
     using System.Dynamic;
 
     /// <summary>
@@ -26,5 +27,13 @@ namespace Kephas.Dynamic
         /// True if defined, false if not.
         /// </returns>
         bool IsDefined(string memberName);
+
+        /// <summary>
+        /// Converts the expando to a dictionary having as keys the property names and as values the respective properties' values.
+        /// </summary>
+        /// <returns>
+        /// A dictionary of property values with their associated names.
+        /// </returns>
+        IDictionary<string, object> ToDictionary();
     }
 }
