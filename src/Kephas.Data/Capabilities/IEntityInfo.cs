@@ -9,12 +9,14 @@
 
 namespace Kephas.Data.Capabilities
 {
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
     /// Provides extended entity information like the <see cref="ChangeState"/>.
     /// </summary>
-    public interface IEntityInfo : IExpando, IChangeStateTrackable, IIdentifiable, IAggregatable
+    public interface IEntityInfo : IExpando, IChangeStateTrackable, IIdentifiable, IAggregatable, IDisposable
     {
         /// <summary>
         /// Gets the entity.
@@ -25,11 +27,29 @@ namespace Kephas.Data.Capabilities
         object Entity { get; }
 
         /// <summary>
+        /// Gets a copy of the original entity, before any changes occured.
+        /// </summary>
+        /// <value>
+        /// The original entity.
+        /// </value>
+        IExpando OriginalEntity { get; }
+
+        /// <summary>
         /// Gets the identifier of the entity.
         /// </summary>
         /// <value>
         /// The identifier of the entity.
         /// </value>
         Id EntityId { get; }
+
+        /// <summary>
+        /// Accepts the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.
+        /// </summary>
+        void AcceptChanges();
+
+        /// <summary>
+        /// Undoes the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.
+        /// </summary>
+        void UndoChanges();
     }
 }

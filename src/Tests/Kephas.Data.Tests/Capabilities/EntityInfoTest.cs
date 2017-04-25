@@ -11,6 +11,7 @@ namespace Kephas.Data.Tests.Capabilities
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -102,10 +103,20 @@ namespace Kephas.Data.Tests.Capabilities
         }
 
         [Test]
-        public async Task GetFlattenedGraphAsync_non_aggregatable()
+        public async Task GetFlattenedEntityGraphAsync_non_aggregatable()
         {
             var entityInfo = new EntityInfo("123");
-            var graph = await entityInfo.GetFlattenedGraphAsync(new GraphOperationContext(Substitute.For<IDataContext>()));
+            var graph = await entityInfo.GetFlattenedEntityGraphAsync(new GraphOperationContext(Substitute.For<IDataContext>()));
+
+            Assert.AreEqual(1, graph.Count());
+            Assert.AreEqual("123", graph.First());
+        }
+
+        [Test]
+        public void GetStructuralEntityGraph_non_aggregatable()
+        {
+            var entityInfo = new EntityInfo("123");
+            var graph = entityInfo.GetStructuralEntityGraph();
 
             Assert.AreEqual(1, graph.Count());
             Assert.AreEqual("123", graph.First());
@@ -123,23 +134,98 @@ namespace Kephas.Data.Tests.Capabilities
         }
 
         [Test]
-        public async Task GetFlattenedGraphAsync_aggregatable()
+        public async Task GetFlattenedEntityGraphAsync_aggregatable()
         {
             var entity = Substitute.For<IAggregatable>();
             var rootEntity = Substitute.For<IAggregatable>();
-            entity.GetFlattenedGraphAsync(Arg.Any<IGraphOperationContext>(), Arg.Any<CancellationToken>())
+            entity.GetFlattenedEntityGraphAsync(Arg.Any<IGraphOperationContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IEnumerable<object>>(new[] { rootEntity, entity }));
             var entityInfo = new EntityInfo(entity);
 
-            var graph = (await entityInfo.GetFlattenedGraphAsync(null, CancellationToken.None)).ToList();
+            var graph = (await entityInfo.GetFlattenedEntityGraphAsync(null, CancellationToken.None)).ToList();
             Assert.AreEqual(2, graph.Count);
             Assert.AreSame(rootEntity, graph[0]);
             Assert.AreSame(entity, graph[1]);
         }
 
-        public class TestEntity
+        [Test]
+        public void GetStructuralEntityGraph_aggregatable()
         {
-            public Guid Id { get; set; }
+            var entity = Substitute.For<IAggregatable>();
+            var rootEntity = Substitute.For<IAggregatable>();
+            entity.GetStructuralEntityGraph()
+                .Returns(new[] { rootEntity, entity });
+            var entityInfo = new EntityInfo(entity);
+
+            var graph = entityInfo.GetStructuralEntityGraph().ToList();
+            Assert.AreEqual(2, graph.Count);
+            Assert.AreSame(rootEntity, graph[0]);
+            Assert.AreSame(entity, graph[1]);
+        }
+
+        [Test]
+        public void IsNotifyPropertyChangedSensitive()
+        {
+            var entity = new TestEntity();
+            var entityInfo = new EntityInfo(entity);
+            entity.Id = Guid.NewGuid();
+
+            Assert.AreEqual(ChangeState.Changed, entityInfo.ChangeState);
+        }
+
+        [Test]
+        public void AcceptChanges()
+        {
+            var originalGuid = Guid.NewGuid();
+            var entity = new TestEntity { Id = originalGuid };
+            var entityInfo = new EntityInfo(entity);
+            var newGuid = Guid.NewGuid();
+            entity.Id = newGuid;
+
+            entityInfo.AcceptChanges();
+
+            Assert.AreEqual(newGuid, entity.Id);
+            Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
+            Assert.AreEqual(newGuid, entityInfo.OriginalEntity["Id"]);
+        }
+
+        [Test]
+        public void UndoChanges()
+        {
+            var originalGuid = Guid.NewGuid();
+            var entity = new TestEntity { Id = originalGuid };
+            var entityInfo = new EntityInfo(entity);
+            var newGuid = Guid.NewGuid();
+            entity.Id = newGuid;
+
+            entityInfo.UndoChanges();
+
+            Assert.AreEqual(originalGuid, entity.Id);
+            Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
+            Assert.AreEqual(originalGuid, entityInfo.OriginalEntity["Id"]);
+        }
+
+        public class TestEntity : INotifyPropertyChanging, INotifyPropertyChanged
+        {
+            private Guid id;
+
+            public Guid Id
+            {
+                get
+                {
+                    return this.id;
+                }
+                set
+                {
+                    this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs("Id"));
+                    this.id = value;
+                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Id"));
+                }
+            }
+
+            public event PropertyChangingEventHandler PropertyChanging;
+
+            public event PropertyChangedEventHandler PropertyChanged;
         }
     }
 }
