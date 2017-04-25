@@ -34,10 +34,20 @@ namespace Kephas.Data.Commands
                 return DataCommandResult.Success;
             }
 
-            var changes = localCache.Values.Where(e => e.ChangeState != ChangeState.NotChanged).ToList();
+            var dataContext = operationContext.DataContext;
+
+            // remove added entities
+            var additions = localCache.Values.Where(e => e.ChangeState == ChangeState.Added || e.ChangeState == ChangeState.AddedOrChanged).ToList();
+            foreach (var addition in additions)
+            {
+                dataContext.DetachEntity(addition);
+            }
+
+            // undo the changes for changed entitites
+            var changes = localCache.Values.Where(e => e.ChangeState == ChangeState.Changed || e.ChangeState == ChangeState.Deleted).ToList();
             foreach (var change in changes)
             {
-                localCache.Remove(change.Id);
+                change.UndoChanges();
             }
 
             return DataCommandResult.Success;
