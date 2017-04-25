@@ -41,12 +41,7 @@ namespace Kephas.Data
             Requires.NotNull(entity, nameof(entity));
 
             var entityInfo = dataContext.GetEntityInfo(entity);
-            if (entityInfo == null)
-            {
-                throw new InvalidOperationException(string.Format(Strings.DataContextBase_EntityNotAttached_Exception, entity));
-            }
-
-            return dataContext.DetachEntity(entityInfo);
+            return entityInfo == null ? null : dataContext.DetachEntity(entityInfo);
         }
 
         /// <summary>

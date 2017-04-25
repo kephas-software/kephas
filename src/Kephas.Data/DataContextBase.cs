@@ -155,11 +155,8 @@ namespace Kephas.Data
         {
             Requires.NotNull(entity, nameof(entity));
 
-            // TODO optimize, maybe set the entity info in the entity
-            // if it is an expando.
             // Try to get the entity info from the local cache.
-            var entityInfo = this.LocalCache.Values.FirstOrDefault(ei => ei.Entity == entity);
-
+            var entityInfo = this.LocalCache.GetEntityInfo(entity);
             return entityInfo;
         }
 
@@ -174,14 +171,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(entity, nameof(entity));
 
-            var entityInfo = this.GetEntityInfo(entity);
-            if (entityInfo == null)
-            {
-                entityInfo = this.CreateEntityInfo(entity);
-                this.LocalCache.Add(entityInfo.Id, entityInfo);
-            }
-
-            return entityInfo;
+            return this.AttachEntityCore(entity, attachEntityGraph: true);
         }
 
         /// <summary>
@@ -195,8 +185,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(entityInfo, nameof(entityInfo));
 
-            this.LocalCache.Remove(entityInfo.Id);
-            return entityInfo;
+            return this.DetachEntityCore(entityInfo, detachEntityGraph: true);
         }
 
         /// <summary>
@@ -249,6 +238,87 @@ namespace Kephas.Data
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
+        }
+
+        /// <summary>
+        /// Attaches the entity to the data context, optionally attaching the whole entity graph.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="attachEntityGraph"><c>true</c> to attach the whole entity graph.</param>
+        /// <returns>
+        /// The entity extended information.
+        /// </returns>
+        protected virtual IEntityInfo AttachEntityCore(object entity, bool attachEntityGraph)
+        {
+            var entityInfo = this.GetEntityInfo(entity);
+            if (entityInfo != null)
+            {
+                return entityInfo;
+            }
+
+            entityInfo = this.CreateEntityInfo(entity);
+            this.LocalCache.Add(entityInfo.Id, entityInfo);
+
+            if (attachEntityGraph)
+            {
+                var structuralEntityGraph = entityInfo.GetStructuralEntityGraph();
+                if (structuralEntityGraph != null)
+                {
+                    foreach (var entityPart in structuralEntityGraph)
+                    {
+                        // already attached if the root entity.
+                        if (entityPart == entity)
+                        {
+                            continue;
+                        }
+
+                        this.AttachEntityCore(entityPart, attachEntityGraph: false);
+                    }
+                }
+            }
+
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// Detaches the entity from the data context.
+        /// </summary>
+        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="detachEntityGraph"><c>true</c> to detach the whole entity graph.</param>
+        /// <returns>
+        /// The entity extended information, or <c>null</c> if the entity is not attached to this data context.
+        /// </returns>
+        protected virtual IEntityInfo DetachEntityCore(IEntityInfo entityInfo, bool detachEntityGraph)
+        {
+            if (!this.LocalCache.Remove(entityInfo.Id))
+            {
+                return null;
+            }
+
+            if (detachEntityGraph)
+            {
+                var structuralEntityGraph = entityInfo.GetStructuralEntityGraph();
+                if (structuralEntityGraph != null)
+                {
+                    foreach (var entityPart in structuralEntityGraph)
+                    {
+                        // root already detached.
+                        if (entityInfo.Entity == entityPart)
+                        {
+                            continue;
+                        }
+
+                        var partEntityInfo = this.GetEntityInfo(entityPart);
+                        if (partEntityInfo != null)
+                        {
+                            this.DetachEntityCore(partEntityInfo, detachEntityGraph: false);
+                        }
+                    }
+                }
+            }
+
+            entityInfo.Dispose();
+            return entityInfo;
         }
     }
 }

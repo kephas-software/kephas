@@ -97,7 +97,7 @@ namespace Kephas.Data.Commands
 
                                 changes = await this.ValidateAndPersistModifiedEntriesAsync(modifiedEntries, changes, operationContext, sb, cancellationToken).PreserveThreadContext();
 
-                                this.ResetChangeState(operationContext, modifiedEntries);
+                                this.AcceptChanges(operationContext, modifiedEntries);
 
                                 await this.ExecuteAfterSaveBehaviorsAsync(operationContext, modifiedEntries, cancellationToken).PreserveThreadContext();
 
@@ -151,22 +151,22 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Resets the change state of the entities after the persistance.
+        /// Accepts the changes of the entities after the persistance.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="modifiedEntries">The modified entries.</param>
-        protected virtual void ResetChangeState(IPersistChangesContext operationContext, IList<IEntityInfo> modifiedEntries)
+        protected virtual void AcceptChanges(IPersistChangesContext operationContext, IList<IEntityInfo> modifiedEntries)
         {
-            var localCache = this.TryGetLocalCache(operationContext.DataContext);
-            foreach (var entry in modifiedEntries)
+            var dataContext = operationContext.DataContext;
+            foreach (var entityInfo in modifiedEntries)
             {
-                if (entry.ChangeState != ChangeState.Deleted)
+                if (entityInfo.ChangeState != ChangeState.Deleted)
                 {
-                    entry.ChangeState = ChangeState.NotChanged;
+                    entityInfo.AcceptChanges();
                 }
                 else
                 {
-                    localCache?.Remove(entry.Id);
+                    dataContext.DetachEntity(entityInfo);
                 }
             }
         }
@@ -296,13 +296,9 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task ValidateModifiedEntriesAsync(IList<IEntityInfo> modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
-            var graphOperationContext = new GraphOperationContext(operationContext.DataContext) { LoadLooseParts = false };
             foreach (var entityInfo in modifiedEntries)
             {
-                var entityGraphParts = await entityInfo
-                                            .GetFlattenedGraphAsync(graphOperationContext, cancellationToken)
-                                            .PreserveThreadContext()
-                                        ?? new[] { entityInfo.Entity };
+                var entityGraphParts = entityInfo.GetStructuralEntityGraph() ?? new[] { entityInfo.Entity };
 
                 foreach (var entityPart in entityGraphParts)
                 {
@@ -334,7 +330,6 @@ namespace Kephas.Data.Commands
             var result = new DataValidationResult();
             foreach (var validator in validators)
             {
-                // TODO optimize getting the entity information
                 var validatorResult = await validator.ValidateAsync(entityPart, dataContext.GetEntityInfo(entityPart), operationContext, cancellationToken).PreserveThreadContext();
                 result.Add(validatorResult.ToArray());
             }
