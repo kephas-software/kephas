@@ -39,8 +39,7 @@ namespace Kephas.Data.Commands
 
             if (entityInfo.ChangeState == ChangeState.Added)
             {
-                var localCache = this.TryGetLocalCache(dataContext);
-                localCache?.Remove(entityInfo.Id);
+                dataContext.DetachEntity(entityInfo);
             }
 
             entityInfo.ChangeState = ChangeState.Deleted;
