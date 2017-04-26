@@ -16,6 +16,7 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Capabilities;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -75,6 +76,11 @@ namespace Kephas.Data.Commands
                 var result = new CreateEntityResult(entity, entityInfo);
                 this.PostCreateEntity(operationContext, result);
 
+                // all the changes in the initialization should be reset.
+                // only after this point, the entity may be consider fully initialized.
+                entityInfo.AcceptChanges();
+                entityInfo.ChangeState = ChangeState.Added;
+
                 return result;
             }
             catch
@@ -97,9 +103,9 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
-            // TODO involve an activator, for the case of interfaces.
-            var runtimeTypeInfo = operationContext.EntityType.AsRuntimeTypeInfo();
-            return runtimeTypeInfo.CreateInstance();
+            var activator = this.TryGetEntityActivator(operationContext.DataContext) ?? RuntimeActivator.Instance;
+            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo());
+            return entity;
         }
 
         /// <summary>

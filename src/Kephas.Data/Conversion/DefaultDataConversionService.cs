@@ -283,7 +283,6 @@ namespace Kephas.Data.Conversion
         protected virtual async Task<object> CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, CancellationToken cancellationToken)
         {
             var target = await targetDataContext.CreateEntityAsync(
-                             targetType.AsType(),
                              new CreateEntityContext<object>(targetDataContext)
                              {
                                  EntityType = targetType.AsType()

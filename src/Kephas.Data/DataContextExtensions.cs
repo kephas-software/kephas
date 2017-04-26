@@ -65,7 +65,6 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="dataContext">The data context.</param>
         /// <param name="entityType">Type of the entity to create.</param>
-        /// <param name="operationContext">Context for the create entity operation (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the created entity.
@@ -73,18 +72,54 @@ namespace Kephas.Data
         public static Task<object> CreateEntityAsync(
             this IDataContext dataContext,
             Type entityType,
-            ICreateEntityContext operationContext = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entityType, nameof(entityType));
 
-            if (operationContext == null)
-            {
-                operationContext = new CreateEntityContext(dataContext, entityType);
-            }
+            var operationContext = new CreateEntityContext(dataContext, entityType);
 
             return CreateEntityCoreAsync(dataContext, operationContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates asynchronously a new entity of the provided type and returns it.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="operationContext">Context for the create entity operation (optional).</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the created entity.
+        /// </returns>
+        public static Task<object> CreateEntityAsync(
+            this IDataContext dataContext,
+            ICreateEntityContext operationContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(operationContext, nameof(operationContext));
+
+            return CreateEntityCoreAsync(dataContext, operationContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates asynchronously a new entity of the provided type and returns it.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity to create.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the created entity.
+        /// </returns>
+        public static async Task<T> CreateEntityAsync<T>(
+            this IDataContext dataContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+
+            var operationContext = new CreateEntityContext<T>(dataContext);
+            return (T)await CreateEntityCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -99,16 +134,12 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<T> CreateEntityAsync<T>(
             this IDataContext dataContext,
-            ICreateEntityContext operationContext = null,
+            ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
-
-            if (operationContext == null)
-            {
-                operationContext = new CreateEntityContext<T>(dataContext);
-            }
+            Requires.NotNull(operationContext, nameof(operationContext));
 
             return (T)await CreateEntityCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }

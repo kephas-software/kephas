@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Activation;
     using Kephas.Data.Caching;
     using Kephas.Threading.Tasks;
 
@@ -75,6 +76,18 @@ namespace Kephas.Data.Commands
         protected virtual IDataContextCache TryGetLocalCache(IDataContext dataContext)
         {
             return (dataContext as DataContextBase)?.LocalCache;
+        }
+
+        /// <summary>
+        /// Tries to get the data context's entity activator.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <returns>
+        /// An IActivator.
+        /// </returns>
+        protected virtual IActivator TryGetEntityActivator(IDataContext dataContext)
+        {
+            return (dataContext as DataContextBase)?.EntityActivator;
         }
     }
 }

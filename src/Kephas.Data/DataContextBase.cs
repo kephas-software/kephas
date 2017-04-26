@@ -14,6 +14,7 @@ namespace Kephas.Data
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using Kephas.Activation;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -21,6 +22,7 @@ namespace Kephas.Data
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
 
@@ -45,10 +47,12 @@ namespace Kephas.Data
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="localCache">The local cache (optional). If not provided, a default one will be created.</param>
+        /// <param name="entityActivator">The entity activator (optional). If not provided, the <see cref="RuntimeActivator"/> will be used.</param>
         protected DataContextBase(
             IAmbientServices ambientServices,
             IDataCommandProvider dataCommandProvider,
-            IDataContextCache localCache = null)
+            IDataContextCache localCache = null,
+            IActivator entityActivator = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
@@ -56,6 +60,7 @@ namespace Kephas.Data
             this.AmbientServices = ambientServices;
             this.dataCommandProvider = dataCommandProvider;
             this.LocalCache = localCache ?? new DataContextCache();
+            this.EntityActivator = entityActivator ?? RuntimeActivator.Instance;
             this.Id = new Id(Guid.NewGuid());
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
         }
@@ -83,6 +88,14 @@ namespace Kephas.Data
         /// The local cache.
         /// </value>
         protected internal virtual IDataContextCache LocalCache { get; }
+
+        /// <summary>
+        /// Gets the entity activator.
+        /// </summary>
+        /// <value>
+        /// The entity activator.
+        /// </value>
+        protected internal virtual IActivator EntityActivator { get; }
 
         /// <summary>
         /// Initializes the service asynchronously.

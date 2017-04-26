@@ -422,6 +422,9 @@
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeTypeInfo.cs">
       <Link>Runtime\IRuntimeTypeInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeActivator.cs">
+      <Link>Runtime\RuntimeActivator.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeMethodInfo.cs">
       <Link>Runtime\RuntimeMethodInfo.cs</Link>
     </Compile>
