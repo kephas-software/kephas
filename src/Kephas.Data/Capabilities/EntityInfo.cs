@@ -183,20 +183,29 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
-        /// Undoes the changes and resets the change state to <see cref="Capabilities.ChangeState.NotChanged"/>.
+        /// Discards the changes and resets the change state to <see cref="Capabilities.ChangeState.NotChanged"/>.
         /// </summary>
-        public void UndoChanges()
+        public void DiscardChanges()
         {
-            // undo the values in the entities, only if some changes occurred.
-            if (this.originalEntity != null)
+            try
             {
-                foreach (var changedProperty in this.changedProperties)
-                {
-                    this.ExpandoEntity[changedProperty] = this.OriginalEntity[changedProperty];
-                }
-            }
+                this.DetachPropertyChangeHandlers();
 
-            this.ResetChangeState();
+                // undo the values in the entities, only if some changes occurred.
+                if (this.originalEntity != null)
+                {
+                    foreach (var changedProperty in this.changedProperties)
+                    {
+                        this.ExpandoEntity[changedProperty] = this.OriginalEntity[changedProperty];
+                    }
+                }
+
+                this.ResetChangeState();
+            }
+            finally
+            {
+                this.AttachPropertyChangeHandlers();
+            }
         }
 
         /// <summary>
@@ -301,34 +310,9 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
-        /// Ensures that the original entity is created.
-        /// </summary>
-        /// <param name="sender">Source of the event.</param>
-        /// <param name="e">Property changing event information.</param>
-        private void EnsureOriginalEntity(object sender, PropertyChangingEventArgs e)
-        {
-            // force the creation of the original entity, if not already done.
-            var originalEntity = this.OriginalEntity;
-        }
-
-        /// <summary>
-        /// Ensures that the changes are tracked.
-        /// </summary>
-        /// <param name="sender">Source of the event.</param>
-        /// <param name="e">Property changed event information.</param>
-        private void EnsureTrackChanges(object sender, PropertyChangedEventArgs e)
-        {
-            this.changedProperties.Add(e.PropertyName);
-            if (this.ChangeState == ChangeState.NotChanged)
-            {
-                this.ChangeState = ChangeState.Changed;
-            }
-        }
-
-        /// <summary>
         /// Attaches the property change handlers.
         /// </summary>
-        private void AttachPropertyChangeHandlers()
+        protected virtual void AttachPropertyChangeHandlers()
         {
             var propertyChanging = this.TryGetNotifyPropertyChanging();
             if (propertyChanging != null)
@@ -346,7 +330,7 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Detaches the property change handlers.
         /// </summary>
-        private void DetachPropertyChangeHandlers()
+        protected virtual void DetachPropertyChangeHandlers()
         {
             var propertyChanging = this.TryGetNotifyPropertyChanging();
             if (propertyChanging != null)
@@ -358,6 +342,31 @@ namespace Kephas.Data.Capabilities
             if (propertyChanged != null)
             {
                 propertyChanged.PropertyChanged -= this.EnsureTrackChanges;
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the original entity is created.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="e">Property changing event information.</param>
+        private void EnsureOriginalEntity(object sender, PropertyChangingEventArgs e)
+        {
+            // force the creation of the original entity, if not already done.
+            var _ = this.OriginalEntity;
+        }
+
+        /// <summary>
+        /// Ensures that the changes are tracked.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="e">Property changed event information.</param>
+        private void EnsureTrackChanges(object sender, PropertyChangedEventArgs e)
+        {
+            this.changedProperties.Add(e.PropertyName);
+            if (this.ChangeState == ChangeState.NotChanged)
+            {
+                this.ChangeState = ChangeState.Changed;
             }
         }
 

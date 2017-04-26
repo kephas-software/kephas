@@ -190,7 +190,7 @@ namespace Kephas.Data.Tests.Capabilities
         }
 
         [Test]
-        public void UndoChanges()
+        public void DiscardChanges()
         {
             var originalGuid = Guid.NewGuid();
             var entity = new TestEntity { Id = originalGuid };
@@ -198,7 +198,7 @@ namespace Kephas.Data.Tests.Capabilities
             var newGuid = Guid.NewGuid();
             entity.Id = newGuid;
 
-            entityInfo.UndoChanges();
+            entityInfo.DiscardChanges();
 
             Assert.AreEqual(originalGuid, entity.Id);
             Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);

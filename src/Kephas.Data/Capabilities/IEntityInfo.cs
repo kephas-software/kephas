@@ -48,8 +48,8 @@ namespace Kephas.Data.Capabilities
         void AcceptChanges();
 
         /// <summary>
-        /// Undoes the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.
+        /// Discards the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.
         /// </summary>
-        void UndoChanges();
+        void DiscardChanges();
     }
 }

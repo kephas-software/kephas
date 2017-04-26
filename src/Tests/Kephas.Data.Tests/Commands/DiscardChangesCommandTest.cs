@@ -15,8 +15,6 @@ namespace Kephas.Data.Tests.Commands
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
 
-    using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,11 +24,12 @@ namespace Kephas.Data.Tests.Commands
         public void Execute_success()
         {
             var localCache = new DataContextCache();
-            var cmd = new TestDiscardChangesCommand(localCache);
+            var dataContext = new TestDataContext(localCache: localCache);
+            var cmd = new DiscardChangesCommand();
 
             var entityInfo = new EntityInfo("added") { ChangeState = ChangeState.Added };
             localCache.Add(entityInfo.Id, entityInfo);
-            entityInfo = new EntityInfo("addedChanged") { ChangeState = ChangeState.AddedOrChanged };
+            entityInfo = new EntityInfo("addedOrChanged") { ChangeState = ChangeState.AddedOrChanged };
             localCache.Add(entityInfo.Id, entityInfo);
             entityInfo = new EntityInfo("changed") { ChangeState = ChangeState.Changed };
             localCache.Add(entityInfo.Id, entityInfo);
@@ -39,33 +38,13 @@ namespace Kephas.Data.Tests.Commands
             entityInfo = new EntityInfo("notchanged") { ChangeState = ChangeState.NotChanged };
             localCache.Add(entityInfo.Id, entityInfo);
 
-            var result = cmd.Execute(new DataOperationContext(Substitute.For<IDataContext>()));
+            var result = cmd.Execute(new DataOperationContext(dataContext));
             Assert.AreSame(DataCommandResult.Success, result);
-            Assert.AreEqual(1, localCache.Count);
-            Assert.AreEqual(ChangeState.NotChanged, localCache.First().Value.ChangeState);
-            Assert.AreEqual("notchanged", localCache.First().Value.Entity);
-        }
-    }
-
-    public class TestDiscardChangesCommand : DiscardChangesCommand
-    {
-        private readonly IDataContextCache localCache;
-
-        public TestDiscardChangesCommand(IDataContextCache localCache)
-        {
-            this.localCache = localCache;
-        }
-
-        /// <summary>
-        /// Tries to get the data context's local cache.
-        /// </summary>
-        /// <param name="dataContext">Context for the data.</param>
-        /// <returns>
-        /// An IDataContextCache.
-        /// </returns>
-        protected override IDataContextCache TryGetLocalCache(IDataContext dataContext)
-        {
-            return this.localCache;
+            Assert.AreEqual(3, localCache.Count);
+            Assert.IsTrue(localCache.All(e => e.Value.ChangeState == ChangeState.NotChanged));
+            Assert.IsTrue(localCache.Any(e => (string)e.Value.Entity == "changed"));
+            Assert.IsTrue(localCache.Any(e => (string)e.Value.Entity == "deleted"));
+            Assert.IsTrue(localCache.Any(e => (string)e.Value.Entity == "notchanged"));
         }
     }
 }

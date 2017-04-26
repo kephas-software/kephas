@@ -47,7 +47,7 @@ namespace Kephas.Data.Commands
             var changes = localCache.Values.Where(e => e.ChangeState == ChangeState.Changed || e.ChangeState == ChangeState.Deleted).ToList();
             foreach (var change in changes)
             {
-                change.UndoChanges();
+                change.DiscardChanges();
             }
 
             return DataCommandResult.Success;
