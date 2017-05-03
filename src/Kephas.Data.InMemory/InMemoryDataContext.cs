@@ -225,13 +225,13 @@ namespace Kephas.Data.InMemory
                 foreach (var entity in (IEnumerable)data)
                 {
                     var entityInfo = this.CreateEntityInfo(entity);
-                    this.workingCache.Add(entityInfo.Id, entityInfo);
+                    this.workingCache.Add(entityInfo);
                 }
             }
             else
             {
                 var entityInfo = this.CreateEntityInfo(data);
-                this.workingCache.Add(entityInfo.Id, entityInfo);
+                this.workingCache.Add(entityInfo);
             }
         }
     }

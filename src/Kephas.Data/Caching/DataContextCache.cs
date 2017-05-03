@@ -129,7 +129,7 @@ namespace Kephas.Data.Caching
                     this.Remove(key);
                 }
 
-                this.Add(key, value);
+                this.Add(value);
             }
         }
 
@@ -148,6 +148,38 @@ namespace Kephas.Data.Caching
         public virtual bool TryGetValue(Id key, out IEntityInfo value)
         {
             return this.items.TryGetValue(key, out value);
+        }
+
+        /// <summary>
+        /// Adds an <see cref="IEntityInfo"/> to the <see cref="IDataContextCache" />.
+        /// </summary>
+        /// <param name="value">The object to add.</param>
+        public virtual void Add(IEntityInfo value)
+        {
+            Requires.NotNull(value, nameof(value));
+
+            this.items.Add(value.Id, value);
+            this.entityInfoMappings.Add(value.Entity, value);
+        }
+
+        /// <summary>
+        /// Removes an <see cref="IEntityInfo"/> from the <see cref="IDataContextCache" />.
+        /// </summary>
+        /// <param name="value">The object to remove.</param>
+        /// <returns>
+        /// <c>true</c> if the removal succeeds, <c>false</c> otherwise.
+        /// </returns>
+        public virtual bool Remove(IEntityInfo value)
+        {
+            Requires.NotNull(value, nameof(value));
+
+            var result = this.items.Remove(value.Id);
+            if (result)
+            {
+                this.entityInfoMappings.Remove(value.Entity);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -174,7 +206,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element
         /// with the key; otherwise, <c>false</c>.
         /// </returns>
-        public bool ContainsKey(Id key) => this.items.ContainsKey(key);
+        public virtual bool ContainsKey(Id key) => this.items.ContainsKey(key);
 
         /// <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.</summary>
         /// <param name="key">The object to use as the key of the element to add.</param>
@@ -183,7 +215,7 @@ namespace Kephas.Data.Caching
         /// <paramref name="key" /> is null.</exception>
         /// <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
-        public virtual void Add(Id key, IEntityInfo value)
+        void IDictionary<Id, IEntityInfo>.Add(Id key, IEntityInfo value)
         {
             Requires.NotNull(key, nameof(key));
             Requires.NotNull(value, nameof(value));
@@ -193,8 +225,7 @@ namespace Kephas.Data.Caching
                 throw new ArgumentException(string.Format(Strings.DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception, key, value.Id), nameof(value));
             }
 
-            this.items.Add(key, value);
-            this.entityInfoMappings.Add(value.Entity, value);
+            this.Add(value);
         }
 
         /// <summary>
@@ -206,7 +237,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the element is successfully removed; otherwise, <c>false</c>.  This method also returns
         /// <c>false</c> if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </returns>
-        public virtual bool Remove(Id key)
+        public bool Remove(Id key)
         {
             IEntityInfo value;
             if (!this.TryGetValue(key, out value))
@@ -214,22 +245,16 @@ namespace Kephas.Data.Caching
                 return false;
             }
 
-            var result = this.items.Remove(key);
-            if (result)
-            {
-                this.entityInfoMappings.Remove(value.Entity);
-            }
-
-            return result;
+            return this.Remove(value);
         }
 
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        public void Add(KeyValuePair<Id, IEntityInfo> item)
+        void ICollection<KeyValuePair<Id, IEntityInfo>>.Add(KeyValuePair<Id, IEntityInfo> item)
         {
-            this.Add(item.Key, item.Value);
+            this.Add(item.Value);
         }
 
         /// <summary>
@@ -251,7 +276,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if <paramref name="item" /> is found in the
         /// <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(KeyValuePair<Id, IEntityInfo> item) => this.items.Contains(item);
+        bool ICollection<KeyValuePair<Id, IEntityInfo>>.Contains(KeyValuePair<Id, IEntityInfo> item) => this.items.Contains(item);
 
         /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an
@@ -276,7 +301,7 @@ namespace Kephas.Data.Caching
         /// returns <c>false</c> if <paramref name="item" /> is not found in the original
         /// <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        public bool Remove(KeyValuePair<Id, IEntityInfo> item)
+        bool ICollection<KeyValuePair<Id, IEntityInfo>>.Remove(KeyValuePair<Id, IEntityInfo> item)
         {
             return this.Remove(item.Key);
         }

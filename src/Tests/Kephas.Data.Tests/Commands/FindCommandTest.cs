@@ -32,11 +32,11 @@ namespace Kephas.Data.Tests.Commands
             var cmd = new FindCommand();
 
             var entityInfo = new EntityInfo(new TestEntity { Id = new Id(1) });
-            localCache.Add(entityInfo.Id, entityInfo);
+            localCache.Add(entityInfo);
             entityInfo = new EntityInfo(new TestEntity { Id = new Id(2) });
-            localCache.Add(entityInfo.Id, entityInfo);
+            localCache.Add(entityInfo);
             entityInfo = new EntityInfo(new TestEntity { Id = new Id(3) });
-            localCache.Add(entityInfo.Id, entityInfo);
+            localCache.Add(entityInfo);
 
             var findContext = new FindContext<TestEntity>(dataContext, new Id(2));
             var result = await cmd.ExecuteAsync(findContext);

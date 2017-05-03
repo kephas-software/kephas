@@ -270,7 +270,7 @@ namespace Kephas.Data
             }
 
             entityInfo = this.CreateEntityInfo(entity);
-            this.LocalCache.Add(entityInfo.Id, entityInfo);
+            this.LocalCache.Add(entityInfo);
 
             if (attachEntityGraph)
             {
