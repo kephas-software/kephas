@@ -142,6 +142,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The key (&apos;{0}&apos;) and then entity info ID (&apos;{1}&apos;) do not match..
+        /// </summary>
+        internal static string DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception {
+            get {
+                return ResourceManager.GetString("DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
         internal static string DataConverterNotFound_Exception {
