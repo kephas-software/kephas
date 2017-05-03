@@ -17,6 +17,7 @@ namespace Kephas.Data.Capabilities
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Provides extended information about the entity.
@@ -305,7 +306,14 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         protected virtual IExpando CreateOriginalEntity()
         {
-            var original = new Expando(this.ExpandoEntity.ToDictionary());
+            var typeInfo = this.Entity.GetTypeInfo();
+            var originalValues = new Dictionary<string, object>();
+            foreach (var prop in typeInfo.Properties)
+            {
+                originalValues.Add(prop.Name, prop.GetValue(this.Entity));
+            }
+
+            var original = new Expando(originalValues);
             return original;
         }
 

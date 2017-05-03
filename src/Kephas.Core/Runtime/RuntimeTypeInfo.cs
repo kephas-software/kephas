@@ -285,6 +285,36 @@ namespace Kephas.Runtime
         public MemberInfo GetUnderlyingMemberInfo() => this.TypeInfo;
 
         /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        public IElementInfo GetMember(string name, bool throwIfNotFound = true)
+        {
+            IRuntimePropertyInfo property;
+            if (this.Properties.TryGetValue(name, out property))
+            {
+                return property;
+            }
+
+            IEnumerable<IRuntimeMethodInfo> methods;
+            if (this.Methods.TryGetValue(name, out methods))
+            {
+                return methods.Single();
+            }
+
+            if (throwIfNotFound)
+            {
+                throw new KeyNotFoundException(string.Format(Strings.RuntimeTypeInfo_MemberNotFound_Exception, name, this.Type));
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the value of the property with the specified name.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -459,7 +489,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
-        protected override IRuntimeTypeInfo GetThisTypeInfo()
+        protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeTypeInfo;
         }

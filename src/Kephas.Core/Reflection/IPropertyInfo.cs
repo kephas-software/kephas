@@ -37,5 +37,21 @@ namespace Kephas.Reflection
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
         bool CanRead { get; }
+
+        /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        void SetValue(object obj, object value);
+
+        /// <summary>
+        /// Gets the value from the specified object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        object GetValue(object obj);
     }
 }

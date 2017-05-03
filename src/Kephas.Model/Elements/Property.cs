@@ -64,6 +64,30 @@ namespace Kephas.Model.Elements
         public virtual bool CanRead { get; protected internal set; }
 
         /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        public void SetValue(object obj, object value)
+        {
+            // TODO improve implementation.
+            obj.SetPropertyValue(this.Name, value);
+        }
+
+        /// <summary>
+        /// Gets the value from the specified object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        public object GetValue(object obj)
+        {
+            // TODO improve implementation.
+            return obj.GetPropertyValue(this.Name);
+        }
+
+        /// <summary>
         /// Calculates the property type.
         /// </summary>
         /// <exception cref="ModelException">Thrown when the property has no parts which can be used to get the classifier.</exception>

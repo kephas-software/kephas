@@ -11,10 +11,10 @@ namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
 
@@ -37,7 +37,7 @@ namespace Kephas.Runtime
         internal RuntimeMethodInfo(MethodInfo methodInfo)
             : base(isThreadSafe: true)
         {
-            Contract.Requires(methodInfo != null);
+            Requires.NotNull(methodInfo, nameof(methodInfo));
 
             this.MethodInfo = methodInfo;
             this.Name = methodInfo.Name;
@@ -145,7 +145,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
-        protected override IRuntimeTypeInfo GetThisTypeInfo()
+        protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeMethodInfo;
         }

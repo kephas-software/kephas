@@ -303,7 +303,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityInfo DetachEntityCore(IEntityInfo entityInfo, bool detachEntityGraph)
         {
-            if (!this.LocalCache.Remove(entityInfo.Id))
+            if (!this.LocalCache.Remove(entityInfo))
             {
                 return null;
             }

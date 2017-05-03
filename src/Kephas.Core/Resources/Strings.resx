@@ -237,4 +237,7 @@
   <data name="DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception" xml:space="preserve">
     <value>Please use a more specific assembly loader, which can load from a file path, like NetAssemblyLoader.</value>
   </data>
+  <data name="RuntimeTypeInfo_MemberNotFound_Exception" xml:space="preserve">
+    <value>Member {0} not found in {1}.</value>
+  </data>
 </root>

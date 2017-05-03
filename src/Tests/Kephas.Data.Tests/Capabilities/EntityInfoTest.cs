@@ -18,6 +18,7 @@ namespace Kephas.Data.Tests.Capabilities
 
     using Kephas.Data.Capabilities;
     using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     using NSubstitute;
 
@@ -26,6 +27,27 @@ namespace Kephas.Data.Tests.Capabilities
     [TestFixture]
     public class EntityInfoTest
     {
+        [Test]
+        public void OriginalEntity_IInstance_entity()
+        {
+            var collector = new Expando();
+            var namePropInfo = this.CreatePropertyInfo("Name", () => (string)collector["Name"], value => collector["Name"] = value);
+            var dynTypeInfo = Substitute.For<ITypeInfo>();
+            dynTypeInfo.GetMember(Arg.Any<string>(), Arg.Any<bool>()).Returns(namePropInfo);
+            dynTypeInfo.Properties.Returns(new[] { namePropInfo });
+            var entity = new InstanceEntity(dynTypeInfo);
+            entity[namePropInfo.Name] = "gigi";
+            var entityInfo = new EntityInfo(entity);
+
+            var originalEntity = entityInfo.OriginalEntity;
+            Assert.AreEqual(1, originalEntity.ToDictionary().Keys.Count);
+
+            entity[namePropInfo.Name] = "belogea";
+            entityInfo.DiscardChanges();
+
+            Assert.AreEqual("gigi", entity[namePropInfo.Name]);
+        }
+
         [Test]
         public void EntityId_identifiable()
         {
@@ -205,6 +227,19 @@ namespace Kephas.Data.Tests.Capabilities
             Assert.AreEqual(originalGuid, entityInfo.OriginalEntity["Id"]);
         }
 
+        private IPropertyInfo CreatePropertyInfo<TValue>(string name, Func<TValue> getter = null, Action<TValue> setter = null)
+        {
+            var propInfo = Substitute.For<IPropertyInfo>();
+            propInfo.Name.Returns(name);
+            propInfo.PropertyType.Returns(typeof(TValue).AsRuntimeTypeInfo());
+            propInfo.CanRead.Returns(true);
+            propInfo.CanWrite.Returns(true);
+            propInfo.GetValue(Arg.Any<object>()).Returns(ci => getter == null ? default(TValue) : getter());
+            propInfo.When(p => p.SetValue(Arg.Any<object>(), Arg.Any<object>())).Do(ci => setter?.Invoke((TValue)ci.Args()[1]));
+
+            return propInfo;
+        }
+
         public class TestEntity : INotifyPropertyChanging, INotifyPropertyChanged
         {
             private Guid id;
@@ -226,6 +261,53 @@ namespace Kephas.Data.Tests.Capabilities
             public event PropertyChangingEventHandler PropertyChanging;
 
             public event PropertyChangedEventHandler PropertyChanged;
+        }
+
+        public class InstanceEntity : Expando, INotifyPropertyChanging, INotifyPropertyChanged, IInstance
+        {
+            private readonly ITypeInfo typeInfo;
+
+            public InstanceEntity()
+            {
+            }
+
+            public InstanceEntity(ITypeInfo typeInfo)
+            {
+                this.typeInfo = typeInfo;
+            }
+
+            /// <summary>
+            /// Attempts to set the value with the given key.
+            /// </summary>
+            /// <remarks>
+            /// First of all, it is tried to set the property value to the inner object, if one is set.
+            /// The next try is to set the property value to the expando object itself.
+            /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is used to set the value with the provided key.
+            /// </remarks>
+            /// <param name="key">The key.</param>
+            /// <param name="value">The value to set.</param>
+            /// <returns>
+            /// <c>true</c> if the value could be set, <c>false</c> otherwise.
+            /// </returns>
+            protected override bool TrySetValue(string key, object value)
+            {
+                this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(key));
+                var result = base.TrySetValue(key, value);
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+                return result;
+            }
+
+            public event PropertyChangingEventHandler PropertyChanging;
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            /// <summary>
+            /// Gets the type information for this instance.
+            /// </summary>
+            /// <returns>
+            /// The type information.
+            /// </returns>
+            public ITypeInfo GetTypeInfo() => this.typeInfo ?? this.GetRuntimeTypeInfo();
         }
     }
 }

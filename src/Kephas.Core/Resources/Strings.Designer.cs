@@ -359,6 +359,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Member {0} not found in {1}..
+        /// </summary>
+        internal static string RuntimeTypeInfo_MemberNotFound_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeTypeInfo_MemberNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No public constructor defined for &apos;{0}&apos;, cannot create instances..
         /// </summary>
         internal static string RuntimeTypeInfo_NoPublicConstructorDefined_Exception {

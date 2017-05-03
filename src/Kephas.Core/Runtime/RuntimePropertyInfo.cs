@@ -169,12 +169,12 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// Gets the <see cref="ITypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// The <see cref="ITypeInfo"/> of this expando object.
         /// </returns>
-        protected override IRuntimeTypeInfo GetThisTypeInfo()
+        protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimePropertyInfo;
         }

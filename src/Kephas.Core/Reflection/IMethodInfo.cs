@@ -9,6 +9,8 @@
 
 namespace Kephas.Reflection
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Contract for method information.
     /// </summary>
@@ -21,5 +23,13 @@ namespace Kephas.Reflection
         /// The return type of the method.
         /// </value>
         ITypeInfo ReturnType { get; }
+
+        /// <summary>
+        /// Invokes the specified method on the provided instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The invocation result.</returns>
+        object Invoke(object instance, IEnumerable<object> args);
     }
 }

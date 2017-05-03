@@ -20,6 +20,7 @@ namespace Kephas.Dynamic
     using System;
     using System.Collections.Generic;
     using System.Dynamic;
+    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
@@ -71,7 +72,7 @@ namespace Kephas.Dynamic
         /// Do not use directly this field, instead use the <see cref="GetInnerObjectTypeInfo"/> method
         /// which knows how to late-initialize it.
         /// </remarks>
-        private IRuntimeTypeInfo innerObjectTypeInfo;
+        private ITypeInfo innerObjectTypeInfo;
 
         /// <summary>
         /// Cached dynamic type of this instance.
@@ -80,7 +81,7 @@ namespace Kephas.Dynamic
         /// Do not use directly this field, instead use the <see cref="GetThisTypeInfo"/> method
         /// which knows how to late-initialize it.
         /// </remarks>
-        private IRuntimeTypeInfo thisTypeInfo;
+        private ITypeInfo thisTypeInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
@@ -143,19 +144,19 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        public virtual bool IsDefined(string memberName)
+        public virtual bool HasMember(string memberName)
         {
             // First check for public properties via reflection
             if (this.innerObject != null)
             {
-                if (this.GetInnerObjectTypeInfo().Properties.ContainsKey(memberName))
+                if (this.GetInnerObjectTypeInfo().Properties.Any(p => p.Name == memberName))
                 {
                     return true;
                 }
             }
 
             // then, check the properties in this object
-            if (this.GetThisTypeInfo().Properties.ContainsKey(memberName))
+            if (this.GetThisTypeInfo().Properties.Any(p => p.Name == memberName))
             {
                 return true;
             }
@@ -210,14 +211,21 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            if (this.innerObject != null
-                && this.GetInnerObjectTypeInfo().TryInvoke(this.innerObject, binder.Name, args, out result))
+            IMethodInfo methodInfo;
+            if (this.innerObject != null)
             {
-                return true;
+                methodInfo = (IMethodInfo)this.GetInnerObjectTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+                if (methodInfo != null)
+                {
+                    result = methodInfo.Invoke(this.innerObject, args);
+                    return true;
+                }
             }
 
-            if (this.GetThisTypeInfo().TryInvoke(this, binder.Name, args, out result))
+            methodInfo = (IMethodInfo)this.GetThisTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+            if (methodInfo != null)
             {
+                result = methodInfo.Invoke(this.innerObject, args);
                 return true;
             }
 
@@ -227,7 +235,7 @@ namespace Kephas.Dynamic
                 var delegateProperty = method as Delegate;
                 if (delegateProperty == null)
                 {
-                    throw new MemberAccessException(string.Format(Strings.ExpandoBase_CannotInvokeNonDelegate_Exception, binder.Name, delegateProperty?.GetType()));
+                    throw new MemberAccessException(string.Format(Strings.ExpandoBase_CannotInvokeNonDelegate_Exception, binder.Name, method?.GetType()));
                 }
 
                 result = delegateProperty.DynamicInvoke(args);
@@ -253,7 +261,7 @@ namespace Kephas.Dynamic
             // second, the values in this expando's properties
             foreach (var prop in this.GetThisTypeInfo().Properties)
             {
-                dictionary.Add(prop.Key, prop.Value.GetValue(this.innerObject));
+                dictionary.Add(prop.Name, prop.GetValue(this.innerObject));
             }
 
             // last, the values in the inner object
@@ -261,7 +269,7 @@ namespace Kephas.Dynamic
             {
                 foreach (var prop in this.GetInnerObjectTypeInfo().Properties)
                 {
-                    dictionary.Add(prop.Key, prop.Value.GetValue(this.innerObject));
+                    dictionary.Add(prop.Name, prop.GetValue(this.innerObject));
                 }
             }
 
@@ -269,12 +277,12 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of the inner object.
+        /// Gets the <see cref="ITypeInfo"/> of the inner object.
         /// </summary>
         /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of the inner object.
+        /// The <see cref="ITypeInfo"/> of the inner object.
         /// </returns>
-        protected virtual IRuntimeTypeInfo GetInnerObjectTypeInfo()
+        protected virtual ITypeInfo GetInnerObjectTypeInfo()
         {
             return this.innerObject == null
                        ? null
@@ -282,14 +290,14 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// Gets the <see cref="ITypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// The <see cref="ITypeInfo"/> of this expando object.
         /// </returns>
-        protected virtual IRuntimeTypeInfo GetThisTypeInfo()
+        protected virtual ITypeInfo GetThisTypeInfo()
         {
-            return this.thisTypeInfo ?? (this.thisTypeInfo = this.GetType().AsRuntimeTypeInfo());
+            return this.thisTypeInfo ?? (this.thisTypeInfo = this.GetTypeInfo());
         }
 
         /// <summary>
@@ -307,12 +315,13 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual bool TryGetValue(string key, out object value)
         {
-            IRuntimePropertyInfo propInfo;
+            IPropertyInfo propInfo;
 
             // First check for public properties via reflection
             if (this.innerObject != null)
             {
-                if (this.GetInnerObjectTypeInfo().Properties.TryGetValue(key, out propInfo))
+                propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
+                if (propInfo != null)
                 {
                     value = propInfo.GetValue(this.innerObject);
                     return true;
@@ -320,7 +329,8 @@ namespace Kephas.Dynamic
             }
 
             // then, check the properties in this object
-            if (this.GetThisTypeInfo().Properties.TryGetValue(key, out propInfo))
+            propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+            if (propInfo != null)
             {
                 value = propInfo.GetValue(this);
                 return true;
@@ -350,12 +360,13 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual bool TrySetValue(string key, object value)
         {
-            IRuntimePropertyInfo propInfo;
+            IPropertyInfo propInfo;
 
             // First check for public properties via reflection
             if (this.innerObject != null)
             {
-                if (this.GetInnerObjectTypeInfo().Properties.TryGetValue(key, out propInfo))
+                propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
+                if (propInfo != null)
                 {
                     propInfo.SetValue(this.innerObject, value);
                     return true;
@@ -363,7 +374,8 @@ namespace Kephas.Dynamic
             }
 
             // then, check the properties in this object
-            if (this.GetThisTypeInfo().Properties.TryGetValue(key, out propInfo))
+            propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+            if (propInfo != null)
             {
                 propInfo.SetValue(this, value);
                 return true;

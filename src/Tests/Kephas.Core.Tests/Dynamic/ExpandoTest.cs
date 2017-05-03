@@ -185,14 +185,14 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var expando = new Expando();
             expando["Age"] = 12;
-            Assert.IsTrue(expando.IsDefined("Age"));
+            Assert.IsTrue(expando.HasMember("Age"));
         }
 
         [Test]
         public void IsDefined_Property_existing_in_object()
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
-            Assert.IsTrue(expando.IsDefined(nameof(IIdentifiable.Id)));
+            Assert.IsTrue(expando.HasMember(nameof(IIdentifiable.Id)));
         }
 
         [Test]
@@ -200,21 +200,21 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
             expando["Age"] = 12;
-            Assert.IsTrue(expando.IsDefined("Age"));
+            Assert.IsTrue(expando.HasMember("Age"));
         }
 
         [Test]
         public void IsDefined_Property_non_existing()
         {
             var expando = new Expando();
-            Assert.IsFalse(expando.IsDefined("Age"));
+            Assert.IsFalse(expando.HasMember("Age"));
         }
 
         [Test]
         public void IsDefined_Property_non_existing_in_object()
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
-            Assert.IsFalse(expando.IsDefined("Age"));
+            Assert.IsFalse(expando.HasMember("Age"));
         }
 
         [Test]

@@ -71,5 +71,15 @@ namespace Kephas.Reflection
         /// The properties.
         /// </value>
         IEnumerable<IPropertyInfo> Properties { get; }
+
+        /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The member name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        IElementInfo GetMember(string name, bool throwIfNotFound = true);
     }
 }

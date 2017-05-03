@@ -36,14 +36,6 @@ namespace Kephas.Runtime
         MethodInfo MethodInfo { get; }
 
         /// <summary>
-        /// Invokes the specified method on the provided instance.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="args">The arguments.</param>
-        /// <returns>The invocation result.</returns>
-        object Invoke(object instance, IEnumerable<object> args);
-
-        /// <summary>
         /// Tries to invokes the specified method on the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>

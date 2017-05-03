@@ -26,7 +26,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        bool IsDefined(string memberName);
+        bool HasMember(string memberName);
 
         /// <summary>
         /// Converts the expando to a dictionary having as keys the property names and as values the respective properties' values.

@@ -133,6 +133,19 @@ namespace Kephas.Model.Elements
         IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
 
         /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The member name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        IElementInfo ITypeInfo.GetMember(string name, bool throwIfNotFound)
+        {
+            return this.GetMember(name, throwIfNotFound);
+        }
+
+        /// <summary>
         /// Calculates the flag indicating whether the classifier is a mixin or not.
         /// </summary>
         /// <returns>
