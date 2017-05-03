@@ -72,7 +72,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise,
         /// <c>false</c>.
         /// </value>
-        public bool IsReadOnly => this.items.IsReadOnly;
+        bool ICollection<KeyValuePair<Id, IEntityInfo>>.IsReadOnly => this.items.IsReadOnly;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the
