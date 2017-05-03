@@ -105,7 +105,14 @@ namespace Kephas.Data.Caching
         {
             get
             {
-                return this.items[key];
+                IEntityInfo value;
+                if (!this.TryGetValue(key, out value))
+                {
+                    // TODO add a resource
+                    throw new KeyNotFoundException();
+                }
+
+                return value;
             }
 
             set
@@ -126,7 +133,7 @@ namespace Kephas.Data.Caching
 
                 if (existingItem != null)
                 {
-                    this.Remove(key);
+                    this.Remove(existingItem);
                 }
 
                 this.Add(value);
