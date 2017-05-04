@@ -43,6 +43,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data\Activation\EntityActivatorBase.cs">
+      <Link>Activation\EntityActivatorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\AmbiguousMatchDataException.cs">
       <Link>AmbiguousMatchDataException.cs</Link>
     </Compile>
