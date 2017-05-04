@@ -11,7 +11,7 @@
 namespace Kephas.Resources {
     using System;
     using System.Reflection;
-
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -70,7 +70,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot instantiate the implementation type &apos;{0}&apos; because it is not resolved to an {1} instance. The provided type info was &apos;{2}&apos;..
+        ///   Looks up a localized string similar to Cannot instantiate the type &apos;{0}&apos; because it could not be resolved to an implementation type..
         /// </summary>
         internal static string ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception {
             get {

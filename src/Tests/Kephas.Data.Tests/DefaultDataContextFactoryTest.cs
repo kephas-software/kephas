@@ -47,7 +47,8 @@ namespace Kephas.Data.Tests
         {
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             var dcConfig = Substitute.For<IDataContextConfiguration>();
-            dataStoreProvider.GetDataStore("test-store").Returns(new DataStore("test-store", "kind1", dataContextConfiguration: dcConfig));
+            var dataStore = new DataStore("test-store", "kind1", dataContextConfiguration: dcConfig);
+            dataStoreProvider.GetDataStore("test-store").Returns(dataStore);
             IDataInitializationContext initContext = null;
             var dataContext1 = Substitute.For<IDataContext>();
             dataContext1.When(ctx => ctx.Initialize(Arg.Any<IContext>())).Do(ci => initContext = ci.Arg<IContext>() as IDataInitializationContext);
@@ -61,7 +62,7 @@ namespace Kephas.Data.Tests
 
             var initData = Substitute.For<IContext>();
             var dataContext = provider.CreateDataContext("test-store", initData);
-            Assert.AreSame(dcConfig, initContext.Configuration);
+            Assert.AreSame(dataStore, initContext.DataStore);
             Assert.AreSame(initData, initContext.InitializationContext);
         }
 

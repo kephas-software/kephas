@@ -11,6 +11,8 @@ namespace Kephas.Data.Store
 {
     using System;
 
+    using Kephas.Activation;
+
     /// <summary>
     /// Interface for data store.
     /// </summary>
@@ -47,5 +49,13 @@ namespace Kephas.Data.Store
         /// The data context configuration.
         /// </value>
         IDataContextConfiguration DataContextConfiguration { get; }
+
+        /// <summary>
+        /// Gets the entity activator.
+        /// </summary>
+        /// <value>
+        /// The entity activator.
+        /// </value>
+        IActivator EntityActivator { get; }
     }
 }

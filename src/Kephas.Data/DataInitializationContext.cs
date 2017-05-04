@@ -9,7 +9,7 @@
 
 namespace Kephas.Data
 {
-    using Kephas.Diagnostics.Contracts;
+    using Kephas.Data.Store;
     using Kephas.Services;
 
     /// <summary>
@@ -21,25 +21,25 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DataInitializationContext"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="dataStore">The data store.</param>
         /// <param name="initializationContext">The initialization context (optional).</param>
         public DataInitializationContext(
             IDataContext dataContext,
-            IDataContextConfiguration configuration,
+            IDataStore dataStore,
             IContext initializationContext = null)
             : base(dataContext)
         {
-            this.Configuration = configuration;
+            this.DataStore = dataStore;
             this.InitializationContext = initializationContext;
         }
 
         /// <summary>
-        /// Gets the data context configuration.
+        /// Gets the data store.
         /// </summary>
         /// <value>
-        /// The configuration.
+        /// The data store.
         /// </value>
-        public IDataContextConfiguration Configuration { get; }
+        public IDataStore DataStore { get; }
 
         /// <summary>
         /// Gets a context for the initialization.

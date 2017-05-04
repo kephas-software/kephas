@@ -13,6 +13,7 @@ namespace Kephas.Model.Elements
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using Kephas.Activation;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
@@ -143,6 +144,18 @@ namespace Kephas.Model.Elements
         IElementInfo ITypeInfo.GetMember(string name, bool throwIfNotFound)
         {
             return this.GetMember(name, throwIfNotFound);
+        }
+
+        /// <summary>
+        /// Creates an instance with the provided arguments (if any).
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        public virtual object CreateInstance(IEnumerable<object> args = null)
+        {
+            throw new ActivationException(string.Format(Strings.ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception, this, typeof(ITypeInfo), this));
         }
 
         /// <summary>

@@ -22,6 +22,7 @@ namespace Kephas.Data.InMemory
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Security;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
 
@@ -50,12 +51,14 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
+        /// <param name="identityProvider">The identity provider.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
-            : base(ambientServices, dataCommandProvider)
+        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentityProvider identityProvider, ISerializationService serializationService)
+            : base(ambientServices, dataCommandProvider, identityProvider: identityProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
+            Requires.NotNull(identityProvider, nameof(identityProvider));
             Requires.NotNull(serializationService, nameof(serializationService));
 
             this.SerializationService = serializationService;
@@ -139,7 +142,9 @@ namespace Kephas.Data.InMemory
         /// <param name="dataInitializationContext">The data initialization context.</param>
         protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
-            var config = dataInitializationContext?.Configuration;
+            base.Initialize(dataInitializationContext);
+
+            var config = dataInitializationContext?.DataStore.DataContextConfiguration;
             var connectionStringValues = string.IsNullOrWhiteSpace(config?.ConnectionString)
                                              ? new Dictionary<string, string>()
                                              : ConnectionStringParser.Parse(config.ConnectionString);

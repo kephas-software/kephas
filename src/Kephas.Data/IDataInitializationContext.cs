@@ -9,6 +9,8 @@
 
 namespace Kephas.Data
 {
+    using Kephas.Activation;
+    using Kephas.Data.Store;
     using Kephas.Services;
 
     /// <summary>
@@ -17,12 +19,12 @@ namespace Kephas.Data
     public interface IDataInitializationContext : IDataOperationContext
     {
         /// <summary>
-        /// Gets the data context configuration.
+        /// Gets the data store.
         /// </summary>
         /// <value>
-        /// The configuration.
+        /// The data store.
         /// </value>
-        IDataContextConfiguration Configuration { get; }
+        IDataStore DataStore { get; }
 
         /// <summary>
         /// Gets a context for the initialization.

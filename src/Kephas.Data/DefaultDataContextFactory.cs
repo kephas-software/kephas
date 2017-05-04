@@ -87,7 +87,7 @@ namespace Kephas.Data
             var factory = this.factories.GetOrAdd(dataStoreName, _ => this.ComputeDataContextExportFactory(dataStore));
             var dataContext = factory.CreateExportedValue();
 
-            dataContext.Initialize(this.CreateDataInitializationContext(dataContext, dataStore.DataContextConfiguration, initializationContext));
+            dataContext.Initialize(this.CreateDataInitializationContext(dataContext, dataStore, initializationContext));
             return dataContext;
         }
 
@@ -95,17 +95,17 @@ namespace Kephas.Data
         /// Creates the data initialization context.
         /// </summary>
         /// <param name="dataContext">Context for the data.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="initializationContext">An initialization context (optional).</param>
+        /// <param name="dataStore">The data store.</param>
+        /// <param name="initializationContext">An initialization context.</param>
         /// <returns>
         /// The new data initialization context.
         /// </returns>
         protected virtual IDataInitializationContext CreateDataInitializationContext(
             IDataContext dataContext,
-            IDataContextConfiguration configuration,
+            IDataStore dataStore,
             IContext initializationContext)
         {
-            return new DataInitializationContext(dataContext, configuration, initializationContext);
+            return new DataInitializationContext(dataContext, dataStore, initializationContext);
         }
 
         /// <summary>

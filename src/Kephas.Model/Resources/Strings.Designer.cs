@@ -11,8 +11,7 @@
 namespace Kephas.Model.Resources {
     using System;
     using System.Reflection;
-    
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -67,6 +66,15 @@ namespace Kephas.Model.Resources {
         internal static string CannotProvideElementInfoForRuntimeElement {
             get {
                 return ResourceManager.GetString("CannotProvideElementInfoForRuntimeElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot instantiate the implementation type &apos;{0}&apos; because it is not resolved to an {1} instance. The provided type info was &apos;{2}&apos;..
+        /// </summary>
+        internal static string ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception {
+            get {
+                return ResourceManager.GetString("ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception", resourceCulture);
             }
         }
         

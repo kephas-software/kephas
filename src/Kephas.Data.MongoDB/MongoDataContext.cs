@@ -14,6 +14,8 @@ namespace Kephas.Data.MongoDB
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using global::MongoDB.Driver;
+
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Linq;
@@ -21,8 +23,7 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-
-    using global::MongoDB.Driver;
+    using Kephas.Security;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -41,8 +42,9 @@ namespace Kephas.Data.MongoDB
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
-            : base(ambientServices, dataCommandProvider)
+        /// <param name="identityProvider">The identity provider.</param>
+        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentityProvider identityProvider)
+            : base(ambientServices, dataCommandProvider, identityProvider: identityProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Contract.Requires(dataCommandProvider != null);
@@ -106,9 +108,12 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataInitializationContext">The data initialization context.</param>
         protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
-            Requires.NotNull(dataInitializationContext.Configuration, nameof(dataInitializationContext.Configuration));
+            Requires.NotNull(dataInitializationContext.DataStore, nameof(dataInitializationContext.DataStore));
+            Requires.NotNull(dataInitializationContext.DataStore.DataContextConfiguration, nameof(dataInitializationContext.DataStore.DataContextConfiguration));
 
-            var config = dataInitializationContext.Configuration;
+            base.Initialize(dataInitializationContext);
+
+            var config = dataInitializationContext.DataStore.DataContextConfiguration;
             var mongoUrl = MongoUrl.Create(config.ConnectionString);
             var databaseName = mongoUrl.DatabaseName;
             if (string.IsNullOrEmpty(databaseName))

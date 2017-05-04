@@ -126,14 +126,5 @@ namespace Kephas.Runtime
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
         bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result);
-
-        /// <summary>
-        /// Creates an instance with the provided arguments (if any).
-        /// </summary>
-        /// <param name="args">The arguments.</param>
-        /// <returns>
-        /// The new instance.
-        /// </returns>
-        object CreateInstance(IEnumerable<object> args = null);
     }
 }

@@ -46,15 +46,9 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
-        /// <param name="entityActivator">The entity activator (optional). If not provided, the <see cref="RuntimeActivator"/> will be used.</param>
         /// <param name="identityProvider">The identity provider (optional).</param>
         /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
-        protected DataContextBase(
-            IAmbientServices ambientServices,
-            IDataCommandProvider dataCommandProvider = null,
-            IActivator entityActivator = null,
-            IIdentityProvider identityProvider = null,
-            IDataContextCache localCache = null)
+        protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider = null, IIdentityProvider identityProvider = null, IDataContextCache localCache = null)
             : base(ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -62,7 +56,6 @@ namespace Kephas.Data
             this.Identity = identityProvider?.GetCurrentIdentity();
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(ambientServices.CompositionContainer);
             this.LocalCache = localCache ?? new DataContextCache();
-            this.EntityActivator = entityActivator ?? RuntimeActivator.Instance;
             this.Id = new Id(Guid.NewGuid());
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
         }
@@ -89,7 +82,7 @@ namespace Kephas.Data
         /// <value>
         /// The entity activator.
         /// </value>
-        protected internal virtual IActivator EntityActivator { get; }
+        protected internal virtual IActivator EntityActivator { get; private set; }
 
         /// <summary>
         /// Initializes the service asynchronously.
@@ -223,6 +216,7 @@ namespace Kephas.Data
         /// <param name="dataInitializationContext">The data initialization context.</param>
         protected virtual void Initialize(IDataInitializationContext dataInitializationContext)
         {
+            this.EntityActivator = dataInitializationContext?.DataStore.EntityActivator ?? RuntimeActivator.Instance;
         }
 
         /// <summary>
