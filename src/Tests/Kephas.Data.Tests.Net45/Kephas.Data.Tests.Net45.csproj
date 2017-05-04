@@ -91,8 +91,8 @@
     <Compile Include="..\Kephas.Data.Tests\DataContextExtensionsTest.cs">
       <Link>DataContextExtensionsTest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Tests\DefaultDataContextProviderTest.cs">
-      <Link>DefaultDataContextProviderTest.cs</Link>
+    <Compile Include="..\Kephas.Data.Tests\DefaultDataContextFactoryTest.cs">
+      <Link>DefaultDataContextFactoryTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Store\ConnectionStringParserTest.cs">
       <Link>Store\ConnectionStringParserTest.cs</Link>

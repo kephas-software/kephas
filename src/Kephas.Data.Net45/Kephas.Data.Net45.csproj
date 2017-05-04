@@ -256,8 +256,8 @@
     <Compile Include="..\Kephas.Data\DataOperationContext.cs">
       <Link>DataOperationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\DefaultDataContextProvider.cs">
-      <Link>DefaultDataContextProvider.cs</Link>
+    <Compile Include="..\Kephas.Data\DefaultDataContextFactory.cs">
+      <Link>DefaultDataContextFactory.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\IDataContext.cs">
       <Link>IDataContext.cs</Link>
@@ -265,8 +265,8 @@
     <Compile Include="..\Kephas.Data\IDataContextConfiguration.cs">
       <Link>IDataContextConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\IDataContextProvider.cs">
-      <Link>IDataContextProvider.cs</Link>
+    <Compile Include="..\Kephas.Data\IDataContextFactory.cs">
+      <Link>IDataContextFactory.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\IDataInitializationContext.cs">
       <Link>IDataInitializationContext.cs</Link>

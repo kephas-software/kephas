@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultDataContextProviderTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultDataContextFactoryTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -22,7 +22,7 @@ namespace Kephas.Data.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultDataContextProviderTest
+    public class DefaultDataContextFactoryTest
     {
         [Test]
         public void GetDataContext_success()
@@ -31,14 +31,14 @@ namespace Kephas.Data.Tests
             dataStoreProvider.GetDataStore("test-store").Returns(new DataStore("test-store", "kind1"));
             var dataContext1 = Substitute.For<IDataContext>();
 
-            var provider = new DefaultDataContextProvider(
+            var provider = new DefaultDataContextFactory(
                 new List<IExportFactory<IDataContext, DataContextMetadata>>
                     {
                         new ExportFactory<IDataContext, DataContextMetadata>(() => dataContext1, new DataContextMetadata(new[] { "kind1" }))
                     },
                 dataStoreProvider);
 
-            var dataContext = provider.GetDataContext("test-store");
+            var dataContext = provider.CreateDataContext("test-store");
             Assert.AreSame(dataContext1, dataContext);
         }
 
@@ -52,7 +52,7 @@ namespace Kephas.Data.Tests
             var dataContext1 = Substitute.For<IDataContext>();
             dataContext1.When(ctx => ctx.Initialize(Arg.Any<IContext>())).Do(ci => initContext = ci.Arg<IContext>() as IDataInitializationContext);
 
-            var provider = new DefaultDataContextProvider(
+            var provider = new DefaultDataContextFactory(
                 new List<IExportFactory<IDataContext, DataContextMetadata>>
                     {
                         new ExportFactory<IDataContext, DataContextMetadata>(() => dataContext1, new DataContextMetadata(new[] { "kind1" }))
@@ -60,7 +60,7 @@ namespace Kephas.Data.Tests
                 dataStoreProvider);
 
             var initData = Substitute.For<IContext>();
-            var dataContext = provider.GetDataContext("test-store", initData);
+            var dataContext = provider.CreateDataContext("test-store", initData);
             Assert.AreSame(dcConfig, initContext.Configuration);
             Assert.AreSame(initData, initContext.InitializationContext);
         }
@@ -73,7 +73,7 @@ namespace Kephas.Data.Tests
             var dataContext1 = Substitute.For<IDataContext>();
             var dataContext2 = Substitute.For<IDataContext>();
 
-            var provider = new DefaultDataContextProvider(
+            var provider = new DefaultDataContextFactory(
                 new List<IExportFactory<IDataContext, DataContextMetadata>>
                     {
                         new ExportFactory<IDataContext, DataContextMetadata>(() => dataContext1, new DataContextMetadata(new[] { "kind1" })),
@@ -81,7 +81,7 @@ namespace Kephas.Data.Tests
                     },
                 dataStoreProvider);
 
-            Assert.Throws<AmbiguousMatchDataException>(() => provider.GetDataContext("test-store"));
+            Assert.Throws<AmbiguousMatchDataException>(() => provider.CreateDataContext("test-store"));
         }
     }
 }

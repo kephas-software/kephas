@@ -64,7 +64,7 @@
     <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
     <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="DataContextExtensionsTest.cs" />
-    <Compile Include="DefaultDataContextProviderTest.cs" />
+    <Compile Include="DefaultDataContextFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Store\ConnectionStringParserTest.cs" />
     <Compile Include="TestDataContext.cs" />
