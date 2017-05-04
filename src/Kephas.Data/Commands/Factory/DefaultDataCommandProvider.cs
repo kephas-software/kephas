@@ -7,15 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Concurrent;
-using Kephas.Data.Resources;
-
 namespace Kephas.Data.Commands.Factory
 {
     using System;
-    using System.Diagnostics.Contracts;
+    using System.Collections.Concurrent;
 
     using Kephas.Composition;
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -118,7 +116,7 @@ namespace Kephas.Data.Commands.Factory
             /// <returns>A hash code for the current object.</returns>
             public override int GetHashCode()
             {
-                return this.dataContextType.GetHashCode() + this.commandType.GetHashCode() << 3;
+                return this.dataContextType.GetHashCode() + (this.commandType.GetHashCode() << 3);
             }
 
             /// <summary>Determines whether the specified object is equal to the current object.</summary>

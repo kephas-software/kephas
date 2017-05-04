@@ -95,7 +95,7 @@ namespace Kephas.Data.InMemory.Tests
             Assert.AreEqual(ChangeState.NotChanged, initialDataList[2].ChangeState);
         }
 
-        public class TestContext : ContextBase
+        public class TestContext : Context
         {
         }
     }

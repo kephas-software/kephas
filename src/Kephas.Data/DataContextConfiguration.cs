@@ -14,7 +14,7 @@ namespace Kephas.Data
     /// <summary>
     /// A data context configuration.
     /// </summary>
-    public class DataContextConfiguration : ContextBase, IDataContextConfiguration
+    public class DataContextConfiguration : Context, IDataContextConfiguration
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextConfiguration"/> class.

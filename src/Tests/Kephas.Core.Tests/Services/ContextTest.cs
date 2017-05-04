@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContextBaseTest.cs" company="Quartz Software SRL">
+// <copyright file="ContextTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Test class for <see cref="ContextBase" />.
+//   Test class for <see cref="Context" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,15 +18,15 @@ namespace Kephas.Core.Tests.Services
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="ContextBase"/>.
+    /// Test class for <see cref="Context"/>.
     /// </summary>
     [TestFixture]
-    public class ContextBaseTest
+    public class ContextTest
     {
         [Test]
         public void Dynamic_Context()
         {
-            dynamic context = new TestContext();
+            dynamic context = new Context();
             context.Value = 12;
             Assert.AreEqual(12, context.Value);
 
@@ -34,15 +34,11 @@ namespace Kephas.Core.Tests.Services
             context.Identity = mockUser;
             Assert.AreSame(mockUser, context.Identity);
 
-            var contextBase = (ContextBase)context;
+            var contextBase = (Context)context;
             Assert.AreSame(mockUser, contextBase.Identity);
 
             Assert.AreSame(mockUser, contextBase["Identity"]);
             Assert.AreEqual(12, contextBase["Value"]);
-        }
-
-        private class TestContext : ContextBase
-        {
         }
     }
 }

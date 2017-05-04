@@ -437,6 +437,12 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeInfoExtensions.cs">
       <Link>Runtime\RuntimeTypeInfoExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\IIdentityProvider.cs">
+      <Link>Security\IIdentityProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\NullIdentityProvider.cs">
+      <Link>Security\NullIdentityProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
     </Compile>
@@ -500,8 +506,8 @@
     <Compile Include="..\Kephas.Core\Services\Composition\AttributedAppServiceConventionsRegistrar.cs">
       <Link>Services\Composition\AttributedAppServiceConventionsRegistrar.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Services\ContextBase.cs">
-      <Link>Services\ContextBase.cs</Link>
+    <Compile Include="..\Kephas.Core\Services\Context.cs">
+      <Link>Services\Context.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\IAsyncInitializable.cs">
       <Link>Services\IAsyncInitializable.cs</Link>

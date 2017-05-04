@@ -154,8 +154,8 @@
     <Compile Include="..\Kephas.Core.Tests\Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs">
       <Link>Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core.Tests\Services\ContextBaseTest.cs">
-      <Link>Services\ContextBaseTest.cs</Link>
+    <Compile Include="..\Kephas.Core.Tests\Services\ContextTest.cs">
+      <Link>Services\ContextTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\Transitioning\TransitionMonitorTest.cs">
       <Link>Services\Transitioning\TransitionMonitorTest.cs</Link>

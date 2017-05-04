@@ -14,7 +14,7 @@ namespace Kephas.Application
     /// <summary>
     /// The default application context.
     /// </summary>
-    public class AppContext : ContextBase, IAppContext
+    public class AppContext : Context, IAppContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.

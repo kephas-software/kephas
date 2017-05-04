@@ -17,7 +17,7 @@ namespace Kephas.Composition.Hosting
     /// <summary>
     /// A composition container builder context.
     /// </summary>
-    public class CompositionContainerBuilderContext : ContextBase
+    public class CompositionContainerBuilderContext : Context
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositionContainerBuilderContext"/> class.

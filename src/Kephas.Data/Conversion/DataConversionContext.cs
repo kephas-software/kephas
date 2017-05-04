@@ -17,7 +17,7 @@ namespace Kephas.Data.Conversion
     /// <summary>
     /// A data conversion context.
     /// </summary>
-    public class DataConversionContext : ContextBase, IDataConversionContext
+    public class DataConversionContext : Context, IDataConversionContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.

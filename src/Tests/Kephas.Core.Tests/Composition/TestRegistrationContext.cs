@@ -14,7 +14,7 @@ namespace Kephas.Testing.Core.Services.Composition
     /// <summary>
     /// The test registration context.
     /// </summary>
-    public class TestRegistrationContext : ContextBase
+    public class TestRegistrationContext : Context
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRegistrationContext"/> class.

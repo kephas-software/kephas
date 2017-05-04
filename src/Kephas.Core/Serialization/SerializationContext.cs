@@ -18,7 +18,7 @@ namespace Kephas.Serialization
     /// <summary>
     /// A serialization context.
     /// </summary>
-    public class SerializationContext : ContextBase, ISerializationContext
+    public class SerializationContext : Context, ISerializationContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.

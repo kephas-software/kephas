@@ -18,7 +18,7 @@ namespace Kephas.Services.Behavior
     /// The default implementation of a service behavior context.
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
-    public class ServiceBehaviorContext<TServiceContract> : ContextBase, IServiceBehaviorContext<TServiceContract>
+    public class ServiceBehaviorContext<TServiceContract> : Context, IServiceBehaviorContext<TServiceContract>
             where TServiceContract : class
     {
         /// <summary>

@@ -20,7 +20,7 @@ namespace Kephas.Threading.Tasks
     /// <summary>
     /// Stores the thread context.
     /// </summary>
-    public class ThreadContext : ContextBase
+    public class ThreadContext : Context
     {
         /// <summary>
         /// The store actions.

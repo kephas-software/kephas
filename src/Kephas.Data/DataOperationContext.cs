@@ -17,7 +17,7 @@ namespace Kephas.Data
     /// <summary>
     /// A context for data operations.
     /// </summary>
-    public class DataOperationContext : ContextBase, IDataOperationContext
+    public class DataOperationContext : Context, IDataOperationContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataOperationContext"/> class.

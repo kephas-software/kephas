@@ -20,7 +20,7 @@ namespace Kephas.Model.Construction
     /// <summary>
     /// A model construction context.
     /// </summary>
-    public class ModelConstructionContext : ContextBase, IModelConstructionContext
+    public class ModelConstructionContext : Context, IModelConstructionContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.

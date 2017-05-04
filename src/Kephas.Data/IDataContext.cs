@@ -15,14 +15,13 @@ namespace Kephas.Data
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Store;
-    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
     /// Contract interface for data contexts.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedDataStoreKindsAttribute) })]
-    public interface IDataContext : IExpando, IIdentifiable, IDisposable, IAmbientServicesAware, IInitializable
+    public interface IDataContext : IContext, IIdentifiable, IDisposable, IInitializable
     {
         /// <summary>
         /// Gets a query over the entity type for the given query operationContext, if any is provided.

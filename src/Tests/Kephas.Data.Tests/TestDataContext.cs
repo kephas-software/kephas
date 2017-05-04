@@ -22,7 +22,7 @@ namespace Kephas.Data.Tests
             IAmbientServices ambientServices = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataContextCache localCache = null)
-            : base(GetTestAmbientServices(ambientServices), GetTestDataCommandProvider(dataCommandProvider), localCache)
+            : base(GetTestAmbientServices(ambientServices), GetTestDataCommandProvider(dataCommandProvider), localCache: localCache)
         {
         }
 

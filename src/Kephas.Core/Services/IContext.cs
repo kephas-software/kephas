@@ -16,16 +16,8 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IExpando
+    public interface IContext : IExpando, IAmbientServicesAware
     {
-        /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        /// <value>
-        /// The ambient services.
-        /// </value>
-        IAmbientServices AmbientServices { get; }
-
         /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>

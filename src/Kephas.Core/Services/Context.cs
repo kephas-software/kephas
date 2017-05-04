@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ContextBase.cs" company="Quartz Software SRL">
+// <copyright file="Context.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,13 +17,13 @@ namespace Kephas.Services
     /// <summary>
     /// A base implementtion for contexts.
     /// </summary>
-    public abstract class ContextBase : Expando, IContext
+    public class Context : Expando, IContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContextBase"/> class.
+        /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        protected ContextBase(IAmbientServices ambientServices = null)
+        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="M:AmbientServices.Instance"/> will be considered.</param>
+        public Context(IAmbientServices ambientServices = null)
         {
             this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
         }

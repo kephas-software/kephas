@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Server
     /// <summary>
     /// The default processing context.
     /// </summary>
-    public class MessageProcessingContext : ContextBase, IMessageProcessingContext
+    public class MessageProcessingContext : Context, IMessageProcessingContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
