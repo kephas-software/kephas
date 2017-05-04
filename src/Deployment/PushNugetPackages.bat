@@ -1,5 +1,5 @@
 @echo off
-if [%1]==[] goto usage
+@if [%1]==[] goto usage
 
 @echo on
 nuget push Kephas.Core.%1.nupkg -Source https://www.nuget.org/api/v2/package
@@ -21,12 +21,12 @@ nuget push Kephas.Web.Owin.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Npgsql.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
-pause
+@pause
 
-goto :eof
+@goto :eof
 :usage
 @echo Usage: %0 ^<version-number^>
 
 :eof
-pause
-exit /B 1
+@pause
+@exit /B 1
