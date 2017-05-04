@@ -21,15 +21,15 @@ namespace Kephas.Data
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Runtime;
+    using Kephas.Security;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base implementation of a <see cref="IDataContext"/>.
     /// </summary>
-    public abstract class DataContextBase : Expando, IDataContext
+    public abstract class DataContextBase : Context, IDataContext
     {
         /// <summary>
         /// The initialization monitor.
@@ -45,20 +45,22 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="dataCommandProvider">The data command provider.</param>
-        /// <param name="localCache">The local cache (optional). If not provided, a default one will be created.</param>
+        /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
         /// <param name="entityActivator">The entity activator (optional). If not provided, the <see cref="RuntimeActivator"/> will be used.</param>
+        /// <param name="identityProvider">The identity provider (optional).</param>
+        /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
             IAmbientServices ambientServices,
-            IDataCommandProvider dataCommandProvider,
-            IDataContextCache localCache = null,
-            IActivator entityActivator = null)
+            IDataCommandProvider dataCommandProvider = null,
+            IActivator entityActivator = null,
+            IIdentityProvider identityProvider = null,
+            IDataContextCache localCache = null)
+            : base(ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
 
-            this.AmbientServices = ambientServices;
-            this.dataCommandProvider = dataCommandProvider;
+            this.Identity = identityProvider?.GetCurrentIdentity();
+            this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(ambientServices.CompositionContainer);
             this.LocalCache = localCache ?? new DataContextCache();
             this.EntityActivator = entityActivator ?? RuntimeActivator.Instance;
             this.Id = new Id(Guid.NewGuid());
@@ -72,14 +74,6 @@ namespace Kephas.Data
         /// The identifier.
         /// </value>
         public Id Id { get; }
-
-        /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        /// <value>
-        /// The ambient services.
-        /// </value>
-        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the local cache where the session entities are stored.
