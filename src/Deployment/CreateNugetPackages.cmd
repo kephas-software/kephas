@@ -2,7 +2,7 @@
 if [%1]==[] goto usage
 if [%2]==[] goto usage
 set BuildConfiguration=%3
-if [BuildConfiguration]==[] set BuildConfiguration=Debug
+if "%BuildConfiguration%"=="" set BuildConfiguration=Debug
 
 set PackageVersion=%1
 set PackageRefVersion=%2
@@ -29,9 +29,9 @@ nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbo
 nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas.Npgsql -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 
 @echo Done.
-pause
+@pause
 
-goto :eof
+@goto :eof
 :usage
 @echo Usage: %0 ^<version^> ^<ref-version^> [^<build-configuration^> = Debug]
 @echo version is the package version number
@@ -39,5 +39,5 @@ goto :eof
 @echo build-configuration is the build configuration used for packaging (default is Debug)
 
 :eof
-pause
-exit /B 1
+@pause
+@exit /B 1
