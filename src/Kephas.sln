@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -152,6 +152,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB.Net45", "Kephas.Data.MongoDB.Net45\Kephas.Data.MongoDB.Net45.csproj", "{4317F518-AA3E-4926-9B91-85DA0EB7C2AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Tests.Net45", "Tests\Kephas.Data.Tests.Net45\Kephas.Data.Tests.Net45.csproj", "{73122BB6-D992-44EB-9106-63F34CCF2723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization", "Kephas.Localization\Kephas.Localization.csproj", "{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Net45", "Kephas.Localization.Net45\Kephas.Localization.Net45.csproj", "{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -383,6 +387,14 @@ Global
 		{73122BB6-D992-44EB-9106-63F34CCF2723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73122BB6-D992-44EB-9106-63F34CCF2723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73122BB6-D992-44EB-9106-63F34CCF2723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -430,5 +442,6 @@ Global
 		{DF71B360-02A2-4BE3-9702-816A6366907C} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{4317F518-AA3E-4926-9B91-85DA0EB7C2AC} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{73122BB6-D992-44EB-9106-63F34CCF2723} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
+		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 	EndGlobalSection
 EndGlobal

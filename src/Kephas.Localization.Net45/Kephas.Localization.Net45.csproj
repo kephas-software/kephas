@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas</RootNamespace>
+    <AssemblyName>Kephas.Localization</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Localization.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Localization.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Localization\Localization\ILocalization.cs">
+      <Link>Localization\ILocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Localization\Localization.cs">
+      <Link>Localization\Localization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\ElementInfoLocalization.cs">
+      <Link>Reflection\Localization\ElementInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\IElementInfoLocalization.cs">
+      <Link>Reflection\Localization\IElementInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\IPropertyInfoLocalization.cs">
+      <Link>Reflection\Localization\IPropertyInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\ITypeInfoLocalization.cs">
+      <Link>Reflection\Localization\ITypeInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\PropertyInfoLocalization.cs">
+      <Link>Reflection\Localization\PropertyInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\Localization\TypeInfoLocalization.cs">
+      <Link>Reflection\Localization\TypeInfoLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
