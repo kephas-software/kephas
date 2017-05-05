@@ -192,6 +192,20 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the runtime type kind.
+        /// </summary>
+        /// <value>
+        /// The runtime type kind.
+        /// </value>
+        public RuntimeTypeKind Kind => this.TypeInfo.IsClass
+                                           ? RuntimeTypeKind.Class
+                                           : this.TypeInfo.IsInterface
+                                               ? RuntimeTypeKind.Interface
+                                               : this.TypeInfo.IsEnum
+                                                   ? RuntimeTypeKind.Enum
+                                                   : RuntimeTypeKind.Unknown;
+
+        /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
         /// </summary>
         /// <value>

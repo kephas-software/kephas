@@ -45,6 +45,14 @@ namespace Kephas.Runtime
         object DefaultValue { get; }
 
         /// <summary>
+        /// Gets the runtime type kind.
+        /// </summary>
+        /// <value>
+        /// The runtime type kind.
+        /// </value>
+        RuntimeTypeKind Kind { get; }
+
+        /// <summary>
         /// Gets the properties.
         /// </summary>
         /// <value>

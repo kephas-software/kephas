@@ -437,6 +437,9 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeInfoExtensions.cs">
       <Link>Runtime\RuntimeTypeInfoExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeKind.cs">
+      <Link>Runtime\RuntimeTypeKind.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Security\IIdentityProvider.cs">
       <Link>Security\IIdentityProvider.cs</Link>
     </Compile>
