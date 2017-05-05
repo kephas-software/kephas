@@ -57,7 +57,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized name.
         /// </value>
-        public string Name
+        public virtual string Name
         {
             get => this.DisplayAttribute == null ? this.name : this.DisplayAttribute.GetName();
             set => this.name = value;
@@ -69,7 +69,7 @@ namespace Kephas.Reflection.Localization
         /// <value>
         /// The localized description.
         /// </value>
-        public string Description
+        public virtual string Description
         {
             get => this.DisplayAttribute == null ? this.description : this.DisplayAttribute.GetDescription();
             set => this.description = value;

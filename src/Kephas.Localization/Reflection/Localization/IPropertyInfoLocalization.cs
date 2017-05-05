@@ -24,5 +24,13 @@ namespace Kephas.Reflection.Localization
         /// The localized short name.
         /// </value>
         string ShortName { get; }
+
+        /// <summary>
+        /// Gets the localized value that will be used to set the watermark for prompts in the UI.
+        /// </summary>
+        /// <value>
+        /// The localized value that will be used to set the watermark for prompts in the UI.
+        /// </value>
+        string Prompt { get; }
     }
 }

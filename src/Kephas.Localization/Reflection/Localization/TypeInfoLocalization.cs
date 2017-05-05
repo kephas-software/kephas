@@ -10,8 +10,10 @@
 namespace Kephas.Reflection.Localization
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -57,6 +59,24 @@ namespace Kephas.Reflection.Localization
 
                 this.properties = value;
             }
+        }
+
+        /// <summary>
+        /// Tries to get the display attribute from the provided <see cref="IElementInfo"/>.
+        /// </summary>
+        /// <param name="elementInfo">Information describing the element.</param>
+        /// <returns>
+        /// A DisplayAttribute or <c>null</c>.
+        /// </returns>
+        protected override DisplayAttribute TryGetDisplayAttribute(IElementInfo elementInfo)
+        {
+            var typeDisplayAttribute = elementInfo?.Annotations.OfType<TypeDisplayAttribute>().FirstOrDefault();
+            if (typeDisplayAttribute != null)
+            {
+                return new DisplayAttribute { ResourceType = typeDisplayAttribute.ResourceType, Name = typeDisplayAttribute.Name, Description = typeDisplayAttribute.Description };
+            }
+
+            return null;
         }
 
         /// <summary>

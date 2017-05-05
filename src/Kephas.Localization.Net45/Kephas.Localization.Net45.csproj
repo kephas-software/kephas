@@ -44,11 +44,20 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Localization\ComponentModel\DataAnnotations\TypeDisplayAttribute.cs">
+      <Link>ComponentModel\DataAnnotations\TypeDisplayAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Localization\Localization\ILocalization.cs">
       <Link>Localization\ILocalization.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Localization\Localization\Internal\LocalizableString.cs">
+      <Link>Localization\Internal\LocalizableString.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Localization\Localization\Localization.cs">
       <Link>Localization\Localization.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Localization\Reflection\LocalizationExtensions.cs">
+      <Link>LocalizationExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Localization\Reflection\Localization\ElementInfoLocalization.cs">
       <Link>Reflection\Localization\ElementInfoLocalization.cs</Link>
