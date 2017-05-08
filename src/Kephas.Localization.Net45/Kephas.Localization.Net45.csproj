@@ -56,8 +56,8 @@
     <Compile Include="..\Kephas.Localization\Localization\Localization.cs">
       <Link>Localization\Localization.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Localization\Reflection\LocalizationExtensions.cs">
-      <Link>LocalizationExtensions.cs</Link>
+    <Compile Include="..\Kephas.Localization\Reflection\LocalizationHelper.cs">
+      <Link>LocalizationHelper.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Localization\Reflection\Localization\ElementInfoLocalization.cs">
       <Link>Reflection\Localization\ElementInfoLocalization.cs</Link>

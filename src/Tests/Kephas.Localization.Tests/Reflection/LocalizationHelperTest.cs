@@ -1,28 +1,33 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalizationExtensionsTest.cs" company="Quartz Software SRL">
+// <copyright file="LocalizationHelperTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the LocalizationExtensionsTest type.
+//   Defines the LocalizationHelperTest type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Tests.Reflection
 {
+    using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Reflection.Localization;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class LocalizationExtensionsTest
+    public class LocalizationHelperTest
     {
         [Test]
         public void GetLocalization_Type()
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity);
-            var localization = localizableTypeInfo.GetLocalization();
+            var localization = LocalizationHelper.GetLocalization(localizableTypeInfo);
             Assert.IsNotNull(localization);
             Assert.AreEqual("LocalizableTestEntity-Name", localization.Name);
             Assert.AreEqual("LocalizableTestEntity-Description", localization.Description);
@@ -32,7 +37,7 @@ namespace Kephas.Tests.Reflection
         public void GetLocalization_TypeInfo()
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity).GetTypeInfo();
-            var localization = localizableTypeInfo.GetLocalization();
+            var localization = LocalizationHelper.GetLocalization(localizableTypeInfo);
             Assert.IsNotNull(localization);
             Assert.AreEqual("LocalizableTestEntity-Name", localization.Name);
             Assert.AreEqual("LocalizableTestEntity-Description", localization.Description);
@@ -42,10 +47,19 @@ namespace Kephas.Tests.Reflection
         public void GetLocalization_ITypeInfo()
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity).AsRuntimeTypeInfo();
-            var localization = localizableTypeInfo.GetLocalization();
+            var localization = LocalizationHelper.GetLocalization(localizableTypeInfo);
             Assert.IsNotNull(localization);
             Assert.AreEqual("LocalizableTestEntity-Name", localization.Name);
             Assert.AreEqual("LocalizableTestEntity-Description", localization.Description);
+        }
+
+        [Test]
+        public void GetLocalization_ITypeInfo_same_if_called_twice()
+        {
+            var localizableTypeInfo = typeof(LocalizableTestEntity).AsRuntimeTypeInfo();
+            var localization = LocalizationHelper.GetLocalization(localizableTypeInfo);
+            var localization2 = LocalizationHelper.GetLocalization(localizableTypeInfo);
+            Assert.AreSame(localization, localization2);
         }
 
         [Test]
@@ -53,7 +67,7 @@ namespace Kephas.Tests.Reflection
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity);
             var propertyInfo = localizableTypeInfo.GetProperty("Id");
-            var localization = propertyInfo.GetLocalization();
+            var localization = LocalizationHelper.GetLocalization(propertyInfo);
             Assert.IsNotNull(localization);
             Assert.AreEqual("Id-Name", localization.Name);
             Assert.AreEqual("Id-Description", localization.Description);
@@ -64,10 +78,22 @@ namespace Kephas.Tests.Reflection
         {
             var localizableTypeInfo = typeof(LocalizableTestEntity).AsRuntimeTypeInfo();
             var propertyInfo = localizableTypeInfo.Properties["Id"];
-            var localization = propertyInfo.GetLocalization();
+            var localization = LocalizationHelper.GetLocalization(propertyInfo);
             Assert.IsNotNull(localization);
             Assert.AreEqual("Id-Name", localization.Name);
             Assert.AreEqual("Id-Description", localization.Description);
+        }
+
+        [Test]
+        public void CreateTypeInfoLocalization()
+        {
+            var oldFunc = LocalizationHelper.CreateTypeInfoLocalization;
+            var localization = Substitute.For<ITypeInfoLocalization>();
+            LocalizationHelper.CreateTypeInfoLocalization = ti => localization;
+            var typeLocalization  = LocalizationHelper.GetLocalization(Substitute.For<ITypeInfo>());
+            LocalizationHelper.CreateTypeInfoLocalization = oldFunc;
+
+            Assert.AreSame(localization, typeLocalization);
         }
     }
 }

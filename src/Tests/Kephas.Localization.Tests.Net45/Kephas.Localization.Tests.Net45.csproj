@@ -54,8 +54,8 @@
     <Compile Include="..\Kephas.Localization.Tests\Reflection\LocalizableTestEntityWithOverloads.cs">
       <Link>Reflection\LocalizableTestEntityWithOverloads.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Localization.Tests\Reflection\LocalizationExtensionsTest.cs">
-      <Link>Reflection\LocalizationExtensionsTest.cs</Link>
+    <Compile Include="..\Kephas.Localization.Tests\Reflection\LocalizationHelperTest.cs">
+      <Link>Reflection\LocalizationHelperTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Localization.Tests\Reflection\Localization\PropertyInfoLocalizationTest.cs">
       <Link>Reflection\Localization\PropertyInfoLocalizationTest.cs</Link>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocalizationExtensions.cs" company="Quartz Software SRL">
+// <copyright file="LocalizationHelper.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -18,7 +18,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Localization extensions for reflection.
     /// </summary>
-    public static class LocalizationExtensions
+    public static class LocalizationHelper
     {
         /// <summary>
         /// Gets the dynamic localization property name.
