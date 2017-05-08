@@ -29,6 +29,27 @@ namespace Kephas.Reflection
         private const string LocalizationPropertyName = "Kephas-Localization";
 
         /// <summary>
+        /// The the function for creating the type info localization.
+        /// </summary>
+        private static Func<ITypeInfo, ITypeInfoLocalization> createTypeInfoLocalizationFunc = ti => new TypeInfoLocalization(ti);
+
+        /// <summary>
+        /// Gets or sets the function for creating the type info localization.
+        /// </summary>
+        /// <value>
+        /// The the function for creating the type info localization.
+        /// </value>
+        public static Func<ITypeInfo, ITypeInfoLocalization> CreateTypeInfoLocalization
+        {
+            get => createTypeInfoLocalizationFunc;
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+                createTypeInfoLocalizationFunc = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the localization for a <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The type to act on.</param>
@@ -70,7 +91,7 @@ namespace Kephas.Reflection
             var localization = typeInfo[LocalizationPropertyName] as ITypeInfoLocalization;
             if (localization == null && !typeInfo.HasMember(LocalizationPropertyName))
             {
-                localization = new TypeInfoLocalization(typeInfo);
+                localization = CreateTypeInfoLocalization(typeInfo) ?? new TypeInfoLocalization(typeInfo);
                 typeInfo[LocalizationPropertyName] = localization;
             }
 
