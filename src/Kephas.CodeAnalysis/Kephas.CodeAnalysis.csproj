@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>3.5.0-preview1</Version>
+    <Authors>Quartz Software SRL</Authors>
+    <Company>Quartz Software SRL</Company>
+    <Product>Kephas Framework</Product>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <FileVersion>3.5.0.0</FileVersion>
+    <Description>Provides a common infrastructure for code analysis, conversion, and generation.</Description>
+    <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
+    <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+    <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>kephas framework code analysis quartz-software</PackageTags>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>Kephas</RootNamespace>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageReleaseNotes>
+        Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+        Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
+    </PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.CodeAnalysis.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\Kephas.CodeAnalysis.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

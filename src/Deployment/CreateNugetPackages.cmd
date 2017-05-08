@@ -24,6 +24,7 @@ nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoD
 nuget pack ..\Kephas.Data.InMemory\Package.nuspec -BasePath ..\Kephas.Data.InMemory -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Platform\Package.nuspec -BasePath ..\Kephas.Platform -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Kephas.CodeAnalysis\Package.nuspec -BasePath ..\Kephas.CodeAnalysis -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Mail.Services.Net45\Package.nuspec -BasePath ..\Kephas.Mail.Services.Net45 -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.CodeAnalysis</id>
+        <version>$version$</version>
+        <title>Kephas.CodeAnalysis</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides a common infrastructure for code analysis, conversion, and generation.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides a common infrastructure for code analysis, conversion, and generation.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+            </group>
+            <group targetFramework="netstandard1.3">
+                <dependency id="Microsoft.CSharp" version="4.3.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.CodeAnalysis.dll" />
+        </references>
+        <tags>kephas framework code analysis quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.dll" target="lib\net45" />
+        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.pdb" target="lib\net45" />
+        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.xml" target="lib\net45" />
+    </files>
+</package>

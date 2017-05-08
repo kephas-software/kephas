@@ -161,6 +161,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Tests.Net45", "Tests\Kephas.Localization.Tests.Net45\Kephas.Localization.Tests.Net45.csproj", "{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis", "Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj", "{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Net45", "Kephas.CodeAnalysis.Net45\Kephas.CodeAnalysis.Net45.csproj", "{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Tests", "Tests\Kephas.CodeAnalysis.Tests\Kephas.CodeAnalysis.Tests.csproj", "{D72B5A39-E407-4599-B9E5-A17584A07FAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Tests.Net45", "Tests\Kephas.CodeAnalysis.Tests.Net45\Kephas.CodeAnalysis.Tests.Net45.csproj", "{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -407,6 +415,22 @@ Global
 		{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72B5A39-E407-4599-B9E5-A17584A07FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72B5A39-E407-4599-B9E5-A17584A07FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72B5A39-E407-4599-B9E5-A17584A07FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72B5A39-E407-4599-B9E5-A17584A07FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -457,5 +481,8 @@ Global
 		{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{D6FDEF59-D893-4DEA-89B1-FDA1CC926CB5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
+		{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{D72B5A39-E407-4599-B9E5-A17584A07FAD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 EndGlobal
