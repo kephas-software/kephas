@@ -17,7 +17,7 @@
     <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
-    <PackageTags>kephas framework npgsql adapters quartz software</PackageTags>
+    <PackageTags>kephas framework npgsql adapters quartz-software</PackageTags>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     <RootNamespace>Kephas.Npgsql</RootNamespace>

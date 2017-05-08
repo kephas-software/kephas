@@ -36,7 +36,7 @@
         <references>
             <reference file="Kephas.Platform.dll" />
         </references>
-        <tags>kephas framework platform net quartz software</tags>
+        <tags>kephas framework platform net quartz-software</tags>
     </metadata>
     <files>
         <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.dll" target="lib\netstandard1.5" />

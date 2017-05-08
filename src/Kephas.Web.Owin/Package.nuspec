@@ -31,7 +31,7 @@
     <references>
       <reference file="Kephas.Web.Owin.dll" />
     </references>
-    <tags>kephas framework web owin quartz software</tags>
+    <tags>kephas framework web owin quartz-software</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\Kephas.Web.Owin.dll" target="lib\net461" />

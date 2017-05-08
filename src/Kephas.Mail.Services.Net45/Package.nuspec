@@ -25,7 +25,7 @@
     <references>
       <reference file="Kephas.Mail.Services.dll" />
     </references>
-    <tags>kephas framework mail smtp quartz software</tags>
+    <tags>kephas framework mail smtp quartz-software</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\Kephas.Mail.Services.dll" target="lib\net45" />

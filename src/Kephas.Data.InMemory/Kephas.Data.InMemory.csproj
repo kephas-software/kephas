@@ -16,7 +16,7 @@
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
     <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
-    <PackageTags>kephas framework data in-memory store quartz software</PackageTags>
+    <PackageTags>kephas framework data in-memory store quartz-software</PackageTags>
     <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>

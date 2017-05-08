@@ -33,7 +33,7 @@
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework="net45" />
         </frameworkAssemblies>
-        <tags>kephas framework localization quartz software</tags>
+        <tags>kephas framework localization quartz-software</tags>
     </metadata>
     <files>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Localization.dll" target="lib\netstandard1.3" />

@@ -24,7 +24,7 @@
     <references>
       <reference file="Kephas.Data.MongoDB.dll" />
     </references>
-    <tags>kephas framework data mongo mongodb quartz software</tags>
+    <tags>kephas framework data mongo mongodb quartz-software</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />

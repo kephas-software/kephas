@@ -25,7 +25,7 @@
         <references>
             <reference file="Kephas.Data.Model.dll" />
         </references>
-        <tags>kephas framework data model quartz software</tags>
+        <tags>kephas framework data model quartz-software</tags>
     </metadata>
     <files>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.dll" target="lib\netstandard1.3" />

@@ -31,7 +31,7 @@
     <references>
       <reference file="Kephas.Logging.Log4net.dll" />
     </references>
-    <tags>kephas framework logging log4net quartz software</tags>
+    <tags>kephas framework logging log4net quartz-software</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\Kephas.Logging.Log4net.dll" target="lib\net461" />

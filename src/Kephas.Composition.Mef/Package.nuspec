@@ -36,7 +36,7 @@
                 <reference file="Kephas.Composition.Mef.dll" />
             </group>
         </references>
-        <tags>kephas framework composition mef quartz software</tags>
+        <tags>kephas framework composition mef quartz-software</tags>
     </metadata>
     <files>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Composition.Mef.dll" target="lib\netstandard1.3" />

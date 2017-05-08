@@ -35,7 +35,7 @@
         <references>
             <reference file="Kephas.Core.dll" />
         </references>
-        <tags>kephas framework core quartz software</tags>
+        <tags>kephas framework core quartz-software</tags>
     </metadata>
     <files>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Core.dll" target="lib\netstandard1.3" />
