@@ -376,6 +376,16 @@ namespace Kephas.Core.Tests.Runtime
             Assert.Throws<AmbiguousMatchException>(() => runtimeTypeInfo.GetMember(nameof(TestClass.ComputeFullName)));
         }
 
+        [Test]
+        public void DeclaringContainer()
+        {
+            var runtimeTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
+            var declaringContainer = runtimeTypeInfo.DeclaringContainer as IRuntimeAssemblyInfo;
+
+            Assert.IsNotNull(declaringContainer);
+            Assert.AreSame(typeof(TestClass).Assembly, declaringContainer.GetUnderlyingAssemblyInfo());
+        }
+
         public class TestClass
         {
             public string PublicField;

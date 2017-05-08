@@ -11,7 +11,6 @@ namespace Kephas.Reflection
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
@@ -33,7 +32,7 @@ namespace Kephas.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
         /// </summary>
-        /// <param name="ambientServices">(Optional) The ambient services.</param>
+        /// <param name="ambientServices">The ambient services (optional).</param>
         public DefaultTypeLoader(IAmbientServices ambientServices = null)
         {
             this.ambientServices = ambientServices;

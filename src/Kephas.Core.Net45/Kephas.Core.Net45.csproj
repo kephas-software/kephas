@@ -365,8 +365,23 @@
     <Compile Include="..\Kephas.Core\Reflection\DefaultTypeResolver.cs">
       <Link>Reflection\DefaultTypeResolver.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicAssemblyInfo.cs">
+      <Link>Reflection\Dynamic\DynamicAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicElementInfo.cs">
+      <Link>Reflection\Dynamic\DynamicElementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicPropertyInfo.cs">
+      <Link>Reflection\Dynamic\DynamicPropertyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicTypeInfo.cs">
+      <Link>Reflection\Dynamic\DynamicTypeInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\IAggregatedElementInfo.cs">
       <Link>Reflection\IAggregatedElementInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IAssemblyInfo.cs">
+      <Link>Reflection\IAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\IAssemblyLoader.cs">
       <Link>Reflection\IAssemblyLoader.cs</Link>
@@ -413,6 +428,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeAssemblyInfo.cs">
+      <Link>Runtime\IRuntimeAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeElementInfo.cs">
       <Link>Runtime\IRuntimeElementInfo.cs</Link>
     </Compile>
@@ -430,6 +448,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeActivator.cs">
       <Link>Runtime\RuntimeActivator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeAssemblyInfo.cs">
+      <Link>Runtime\RuntimeAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeFieldInfo.cs">
       <Link>Runtime\RuntimeFieldInfo.cs</Link>

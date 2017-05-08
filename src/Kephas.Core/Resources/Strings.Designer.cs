@@ -11,7 +11,7 @@
 namespace Kephas.Resources {
     using System;
     using System.Reflection;
-    
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -310,6 +310,33 @@ namespace Kephas.Resources {
         internal static string DefaultTypeResolver_ResolveType_NotFound_Exception {
             get {
                 return ResourceManager.GetString("DefaultTypeResolver_ResolveType_NotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate type with full name &apos;{0}&apos; in &apos;{1}&apos;..
+        /// </summary>
+        internal static string DynamicAssemblyInfo_AddType_Duplicate_Exception {
+            get {
+                return ResourceManager.GetString("DynamicAssemblyInfo_AddType_Duplicate_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be a base of itself..
+        /// </summary>
+        internal static string DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception {
+            get {
+                return ResourceManager.GetString("DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate member with name &apos;{0}&apos; in &apos;{1}&apos;..
+        /// </summary>
+        internal static string DynamicTypeInfo_AddMember_Duplicate_Exception {
+            get {
+                return ResourceManager.GetString("DynamicTypeInfo_AddMember_Duplicate_Exception", resourceCulture);
             }
         }
         

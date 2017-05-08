@@ -243,4 +243,13 @@
   <data name="RuntimeTypeInfo_AmbiguousMember_Exception" xml:space="preserve">
     <value>There are multiple members with the name '{0}' in '{1}'. Please use {2} to disambiguate between them.</value>
   </data>
+  <data name="DynamicTypeInfo_AddMember_Duplicate_Exception" xml:space="preserve">
+    <value>Duplicate member with name '{0}' in '{1}'.</value>
+  </data>
+  <data name="DynamicTypeInfo_AddBaseType_TypeCannotBeABaseOfItself_Exception" xml:space="preserve">
+    <value>The type '{0}' cannot be a base of itself.</value>
+  </data>
+  <data name="DynamicAssemblyInfo_AddType_Duplicate_Exception" xml:space="preserve">
+    <value>Duplicate type with full name '{0}' in '{1}'.</value>
+  </data>
 </root>

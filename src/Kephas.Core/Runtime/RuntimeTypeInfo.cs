@@ -38,7 +38,7 @@ namespace Kephas.Runtime
     public sealed class RuntimeTypeInfo : Expando, IRuntimeTypeInfo
     {
         /// <summary>
-        /// The cache of dynamic type infos.
+        /// The cache of runtime type infos.
         /// </summary>
         private static readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
 
@@ -58,7 +58,7 @@ namespace Kephas.Runtime
         private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
 
         /// <summary>
-        /// The function for creating the type info localization.
+        /// The function for creating the type info.
         /// </summary>
         private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = t => new RuntimeTypeInfo(t);
 
@@ -116,6 +116,11 @@ namespace Kephas.Runtime
         /// The instance activator.
         /// </summary>
         private InstanceActivator instanceActivator;
+
+        /// <summary>
+        /// The declaring container.
+        /// </summary>
+        private IRuntimeAssemblyInfo declaringContainer;
 
         /// <summary>
         /// Initializes static members of the <see cref="RuntimeTypeInfo"/> class.
@@ -300,7 +305,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => null;
+        public IElementInfo DeclaringContainer => this.declaringContainer ?? (this.declaringContainer = RuntimeAssemblyInfo.GetRuntimeAssembly(this.TypeInfo.Assembly));
 
         /// <summary>
         /// Gets the type.

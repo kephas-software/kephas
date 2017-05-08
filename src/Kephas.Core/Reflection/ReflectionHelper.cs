@@ -226,6 +226,20 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the <see cref="IRuntimeAssemblyInfo"/> for the provided <see cref="Assembly"/> instance.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// The provided <see cref="Assembly"/>'s associated <see cref="IRuntimeAssemblyInfo"/>.
+        /// </returns>
+        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly)
+        {
+            Requires.NotNull(assembly, nameof(assembly));
+
+            return RuntimeAssemblyInfo.GetRuntimeAssembly(assembly);
+        }
+
+        /// <summary>
         /// Invokes the <paramref name="methodInfo"/> with the provided parameters,
         /// ensuring in case of an exception that the original exception is thrown.
         /// </summary>
