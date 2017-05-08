@@ -374,6 +374,9 @@
     <Compile Include="..\Kephas.Core\Reflection\IElementInfo.cs">
       <Link>Reflection\IElementInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IFieldInfo.cs">
+      <Link>Reflection\IFieldInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\IMethodInfo.cs">
       <Link>Reflection\IMethodInfo.cs</Link>
     </Compile>
@@ -413,6 +416,9 @@
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeElementInfo.cs">
       <Link>Runtime\IRuntimeElementInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeFieldInfo.cs">
+      <Link>Runtime\IRuntimeFieldInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeMethodInfo.cs">
       <Link>Runtime\IRuntimeMethodInfo.cs</Link>
     </Compile>
@@ -424,6 +430,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeActivator.cs">
       <Link>Runtime\RuntimeActivator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeFieldInfo.cs">
+      <Link>Runtime\RuntimeFieldInfo.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeMethodInfo.cs">
       <Link>Runtime\RuntimeMethodInfo.cs</Link>

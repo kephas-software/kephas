@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Reflection\LocalizableTestEntityWithOverloads.cs" />
     <Compile Include="Reflection\LocalizableTestEntity.cs" />
     <Compile Include="Reflection\LocalizationExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
