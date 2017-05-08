@@ -50,7 +50,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The projection.
         /// </value>
-        public IModelProjection Projection { get; }
+        public IModelProjection Projection { get; } // TODO set the projection
 
         /// <summary>
         /// Gets the classifier properties.
@@ -59,6 +59,14 @@ namespace Kephas.Model.Elements
         /// The classifier properties.
         /// </value>
         public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.

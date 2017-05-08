@@ -22,16 +22,16 @@ namespace Kephas.Reflection.Localization
     public class TypeInfoLocalization : ElementInfoLocalization, ITypeInfoLocalization
     {
         /// <summary>
-        /// The properties' localizations.
+        /// The members' localizations.
         /// </summary>
-        private IDictionary<string, IPropertyInfoLocalization> properties;
+        private IDictionary<string, IMemberInfoLocalization> members;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeInfoLocalization"/> class.
         /// </summary>
         public TypeInfoLocalization()
         {
-            this.properties = new Dictionary<string, IPropertyInfoLocalization>();
+            this.members = new Dictionary<string, IMemberInfoLocalization>();
         }
 
         /// <summary>
@@ -41,23 +41,35 @@ namespace Kephas.Reflection.Localization
         public TypeInfoLocalization(ITypeInfo typeInfo)
             : base(typeInfo)
         {
-            this.properties = typeInfo.Properties.ToDictionary(p => p.Name, this.CreatePropertyInfoLocalization);
+            this.members = new Dictionary<string, IMemberInfoLocalization>();
+            foreach (var member in typeInfo.Members)
+            {
+                // avoid cases of overloaded members
+                // in such cases consider only the first member with the provided name.
+                if (this.members.ContainsKey(member.Name))
+                {
+                    continue;
+                }
+
+                // ReSharper disable once VirtualMemberCallInConstructor
+                this.members.Add(member.Name, this.CreateMemberInfoLocalization(member));
+            }
         }
 
         /// <summary>
-        /// Gets or sets a dictionary of properties' localizations.
+        /// Gets or sets a dictionary of members' localizations.
         /// </summary>
         /// <value>
-        /// The properties' localizations.
+        /// The members' localizations.
         /// </value>
-        public IDictionary<string, IPropertyInfoLocalization> Properties
+        public IDictionary<string, IMemberInfoLocalization> Members
         {
-            get => this.properties;
+            get => this.members;
             set
             {
                 Requires.NotNull(value, nameof(value));
 
-                this.properties = value;
+                this.members = value;
             }
         }
 
@@ -80,15 +92,15 @@ namespace Kephas.Reflection.Localization
         }
 
         /// <summary>
-        /// Creates a property information localization.
+        /// Creates a member information localization.
         /// </summary>
-        /// <param name="propertyInfo">Information describing the property.</param>
+        /// <param name="memberInfo">Information describing the member.</param>
         /// <returns>
-        /// The new property information localization.
+        /// The new member information localization.
         /// </returns>
-        protected virtual IPropertyInfoLocalization CreatePropertyInfoLocalization(IPropertyInfo propertyInfo)
+        protected virtual IMemberInfoLocalization CreateMemberInfoLocalization(IElementInfo memberInfo)
         {
-            return new PropertyInfoLocalization(propertyInfo);
+            return new MemberInfoLocalization(memberInfo);
         }
     }
 }

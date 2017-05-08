@@ -11,10 +11,12 @@ namespace Kephas.Runtime
 {
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// Interface for dynamic element information.
     /// </summary>
-    public interface IRuntimeElementInfo
+    public interface IRuntimeElementInfo : IElementInfo
     {
         /// <summary>
         /// Gets the underlying member information.

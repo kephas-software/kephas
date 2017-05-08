@@ -14,6 +14,8 @@ namespace Kephas.Model
     using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Contract providing base information about a model element.
     /// </summary>
@@ -48,9 +50,9 @@ namespace Kephas.Model
         /// </summary>
         /// <param name="modelElement">The model element.</param>
         /// <returns>The members declared exclusively at the element level.</returns>
-        public static IEnumerable<INamedElement> GetOwnMembers(this IModelElement modelElement)
+        public static IEnumerable<INamedElement> GetDeclaredMembers(this IModelElement modelElement)
         {
-            Contract.Requires(modelElement != null);
+            Requires.NotNull(modelElement, nameof(modelElement));
 
             return modelElement.Members.Where(m => m.Container == modelElement);
         }

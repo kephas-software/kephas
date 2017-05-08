@@ -359,6 +359,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are multiple members with the name &apos;{0}&apos; in &apos;{1}&apos;. Please use {2} to disambiguate between them..
+        /// </summary>
+        internal static string RuntimeTypeInfo_AmbiguousMember_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeTypeInfo_AmbiguousMember_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Member {0} not found in {1}..
         /// </summary>
         internal static string RuntimeTypeInfo_MemberNotFound_Exception {

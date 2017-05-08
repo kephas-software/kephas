@@ -10,6 +10,8 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
@@ -123,6 +125,18 @@ namespace Kephas.Reflection
             }
 
             return qualifiedFullName;
+        }
+
+        /// <summary>
+        /// Gets the model element's own members, excluding those declared by the base element or mixins.
+        /// </summary>
+        /// <param name="typeInfo">The type information.</param>
+        /// <returns>The members declared exclusively at the type level.</returns>
+        public static IEnumerable<IElementInfo> GetDeclaredMembers(this ITypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return typeInfo.Members.Where(m => m.DeclaringContainer == typeInfo);
         }
     }
 }

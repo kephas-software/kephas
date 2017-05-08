@@ -84,7 +84,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The property localization.
         /// </returns>
-        public static IPropertyInfoLocalization GetLocalization(this PropertyInfo propertyInfo)
+        public static IMemberInfoLocalization GetLocalization(this PropertyInfo propertyInfo)
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
@@ -100,16 +100,16 @@ namespace Kephas.Reflection
         /// <returns>
         /// The property localization.
         /// </returns>
-        public static IPropertyInfoLocalization GetLocalization(this IPropertyInfo propertyInfo)
+        public static IMemberInfoLocalization GetLocalization(this IPropertyInfo propertyInfo)
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
-            var localization = propertyInfo[LocalizationPropertyName] as IPropertyInfoLocalization;
+            var localization = propertyInfo[LocalizationPropertyName] as IMemberInfoLocalization;
             if (localization == null && !propertyInfo.HasMember(LocalizationPropertyName))
             {
                 var typeInfo = propertyInfo.DeclaringContainer as ITypeInfo;
                 var typeInfoLocalization = GetLocalization(typeInfo);
-                localization = typeInfoLocalization.Properties[propertyInfo.Name];
+                localization = typeInfoLocalization.Members[propertyInfo.Name];
                 propertyInfo[LocalizationPropertyName] = localization;
             }
 

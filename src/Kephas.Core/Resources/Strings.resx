@@ -240,4 +240,7 @@
   <data name="ActivatorBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
     <value>Cannot instantiate the type '{0}' because it could not be resolved to an implementation type.</value>
   </data>
+  <data name="RuntimeTypeInfo_AmbiguousMember_Exception" xml:space="preserve">
+    <value>There are multiple members with the name '{0}' in '{1}'. Please use {2} to disambiguate between them.</value>
+  </data>
 </root>

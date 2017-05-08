@@ -17,11 +17,11 @@ namespace Kephas.Reflection.Localization
     public interface ITypeInfoLocalization : IElementInfoLocalization
     {
         /// <summary>
-        /// Gets a dictionary of properties' localizations.
+        /// Gets a dictionary of members' localizations.
         /// </summary>
         /// <value>
-        /// The properties' localizations.
+        /// The members' localizations.
         /// </value>
-        IDictionary<string, IPropertyInfoLocalization> Properties { get; }
+        IDictionary<string, IMemberInfoLocalization> Members { get; }
     }
 }

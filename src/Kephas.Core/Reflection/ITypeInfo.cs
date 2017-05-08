@@ -73,6 +73,14 @@ namespace Kephas.Reflection
         IEnumerable<IPropertyInfo> Properties { get; }
 
         /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> Members { get; }
+
+        /// <summary>
         /// Gets a member by the provided name.
         /// </summary>
         /// <param name="name">The member name.</param>

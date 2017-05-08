@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PropertyInfoLocalization.cs" company="Quartz Software SRL">
+// <copyright file="MemberInfoLocalization.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -12,28 +12,31 @@ namespace Kephas.Reflection.Localization
     /// <summary>
     /// Localization information for <see cref="IPropertyInfo"/>.
     /// </summary>
-    public class PropertyInfoLocalization : ElementInfoLocalization, IPropertyInfoLocalization
+    public class MemberInfoLocalization : ElementInfoLocalization, IMemberInfoLocalization
     {
         /// <summary>
         /// The localized short name.
         /// </summary>
         private string shortName;
 
+        /// <summary>
+        /// The localized prompt.
+        /// </summary>
         private string prompt;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyInfoLocalization"/> class.
+        /// Initializes a new instance of the <see cref="MemberInfoLocalization"/> class.
         /// </summary>
-        public PropertyInfoLocalization()
+        public MemberInfoLocalization()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyInfoLocalization"/> class.
+        /// Initializes a new instance of the <see cref="MemberInfoLocalization"/> class.
         /// </summary>
-        /// <param name="propertyInfo">Information describing the property.</param>
-        public PropertyInfoLocalization(IPropertyInfo propertyInfo)
-            : base(propertyInfo)
+        /// <param name="memberInfo">Information describing the member.</param>
+        public MemberInfoLocalization(IElementInfo memberInfo)
+            : base(memberInfo)
         {
         }
 

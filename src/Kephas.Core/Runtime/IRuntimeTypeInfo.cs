@@ -53,6 +53,22 @@ namespace Kephas.Runtime
         RuntimeTypeKind Kind { get; }
 
         /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        new IDictionary<string, IRuntimeElementInfo> Members { get; }
+
+        /// <summary>
+        /// Gets the fields.
+        /// </summary>
+        /// <value>
+        /// The fields.
+        /// </value>
+        IDictionary<string, IRuntimeFieldInfo> Fields { get; }
+
+        /// <summary>
         /// Gets the properties.
         /// </summary>
         /// <value>
@@ -66,7 +82,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The methods.
         /// </value>
-        IDictionary<string, IEnumerable<IRuntimeMethodInfo>> Methods { get; }
+        IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods { get; }
 
         /// <summary>
         /// Gets the value of the property with the specified name.

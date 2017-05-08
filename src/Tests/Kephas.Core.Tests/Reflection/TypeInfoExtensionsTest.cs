@@ -1,9 +1,9 @@
 ﻿namespace Kephas.Core.Tests.Reflection
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -74,6 +74,16 @@
             var typeInfo = typeof(string).GetTypeInfo();
 
             Assert.AreEqual(typeInfo.AssemblyQualifiedName, typeInfo.GetQualifiedFullName(stripVersionInfo: false));
+        }
+
+        [Test]
+        public void GetDeclaredMembers()
+        {
+            var typeInfo = typeof(IRuntimeElementInfo).AsRuntimeTypeInfo();
+
+            var declaredMembers = typeInfo.GetDeclaredMembers().ToList();
+            Assert.AreEqual(1, declaredMembers.Count);
+            Assert.AreEqual(nameof(IRuntimeElementInfo.GetUnderlyingMemberInfo), declaredMembers[0].Name);
         }
     }
 }

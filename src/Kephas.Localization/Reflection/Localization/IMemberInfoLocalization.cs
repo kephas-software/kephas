@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPropertyInfoLocalization.cs" company="Quartz Software SRL">
+// <copyright file="IMemberInfoLocalization.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IPropertyInfoLocalization interface.
+//   Declares the IMemberInfoLocalization interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ namespace Kephas.Reflection.Localization
     /// <summary>
     /// Interface for property information localization.
     /// </summary>
-    public interface IPropertyInfoLocalization : IElementInfoLocalization
+    public interface IMemberInfoLocalization : IElementInfoLocalization
     {
         /// <summary>
         /// Gets the localized short name.

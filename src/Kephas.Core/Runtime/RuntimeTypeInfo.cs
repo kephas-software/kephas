@@ -43,6 +43,11 @@ namespace Kephas.Runtime
         private static readonly ConcurrentDictionary<Type, RuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, RuntimeTypeInfo>();
 
         /// <summary>
+        /// The <see cref="RuntimeFieldInfo{T,TMember}"/> generic type information.
+        /// </summary>
+        private static readonly TypeInfo RuntimeFieldInfoGenericTypeInfo = typeof(RuntimeFieldInfo<,>).GetTypeInfo();
+
+        /// <summary>
         /// The <see cref="RuntimePropertyInfo{T,TMember}"/> generic type information.
         /// </summary>
         private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
@@ -53,6 +58,11 @@ namespace Kephas.Runtime
         private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
 
         /// <summary>
+        /// The fields.
+        /// </summary>
+        private IDictionary<string, IRuntimeFieldInfo> fields;
+
+        /// <summary>
         /// The properties.
         /// </summary>
         private IDictionary<string, IRuntimePropertyInfo> properties;
@@ -60,7 +70,12 @@ namespace Kephas.Runtime
         /// <summary>
         /// The methods.
         /// </summary>
-        private IDictionary<string, IEnumerable<IRuntimeMethodInfo>> methods;
+        private IDictionary<string, ICollection<IRuntimeMethodInfo>> methods;
+
+        /// <summary>
+        /// The members.
+        /// </summary>
+        private IDictionary<string, IRuntimeElementInfo> members;
 
         /// <summary>
         /// The base <see cref="ITypeInfo"/>s.
@@ -243,6 +258,14 @@ namespace Kephas.Runtime
         IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties.Values;
 
         /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members.Values;
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>
@@ -275,6 +298,22 @@ namespace Kephas.Runtime
         public TypeInfo TypeInfo { get; }
 
         /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        public IDictionary<string, IRuntimeElementInfo> Members => this.GetMembers();
+
+        /// <summary>
+        /// Gets the fields.
+        /// </summary>
+        /// <value>
+        /// The fields.
+        /// </value>
+        public IDictionary<string, IRuntimeFieldInfo> Fields => this.GetFields();
+
+        /// <summary>
         /// Gets the runtime properties.
         /// </summary>
         /// <value>
@@ -288,7 +327,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The runtime methods.
         /// </value>
-        public IDictionary<string, IEnumerable<IRuntimeMethodInfo>> Methods => this.GetMethods();
+        public IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods => this.GetMethods();
 
         /// <summary>
         /// Gets the underlying member information.
@@ -308,16 +347,24 @@ namespace Kephas.Runtime
         /// </returns>
         public IElementInfo GetMember(string name, bool throwIfNotFound = true)
         {
-            IRuntimePropertyInfo property;
-            if (this.Properties.TryGetValue(name, out property))
+            if (this.Fields.TryGetValue(name, out IRuntimeFieldInfo fieldInfo))
             {
-                return property;
+                return fieldInfo;
             }
 
-            IEnumerable<IRuntimeMethodInfo> methods;
-            if (this.Methods.TryGetValue(name, out methods))
+            if (this.Properties.TryGetValue(name, out IRuntimePropertyInfo propertyInfo))
             {
-                return methods.Single();
+                return propertyInfo;
+            }
+
+            if (this.Methods.TryGetValue(name, out ICollection<IRuntimeMethodInfo> methodInfos))
+            {
+                if (methodInfos.Count > 1)
+                {
+                    throw new AmbiguousMatchException(string.Format(Strings.RuntimeTypeInfo_AmbiguousMember_Exception, name, this, nameof(this.Methods)));
+                }
+
+                return methodInfos.First();
             }
 
             if (throwIfNotFound)
@@ -509,14 +556,91 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Creates the dynamic methods.
+        /// Creates the runtime method infos.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns>A dictionary of runtime dynamic methods.</returns>
-        private static IDictionary<string, IEnumerable<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
+        /// <returns>A dictionary of runtime method infos.</returns>
+        private static IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
         {
-            var methodInfos = type.GetRuntimeMethods().Where(mi => !mi.IsStatic).GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, IList<IRuntimeMethodInfo>>(name, methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList()));
-            return new ReadOnlyDictionary<string, IEnumerable<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => (IEnumerable<IRuntimeMethodInfo>)g.Value));
+            var methodInfos = type.GetRuntimeMethods()
+                                .Where(mi => !mi.IsStatic)
+                                .GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(name, new ReadOnlyCollection<IRuntimeMethodInfo>(methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList())));
+            return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
+        }
+
+        /// <summary>
+        /// Creates the member infos.
+        /// </summary>
+        /// <param name="fieldInfos">The field infos.</param>
+        /// <param name="propertyInfos">The property infos.</param>
+        /// <param name="methodInfos">The method infos.</param>
+        /// <returns>
+        /// The new member infos.
+        /// </returns>
+        private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
+            IDictionary<string, IRuntimeFieldInfo> fieldInfos,
+            IDictionary<string, IRuntimePropertyInfo> propertyInfos,
+            IDictionary<string, ICollection<IRuntimeMethodInfo>> methodInfos)
+        {
+            var memberInfos = new Dictionary<string, IRuntimeElementInfo>();
+            foreach (var kv in fieldInfos)
+            {
+                memberInfos.Add(kv.Key, kv.Value);
+            }
+
+            foreach (var kv in propertyInfos)
+            {
+                memberInfos.Add(kv.Key, kv.Value);
+            }
+
+            foreach (var kv in methodInfos)
+            {
+                var groupMethodInfos = (IList<IRuntimeMethodInfo>)kv.Value;
+                if (groupMethodInfos.Count > 1)
+                {
+                    for (var i = 0; i < groupMethodInfos.Count; i++)
+                    {
+                        var methodInfo = groupMethodInfos[i];
+                        memberInfos.Add($"{kv.Key}#{i}", methodInfo);
+                    }
+                }
+                else
+                {
+                    memberInfos.Add(groupMethodInfos[0].Name, groupMethodInfos[0]);
+                }
+            }
+
+            return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
+        }
+
+        /// <summary>
+        /// Creates the fields.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// A dictionary of fields.
+        /// </returns>
+        private static IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type)
+        {
+            var runtimeFieldInfos = new Dictionary<string, IRuntimeFieldInfo>();
+            var fieldInfos = type.GetRuntimeFields().Where(f => !f.IsPrivate);
+            foreach (var fieldInfo in fieldInfos)
+            {
+                var fieldName = fieldInfo.Name;
+                if (runtimeFieldInfos.ContainsKey(fieldName))
+                {
+                    continue;
+                }
+
+                var fieldAccessorType = RuntimeFieldInfoGenericTypeInfo.MakeGenericType(
+                    type,
+                    fieldInfo.FieldType);
+                var constructor = fieldAccessorType.GetTypeInfo().DeclaredConstructors.First();
+                var runtimeFieldInfo = (IRuntimeFieldInfo)constructor.Invoke(new object[] { fieldInfo });
+                runtimeFieldInfos.Add(fieldName, runtimeFieldInfo);
+            }
+
+            return new ReadOnlyDictionary<string, IRuntimeFieldInfo>(runtimeFieldInfos);
         }
 
         /// <summary>
@@ -528,12 +652,12 @@ namespace Kephas.Runtime
         /// </returns>
         private static IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type)
         {
-            var dynamicProperties = new Dictionary<string, IRuntimePropertyInfo>();
+            var runtimePropertyInfos = new Dictionary<string, IRuntimePropertyInfo>();
             var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic);
             foreach (var propertyInfo in propertyInfos)
             {
                 var propertyName = propertyInfo.Name;
-                if (propertyInfo.GetIndexParameters().Length > 0 || dynamicProperties.ContainsKey(propertyName))
+                if (propertyInfo.GetIndexParameters().Length > 0 || runtimePropertyInfos.ContainsKey(propertyName))
                 {
                     continue;
                 }
@@ -542,11 +666,11 @@ namespace Kephas.Runtime
                     type,
                     propertyInfo.PropertyType);
                 var constructor = propertyAccessorType.GetTypeInfo().DeclaredConstructors.First();
-                var propertyAccessor = (IRuntimePropertyInfo)constructor.Invoke(new object[] { propertyInfo });
-                dynamicProperties.Add(propertyName, propertyAccessor);
+                var runtimePropertyInfo = (IRuntimePropertyInfo)constructor.Invoke(new object[] { propertyInfo });
+                runtimePropertyInfos.Add(propertyName, runtimePropertyInfo);
             }
 
-            return new ReadOnlyDictionary<string, IRuntimePropertyInfo>(dynamicProperties);
+            return new ReadOnlyDictionary<string, IRuntimePropertyInfo>(runtimePropertyInfos);
         }
 
         /// <summary>
@@ -558,15 +682,15 @@ namespace Kephas.Runtime
         /// </returns>
         private IReadOnlyList<ITypeInfo> CreateBaseTypes(TypeInfo typeInfo)
         {
-            var baseTypes = new List<ITypeInfo>();
+            var baseTypeInfos = new List<ITypeInfo>();
             if (typeInfo.BaseType != null)
             {
-                baseTypes.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
+                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
             }
 
-            typeInfo.ImplementedInterfaces.ForEach(i => baseTypes.Add(i.AsRuntimeTypeInfo()));
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo()));
 
-            return new ReadOnlyCollection<ITypeInfo>(baseTypes);
+            return new ReadOnlyCollection<ITypeInfo>(baseTypeInfos);
         }
 
         /// <summary>
@@ -587,6 +711,28 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the members, initializing them if necessary.
+        /// </summary>
+        /// <returns>
+        /// The members.
+        /// </returns>
+        private IDictionary<string, IRuntimeElementInfo> GetMembers()
+        {
+            return this.members ?? (this.members = CreateMemberInfos(this.Fields, this.Properties, this.Methods));
+        }
+
+        /// <summary>
+        /// Gets the field infos, initializing them if necessary.
+        /// </summary>
+        /// <returns>
+        /// The fields.
+        /// </returns>
+        private IDictionary<string, IRuntimeFieldInfo> GetFields()
+        {
+            return this.fields ?? (this.fields = CreateFieldInfos(this.Type));
+        }
+
+        /// <summary>
         /// Gets the property infos, initializing them if necessary.
         /// </summary>
         /// <returns>
@@ -603,7 +749,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The dynamic method.
         /// </returns>
-        private IDictionary<string, IEnumerable<IRuntimeMethodInfo>> GetMethods()
+        private IDictionary<string, ICollection<IRuntimeMethodInfo>> GetMethods()
         {
             return this.methods ?? (this.methods = CreateMethodInfos(this.Type));
         }
@@ -677,7 +823,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IList<IRuntimeMethodInfo> GetMethods(string methodName, bool throwOnNotFound = true)
         {
-            if (!this.GetMethods().TryGetValue(methodName, out IEnumerable<IRuntimeMethodInfo> methodInfos))
+            if (!this.GetMethods().TryGetValue(methodName, out ICollection<IRuntimeMethodInfo> methodInfos))
             {
                 if (throwOnNotFound)
                 {

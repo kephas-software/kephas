@@ -24,7 +24,7 @@ namespace Kephas.Runtime
     public sealed class RuntimePropertyInfo<T, TMember> : Expando, IRuntimePropertyInfo
     {
         /// <summary>
-        /// The dynamic type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
+        /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
         /// </summary>
         private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
 
@@ -41,9 +41,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
         /// </summary>
-        /// <param name="propertyInfo">
-        /// The property information.
-        /// </param>
+        /// <param name="propertyInfo">The property information.</param>
         internal RuntimePropertyInfo(PropertyInfo propertyInfo)
             : base(isThreadSafe: true)
         {
