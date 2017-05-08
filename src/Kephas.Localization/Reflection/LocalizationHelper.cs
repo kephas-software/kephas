@@ -29,7 +29,7 @@ namespace Kephas.Reflection
         private const string LocalizationPropertyName = "Kephas-Localization";
 
         /// <summary>
-        /// The the function for creating the type info localization.
+        /// The function for creating the type info localization.
         /// </summary>
         private static Func<ITypeInfo, ITypeInfoLocalization> createTypeInfoLocalizationFunc = ti => new TypeInfoLocalization(ti);
 
@@ -37,7 +37,7 @@ namespace Kephas.Reflection
         /// Gets or sets the function for creating the type info localization.
         /// </summary>
         /// <value>
-        /// The the function for creating the type info localization.
+        /// The function for creating the type info localization.
         /// </value>
         public static Func<ITypeInfo, ITypeInfoLocalization> CreateTypeInfoLocalization
         {

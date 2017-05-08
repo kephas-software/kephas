@@ -40,7 +40,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The cache of dynamic type infos.
         /// </summary>
-        private static readonly ConcurrentDictionary<Type, RuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, RuntimeTypeInfo>();
+        private static readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
 
         /// <summary>
         /// The <see cref="RuntimeFieldInfo{T,TMember}"/> generic type information.
@@ -56,6 +56,11 @@ namespace Kephas.Runtime
         /// The runtime type of the <see cref="RuntimeTypeInfo"/>.
         /// </summary>
         private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
+
+        /// <summary>
+        /// The function for creating the type info localization.
+        /// </summary>
+        private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = t => new RuntimeTypeInfo(t);
 
         /// <summary>
         /// The fields.
@@ -152,6 +157,22 @@ namespace Kephas.Runtime
             this.Name = type.Name;
             this.FullName = typeInfo.FullName;
             this.Namespace = type.Namespace;
+        }
+
+        /// <summary>
+        /// Gets or sets the function for creating the runtime type information.
+        /// </summary>
+        /// <value>
+        /// The function for creating the runtime type information.
+        /// </value>
+        public static Func<Type, IRuntimeTypeInfo> CreateRuntimeTypeInfo
+        {
+            get => createRuntimeTypeInfoFunc;
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+                createRuntimeTypeInfoFunc = value;
+            }
         }
 
         /// <summary>
@@ -525,11 +546,11 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A runtime type.</returns>
-        internal static RuntimeTypeInfo GetRuntimeType(Type type)
+        internal static IRuntimeTypeInfo GetRuntimeType(Type type)
         {
             Requires.NotNull(type, nameof(type));
 
-            return RuntimeTypeInfosCache.GetOrAdd(type, _ => new RuntimeTypeInfo(type));
+            return RuntimeTypeInfosCache.GetOrAdd(type, _ => CreateRuntimeTypeInfo(type) ?? new RuntimeTypeInfo(type));
         }
 
         /// <summary>
@@ -537,11 +558,11 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <returns>A runtime type.</returns>
-        internal static RuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
+        internal static IRuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return RuntimeTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => new RuntimeTypeInfo(typeInfo));
+            return RuntimeTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => CreateRuntimeTypeInfo(typeInfo.AsType()) ?? new RuntimeTypeInfo(typeInfo));
         }
 
         /// <summary>

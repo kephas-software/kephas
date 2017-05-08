@@ -15,7 +15,7 @@
         [Test]
         public void IsGenericType_non_generic()
         {
-            var typeInfo = new RuntimeTypeInfo(typeof(string));
+            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(string));
 
             Assert.IsFalse(typeInfo.IsGenericType());
         }
