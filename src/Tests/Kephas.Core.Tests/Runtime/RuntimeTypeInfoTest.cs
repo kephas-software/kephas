@@ -294,10 +294,9 @@ namespace Kephas.Core.Tests.Runtime
             var runtimeTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
             var properties = runtimeTypeInfo.Properties;
             Assert.IsTrue(properties.IsReadOnly);
-            Assert.AreEqual(3, properties.Count);
+            Assert.AreEqual(2, properties.Count);
             Assert.IsTrue(properties.ContainsKey(nameof(TestClass.Name)));
             Assert.IsTrue(properties.ContainsKey(nameof(TestClass.ReadOnlyFullName)));
-            Assert.IsTrue(properties.ContainsKey("PrivateAge"));
         }
 
         [Test]

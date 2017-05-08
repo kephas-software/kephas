@@ -98,8 +98,12 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
+            var value = expando.PrivateAge;
+            instance.SetPrivateAge(10);
+            var objValue = instance.GetPrivateAge();
 
-            Assert.Throws<MemberAccessException>(() => { var value = expando.PrivateAge; });
+            Assert.AreEqual(10, objValue);
+            Assert.AreEqual(null, value);
         }
 
         [Test]
@@ -107,8 +111,13 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var instance = new TestClass();
             dynamic expando = new Expando(instance);
+            var value = expando.PrivateAge;
+            expando.PrivateAge = 10;
+            var objValue = instance.GetPrivateAge();
 
-            Assert.Throws<MemberAccessException>(() => expando.PrivateAge = "John Doe");
+            Assert.AreNotEqual(value, objValue);
+            Assert.AreEqual(10, expando.PrivateAge);
+            Assert.AreEqual(0, instance.GetPrivateAge());
         }
 
         [Test]
@@ -250,6 +259,10 @@ namespace Kephas.Core.Tests.Dynamic
             public string ReadOnlyFullName => this.ComputeFullName(string.Empty);
 
             private int PrivateAge { get; set; }
+
+            public int GetPrivateAge() => this.PrivateAge;
+
+            public void SetPrivateAge(int value) => this.PrivateAge = value;
 
             public virtual string ComputeFullName(string parentsInitials) => $"{parentsInitials} {this.Name}";
         }
