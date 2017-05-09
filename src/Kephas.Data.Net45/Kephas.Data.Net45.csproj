@@ -316,8 +316,8 @@
     <Compile Include="..\Kephas.Data\Linq\IDataContextQueryProvider.cs">
       <Link>Linq\IDataContextQueryProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\Linq\QueryableExtensions.cs">
-      <Link>Linq\QueryableExtensions.cs</Link>
+    <Compile Include="..\Kephas.Data\Linq\QueryableHelper.cs">
+      <Link>Linq\QueryableHelper.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\MissingDataCommandException.cs">
       <Link>MissingDataCommandException.cs</Link>
