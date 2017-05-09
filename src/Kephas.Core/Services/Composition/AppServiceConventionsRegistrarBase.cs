@@ -66,8 +66,13 @@ namespace Kephas.Services.Composition
             var typeInfos = candidateTypes.ToList();
 
             // get all type infos from the composition assemblies
-            var appServiceContractsInfos =
-                typeInfos.ToDictionary(ti => ti, this.TryGetAppServiceContractAttribute)
+            var contracts = this.GetAppServiceContracts(typeInfos);
+            if (contracts == null)
+            {
+                return;
+            }
+
+            var appServiceContractsInfos = contracts
                     .Where(ta => ta.Value != null)
                     .ToList();
 
@@ -114,6 +119,18 @@ namespace Kephas.Services.Composition
                     .Select(a => a.Value)
                     .FirstOrDefault();
             return value;
+        }
+
+        /// <summary>
+        /// Gets the application service contracts to register.
+        /// </summary>
+        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <returns>
+        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the value is the <see cref="AppServiceContractAttribute"/>.
+        /// </returns>
+        protected virtual IEnumerable<KeyValuePair<TypeInfo, AppServiceContractAttribute>> GetAppServiceContracts(IList<TypeInfo> candidateTypes)
+        {
+            return candidateTypes.ToDictionary(ti => ti, this.TryGetAppServiceContractAttribute);
         }
 
         /// <summary>
