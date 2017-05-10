@@ -31,18 +31,54 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Kephas.CodeAnalysis.xml</DocumentationFile>
   </PropertyGroup>
-    <PropertyGroup>
-        <SignAssembly>true</SignAssembly>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.CodeAnalysis\Conversion\CodeConversionContext.cs">
+      <Link>Conversion\CodeConversionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Conversion\ICodeConversionContext.cs">
+      <Link>Conversion\ICodeConversionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Conversion\ICodeConverter.cs">
+      <Link>Conversion\ICodeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\CodeFormatter.cs">
+      <Link>Generation\CodeFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\CodeGenerationContext.cs">
+      <Link>Generation\CodeGenerationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\CodeGenerationUnit.cs">
+      <Link>Generation\CodeGenerationUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\ICodeFormatter.cs">
+      <Link>Generation\ICodeFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\ICodeGenerationContext.cs">
+      <Link>Generation\ICodeGenerationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\ICodeGenerationUnit.cs">
+      <Link>Generation\ICodeGenerationUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\ICodeGenerator.cs">
+      <Link>Generation\ICodeGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\IElementInfoGenerator.cs">
+      <Link>Generation\IElementInfoGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CodeAnalysis\Generation\IElementInfoGeneratorProvider.cs">
+      <Link>Generation\IElementInfoGeneratorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>

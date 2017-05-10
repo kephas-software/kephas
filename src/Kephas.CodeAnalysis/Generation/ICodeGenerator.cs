@@ -1,0 +1,37 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ICodeGenerator.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Declares the ICodeGenerator interface.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Generation
+{
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Reflection;
+
+    /// <summary>
+    /// Interface for code generator.
+    /// </summary>
+    public interface ICodeGenerator
+    {
+        /// <summary>
+        /// Writes the generated code to the given text writer.
+        /// </summary>
+        /// <param name="codeElements">The <see cref="IElementInfo"/>s to be generated.</param>
+        /// <param name="codeGenerationContext">Context for the code generation.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of an enumeration of <see cref="ICodeGenerationUnit"/>s.
+        /// </returns>
+        Task<IEnumerable<ICodeGenerationUnit>> GenerateCodeAsync(
+            IEnumerable<IElementInfo> codeElements,
+            ICodeGenerationContext codeGenerationContext,
+            CancellationToken cancellationToken = default(CancellationToken));
+    }
+}
