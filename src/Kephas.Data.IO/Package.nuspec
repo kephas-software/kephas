@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Data.IO</id>
+        <version>$version$</version>
+        <title>Kephas.Data.IO</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides functionality for data import/export (input/output).</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides functionality for data import/export (input/output).</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Data" version="$refversion$" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.IO.dll" />
+        </references>
+        <tags>kephas framework data input output import export quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.IO.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.IO.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.IO.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Data.IO.Net45\bin\$configuration$\Kephas.Data.IO.dll" target="lib\net45" />
+        <file src="..\Kephas.Data.IO.Net45\bin\$configuration$\Kephas.Data.IO.pdb" target="lib\net45" />
+        <file src="..\Kephas.Data.IO.Net45\bin\$configuration$\Kephas.Data.IO.xml" target="lib\net45" />
+    </files>
+</package>
