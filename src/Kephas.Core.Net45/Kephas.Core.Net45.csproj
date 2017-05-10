@@ -590,6 +590,9 @@
     <Compile Include="..\Kephas.Core\Sets\PartialOrderedSet.cs">
       <Link>Sets\PartialOrderedSet.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Text\Encoding\Base64Data.cs">
+      <Link>Text\Encoding\Base64Data.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Threading\Tasks\TaskHelper.cs">
       <Link>Threading\Tasks\TaskHelper.cs</Link>
     </Compile>

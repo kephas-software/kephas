@@ -166,6 +166,9 @@
     <Compile Include="..\Kephas.Core.Tests\Sets\PartialOrderedSetTest.cs">
       <Link>Sets\PartialOrderedSetTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Text\Encoding\Base64DataTest.cs">
+      <Link>Text\Encoding\Base64DataTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Threading\Tasks\TaskHelperTest.cs">
       <Link>Threading\Tasks\TaskHelperTest.cs</Link>
     </Compile>

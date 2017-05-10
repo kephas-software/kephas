@@ -96,6 +96,7 @@
     <Compile Include="Services\ContextTest.cs" />
     <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
     <Compile Include="Sets\PartialOrderedSetTest.cs" />
+    <Compile Include="Text\Encoding\Base64DataTest.cs" />
     <Compile Include="Threading\Tasks\TaskHelperTest.cs" />
   </ItemGroup>
   <ItemGroup>
