@@ -27,18 +27,15 @@ namespace Kephas.Text.Encoding
         {
             Requires.NotNullOrEmpty(base64String, nameof(base64String));
 
-            var indexOfComma = base64String.IndexOf(",");
+            var indexOfComma = base64String.IndexOf(",", StringComparison.Ordinal);
+            var plainString = base64String;
             if (indexOfComma > 0)
             {
                 this.MimeType = base64String.Substring(0, indexOfComma);
-                this.PlainString = base64String.Substring(indexOfComma + 1);
-            }
-            else
-            {
-                this.PlainString = base64String;
+                plainString = base64String.Substring(indexOfComma + 1);
             }
 
-            this.Bytes = Convert.FromBase64String(this.PlainString);
+            this.Bytes = Convert.FromBase64String(plainString);
         }
 
         /// <summary>
@@ -69,14 +66,6 @@ namespace Kephas.Text.Encoding
         /// The bytes.
         /// </value>
         public byte[] Bytes { get; }
-
-        /// <summary>
-        /// Gets the plain string.
-        /// </summary>
-        /// <value>
-        /// The plain string.
-        /// </value>
-        public string PlainString { get; }
 
         /// <summary>
         /// Initializes a new <see cref="Base64Data"/> from the given Base64 string.
