@@ -15,6 +15,7 @@ namespace Kephas.Runtime
 
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Resources;
 
     /// <summary>
     /// Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
@@ -141,7 +142,7 @@ namespace Kephas.Runtime
             var setDelegate = this.GetMemberSetDelegate();
             if (setDelegate == null)
             {
-                throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be set.");
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             setDelegate((T)obj, (TMember)value);
@@ -160,7 +161,7 @@ namespace Kephas.Runtime
             var getDelegate = this.GetMemberGetDelegate();
             if (getDelegate == null)
             {
-                throw new MemberAccessException($"Value of property {this.PropertyInfo.Name} in {typeof(T)} cannot be get.");
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             return getDelegate((T)obj);

@@ -386,6 +386,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No get accessor for property &apos;{0}&apos; in &apos;{1}&apos;..
+        /// </summary>
+        internal static string RuntimePropertyInfo_GetValue_Exception {
+            get {
+                return ResourceManager.GetString("RuntimePropertyInfo_GetValue_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No set accessor for property &apos;{0}&apos; in &apos;{1}&apos;..
+        /// </summary>
+        internal static string RuntimePropertyInfo_SetValue_Exception {
+            get {
+                return ResourceManager.GetString("RuntimePropertyInfo_SetValue_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are multiple members with the name &apos;{0}&apos; in &apos;{1}&apos;. Please use {2} to disambiguate between them..
         /// </summary>
         internal static string RuntimeTypeInfo_AmbiguousMember_Exception {

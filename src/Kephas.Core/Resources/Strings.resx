@@ -252,4 +252,10 @@
   <data name="DynamicAssemblyInfo_AddType_Duplicate_Exception" xml:space="preserve">
     <value>Duplicate type with full name '{0}' in '{1}'.</value>
   </data>
+  <data name="RuntimePropertyInfo_GetValue_Exception" xml:space="preserve">
+    <value>No get accessor for property '{0}' in '{1}'.</value>
+  </data>
+  <data name="RuntimePropertyInfo_SetValue_Exception" xml:space="preserve">
+    <value>No set accessor for property '{0}' in '{1}'.</value>
+  </data>
 </root>

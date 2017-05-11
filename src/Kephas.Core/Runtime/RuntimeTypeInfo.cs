@@ -589,7 +589,7 @@ namespace Kephas.Runtime
         private static IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
         {
             var methodInfos = type.GetRuntimeMethods()
-                                .Where(mi => !mi.IsStatic && !mi.IsPrivate)
+                                .Where(mi => !mi.IsStatic && mi.IsPublic)
                                 .GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(name, new ReadOnlyCollection<IRuntimeMethodInfo>(methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList())));
             return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
         }
@@ -649,7 +649,7 @@ namespace Kephas.Runtime
         private static IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type)
         {
             var runtimeFieldInfos = new Dictionary<string, IRuntimeFieldInfo>();
-            var fieldInfos = type.GetRuntimeFields().Where(f => !f.IsPrivate);
+            var fieldInfos = type.GetRuntimeFields().Where(f => f.IsPublic);
             foreach (var fieldInfo in fieldInfos)
             {
                 var fieldName = fieldInfo.Name;
@@ -679,7 +679,7 @@ namespace Kephas.Runtime
         private static IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type)
         {
             var runtimePropertyInfos = new Dictionary<string, IRuntimePropertyInfo>();
-            var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && !p.GetMethod.IsPrivate);
+            var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
             foreach (var propertyInfo in propertyInfos)
             {
                 var propertyName = propertyInfo.Name;
