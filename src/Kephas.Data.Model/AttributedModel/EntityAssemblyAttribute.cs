@@ -7,11 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Model.Runtime.AttributedModel
+namespace Kephas.Data.Model.AttributedModel
 {
     using System;
 
-    using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Model.AttributedModel;
 
     /// <summary>
     /// Marks an assembly as exporting <see cref="IEntity"/> model elements.

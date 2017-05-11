@@ -11,7 +11,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
 
-    using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 

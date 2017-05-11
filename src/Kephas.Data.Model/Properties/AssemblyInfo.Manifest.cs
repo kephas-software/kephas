@@ -7,6 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Model.Runtime.AttributedModel;
+using Kephas.Model.AttributedModel;
 
 [assembly: ModelAssembly("Kephas.Data.Model.Dimensions")]

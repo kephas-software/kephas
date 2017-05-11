@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.AttributedModel
+namespace Kephas.Model.AttributedModel
 {
     using System;
     using System.Collections.Generic;

@@ -20,8 +20,8 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Reflection;
-    using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 

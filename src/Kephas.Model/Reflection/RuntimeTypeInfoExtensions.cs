@@ -12,7 +12,7 @@ namespace Kephas.Model.Reflection
     using System;
     using System.Linq;
 
-    using Kephas.Model.Runtime.AttributedModel;
+    using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
 
     /// <summary>

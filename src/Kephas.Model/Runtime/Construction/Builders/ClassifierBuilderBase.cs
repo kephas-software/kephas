@@ -13,6 +13,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using System.Linq;
 
     using Kephas.Dynamic;
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Dimensions.App;
@@ -22,7 +23,6 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
-    using Kephas.Model.Runtime.AttributedModel;
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Runtime;
 

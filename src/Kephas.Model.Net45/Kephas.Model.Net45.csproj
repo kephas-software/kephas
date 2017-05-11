@@ -46,14 +46,32 @@
     <Compile Include="..\Kephas.Model\Application\ModelFeatureManager.cs">
       <Link>Application\ModelFeatureManager.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\AbstractAttribute.cs">
+      <Link>AttributedModel\AbstractAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\AggregatableModelDimensionAttribute.cs">
       <Link>AttributedModel\AggregatableModelDimensionAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\AspectAttribute.cs">
+      <Link>AttributedModel\AspectAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\AspectForAttribute.cs">
+      <Link>AttributedModel\AspectForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ClassifierKindAttribute.cs">
+      <Link>AttributedModel\ClassifierKindAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\ExcludeFromModelAttribute.cs">
       <Link>AttributedModel\ExcludeFromModelAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\MemberNameDiscriminatorAttribute.cs">
       <Link>AttributedModel\MemberNameDiscriminatorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\MixinAttribute.cs">
+      <Link>AttributedModel\MixinAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ModelAssemblyAttribute.cs">
+      <Link>AttributedModel\ModelAssemblyAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\ModelDimensionAttribute.cs">
       <Link>AttributedModel\ModelDimensionAttribute.cs</Link>
@@ -66,6 +84,9 @@
     </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\ProjectionForAttribute.cs">
       <Link>AttributedModel\ProjectionForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\AttributedModel\ValueTypeAttribute.cs">
+      <Link>AttributedModel\ValueTypeAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Configuration\IElementConfigurator.cs">
       <Link>Configuration\IElementConfigurator.cs</Link>
@@ -204,27 +225,6 @@
     </Compile>
     <Compile Include="..\Kephas.Model\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AbstractAttribute.cs">
-      <Link>Runtime\AttributedModel\AbstractAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AspectAttribute.cs">
-      <Link>Runtime\AttributedModel\AspectAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\AspectForAttribute.cs">
-      <Link>Runtime\AttributedModel\AspectForAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ClassifierKindAttribute.cs">
-      <Link>Runtime\AttributedModel\ClassifierKindAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\MixinAttribute.cs">
-      <Link>Runtime\AttributedModel\MixinAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ModelAssemblyAttribute.cs">
-      <Link>Runtime\AttributedModel\ModelAssemblyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\AttributedModel\ValueTypeAttribute.cs">
-      <Link>Runtime\AttributedModel\ValueTypeAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs">
       <Link>Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs</Link>

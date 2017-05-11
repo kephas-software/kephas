@@ -43,8 +43,17 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityAssemblyAttribute.cs">
+      <Link>AttributedModel\EntityAssemblyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityAttribute.cs">
+      <Link>AttributedModel\EntityAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IClientScopeDimensionElement.cs">
       <Link>Dimensions\Scope\IClientScopeDimensionElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IDomainScopeDimensionElement.cs">
+      <Link>Dimensions\Scope\IDomainScopeDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Elements\Entity.cs">
       <Link>Elements\Entity.cs</Link>
@@ -54,12 +63,6 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model\Runtime\AttributedModel\EntityAssemblyAttribute.cs">
-      <Link>Runtime\AttributedModel\EntityAssemblyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model\Runtime\AttributedModel\EntityAttribute.cs">
-      <Link>Runtime\AttributedModel\EntityAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Runtime\Construction\EntityConstructor.cs">
       <Link>Runtime\Construction\EntityConstructor.cs</Link>

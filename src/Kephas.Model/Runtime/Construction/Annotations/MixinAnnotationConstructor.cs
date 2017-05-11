@@ -9,9 +9,9 @@
 
 namespace Kephas.Model.Runtime.Construction.Annotations
 {
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements.Annotations;
-    using Kephas.Model.Runtime.AttributedModel;
 
     /// <summary>
     /// A mixin annotation constructor.

@@ -305,7 +305,7 @@ namespace Kephas.Core.Tests.Runtime
             var runtimeTypeInfo = new RuntimeTypeInfo(typeof(TestClassWithOverloads));
             var methods = runtimeTypeInfo.Methods;
             Assert.IsTrue(methods.IsReadOnly);
-            Assert.AreEqual(10, methods.Count);
+            Assert.AreEqual(8, methods.Count);
             Assert.IsTrue(methods.ContainsKey(nameof(TestClassWithOverloads.GetType)));
             Assert.IsTrue(methods.ContainsKey(nameof(TestClassWithOverloads.Equals)));
             Assert.IsTrue(methods.ContainsKey(nameof(TestClassWithOverloads.GetHashCode)));
@@ -314,8 +314,6 @@ namespace Kephas.Core.Tests.Runtime
             Assert.IsTrue(methods.ContainsKey("get_" + nameof(TestClassWithOverloads.Name)));
             Assert.IsTrue(methods.ContainsKey("set_" + nameof(TestClassWithOverloads.Name)));
             Assert.IsTrue(methods.ContainsKey("get_" + nameof(TestClassWithOverloads.ReadOnlyFullName)));
-            Assert.IsTrue(methods.ContainsKey("Finalize"));
-            Assert.IsTrue(methods.ContainsKey("MemberwiseClone"));
 
             var overloads = methods[nameof(TestClassWithOverloads.ComputeFullName)];
             Assert.IsTrue(overloads.IsReadOnly);

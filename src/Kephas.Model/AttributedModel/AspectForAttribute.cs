@@ -7,13 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Runtime.AttributedModel
+namespace Kephas.Model.AttributedModel
 {
     using System;
     using System.Diagnostics.Contracts;
     using System.Linq;
 
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
