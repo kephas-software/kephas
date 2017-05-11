@@ -23,6 +23,8 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
+    using IMessage = Kephas.Messaging.IMessage;
+
     /// <summary>
     /// A messaging model registry.
     /// </summary>
