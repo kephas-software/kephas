@@ -53,6 +53,7 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Adapters\CollectionAdapterTest.cs" />
     <Compile Include="Caching\DataContextCacheTest.cs" />
     <Compile Include="Capabilities\EntityInfoTest.cs" />
     <Compile Include="Commands\CreateEntityCommandTest.cs" />

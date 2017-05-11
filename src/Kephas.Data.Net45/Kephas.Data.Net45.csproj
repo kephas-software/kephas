@@ -46,6 +46,9 @@
     <Compile Include="..\Kephas.Data\Activation\EntityActivatorBase.cs">
       <Link>Activation\EntityActivatorBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Adapters\CollectionAdapter.cs">
+      <Link>Adapters\CollectionAdapter.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\AmbiguousMatchDataException.cs">
       <Link>AmbiguousMatchDataException.cs</Link>
     </Compile>
