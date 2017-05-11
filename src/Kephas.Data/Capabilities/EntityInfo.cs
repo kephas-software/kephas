@@ -55,6 +55,7 @@ namespace Kephas.Data.Capabilities
             this.Entity = entity;
             this.Id = new Id(Guid.NewGuid());
 
+            // ReSharper disable once VirtualMemberCallInConstructor
             this.AttachPropertyChangeHandlers();
         }
 
@@ -101,11 +102,28 @@ namespace Kephas.Data.Capabilities
                 var tracker = this.TryGetChangeStateTracker();
                 if (tracker != null)
                 {
+                    if (tracker.ChangeState == value)
+                    {
+                        return;
+                    }
+
                     tracker.ChangeState = value;
                 }
                 else
                 {
+                    if (this.changeState == value)
+                    {
+                        return;
+                    }
+
                     this.changeState = value;
+                }
+
+                // Ensure the original entity is created.
+                // ReSharper disable once StyleCop.SA1309
+                if (value != ChangeState.NotChanged)
+                {
+                    var _ = this.OriginalEntity;
                 }
             }
         }

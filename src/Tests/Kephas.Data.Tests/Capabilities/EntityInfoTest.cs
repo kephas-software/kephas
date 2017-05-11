@@ -212,7 +212,21 @@ namespace Kephas.Data.Tests.Capabilities
         }
 
         [Test]
-        public void DiscardChanges()
+        public void DiscardChanges_Added()
+        {
+            var entity = "123";
+            var entityInfo = new EntityInfo(entity)
+                                 {
+                                     ChangeState = ChangeState.Added
+                                 };
+
+            entityInfo.DiscardChanges();
+
+            Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
+        }
+
+        [Test]
+        public void DiscardChanges_Changed()
         {
             var originalGuid = Guid.NewGuid();
             var entity = new TestEntity { Id = originalGuid };
@@ -225,6 +239,31 @@ namespace Kephas.Data.Tests.Capabilities
             Assert.AreEqual(originalGuid, entity.Id);
             Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
             Assert.AreEqual(originalGuid, entityInfo.OriginalEntity["Id"]);
+        }
+
+        [Test]
+        public void DiscardChanges_Changed_entity_with_readOnlyProperties()
+        {
+            var entity = "123";
+            var entityInfo = new EntityInfo(entity) { ChangeState = ChangeState.Changed };
+
+            entityInfo.DiscardChanges();
+
+            Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
+        }
+
+        [Test]
+        public void DiscardChanges_Deleted()
+        {
+            var entity = "123";
+            var entityInfo = new EntityInfo(entity)
+                                 {
+                                     ChangeState = ChangeState.Deleted
+                                 };
+
+            entityInfo.DiscardChanges();
+
+            Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
         }
 
         private IPropertyInfo CreatePropertyInfo<TValue>(string name, Func<TValue> getter = null, Action<TValue> setter = null)
