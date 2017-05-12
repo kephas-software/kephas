@@ -18,6 +18,17 @@ namespace Kephas.Application
     public class NullAppRuntime : AppRuntimeBase
     {
         /// <summary>
+        /// Gets the application location.
+        /// </summary>
+        /// <returns>
+        /// A path indicating the application location.
+        /// </returns>
+        public override string GetAppLocation()
+        {
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Gets the loaded assemblies.
         /// </summary>
         /// <returns>
@@ -38,17 +49,6 @@ namespace Kephas.Application
         protected override AssemblyName[] GetReferencedAssemblies(Assembly assembly)
         {
             return new AssemblyName[0];
-        }
-
-        /// <summary>
-        /// Gets the application location.
-        /// </summary>
-        /// <returns>
-        /// A path indicating the application location.
-        /// </returns>
-        protected override string GetAppLocation()
-        {
-            return string.Empty;
         }
 
         /// <summary>

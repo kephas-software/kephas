@@ -10,7 +10,6 @@
 namespace Kephas.Application
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -74,6 +73,14 @@ namespace Kephas.Application
         /// The assembly filter.
         /// </value>
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
+
+        /// <summary>
+        /// Gets the application location (directory where the application lies).
+        /// </summary>
+        /// <returns>
+        /// A path indicating the application location.
+        /// </returns>
+        public abstract string GetAppLocation();
 
         /// <summary>
         /// Gets the application assemblies.
@@ -202,14 +209,6 @@ namespace Kephas.Application
         {
             return Task.FromResult((IEnumerable<string>)new[] { this.GetAppLocation() });
         }
-
-        /// <summary>
-        /// Gets the application location (directory where the application lies).
-        /// </summary>
-        /// <returns>
-        /// A path indicating the application location.
-        /// </returns>
-        protected abstract string GetAppLocation();
 
         /// <summary>
         /// Gets the file name of the provided assembly.

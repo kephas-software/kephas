@@ -23,6 +23,14 @@ namespace Kephas.Application
     public interface IAppRuntime : IExpando
     {
         /// <summary>
+        /// Gets the application location (directory where the application lies).
+        /// </summary>
+        /// <returns>
+        /// A path indicating the application location.
+        /// </returns>
+        string GetAppLocation();
+
+        /// <summary>
         /// Gets the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
