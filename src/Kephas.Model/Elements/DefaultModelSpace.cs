@@ -207,15 +207,16 @@ namespace Kephas.Model.Elements
 
             // then sort them, to be able to have all the dependencies constructed completely
             // before moving on.
-            var classifierComparer = ClassifierDependencyComparer;
+            constructionContext.ConstructedClassifiers = unsortedClassifiers;
             var orderGraphNodes = unsortedClassifiers.Select(
                 c => new KeyValuePair<IClassifier, IEnumerable<IElementInfo>>(
                     c,
                     ((IWritableNamedElement)c).GetDependencies(constructionContext)));
-            var orderedSet = new PartialOrderedSet<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>>(orderGraphNodes, classifierComparer);
+            var orderedSet = new PartialOrderedSet<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>>(orderGraphNodes, ClassifierDependencyComparer);
             var classifiers = orderedSet.Select(cd => cd.Key).ToList();
 
             // having ordered classifiers, go complete their construction
+            // the constructed classifiers are now in the proper order
             constructionContext.ConstructedClassifiers = classifiers;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
