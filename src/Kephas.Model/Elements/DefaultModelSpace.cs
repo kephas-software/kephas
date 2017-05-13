@@ -18,6 +18,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction.Internal;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Sets;
 
     /// <summary>
     /// The default implementation of the model space.
@@ -177,8 +178,16 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected internal virtual IEnumerable<IClassifier> ComputeClassifiers(IModelConstructionContext constructionContext)
         {
-            // TODO
-            var classifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
+            // first, get the classifiers and resolve their aspects
+            var unsortedClassifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
+            this.ResolveAspects(unsortedClassifiers);
+
+            // then sort them, to be able to have all the dependencies constructed completely
+            // before moving on.
+            var orderedSet = new PartialOrderedSet<IClassifier>(unsortedClassifiers, this.CompareClassifiers);
+            var classifiers = orderedSet.ToList();
+
+            // having ordered classifiers, go complete their construction
             constructionContext[nameof(IModelConstructionContext.ConstructedClassifiers)] = classifiers;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
@@ -203,6 +212,36 @@ namespace Kephas.Model.Elements
             // aggregate the model elements, adding them to the right aggregated projection
 
             // TODO...;
+        }
+
+        /// <summary>
+        /// Compares two classifier to get a priority in handling them.
+        /// A classifier is "greater" than another classifier if the other one is a part of it.
+        /// Otherwise they are not comparable.
+        /// </summary>
+        /// <param name="c1">The first IClassifier.</param>
+        /// <param name="c2">The second IClassifier.</param>
+        /// <returns>
+        /// An int?
+        /// </returns>
+        protected virtual int? CompareClassifiers(IClassifier c1, IClassifier c2)
+        {
+            if (c1 == c2)
+            {
+                return 0;
+            }
+
+            if (c1.Parts.Contains(c2))
+            {
+                return 1;
+            }
+
+            if (c2.Parts.Contains(c1))
+            {
+                return - 1;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -264,6 +303,25 @@ namespace Kephas.Model.Elements
             // if one is found, the containing classifier is the searched one.
 
             return classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
+        }
+
+        /// <summary>
+        /// Resolves the aspects by adding them as parts to the targeted classifiers.
+        /// </summary>
+        /// <param name="classifiers">The classifiers.</param>
+        private void ResolveAspects(IReadOnlyCollection<IClassifier> classifiers)
+        {
+            var aspects = classifiers.Where(c => c.IsAspect).ToList();
+            foreach (var aspect in aspects)
+            {
+                foreach (var classifier in classifiers)
+                {
+                    if (aspect != classifier && aspect.IsAspectOf(classifier))
+                    {
+                        ((IWritableNamedElement)classifier).AddPart(aspect);
+                    }
+                }
+            }
         }
     }
 }

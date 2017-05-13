@@ -74,7 +74,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeInfo.GenericTypeArguments.Count > 0 || typeInfo.GenericTypeParameters.Count > 0;
+            return typeInfo.GenericTypeArguments?.Count > 0 || typeInfo.GenericTypeParameters?.Count > 0;
         }
 
         /// <summary>

@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -30,6 +31,16 @@ namespace Kephas.Model.Elements
         /// True if this object is a mixin.
         /// </summary>
         private bool? isMixin;
+
+        /// <summary>
+        /// True if this object is an aspect.
+        /// </summary>
+        private bool? isAspect;
+
+        /// <summary>
+        /// The function indicating whether this classifier is an aspect of other classifiers.
+        /// </summary>
+        private Func<IClassifier, bool> isAspectOf;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract}" /> class.
@@ -97,6 +108,18 @@ namespace Kephas.Model.Elements
         public IEnumerable<IClassifier> BaseMixins { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether this classifier is an aspect of other classifiers.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this classifier is an aspect of other classifiers, <c>false</c> if not.
+        /// </returns>
+        public bool IsAspect
+            => // during construction, compute each time this flag, after that only once.
+                this.ConstructionMonitor.IsInProgress
+                    ? this.ComputeIsAspect()
+                    : (this.isAspect ?? (this.isAspect = this.ComputeIsAspect()).Value);
+
+        /// <summary>
         /// Gets the namespace of the type.
         /// </summary>
         /// <value>
@@ -142,6 +165,29 @@ namespace Kephas.Model.Elements
         IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
 
         /// <summary>
+        /// Indicates whether this classifier is an aspect of the provided classifier.
+        /// </summary>
+        /// <param name="classifier">The classifier.</param>
+        /// <returns>
+        /// <c>true</c> if this classifier is an aspect of the provided classifier, <c>false</c> if not.
+        /// </returns>
+        public virtual bool IsAspectOf(IClassifier classifier)
+        {
+            // during construction, compute each time the function, after that only once.
+            if (this.ConstructionMonitor.IsInProgress)
+            {
+                return this.ComputeIsAspectOf()?.Invoke(classifier) ?? false;
+            }
+
+            if (this.isAspectOf == null)
+            {
+                this.isAspectOf = this.ComputeIsAspectOf() ?? (_ => false);
+            }
+
+            return this.isAspectOf(classifier);
+        }
+
+        /// <summary>
         /// Gets a member by the provided name.
         /// </summary>
         /// <param name="name">The member name.</param>
@@ -175,6 +221,29 @@ namespace Kephas.Model.Elements
         protected virtual bool ComputeIsMixin()
         {
             return this.Members.OfType<MixinAnnotation>().Any() || this.Name.EndsWith("Mixin");
+        }
+
+        /// <summary>
+        /// Calculates the flag indicating whether the classifier is an aspect or not.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the classifier is an aspect, <c>false</c> otherwise.
+        /// </returns>
+        protected virtual bool ComputeIsAspect()
+        {
+            return this.Members.OfType<AspectAnnotation>().Any();
+        }
+
+        /// <summary>
+        /// For an aspect, calculates the function to select the classifiers for which this classifier is an aspect.
+        /// </summary>
+        /// <returns>
+        /// A function.
+        /// </returns>
+        protected virtual Func<IClassifier, bool> ComputeIsAspectOf()
+        {
+            var aspectAnnotation = this.Members.OfType<AspectAnnotation>().FirstOrDefault();
+            return aspectAnnotation?.IsAspectOf;
         }
 
         /// <summary>

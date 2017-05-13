@@ -57,5 +57,22 @@ namespace Kephas.Model
         /// The base mixins.
         /// </value>
         IEnumerable<IClassifier> BaseMixins { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this classifier is an aspect of other classifiers.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this classifier is an aspect of other classifiers, <c>false</c> if not.
+        /// </returns>
+        bool IsAspect { get; }
+
+        /// <summary>
+        /// Indicates whether this classifier is an aspect of the provided classifier.
+        /// </summary>
+        /// <param name="classifier">The classifier.</param>
+        /// <returns>
+        /// <c>true</c> if this classifier is an aspect of the provided classifier, <c>false</c> if not.
+        /// </returns>
+        bool IsAspectOf(IClassifier classifier);
     }
 }

@@ -1,0 +1,44 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AspectAnnotation.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the aspect annotation class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Elements.Annotations
+{
+    using System;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Model.Construction;
+
+    /// <summary>
+    /// Annotation foe aspect classifiers.
+    /// </summary>
+    public class AspectAnnotation : Annotation
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AspectAnnotation"/> class.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="name">The model element name.</param>
+        /// <param name="classifierFilter">A filter to select classifiers for which the annotated classifier is an aspect.</param>
+        public AspectAnnotation(IModelConstructionContext constructionContext, string name, Func<IClassifier, bool> classifierFilter)
+            : base(constructionContext, name)
+        {
+            Requires.NotNull(classifierFilter, nameof(classifierFilter));
+
+            this.IsAspectOf = classifierFilter;
+        }
+
+        /// <summary>
+        /// Gets a filter function to select classifiers for which the annotated classifier is an aspect.
+        /// </summary>
+        /// <value>
+        /// A filter function.
+        /// </value>
+        public Func<IClassifier, bool> IsAspectOf { get; }
+    }
+}
