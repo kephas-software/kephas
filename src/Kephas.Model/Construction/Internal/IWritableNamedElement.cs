@@ -9,7 +9,10 @@
 
 namespace Kephas.Model.Construction.Internal
 {
+    using System.Collections.Generic;
+
     using Kephas.Model.Construction;
+    using Kephas.Reflection;
     using Kephas.Services.Transitioning;
 
     /// <summary>
@@ -48,5 +51,14 @@ namespace Kephas.Model.Construction.Internal
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         void CompleteConstruction(IModelConstructionContext constructionContext);
+
+        /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext);
     }
 }

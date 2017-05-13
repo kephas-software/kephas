@@ -33,19 +33,14 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// A value used to compare the two classifiers.
         /// </returns>
-        public static readonly Func<IClassifier, IClassifier, int?> ClassifierDependencyComparer = (c1, c2) =>
+        public static readonly Func<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>, KeyValuePair<IClassifier, IEnumerable<IElementInfo>>, int?> ClassifierDependencyComparer = (c1, c2) =>
             {
-                if (c1 == c2)
-                {
-                    return 0;
-                }
-
-                if (c1.Parts.Contains(c2))
+                if (c1.Value.Contains(c2.Key))
                 {
                     return 1;
                 }
 
-                if (c2.Parts.Contains(c1))
+                if (c2.Value.Contains(c1.Key))
                 {
                     return -1;
                 }
@@ -212,13 +207,16 @@ namespace Kephas.Model.Elements
 
             // then sort them, to be able to have all the dependencies constructed completely
             // before moving on.
-            var classifierComparer = constructionContext.ClassifierDependencyCompararer ?? ClassifierDependencyComparer;
-            var orderedSet = new PartialOrderedSet<IClassifier>(unsortedClassifiers, classifierComparer);
-            var classifiers = orderedSet.ToList();
+            var classifierComparer = ClassifierDependencyComparer;
+            var orderGraphNodes = unsortedClassifiers.Select(
+                c => new KeyValuePair<IClassifier, IEnumerable<IElementInfo>>(
+                    c,
+                    ((IWritableNamedElement)c).GetDependencies(constructionContext)));
+            var orderedSet = new PartialOrderedSet<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>>(orderGraphNodes, classifierComparer);
+            var classifiers = orderedSet.Select(cd => cd.Key).ToList();
 
             // having ordered classifiers, go complete their construction
-            constructionContext[nameof(IModelConstructionContext.ConstructedClassifiers)] = classifiers;
-            constructionContext.ClassifierDependencyCompararer = constructionContext.ClassifierDependencyCompararer ?? ClassifierDependencyComparer;
+            constructionContext.ConstructedClassifiers = classifiers;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
             return classifiers;

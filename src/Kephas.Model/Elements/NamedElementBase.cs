@@ -220,6 +220,18 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        IEnumerable<IElementInfo> IWritableNamedElement.GetDependencies(IModelConstructionContext constructionContext)
+        {
+            return this.GetDependencies(constructionContext);
+        }
+
+        /// <summary>
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
@@ -237,6 +249,18 @@ namespace Kephas.Model.Elements
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddPart(part);
+        }
+
+        /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        protected virtual IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext)
+        {
+            return ModelHelper.EmptyModelElements;
         }
 
         /// <summary>

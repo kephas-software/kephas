@@ -19,6 +19,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
+    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -27,6 +28,11 @@ namespace Kephas.Model.Elements
     public abstract class ClassifierBase<TModelContract> : ModelElementBase<TModelContract>, IClassifier
         where TModelContract : IClassifier
     {
+        /// <summary>
+        /// State of the complete construction.
+        /// </summary>
+        private readonly TransitionMonitor<TModelContract> completeConstructionState;
+
         /// <summary>
         /// True if this object is a mixin.
         /// </summary>
@@ -53,6 +59,7 @@ namespace Kephas.Model.Elements
             this.BaseTypes = ModelHelper.EmptyClassifiers;
             this.BaseMixins = ModelHelper.EmptyClassifiers;
             this.GenericTypeArguments = ModelHelper.EmptyClassifiers;
+            this.completeConstructionState = new TransitionMonitor<TModelContract>(nameof(this.OnCompleteConstruction), this.GetType());
         }
 
         /// <summary>
@@ -283,6 +290,22 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        protected override IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext)
+        {
+            var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
+            var eligibleTypes = parts.SelectMany(t => t.BaseTypes)
+                .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
+                .ToList();
+            return eligibleTypes;
+        }
+
+        /// <summary>
         /// Calculates the base types.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -295,18 +318,13 @@ namespace Kephas.Model.Elements
             var eligibleTypes = parts.SelectMany(t => t.BaseTypes)
                                      .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
                                      .ToList();
-            var eligibleClassifiers = eligibleTypes.OfType<IClassifier>().ToList();
-
-            var compararer = constructionContext.ClassifierDependencyCompararer
-                             ?? DefaultModelSpace.ClassifierDependencyComparer;
 
             var baseTypes = new List<ITypeInfo>();
             foreach (var eligibleType in eligibleTypes)
             {
-                var eligibleClassifier = eligibleType as IClassifier;
-
-                // ignore classifiers which are already a dependency of another base.
-                if (eligibleClassifier != null && eligibleClassifiers.Any(c => compararer(c, eligibleClassifier) > 0))
+                // TODO the next sentence should apply at any level.
+                // ignore types which are already base for one of the eligible types.
+                if (eligibleTypes.Any(t => t.BaseTypes.Contains(eligibleType)))
                 {
                     continue;
                 }

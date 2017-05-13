@@ -14,6 +14,7 @@ namespace Kephas.Model.Elements
 
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
