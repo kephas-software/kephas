@@ -350,11 +350,32 @@
     <Compile Include="..\Kephas.Core\Logging\TypedLogger.cs">
       <Link>Logging\TypedLogger.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\Composition\MediaTypeMetadata.cs">
+      <Link>Net\Mime\Composition\MediaTypeMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\DefaultMediaTypeProvider.cs">
+      <Link>Net\Mime\DefaultMediaTypeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\IMediaType.cs">
+      <Link>Net\Mime\IMediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\IMediaTypeProvider.cs">
+      <Link>Net\Mime\IMediaTypeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\IniMediaType.cs">
+      <Link>Net\Mime\IniMediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\JsonMediaType.cs">
+      <Link>Net\Mime\JsonMediaType.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Net\Mime\MediaTypeNames.cs">
       <Link>Net\Mime\MediaTypeNames.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Net\Mime\SupportedMediaTypesAttribute.cs">
       <Link>Net\Mime\SupportedMediaTypesAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\XmlMediaType.cs">
+      <Link>Net\Mime\XmlMediaType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
@@ -482,26 +503,11 @@
     <Compile Include="..\Kephas.Core\Security\NullIdentityProvider.cs">
       <Link>Security\NullIdentityProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\Composition\FormatMetadata.cs">
-      <Link>Serialization\Composition\FormatMetadata.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\DefaultFormatProvider.cs">
-      <Link>Serialization\DefaultFormatProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\DefaultSerializationService.cs">
       <Link>Serialization\DefaultSerializationService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\IFormat.cs">
-      <Link>Serialization\IFormat.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\IFormatProvider.cs">
-      <Link>Serialization\IFormatProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\Ini\IniFormat.cs">
-      <Link>Serialization\Ini\IniFormat.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\ISerializationContext.cs">
       <Link>Serialization\ISerializationContext.cs</Link>
@@ -512,17 +518,11 @@
     <Compile Include="..\Kephas.Core\Serialization\ISerializer.cs">
       <Link>Serialization\ISerializer.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\Json\JsonFormat.cs">
-      <Link>Serialization\Json\JsonFormat.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\SerializationExtensions.cs">
       <Link>Serialization\SerializationExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Serialization\Xml\XmlFormat.cs">
-      <Link>Serialization\Xml\XmlFormat.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\AppServiceContractAttribute.cs">
       <Link>Services\AppServiceContractAttribute.cs</Link>

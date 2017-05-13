@@ -1,21 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JsonFormat.cs" company="Quartz Software SRL">
+// <copyright file="IniMediaType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Marker class for JSON format.
+//   Implements the initialize format class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Json
+namespace Kephas.Net.Mime
 {
-    using Kephas.Net.Mime;
-
     /// <summary>
-    /// Marker class for JSON format.
+    /// Marker class for the INI format.
     /// </summary>
-    [SupportedMediaTypes(new[] { MediaTypeNames.Application.Json })]
-    public sealed class JsonFormat : IFormat
+    [SupportedMediaTypes(new[] { MediaTypeNames.Text.Ini })]
+    public class IniMediaType : IMediaType
     {
     }
 }

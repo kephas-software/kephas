@@ -13,6 +13,7 @@ namespace Kephas.Serialization
     using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Net.Mime;
     using Kephas.Services;
 
     /// <summary>
@@ -24,15 +25,15 @@ namespace Kephas.Serialization
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="formatType">Type of the format.</param>
-        public SerializationContext(ISerializationService serializationService, Type formatType)
+        /// <param name="mediaType">The media type (type implementing <see cref="IMediaType"/>).</param>
+        public SerializationContext(ISerializationService serializationService, Type mediaType)
             : base(serializationService.AmbientServices)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
-            Contract.Requires(formatType != null);
+            Contract.Requires(mediaType != null);
 
             this.SerializationService = serializationService;
-            this.FormatType = formatType;
+            this.MediaType = mediaType;
         }
 
         /// <summary>
@@ -44,12 +45,12 @@ namespace Kephas.Serialization
         public ISerializationService SerializationService { get; }
 
         /// <summary>
-        /// Gets the type of the format.
+        /// Gets the media type.
         /// </summary>
         /// <value>
-        /// The type of the format.
+        /// The media type.
         /// </value>
-        public Type FormatType { get; }
+        public Type MediaType { get; }
 
         /// <summary>
         /// Gets or sets the type of the root object.
@@ -70,36 +71,36 @@ namespace Kephas.Serialization
         /// <summary>
         /// Creates a new configured <see cref="SerializationContext"/>.
         /// </summary>
-        /// <typeparam name="TFormatType">Type of the format type.</typeparam>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="rootObjectFactory">The root object factory (optional).</param>
         /// <returns>
         /// A configured <see cref="SerializationContext"/>.
         /// </returns>
-        public static SerializationContext Create<TFormatType>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
-            where TFormatType : IFormat
+        public static SerializationContext Create<TMediaType>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
+            where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
-            return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectFactory = rootObjectFactory };
+            return new SerializationContext(serializationService, typeof(TMediaType)) { RootObjectFactory = rootObjectFactory };
         }
 
         /// <summary>
         /// Creates a new configured <see cref="SerializationContext"/>.
         /// </summary>
-        /// <typeparam name="TFormatType">The format type.</typeparam>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="rootObjectFactory">The root object factory (optional).</param>
         /// <returns>
         /// A configured <see cref="SerializationContext"/>.
         /// </returns>
-        public static SerializationContext Create<TFormatType, TRootObject>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
-            where TFormatType : IFormat
+        public static SerializationContext Create<TMediaType, TRootObject>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
+            where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
-            return new SerializationContext(serializationService, typeof(TFormatType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
+            return new SerializationContext(serializationService, typeof(TMediaType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
         }
     }
 }

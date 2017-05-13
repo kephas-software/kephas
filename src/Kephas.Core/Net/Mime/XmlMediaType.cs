@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="XmlFormat.cs" company="Quartz Software SRL">
+// <copyright file="XmlMediaType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,15 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Xml
+namespace Kephas.Net.Mime
 {
-    using Kephas.Net.Mime;
-
     /// <summary>
     /// Marker class for XML format.
     /// </summary>
     [SupportedMediaTypes(new[] { MediaTypeNames.Application.Xml, MediaTypeNames.Text.Xml })]
-    public sealed class XmlFormat : IFormat
+    public sealed class XmlMediaType : IMediaType
     {
     }
 }

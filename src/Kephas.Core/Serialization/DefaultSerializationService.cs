@@ -17,9 +17,9 @@ namespace Kephas.Serialization
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Net.Mime;
     using Kephas.Resources;
     using Kephas.Serialization.Composition;
-    using Kephas.Serialization.Json;
 
     /// <summary>
     /// A default serialization service.
@@ -46,9 +46,9 @@ namespace Kephas.Serialization
             this.AmbientServices = ambientServices;
             foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
             {
-                if (!this.serializerFactories.ContainsKey(factory.Metadata.FormatType))
+                if (!this.serializerFactories.ContainsKey(factory.Metadata.MediaType))
                 {
-                    this.serializerFactories.Add(factory.Metadata.FormatType, factory);
+                    this.serializerFactories.Add(factory.Metadata.MediaType, factory);
                 }
             }
         }
@@ -70,13 +70,13 @@ namespace Kephas.Serialization
         /// </returns>
         public ISerializer GetSerializer(ISerializationContext context = null)
         {
-            context = context ?? new SerializationContext(this, typeof(JsonFormat));
-            var formatType = context.FormatType ?? typeof(JsonFormat);
+            context = context ?? new SerializationContext(this, typeof(JsonMediaType));
+            var mediaType = context.MediaType ?? typeof(JsonMediaType);
 
-            var serializer = this.serializerFactories.TryGetValue(formatType);
+            var serializer = this.serializerFactories.TryGetValue(mediaType);
             if (serializer == null)
             {
-                throw new KeyNotFoundException(string.Format(Strings.DefaultSerializationService_SerializerNotFound_Exception, formatType));
+                throw new KeyNotFoundException(string.Format(Strings.DefaultSerializationService_SerializerNotFound_Exception, mediaType));
             }
 
             return serializer.CreateExport().Value;

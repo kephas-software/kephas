@@ -14,6 +14,7 @@ namespace Kephas.Serialization.Json.Tests
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Serialization.Json;
 
@@ -64,7 +65,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
-            context.FormatType.Returns(typeof(JsonFormat));
+            context.MediaType.Returns(typeof(JsonMediaType));
             context.RootObjectType.Returns(typeof(TestEntity));
             context.RootObjectFactory.Returns((Func<object>)null);
             var obj = await serializer.DeserializeAsync(serializedObj, context);
@@ -83,7 +84,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
-            context.FormatType.Returns(typeof(JsonFormat));
+            context.MediaType.Returns(typeof(JsonMediaType));
             context.RootObjectType.Returns(typeof(TestEntity));
             context.RootObjectFactory.Returns((Func<object>)null);
             var obj = await serializer.DeserializeAsync(serializedObj, context);
@@ -104,7 +105,7 @@ namespace Kephas.Serialization.Json.Tests
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
             var ambientServices = asBuilder.AmbientServices;
             var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
-            var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonFormat>(serializationService));
+            var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonMediaType>(serializationService));
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

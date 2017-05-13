@@ -13,12 +13,14 @@ namespace Kephas.Serialization.Json
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Net.Mime;
+
     using Newtonsoft.Json;
 
     /// <summary>
     /// JSON serializer.
     /// </summary>
-    public class JsonSerializer : ISerializer<JsonFormat>
+    public class JsonSerializer : ISerializer<JsonMediaType>
     {
         /// <summary>
         /// The settings provider.

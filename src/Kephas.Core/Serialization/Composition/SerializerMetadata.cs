@@ -13,7 +13,6 @@ namespace Kephas.Serialization.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
-    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -33,27 +32,27 @@ namespace Kephas.Serialization.Composition
                 return;
             }
 
-            this.FormatType = (Type)metadata.TryGetValue(nameof(this.FormatType), null);
+            this.MediaType = (Type)metadata.TryGetValue(nameof(this.MediaType), null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerializerMetadata" /> class.
         /// </summary>
-        /// <param name="formatType">        Type of the format.</param>
+        /// <param name="mediaType">The media type.</param>
         /// <param name="processingPriority">The processing priority.</param>
         /// <param name="overridePriority">  The override priority.</param>
-        public SerializerMetadata(Type formatType, int processingPriority = 0, int overridePriority = 0)
+        public SerializerMetadata(Type mediaType, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
-            this.FormatType = formatType;
+            this.MediaType = mediaType;
         }
 
         /// <summary>
-        /// Gets the format to use.
+        /// Gets the media type.
         /// </summary>
         /// <value>
-        /// The format type.
+        /// The media type.
         /// </value>
-        public Type FormatType { get; }
+        public Type MediaType { get; }
     }
 }

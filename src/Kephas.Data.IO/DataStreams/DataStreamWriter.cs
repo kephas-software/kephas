@@ -17,11 +17,10 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
-
-    using IFormatProvider = Kephas.Serialization.IFormatProvider;
 
     /// <summary>
     /// A data stream writer.
@@ -35,22 +34,22 @@ namespace Kephas.Data.IO.DataStreams
         private readonly ISerializationService serializationService;
 
         /// <summary>
-        /// The format provider.
+        /// The media type provider.
         /// </summary>
-        private readonly IFormatProvider formatProvider;
+        private readonly IMediaTypeProvider mediaTypeProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataStreamWriter"/> class.
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="formatProvider">The format provider.</param>
-        public DataStreamWriter(ISerializationService serializationService, IFormatProvider formatProvider)
+        /// <param name="mediaTypeProvider">The media type provider.</param>
+        public DataStreamWriter(ISerializationService serializationService, IMediaTypeProvider mediaTypeProvider)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
-            Requires.NotNull(formatProvider, nameof(formatProvider));
+            Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
 
             this.serializationService = serializationService;
-            this.formatProvider = formatProvider;
+            this.mediaTypeProvider = mediaTypeProvider;
         }
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace Kephas.Data.IO.DataStreams
 
             context.CheckCancellationRequested();
 
-            var serializationContext = new SerializationContext(this.serializationService, this.GetFormatType(dataStream));
+            var serializationContext = new SerializationContext(this.serializationService, this.GetMediaType(dataStream));
             var serializer = this.serializationService.GetSerializer(serializationContext);
 
             using (var writer = this.CreateEncodedStreamWriter(dataStream))
@@ -100,15 +99,15 @@ namespace Kephas.Data.IO.DataStreams
         }
 
         /// <summary>
-        /// Gets the format type for the <see cref="DataStream"/>'s media type.
+        /// Gets the media type for the <see cref="DataStream"/>.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/>.</param>
         /// <returns>
-        /// The format type.
+        /// The media type.
         /// </returns>
-        protected virtual Type GetFormatType(DataStream dataStream)
+        protected virtual Type GetMediaType(DataStream dataStream)
         {
-            return this.formatProvider.GetFormatType(dataStream.MediaType);
+            return this.mediaTypeProvider.GetMediaType(dataStream.MediaType);
         }
 
         /// <summary>

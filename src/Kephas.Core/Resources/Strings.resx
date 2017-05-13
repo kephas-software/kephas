@@ -139,7 +139,7 @@
     <value>The boostrapper encountered an exception while starting, at {0:s}.</value>
   </data>
   <data name="DefaultSerializationService_SerializerNotFound_Exception" xml:space="preserve">
-    <value>A serializer for the format type '{0}' was not found.</value>
+    <value>A serializer for the media type '{0}' was not found.</value>
   </data>
   <data name="NullServiceExceptionMessage" xml:space="preserve">
     <value>{0} is intended to be replaced by a proper implementation.</value>
@@ -168,8 +168,8 @@
   <data name="AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception" xml:space="preserve">
     <value>The provided service instance '{0}' is not convertible to the service type '{1}'.</value>
   </data>
-  <data name="Serialization_FormatTypeMismatch_Exception" xml:space="preserve">
-    <value>Expected {0} instead of {1} format type in the serialization context.</value>
+  <data name="Serialization_MediaTypeMismatch_Exception" xml:space="preserve">
+    <value>Expected {0} instead of {1} media type in the serialization context.</value>
   </data>
   <data name="AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException" xml:space="preserve">
     <value>Cannot load exported type {0} from {1}. Only the loadable types will be considered.</value>
@@ -258,7 +258,7 @@
   <data name="RuntimePropertyInfo_SetValue_Exception" xml:space="preserve">
     <value>No set accessor for property '{0}' in '{1}'.</value>
   </data>
-  <data name="DefaultFormatProvider_FormatNotFound_Exception" xml:space="preserve">
-    <value>No format found for media type '{0}'.</value>
+  <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
+    <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
 </root>

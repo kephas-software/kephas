@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FormatMetadata.cs" company="Quartz Software SRL">
+// <copyright file="MediaTypeMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization.Composition
+namespace Kephas.Net.Mime.Composition
 {
     using System.Collections.Generic;
 
@@ -15,15 +15,15 @@ namespace Kephas.Serialization.Composition
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// Metadata for <see cref="IFormat"/> services.
+    /// Metadata for <see cref="IMediaType"/> services.
     /// </summary>
-    public class FormatMetadata : AppServiceMetadata
+    public class MediaTypeMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FormatMetadata"/> class.
+        /// Initializes a new instance of the <see cref="MediaTypeMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public FormatMetadata(IDictionary<string, object> metadata)
+        public MediaTypeMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)

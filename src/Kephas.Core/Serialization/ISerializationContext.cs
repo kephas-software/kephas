@@ -27,12 +27,12 @@ namespace Kephas.Serialization
         ISerializationService SerializationService { get; }
 
         /// <summary>
-        /// Gets the type of the format.
+        /// Gets the media type.
         /// </summary>
         /// <value>
-        /// The type of the format.
+        /// The media type.
         /// </value>
-        Type FormatType { get; }
+        Type MediaType { get; }
 
         /// <summary>
         /// Gets or sets the type of the root object.

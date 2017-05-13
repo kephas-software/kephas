@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFormatProvider.cs" company="Quartz Software SRL">
+// <copyright file="IMediaTypeProvider.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -7,26 +7,26 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Serialization
+namespace Kephas.Net.Mime
 {
     using System;
 
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for format provider.
+    /// Shared application service contract providing the media type based on its name.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IFormatProvider
+    public interface IMediaTypeProvider
     {
         /// <summary>
-        /// Gets the format type based on the MIME type.
+        /// Gets the media type based on the media type name.
         /// </summary>
-        /// <param name="mediaType">The media type.</param>
+        /// <param name="mediaTypeName">The media type name.</param>
         /// <param name="throwIfNotFound">True to throw if a format is not found (optional).</param>
         /// <returns>
-        /// The format type.
+        /// The media type or <c>null</c>.
         /// </returns>
-        Type GetFormatType(string mediaType, bool throwIfNotFound = true);
+        Type GetMediaType(string mediaTypeName, bool throwIfNotFound = true);
     }
 }

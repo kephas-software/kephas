@@ -14,10 +14,9 @@ namespace Kephas.Core.Tests.Serialization
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Composition;
+    using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
-    using Kephas.Serialization.Json;
-    using Kephas.Serialization.Xml;
     using Kephas.Services;
 
     using NSubstitute;
@@ -32,12 +31,12 @@ namespace Kephas.Core.Tests.Serialization
     public class DefaultSerializationServiceTest
     {
         [Test]
-        [TestCase(typeof(XmlFormat))]
-        [TestCase(typeof(JsonFormat))]
-        public void GetSerializer_WithContext_Exception(Type formatType)
+        [TestCase(typeof(XmlMediaType))]
+        [TestCase(typeof(JsonMediaType))]
+        public void GetSerializer_WithContext_Exception(Type mediaType)
         {
             var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            var context = new SerializationContext(serializationService, formatType);
+            var context = new SerializationContext(serializationService, mediaType);
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
         }
 
@@ -52,7 +51,7 @@ namespace Kephas.Core.Tests.Serialization
         public void GetSerializer()
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
-            factories.Add(this.GetSerializerFactory(typeof(JsonFormat)));
+            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType)));
             var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.IsNotNull(serializer);
@@ -64,19 +63,19 @@ namespace Kephas.Core.Tests.Serialization
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             var oldSerializer = Substitute.For<ISerializer>();
             var newSerializer = Substitute.For<ISerializer>();
-            factories.Add(this.GetSerializerFactory(typeof(JsonFormat), oldSerializer, Priority.Normal));
-            factories.Add(this.GetSerializerFactory(typeof(JsonFormat), newSerializer, Priority.AboveNormal));
+            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), oldSerializer, Priority.Normal));
+            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), newSerializer, Priority.AboveNormal));
             var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.AreSame(serializer, newSerializer);
         }
 
         private IExportFactory<ISerializer, SerializerMetadata> GetSerializerFactory(
-            Type formatType,
+            Type mediaType,
             ISerializer serializer = null,
             Priority overridePriority = Priority.Normal)
         {
-            var metadata = new SerializerMetadata(formatType, overridePriority: (int)overridePriority);
+            var metadata = new SerializerMetadata(mediaType, overridePriority: (int)overridePriority);
             serializer = serializer ?? Substitute.For<ISerializer>();
             var export = Substitute.For<IExport<ISerializer, SerializerMetadata>>();
             export.Value.Returns(serializer);

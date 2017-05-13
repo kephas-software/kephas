@@ -287,16 +287,16 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No format found for media type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to No media type class  found for &apos;{0}&apos;. Resolution: define a class implementing {1} with the indicated media type..
         /// </summary>
-        internal static string DefaultFormatProvider_FormatNotFound_Exception {
+        internal static string DefaultMediaTypeProvider_NotFound_Exception {
             get {
-                return ResourceManager.GetString("DefaultFormatProvider_FormatNotFound_Exception", resourceCulture);
+                return ResourceManager.GetString("DefaultMediaTypeProvider_NotFound_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A serializer for the format type &apos;{0}&apos; was not found..
+        ///   Looks up a localized string similar to A serializer for the media type &apos;{0}&apos; was not found..
         /// </summary>
         internal static string DefaultSerializationService_SerializerNotFound_Exception {
             get {
@@ -449,11 +449,11 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Expected {0} instead of {1} format type in the serialization context..
+        ///   Looks up a localized string similar to Expected {0} instead of {1} media type in the serialization context..
         /// </summary>
-        internal static string Serialization_FormatTypeMismatch_Exception {
+        internal static string Serialization_MediaTypeMismatch_Exception {
             get {
-                return ResourceManager.GetString("Serialization_FormatTypeMismatch_Exception", resourceCulture);
+                return ResourceManager.GetString("Serialization_MediaTypeMismatch_Exception", resourceCulture);
             }
         }
         

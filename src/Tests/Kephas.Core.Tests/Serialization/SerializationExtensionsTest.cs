@@ -4,9 +4,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Net.Mime;
     using Kephas.Serialization;
-    using Kephas.Serialization.Json;
-    using Kephas.Serialization.Xml;
 
     using NSubstitute;
 
@@ -21,9 +20,9 @@
         public async Task SerializeAsync_SerializationService()
         {
             var serializer = this.CreateSerializerMock("ok");
-            var serializationService = this.CreateSerializationServiceMock<JsonFormat>(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var result = await SerializationExtensions.SerializeAsync<JsonFormat>(serializationService, new TestEntity());
+            var result = await SerializationExtensions.SerializeAsync<JsonMediaType>(serializationService, new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -31,7 +30,7 @@
         public async Task JsonSerializeAsync_SerializationService()
         {
             var serializer = this.CreateSerializerMock("ok");
-            var serializationService = this.CreateSerializationServiceMock<JsonFormat>(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             var result = await SerializationExtensions.JsonSerializeAsync(serializationService, new TestEntity());
             Assert.AreEqual("ok", result);
@@ -41,7 +40,7 @@
         public async Task XmlSerializeAsync_SerializationService()
         {
             var serializer = this.CreateSerializerMock("ok");
-            var serializationService = this.CreateSerializationServiceMock<XmlFormat>(serializer);
+            var serializationService = this.CreateSerializationServiceMock<XmlMediaType>(serializer);
 
             var result = await SerializationExtensions.XmlSerializeAsync(serializationService, new TestEntity());
             Assert.AreEqual("ok", result);
@@ -51,9 +50,9 @@
         public async Task DeserializeAsync_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
-            var serializationService = this.CreateSerializationServiceMock<JsonFormat>(deserializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
-            var result = await SerializationExtensions.DeserializeAsync<JsonFormat>(serializationService, "my object");
+            var result = await SerializationExtensions.DeserializeAsync<JsonMediaType>(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }
@@ -62,7 +61,7 @@
         public async Task JsonDeserializeAsync_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
-            var serializationService = this.CreateSerializationServiceMock<JsonFormat>(deserializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
             var result = await SerializationExtensions.JsonDeserializeAsync(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
@@ -73,7 +72,7 @@
         public async Task XmlDeserializeAsync_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
-            var serializationService = this.CreateSerializationServiceMock<XmlFormat>(deserializer);
+            var serializationService = this.CreateSerializationServiceMock<XmlMediaType>(deserializer);
 
             var result = await SerializationExtensions.XmlDeserializeAsync(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
@@ -104,12 +103,12 @@
             return serializer;
         }
 
-        private ISerializationService CreateSerializationServiceMock<TFormat>(ISerializer serializer)
+        private ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
             var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
             var ambientServicesMock = Substitute.For<IAmbientServices>();
             serializationService.AmbientServices.Returns(ambientServicesMock);
-            serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.FormatType == typeof(TFormat)))
+            serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
                 .Returns(serializer);
             return serializationService;
         }

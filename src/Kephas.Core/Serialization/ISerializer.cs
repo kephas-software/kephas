@@ -14,6 +14,7 @@ namespace Kephas.Serialization
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Net.Mime;
     using Kephas.Services;
 
     /// <summary>
@@ -54,12 +55,12 @@ namespace Kephas.Serialization
     }
 
     /// <summary>
-    /// Contract for a serializer with for a specific contract.
+    /// Application service contract for a serializer based on the indicated media type.
     /// </summary>
-    /// <typeparam name="TFormat">Type of the format.</typeparam>
+    /// <typeparam name="TMedia">The media type.</typeparam>
     [AppServiceContract(ContractType = typeof(ISerializer), AllowMultiple = true)]
-    public interface ISerializer<TFormat> : ISerializer
-        where TFormat : IFormat
+    public interface ISerializer<TMedia> : ISerializer
+        where TMedia : IMediaType
     {
     }
 
