@@ -58,5 +58,58 @@ namespace Kephas.Core.Tests.Sets
                         var orderedSet = new PartialOrderedSet<int>(new[] { 1, 2 }, (i1, i2) => Math.Abs(i1 - i2));
                     });
         }
+
+        [Test]
+        public void Compare_direct_comparable()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
+                {
+                    if (i1 == 1 && i2 == 2 || i1 == 2 && i2 == 3)
+                    {
+                        return i1 - i2;
+                    }
+
+                    return null;
+                });
+
+            Assert.AreEqual(0, orderedSet.Compare(2, 2));
+            Assert.AreEqual(-1, orderedSet.Compare(1, 2));
+            Assert.AreEqual(1, orderedSet.Compare(3, 2));
+        }
+
+        [Test]
+        public void Compare_indirect_comparable()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
+                {
+                    if (i1 == 1 && i2 == 2 || i1 == 2 && i2 == 3)
+                    {
+                        return i1 - i2;
+                    }
+
+                    return null;
+                });
+
+            Assert.AreEqual(0, orderedSet.Compare(2, 2));
+            Assert.AreEqual(-1, orderedSet.Compare(1, 3));
+            Assert.AreEqual(1, orderedSet.Compare(3, 1));
+        }
+
+        [Test]
+        public void Compare_not_comparable()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) =>
+                {
+                    if (i1 == 1 && i2 == 2)
+                    {
+                        return i1 - i2;
+                    }
+
+                    return null;
+                });
+
+            Assert.IsNull(orderedSet.Compare(1, 3));
+            Assert.IsNull(orderedSet.Compare(2, 3));
+        }
     }
 }

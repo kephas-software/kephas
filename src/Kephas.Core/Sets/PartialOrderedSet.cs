@@ -13,6 +13,7 @@ namespace Kephas.Sets
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Graphs;
@@ -64,6 +65,47 @@ namespace Kephas.Sets
         }
 
         /// <summary>
+        /// Compares two TValue objects to determine their relative ordering.
+        /// </summary>
+        /// <param name="value1">First value to be compared.</param>
+        /// <param name="value2">Second value to be compared.</param>
+        /// <returns>
+        /// Negative if 'value1' is less than 'value2', 0 if they are equal, positive if it is greater, or <c>null</c> if they are not comparable.
+        /// </returns>
+        public int? Compare(TValue value1, TValue value2)
+        {
+            if (ReferenceEquals(value1, value2))
+            {
+                return 0;
+            }
+
+            if (value1 != null && value1.Equals(value2))
+            {
+                return 0;
+            }
+
+            var nodes1 = this.orderGraph.FindNodesByValue(value1).Take(2).ToList();
+            var nodes2 = this.orderGraph.FindNodesByValue(value2).Take(2).ToList();
+
+            if (nodes1.Count != 1 && nodes2.Count != 1)
+            {
+                return null;
+            }
+
+            if (this.orderGraph.HasEdge(nodes1[0], nodes2[0]))
+            {
+                return 1;
+            }
+
+            if (this.orderGraph.HasEdge(nodes2[0], nodes1[0]))
+            {
+                return -1;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Initializes the order graph.
         /// </summary>
         /// <param name="values">The values.</param>
@@ -81,7 +123,7 @@ namespace Kephas.Sets
             var subgraphs = this.orderGraph.GetConnectedSubgraphs();
             foreach (var subgraph in subgraphs)
             {
-                this.AddMissingOrderEdges(subgraph);
+                this.AddMissingOrderEdges(this.orderGraph, subgraph);
                 this.orderedValues.AddRange(this.GetOrderedValues(subgraph));
             }
         }
@@ -156,8 +198,9 @@ namespace Kephas.Sets
         /// <summary>
         /// Adds the missing order edges.
         /// </summary>
+        /// <param name="graph">The graph.</param>
         /// <param name="subgraph">The subgraph.</param>
-        private void AddMissingOrderEdges(Graph<TValue> subgraph)
+        private void AddMissingOrderEdges(Graph<TValue> graph, Graph<TValue> subgraph)
         {
             var edgesToProcess = new Queue<IGraphEdge<TValue>>(subgraph.Edges.OfType<IGraphEdge<TValue>>());
 
@@ -170,7 +213,8 @@ namespace Kephas.Sets
                 {
                     if (!subgraph.HasEdge(from, to))
                     {
-                        var newEdge = (IGraphEdge<TValue>)subgraph.AddEdge(from, to);
+                        var newEdge = (IGraphEdge<TValue>)graph.AddEdge(from, to);
+                        subgraph.AddEdge(newEdge);
                         edgesToProcess.Enqueue(newEdge);
                     }
                 }
