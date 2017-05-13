@@ -1,0 +1,45 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DataStreamReaderMetadata.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the data stream reader metadata class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Data.IO.DataStreams.Composition
+{
+    using System.Collections.Generic;
+
+    using Kephas.Collections;
+    using Kephas.Services.Composition;
+
+    /// <summary>
+    /// Metadata for <see cref="IDataStreamReader"/> services.
+    /// </summary>
+    public class DataStreamReaderMetadata : AppServiceMetadata
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataStreamReaderMetadata"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        public DataStreamReaderMetadata(IDictionary<string, object> metadata)
+            : base(metadata)
+        {
+            if (metadata == null)
+            {
+                return;
+            }
+
+            this.SupportedMediaTypes = (string[])metadata.TryGetValue(nameof(this.SupportedMediaTypes));
+        }
+
+        /// <summary>
+        /// Gets the supported data formats.
+        /// </summary>
+        /// <value>
+        /// The supported data formats.
+        /// </value>
+        public string[] SupportedMediaTypes { get; }
+    }
+}

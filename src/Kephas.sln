@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -176,6 +176,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Model.Tests", "Tests\Kephas.Messaging.Model.Tests\Kephas.Messaging.Model.Tests.csproj", "{84DF26B3-F1B7-40B2-8360-DB02B431DCCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Model.Tests.Net45", "Tests\Kephas.Messaging.Model.Tests.Net45\Kephas.Messaging.Model.Tests.Net45.csproj", "{92B7D760-A6E7-48EA-B982-7163CCC2AF34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests", "Tests\Kephas.Data.IO.Tests\Kephas.Data.IO.Tests.csproj", "{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests.Net45", "Tests\Kephas.Data.IO.Tests.Net45\Kephas.Data.IO.Tests.Net45.csproj", "{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -455,6 +459,14 @@ Global
 		{92B7D760-A6E7-48EA-B982-7163CCC2AF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92B7D760-A6E7-48EA-B982-7163CCC2AF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92B7D760-A6E7-48EA-B982-7163CCC2AF34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -511,5 +523,7 @@ Global
 		{0BDCAFAD-4E92-4CA5-96B7-4A0C0B56DFDB} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{84DF26B3-F1B7-40B2-8360-DB02B431DCCC} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{92B7D760-A6E7-48EA-B982-7163CCC2AF34} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
+		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 EndGlobal

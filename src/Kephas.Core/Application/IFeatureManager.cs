@@ -12,7 +12,6 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application.AttributedModel;
     using Kephas.Services;
 
     /// <summary>

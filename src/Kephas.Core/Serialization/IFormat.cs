@@ -9,9 +9,13 @@
 
 namespace Kephas.Serialization
 {
+    using Kephas.Net.Mime;
+    using Kephas.Services;
+
     /// <summary>
     /// Contract for serialization formats.
     /// </summary>
+    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedMediaTypesAttribute) })]
     public interface IFormat
     {
     }

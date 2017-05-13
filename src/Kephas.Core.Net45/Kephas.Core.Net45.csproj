@@ -77,9 +77,6 @@
     <Compile Include="..\Kephas.Core\Application\AppRuntimeBase.cs">
       <Link>Application\AppRuntimeBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\AttributedModel\FeatureInfoAttribute.cs">
-      <Link>Application\AttributedModel\FeatureInfoAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
       <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
     </Compile>
@@ -88,6 +85,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureInfo.cs">
       <Link>Application\FeatureInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\FeatureInfoAttribute.cs">
+      <Link>Application\FeatureInfoAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureLifecycleBehaviorBase.cs">
       <Link>Application\FeatureLifecycleBehaviorBase.cs</Link>
@@ -350,6 +350,12 @@
     <Compile Include="..\Kephas.Core\Logging\TypedLogger.cs">
       <Link>Logging\TypedLogger.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\MediaTypeNames.cs">
+      <Link>Net\Mime\MediaTypeNames.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Net\Mime\SupportedMediaTypesAttribute.cs">
+      <Link>Net\Mime\SupportedMediaTypesAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
     </Compile>
@@ -476,14 +482,23 @@
     <Compile Include="..\Kephas.Core\Security\NullIdentityProvider.cs">
       <Link>Security\NullIdentityProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\Composition\FormatMetadata.cs">
+      <Link>Serialization\Composition\FormatMetadata.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\DefaultFormatProvider.cs">
+      <Link>Serialization\DefaultFormatProvider.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\DefaultSerializationService.cs">
       <Link>Serialization\DefaultSerializationService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\IFormat.cs">
       <Link>Serialization\IFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\IFormatProvider.cs">
+      <Link>Serialization\IFormatProvider.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Ini\IniFormat.cs">
       <Link>Serialization\Ini\IniFormat.cs</Link>

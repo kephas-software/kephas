@@ -11,7 +11,6 @@ namespace Kephas.Application.Composition
 {
     using System.Collections.Generic;
 
-    using Kephas.Application.AttributedModel;
     using Kephas.Services.Composition;
 
     /// <summary>

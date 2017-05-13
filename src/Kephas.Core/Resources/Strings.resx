@@ -258,4 +258,7 @@
   <data name="RuntimePropertyInfo_SetValue_Exception" xml:space="preserve">
     <value>No set accessor for property '{0}' in '{1}'.</value>
   </data>
+  <data name="DefaultFormatProvider_FormatNotFound_Exception" xml:space="preserve">
+    <value>No format found for media type '{0}'.</value>
+  </data>
 </root>

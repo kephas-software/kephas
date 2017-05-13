@@ -9,9 +9,12 @@
 
 namespace Kephas.Serialization.Ini
 {
+    using Kephas.Net.Mime;
+
     /// <summary>
     /// Marker class for the INI format.
     /// </summary>
+    [SupportedMediaTypes(new[] { MediaTypeNames.Text.Ini })]
     public class IniFormat : IFormat
     {
     }

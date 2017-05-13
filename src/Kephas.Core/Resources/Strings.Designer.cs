@@ -287,6 +287,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No format found for media type &apos;{0}&apos;..
+        /// </summary>
+        internal static string DefaultFormatProvider_FormatNotFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultFormatProvider_FormatNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A serializer for the format type &apos;{0}&apos; was not found..
         /// </summary>
         internal static string DefaultSerializationService_SerializerNotFound_Exception {

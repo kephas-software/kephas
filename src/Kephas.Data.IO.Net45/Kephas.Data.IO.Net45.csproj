@@ -43,6 +43,57 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.IO\DataIOContext.cs">
+      <Link>DataIOContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataIOException.cs">
+      <Link>DataIOException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\Composition\DataStreamReaderMetadata.cs">
+      <Link>DataStreams\Composition\DataStreamReaderMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\Composition\DataStreamWriterMetadata.cs">
+      <Link>DataStreams\Composition\DataStreamWriterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DataStream.cs">
+      <Link>DataStreams\DataStream.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DataStreamHelper.cs">
+      <Link>DataStreams\DataStreamHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DataStreamReader.cs">
+      <Link>DataStreams\DataStreamReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DataStreamWriter.cs">
+      <Link>DataStreams\DataStreamWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DefaultDataStreamReadService.cs">
+      <Link>DataStreams\DefaultDataStreamReadService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\DefaultDataStreamWriteService.cs">
+      <Link>DataStreams\DefaultDataStreamWriteService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamReader.cs">
+      <Link>DataStreams\IDataStreamReader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamReadService.cs">
+      <Link>DataStreams\IDataStreamReadService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamWriter.cs">
+      <Link>DataStreams\IDataStreamWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamWriteService.cs">
+      <Link>DataStreams\IDataStreamWriteService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\IDataIOContext.cs">
+      <Link>IDataIOContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
@@ -62,6 +113,13 @@
       <Project>{27926b67-08ce-4fe4-9338-0b11da98e930}</Project>
       <Name>Kephas.Data.Net45</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Data.IO\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

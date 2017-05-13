@@ -13,7 +13,6 @@ namespace Kephas.Npgsql.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.AttributedModel;
     using Kephas.Npgsql.Logging;
     using Kephas.Services;
 

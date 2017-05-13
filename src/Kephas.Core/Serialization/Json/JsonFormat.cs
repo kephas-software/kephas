@@ -9,9 +9,12 @@
 
 namespace Kephas.Serialization.Json
 {
+    using Kephas.Net.Mime;
+
     /// <summary>
     /// Marker class for JSON format.
     /// </summary>
+    [SupportedMediaTypes(new[] { MediaTypeNames.Application.Json })]
     public sealed class JsonFormat : IFormat
     {
     }

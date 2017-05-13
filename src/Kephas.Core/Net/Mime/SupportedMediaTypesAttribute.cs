@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FeatureInfoAttribute.cs" company="Quartz Software SRL">
+// <copyright file="SupportedMediaTypesAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the feature information attribute class.
+//   Implements the supported media types attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AttributedModel
+namespace Kephas.Net.Mime
 {
     using System;
 
@@ -15,20 +15,21 @@ namespace Kephas.Application.AttributedModel
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Attribute providing feature information.
+    /// Indicates the supported data formats for data stream readers and writers.
     /// </summary>
-    public class FeatureInfoAttribute : Attribute, IMetadataValue<FeatureInfo>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class SupportedMediaTypesAttribute : Attribute, IMetadataValue<string[]>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FeatureInfoAttribute"/> class.
+        /// Initializes a new instance of the <see cref="SupportedMediaTypesAttribute" /> class.
         /// </summary>
-        /// <param name="feature">The feature.</param>
-        /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfoAttribute(string feature, string[] dependencies = null)
+        /// <param name="supportedMediaTypes">The supported media types.</param>
+        public SupportedMediaTypesAttribute(string[] supportedMediaTypes)
         {
-            Requires.NotNullOrEmpty(feature, nameof(feature));
+            Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
+            //Requires.That(supportedMediaTypes.Length > 0);
 
-            this.Value = new FeatureInfo(feature, dependencies);
+            this.Value = supportedMediaTypes;
         }
 
         /// <summary>
@@ -45,6 +46,6 @@ namespace Kephas.Application.AttributedModel
         /// <value>
         /// The metadata value.
         /// </value>
-        public FeatureInfo Value { get; }
+        public string[] Value { get; }
     }
 }
