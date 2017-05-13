@@ -255,11 +255,9 @@ namespace Kephas.Model.Elements
             var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
 
             // compute base: types, classifier and mixins
-            var baseTypes = parts.SelectMany(t => t.BaseTypes);
-            this.BaseTypes = baseTypes.Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t).ToList();
-            var classifierBaseTypes = this.BaseTypes.OfType<IClassifier>().ToList();
-            this.BaseClassifier = classifierBaseTypes.SingleOrDefault(c => !c.IsMixin);
-            this.BaseMixins = new ReadOnlyCollection<IClassifier>(classifierBaseTypes.Where(c => c.IsMixin).ToList());
+            this.BaseTypes = this.ComputeBaseTypes(constructionContext, parts);
+            this.BaseClassifier = this.ComputeBaseClassifier(constructionContext, this.BaseTypes);
+            this.BaseMixins = this.ComputeBaseMixins(constructionContext, this.BaseTypes);
 
             // compute generic arguments
             if (parts.Count > 1 && parts.Any(p => p.IsGenericType()))
@@ -282,6 +280,70 @@ namespace Kephas.Model.Elements
             }
 
             base.OnCompleteConstruction(constructionContext);
+        }
+
+        /// <summary>
+        /// Calculates the base types.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="parts">The parts.</param>
+        /// <returns>
+        /// The calculated base types.
+        /// </returns>
+        protected virtual IList<ITypeInfo> ComputeBaseTypes(IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
+        {
+            var eligibleTypes = parts.SelectMany(t => t.BaseTypes)
+                                     .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
+                                     .ToList();
+            var eligibleClassifiers = eligibleTypes.OfType<IClassifier>().ToList();
+
+            var compararer = constructionContext.ClassifierDependencyCompararer
+                             ?? DefaultModelSpace.ClassifierDependencyComparer;
+
+            var baseTypes = new List<ITypeInfo>();
+            foreach (var eligibleType in eligibleTypes)
+            {
+                var eligibleClassifier = eligibleType as IClassifier;
+
+                // ignore classifiers which are already a dependency of another base.
+                if (eligibleClassifier != null && eligibleClassifiers.Any(c => compararer(c, eligibleClassifier) > 0))
+                {
+                    continue;
+                }
+
+                baseTypes.Add(eligibleType);
+            }
+
+            return baseTypes;
+        }
+
+        /// <summary>
+        /// Calculates the base classifier.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="baseTypes">List of base types.</param>
+        /// <returns>
+        /// The calculated base classifier.
+        /// </returns>
+        protected virtual IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        {
+            // TODO provide a more explicit exception.
+            return baseTypes.OfType<IClassifier>().SingleOrDefault(c => !c.IsMixin);
+        }
+
+        /// <summary>
+        /// Calculates the base mixins.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="baseTypes">List of base types.</param>
+        /// <returns>
+        /// The calculated base mixins.
+        /// </returns>
+        protected virtual IEnumerable<IClassifier> ComputeBaseMixins(
+            IModelConstructionContext constructionContext,
+            IEnumerable<ITypeInfo> baseTypes)
+        {
+            return new ReadOnlyCollection<IClassifier>(baseTypes.OfType<IClassifier>().Where(c => c.IsMixin).ToList());
         }
     }
 }

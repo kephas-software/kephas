@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Construction
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
@@ -63,5 +64,15 @@ namespace Kephas.Model.Construction
         /// The constructed classifiers.
         /// </value>
         public IEnumerable<IClassifier> ConstructedClassifiers { get; set; }
+
+        /// <summary>
+        /// Gets or sets a function used to compare two classifier from the dependency perspective.
+        /// A classifier is "greater" than another classifier if the other one is a part of it.
+        /// Otherwise they are not comparable.
+        /// </summary>
+        /// <returns>
+        /// A function used to compare the two classifiers.
+        /// </returns>
+        public Func<IClassifier, IClassifier, int?> ClassifierDependencyCompararer { get; set; }
     }
 }

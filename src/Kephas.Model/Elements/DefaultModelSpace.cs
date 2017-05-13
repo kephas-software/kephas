@@ -26,9 +26,37 @@ namespace Kephas.Model.Elements
     public class DefaultModelSpace : ModelElementBase<IModelSpace>, IModelSpace
     {
         /// <summary>
-        /// Unique identifier.
+        /// Compares two classifiers to get a priority in handling them.
+        /// A classifier is "greater" than another classifier if the other one is contained in its <see cref="T:INamedElementBase{T}.Parts"/>.
+        /// Otherwise they are not comparable.
         /// </summary>
-        private readonly Guid guid = Guid.NewGuid();
+        /// <returns>
+        /// A value used to compare the two classifiers.
+        /// </returns>
+        public static readonly Func<IClassifier, IClassifier, int?> ClassifierDependencyComparer = (c1, c2) =>
+            {
+                if (c1 == c2)
+                {
+                    return 0;
+                }
+
+                if (c1.Parts.Contains(c2))
+                {
+                    return 1;
+                }
+
+                if (c2.Parts.Contains(c1))
+                {
+                    return -1;
+                }
+
+                return null;
+            };
+
+    /// <summary>
+    /// Unique identifier.
+    /// </summary>
+    private readonly Guid guid = Guid.NewGuid();
 
         /// <summary>
         /// The classifier cache key.
@@ -184,11 +212,13 @@ namespace Kephas.Model.Elements
 
             // then sort them, to be able to have all the dependencies constructed completely
             // before moving on.
-            var orderedSet = new PartialOrderedSet<IClassifier>(unsortedClassifiers, this.CompareClassifiers);
+            var classifierComparer = constructionContext.ClassifierDependencyCompararer ?? ClassifierDependencyComparer;
+            var orderedSet = new PartialOrderedSet<IClassifier>(unsortedClassifiers, classifierComparer);
             var classifiers = orderedSet.ToList();
 
             // having ordered classifiers, go complete their construction
             constructionContext[nameof(IModelConstructionContext.ConstructedClassifiers)] = classifiers;
+            constructionContext.ClassifierDependencyCompararer = constructionContext.ClassifierDependencyCompararer ?? ClassifierDependencyComparer;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
             return classifiers;
@@ -212,36 +242,6 @@ namespace Kephas.Model.Elements
             // aggregate the model elements, adding them to the right aggregated projection
 
             // TODO...;
-        }
-
-        /// <summary>
-        /// Compares two classifier to get a priority in handling them.
-        /// A classifier is "greater" than another classifier if the other one is a part of it.
-        /// Otherwise they are not comparable.
-        /// </summary>
-        /// <param name="c1">The first IClassifier.</param>
-        /// <param name="c2">The second IClassifier.</param>
-        /// <returns>
-        /// An int?
-        /// </returns>
-        protected virtual int? CompareClassifiers(IClassifier c1, IClassifier c2)
-        {
-            if (c1 == c2)
-            {
-                return 0;
-            }
-
-            if (c1.Parts.Contains(c2))
-            {
-                return 1;
-            }
-
-            if (c2.Parts.Contains(c1))
-            {
-                return - 1;
-            }
-
-            return null;
         }
 
         /// <summary>
