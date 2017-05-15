@@ -51,6 +51,9 @@
     <Compile Include="..\Kephas.Data.IO.Tests\DataStreams\DataStreamReaderTest.cs">
       <Link>DataStreams\DataStreamReaderTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\DataStreams\DataStreamWriterTest.cs">
+      <Link>DataStreams\DataStreamWriterTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
