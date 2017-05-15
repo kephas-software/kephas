@@ -12,6 +12,7 @@ namespace Kephas.Net.Mime.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -32,6 +33,21 @@ namespace Kephas.Net.Mime.Composition
             }
 
             this.SupportedMediaTypes = (string[])metadata.TryGetValue(nameof(this.SupportedMediaTypes));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaTypeMetadata" /> class.
+        /// </summary>
+        /// <param name="supportedMediaTypes">The supported media types.</param>
+        /// <param name="processingPriority">The processing priority.</param>
+        /// <param name="overridePriority">  The override priority.</param>
+        /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
+        public MediaTypeMetadata(string[] supportedMediaTypes, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+            : base(processingPriority, overridePriority, optionalService)
+        {
+            Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
+
+            this.SupportedMediaTypes = supportedMediaTypes;
         }
 
         /// <summary>

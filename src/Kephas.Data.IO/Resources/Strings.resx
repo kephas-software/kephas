@@ -123,4 +123,7 @@
   <data name="DefaultDataStreamWriteService_WriterNotFound_Exception" xml:space="preserve">
     <value>Data stream writer not found for {0}.</value>
   </data>
+  <data name="DataIOContext_NoCancellationTokenSource_Exception" xml:space="preserve">
+    <value>No cancellation token source could be identified in the data I/O context.</value>
+  </data>
 </root>

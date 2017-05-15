@@ -49,10 +49,25 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStreams\DataStreamReaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
+      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
+      <Name>Kephas.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Data.IO\Kephas.Data.IO.csproj">
+      <Project>{bfa5c4d6-da23-40f1-82d6-57c4feb30243}</Project>
+      <Name>Kephas.Data.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj">
+      <Project>{8591c924-3c04-413f-a530-7a5575b45966}</Project>
+      <Name>Kephas.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

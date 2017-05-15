@@ -61,6 +61,15 @@ namespace Kephas.Data.IO.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No cancellation token source could be identified in the data I/O context..
+        /// </summary>
+        internal static string DataIOContext_NoCancellationTokenSource_Exception {
+            get {
+                return ResourceManager.GetString("DataIOContext_NoCancellationTokenSource_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data stream reader not found for {0}..
         /// </summary>
         internal static string DefaultDataStreamReadService_ReaderNotFound_Exception {
