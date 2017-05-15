@@ -19,7 +19,6 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
-    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -29,9 +28,12 @@ namespace Kephas.Model.Elements
         where TModelContract : IClassifier
     {
         /// <summary>
-        /// State of the complete construction.
+        /// The bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
         /// </summary>
-        private readonly TransitionMonitor<TModelContract> completeConstructionState;
+        /// <value>
+        /// The bases.
+        /// </value>
+        private IEnumerable<ITypeInfo> baseTypes;
 
         /// <summary>
         /// True if this object is a mixin.
@@ -56,10 +58,9 @@ namespace Kephas.Model.Elements
         protected ClassifierBase(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
-            this.BaseTypes = ModelHelper.EmptyClassifiers;
+            this.baseTypes = ModelHelper.EmptyClassifiers;
             this.BaseMixins = ModelHelper.EmptyClassifiers;
             this.GenericTypeArguments = ModelHelper.EmptyClassifiers;
-            this.completeConstructionState = new TransitionMonitor<TModelContract>(nameof(this.OnCompleteConstruction), this.GetType());
         }
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The bases.
         /// </value>
-        public IEnumerable<ITypeInfo> BaseTypes { get; private set; }
+        IEnumerable<ITypeInfo> ITypeInfo.BaseTypes => this.baseTypes;
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
@@ -262,9 +263,9 @@ namespace Kephas.Model.Elements
             var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
 
             // compute base: types, classifier and mixins
-            this.BaseTypes = this.ComputeBaseTypes(constructionContext, parts);
-            this.BaseClassifier = this.ComputeBaseClassifier(constructionContext, this.BaseTypes);
-            this.BaseMixins = this.ComputeBaseMixins(constructionContext, this.BaseTypes);
+            this.baseTypes = this.ComputeBaseTypes(constructionContext, parts);
+            this.BaseClassifier = this.ComputeBaseClassifier(constructionContext, this.baseTypes);
+            this.BaseMixins = this.ComputeBaseMixins(constructionContext, this.baseTypes);
 
             // compute generic arguments
             if (parts.Count > 1 && parts.Any(p => p.IsGenericType()))
@@ -319,7 +320,7 @@ namespace Kephas.Model.Elements
                                      .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
                                      .ToList();
 
-            var baseTypes = new List<ITypeInfo>();
+            var baseTypesList = new List<ITypeInfo>();
             foreach (var eligibleType in eligibleTypes)
             {
                 // TODO the next sentence should apply at any level.
@@ -329,10 +330,10 @@ namespace Kephas.Model.Elements
                     continue;
                 }
 
-                baseTypes.Add(eligibleType);
+                baseTypesList.Add(eligibleType);
             }
 
-            return baseTypes;
+            return baseTypesList;
         }
 
         /// <summary>
@@ -343,7 +344,9 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The calculated base classifier.
         /// </returns>
-        protected virtual IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        protected virtual IClassifier ComputeBaseClassifier(
+            IModelConstructionContext constructionContext,
+            IEnumerable<ITypeInfo> baseTypes)
         {
             // TODO provide a more explicit exception.
             return baseTypes.OfType<IClassifier>().SingleOrDefault(c => !c.IsMixin);
