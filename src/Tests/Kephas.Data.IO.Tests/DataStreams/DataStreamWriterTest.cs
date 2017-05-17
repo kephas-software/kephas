@@ -28,7 +28,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
     public class DataStreamWriterTest
     {
         [Test]
-        public async Task WriteAsync()
+        public async Task WriteAsync_entity_check()
         {
             var serializedEntity = "123";
 
@@ -54,6 +54,58 @@ namespace Kephas.Data.IO.Tests.DataStreams
                 await writer.WriteAsync(new [] { "abcd" }, dataStream);
                 var str = Encoding.UTF8.GetString(memStream.ToArray()).Substring(1); // cut the first unicode char
                 Assert.AreEqual(serializedEntity, str);
+            }
+        }
+
+        [Test]
+        public async Task WriteAsync_provided_RootObjectType()
+        {
+            var serializedEntity = "123";
+            ISerializationContext serializationContext = null;
+
+            var mediaTypeProvider = Substitute.For<IMediaTypeProvider>();
+            mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
+
+            var serializer = Substitute.For<ISerializer>();
+            serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
+                .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
+
+            var serializationService = Substitute.For<ISerializationService>();
+            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+
+            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
+            var memStream = new MemoryStream();
+            using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
+            {
+                await writer.WriteAsync(new[] { "abcd" }, dataStream, new DataIOContext { RootObjectType = typeof(bool) });
+                Assert.IsNotNull(serializationContext);
+                Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
+            }
+        }
+
+        [Test]
+        public async Task WriteAsync_default_RootObjectType()
+        {
+            var serializedEntity = "123";
+            ISerializationContext serializationContext = null;
+
+            var mediaTypeProvider = Substitute.For<IMediaTypeProvider>();
+            mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
+
+            var serializer = Substitute.For<ISerializer>();
+            serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
+                .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
+
+            var serializationService = Substitute.For<ISerializationService>();
+            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+
+            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
+            var memStream = new MemoryStream();
+            using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
+            {
+                await writer.WriteAsync("abcd", dataStream);
+                Assert.IsNotNull(serializationContext);
+                Assert.AreEqual(typeof(string), serializationContext.RootObjectType);
             }
         }
     }

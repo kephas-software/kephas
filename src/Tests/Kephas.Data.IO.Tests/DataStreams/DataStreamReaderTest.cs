@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.IO.Tests.DataStreams
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -26,7 +27,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
     public class DataStreamReaderTest
     {
         [Test]
-        public async Task ReadAsync()
+        public async Task ReadAsync_entity_check()
         {
             var entity = "123";
 
@@ -45,6 +46,58 @@ namespace Kephas.Data.IO.Tests.DataStreams
             {
                 var result = await reader.ReadAsync(dataStream);
                 Assert.AreSame(entity, result);
+            }
+        }
+
+        [Test]
+        public async Task ReadAsync_provided_RootObjectType()
+        {
+            var entity = "123";
+            ISerializationContext serializationContext = null;
+
+            var mediaTypeProvider = Substitute.For<IMediaTypeProvider>();
+            mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
+
+            var serializer = Substitute.For<ISerializer>();
+            serializer.DeserializeAsync(Arg.Any<TextReader>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(entity)
+                .AndDoes(ci => serializationContext = ci.Arg<ISerializationContext>());
+
+            var serializationService = Substitute.For<ISerializationService>();
+            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+
+            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
+            using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
+            {
+                await reader.ReadAsync(dataStream, new DataIOContext { RootObjectType = typeof(bool) });
+                Assert.IsNotNull(serializationContext);
+                Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
+            }
+        }
+
+        [Test]
+        public async Task ReadAsync_default_RootObjectType()
+        {
+            var entity = "123";
+            ISerializationContext serializationContext = null;
+
+            var mediaTypeProvider = Substitute.For<IMediaTypeProvider>();
+            mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
+
+            var serializer = Substitute.For<ISerializer>();
+            serializer.DeserializeAsync(Arg.Any<TextReader>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(entity)
+                .AndDoes(ci => serializationContext = ci.Arg<ISerializationContext>());
+
+            var serializationService = Substitute.For<ISerializationService>();
+            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+
+            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
+            using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
+            {
+                await reader.ReadAsync(dataStream);
+                Assert.IsNotNull(serializationContext);
+                Assert.AreEqual(typeof(List<object>), serializationContext.RootObjectType);
             }
         }
     }
