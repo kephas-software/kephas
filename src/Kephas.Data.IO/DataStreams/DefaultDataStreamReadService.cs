@@ -51,10 +51,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A promise of the deserialized entities.
         /// </returns>
-        public Task<IEnumerable<object>> ReadAsync(
-            DataStream dataStream,
-            IDataIOContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(dataStream, nameof(dataStream));
 

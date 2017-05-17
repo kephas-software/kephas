@@ -32,7 +32,7 @@ namespace Kephas.Data.IO.DataStreams
         bool CanRead(DataStream dataStream);
 
         /// <summary>
-        /// Reads the data source and converts it to an enumeration of client entities.
+        /// Reads the data source and converts it to an enumeration of entities.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
         /// <param name="context">The data I/O context (optional).</param>
@@ -40,6 +40,6 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A promise of the deserialized entities.
         /// </returns>
-        Task<IEnumerable<object>> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

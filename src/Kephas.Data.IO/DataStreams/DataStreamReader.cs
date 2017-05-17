@@ -17,7 +17,6 @@ namespace Kephas.Data.IO.DataStreams
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
-    using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -71,7 +70,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A promise of the deserialized entities.
         /// </returns>
-        public virtual async Task<IEnumerable<object>> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(dataStream, nameof(dataStream));
 
@@ -79,19 +78,16 @@ namespace Kephas.Data.IO.DataStreams
 
             var serializationContext = new SerializationContext(this.serializationService, this.GetMediaType(dataStream))
                                            {
-                                               RootObjectType = typeof(List<object>)
+                                               RootObjectType = context?.RootObjectType ?? typeof(List<object>)
                                            };
             var serializer = this.serializationService.GetSerializer(serializationContext);
 
             using (var reader = this.CreateEncodedStreamReader(dataStream))
             {
-                var rawResult = await serializer.DeserializeAsync(reader, serializationContext, cancellationToken).PreserveThreadContext();
-
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var result = rawResult.GetType().IsCollection()
-                                 ? (IEnumerable<object>)rawResult
-                                 : new[] { rawResult };
+                var result = await serializer.DeserializeAsync(reader, serializationContext, cancellationToken).PreserveThreadContext();
+
                 return result;
             }
         }

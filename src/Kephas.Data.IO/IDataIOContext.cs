@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.IO
 {
+    using System;
+
     using Kephas.Services;
 
     /// <summary>
@@ -16,5 +18,12 @@ namespace Kephas.Data.IO
     /// </summary>
     public interface IDataIOContext : IContext
     {
+        /// <summary>
+        /// Gets or sets the type of the root object.
+        /// </summary>
+        /// <value>
+        /// The type of the root object.
+        /// </value>
+        Type RootObjectType { get; set; }
     }
 }

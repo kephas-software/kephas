@@ -43,10 +43,8 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var reader = new DataStreamReader(serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
-                var objects = await reader.ReadAsync(dataStream);
-                var objectList = objects.ToList();
-                Assert.AreEqual(1, objectList.Count);
-                Assert.AreSame(entity, objectList[0]);
+                var result = await reader.ReadAsync(dataStream);
+                Assert.AreSame(entity, result);
             }
         }
     }
