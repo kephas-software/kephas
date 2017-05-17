@@ -49,6 +49,21 @@ namespace Kephas.Data.Tests.Capabilities
         }
 
         [Test]
+        public void OriginalEntity_inherited_entity()
+        {
+            var entity = new DerivedTestEntity();
+            entity.Id = Guid.NewGuid();
+            entity.Name = "test";
+            var entityInfo = new EntityInfo(entity);
+
+            var originalEntity = entityInfo.OriginalEntity;
+            Assert.AreEqual(2, originalEntity.ToDictionary().Keys.Count);
+
+            Assert.AreEqual(entity.Id, originalEntity[nameof(DerivedTestEntity.Id)]);
+            Assert.AreEqual(entity.Name, originalEntity[nameof(DerivedTestEntity.Name)]);
+        }
+
+        [Test]
         public void EntityId_identifiable()
         {
             var entity = Substitute.For<IIdentifiable>();
@@ -291,15 +306,44 @@ namespace Kephas.Data.Tests.Capabilities
                 }
                 set
                 {
-                    this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs("Id"));
+                    this.OnPropertyChanging(new PropertyChangingEventArgs(nameof(this.Id)));
                     this.id = value;
-                    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Id"));
+                    this.OnPropertyChanged(new PropertyChangedEventArgs(nameof(this.Id)));
                 }
             }
 
             public event PropertyChangingEventHandler PropertyChanging;
 
             public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanging(PropertyChangingEventArgs e)
+            {
+                this.PropertyChanging?.Invoke(this, e);
+            }
+
+            protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+            {
+                this.PropertyChanged?.Invoke(this, e);
+            }
+        }
+
+        public class DerivedTestEntity : TestEntity
+        {
+            private string name;
+
+            public string Name
+            {
+                get
+                {
+                    return this.name;
+                }
+                set
+                {
+                    this.OnPropertyChanging(new PropertyChangingEventArgs(nameof(this.Name)));
+                    this.name = value;
+                    this.OnPropertyChanged(new PropertyChangedEventArgs(nameof(this.Name)));
+                }
+            }
         }
 
         public class InstanceEntity : Expando, INotifyPropertyChanging, INotifyPropertyChanged, IInstance
