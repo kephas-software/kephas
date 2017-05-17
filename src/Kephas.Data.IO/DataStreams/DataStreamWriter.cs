@@ -81,7 +81,7 @@ namespace Kephas.Data.IO.DataStreams
             Requires.NotNull(data, nameof(data));
             Requires.NotNull(dataStream, nameof(dataStream));
 
-            context.CheckCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             var serializationContext = new SerializationContext(this.serializationService, this.GetMediaType(dataStream));
             var serializer = this.serializationService.GetSerializer(serializationContext);
@@ -90,11 +90,11 @@ namespace Kephas.Data.IO.DataStreams
             {
                 var rawResult = await serializer.SerializeAsync(data, serializationContext, cancellationToken).PreserveThreadContext();
 
-                context.CheckCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
                 await writer.WriteAsync(rawResult).PreserveThreadContext();
 
-                context.CheckCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
             }
         }
 

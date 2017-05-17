@@ -75,7 +75,7 @@ namespace Kephas.Data.IO.DataStreams
         {
             Requires.NotNull(dataStream, nameof(dataStream));
 
-            context.CheckCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             var serializationContext = new SerializationContext(this.serializationService, this.GetMediaType(dataStream))
                                            {
@@ -87,7 +87,7 @@ namespace Kephas.Data.IO.DataStreams
             {
                 var rawResult = await serializer.DeserializeAsync(reader, serializationContext, cancellationToken).PreserveThreadContext();
 
-                context.CheckCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
                 var result = rawResult.GetType().IsCollection()
                                  ? (IEnumerable<object>)rawResult
