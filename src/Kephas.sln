@@ -181,6 +181,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests.Net45", "Tests\Kephas.Data.IO.Tests.Net45\Kephas.Data.IO.Tests.Net45.csproj", "{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit", "Kephas.Mail.MailKit\Kephas.Mail.MailKit.csproj", "{52669F27-358D-4F07-849A-4543A257DEE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit.Net45", "Kephas.Mail.MailKit.Net45\Kephas.Mail.MailKit.Net45.csproj", "{104F79B0-1E7E-48DE-873A-2FADE46533B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -467,6 +471,14 @@ Global
 		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52669F27-358D-4F07-849A-4543A257DEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52669F27-358D-4F07-849A-4543A257DEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52669F27-358D-4F07-849A-4543A257DEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52669F27-358D-4F07-849A-4543A257DEE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -525,5 +537,6 @@ Global
 		{92B7D760-A6E7-48EA-B982-7163CCC2AF34} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
+		{104F79B0-1E7E-48DE-873A-2FADE46533B0} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 	EndGlobalSection
 EndGlobal

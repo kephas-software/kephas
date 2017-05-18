@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Kephas.Mail</id>
+    <id>Kephas.Mail.MailKit</id>
     <version>$version$</version>
-    <title>Kephas.Mail</title>
+    <title>Kephas.Mail.MailKit</title>
     <authors>Quartz Software SRL</authors>
     <owners>Quartz Software SRL</owners>
-    <description>Provides the abstract infrastructure for mailing.</description>
+    <description>Provides the mailing implementation using the MailKit project.</description>
     <releaseNotes>
     </releaseNotes>
     <summary>
@@ -20,18 +20,20 @@
     <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
     <dependencies>
       <dependency id="Kephas.Core" version="$refversion$" />
+      <dependency id="Kephas.Mail" version="$refversion$" />
+      <dependency id="MailKit" version="1.16.1" />
     </dependencies>
     <references>
-      <reference file="Kephas.Mail.dll" />
+      <reference file="Kephas.Mail.MailKit.dll" />
     </references>
     <tags>kephas framework mail quartz-software</tags>
   </metadata>
   <files>
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.dll" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.pdb" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.xml" target="lib\netstandard1.3" />
-    <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.dll" target="lib\net45" />
-    <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.pdb" target="lib\net45" />
-    <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.xml" target="lib\net45" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.MailKit.dll" target="lib\netstandard1.3" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.MailKit.pdb" target="lib\netstandard1.3" />
+    <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.MailKit.xml" target="lib\netstandard1.3" />
+    <file src="..\Kephas.Mail.MailKit.Net45\bin\$configuration$\Kephas.Mail.MailKit.dll" target="lib\net45" />
+    <file src="..\Kephas.Mail.MailKit.Net45\bin\$configuration$\Kephas.Mail.MailKit.pdb" target="lib\net45" />
+    <file src="..\Kephas.Mail.MailKit.Net45\bin\$configuration$\Kephas.Mail.MailKit.xml" target="lib\net45" />
   </files>
 </package>

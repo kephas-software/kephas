@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <TargetFramework>netstandard1.3</TargetFramework>
+      <AssemblyName>Kephas.Mail.MailKit</AssemblyName>
+      <RootNamespace>Kephas.Mail.MailKit</RootNamespace>
+      <SignAssembly>True</SignAssembly>
+      <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+      <Version>3.6.0</Version>
+      <AssemblyVersion>3.6.0.0</AssemblyVersion>
+      <FileVersion>3.6.0.0</FileVersion>
+      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+      <Authors>Quartz Software SRL</Authors>
+      <Company>Quartz Software SRL</Company>
+      <Product>Kephas Framework</Product>
+      <Description>Provides the mailing implementation using the MailKit project.</Description>
+      <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
+      <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+      <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+      <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+      <PackageTags>kephas framework mail mailkit quartz-software</PackageTags>
+      <RepositoryType>github</RepositoryType>
+      <PackageReleaseNotes>
+          Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+          Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
+      </PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Mail.MailKit.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Mail.MailKit.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="1.16.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\Kephas.Mail\Kephas.Mail.csproj" />
+  </ItemGroup>
+
+</Project>

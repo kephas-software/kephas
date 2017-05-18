@@ -12,5 +12,5 @@ using System.Reflection;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Kephas.Mail")]
-[assembly: AssemblyDescription("Provides the abstract infrastructure for mailing.")]
+[assembly: AssemblyTitle("Kephas.Mail.MailKit")]
+[assembly: AssemblyDescription("Provides the mailing implementation using the MailKit project.")]
