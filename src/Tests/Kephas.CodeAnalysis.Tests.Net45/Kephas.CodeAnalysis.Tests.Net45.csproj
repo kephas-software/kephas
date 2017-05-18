@@ -47,10 +47,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.CodeAnalysis.Tests\Generation\CodeFormatterExtensionsTest.cs">
+      <Link>Generation\CodeFormatterExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.CodeAnalysis.Net45\Kephas.CodeAnalysis.Net45.csproj">
+      <Project>{52122f2c-2e49-4cc7-8c1e-153b4d8b19de}</Project>
+      <Name>Kephas.CodeAnalysis.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
