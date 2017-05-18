@@ -53,6 +53,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Conversion\DefaultClientQueryConverterTest.cs" />
+    <Compile Include="Queries\Conversion\ExpressionConverters\EndsWithExpressionConverterTest.cs" />
+    <Compile Include="Queries\Conversion\ExpressionConverters\StartsWithExpressionConverterTest.cs" />
+    <Compile Include="Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">

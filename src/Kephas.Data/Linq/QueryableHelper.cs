@@ -437,7 +437,7 @@ namespace Kephas.Data.Linq
         /// <typeparam name="T1">Generic type parameter T1.</typeparam>
         /// <typeparam name="T2">Generic type parameter T2.</typeparam>
         /// <param name="f">A Func{T1,T2} to process.</param>
-        /// <param name="unused1">The parameter is not unused.</param>
+        /// <param name="unused1">The parameter is not used.</param>
         /// <returns>
         /// The method information.
         /// </returns>

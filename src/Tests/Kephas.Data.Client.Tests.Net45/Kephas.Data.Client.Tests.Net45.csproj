@@ -61,6 +61,15 @@
     <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\DefaultClientQueryConverterTest.cs">
       <Link>Queries\Conversion\DefaultClientQueryConverterTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\ExpressionConverters\EndsWithExpressionConverterTest.cs">
+      <Link>Queries\Conversion\ExpressionConverters\EndsWithExpressionConverterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\ExpressionConverters\StartsWithExpressionConverterTest.cs">
+      <Link>Queries\Conversion\ExpressionConverters\StartsWithExpressionConverterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverterTest.cs">
+      <Link>Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverterTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

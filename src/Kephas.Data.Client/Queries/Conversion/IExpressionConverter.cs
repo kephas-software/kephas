@@ -15,7 +15,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Services;
 
     /// <summary>
-    /// Service contract for expression converters.
+    /// Shared application service contract for expression converters.
     /// </summary>
     [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(OperatorAttribute) })]
     public interface IExpressionConverter

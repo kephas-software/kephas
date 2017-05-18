@@ -61,6 +61,9 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\BinaryExpressionConverterBase.cs">
       <Link>Queries\Conversion\ExpressionConverters\BinaryExpressionConverterBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\EndsWithExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\EndsWithExpressionConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\EqExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\EqExpressionConverter.cs</Link>
     </Compile>
@@ -70,17 +73,35 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\GtExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\GtExpressionConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\Internal\ExpressionHelper.cs">
+      <Link>Queries\Conversion\ExpressionConverters\Internal\ExpressionHelper.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\LteExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\LteExpressionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\LtExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\LtExpressionConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\MethodCallExpressionConverterBase.cs">
+      <Link>Queries\Conversion\ExpressionConverters\MethodCallExpressionConverterBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\NeqExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\NeqExpressionConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\NotExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\NotExpressionConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\OrExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\OrExpressionConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\StartsWithExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\StartsWithExpressionConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\UnaryExpressionConverterBase.cs">
+      <Link>Queries\Conversion\ExpressionConverters\UnaryExpressionConverterBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\IClientQueryConversionContext.cs">
       <Link>Queries\Conversion\IClientQueryConversionContext.cs</Link>
