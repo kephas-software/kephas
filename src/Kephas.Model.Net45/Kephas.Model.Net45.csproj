@@ -331,6 +331,9 @@
     <Compile Include="..\Kephas.Model\Services\IProjectedTypeResolver.cs">
       <Link>Services\IProjectedTypeResolver.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
