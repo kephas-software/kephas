@@ -9,17 +9,14 @@
 
 namespace Kephas.Serialization.Json
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
-    using System.Dynamic;
     using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Resources;
 
@@ -69,23 +66,6 @@ namespace Kephas.Serialization.Json
         public static DefaultJsonSerializerSettingsProvider Instance => instance ?? (instance = CreateDefaultInstance());
 
         /// <summary>
-        /// Creates a default instance.
-        /// </summary>
-        /// <returns>
-        /// The new instance.
-        /// </returns>
-        private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
-        {
-            var ambientServices = AmbientServices.Instance;
-            var instance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
-            {
-                Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
-            };
-
-            return instance;
-        }
-
-        /// <summary>
         /// Gets the type resolver.
         /// </summary>
         /// <value>
@@ -109,7 +89,10 @@ namespace Kephas.Serialization.Json
         /// </returns>
         public JsonSerializerSettings GetJsonSerializerSettings()
         {
-            return this.GetJsonSerializerSettings(camelCase: true, thrownOnMissingMembers: true, converters: this.jsonConverters);
+            return this.GetJsonSerializerSettings(
+                camelCase: true,
+                thrownOnMissingMembers: true,
+                converters: this.jsonConverters);
         }
 
         /// <summary>
@@ -182,6 +165,23 @@ namespace Kephas.Serialization.Json
                 args.ErrorContext.Error,
                 Strings.DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage,
                 args.CurrentObject?.GetType());
+        }
+
+        /// <summary>
+        /// Creates a default instance.
+        /// </summary>
+        /// <returns>
+        /// The new instance.
+        /// </returns>
+        private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
+        {
+            var ambientServices = AmbientServices.Instance;
+            var defaultInstance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
+                               {
+                                   Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
+                               };
+
+            return defaultInstance;
         }
     }
 }
