@@ -19,7 +19,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     /// <summary>
     /// Base class for unary expression converters.
     /// </summary>
-    public class UnaryExpressionConverterBase : IExpressionConverter
+    public abstract class UnaryExpressionConverterBase : IExpressionConverter
     {
         /// <summary>
         /// The binary expression factory.
