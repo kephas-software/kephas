@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -57,6 +58,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data\Behaviors\Composition\DataBehaviorMetadata.cs">
       <Link>Behaviors\Composition\DataBehaviorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\DataAnnotationsBehaviorBase.cs">
+      <Link>Behaviors\DataAnnotationsBehaviorBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Behaviors\DataBehaviorBase.cs">
       <Link>Behaviors\DataBehaviorBase.cs</Link>
@@ -388,6 +392,10 @@
     <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Localization.Net45\Kephas.Localization.Net45.csproj">
+      <Project>{92c3ffc4-c530-4ac3-9521-0e5e91f9c9bf}</Project>
+      <Name>Kephas.Localization.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,7 @@
       <HintPath>..\..\..\Packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
@@ -54,6 +55,8 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Adapters\CollectionAdapterTest.cs" />
+    <Compile Include="Behaviors\DataAnnotationsBehaviorBaseTest.cs" />
+    <Compile Include="Behaviors\DataBehaviorBaseTest.cs" />
     <Compile Include="Caching\DataContextCacheTest.cs" />
     <Compile Include="Capabilities\EntityInfoTest.cs" />
     <Compile Include="Commands\CreateEntityCommandTest.cs" />
@@ -85,6 +88,10 @@
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj">
       <Project>{8591c924-3c04-413f-a530-7a5575b45966}</Project>
       <Name>Kephas.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Localization\Kephas.Localization.csproj">
+      <Project>{c477b316-ffc6-4bd8-81b5-8642d1d71cc6}</Project>
+      <Name>Kephas.Localization</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

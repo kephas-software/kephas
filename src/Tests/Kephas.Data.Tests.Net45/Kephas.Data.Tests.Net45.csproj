@@ -52,6 +52,7 @@
       <HintPath>..\..\..\Packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +61,12 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Adapters\CollectionAdapterTest.cs">
       <Link>Adapters\CollectionAdapterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Behaviors\DataAnnotationsBehaviorBaseTest.cs">
+      <Link>Behaviors\DataAnnotationsBehaviorBaseTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Behaviors\DataBehaviorBaseTest.cs">
+      <Link>Behaviors\DataBehaviorBaseTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Tests\Caching\DataContextCacheTest.cs">
       <Link>Caching\DataContextCacheTest.cs</Link>
@@ -122,6 +129,10 @@
     <ProjectReference Include="..\..\Kephas.Data.Net45\Kephas.Data.Net45.csproj">
       <Project>{27926b67-08ce-4fe4-9338-0b11da98e930}</Project>
       <Name>Kephas.Data.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Localization.Net45\Kephas.Localization.Net45.csproj">
+      <Project>{92c3ffc4-c530-4ac3-9521-0e5e91f9c9bf}</Project>
+      <Name>Kephas.Localization.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
