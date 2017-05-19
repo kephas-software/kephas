@@ -4,12 +4,12 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>3.6.0</Version>
+    <Version>3.6.1</Version>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
     <AssemblyVersion>3.6.0.0</AssemblyVersion>
-    <FileVersion>3.6.0.0</FileVersion>
+    <FileVersion>3.6.1.0</FileVersion>
     <Description>Provides a common infrastructure for code analysis, conversion, and generation.</Description>
     <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

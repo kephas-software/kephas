@@ -107,6 +107,9 @@
     <Compile Include="..\Kephas.Data\Capabilities\IEntityInfo.cs">
       <Link>Capabilities\IEntityInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IEntityInfoAware.cs">
+      <Link>Capabilities\IEntityInfoAware.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Capabilities\IGraphOperationContext.cs">
       <Link>Capabilities\IGraphOperationContext.cs</Link>
     </Compile>
