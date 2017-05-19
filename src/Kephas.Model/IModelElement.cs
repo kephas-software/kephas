@@ -53,7 +53,7 @@ namespace Kephas.Model
         {
             Requires.NotNull(modelElement, nameof(modelElement));
 
-            return modelElement.Members.Where(m => m.Container == modelElement);
+            return modelElement.Members.Where(m => m.DeclaringContainer == modelElement);
         }
     }
 }

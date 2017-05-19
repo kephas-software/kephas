@@ -19,6 +19,28 @@ namespace Kephas.Model
     public interface IClassifier : IModelElement, ITypeInfo
     {
         /// <summary>
+        /// Gets the qualified name of the element.
+        /// </summary>
+        /// <value>
+        /// The qualified name of the element.
+        /// </value>
+        /// <remarks>
+        /// The qualified name is unique within the container's members. 
+        /// Some elements have the qualified name the same as their name, 
+        /// but others will use a discriminator prefix to avoid name collisions.
+        /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
+        /// </remarks>
+        new string QualifiedFullName { get; }
+
+        /// <summary>
+        /// Gets the members of this model element.
+        /// </summary>
+        /// <value>
+        /// The model element members.
+        /// </value>
+        new IEnumerable<INamedElement> Members { get; }
+
+        /// <summary>
         /// Gets the projection where the model element is defined.
         /// </summary>
         /// <value>
@@ -74,5 +96,13 @@ namespace Kephas.Model
         /// <c>true</c> if this classifier is an aspect of the provided classifier, <c>false</c> if not.
         /// </returns>
         bool IsAspectOf(IClassifier classifier);
+
+        /// <summary>
+        /// Gets the member with the specified qualified name.
+        /// </summary>
+        /// <param name="qualifiedName">The qualified name of the member.</param>
+        /// <param name="throwOnNotFound">If set to <c>true</c> and the member is not found, an exception occurs; otherwise <c>null</c> is returned if the member is not found.</param>
+        /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
+        new INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true);
     }
 }

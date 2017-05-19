@@ -40,6 +40,6 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The declaring dimension.
         /// </value>
-        public IModelDimension DeclaringDimension => (IModelDimension)this.Container;
+        public IModelDimension DeclaringDimension => (IModelDimension)this.DeclaringContainer;
     }
 }

@@ -16,6 +16,7 @@ namespace Kephas.Model.Elements
 
     using Kephas.Activation;
     using Kephas.Model.Construction;
+    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
@@ -268,24 +269,10 @@ namespace Kephas.Model.Elements
             this.BaseMixins = this.ComputeBaseMixins(constructionContext, this.baseTypes);
 
             // compute generic arguments
-            if (parts.Count > 1 && parts.Any(p => p.IsGenericType()))
-            {
-                throw new ModelConstructionException(string.Format(Strings.ClassifierBase_MultipleGenericPartsNotSupported_Exception, this.FullName, string.Join(", ", parts.Select(p => p.FullName))));
-            }
+            this.ComputeGenericInformation(constructionContext, parts);
 
-            var genericPart = parts.Count == 1 ? parts[0] : null;
-            if (genericPart != null && genericPart.IsGenericType())
-            {
-                this.GenericTypeParameters = genericPart.GenericTypeParameters;
-                this.GenericTypeArguments = (genericPart as IClassifier)?.GenericTypeArguments
-                                            ?? new ReadOnlyCollection<ITypeInfo>(
-                                                   genericPart.GenericTypeArguments.Select(
-                                                       t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t).ToList());
-
-                this.GenericTypeDefinition = genericPart.GenericTypeDefinition != null
-                                                 ? this.ModelSpace.TryGetClassifier(genericPart.GenericTypeDefinition, findContext: constructionContext)
-                                                 : null;
-            }
+            // add members from the bases
+            this.AddMembersFromBaseClassifiers();
 
             base.OnCompleteConstruction(constructionContext);
         }
@@ -365,6 +352,117 @@ namespace Kephas.Model.Elements
             IEnumerable<ITypeInfo> baseTypes)
         {
             return new ReadOnlyCollection<IClassifier>(baseTypes.OfType<IClassifier>().Where(c => c.IsMixin).ToList());
+        }
+
+        /// <summary>
+        /// Calculates the generic information.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="parts">The parts.</param>
+        private void ComputeGenericInformation(IModelConstructionContext constructionContext, List<ITypeInfo> parts)
+        {
+            if (parts.Count > 1 && parts.Any(p => p.IsGenericType()))
+            {
+                throw new ModelConstructionException(
+                    string.Format(
+                        Strings.ClassifierBase_MultipleGenericPartsNotSupported_Exception,
+                        this.FullName,
+                        string.Join(", ", parts.Select(p => p.FullName))));
+            }
+
+            var genericPart = parts.Count == 1 ? parts[0] : null;
+            if (genericPart != null && genericPart.IsGenericType())
+            {
+                this.GenericTypeParameters = genericPart.GenericTypeParameters;
+                this.GenericTypeArguments = (genericPart as IClassifier)?.GenericTypeArguments
+                                            ?? new ReadOnlyCollection<ITypeInfo>(
+                                                genericPart.GenericTypeArguments
+                                                    .Select(
+                                                        t => this.ModelSpace.TryGetClassifier(
+                                                                 t,
+                                                                 findContext: constructionContext) ?? t).ToList());
+
+                this.GenericTypeDefinition = genericPart.GenericTypeDefinition != null
+                                                 ? this.ModelSpace.TryGetClassifier(
+                                                     genericPart.GenericTypeDefinition,
+                                                     findContext: constructionContext)
+                                                 : null;
+            }
+        }
+
+        /// <summary>
+        /// Adds members from base classifiers.
+        /// </summary>
+        private void AddMembersFromBaseClassifiers()
+        {
+            // construct the base members list from the bases.
+            var baseMembers = new Dictionary<string, object>();
+            if (this.BaseClassifier != null)
+            {
+                foreach (var member in this.BaseClassifier.Members)
+                {
+                    baseMembers.Add(member.Name, member);
+                }
+            }
+
+            foreach (var mixin in this.BaseMixins)
+            {
+                foreach (var member in mixin.Members)
+                {
+                    if (baseMembers.TryGetValue(member.Name, out object conflictingMember))
+                    {
+                        var collection = conflictingMember as IList<INamedElement>;
+                        if (collection != null)
+                        {
+                            collection.Add(member);
+                        }
+                        else
+                        {
+                            collection = new List<INamedElement> { (INamedElement)conflictingMember, member };
+                            baseMembers[member.Name] = collection;
+                        }
+                    }
+
+                    baseMembers.Add(member.Name, member);
+                }
+            }
+
+            // add the base members 
+            foreach (var baseMemberMap in baseMembers)
+            {
+                var ownMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);
+                if (ownMember != null)
+                {
+                    var ownMemberBuilder = ownMember as IWritableNamedElement;
+                    var collection = baseMemberMap.Value as IList<INamedElement>;
+                    if (collection != null)
+                    {
+                        foreach (var baseMember in collection)
+                        {
+                            ownMemberBuilder?.AddPart(baseMember);
+                        }
+                    }
+                    else
+                    {
+                        ownMemberBuilder?.AddPart(baseMemberMap.Value);
+                    }
+                }
+                else
+                {
+                    var collection = baseMemberMap.Value as IList<INamedElement>;
+                    if (collection != null)
+                    {
+                        throw new ModelConstructionException(
+                            string.Format(
+                                Strings.ClassifierBase_ConflictingMembersInBases_Exception,
+                                baseMemberMap.Key,
+                                this.Name,
+                                string.Join(", ", collection.Select(e => ((IElementInfo)e).DeclaringContainer?.Name))));
+                    }
+
+                    this.AddMember((INamedElement)baseMemberMap.Value);
+                }
+            }
         }
     }
 }

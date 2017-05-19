@@ -87,7 +87,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The declaring element.
         /// </value>
-        IElementInfo IElementInfo.DeclaringContainer => this.Container;
+        IElementInfo IElementInfo.DeclaringContainer => this.DeclaringContainer;
 
         /// <summary>
         /// Gets the element annotations.
@@ -153,7 +153,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The container element.
         /// </value>
-        public virtual IModelElement Container { get; private set; }
+        public virtual IModelElement DeclaringContainer { get; private set; }
 
         /// <summary>
         /// Gets the model space.
@@ -194,10 +194,10 @@ namespace Kephas.Model.Elements
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
-        void IWritableNamedElement.SetContainer(IModelElement container)
+        void IWritableNamedElement.SetDeclaringContainer(IModelElement container)
         {
             this.ConstructionMonitor.AssertIsInProgress();
-            this.Container = container;
+            this.DeclaringContainer = container;
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Kephas.Model.Elements
             this.ConstructionMonitor.AssertIsInProgress();
             try
             {
-                this.FullName = this.Container?.FullName + this.QualifiedFullName;
+                this.FullName = this.DeclaringContainer?.FullName + this.QualifiedFullName;
                 this.OnCompleteConstruction(constructionContext);
                 this.ConstructionMonitor.Complete();
             }

@@ -29,10 +29,10 @@ namespace Kephas.Model.Construction.Internal
         ITransitionState ConstructionState { get; }
 
         /// <summary>
-        /// Sets the element container.
+        /// Sets the element's declaring container.
         /// </summary>
-        /// <param name="container">The element container.</param>
-        void SetContainer(IModelElement container);
+        /// <param name="container">The element's declaring container.</param>
+        void SetDeclaringContainer(IModelElement container);
 
         /// <summary>
         /// Adds the member to the members list.

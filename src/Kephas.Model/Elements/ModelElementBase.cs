@@ -14,7 +14,6 @@ namespace Kephas.Model.Elements
 
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
@@ -84,10 +83,28 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         protected override void AddMember(INamedElement member)
         {
-            var memberBuilder = member as IWritableNamedElement;
-            memberBuilder?.SetContainer(this);
+            if (member.DeclaringContainer == null)
+            {
+                var memberBuilder = member as IWritableNamedElement;
+                memberBuilder?.SetDeclaringContainer(this);
+            }
 
             this.members.Add(member.Name, member);
+        }
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
+        {
+            // Complete construction for declared members
+            foreach (var declaredMember in this.GetDeclaredMembers())
+            {
+                (declaredMember as IWritableNamedElement)?.CompleteConstruction(constructionContext);
+            }
+
+            base.OnCompleteConstruction(constructionContext);
         }
     }
 }

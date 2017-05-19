@@ -43,8 +43,8 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo PropertyType
         {
-            get { return this.propertyType ?? (this.propertyType = this.ComputePropertyType()); }
-            protected internal set { this.propertyType = value; }
+            get => this.propertyType ?? (this.propertyType = this.ComputePropertyType());
+            protected internal set => this.propertyType = value;
         } 
 
         /// <summary>
@@ -99,10 +99,21 @@ namespace Kephas.Model.Elements
             var firstPart = ((IAggregatedElementInfo)this).Parts.OfType<IPropertyInfo>().FirstOrDefault();
             if (firstPart == null)
             {
-                throw new ModelException(string.Format(Strings.Property_MissingPartsToComputePropertyType_Exception, this.Name, this.Container));
+                throw new ModelException(string.Format(Strings.Property_MissingPartsToComputePropertyType_Exception, this.Name, this.DeclaringContainer));
             }
 
             return this.ModelSpace.TryGetClassifier(firstPart.PropertyType) ?? firstPart.PropertyType;
+        }
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
+        {
+            // TODO add members from multiple parts
+            // TODO validate the property types of multiple parts
+            base.OnCompleteConstruction(constructionContext);
         }
     }
 }

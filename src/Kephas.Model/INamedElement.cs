@@ -69,12 +69,12 @@ namespace Kephas.Model
         new IEnumerable<IAnnotation> Annotations { get; }
 
         /// <summary>
-        /// Gets the container element.
+        /// Gets the declaring container element.
         /// </summary>
         /// <value>
-        /// The container element.
+        /// The declaring container element.
         /// </value>
-        IModelElement Container { get; }
+        new IModelElement DeclaringContainer { get; }
 
         /// <summary>
         /// Gets the model space.

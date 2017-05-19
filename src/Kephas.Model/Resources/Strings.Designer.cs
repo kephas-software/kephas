@@ -79,6 +79,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple members with the name {0} found in the bases of {1}: {2}. Possible resolutions: either add a new one at that classifier level to inherit from all the base members, or remove one or more from the bases..
+        /// </summary>
+        internal static string ClassifierBase_ConflictingMembersInBases_Exception {
+            get {
+                return ResourceManager.GetString("ClassifierBase_ConflictingMembersInBases_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A generic classifier with more than one part is not supported. Check the {0} classifier with parts: {1}..
         /// </summary>
         internal static string ClassifierBase_MultipleGenericPartsNotSupported_Exception {

@@ -138,4 +138,7 @@
   <data name="ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
     <value>Cannot instantiate the implementation type '{0}' because it is not resolved to an {1} instance. The provided type info was '{2}'.</value>
   </data>
+  <data name="ClassifierBase_ConflictingMembersInBases_Exception" xml:space="preserve">
+    <value>Multiple members with the name {0} found in the bases of {1}: {2}. Possible resolutions: either add a new one at that classifier level to inherit from all the base members, or remove one or more from the bases.</value>
+  </data>
 </root>
