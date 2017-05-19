@@ -21,6 +21,9 @@
                 <dependency id="Kephas.Data" version="$refversion$" />
                 <dependency id="Kephas.Model" version="$refversion$" />
             </group>
+            <group targetFramework="netstandard1.3">
+                <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
+            </group>
         </dependencies>
         <references>
             <reference file="Kephas.Data.Model.dll" />

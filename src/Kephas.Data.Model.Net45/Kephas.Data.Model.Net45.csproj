@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -55,6 +56,9 @@
     <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IDomainScopeDimensionElement.cs">
       <Link>Dimensions\Scope\IDomainScopeDimensionElement.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\Elements\Annotations\ValidationAnnotation.cs">
+      <Link>Elements\Annotations\ValidationAnnotation.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\Elements\Entity.cs">
       <Link>Elements\Entity.cs</Link>
     </Compile>
@@ -63,6 +67,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model\Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs">
+      <Link>Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Runtime\Construction\EntityConstructor.cs">
       <Link>Runtime\Construction\EntityConstructor.cs</Link>
