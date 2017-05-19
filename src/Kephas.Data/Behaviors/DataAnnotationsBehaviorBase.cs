@@ -70,7 +70,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The new validation function.
         /// </returns>
-        private Func<object, IEntityInfo, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
+        protected virtual Func<object, IEntityInfo, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
         {
             var propValidations = new List<Func<object, IDataValidationResultItem>>();
 
