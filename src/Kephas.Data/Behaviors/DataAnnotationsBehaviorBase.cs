@@ -77,6 +77,7 @@ namespace Kephas.Data.Behaviors
             foreach (var propInfo in typeInfo.Properties)
             {
                 var propInfoValidations = propInfo.Annotations.OfType<ValidationAttribute>().ToList();
+                propInfoValidations.AddRange(propInfo.Annotations.OfType<IValidationAttributeProvider>().Select(p => p.GetValidationAttribute()).Where(a => a != null));
                 var propInfoLocalization = propInfo.GetLocalization();
                 foreach (var propInfoValidation in propInfoValidations)
                 {
