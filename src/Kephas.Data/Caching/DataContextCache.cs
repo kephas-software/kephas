@@ -198,8 +198,13 @@ namespace Kephas.Data.Caching
         /// </returns>
         public virtual IEntityInfo GetEntityInfo(object entity)
         {
-            IEntityInfo entityInfo;
-            this.entityInfoMappings.TryGetValue(entity, out entityInfo);
+            var entityInfoAware = entity as IEntityInfoAware;
+            var entityInfo = entityInfoAware?.GetEntityInfo();
+            if (entityInfo == null)
+            {
+                this.entityInfoMappings.TryGetValue(entity, out entityInfo);
+            }
+
             return entityInfo;
         }
 

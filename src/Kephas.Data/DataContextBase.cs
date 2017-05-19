@@ -229,7 +229,16 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = null)
         {
-            return new EntityInfo(entity);
+            var entityInfo = new EntityInfo(entity);
+            if (changeState != null)
+            {
+                entityInfo.ChangeState = changeState.Value;
+            }
+
+            var entityInfoAware = entity as IEntityInfoAware;
+            entityInfoAware?.SetEntityInfo(entityInfo);
+
+            return entityInfo;
         }
 
         /// <summary>
