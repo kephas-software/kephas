@@ -12,6 +12,7 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Model.Configuration;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
 
@@ -98,6 +99,13 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
+            // invoke all members which are element configurators
+            var configurators = this.GetDeclaredMembers().OfType<IElementConfigurator>().ToList();
+            foreach (var configurator in configurators)
+            {
+                configurator.Configure(constructionContext, this);
+            }
+
             // Complete construction for declared members
             foreach (var declaredMember in this.GetDeclaredMembers())
             {
