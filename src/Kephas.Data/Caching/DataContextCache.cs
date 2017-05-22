@@ -25,7 +25,7 @@ namespace Kephas.Data.Caching
         /// <summary>
         /// The items.
         /// </summary>
-        private readonly IDictionary<Id, IEntityInfo> items;
+        private readonly IDictionary<object, IEntityInfo> items;
 
         /// <summary>
         /// The entity information mappings.
@@ -36,7 +36,7 @@ namespace Kephas.Data.Caching
         /// Initializes a new instance of the <see cref="DataContextCache"/> class.
         /// </summary>
         public DataContextCache()
-            : this(new Dictionary<Id, IEntityInfo>(), new Dictionary<object, IEntityInfo>())
+            : this(new Dictionary<object, IEntityInfo>(), new Dictionary<object, IEntityInfo>())
         {
         }
 
@@ -45,7 +45,7 @@ namespace Kephas.Data.Caching
         /// </summary>
         /// <param name="items">The items.</param>
         /// <param name="entityInfoMappings">The entity information mappings.</param>
-        protected DataContextCache(IDictionary<Id, IEntityInfo> items, IDictionary<object, IEntityInfo> entityInfoMappings)
+        protected DataContextCache(IDictionary<object, IEntityInfo> items, IDictionary<object, IEntityInfo> entityInfoMappings)
         {
             Requires.NotNull(items, nameof(items));
             Requires.NotNull(entityInfoMappings, nameof(entityInfoMappings));
@@ -72,7 +72,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise,
         /// <c>false</c>.
         /// </value>
-        bool ICollection<KeyValuePair<Id, IEntityInfo>>.IsReadOnly => this.items.IsReadOnly;
+        bool ICollection<KeyValuePair<object, IEntityInfo>>.IsReadOnly => this.items.IsReadOnly;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the
@@ -82,7 +82,7 @@ namespace Kephas.Data.Caching
         /// An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the
         /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </value>
-        public ICollection<Id> Keys => this.items.Keys;
+        public ICollection<object> Keys => this.items.Keys;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in
@@ -101,14 +101,14 @@ namespace Kephas.Data.Caching
         /// <returns>
         /// The element with the specified key.
         /// </returns>
-        public IEntityInfo this[Id key]
+        public IEntityInfo this[object key]
         {
             get
             {
                 IEntityInfo value;
                 if (!this.TryGetValue(key, out value))
                 {
-                    // TODO add a resource
+                    // TODO localization add a resource
                     throw new KeyNotFoundException();
                 }
 
@@ -152,7 +152,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />
         /// contains an element with the specified key; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool TryGetValue(Id key, out IEntityInfo value)
+        public virtual bool TryGetValue(object key, out IEntityInfo value)
         {
             return this.items.TryGetValue(key, out value);
         }
@@ -218,7 +218,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element
         /// with the key; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool ContainsKey(Id key) => this.items.ContainsKey(key);
+        public virtual bool ContainsKey(object key) => this.items.ContainsKey(key);
 
         /// <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.</summary>
         /// <param name="key">The object to use as the key of the element to add.</param>
@@ -227,7 +227,7 @@ namespace Kephas.Data.Caching
         /// <paramref name="key" /> is null.</exception>
         /// <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
-        void IDictionary<Id, IEntityInfo>.Add(Id key, IEntityInfo value)
+        void IDictionary<object, IEntityInfo>.Add(object key, IEntityInfo value)
         {
             Requires.NotNull(key, nameof(key));
             Requires.NotNull(value, nameof(value));
@@ -249,7 +249,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the element is successfully removed; otherwise, <c>false</c>.  This method also returns
         /// <c>false</c> if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </returns>
-        public bool Remove(Id key)
+        public bool Remove(object key)
         {
             IEntityInfo value;
             if (!this.TryGetValue(key, out value))
@@ -264,7 +264,7 @@ namespace Kephas.Data.Caching
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        void ICollection<KeyValuePair<Id, IEntityInfo>>.Add(KeyValuePair<Id, IEntityInfo> item)
+        void ICollection<KeyValuePair<object, IEntityInfo>>.Add(KeyValuePair<object, IEntityInfo> item)
         {
             this.Add(item.Value);
         }
@@ -288,7 +288,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if <paramref name="item" /> is found in the
         /// <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>.
         /// </returns>
-        bool ICollection<KeyValuePair<Id, IEntityInfo>>.Contains(KeyValuePair<Id, IEntityInfo> item) => this.items.Contains(item);
+        bool ICollection<KeyValuePair<object, IEntityInfo>>.Contains(KeyValuePair<object, IEntityInfo> item) => this.items.Contains(item);
 
         /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an
@@ -299,7 +299,7 @@ namespace Kephas.Data.Caching
         ///                     <see cref="T:System.Collections.Generic.ICollection`1" />. The
         ///                     <see cref="T:System.Array" /> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-        public void CopyTo(KeyValuePair<Id, IEntityInfo>[] array, int arrayIndex) => this.items.CopyTo(array, arrayIndex);
+        public void CopyTo(KeyValuePair<object, IEntityInfo>[] array, int arrayIndex) => this.items.CopyTo(array, arrayIndex);
 
         /// <summary>
         /// Removes the first occurrence of a specific object from the
@@ -313,7 +313,7 @@ namespace Kephas.Data.Caching
         /// returns <c>false</c> if <paramref name="item" /> is not found in the original
         /// <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        bool ICollection<KeyValuePair<Id, IEntityInfo>>.Remove(KeyValuePair<Id, IEntityInfo> item)
+        bool ICollection<KeyValuePair<object, IEntityInfo>>.Remove(KeyValuePair<object, IEntityInfo> item)
         {
             return this.Remove(item.Key);
         }
@@ -324,7 +324,7 @@ namespace Kephas.Data.Caching
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<Id, IEntityInfo>> GetEnumerator() => this.items.GetEnumerator();
+        public IEnumerator<KeyValuePair<object, IEntityInfo>> GetEnumerator() => this.items.GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.

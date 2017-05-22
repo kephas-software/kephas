@@ -61,8 +61,6 @@ namespace Kephas.Model.Tests.Runtime
             Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(Guid).AsRuntimeTypeInfo() && info.IsPrimitive));
 
             Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(string).AsRuntimeTypeInfo() && info.IsPrimitive));
-
-            Assert.IsTrue(elementInfos.Any(info => info.Parts.First() == typeof(Id).AsRuntimeTypeInfo() && info.IsPrimitive));
         }
     }
 }

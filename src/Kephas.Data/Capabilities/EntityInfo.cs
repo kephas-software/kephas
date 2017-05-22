@@ -15,6 +15,7 @@ namespace Kephas.Data.Capabilities
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -45,6 +46,11 @@ namespace Kephas.Data.Capabilities
         private IExpando originalEntity;
 
         /// <summary>
+        /// Context for the data.
+        /// </summary>
+        private WeakReference<IDataContext> dataContextRef;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EntityInfo"/> class.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -53,7 +59,7 @@ namespace Kephas.Data.Capabilities
             Requires.NotNull(entity, nameof(entity));
 
             this.Entity = entity;
-            this.Id = new Id(Guid.NewGuid());
+            this.Id = Guid.NewGuid();
 
             // ReSharper disable once VirtualMemberCallInConstructor
             this.AttachPropertyChangeHandlers();
@@ -81,7 +87,32 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        public Id EntityId => this.TryGetEntityId() ?? this.Id;
+        public object EntityId => this.TryGetEntityId() ?? this.Id;
+
+        /// <summary>
+        /// Gets or sets the entity owning data context.
+        /// </summary>
+        /// <value>
+        /// The data context.
+        /// </value>
+        public IDataContext DataContext
+        {
+            get
+            {
+                IDataContext dataContext = null;
+                this.dataContextRef?.TryGetTarget(out dataContext);
+                return dataContext;
+            }
+            set
+            {
+                if (this.dataContextRef != null)
+                {
+                    throw new InvalidOperationException(Strings.EntityInfo_DataContextAlreadySet_Exception);
+                }
+
+                this.dataContextRef = new WeakReference<IDataContext>(value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the change state of the entity.
@@ -134,7 +165,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier.
         /// </value>
-        public Id Id { get; protected set; }
+        public object Id { get; protected set; }
 
         /// <summary>
         /// Gets a wrapper expando object over the entity, to access dynamic values from it.
@@ -264,7 +295,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The entity identifier.
         /// </returns>
-        protected virtual Id TryGetEntityId()
+        protected virtual object TryGetEntityId()
         {
             // first of all get the ID from an Identifiable interface
             var identifiable = this.Entity as IIdentifiable;
@@ -274,13 +305,7 @@ namespace Kephas.Data.Capabilities
             }
 
             // then try to access the ID dynamically.
-            var id = this.ExpandoEntity[nameof(IIdentifiable.Id)];
-            if (id != null)
-            {
-                return id as Id ?? new Id(id);
-            }
-
-            return null;
+            return this.ExpandoEntity[nameof(IIdentifiable.Id)];
         }
 
         /// <summary>

@@ -31,23 +31,23 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = new Id(1) });
+            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = new Id(2) });
+            entityInfo = new EntityInfo(new TestEntity { Id = 2 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = new Id(3) });
+            entityInfo = new EntityInfo(new TestEntity { Id = 3 });
             localCache.Add(entityInfo);
 
-            var findContext = new FindContext<TestEntity>(dataContext, new Id(2));
+            var findContext = new FindContext<TestEntity>(dataContext, 2);
             var result = await cmd.ExecuteAsync(findContext);
             var foundEntity = result.Entity;
 
-            Assert.AreSame(localCache.Values.First(e => new Id(2) == e.EntityId).Entity, foundEntity);
+            Assert.AreSame(localCache.Values.First(e => e.EntityId.Equals(2)).Entity, foundEntity);
         }
 
         public class TestEntity : IIdentifiable
         {
-            public Id Id { get; set; }
+            public object Id { get; set; }
         }
     }
 }

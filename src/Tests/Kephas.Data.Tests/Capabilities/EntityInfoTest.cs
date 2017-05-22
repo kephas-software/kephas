@@ -67,10 +67,10 @@ namespace Kephas.Data.Tests.Capabilities
         public void EntityId_identifiable()
         {
             var entity = Substitute.For<IIdentifiable>();
-            entity.Id.Returns(new Id(3));
+            entity.Id.Returns(3);
             var entityInfo = new EntityInfo(entity);
 
-            Assert.AreEqual(new Id(3), entityInfo.EntityId);
+            Assert.AreEqual(3, entityInfo.EntityId);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace Kephas.Data.Tests.Capabilities
             entity.Id = "aha";
             var entityInfo = new EntityInfo(entity);
 
-            Assert.AreEqual(new Id("aha"), entityInfo.EntityId);
+            Assert.AreEqual("aha", entityInfo.EntityId);
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Kephas.Data.Tests.Capabilities
             var entity = new TestEntity { Id = guid };
             var entityInfo = new EntityInfo(entity);
 
-            Assert.AreEqual(new Id(guid), entityInfo.EntityId);
+            Assert.AreEqual(guid, entityInfo.EntityId);
         }
 
         [Test]

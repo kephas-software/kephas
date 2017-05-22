@@ -16,7 +16,7 @@ namespace Kephas.Data.Caching
     /// <summary>
     /// Interface for data context cache.
     /// </summary>
-    public interface IDataContextCache : IDictionary<Id, IEntityInfo>
+    public interface IDataContextCache : IDictionary<object, IEntityInfo>
     {
         /// <summary>
         /// Adds an <see cref="IEntityInfo"/> to the <see cref="IDataContextCache" />.

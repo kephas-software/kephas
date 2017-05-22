@@ -13,7 +13,6 @@ namespace Kephas.Data.Validation
     using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Services;
 
     /// <summary>
     /// Contract for the behavior invoked upon entity validation.

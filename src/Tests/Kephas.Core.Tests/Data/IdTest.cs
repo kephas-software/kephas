@@ -24,133 +24,40 @@ namespace Kephas.Core.Tests.Data
     public class IdTest
     {
         private static readonly object SyncObject = new object();
-
-        [Test]
-        public void Id_success()
-        {
-            var id = new Id(2);
-            Assert.AreEqual(2, id.Value);
-
-            id = new Id(15L);
-            Assert.AreEqual(15L, id.Value);
-
-            var guid = Guid.NewGuid();
-            id = new Id(guid);
-            Assert.AreEqual(guid, id.Value);
-
-            id = new Id("hallo");
-            Assert.AreEqual("hallo", id.Value);
-
-            var someObject = new object();
-            id = new Id(someObject);
-            Assert.AreEqual(someObject, id.Value);
-        }
-
-        [Test]
-        public void Id_unset()
-        {
-            var id = new Id(0);
-            Assert.AreEqual(null, id.Value);
-
-            id = new Id(0L);
-            Assert.AreEqual(null, id.Value);
-
-            id = new Id(Guid.Empty);
-            Assert.AreEqual(null, id.Value);
-
-            id = new Id(string.Empty);
-            Assert.AreEqual(null, id.Value);
-
-            id = new Id(null);
-            Assert.AreEqual(null, id.Value);
-
-            id = new Id(new Id(null));
-            Assert.AreEqual(null, id.Value);
-        }
-
-        [Test]
-        public void ToString_id()
-        {
-            var id = new Id("some string");
-            var actual = id.ToString();
-            Assert.AreEqual("id(some string)", actual);
-        }
-
-        [Test]
-        public void Equals_int_Success()
-        {
-            var id1 = new Id(2);
-            var id2 = new Id(2);
-
-            Assert.AreEqual(id1, id2);
-        }
-
-        [Test]
-        public void Equals_different_types_Failure()
-        {
-            var id1 = new Id(2);
-            var id2 = new Id("2");
-
-            Assert.AreNotEqual(id1, id2);
-        }
-
-        [Test]
-        public void Op_Equals()
-        {
-            var id1 = new Id(1);
-            Assert.IsTrue(id1 == 1);
-            Assert.IsFalse(id1 == 2);
-            Assert.IsFalse(id1 == "abc");
-            Assert.IsFalse(id1 == null);
-        }
-
-        [Test]
-        public void Op_NotEquals()
-        {
-            var id1 = new Id(1);
-            Assert.IsFalse(id1 != 1);
-            Assert.IsTrue(id1 != 2);
-            Assert.IsTrue(id1 != "abc");
-            Assert.IsTrue(id1 != null);
-        }
-
         [Test]
         public void IsUnset_default()
         {
             lock (SyncObject)
             {
-                Assert.IsTrue(new Id().IsUnset);
-                Assert.IsTrue(new Id(null).IsUnset);
-                Assert.IsTrue(new Id(0).IsUnset);
-                Assert.IsTrue(new Id(0L).IsUnset);
-                Assert.IsTrue(new Id(string.Empty).IsUnset);
-                Assert.IsTrue(new Id(Guid.Empty).IsUnset);
-                Assert.IsTrue(new Id(new Id(null)).IsUnset);
+                Assert.IsTrue(Id.IsUnset(null));
+                Assert.IsTrue(Id.IsUnset(0));
+                Assert.IsTrue(Id.IsUnset(0L));
+                Assert.IsTrue(Id.IsUnset(string.Empty));
+                Assert.IsTrue(Id.IsUnset(Guid.Empty));
             }
         }
 
         [Test]
-        public void IsUnsetValue_custom()
+        public void IsUnset_custom()
         {
             lock (SyncObject)
             {
-                var originalIsUnsetValue = Id.IsUnsetValue;
-                Id.IsUnsetValue = obj => obj == null || (obj is int && (int)obj == 0);
+                var originalIsUnset = Id.IsUnset;
+                Id.IsUnset = obj => obj == null || (obj is int && (int)obj <= 0);
 
-                var zero = new Id(0);
-                Assert.IsTrue(zero.IsUnset);
+                Assert.IsTrue(Id.IsUnset(0));
+                Assert.IsTrue(Id.IsUnset(-1));
 
-                var one = new Id(1);
-                Assert.IsFalse(one.IsUnset);
+                Assert.IsFalse(Id.IsUnset(1));
 
-                Id.IsUnsetValue = originalIsUnsetValue;
+                Id.IsUnset = originalIsUnset;
             }
         }
 
         [Test]
-        public void IsUnsetValue_Exception()
+        public void IsUnset_Exception()
         {
-            Assert.Throws<ArgumentNullException>(() => Id.IsUnsetValue = null);
+            Assert.Throws<ArgumentNullException>(() => Id.IsUnset = null);
         }
     }
 }

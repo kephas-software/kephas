@@ -22,7 +22,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        Id Id { get; }
+        object Id { get; }
 
         /// <summary>
         /// Gets the type of the entity.

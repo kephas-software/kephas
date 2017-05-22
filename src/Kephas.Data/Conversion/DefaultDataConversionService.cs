@@ -224,7 +224,7 @@ namespace Kephas.Data.Conversion
             }
             else if (sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
-                if (!(sourceId?.IsUnset ?? true))
+                if (!Id.IsUnset(sourceId))
                 {
                     target = await this.FindTargetEntityAsync(
                                  targetDataContext,
@@ -263,7 +263,7 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        protected virtual async Task<object> FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, Id id, bool throwIfNotFound, CancellationToken cancellationToken)
+        protected virtual async Task<object> FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object id, bool throwIfNotFound, CancellationToken cancellationToken)
         {
             var target = await targetDataContext.FindAsync(
                              new FindContext(targetDataContext, targetType.AsType(), id, throwIfNotFound),

@@ -224,6 +224,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The data context is already set in the entity information structure, cannot set multiple times..
+        /// </summary>
+        internal static string EntityInfo_DataContextAlreadySet_Exception {
+            get {
+                return ResourceManager.GetString("EntityInfo_DataContextAlreadySet_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The maximum number of iterations ({0}) was exceeded when saving with activated behaviors. Could not update the changed entities. See the affected entities for more information..
         /// </summary>
         internal static string PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception {

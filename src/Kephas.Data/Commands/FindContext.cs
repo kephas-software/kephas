@@ -25,7 +25,7 @@ namespace Kephas.Data.Commands
         /// <param name="entityType">Type of the entity.</param>
         /// <param name="id">The identifier of the entity.</param>
         /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c> (optional).</param>
-        public FindContext(IDataContext dataContext, Type entityType, Id id, bool throwIfNotFound = true)
+        public FindContext(IDataContext dataContext, Type entityType, object id, bool throwIfNotFound = true)
             : base(dataContext)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -42,7 +42,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        public Id Id { get; set; }
+        public object Id { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw an exception if an entity is not found.
@@ -73,7 +73,7 @@ namespace Kephas.Data.Commands
         /// <param name="dataContext">The data context.</param>
         /// <param name="id">The identifier of the entity.</param>
         /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c> (optional).</param>
-        public FindContext(IDataContext dataContext, Id id, bool throwIfNotFound = true)
+        public FindContext(IDataContext dataContext, object id, bool throwIfNotFound = true)
             : base(dataContext, typeof(T), id, throwIfNotFound)
         {
             Requires.NotNull(dataContext, nameof(dataContext));

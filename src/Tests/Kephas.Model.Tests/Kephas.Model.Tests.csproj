@@ -79,7 +79,7 @@
     <Compile Include="ModelTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Construction\AnnotationConstructorBaseTest.cs" />
-    <Compile Include="Runtime\Construction\Annotations\AnnotationConstructorTest.cs" />
+    <Compile Include="Runtime\Construction\Annotations\AttributeAnnotationConstructorTest.cs" />
     <Compile Include="Runtime\Construction\Builders\ValueTypeBuilderTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorTest.cs" />

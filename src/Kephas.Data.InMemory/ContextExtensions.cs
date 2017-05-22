@@ -44,9 +44,9 @@ namespace Kephas.Data.InMemory
             Requires.NotNull(context, nameof(context));
 
             context[nameof(InMemoryDataContextConfiguration.InitialData)] =
-                initialData
-                    ?.Where(t => t.Item1 != null)
-                    .Select(t => new EntityInfo(t.Item1) { ChangeState = t.Item2 });
+                    initialData
+                        ?.Where(t => t.Item1 != null)
+                        .Select(t => new EntityInfo(t.Item1) { ChangeState = t.Item2 });
         }
 
         /// <summary>

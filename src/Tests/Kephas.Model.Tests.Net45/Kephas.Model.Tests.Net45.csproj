@@ -85,8 +85,8 @@
     <Compile Include="..\Kephas.Model.Tests\Runtime\Construction\AnnotationConstructorBaseTest.cs">
       <Link>Runtime\Construction\AnnotationConstructorBaseTest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model.Tests\Runtime\Construction\Annotations\AnnotationConstructorTest.cs">
-      <Link>Runtime\Construction\Annotations\AnnotationConstructorTest.cs</Link>
+    <Compile Include="..\Kephas.Model.Tests\Runtime\Construction\Annotations\AttributeAnnotationConstructorTest.cs">
+      <Link>Runtime\Construction\Annotations\AttributeAnnotationConstructorTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model.Tests\Runtime\Construction\Builders\ValueTypeBuilderTest.cs">
       <Link>Runtime\Construction\Builders\ValueTypeBuilderTest.cs</Link>

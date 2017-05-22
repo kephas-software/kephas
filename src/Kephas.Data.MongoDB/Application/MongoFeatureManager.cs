@@ -13,10 +13,7 @@ namespace Kephas.Data.MongoDB.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Data.MongoDB.Serialization;
     using Kephas.Threading.Tasks;
-
-    using global::MongoDB.Bson.Serialization;
 
     /// <summary>
     /// Feature manager for MongoDB.
@@ -33,8 +30,6 @@ namespace Kephas.Data.MongoDB.Application
         /// </returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            BsonSerializer.RegisterSerializer(typeof(Id), new IdBsonSerializer());
-
             return TaskHelper.CompletedTask;
         }
     }

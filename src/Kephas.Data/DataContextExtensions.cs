@@ -158,7 +158,7 @@ namespace Kephas.Data
         public static Task<object> FindAsync(
             this IDataContext dataContext,
             Type entityType,
-            Id id,
+            object id,
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -224,7 +224,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<T> FindAsync<T>(
             this IDataContext dataContext,
-            Id id,
+            object id,
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : class

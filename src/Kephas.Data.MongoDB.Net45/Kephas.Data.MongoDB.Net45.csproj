@@ -82,9 +82,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\Kephas.Data.MongoDB\Serialization\IdBsonSerializer.cs">
-      <Link>Serialization\IdBsonSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>

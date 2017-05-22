@@ -56,7 +56,7 @@ namespace Kephas.Data
             this.Identity = identityProvider?.GetCurrentIdentity();
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(ambientServices.CompositionContainer);
             this.LocalCache = localCache ?? new DataContextCache();
-            this.Id = new Id(Guid.NewGuid());
+            this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
         }
 
@@ -66,7 +66,7 @@ namespace Kephas.Data
         /// <value>
         /// The identifier.
         /// </value>
-        public Id Id { get; }
+        public object Id { get; }
 
         /// <summary>
         /// Gets the local cache where the session entities are stored.
@@ -205,9 +205,9 @@ namespace Kephas.Data
         /// <returns>
         /// The equality expression.
         /// </returns>
-        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(Id entityId)
+        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(object entityId)
         {
-            return t => ((IIdentifiable)t).Id == entityId;
+            return t => entityId.Equals(((IIdentifiable)t).Id);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = null)
         {
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityInfo(entity) { DataContext = this };
             if (changeState != null)
             {
                 entityInfo.ChangeState = changeState.Value;

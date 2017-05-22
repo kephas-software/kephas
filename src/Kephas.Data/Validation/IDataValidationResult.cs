@@ -10,7 +10,6 @@
 namespace Kephas.Data.Validation
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Diagnostics.Contracts;

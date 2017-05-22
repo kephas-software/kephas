@@ -181,4 +181,7 @@
   <data name="DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception" xml:space="preserve">
     <value>The key ('{0}') and then entity info ID ('{1}') do not match.</value>
   </data>
+  <data name="EntityInfo_DataContextAlreadySet_Exception" xml:space="preserve">
+    <value>The data context is already set in the entity information structure, cannot set multiple times.</value>
+  </data>
 </root>

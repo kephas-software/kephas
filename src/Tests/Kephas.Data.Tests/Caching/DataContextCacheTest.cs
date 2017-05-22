@@ -38,14 +38,14 @@ namespace Kephas.Data.Tests.Caching
         public void Indexer_set_not_null()
         {
             var cache = new DataContextCache();
-            Assert.Throws<ArgumentNullException>(() => cache[new Id()] = null);
+            Assert.Throws<ArgumentNullException>(() => cache[1] = null);
             Assert.Throws<ArgumentNullException>(() => cache[null] = Substitute.For<IEntityInfo>());
         }
 
         [Test]
         public void Indexer_set()
         {
-            var items = new Dictionary<Id, IEntityInfo>();
+            var items = new Dictionary<object, IEntityInfo>();
             var mappings = new Dictionary<object, IEntityInfo>();
             var cache = new TestDataContextCache(items, mappings);
 
@@ -64,13 +64,13 @@ namespace Kephas.Data.Tests.Caching
 
             var entity = "123";
             var eInfo = new EntityInfo(entity);
-            Assert.Throws<ArgumentException>(() => cache[new Id()] = eInfo);
+            Assert.Throws<ArgumentException>(() => cache[Guid.NewGuid()] = eInfo);
         }
 
         [Test]
         public void Indexer_set_replace()
         {
-            var items = new Dictionary<Id, IEntityInfo>();
+            var items = new Dictionary<object, IEntityInfo>();
             var mappings = new Dictionary<object, IEntityInfo>();
             var cache = new TestDataContextCache(items, mappings);
 
@@ -91,7 +91,7 @@ namespace Kephas.Data.Tests.Caching
 
         public class TestDataContextCache : DataContextCache
         {
-            public TestDataContextCache(IDictionary<Id, IEntityInfo> items, IDictionary<object, IEntityInfo> mappings)
+            public TestDataContextCache(IDictionary<object, IEntityInfo> items, IDictionary<object, IEntityInfo> mappings)
                 : base(items, mappings)
             {
             }

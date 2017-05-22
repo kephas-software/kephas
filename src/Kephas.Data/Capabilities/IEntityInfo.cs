@@ -40,7 +40,15 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        Id EntityId { get; }
+        object EntityId { get; }
+
+        /// <summary>
+        /// Gets or sets the entity owning data context.
+        /// </summary>
+        /// <value>
+        /// The data context.
+        /// </value>
+        IDataContext DataContext { get; set; }
 
         /// <summary>
         /// Accepts the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.

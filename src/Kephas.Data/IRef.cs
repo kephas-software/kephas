@@ -26,7 +26,7 @@ namespace Kephas.Data
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        new Id Id { get; set; }
+        new object Id { get; set; }
 
         /// <summary>
         /// Gets the type of the referenced entity.
