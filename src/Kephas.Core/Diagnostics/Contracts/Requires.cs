@@ -10,6 +10,7 @@
 namespace Kephas.Diagnostics.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Globalization;
@@ -50,6 +51,27 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         public static void NotNullOrEmpty(string value, string parameterName)
+        {
+            NotNull(value, parameterName);
+
+            if (value.Length == 0)
+            {
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
+            }
+
+            Contract.EndContractBlock();
+        }
+
+        /// <summary>
+        /// Requires that the argument is not null or empty.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when the required argument is null or empty.</exception>
+        /// <typeparam name="T">The array item type.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        [DebuggerStepThrough]
+        [ContractArgumentValidator]
+        public static void NotNullOrEmpty<T>(ICollection<T>[] value, string parameterName)
         {
             NotNull(value, parameterName);
 
