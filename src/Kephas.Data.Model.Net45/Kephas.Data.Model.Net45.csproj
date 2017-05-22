@@ -65,6 +65,9 @@
     <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IDomainScopeDimensionElement.cs">
       <Link>Dimensions\Scope\IDomainScopeDimensionElement.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\Elements\Annotations\KeyAnnotation.cs">
+      <Link>Elements\Annotations\KeyAnnotation.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\Elements\Annotations\ValidationAnnotation.cs">
       <Link>Elements\Annotations\ValidationAnnotation.cs</Link>
     </Compile>
