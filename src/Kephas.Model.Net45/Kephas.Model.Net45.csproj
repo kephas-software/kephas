@@ -145,6 +145,9 @@
     <Compile Include="..\Kephas.Model\Elements\Annotations\AspectAnnotation.cs">
       <Link>Elements\Annotations\AspectAnnotation.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Annotations\AttributeAnnotation.cs">
+      <Link>Elements\Annotations\AttributeAnnotation.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Elements\Annotations\MixinAnnotation.cs">
       <Link>Elements\Annotations\MixinAnnotation.cs</Link>
     </Compile>
@@ -186,6 +189,9 @@
     </Compile>
     <Compile Include="..\Kephas.Model\IAnnotation.cs">
       <Link>IAnnotation.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IAttributeAnnotation.cs">
+      <Link>IAttributeAnnotation.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\IClassifier.cs">
       <Link>IClassifier.cs</Link>
@@ -244,11 +250,11 @@
     <Compile Include="..\Kephas.Model\Runtime\Construction\AnnotationConstructorBase.cs">
       <Link>Runtime\Construction\AnnotationConstructorBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\AnnotationConstructor.cs">
-      <Link>Runtime\Construction\Annotations\AnnotationConstructor.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\AspectAnnotationConstructor.cs">
       <Link>Runtime\Construction\Annotations\AspectAnnotationConstructor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\AttributeAnnotationConstructor.cs">
+      <Link>Runtime\Construction\Annotations\AttributeAnnotationConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\MixinAnnotationConstructor.cs">
       <Link>Runtime\Construction\Annotations\MixinAnnotationConstructor.cs</Link>

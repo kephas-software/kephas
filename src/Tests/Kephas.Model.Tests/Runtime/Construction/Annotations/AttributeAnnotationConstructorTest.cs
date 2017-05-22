@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationConstructorTest.cs" company="Quartz Software SRL">
+// <copyright file="AttributeAnnotationConstructorTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -25,14 +25,14 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AnnotationConstructorTest
+    public class AttributeAnnotationConstructorTest
     {
         [Test]
         public void TryCreateModelElement_success()
         {
-            var constructor = new AnnotationConstructor();
+            var constructor = new AttributeAnnotationConstructor();
             var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = Substitute.For<IModelSpace>() };
-            var annotation = constructor.TryCreateModelElement(context, new NotMultipleAttribute());
+            var annotation = constructor.TryCreateModelElement(context, new AnnotationConstructorBaseTest.NotMultipleAttribute());
 
             Assert.IsInstanceOf<Annotation>(annotation);
             Assert.AreEqual("@NotMultiple", annotation.Name);

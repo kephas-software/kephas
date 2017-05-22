@@ -74,8 +74,6 @@ namespace Kephas.Model.Runtime
 
                            new ValueTypeBuilder(constructionContext, typeof(System.String)).AsPrimitive().Element,
                            // TODO Byte Array
-
-                           new ValueTypeBuilder(constructionContext, typeof(Id)).AsPrimitive().Element,
                         };
 
             return Task.FromResult((IEnumerable<IElementInfo>)elementInfos);

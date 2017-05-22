@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationConstructor.cs" company="Quartz Software SRL">
+// <copyright file="AttributeAnnotationConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -13,13 +13,15 @@ namespace Kephas.Model.Runtime.Construction.Annotations
 
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Annotations;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
     /// A default runtime factory for annotation information.
     /// </summary>
     [ProcessingPriority(Priority.Low)]
-    public class AnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
+    public class AttributeAnnotationConstructor : AnnotationConstructorBase<Annotation, Attribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -32,7 +34,15 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// </returns>
         protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
         {
-            return new Annotation(constructionContext, this.TryComputeNameCore(runtimeElement));
+            var annotationType = typeof(AttributeAnnotation<>).MakeGenericType(runtimeElement.GetType());
+            var annotation = annotationType.AsRuntimeTypeInfo().CreateInstance(
+                new object[]
+                {
+                    constructionContext,
+                    this.TryComputeNameCore(runtimeElement),
+                    runtimeElement
+                });
+            return (Annotation)annotation;
         }
     }
 }

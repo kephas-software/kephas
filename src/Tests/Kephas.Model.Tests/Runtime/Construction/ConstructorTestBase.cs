@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructors = new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>
                                    {
-                                       new ExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new AnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
+                                       new ExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new AttributeAnnotationConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Annotation), typeof(IAnnotation), typeof(Attribute))),
                                        new ExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>(() => new PropertyConstructor(), new RuntimeModelElementConstructorMetadata(typeof(Property), typeof(IProperty), typeof(IRuntimePropertyInfo))),
                                    };
 
