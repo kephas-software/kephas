@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.Model
 {
+    using System.Collections.Generic;
+
     using Kephas.Model;
 
     /// <summary>
@@ -17,5 +19,12 @@ namespace Kephas.Data.Model
     /// </summary>
     public interface IEntity : IClassifier
     {
+        /// <summary>
+        /// Gets the entity keys.
+        /// </summary>
+        /// <value>
+        /// The entity keys.
+        /// </value>
+        IEnumerable<IKey> Keys { get; }
     }
 }

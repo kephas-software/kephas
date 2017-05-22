@@ -3,7 +3,7 @@
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the entity type attribute class.
+//   Implements the entity attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

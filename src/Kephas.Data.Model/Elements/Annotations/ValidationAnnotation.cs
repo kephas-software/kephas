@@ -12,20 +12,14 @@ namespace Kephas.Data.Model.Elements.Annotations
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Data.Validation;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
-    using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Annotations;
 
     /// <summary>
     /// A validation annotation.
     /// </summary>
-    public class ValidationAnnotation : Annotation, IValidationAttributeProvider
+    public class ValidationAnnotation : AttributeAnnotation<ValidationAttribute>, IValidationAttributeProvider
     {
-        /// <summary>
-        /// The validation attribute.
-        /// </summary>
-        private ValidationAttribute validationAttribute;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationAnnotation"/> class.
         /// </summary>
@@ -33,11 +27,8 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// <param name="name">The model element name.</param>
         /// <param name="validationAttribute">The validation attribute.</param>
         public ValidationAnnotation(IModelConstructionContext constructionContext, string name, ValidationAttribute validationAttribute)
-            : base(constructionContext, name)
+            : base(constructionContext, name, validationAttribute)
         {
-            Requires.NotNull(validationAttribute, nameof(validationAttribute));
-
-            this.validationAttribute = validationAttribute;
         }
 
         /// <summary>
@@ -48,7 +39,7 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// </returns>
         public ValidationAttribute GetValidationAttribute()
         {
-            return this.validationAttribute;
+            return this.Attribute;
         }
     }
 }

@@ -1,24 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValidationAnnotationConstructor.cs" company="Quartz Software SRL">
+// <copyright file="KeyAnnotationConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the validation annotation constructor class.
+//   Implements the key annotation constructor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Model.Runtime.Construction.Annotations
 {
-    using System.ComponentModel.DataAnnotations;
-
+    using Kephas.Data.Model.AttributedModel;
     using Kephas.Data.Model.Elements.Annotations;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
 
     /// <summary>
-    /// A validation annotation constructor.
+    /// A key annotation constructor.
     /// </summary>
-    public class ValidationAnnotationConstructor : AnnotationConstructorBase<ValidationAnnotation, ValidationAttribute>
+    public class KeyAnnotationConstructor : AnnotationConstructorBase<KeyAnnotation, KeyAttribute>
     {
         /// <summary>
         /// Core implementation of trying to get the element information.
@@ -29,9 +28,9 @@ namespace Kephas.Data.Model.Runtime.Construction.Annotations
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override ValidationAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, ValidationAttribute runtimeElement)
+        protected override KeyAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, KeyAttribute runtimeElement)
         {
-            return new ValidationAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement), runtimeElement);
+            return new KeyAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement), runtimeElement);
         }
     }
 }
