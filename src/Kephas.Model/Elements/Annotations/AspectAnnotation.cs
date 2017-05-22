@@ -17,7 +17,7 @@ namespace Kephas.Model.Elements.Annotations
     /// <summary>
     /// Annotation foe aspect classifiers.
     /// </summary>
-    public class AspectAnnotation : Annotation
+    public class AspectAnnotation : MixinAnnotation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AspectAnnotation"/> class.
