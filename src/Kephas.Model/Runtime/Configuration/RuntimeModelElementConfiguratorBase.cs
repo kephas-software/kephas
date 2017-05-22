@@ -10,6 +10,7 @@
 namespace Kephas.Model.Runtime.Configuration
 {
     using Kephas.Model.Configuration;
+    using Kephas.Model.Construction;
 
     /// <summary>
     /// Base configurator for model elements.
@@ -22,38 +23,20 @@ namespace Kephas.Model.Runtime.Configuration
         where TConfigurator : IRuntimeModelElementConfigurator<TElement, TRuntimeElement>
     {
         /// <summary>
-        /// Gets the element to be configured.
+        /// Configures the model element provided.
         /// </summary>
-        /// <value>
-        /// The element.
-        /// </value>
-        public TElement Element { get; private set; }
-
-        /// <summary>
-        /// Provides the model element to be configured.
-        /// </summary>
-        /// <param name="element">The model element.</param>
-        /// <returns>A configurator for the provided model element.</returns>
-        public TConfigurator With(INamedElement element)
+        /// <param name="constructionContext">The construction context.</param>
+        /// <param name="element">The model element to be configured.</param>
+        void IElementConfigurator.Configure(IModelConstructionContext constructionContext, INamedElement element)
         {
-            this.Element = (TElement)element;
-
-            return (TConfigurator)(object)this;
+            this.Configure(constructionContext, (TElement)element);
         }
 
         /// <summary>
-        /// Provides the model element to be configured.
+        /// Configures the model element provided.
         /// </summary>
-        /// <param name="element">The model element.</param>
-        /// <returns>A configurator for the provided model element.</returns>
-        IElementConfigurator IElementConfigurator.With(INamedElement element)
-        {
-            return this.With(element);
-        }
-
-        /// <summary>
-        /// Configures the model element provided with the.
-        /// </summary>
-        public abstract void Configure();
+        /// <param name="constructionContext">The construction context.</param>
+        /// <param name="element">The model element to be configured.</param>
+        public abstract void Configure(IModelConstructionContext constructionContext, TElement element);
     }
 }

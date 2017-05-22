@@ -9,21 +9,18 @@
 
 namespace Kephas.Model.Configuration
 {
+    using Kephas.Model.Construction;
+
     /// <summary>
     /// Contract for model element configurators.
     /// </summary>
     public interface IElementConfigurator
     {
         /// <summary>
-        /// Provides the model element to be configured.
+        /// Configures the model element provided.
         /// </summary>
-        /// <param name="element">The model element.</param>
-        /// <returns>A configurator for the provided model element.</returns>
-        IElementConfigurator With(INamedElement element);
-
-        /// <summary>
-        /// Configures the model element provided with the.
-        /// </summary>
-        void Configure();
+        /// <param name="constructionContext">The construction context.</param>
+        /// <param name="element">The model element to be configured.</param>
+        void Configure(IModelConstructionContext constructionContext, INamedElement element);
     }
 }

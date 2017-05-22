@@ -10,12 +10,11 @@
 namespace Kephas.Model.Runtime.Construction
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Composition;
-    using Kephas.Dynamic;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Model.Runtime.Configuration.Composition;
@@ -49,7 +48,7 @@ namespace Kephas.Model.Runtime.Construction
             ICollection<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>> modelElementConstructors,
             ICollection<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>> modelElementConfigurators)
         {
-            Contract.Requires(modelElementConstructors != null);
+            Requires.NotNull(modelElementConstructors, nameof(modelElementConstructors));
 
             this.modelElementConstructors = modelElementConstructors
                     .OrderBy(e => e.Metadata.ProcessingPriority)
@@ -90,7 +89,7 @@ namespace Kephas.Model.Runtime.Construction
             if (runtimeDynamicType != null)
             {
                 var configurators = this.modelElementConfigurators.TryGetValue(runtimeDynamicType);
-                configurators?.ForEach(cfg => cfg.With(element).Configure());
+                configurators?.ForEach(cfg => cfg.Configure(constructionContext, element));
             }
 
             return element;
