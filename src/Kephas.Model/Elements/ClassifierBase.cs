@@ -287,7 +287,7 @@ namespace Kephas.Model.Elements
         protected override IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext)
         {
             var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
-            var eligibleTypes = parts.SelectMany(t => t.BaseTypes)
+            var eligibleTypes = parts.SelectMany(this.GetDependencies)
                 .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
                 .ToList();
             return eligibleTypes;
@@ -303,7 +303,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected virtual IList<ITypeInfo> ComputeBaseTypes(IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
         {
-            var eligibleTypes = parts.SelectMany(t => t.BaseTypes)
+            var eligibleTypes = parts.SelectMany(this.GetDependencies)
                                      .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
                                      .ToList();
 
@@ -463,6 +463,27 @@ namespace Kephas.Model.Elements
                     this.AddMember((INamedElement)baseMemberMap.Value);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="typeInfo">Information describing the type.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        private IEnumerable<ITypeInfo> GetDependencies(ITypeInfo typeInfo)
+        {
+            var aspect = typeInfo as IClassifier;
+            if (aspect != null)
+            {
+                if (aspect.IsAspectOf(this))
+                {
+                    return new[] { aspect };
+                }
+            }
+
+            return typeInfo.BaseTypes;
         }
     }
 }
