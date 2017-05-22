@@ -185,6 +185,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit", "Keph
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit.Net45", "Kephas.Mail.MailKit.Net45\Kephas.Mail.MailKit.Net45.csproj", "{104F79B0-1E7E-48DE-873A-2FADE46533B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Tests", "Tests\Kephas.Data.Model.Tests\Kephas.Data.Model.Tests.csproj", "{8A3883B1-34A0-4697-9336-7A1D58E24E4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Tests.Net45", "Tests\Kephas.Data.Model.Tests.Net45\Kephas.Data.Model.Tests.Net45.csproj", "{D9542655-DB2A-4880-B98F-AB51EDB47B8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -479,6 +483,14 @@ Global
 		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{104F79B0-1E7E-48DE-873A-2FADE46533B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A3883B1-34A0-4697-9336-7A1D58E24E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A3883B1-34A0-4697-9336-7A1D58E24E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A3883B1-34A0-4697-9336-7A1D58E24E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A3883B1-34A0-4697-9336-7A1D58E24E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9542655-DB2A-4880-B98F-AB51EDB47B8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9542655-DB2A-4880-B98F-AB51EDB47B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9542655-DB2A-4880-B98F-AB51EDB47B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9542655-DB2A-4880-B98F-AB51EDB47B8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -538,5 +550,7 @@ Global
 		{5A780ADA-73B2-42EC-B883-41C1B0ED9FA5} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{676FDE9E-F917-4ADD-B6D2-D2A322134DC1} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{104F79B0-1E7E-48DE-873A-2FADE46533B0} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{8A3883B1-34A0-4697-9336-7A1D58E24E4E} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{D9542655-DB2A-4880-B98F-AB51EDB47B8D} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 EndGlobal

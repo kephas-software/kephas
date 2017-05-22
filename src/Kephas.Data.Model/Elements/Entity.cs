@@ -10,6 +10,7 @@
 namespace Kephas.Data.Model.Elements
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -32,7 +33,6 @@ namespace Kephas.Data.Model.Elements
         public Entity(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
-            this.Keys = EmptyKeys;
         }
 
         /// <summary>
@@ -41,15 +41,6 @@ namespace Kephas.Data.Model.Elements
         /// <value>
         /// The entity keys.
         /// </value>
-        public IEnumerable<IKey> Keys { get; }
-
-        /// <summary>
-        /// Called when the construction is complete.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
-        {
-            base.OnCompleteConstruction(constructionContext);
-        }
+        public IEnumerable<IKey> Keys => this.Members.OfType<IKey>();
     }
 }

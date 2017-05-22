@@ -10,7 +10,7 @@
 namespace Kephas.Data.Model
 {
     using Kephas.Model;
-
+    using Kephas.Model.AttributedModel;
 
     /// <summary>
     /// Enumerates the key kinds.
@@ -36,6 +36,7 @@ namespace Kephas.Data.Model
     /// <summary>
     /// Interface for entity key.
     /// </summary>
+    [MemberNameDiscriminator("$")]
     public interface IKey : IModelElement
     {
         /// <summary>

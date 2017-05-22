@@ -95,6 +95,9 @@
     <Compile Include="..\Kephas.Data.Model\Runtime\Construction\EntityConstructor.cs">
       <Link>Runtime\Construction\EntityConstructor.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\Runtime\DataPrimitiveTypesModelInfoProvider.cs">
+      <Link>Runtime\DataPrimitiveTypesModelInfoProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>

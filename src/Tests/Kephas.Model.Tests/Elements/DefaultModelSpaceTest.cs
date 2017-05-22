@@ -9,12 +9,15 @@
 
 namespace Kephas.Model.Tests.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
+    using Kephas.Model.Elements.Annotations;
     using Kephas.Reflection;
 
     using NSubstitute;
@@ -87,18 +90,73 @@ namespace Kephas.Model.Tests.Elements
             Assert.AreEqual(":E2:F2", projDictionary[":E2:F2"].FullName);
         }
 
-        /// <summary>
-        /// Enumerates create model dimension in this collection.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="dimensionName">Name of the dimension.</param>
-        /// <param name="isAggregatable">true if this object is aggregatable.</param>
-        /// <param name="index">Zero-based index of the dimension.</param>
-        /// <param name="dimensionElements">The dimension elements.</param>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process create model dimension in this
-        /// collection.
-        /// </returns>
+        [Test]
+        public void ComputeClassifiers_classifier_with_two_properties()
+        {
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var modelSpace = new DefaultModelSpace(context);
+            context.ModelSpace = modelSpace;
+
+            var elementInfos = new List<IElementInfo>();
+            elementInfos.AddRange(this.CreateClassifier(context, "Contact", properties: new[] { "Name", "Age" }));
+
+            context.ElementInfos = elementInfos;
+
+            var classifiers = modelSpace.ComputeClassifiers(context).ToList();
+            Assert.AreEqual(1, classifiers.Count);
+
+            var classifier = classifiers.Single();
+            Assert.AreEqual(2, classifier.Properties.Count());
+        }
+
+        [Test]
+        public void ComputeClassifiers_aspect_classifier()
+        {
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var modelSpace = new DefaultModelSpace(context);
+            context.ModelSpace = modelSpace;
+
+            var elementInfos = new List<IElementInfo>();
+            elementInfos.AddRange(this.CreateClassifier(context, "ContactAspect", properties: new[] { "Employee" }, aspectFor: c => c.Name == "Contact"));
+
+            context.ElementInfos = elementInfos;
+
+            var classifiers = modelSpace.ComputeClassifiers(context).ToList();
+            Assert.AreEqual(1, classifiers.Count);
+
+            var classifier = classifiers.Single();
+            Assert.IsTrue(classifier.IsAspect);
+            Assert.IsTrue(classifier.IsMixin);
+
+            var aspectOfClassifier = Substitute.For<IClassifier>();
+            aspectOfClassifier.Name.Returns("Contact");
+            Assert.IsTrue(classifier.IsAspectOf(aspectOfClassifier));
+
+            var nonAspectOfClassifier = Substitute.For<IClassifier>();
+            nonAspectOfClassifier.Name.Returns("NonContact");
+            Assert.IsFalse(classifier.IsAspectOf(nonAspectOfClassifier));
+        }
+
+        [Test]
+        public void ComputeClassifiers_classifier_with_aspect()
+        {
+            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var modelSpace = new DefaultModelSpace(context);
+            context.ModelSpace = modelSpace;
+
+            var elementInfos = new List<IElementInfo>();
+            elementInfos.AddRange(this.CreateClassifier(context, "Contact", properties: new[] { "Name", "Age" }));
+            elementInfos.AddRange(this.CreateClassifier(context, "ContactAspect", properties: new[] { "Employee" }, aspectFor: c => c.Name == "Contact"));
+
+            context.ElementInfos = elementInfos;
+
+            var classifiers = modelSpace.ComputeClassifiers(context).ToList();
+            Assert.AreEqual(2, classifiers.Count);
+
+            var classifier = classifiers.Single(c => c.Name == "Contact");
+            Assert.AreEqual(3, classifier.Properties.Count());
+        }
+
         private IList<IElementInfo> CreateModelDimension(IModelConstructionContext context, string dimensionName, bool isAggregatable, int index, IEnumerable<string> dimensionElements)
         {
             var elementInfos = new List<IElementInfo>();
@@ -113,6 +171,41 @@ namespace Kephas.Model.Tests.Elements
             {
                 var element = new ModelDimensionElement(context, elementName) { DimensionName = dimensionName };
                 elementInfos.Add(element);
+            }
+
+            return elementInfos;
+        }
+
+        private IList<IElementInfo> CreateClassifier(
+            IModelConstructionContext context,
+            string name,
+            string[] properties,
+            Func<IModelElement, bool> aspectFor = null,
+            IAnnotation[] annotations = null)
+        {
+            var elementInfos = new List<IElementInfo>();
+            var classifier = new Classifier(context, name);
+            elementInfos.Add(classifier);
+
+            foreach (var propName in properties)
+            {
+                var property = new Property(context, propName);
+                property.PropertyType = typeof(string).AsRuntimeTypeInfo();
+                ((IWritableNamedElement)classifier).AddMember(property);
+            }
+
+            if (aspectFor != null)
+            {
+                var annotation = new AspectAnnotation(context, "aspectFor", aspectFor);
+                ((IWritableNamedElement)classifier).AddMember(annotation);
+            }
+
+            if (annotations != null)
+            {
+                foreach (var annotation in annotations)
+                {
+                    ((IWritableNamedElement)classifier).AddMember(annotation);
+                }
             }
 
             return elementInfos;

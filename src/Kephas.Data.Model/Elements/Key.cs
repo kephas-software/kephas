@@ -9,6 +9,9 @@
 
 namespace Kephas.Data.Model.Elements
 {
+    using System.Linq;
+
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -19,13 +22,30 @@ namespace Kephas.Data.Model.Elements
     public class Key : ModelElementBase<IKey>, IKey
     {
         /// <summary>
+        /// The empty key properties.
+        /// </summary>
+        private static readonly IProperty[] EmptyKeyProperties = new IProperty[0];
+
+        /// <summary>
+        /// The key properties.
+        /// </summary>
+        private string[] keyPropertyNames;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Key"/> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>
-        public Key(IModelConstructionContext constructionContext, string name)
+        /// <param name="kind">The key kind.</param>
+        /// <param name="keyProperties">The key properties.</param>
+        public Key(IModelConstructionContext constructionContext, string name, KeyKind kind, string[] keyProperties)
             : base(constructionContext, name)
         {
+            Requires.NotNullOrEmpty(keyProperties, nameof(keyProperties));
+
+            this.Kind = kind;
+            this.KeyProperties = EmptyKeyProperties;
+            this.keyPropertyNames = keyProperties;
         }
 
         /// <summary>
@@ -42,6 +62,24 @@ namespace Kephas.Data.Model.Elements
         /// <value>
         /// The key properties.
         /// </value>
-        public IProperty[] KeyProperties { get; }
+        public IProperty[] KeyProperties { get; private set; }
+
+        /// <summary>
+        /// Called when the construction is complete.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
+        {
+            base.OnCompleteConstruction(constructionContext);
+
+            var containerProperties = this.DeclaringContainer?.Members.OfType<IProperty>().ToDictionary(m => m.Name, m => m);
+            if (containerProperties == null || containerProperties.Count == 0)
+            {
+                // TODO localization.
+                throw new ModelConstructionException($"The key '{this}' in '{this.DeclaringContainer}' cannot find any properties.");
+            }
+
+            this.KeyProperties = this.keyPropertyNames.Select(n => containerProperties[n]).ToArray();
+        }
     }
 }

@@ -32,5 +32,21 @@ namespace Kephas.Data.Model.Runtime.Construction.Annotations
         {
             return new KeyAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement), runtimeElement);
         }
+
+        /// <summary>
+        /// Computes the model element name based on the runtime element.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
+        protected override string TryComputeNameCore(object runtimeElement)
+        {
+            var attribute = (KeyAttribute)runtimeElement;
+            if (!string.IsNullOrEmpty(attribute.Name))
+            {
+                return attribute.Name;
+            }
+
+            return string.Join("_", attribute.KeyProperties);
+        }
     }
 }
