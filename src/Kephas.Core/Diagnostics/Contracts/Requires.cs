@@ -71,11 +71,11 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
-        public static void NotNullOrEmpty<T>(ICollection<T>[] value, string parameterName)
+        public static void NotNullOrEmpty<T>(ICollection<T> value, string parameterName)
         {
             NotNull(value, parameterName);
 
-            if (value.Length == 0)
+            if (value.Count == 0)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
