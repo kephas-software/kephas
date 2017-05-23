@@ -20,27 +20,15 @@ namespace Kephas.Runtime
     /// <summary>
     /// Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
     /// </summary>
-    /// <typeparam name="T">The container type.</typeparam>
-    /// <typeparam name="TMember">The member type.</typeparam>
-    public sealed class RuntimePropertyInfo<T, TMember> : Expando, IRuntimePropertyInfo
+    public class RuntimePropertyInfo : Expando, IRuntimePropertyInfo
     {
         /// <summary>
         /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
         /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo));
 
         /// <summary>
-        /// The getter.
-        /// </summary>
-        private Func<T, TMember> getter;
-
-        /// <summary>
-        /// The setter.
-        /// </summary>
-        private Action<T, TMember> setter;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimePropertyInfo"/> class.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
         internal RuntimePropertyInfo(PropertyInfo propertyInfo)
@@ -136,8 +124,75 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public void SetValue(object obj, object value)
+        /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
+        public virtual void SetValue(object obj, object value)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets the value from the specified object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
+        public virtual object GetValue(object obj)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ITypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ITypeInfo"/> of this expando object.
+        /// </returns>
+        protected override ITypeInfo GetThisTypeInfo()
+        {
+            return RuntimeTypeInfoOfRuntimePropertyInfo;
+        }
+    }
+
+    /// <summary>
+    /// Implementation of <see cref="IRuntimePropertyInfo" /> for typed runtime properties.
+    /// </summary>
+    /// <typeparam name="T">The container type.</typeparam>
+    /// <typeparam name="TMember">The member type.</typeparam>
+    public sealed class RuntimePropertyInfo<T, TMember> : RuntimePropertyInfo
+    {
+        /// <summary>
+        /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
+        /// </summary>
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
+
+        /// <summary>
+        /// The getter.
+        /// </summary>
+        private Func<T, TMember> getter;
+
+        /// <summary>
+        /// The setter.
+        /// </summary>
+        private Action<T, TMember> setter;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
+        /// </summary>
+        /// <param name="propertyInfo">The property information.</param>
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo)
+            : base(propertyInfo)
+        {
+        }
+
+        /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
+        public override void SetValue(object obj, object value)
         {
             var setDelegate = this.GetMemberSetDelegate();
             if (setDelegate == null)
@@ -156,7 +211,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public object GetValue(object obj)
+        public override object GetValue(object obj)
         {
             var getDelegate = this.GetMemberGetDelegate();
             if (getDelegate == null)

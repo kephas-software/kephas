@@ -53,6 +53,11 @@ namespace Kephas.Runtime
         private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
 
         /// <summary>
+        /// The <see cref="RuntimePropertyInfo"/> type information.
+        /// </summary>
+        private static readonly TypeInfo RuntimePropertyInfoTypeInfo = typeof(RuntimePropertyInfo).GetTypeInfo();
+
+        /// <summary>
         /// The runtime type of the <see cref="RuntimeTypeInfo"/>.
         /// </summary>
         private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
@@ -680,6 +685,9 @@ namespace Kephas.Runtime
         {
             var runtimePropertyInfos = new Dictionary<string, IRuntimePropertyInfo>();
             var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
+            var propertyAccessorTypeFn = type.GetTypeInfo().ContainsGenericParameters
+                                                ? (Func<Type, Type>)(propType => RuntimePropertyInfoTypeInfo.AsType())
+                                                : (propType => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, propType));
             foreach (var propertyInfo in propertyInfos)
             {
                 var propertyName = propertyInfo.Name;
@@ -688,9 +696,7 @@ namespace Kephas.Runtime
                     continue;
                 }
 
-                var propertyAccessorType = RuntimePropertyInfoGenericTypeInfo.MakeGenericType(
-                    type,
-                    propertyInfo.PropertyType);
+                var propertyAccessorType = propertyAccessorTypeFn(propertyInfo.PropertyType);
                 var constructor = propertyAccessorType.GetTypeInfo().DeclaredConstructors.First();
                 var runtimePropertyInfo = (IRuntimePropertyInfo)constructor.Invoke(new object[] { propertyInfo });
                 runtimePropertyInfos.Add(propertyName, runtimePropertyInfo);

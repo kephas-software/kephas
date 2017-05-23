@@ -38,6 +38,14 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
+        public void RuntimeTypeInfo_open_generic()
+        {
+            var runtimeTypeInfo = new RuntimeTypeInfo(typeof(ICollection<>));
+            var type = runtimeTypeInfo.Type;
+            Assert.AreEqual(type, typeof(ICollection<>));
+        }
+
+        [Test]
         public void Name()
         {
             var runtimeTypeInfo = new RuntimeTypeInfo(typeof(TestClass));
