@@ -3,7 +3,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application.AttributedModel;
+    using Kephas.Application;
     using Kephas.Messaging.Server;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;

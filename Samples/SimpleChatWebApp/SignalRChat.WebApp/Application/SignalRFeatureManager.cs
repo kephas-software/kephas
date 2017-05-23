@@ -3,7 +3,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application.AttributedModel;
+    using Kephas.Application;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
