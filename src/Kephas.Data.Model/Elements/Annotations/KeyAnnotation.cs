@@ -26,7 +26,7 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// <summary>
         /// Name of the key.
         /// </summary>
-        private string keyName;
+        private readonly string keyName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyAnnotation"/> class.
