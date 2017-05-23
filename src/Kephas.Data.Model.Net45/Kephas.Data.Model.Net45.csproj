@@ -59,6 +59,9 @@
     <Compile Include="..\Kephas.Data.Model\AttributedModel\NaturalKeyAttribute.cs">
       <Link>AttributedModel\NaturalKeyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\AttributedModel\PrimaryKeyAttribute.cs">
+      <Link>AttributedModel\PrimaryKeyAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IClientScopeDimensionElement.cs">
       <Link>Dimensions\Scope\IClientScopeDimensionElement.cs</Link>
     </Compile>
