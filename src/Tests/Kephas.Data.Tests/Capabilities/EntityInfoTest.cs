@@ -99,7 +99,7 @@ namespace Kephas.Data.Tests.Capabilities
             var entity = "aha";
             var entityInfo = new EntityInfo(entity);
 
-            Assert.AreEqual(entityInfo.Id, entityInfo.EntityId);
+            Assert.IsNull(entityInfo.EntityId);
         }
 
         [Test]

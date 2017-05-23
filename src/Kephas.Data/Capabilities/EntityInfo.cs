@@ -87,7 +87,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        public object EntityId => this.TryGetEntityId() ?? this.Id;
+        public object EntityId => this.TryGetEntityId();
 
         /// <summary>
         /// Gets or sets the entity owning data context.
