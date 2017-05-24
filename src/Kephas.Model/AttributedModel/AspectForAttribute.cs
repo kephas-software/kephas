@@ -19,6 +19,7 @@ namespace Kephas.Model.AttributedModel
     /// <summary>
     /// Attribute to mark aspects to be applied to classifiers indicated by the provided types.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
     public class AspectForAttribute : AspectAttribute
     {
         /// <summary>
