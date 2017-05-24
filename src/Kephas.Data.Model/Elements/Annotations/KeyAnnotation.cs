@@ -16,6 +16,7 @@ namespace Kephas.Data.Model.Elements.Annotations
     using Kephas.Model.Configuration;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
+    using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// <summary>
         /// Name of the key.
         /// </summary>
-        private readonly string keyName;
+        private readonly string baseKeyName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyAnnotation"/> class.
@@ -37,7 +38,7 @@ namespace Kephas.Data.Model.Elements.Annotations
         public KeyAnnotation(IModelConstructionContext constructionContext, string name, KeyAttribute attribute)
             : base(constructionContext, $"{name}_{typeof(KeyAnnotation).Name}", attribute)
         {
-            this.keyName = name;
+            this.baseKeyName = name;
         }
 
         /// <summary>
@@ -54,7 +55,8 @@ namespace Kephas.Data.Model.Elements.Annotations
                 throw new ArgumentException($"Expected a writable model element for {element}.", nameof(element));
             }
 
-            var key = new Key(constructionContext, this.keyName, this.Attribute.Kind, this.Attribute.KeyProperties);
+            var keyName = typeof(IKey).GetMemberNameDiscriminator() + this.baseKeyName;
+            var key = new Key(constructionContext, keyName, this.Attribute.Kind, this.Attribute.KeyProperties);
             writableEntity.AddMember(key);
         }
     }
