@@ -55,7 +55,7 @@ namespace Kephas.Model.Runtime.Construction
             // This simplifies the member aggregation in the final classifier
             // because the name is already prepared by the info classes and the 
             // classifier must simply create the corresponding members.
-            var name = "@" + base.TryComputeNameCore(attrTypeInfo);
+            var name = typeof(IAnnotation).GetMemberNameDiscriminator() + base.TryComputeNameCore(attrTypeInfo);
             if (usage == null || usage.AllowMultiple)
             {
                 name = name + "_" + runtimeElement.GetHashCode();
@@ -80,6 +80,7 @@ namespace Kephas.Model.Runtime.Construction
             if (usage != null)
             {
                 element.AllowMultiple = usage.AllowMultiple;
+                element.Inherited = usage.Inherited;
             }
         }
     }

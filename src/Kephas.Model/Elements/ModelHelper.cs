@@ -17,7 +17,6 @@ namespace Kephas.Model.Elements
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
     using Kephas.Runtime;
 
