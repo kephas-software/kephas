@@ -83,5 +83,13 @@ namespace Kephas.Model
         /// The model space.
         /// </value>
         IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this element is inherited.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the model element is inherited, <c>false</c> if not.
+        /// </value>
+        bool Inherited { get; }
     }
 }

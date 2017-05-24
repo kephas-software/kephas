@@ -407,7 +407,7 @@ namespace Kephas.Model.Elements
 
             foreach (var mixin in this.BaseMixins)
             {
-                foreach (var member in mixin.Members)
+                foreach (var member in mixin.Members.Where(m => m.Inherited))
                 {
                     if (baseMembers.TryGetValue(member.Name, out object conflictingMember))
                     {
@@ -430,10 +430,10 @@ namespace Kephas.Model.Elements
             // add the base members 
             foreach (var baseMemberMap in baseMembers)
             {
-                var ownMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);
-                if (ownMember != null)
+                var declaredMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);
+                if (declaredMember != null)
                 {
-                    var ownMemberBuilder = ownMember as IWritableNamedElement;
+                    var ownMemberBuilder = declaredMember as IWritableNamedElement;
                     var collection = baseMemberMap.Value as IList<INamedElement>;
                     if (collection != null)
                     {

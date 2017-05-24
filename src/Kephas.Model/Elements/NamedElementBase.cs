@@ -58,6 +58,7 @@ namespace Kephas.Model.Elements
             this.Name = name;
             this.ModelSpace = constructionContext.ModelSpace;
             this.QualifiedFullName = typeof(TModelContract).GetMemberNameDiscriminator() + name;
+            this.Inherited = true;
 
             this.parts = new List<object>();
 
@@ -162,6 +163,14 @@ namespace Kephas.Model.Elements
         /// The model space.
         /// </value>
         public virtual IModelSpace ModelSpace { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this element is inherited.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the model element is inherited, <c>false</c> if not.
+        /// </value>
+        public bool Inherited { get; protected internal set; }
 
         /// <summary>
         /// Gets the state of the construction.
