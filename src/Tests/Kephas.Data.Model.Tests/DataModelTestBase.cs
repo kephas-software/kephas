@@ -1,30 +1,22 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ModelTestBase.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
-// </copyright>
-// <summary>
-//   Implements the model test base class.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Kephas.Model.Tests
+﻿namespace Kephas.Data.Model.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Model;
     using Kephas.Model.Runtime;
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
+    using System.Reflection;
 
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class ModelTestBase : CompositionTestBase
+    public abstract class DataModelTestBase : CompositionTestBase
     {
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {
@@ -37,7 +29,7 @@ namespace Kephas.Model.Tests
         public ICompositionContext CreateContainerForModel(params Type[] elements)
         {
             var container = this.CreateContainer(
-                new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
+                new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntity).Assembly },
                 config: b => b.WithFactoryExportProvider(() => this.GetModelRegistry(elements), isShared: true));
 
             return container;

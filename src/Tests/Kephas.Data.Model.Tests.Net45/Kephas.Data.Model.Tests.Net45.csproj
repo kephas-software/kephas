@@ -43,6 +43,21 @@
       <HintPath>..\..\..\Packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Convention.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Hosting.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Runtime.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
@@ -55,8 +70,17 @@
     <Compile Include="..\Kephas.Data.Model.Tests\AttributedModel\PrimaryKeyAttributeTest.cs">
       <Link>AttributedModel\PrimaryKeyAttributeTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model.Tests\DataModelTestBase.cs">
+      <Link>DataModelTestBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model.Tests\Elements\Annotations\KeyAnnotationTest.cs">
       <Link>Elements\Annotations\KeyAnnotationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model.Tests\Models\KeyInheritanceModel\KeyInheritance.cs">
+      <Link>Models\KeyInheritanceModel\KeyInheritance.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model.Tests\Models\KeyInheritanceModel\KeyInheritanceTest.cs">
+      <Link>Models\KeyInheritanceModel\KeyInheritanceTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,9 +88,16 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="..\Kephas.Data.Model.Tests\Models\KeyInheritanceModel\KeyInheritance.cd">
+      <Link>Models\KeyInheritanceModel\KeyInheritance.cd</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef.Net45\Kephas.Composition.Mef.Net45.csproj">
+      <Project>{2f644dab-ebe5-4548-af2a-dd43948503de}</Project>
+      <Name>Kephas.Composition.Mef.Net45</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
@@ -82,6 +113,10 @@
     <ProjectReference Include="..\..\Kephas.Model.Net45\Kephas.Model.Net45.csproj">
       <Project>{0e4d7eb1-19f1-4344-89bd-402455c398c4}</Project>
       <Name>Kephas.Model.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef.Net45\Kephas.Testing.Composition.Mef.Net45.csproj">
+      <Project>{5e6c23b7-191a-40c1-9aab-326d190cafa3}</Project>
+      <Name>Kephas.Testing.Composition.Mef.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

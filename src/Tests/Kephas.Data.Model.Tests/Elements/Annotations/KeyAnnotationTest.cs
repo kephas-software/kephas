@@ -49,7 +49,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
             Assert.AreEqual(1, keys.Count);
 
             var key = keys.Single();
-            Assert.AreEqual("gigi_key", key.Name);
+            Assert.AreEqual("$gigi_key", key.Name);
         }
 
         private IList<IElementInfo> CreateClassifier(

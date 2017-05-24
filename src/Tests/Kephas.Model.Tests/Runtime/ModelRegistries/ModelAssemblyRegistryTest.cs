@@ -18,6 +18,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.Mef.Hosting;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
@@ -33,11 +34,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class ModelAssemblyRegistryTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
+        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
-            return base.CreateContainer(assemblyList);
+            return base.CreateContainer(assemblyList, parts, config);
         }
 
         [Test]

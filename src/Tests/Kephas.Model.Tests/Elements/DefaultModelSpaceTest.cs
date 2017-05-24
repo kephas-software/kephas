@@ -13,7 +13,6 @@ namespace Kephas.Model.Tests.Elements
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;

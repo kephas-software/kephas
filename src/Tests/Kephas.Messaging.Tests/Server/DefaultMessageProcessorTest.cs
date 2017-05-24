@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Tests.Server
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.Mef;
+    using Kephas.Composition.Mef.Hosting;
     using Kephas.Messaging.Ping;
     using Kephas.Messaging.Server;
     using Kephas.Messaging.Server.Composition;
@@ -40,11 +41,11 @@ namespace Kephas.Messaging.Tests.Server
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultMessageProcessorTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies)
+        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
-            return base.CreateContainer(assemblyList);
+            return base.CreateContainer(assemblyList, parts, config);
         }
 
         [Test]

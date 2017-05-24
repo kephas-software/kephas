@@ -71,6 +71,18 @@
     <Compile Include="..\Kephas.Model.Tests\Elements\NamedElementBaseTest.cs">
       <Link>Elements\NamedElementBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\DiamondInheritanceModel\DiamondInheritance.cs">
+      <Link>Models\DiamondInheritanceModel\DiamondInheritance.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\DiamondInheritanceModel\DiamondInheritanceTest.cs">
+      <Link>Models\DiamondInheritanceModel\DiamondInheritanceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\MixinInheritanceModel\MixinInheritance.cs">
+      <Link>Models\MixinInheritanceModel\MixinInheritance.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\MixinInheritanceModel\MixinInheritanceTest.cs">
+      <Link>Models\MixinInheritanceModel\MixinInheritanceTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model.Tests\ModelTestBase.cs">
       <Link>ModelTestBase.cs</Link>
     </Compile>
@@ -121,6 +133,12 @@
   <ItemGroup>
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
+    </None>
+    <None Include="..\Kephas.Model.Tests\Models\DiamondInheritanceModel\DiamondInheritance.cd">
+      <Link>Models\DiamondInheritanceModel\DiamondInheritance.cd</Link>
+    </None>
+    <None Include="..\Kephas.Model.Tests\Models\MixinInheritanceModel\MixinInheritance.cd">
+      <Link>Models\MixinInheritanceModel\MixinInheritance.cd</Link>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
