@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -11,7 +12,6 @@
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
-    using System.Reflection;
 
     /// <summary>
     /// A model test base.

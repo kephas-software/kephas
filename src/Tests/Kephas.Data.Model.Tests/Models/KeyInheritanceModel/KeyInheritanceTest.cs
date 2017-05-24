@@ -5,7 +5,6 @@
 
     using Kephas.Data.Model.Elements.Annotations;
     using Kephas.Model;
-    using Kephas.Model.Elements.Annotations;
 
     using NUnit.Framework;
 
