@@ -95,6 +95,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\Runtime\Construction\Annotations\KeyAnnotationConstructor.cs">
+      <Link>Runtime\Construction\Annotations\KeyAnnotationConstructor.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs">
       <Link>Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs</Link>
     </Compile>
