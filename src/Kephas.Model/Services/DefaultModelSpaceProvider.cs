@@ -114,8 +114,8 @@ namespace Kephas.Model.Services
             this.initialization.Start();
 
             var constructionContext = new ModelConstructionContext(this.AmbientServices) { RuntimeModelElementFactory = this.runtimeModelElementFactory };
-            var modelSpace = this.CreateModelSpace(constructionContext);
-            constructionContext.ModelSpace = modelSpace;
+            var constructedModelSpace = this.CreateModelSpace(constructionContext);
+            constructionContext.ModelSpace = constructedModelSpace;
 
             try
             {
@@ -123,9 +123,14 @@ namespace Kephas.Model.Services
                 var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
 
                 constructionContext[nameof(IModelConstructionContext.ElementInfos)] = elementInfos;
-                ((IWritableNamedElement)modelSpace).CompleteConstruction(constructionContext);
+                var writableModelSpace = (IWritableNamedElement)constructedModelSpace;
+                writableModelSpace.CompleteConstruction(constructionContext);
+                if (writableModelSpace.ConstructionState.IsFaulted)
+                {
+                    throw writableModelSpace.ConstructionState.Exception;
+                }
 
-                this.modelSpace = modelSpace;
+                this.modelSpace = constructedModelSpace;
 
                 this.initialization.Complete();
             }

@@ -220,6 +220,17 @@ namespace Kephas.Model.Elements
             constructionContext.ConstructedClassifiers = classifiers;
             classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
 
+            var constructionExceptions = classifiers.OfType<IWritableNamedElement>()
+                .Where(c => c.ConstructionState.IsFaulted)
+                .Select(c => c.ConstructionState.Exception)
+                .Where(e => e != null)
+                .ToList();
+
+            if (constructionExceptions.Count > 0)
+            {
+                throw new AggregateException(constructionExceptions);
+            }
+
             return classifiers;
         }
 
