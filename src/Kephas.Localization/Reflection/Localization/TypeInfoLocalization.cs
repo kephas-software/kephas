@@ -15,6 +15,7 @@ namespace Kephas.Reflection.Localization
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Runtime;
 
     /// <summary>
     /// The type info localization.
@@ -82,11 +83,21 @@ namespace Kephas.Reflection.Localization
         /// </returns>
         protected override DisplayAttribute TryGetDisplayAttribute(IElementInfo elementInfo)
         {
-            var typeDisplayAttribute = elementInfo?.Annotations.OfType<TypeDisplayAttribute>().FirstOrDefault();
+            var typeAnnotations = elementInfo?.Annotations;
+            var typeDisplayAttribute = typeAnnotations?.OfType<TypeDisplayAttribute>().FirstOrDefault();
+            if (typeDisplayAttribute == null)
+            {
+                typeDisplayAttribute = typeAnnotations
+                    ?.OfType<IAttributeProvider>()
+                    .Select(p => p.GetAttribute<TypeDisplayAttribute>())
+                    .FirstOrDefault(a => a != null);
+            }
+
             if (typeDisplayAttribute != null)
             {
                 return new DisplayAttribute { ResourceType = typeDisplayAttribute.ResourceType, Name = typeDisplayAttribute.Name, Description = typeDisplayAttribute.Description };
             }
+
 
             return null;
         }

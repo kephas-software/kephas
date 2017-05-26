@@ -14,6 +14,7 @@ namespace Kephas.Reflection.Localization
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Localization;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Localization information for <see cref="IElementInfo"/>.
@@ -89,7 +90,17 @@ namespace Kephas.Reflection.Localization
         /// </returns>
         protected virtual DisplayAttribute TryGetDisplayAttribute(IElementInfo elementInfo)
         {
-            return elementInfo?.Annotations.OfType<DisplayAttribute>().FirstOrDefault();
+            var elementAnnotations = elementInfo?.Annotations;
+            var displayAttribute = elementAnnotations?.OfType<DisplayAttribute>().FirstOrDefault();
+            if (displayAttribute == null)
+            {
+                displayAttribute = elementAnnotations
+                    ?.OfType<IAttributeProvider>()
+                    .Select(p => p.GetAttribute<DisplayAttribute>())
+                    .FirstOrDefault(a => a != null);
+            }
+
+            return displayAttribute;
         }
     }
 }
