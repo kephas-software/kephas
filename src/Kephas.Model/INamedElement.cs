@@ -90,6 +90,6 @@ namespace Kephas.Model
         /// <value>
         /// <c>true</c> if the model element is inherited, <c>false</c> if not.
         /// </value>
-        bool Inherited { get; }
+        bool IsInherited { get; }
     }
 }

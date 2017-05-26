@@ -80,7 +80,7 @@ namespace Kephas.Model.Runtime.Construction
             if (usage != null)
             {
                 element.AllowMultiple = usage.AllowMultiple;
-                element.Inherited = usage.Inherited;
+                element.IsInherited = usage.Inherited;
             }
         }
     }
