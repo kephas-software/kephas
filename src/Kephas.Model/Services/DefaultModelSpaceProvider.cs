@@ -123,7 +123,7 @@ namespace Kephas.Model.Services
                 var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
 
                 constructionContext[nameof(IModelConstructionContext.ElementInfos)] = elementInfos;
-                var writableModelSpace = (IWritableNamedElement)constructedModelSpace;
+                var writableModelSpace = (IConstructableElement)constructedModelSpace;
                 writableModelSpace.CompleteConstruction(constructionContext);
                 if (writableModelSpace.ConstructionState.IsFaulted)
                 {

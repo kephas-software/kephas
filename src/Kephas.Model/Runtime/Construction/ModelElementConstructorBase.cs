@@ -40,7 +40,7 @@ namespace Kephas.Model.Runtime.Construction
         protected override void ConstructModelElementContent(IModelConstructionContext constructionContext, TRuntime runtimeElement, TModel element)
         {
             var members = this.ComputeMembers(constructionContext, runtimeElement);
-            var writableElement = (IWritableNamedElement)element;
+            var writableElement = (IConstructableElement)element;
             foreach (var member in members)
             {
                 writableElement.AddMember(member);

@@ -11,6 +11,8 @@ namespace Kephas.Reflection
 {
     using System.Collections.Generic;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Contract providing type information.
     /// </summary>
@@ -98,5 +100,15 @@ namespace Kephas.Reflection
         /// The new instance.
         /// </returns>
         object CreateInstance(IEnumerable<object> args = null);
+
+        /// <summary>
+        /// Constructs a generic type baed on the provided type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The type arguments.</param>
+        /// <param name="constructionContext">The construction context (optional).</param>
+        /// <returns>
+        /// A constructed <see cref="ITypeInfo"/>.
+        /// </returns>
+        ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null);
     }
 }

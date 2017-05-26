@@ -73,7 +73,7 @@ namespace Kephas.Model.Elements
             foreach (var element in elements)
             {
                 this.AddMember(element);
-                (element as IWritableNamedElement)?.CompleteConstruction(constructionContext);
+                (element as IConstructableElement)?.CompleteConstruction(constructionContext);
             }
         }
     }

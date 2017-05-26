@@ -20,6 +20,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// Base abstract class for classifiers.
@@ -65,12 +66,12 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Gets the projection where the model element is defined.
+        /// Gets or sets the projection where the model element is defined.
         /// </summary>
         /// <value>
         /// The projection.
         /// </value>
-        public IModelProjection Projection { get; } // TODO set the projection
+        public IModelProjection Projection { get; protected internal set; } // TODO set the projection
 
         /// <summary>
         /// Gets the classifier properties.
@@ -222,6 +223,30 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Constructs a generic type baed on the provided type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The type arguments.</param>
+        /// <param name="context">The construction context (optional).</param>
+        /// <returns>
+        /// A constructed <see cref="ITypeInfo"/>.
+        /// </returns>
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext context = null)
+        {
+            return null;
+
+            // TODO complete implementation
+            var constructionContext = context as IModelConstructionContext;
+            var modelSpace = constructionContext?.ModelSpace ?? this.ModelSpace;
+            var classifierArguments = typeArguments.Select(t => modelSpace.TryGetClassifier(t, context) ?? t).ToList();
+
+            var thisTypeInfo = this.GetType().AsRuntimeTypeInfo();
+            var constructedType = (IConstructableElement)thisTypeInfo.CreateInstance(new object[] { constructionContext, $"{this.Name}_{Guid.NewGuid()}" });
+            constructedType.ConstructGenericClassifier(this, classifierArguments, context);
+
+            return (ITypeInfo)constructedType;
+        }
+
+        /// <summary>
         /// Calculates the flag indicating whether the classifier is a mixin or not.
         /// </summary>
         /// <returns>
@@ -355,6 +380,21 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Constructs the generic classifier.
+        /// </summary>
+        /// <param name="genericDefinition">The generic definition.</param>
+        /// <param name="classifierArguments">The classifier arguments.</param>
+        /// <param name="context">The context.</param>
+        protected override void ConstructGenericClassifier(IClassifier genericDefinition, IEnumerable<ITypeInfo> classifierArguments, IContext context)
+        {
+            this.GenericTypeDefinition = genericDefinition;
+            this.GenericTypeArguments = new ReadOnlyCollection<ITypeInfo>(new List<ITypeInfo>(classifierArguments));
+
+            // TODO clone members and add type arguments
+            // TODO clone base types and add type arguments
+        }
+
+        /// <summary>
         /// Calculates the generic information.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -442,7 +482,7 @@ namespace Kephas.Model.Elements
                 var declaredMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);
                 if (declaredMember != null)
                 {
-                    var ownMemberBuilder = declaredMember as IWritableNamedElement;
+                    var ownMemberBuilder = declaredMember as IConstructableElement;
                     var collection = baseMemberMap.Value as IList<INamedElement>;
                     if (collection != null)
                     {
@@ -461,17 +501,62 @@ namespace Kephas.Model.Elements
                     var collection = baseMemberMap.Value as IList<INamedElement>;
                     if (collection != null)
                     {
-                        throw new ModelConstructionException(
-                            string.Format(
-                                Strings.ClassifierBase_ConflictingMembersInBases_Exception,
-                                baseMemberMap.Key,
-                                this.Name,
-                                string.Join(", ", collection.Select(e => ((IElementInfo)e).DeclaringContainer?.Name))));
-                    }
+                        var resolvedMember = this.TryResolveConflictingMembers(collection);
 
-                    this.AddMember((INamedElement)baseMemberMap.Value);
+                        if (resolvedMember == null)
+                        {
+                            throw new ModelConstructionException(
+                                string.Format(
+                                    Strings.ClassifierBase_ConflictingMembersInBases_Exception,
+                                    baseMemberMap.Key,
+                                    this.Name,
+                                    string.Join(", ", collection.Select(e => ((IElementInfo)e).DeclaringContainer?.Name))));
+                        }
+
+                        this.AddMember(resolvedMember);
+                    }
+                    else
+                    {
+                        this.AddMember((INamedElement)baseMemberMap.Value);
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Tries to resolve conflicting members and return the resolved member.
+        /// </summary>
+        /// <param name="conflictingMembers">The conflicting members.</param>
+        /// <returns>
+        /// The resolved member or <c>null</c>.
+        /// </returns>
+        private INamedElement TryResolveConflictingMembers(IList<INamedElement> conflictingMembers)
+        {
+            var resolvedMember = conflictingMembers[0];
+            for (var i = 1; i < conflictingMembers.Count; i++)
+            {
+                var challengingMember = conflictingMembers[i];
+
+                // if the resolved member aggregates the challenging member,
+                // the challenging member may be safely ignored.
+                if (resolvedMember.Aggregates(challengingMember))
+                {
+                    continue;
+                }
+
+                // if the challenging member aggregates the resolved member,
+                // consider the challenging the resolved one.
+                if (challengingMember.Aggregates(resolvedMember))
+                {
+                    resolvedMember = challengingMember;
+                    continue;
+                }
+
+                // there is no dependency between the two members, cannot solve the conflict.
+                return null;
+            }
+
+            return resolvedMember;
         }
 
         /// <summary>

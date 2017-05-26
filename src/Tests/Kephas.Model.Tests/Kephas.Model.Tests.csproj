@@ -66,6 +66,8 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Elements\DefaultModelSpaceTest.cs" />
+    <Compile Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs" />
+    <Compile Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembersTest.cs" />
     <Compile Include="Models\DiamondInheritanceModel\DiamondInheritance.cs" />
     <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Models\DiamondInheritanceModel\DiamondInheritanceTest.cs" />
@@ -92,6 +94,7 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd" />
     <None Include="Models\DiamondInheritanceModel\DiamondInheritance.cd" />
     <None Include="Models\MixinInheritanceModel\MixinInheritance.cd" />
     <None Include="packages.config" />

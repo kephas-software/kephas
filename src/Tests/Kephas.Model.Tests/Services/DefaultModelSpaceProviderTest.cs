@@ -36,7 +36,7 @@
 
             var modelSpace = provider.GetModelSpace();
 
-            Assert.IsTrue((modelSpace as IWritableNamedElement)?.ConstructionState.IsCompleted);
+            Assert.IsTrue((modelSpace as IConstructableElement)?.ConstructionState.IsCompleted);
         }
 
         [Test]
@@ -49,7 +49,7 @@
 
             var modelSpace = provider.GetModelSpace();
 
-            Assert.IsTrue((modelSpace as IWritableNamedElement)?.ConstructionState.IsCompleted);
+            Assert.IsTrue((modelSpace as IConstructableElement)?.ConstructionState.IsCompleted);
         }
 
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()

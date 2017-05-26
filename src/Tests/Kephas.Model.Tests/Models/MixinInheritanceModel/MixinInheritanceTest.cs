@@ -28,8 +28,6 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
 
             await provider.InitializeAsync();
 
-            // TODO
-
             var modelSpace = provider.GetModelSpace();
             var namedClassifier = modelSpace.Classifiers.Single(c => c.Name == "Named");
             var uniqueClassifier = modelSpace.Classifiers.Single(c => c.Name == "UniquelyNamed");

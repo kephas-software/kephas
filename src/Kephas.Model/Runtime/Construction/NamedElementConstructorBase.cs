@@ -65,7 +65,7 @@ namespace Kephas.Model.Runtime.Construction
             var element = this.TryCreateModelElementCore(constructionContext, runtimeInfo);
             if (element != null)
             {
-                ((IWritableNamedElement)element).AddPart(runtimeInfo);
+                ((IConstructableElement)element).AddPart(runtimeInfo);
                 this.ConstructModelElementContent(constructionContext, runtimeInfo, element);
             }
 

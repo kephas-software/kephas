@@ -122,7 +122,8 @@ namespace Kephas.Model.Elements
                 return classifier;
             }
 
-            var cacheKey = findContext is IModelConstructionContext
+            var constructionContext = findContext as IModelConstructionContext;
+            var cacheKey = constructionContext != null
                                ? this.constructionClassifierCacheKey
                                : this.classifierCacheKey;
 
@@ -133,8 +134,8 @@ namespace Kephas.Model.Elements
                 return classifier;
             }
 
-            var classifiers = (findContext as IModelConstructionContext)?.ConstructedClassifiers ?? this.Classifiers;
-            classifier = this.TryComputeClassifier(typeInfo, classifiers);
+            var classifiers = constructionContext?.ConstructedClassifiers ?? this.Classifiers;
+            classifier = this.TryComputeClassifier(typeInfo, classifiers, findContext);
             if (classifier != null)
             {
                 // set the cached value.
@@ -155,7 +156,7 @@ namespace Kephas.Model.Elements
             IModelConstructionContext constructionContext)
         {
             var dimensions = constructionContext.ElementInfos.OfType<IModelDimension>().OrderBy(d => d.Index).ToArray();
-            dimensions.ForEach(dimension => (dimension as IWritableNamedElement)?.CompleteConstruction(constructionContext));
+            dimensions.ForEach(dimension => (dimension as IConstructableElement)?.CompleteConstruction(constructionContext));
 
             return dimensions;
         }
@@ -181,12 +182,12 @@ namespace Kephas.Model.Elements
                 var nonAggregatableProjections = new List<IModelProjection>();
                 this.BuildProjections(constructionContext, nonAggregatableDimensions, 0, new List<IModelDimensionElement>(), nonAggregatableProjections);
                 var nonAggregatableDictionary = nonAggregatableProjections.ToDictionary(p => p.Name, p => p);
-                projections.ForEach(p => ((IWritableNamedElement)nonAggregatableDictionary[p.AggregatedProjectionName]).AddPart(p));
+                projections.ForEach(p => ((IConstructableElement)nonAggregatableDictionary[p.AggregatedProjectionName]).AddPart(p));
 
                 projections.AddRange(nonAggregatableProjections);
             }
 
-            projections.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
+            projections.ForEach(c => (c as IConstructableElement)?.CompleteConstruction(constructionContext));
 
             return projections;
         }
@@ -211,16 +212,16 @@ namespace Kephas.Model.Elements
             var orderGraphNodes = unsortedClassifiers.Select(
                 c => new KeyValuePair<IClassifier, IEnumerable<IElementInfo>>(
                     c,
-                    ((IWritableNamedElement)c).GetDependencies(constructionContext)));
+                    ((IConstructableElement)c).GetDependencies(constructionContext)));
             var orderedSet = new PartialOrderedSet<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>>(orderGraphNodes, ClassifierDependencyComparer);
             var classifiers = orderedSet.Select(cd => cd.Key).ToList();
 
             // having ordered classifiers, go complete their construction
             // the constructed classifiers are now in the proper order
             constructionContext.ConstructedClassifiers = classifiers;
-            classifiers.ForEach(c => (c as IWritableNamedElement)?.CompleteConstruction(constructionContext));
+            classifiers.ForEach(c => (c as IConstructableElement)?.CompleteConstruction(constructionContext));
 
-            var constructionExceptions = classifiers.OfType<IWritableNamedElement>()
+            var constructionExceptions = classifiers.OfType<IConstructableElement>()
                 .Where(c => c.ConstructionState.IsFaulted)
                 .Select(c => c.ConstructionState.Exception)
                 .Where(e => e != null)
@@ -302,17 +303,33 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
         /// <param name="classifiers">The classifiers.</param>
+        /// <param name="constructionContext">The construction context (optional).</param>
         /// <returns>
         /// An IClassifier.
         /// </returns>
-        private IClassifier TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers)
+        private IClassifier TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IContext constructionContext)
         {
             // TODO 
             // return only aggregated classifiers, not partial ones.
             // try to find in all classifiers, in all parts, the provided type info
             // if one is found, the containing classifier is the searched one.
 
-            return classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
+            var resolvedClassifier = classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
+            if (resolvedClassifier == null)
+            {
+                if (typeInfo.IsConstructedGenericType())
+                {
+                    var genericTypeDefinition = typeInfo.GenericTypeDefinition;
+                    var resolvedGenericDefinition = classifiers.FirstOrDefault(c => c == genericTypeDefinition || c.Aggregates(genericTypeDefinition));
+                    if (resolvedGenericDefinition != null)
+                    {
+                        var constructedType = resolvedGenericDefinition.MakeGenericType(typeInfo.GenericTypeArguments, constructionContext);
+                        return constructedType as IClassifier;
+                    }
+                }
+            }
+
+            return resolvedClassifier;
         }
 
         /// <summary>
@@ -328,7 +345,7 @@ namespace Kephas.Model.Elements
                 {
                     if (aspect != classifier && aspect.IsAspectOf(classifier))
                     {
-                        ((IWritableNamedElement)classifier).AddPart(aspect);
+                        ((IConstructableElement)classifier).AddPart(aspect);
                     }
                 }
             }

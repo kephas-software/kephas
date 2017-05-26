@@ -48,7 +48,7 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// <param name="element">The model element to be configured.</param>
         public void Configure(IModelConstructionContext constructionContext, INamedElement element)
         {
-            var writableEntity = element as IWritableNamedElement;
+            var writableEntity = element as IConstructableElement;
             if (writableEntity == null)
             {
                 // TODO localization

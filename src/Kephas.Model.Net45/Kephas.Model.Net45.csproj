@@ -97,8 +97,8 @@
     <Compile Include="..\Kephas.Model\Construction\IModelInfoProvider.cs">
       <Link>Construction\IModelInfoProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Construction\Internal\IWritableNamedElement.cs">
-      <Link>Construction\Internal\IWritableNamedElement.cs</Link>
+    <Compile Include="..\Kephas.Model\Construction\Internal\IConstructableElement.cs">
+      <Link>Construction\Internal\IConstructableElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Construction\ModelConstructionContext.cs">
       <Link>Construction\ModelConstructionContext.cs</Link>

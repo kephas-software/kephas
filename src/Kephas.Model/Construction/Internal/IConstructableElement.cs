@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IWritableNamedElement.cs" company="Quartz Software SRL">
+// <copyright file="IConstructableElement.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IWritableNamedElement interface.
+//   Declares the IConstructableElement interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,13 +12,15 @@ namespace Kephas.Model.Construction.Internal
     using System.Collections.Generic;
 
     using Kephas.Model.Construction;
+    using Kephas.Model.Elements;
     using Kephas.Reflection;
+    using Kephas.Services;
     using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Interface for writable named elements used during construction.
     /// </summary>
-    internal interface IWritableNamedElement
+    internal interface IConstructableElement
     {
         /// <summary>
         /// Gets the state of the construction.
@@ -60,5 +62,13 @@ namespace Kephas.Model.Construction.Internal
         /// An enumeration of dependencies.
         /// </returns>
         IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext);
+
+        /// <summary>
+        /// Constructs the generic classifier.
+        /// </summary>
+        /// <param name="genericDefinition">The generic definition.</param>
+        /// <param name="classifierArguments">The classifier arguments.</param>
+        /// <param name="context">The context.</param>
+        void ConstructGenericClassifier(IClassifier genericDefinition, IEnumerable<ITypeInfo> classifierArguments, IContext context);
     }
 }

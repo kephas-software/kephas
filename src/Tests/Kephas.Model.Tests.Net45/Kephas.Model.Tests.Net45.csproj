@@ -71,6 +71,12 @@
     <Compile Include="..\Kephas.Model.Tests\Elements\NamedElementBaseTest.cs">
       <Link>Elements\NamedElementBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs">
+      <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembersTest.cs">
+      <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembersTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model.Tests\Models\DiamondInheritanceModel\DiamondInheritance.cs">
       <Link>Models\DiamondInheritanceModel\DiamondInheritance.cs</Link>
     </Compile>
@@ -133,6 +139,9 @@
   <ItemGroup>
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
+    </None>
+    <None Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd">
+      <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd</Link>
     </None>
     <None Include="..\Kephas.Model.Tests\Models\DiamondInheritanceModel\DiamondInheritance.cd">
       <Link>Models\DiamondInheritanceModel\DiamondInheritance.cd</Link>

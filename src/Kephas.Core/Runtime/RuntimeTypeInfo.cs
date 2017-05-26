@@ -22,6 +22,7 @@ namespace Kephas.Runtime
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// An object activator delegate.
@@ -543,6 +544,20 @@ namespace Kephas.Runtime
             }
 
             return args == null ? this.instanceActivator() : this.instanceActivator(args.ToArray());
+        }
+
+        /// <summary>
+        /// Constructs a generic type baed on the provided type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The type arguments.</param>
+        /// <param name="constructionContext">The construction context (optional).</param>
+        /// <returns>
+        /// A constructed <see cref="ITypeInfo"/>.
+        /// </returns>
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
+        {
+            var constructedType = this.TypeInfo.MakeGenericType(typeArguments.Cast<IRuntimeTypeInfo>().Select(t => t.Type).ToArray());
+            return constructedType.AsRuntimeTypeInfo();
         }
 
         /// <summary>

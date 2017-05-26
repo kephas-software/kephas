@@ -16,6 +16,7 @@ namespace Kephas.Reflection.Dynamic
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Dynamic type information.
@@ -148,6 +149,19 @@ namespace Kephas.Reflection.Dynamic
         public virtual object CreateInstance(IEnumerable<object> args = null)
         {
             return new Expando();
+        }
+
+        /// <summary>
+        /// Constructs a generic type baed on the provided type arguments.
+        /// </summary>
+        /// <param name="typeArguments">The type arguments.</param>
+        /// <param name="constructionContext">The construction context (optional).</param>
+        /// <returns>
+        /// A constructed <see cref="ITypeInfo"/>.
+        /// </returns>
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
+        {
+            throw new NotSupportedException();
         }
 
         /// <summary>

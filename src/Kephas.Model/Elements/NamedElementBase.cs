@@ -19,13 +19,14 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
+    using Kephas.Services;
     using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the interface).</typeparam>
-    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IWritableNamedElement
+    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructableElement
         where TModelContract : INamedElement
     {
         /// <summary>
@@ -185,7 +186,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The construction state.
         /// </value>
-        ITransitionState IWritableNamedElement.ConstructionState => this.ConstructionMonitor;
+        ITransitionState IConstructableElement.ConstructionState => this.ConstructionMonitor;
 
         /// <summary>
         /// Gets the construction monitor.
@@ -210,7 +211,7 @@ namespace Kephas.Model.Elements
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
-        void IWritableNamedElement.SetDeclaringContainer(IModelElement container)
+        void IConstructableElement.SetDeclaringContainer(IModelElement container)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.DeclaringContainer = container;
@@ -220,7 +221,7 @@ namespace Kephas.Model.Elements
         /// Completes the construction of the element.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
-        void IWritableNamedElement.CompleteConstruction(IModelConstructionContext constructionContext)
+        void IConstructableElement.CompleteConstruction(IModelConstructionContext constructionContext)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             try
@@ -242,7 +243,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// An enumeration of dependencies.
         /// </returns>
-        IEnumerable<IElementInfo> IWritableNamedElement.GetDependencies(IModelConstructionContext constructionContext)
+        IEnumerable<IElementInfo> IConstructableElement.GetDependencies(IModelConstructionContext constructionContext)
         {
             return this.GetDependencies(constructionContext);
         }
@@ -251,7 +252,7 @@ namespace Kephas.Model.Elements
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
-        void IWritableNamedElement.AddMember(INamedElement member)
+        void IConstructableElement.AddMember(INamedElement member)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddMember(member);
@@ -261,10 +262,24 @@ namespace Kephas.Model.Elements
         /// Adds a part to the aggregated element.
         /// </summary>
         /// <param name="part">The part to be added.</param>
-        void IWritableNamedElement.AddPart(object part)
+        void IConstructableElement.AddPart(object part)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddPart(part);
+        }
+
+        /// <summary>
+        /// Constructs the generic classifier.
+        /// </summary>
+        /// <param name="genericDefinition">The generic definition.</param>
+        /// <param name="classifierArguments">The classifier arguments.</param>
+        /// <param name="context">The context.</param>
+        void IConstructableElement.ConstructGenericClassifier(
+            IClassifier genericDefinition,
+            IEnumerable<ITypeInfo> classifierArguments,
+            IContext context)
+        {
+            this.ConstructGenericClassifier(genericDefinition, classifierArguments, context);
         }
 
         /// <summary>
@@ -304,6 +319,19 @@ namespace Kephas.Model.Elements
         protected virtual void AddMember(INamedElement member)
         {
             Contract.Requires(member != null);
+        }
+
+        /// <summary>
+        /// Constructs the generic classifier.
+        /// </summary>
+        /// <param name="genericDefinition">The generic definition.</param>
+        /// <param name="classifierArguments">The classifier arguments.</param>
+        /// <param name="context">The context.</param>
+        protected virtual void ConstructGenericClassifier(
+            IClassifier genericDefinition,
+            IEnumerable<ITypeInfo> classifierArguments,
+            IContext context)
+        {
         }
     }
 }
