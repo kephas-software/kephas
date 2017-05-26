@@ -202,8 +202,20 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected internal virtual IEnumerable<IClassifier> ComputeClassifiers(IModelConstructionContext constructionContext)
         {
-            // first, get the classifiers and resolve their aspects
+            // first, get the classifiers and collect from them all other classifier references/dependencies
+            // to be able to get a proper sorting upon construction completion
             var unsortedClassifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
+            // TODO get the dependencies from:
+            // 1. Parts (do not resolve yet the classifiers!). This is the only complete information so far.
+            // 2. Constructed Generics
+            // 3. Property/Field/Method parameter Types ? not sure if required.
+            // When constructing generics, must change the signature to include (param, arg) mappings
+            
+            // second, construct the required generics. In this phase, the classifier contain brute information.
+            // TODO...
+
+            // third, resolve their aspects.
+            // TODO aspects are can be applied only to non-generic or open-generics
             this.ResolveAspects(unsortedClassifiers);
 
             // then sort them, to be able to have all the dependencies constructed completely
