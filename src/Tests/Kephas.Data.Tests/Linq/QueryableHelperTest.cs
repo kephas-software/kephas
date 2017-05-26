@@ -276,15 +276,15 @@ namespace Kephas.Data.Tests.Linq
             Assert.IsTrue(value.Contains("there"));
         }
 
-        [Test, Ignore("Somehow the test async query provider does not work. Try fix later.")]
-        public async Task ToListAsync_async()
-        {
-            var queryable = AsyncQueryProvider.AsAsyncQueryable(new[] { "Hi", "there" }.AsQueryable());
-            var value = await queryable.ToListAsync();
-            Assert.IsInstanceOf<List<string>>(value);
-            Assert.IsTrue(value.Contains("Hi"));
-            Assert.IsTrue(value.Contains("there"));
-        }
+        ////[Test]
+        ////public async Task ToListAsync_async()
+        ////{
+        ////    var queryable = AsyncQueryProvider.AsAsyncQueryable(new[] { "Hi", "there" }.AsQueryable());
+        ////    var value = await queryable.ToListAsync();
+        ////    Assert.IsInstanceOf<List<string>>(value);
+        ////    Assert.IsTrue(value.Contains("Hi"));
+        ////    Assert.IsTrue(value.Contains("there"));
+        ////}
 
         public class AsyncQuery<T> : IQueryable<T>
         {
