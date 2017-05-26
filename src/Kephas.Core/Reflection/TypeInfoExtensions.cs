@@ -92,6 +92,20 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Indicates whether the <see cref="ITypeInfo"/> is a generic type definition (aka open generic).
+        /// </summary>
+        /// <param name="typeInfo">The type information instance.</param>
+        /// <returns>
+        /// <c>true</c> if the type is a generic type definition; <c>false</c> if not.
+        /// </returns>
+        public static bool IsConstructedGenericType(this ITypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return typeInfo.GenericTypeArguments.Count > 0 && typeInfo.GenericTypeDefinition != null;
+        }
+
+        /// <summary>
         /// Gets the qualified full name of a <see cref="TypeInfo"/>. Optionally, strips away the version information.
         /// </summary>
         /// <param name="typeInfo">The type information instance.</param>
