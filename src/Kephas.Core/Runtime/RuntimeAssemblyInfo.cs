@@ -98,7 +98,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The element annotations.
         /// </value>
-        public IEnumerable<object> Annotations => this.assembly.CustomAttributes;
+        public IEnumerable<object> Annotations => this.assembly.GetCustomAttributes();
 
         /// <summary>
         /// Gets the parent element declaring this element.
@@ -136,6 +136,19 @@ namespace Kephas.Runtime
         public Assembly GetUnderlyingAssemblyInfo()
         {
             return this.assembly;
+        }
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.assembly.GetCustomAttributes<TAttribute>();
         }
 
         /// <summary>

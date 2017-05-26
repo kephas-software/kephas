@@ -38,11 +38,25 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void RuntimeTypeInfo_open_generic()
+        public void RuntimeTypeInfo_open_generic_properties()
         {
             var runtimeTypeInfo = new RuntimeTypeInfo(typeof(ICollection<>));
             var type = runtimeTypeInfo.Type;
             Assert.AreEqual(type, typeof(ICollection<>));
+            Assert.AreEqual(0, runtimeTypeInfo.Fields.Count);
+            Assert.AreEqual(2, runtimeTypeInfo.Properties.Count);
+            Assert.AreEqual(7, runtimeTypeInfo.Methods.Count);
+        }
+
+        [Test]
+        public void RuntimeTypeInfo_open_generic_fields()
+        {
+            var runtimeTypeInfo = new RuntimeTypeInfo(typeof(OpenGenericFields<>));
+            var type = runtimeTypeInfo.Type;
+            Assert.AreEqual(type, typeof(OpenGenericFields<>));
+            Assert.AreEqual(1, runtimeTypeInfo.Fields.Count);
+            Assert.AreEqual(0, runtimeTypeInfo.Properties.Count);
+            Assert.AreEqual(4, runtimeTypeInfo.Methods.Count);
         }
 
         [Test]
@@ -450,6 +464,12 @@ namespace Kephas.Core.Tests.Runtime
             {
                 return parentsInitials + " " + this.Name + " " + arg2;
             }
+        }
+
+        public class OpenGenericFields<T>
+        {
+            [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
+            public T Value;
         }
     }
 }

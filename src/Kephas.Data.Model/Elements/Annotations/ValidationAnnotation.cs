@@ -11,14 +11,13 @@ namespace Kephas.Data.Model.Elements.Annotations
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Kephas.Data.Validation;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements.Annotations;
 
     /// <summary>
     /// A validation annotation.
     /// </summary>
-    public class ValidationAnnotation : AttributeAnnotation<ValidationAttribute>, IValidationAttributeProvider
+    public class ValidationAnnotation : AttributeAnnotation<ValidationAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValidationAnnotation"/> class.

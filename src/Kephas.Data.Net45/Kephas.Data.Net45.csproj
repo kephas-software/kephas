@@ -389,9 +389,6 @@
     <Compile Include="..\Kephas.Data\Validation\IOnValidateBehavior.cs">
       <Link>Validation\IOnValidateBehavior.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\Validation\IValidationAttributeProvider.cs">
-      <Link>Validation\IValidationAttributeProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>

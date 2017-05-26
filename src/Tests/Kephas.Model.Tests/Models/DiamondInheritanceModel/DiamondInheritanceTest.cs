@@ -34,8 +34,8 @@ namespace Kephas.Model.Tests.Models.DiamondInheritanceModel
             Assert.IsFalse(appParamClassifier.BaseMixins.Any(m => m == namedClassifier));
             Assert.IsTrue(appParamClassifier.BaseMixins.Any(m => m == parameterClassifier));
             Assert.IsTrue(appParamClassifier.BaseMixins.Any(m => m == uniqueClassifier));
-            Assert.AreEqual(1, appParamClassifier.Members.Count());
-            Assert.AreSame(namedClassifier.Members.First(), appParamClassifier.Members.First());
+            Assert.AreEqual(2, appParamClassifier.Members.Count());
+            Assert.AreSame(namedClassifier.Members.First(m => m.Name == "Name"), appParamClassifier.Members.First(m => m.Name == "Name"));
         }
     }
 }

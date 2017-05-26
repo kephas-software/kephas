@@ -19,17 +19,15 @@ namespace Kephas.Runtime
     /// <summary>
     /// Implementation of <see cref="IRuntimeFieldInfo" /> for runtime fields.
     /// </summary>
-    /// <typeparam name="T">The container type.</typeparam>
-    /// <typeparam name="TMember">The member type.</typeparam>
-    public sealed class RuntimeFieldInfo<T, TMember> : Expando, IRuntimeFieldInfo
+    public class RuntimeFieldInfo : Expando, IRuntimeFieldInfo
     {
         /// <summary>
         /// The runtime type of <see cref="RuntimeFieldInfo{T,TMember}"/>.
         /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeFieldInfo = new RuntimeTypeInfo(typeof(RuntimeFieldInfo<T, TMember>));
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeFieldInfo = new RuntimeTypeInfo(typeof(RuntimeFieldInfo));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
+        /// Initializes a new instance of the <see cref="RuntimeFieldInfo"/> class.
         /// </summary>
         /// <param name="fieldInfo">The field information.</param>
         internal RuntimeFieldInfo(FieldInfo fieldInfo)
@@ -112,7 +110,7 @@ namespace Kephas.Runtime
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
         public void SetValue(object obj, object value)
         {
-            this.FieldInfo.SetValue(obj, value);
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -125,7 +123,20 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
         public object GetValue(object obj)
         {
-            return this.FieldInfo.GetValue(obj);
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.FieldInfo.GetCustomAttributes<TAttribute>();
         }
 
         /// <summary>
@@ -137,6 +148,40 @@ namespace Kephas.Runtime
         protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeFieldInfo;
+        }
+    }
+
+    /// <summary>
+    /// Implementation of <see cref="IRuntimeFieldInfo" /> for runtime fields.
+    /// </summary>
+    /// <typeparam name="T">The container type.</typeparam>
+    /// <typeparam name="TMember">The member type.</typeparam>
+    public sealed class RuntimeFieldInfo<T, TMember> : RuntimeFieldInfo
+    {
+        /// <summary>
+        /// The runtime type of <see cref="RuntimeFieldInfo{T,TMember}"/>.
+        /// </summary>
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimeFieldInfo =
+            new RuntimeTypeInfo(typeof(RuntimeFieldInfo<T, TMember>));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
+        /// </summary>
+        /// <param name="fieldInfo">The field information.</param>
+        internal RuntimeFieldInfo(FieldInfo fieldInfo)
+            : base(fieldInfo)
+        {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ITypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ITypeInfo"/> of this expando object.
+        /// </returns>
+        protected override ITypeInfo GetThisTypeInfo()
+        {
+            return RuntimeTypeInfoOfGenericRuntimeFieldInfo;
         }
     }
 }

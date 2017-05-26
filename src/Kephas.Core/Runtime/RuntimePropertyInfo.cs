@@ -144,6 +144,19 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.PropertyInfo.GetCustomAttributes<TAttribute>();
+        }
+
+        /// <summary>
         /// Gets the <see cref="ITypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
@@ -165,7 +178,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
         /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
+        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
 
         /// <summary>
         /// The getter.
@@ -230,7 +243,7 @@ namespace Kephas.Runtime
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
         {
-            return RuntimeTypeInfoOfRuntimePropertyInfo;
+            return RuntimeTypeInfoOfGenericRuntimePropertyInfo;
         }
 
         /// <summary>

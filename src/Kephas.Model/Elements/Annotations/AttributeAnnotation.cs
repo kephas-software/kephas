@@ -10,15 +10,17 @@
 namespace Kephas.Model.Elements.Annotations
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
+    using Kephas.Runtime;
 
     /// <summary>
     /// An annotation holding a runtime attribute.
     /// </summary>
     /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
-    public class AttributeAnnotation<TAttribute> : Annotation, IAttributeAnnotation
+    public class AttributeAnnotation<TAttribute> : Annotation, IAttributeAnnotation, IAttributeProvider
         where TAttribute : Attribute
     {
         /// <summary>
@@ -50,5 +52,24 @@ namespace Kephas.Model.Elements.Annotations
         /// The attribute.
         /// </value>
         Attribute IAttributeAnnotation.Attribute => this.Attribute;
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TRuntimeAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TRuntimeAttribute> GetAttributes<TRuntimeAttribute>()
+            where TRuntimeAttribute : Attribute
+        {
+            var runtimeAttribute = this.Attribute as TRuntimeAttribute;
+            if (runtimeAttribute == null)
+            {
+                return new TRuntimeAttribute[0];
+            }
+
+            return new[] { runtimeAttribute };
+        }
     }
 }

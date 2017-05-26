@@ -16,7 +16,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Interface for dynamic element information.
     /// </summary>
-    public interface IRuntimeElementInfo : IElementInfo
+    public interface IRuntimeElementInfo : IElementInfo, IAttributeProvider
     {
         /// <summary>
         /// Gets the underlying member information.

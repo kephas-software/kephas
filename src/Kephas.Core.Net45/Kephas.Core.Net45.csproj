@@ -455,6 +455,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IAttributeProvider.cs">
+      <Link>Runtime\IAttributeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeAssemblyInfo.cs">
       <Link>Runtime\IRuntimeAssemblyInfo.cs</Link>
     </Compile>

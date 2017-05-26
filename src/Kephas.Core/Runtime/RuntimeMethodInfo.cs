@@ -140,6 +140,19 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.MethodInfo.GetCustomAttributes<TAttribute>();
+        }
+
+        /// <summary>
         /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>

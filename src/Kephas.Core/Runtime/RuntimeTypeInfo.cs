@@ -48,6 +48,11 @@ namespace Kephas.Runtime
         private static readonly TypeInfo RuntimeFieldInfoGenericTypeInfo = typeof(RuntimeFieldInfo<,>).GetTypeInfo();
 
         /// <summary>
+        /// The <see cref="RuntimeFieldInfo"/> type information.
+        /// </summary>
+        private static readonly TypeInfo RuntimeFieldInfoTypeInfo = typeof(RuntimeFieldInfo).GetTypeInfo();
+
+        /// <summary>
         /// The <see cref="RuntimePropertyInfo{T,TMember}"/> generic type information.
         /// </summary>
         private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
@@ -552,6 +557,19 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.TypeInfo.GetCustomAttributes<TAttribute>();
+        }
+
+        /// <summary>
         /// Gets the runtime type.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -655,6 +673,10 @@ namespace Kephas.Runtime
         {
             var runtimeFieldInfos = new Dictionary<string, IRuntimeFieldInfo>();
             var fieldInfos = type.GetRuntimeFields().Where(f => f.IsPublic);
+            var fieldAccessorTypeFn = type.GetTypeInfo().ContainsGenericParameters
+                                             ? (Func<Type, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
+                                             : (fieldType => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, fieldType));
+
             foreach (var fieldInfo in fieldInfos)
             {
                 var fieldName = fieldInfo.Name;
@@ -663,9 +685,7 @@ namespace Kephas.Runtime
                     continue;
                 }
 
-                var fieldAccessorType = RuntimeFieldInfoGenericTypeInfo.MakeGenericType(
-                    type,
-                    fieldInfo.FieldType);
+                var fieldAccessorType = fieldAccessorTypeFn(fieldInfo.FieldType);
                 var constructor = fieldAccessorType.GetTypeInfo().DeclaredConstructors.First();
                 var runtimeFieldInfo = (IRuntimeFieldInfo)constructor.Invoke(new object[] { fieldInfo });
                 runtimeFieldInfos.Add(fieldName, runtimeFieldInfo);

@@ -18,6 +18,7 @@ namespace Kephas.Data.Behaviors
     using Kephas.Data.Validation;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for data behaviors resulting from property annotations, like any type of validations.
@@ -77,7 +78,7 @@ namespace Kephas.Data.Behaviors
             foreach (var propInfo in typeInfo.Properties)
             {
                 var propInfoValidations = propInfo.Annotations.OfType<ValidationAttribute>().ToList();
-                propInfoValidations.AddRange(propInfo.Annotations.OfType<IValidationAttributeProvider>().Select(p => p.GetValidationAttribute()).Where(a => a != null));
+                propInfoValidations.AddRange(propInfo.Annotations.OfType<IAttributeProvider>().Select(p => p.GetAttribute<ValidationAttribute>()).Where(a => a != null));
                 var propInfoLocalization = propInfo.GetLocalization();
                 foreach (var propInfoValidation in propInfoValidations)
                 {
