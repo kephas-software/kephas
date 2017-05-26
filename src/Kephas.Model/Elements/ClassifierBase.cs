@@ -407,10 +407,17 @@ namespace Kephas.Model.Elements
 
             foreach (var mixin in this.BaseMixins)
             {
-                foreach (var member in mixin.Members.Where(m => m.Inherited))
+                foreach (var member in mixin.Members.Where(m => m.IsInherited))
                 {
                     if (baseMembers.TryGetValue(member.Name, out object conflictingMember))
                     {
+                        // if the hierarchy brings the same member, take it only once
+                        if (member == conflictingMember)
+                        {
+                            continue;
+                        }
+
+                        // add the conflicting members to a collection
                         var collection = conflictingMember as IList<INamedElement>;
                         if (collection != null)
                         {
@@ -422,8 +429,10 @@ namespace Kephas.Model.Elements
                             baseMembers[member.Name] = collection;
                         }
                     }
-
-                    baseMembers.Add(member.Name, member);
+                    else
+                    {
+                        baseMembers.Add(member.Name, member);
+                    }
                 }
             }
 

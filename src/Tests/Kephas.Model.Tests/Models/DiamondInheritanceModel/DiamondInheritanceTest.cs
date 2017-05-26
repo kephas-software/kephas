@@ -11,16 +11,13 @@ namespace Kephas.Model.Tests.Models.DiamondInheritanceModel
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Model.Construction.Internal;
-    using Kephas.Model.Elements.Annotations;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class DiamondInheritanceTest : ModelTestBase
     {
         [Test]
-        public async Task InitializeAsync_diamond_inheritance_model()
+        public async Task InitializeAsync_members_inherited_once()
         {
             var container = this.CreateContainerForModel(typeof(INamed), typeof(IUniquelyNamed), typeof(IParameter), typeof(IAppParameter));
             var provider = container.GetExport<IModelSpaceProvider>();
@@ -37,6 +34,8 @@ namespace Kephas.Model.Tests.Models.DiamondInheritanceModel
             Assert.IsFalse(appParamClassifier.BaseMixins.Any(m => m == namedClassifier));
             Assert.IsTrue(appParamClassifier.BaseMixins.Any(m => m == parameterClassifier));
             Assert.IsTrue(appParamClassifier.BaseMixins.Any(m => m == uniqueClassifier));
+            Assert.AreEqual(1, appParamClassifier.Members.Count());
+            Assert.AreSame(namedClassifier.Members.First(), appParamClassifier.Members.First());
         }
     }
 }
