@@ -18,6 +18,7 @@ namespace Kephas.Data.Linq
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Extension methods for <see cref="IQueryable{T}"/>.
@@ -407,17 +408,31 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A list of items.</returns>
-        public static Task<List<T>> ToListAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<IList<T>> ToListAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
         {
             Requires.NotNull(query, nameof(query));
 
             var asyncProvider = query.Provider as IAsyncQueryProvider;
             if (asyncProvider != null)
             {
-                return asyncProvider.ExecuteAsync<List<T>>(query.Expression, cancellationToken);
+                var result = await asyncProvider.ExecuteAsync(query.Expression, cancellationToken).PreserveThreadContext();
+                var listResult = result as IList<T>;
+                if (listResult != null)
+                {
+                    return listResult;
+                }
+
+                var enumerableResult = result as IEnumerable<T>;
+                if (enumerableResult != null)
+                {
+                    return enumerableResult.ToList();
+                }
+
+                var objectEnumerableResult = (IEnumerable<object>)result;
+                return objectEnumerableResult.Cast<T>().ToList();
             }
 
-            return Task.FromResult(query.ToList());
+            return query.ToList();
         }
 
         /// <summary>
@@ -426,7 +441,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A list of items.</returns>
-        public static Task<List<object>> ToListAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IList<object>> ToListAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
         {
             return ToListAsync<object>((IQueryable<object>)query, cancellationToken);
         }
