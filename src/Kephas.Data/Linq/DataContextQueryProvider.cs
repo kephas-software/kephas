@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Linq
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -26,10 +27,16 @@ namespace Kephas.Data.Linq
     public class DataContextQueryProvider : IDataContextQueryProvider
     {
         /// <summary>
-        /// The generic method of IQueryable.CreateQuery{TElement}().
+        /// The generic method of IQueryable.CreateQuery{TElement}.
         /// </summary>
         private static readonly MethodInfo CreateQueryMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((IQueryProvider)null).CreateQuery<int>(null));
+
+        /// <summary>
+        /// The generic method of IQueryable.Execute{TResult}.
+        /// </summary>
+        private static readonly MethodInfo ExecuteMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((IQueryProvider)null).Execute<int>(null));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextQueryProvider"/> class.
@@ -98,7 +105,17 @@ namespace Kephas.Data.Linq
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
         public virtual object Execute(Expression expression)
         {
-            return this.NativeQueryProvider.Execute(this.GetExecutableExpression(expression));
+            Requires.NotNull(expression, nameof(expression));
+
+            var expressionType = expression.Type;
+            if (expressionType.IsConstructedGenericOf(typeof(IQueryable<>)))
+            {
+                var expressionElementType = expressionType.TryGetEnumerableItemType();
+                expressionType = typeof(IEnumerable<>).MakeGenericType(expressionElementType);
+            }
+
+            var execute = ExecuteMethod.MakeGenericMethod(expressionType);
+            return execute.Call(this, expression);
         }
 
         /// <summary>Executes the strongly-typed query represented by a specified expression tree.</summary>
