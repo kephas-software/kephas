@@ -21,6 +21,9 @@ namespace Kephas.Data.Linq.Expressions
     /// </summary>
     public static class QueryableMethods
     {
+        /// <summary>
+        /// Initializes static members of the <see cref="QueryableMethods"/> class.
+        /// </summary>
         static QueryableMethods()
         {
             QueryableOrderByGeneric = ReflectionHelper.GetGenericMethodOf(_ => ((IQueryable<int>)null).OrderBy((Expression<Func<int, int>>)null));

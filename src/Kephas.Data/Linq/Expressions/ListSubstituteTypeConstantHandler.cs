@@ -40,7 +40,7 @@ namespace Kephas.Data.Linq.Expressions
         /// </returns>
         public object Visit(object value, Type substituteType)
         {
-            var itemType = substituteType.GetTypeInfo().GenericTypeParameters[0];
+            var itemType = substituteType.GetTypeInfo().GenericTypeArguments[0];
 
             var convertedObject = EnumerableMethods.EnumerableOfType.MakeGenericMethod(itemType).Invoke(null, new[] { value });
             return convertedObject;

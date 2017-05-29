@@ -13,6 +13,7 @@ namespace Kephas.Data.Linq.Expressions
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Data.Resources;
     using Kephas.Reflection;
 
     /// <summary>
@@ -43,12 +44,11 @@ namespace Kephas.Data.Linq.Expressions
         /// </returns>
         public object Visit(object value, Type substituteType)
         {
-            var itemType = substituteType.GetTypeInfo().GenericTypeParameters[0];
+            var itemType = substituteType.GetTypeInfo().GenericTypeArguments[0];
             var queryProvider = ((IQueryable)value).Provider as IDataContextQueryProvider;
             if (queryProvider == null)
             {
-                // TODO localization
-                throw new InvalidOperationException($"Expected a {typeof(IDataContextQueryProvider)} in query {value}.");
+                throw new InvalidOperationException(string.Format(Strings.DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception, typeof(IDataContextQueryProvider), value));
             }
 
             var genericQueryMethod = typeof(IDataContext).AsRuntimeTypeInfo().Methods[nameof(IDataContext.Query)].FirstOrDefault();

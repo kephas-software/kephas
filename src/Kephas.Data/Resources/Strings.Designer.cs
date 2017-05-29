@@ -151,6 +151,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected a {0} provider in query {1}..
+        /// </summary>
+        internal static string DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception {
+            get {
+                return ResourceManager.GetString("DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
         internal static string DataConverterNotFound_Exception {

@@ -13,6 +13,8 @@ namespace Kephas.Data.Linq.Expressions
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Reflection;
+
     /// <summary>
     /// An <see cref="ISubstituteTypeConstantHandler"/> for <see cref="EnumerableQuery"/>.
     /// </summary>
@@ -39,7 +41,14 @@ namespace Kephas.Data.Linq.Expressions
         /// </returns>
         public object Visit(object value, Type substituteType)
         {
-            var itemType = substituteType.GetTypeInfo().GenericTypeParameters[0];
+            var itemType = substituteType.GetTypeInfo().GenericTypeArguments[0];
+
+            // avoid adding an OfType() expression if the enumerable item type is the same type as the substituted type.
+            var valueEnumerableItemType = value?.GetType().TryGetEnumerableItemType();
+            if (itemType == valueEnumerableItemType)
+            {
+                return value;
+            }
 
             var convertedObject = QueryableMethods.QueryableOfType.MakeGenericMethod(itemType).Invoke(null, new[] { value });
             return convertedObject;

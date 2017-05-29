@@ -184,4 +184,7 @@
   <data name="EntityInfo_DataContextAlreadySet_Exception" xml:space="preserve">
     <value>The data context is already set in the entity information structure, cannot set multiple times.</value>
   </data>
+  <data name="DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception" xml:space="preserve">
+    <value>Expected a {0} provider in query {1}.</value>
+  </data>
 </root>

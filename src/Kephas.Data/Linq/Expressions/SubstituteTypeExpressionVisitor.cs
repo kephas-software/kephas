@@ -17,7 +17,6 @@ namespace Kephas.Data.Linq.Expressions
 
     using Kephas.Activation;
     using Kephas.Collections;
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -103,17 +102,20 @@ namespace Kephas.Data.Linq.Expressions
             var mappedArgs = node.Arguments.Select(this.Visit).ToList();
             var mappedObject = this.Visit(node.Object);
             var mappedMethod = node.Method;
-            if (mappedMethod.IsGenericMethod &&
-                (mappedMethod.Name == nameof(Queryable.Cast) || mappedMethod.Name == nameof(Queryable.OfType)))
+            if (mappedMethod.IsGenericMethod)
             {
                 var genericMethodDefinition = mappedMethod.GetGenericMethodDefinition();
                 var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryGetConcreteType(t) ?? t).ToList();
                 mappedMethod = genericMethodDefinition.MakeGenericMethod(mappedGenericArgs.ToArray());
-                var mappedItemType = mappedArgs[0].Type.TryGetEnumerableItemType();
-                var mappedConvertedItemType = mappedGenericArgs[0];
-                if (mappedItemType == mappedConvertedItemType)
+
+                if (mappedMethod.Name == nameof(Queryable.Cast) || mappedMethod.Name == nameof(Queryable.OfType))
                 {
-                    return mappedArgs[0];
+                    var mappedItemType = mappedArgs[0].Type.TryGetEnumerableItemType();
+                    var mappedConvertedItemType = mappedGenericArgs[0];
+                    if (mappedItemType == mappedConvertedItemType)
+                    {
+                        return mappedArgs[0];
+                    }
                 }
             }
 
@@ -171,7 +173,7 @@ namespace Kephas.Data.Linq.Expressions
             if (nodeTypeInfo.IsGenericType)
             {
                 var genericTypeDefinition = nodeTypeInfo.GetGenericTypeDefinition();
-                var mappedGenericArgs = nodeTypeInfo.GenericTypeParameters.Select(t => this.TryGetConcreteType(t) ?? t);
+                var mappedGenericArgs = nodeTypeInfo.GenericTypeArguments.Select(t => this.TryGetConcreteType(t) ?? t);
                 concreteType = genericTypeDefinition.MakeGenericType(mappedGenericArgs.ToArray());
                 if (node.Value == null)
                 {

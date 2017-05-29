@@ -12,7 +12,6 @@ namespace Kephas.Data.Linq.Expressions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
 
     using Kephas.Reflection;
@@ -46,7 +45,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The enumerable count non empty generic.
         /// </value>
-        public static MethodInfo EnumerableNonEmptyCountGeneric { get; private set; }
+        public static MethodInfo EnumerableNonEmptyCountGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable long count non empty generic.
@@ -54,7 +53,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The enumerable long count non empty generic.
         /// </value>
-        public static MethodInfo EnumerableNonEmptyLongCountGeneric { get; private set; }
+        public static MethodInfo EnumerableNonEmptyLongCountGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable count generic.
@@ -62,7 +61,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The enumerable count generic.
         /// </value>
-        public static MethodInfo EnumerableCountGeneric { get; private set; }
+        public static MethodInfo EnumerableCountGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable long count generic.
@@ -70,37 +69,37 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The enumerable long count generic.
         /// </value>
-        public static MethodInfo EnumerableLongCountGeneric { get; private set; }
+        public static MethodInfo EnumerableLongCountGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable all generic.
         /// </summary>
-        public static MethodInfo EnumerableAllGeneric { get; private set; }
+        public static MethodInfo EnumerableAllGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable empty any generic.
         /// </summary>
-        public static MethodInfo EnumerableEmptyAnyGeneric { get; private set; }
+        public static MethodInfo EnumerableEmptyAnyGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable non empty any generic.
         /// </summary>
-        public static MethodInfo EnumerableNonEmptyAnyGeneric { get; private set; }
+        public static MethodInfo EnumerableNonEmptyAnyGeneric { get; }
 
         /// <summary>
         /// Gets the type of the enumerable of.
         /// </summary>
-        public static MethodInfo EnumerableOfType { get; private set; }
+        public static MethodInfo EnumerableOfType { get; }
 
         /// <summary>
         /// Gets the enumerable select generic.
         /// </summary>
-        public static MethodInfo EnumerableSelectGeneric { get; private set; }
+        public static MethodInfo EnumerableSelectGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable take generic.
         /// </summary>
-        public static MethodInfo EnumerableTakeGeneric { get; private set; }
+        public static MethodInfo EnumerableTakeGeneric { get; }
 
         /// <summary>
         /// Gets the enumerable contains generic.
@@ -108,6 +107,6 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The enumerable contains generic.
         /// </value>
-        public static MethodInfo EnumerableContainsGeneric { get; private set; }
+        public static MethodInfo EnumerableContainsGeneric { get; }
     }
 }
