@@ -96,6 +96,8 @@ namespace Kephas.Data.Linq
         /// <typeparam name="TElement">The type of the elements of the <see cref="T:System.Linq.IQueryable`1" /> that is returned.</typeparam>
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
+            Requires.NotNull(expression, nameof(expression));
+
             var nativeQuery = this.NativeQueryProvider.CreateQuery<TElement>(expression);
             return this.CreateQuery(nativeQuery);
         }
@@ -108,9 +110,9 @@ namespace Kephas.Data.Linq
             Requires.NotNull(expression, nameof(expression));
 
             var expressionType = expression.Type;
-            if (expressionType.IsConstructedGenericOf(typeof(IQueryable<>)))
+            var expressionElementType = expressionType.TryGetEnumerableItemType();
+            if (expressionElementType != null)
             {
-                var expressionElementType = expressionType.TryGetEnumerableItemType();
                 expressionType = typeof(IEnumerable<>).MakeGenericType(expressionElementType);
             }
 
@@ -124,6 +126,8 @@ namespace Kephas.Data.Linq
         /// <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
         public virtual TResult Execute<TResult>(Expression expression)
         {
+            Requires.NotNull(expression, nameof(expression));
+
             return this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
         }
 
