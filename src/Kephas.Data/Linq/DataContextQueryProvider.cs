@@ -36,7 +36,7 @@ namespace Kephas.Data.Linq
         /// </summary>
         /// <param name="queryOperationContext">The query operation context.</param>
         /// <param name="nativeQueryProvider">The native query provider.</param>
-        protected DataContextQueryProvider(IQueryOperationContext queryOperationContext, IQueryProvider nativeQueryProvider)
+        public DataContextQueryProvider(IQueryOperationContext queryOperationContext, IQueryProvider nativeQueryProvider)
         {
             Requires.NotNull(queryOperationContext, nameof(queryOperationContext));
             Requires.NotNull(queryOperationContext.DataContext, nameof(queryOperationContext.DataContext));
