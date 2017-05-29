@@ -68,6 +68,7 @@
     <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="DataContextExtensionsTest.cs" />
     <Compile Include="DefaultDataContextFactoryTest.cs" />
+    <Compile Include="Linq\DataContextQueryProviderTest.cs" />
     <Compile Include="Linq\Expressions\SubstituteTypeExpressionVisitorTest.cs" />
     <Compile Include="Linq\QueryableHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
