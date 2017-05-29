@@ -14,7 +14,7 @@ namespace Kephas.Data.Linq
     /// <summary>
     /// Interface for query providers bound to a <see cref="IDataContext"/>.
     /// </summary>
-    public interface IDataContextQueryProvider : IQueryProvider
+    public interface IDataContextQueryProvider : IAsyncQueryProvider
     {
         /// <summary>
         /// Gets the bound data context.
