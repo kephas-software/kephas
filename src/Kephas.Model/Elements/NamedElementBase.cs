@@ -12,6 +12,7 @@ namespace Kephas.Model.Elements
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
+    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -19,6 +20,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
 
@@ -205,6 +207,19 @@ namespace Kephas.Model.Elements
         public override string ToString()
         {
             return this.QualifiedFullName ?? this.FullName ?? this.Name ?? base.ToString();
+        }
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.Annotations.OfType<IAttributeProvider>().SelectMany(a => a.GetAttributes<TAttribute>());
         }
 
         /// <summary>

@@ -12,11 +12,12 @@ namespace Kephas.Reflection
     using System.Collections.Generic;
 
     using Kephas.Dynamic;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Contract providing base element information.
     /// </summary>
-    public interface IElementInfo : IExpando
+    public interface IElementInfo : IExpando, IAttributeProvider
     {
         /// <summary>
         /// Gets the name of the element.

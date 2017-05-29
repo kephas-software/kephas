@@ -9,10 +9,13 @@
 
 namespace Kephas.Reflection.Dynamic
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Dynamic element information.
@@ -65,6 +68,21 @@ namespace Kephas.Reflection.Dynamic
         public override string ToString()
         {
             return $"{this.Name} ({this.GetType().Name})";
+        }
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            var attributes = new List<TAttribute>(this.Annotations.OfType<TAttribute>());
+            attributes.AddRange(this.Annotations.OfType<IAttributeProvider>().SelectMany(a => a.GetAttributes<TAttribute>()));
+            return attributes;
         }
 
         /// <summary>

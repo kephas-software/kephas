@@ -9,7 +9,9 @@
 
 namespace Kephas.Application
 {
+    using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -20,6 +22,11 @@ namespace Kephas.Application
     /// </summary>
     public class FeatureInfo : Expando, IFeatureInfo
     {
+        /// <summary>
+        /// The empty annotations collection.
+        /// </summary>
+        private static readonly IEnumerable<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureInfo"/> class.
         /// </summary>
@@ -57,7 +64,7 @@ namespace Kephas.Application
         /// <summary>
         /// Annotations of the <see cref="FeatureInfo"/>.
         /// </summary>
-        IEnumerable<object> IElementInfo.Annotations => null;
+        IEnumerable<object> IElementInfo.Annotations => EmptyAnnotations;
 
         /// <summary>
         /// Declaring container of the <see cref="FeatureInfo"/>.
@@ -74,6 +81,19 @@ namespace Kephas.Application
         {
             var deps = string.Join(", ", this.Dependencies ?? new string[0]);
             return $"{this.Name}({deps})";
+        }
+
+        /// <summary>
+        /// Gets the attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return new TAttribute[0];
         }
     }
 }
