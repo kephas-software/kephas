@@ -69,20 +69,20 @@ namespace Kephas.Data
         public object Id { get; }
 
         /// <summary>
+        /// Gets the entity activator.
+        /// </summary>
+        /// <value>
+        /// The entity activator.
+        /// </value>
+        public virtual IActivator EntityActivator { get; private set; }
+
+        /// <summary>
         /// Gets the local cache where the session entities are stored.
         /// </summary>
         /// <value>
         /// The local cache.
         /// </value>
         protected internal virtual IDataContextCache LocalCache { get; }
-
-        /// <summary>
-        /// Gets the entity activator.
-        /// </summary>
-        /// <value>
-        /// The entity activator.
-        /// </value>
-        protected internal virtual IActivator EntityActivator { get; private set; }
 
         /// <summary>
         /// Initializes the service asynchronously.

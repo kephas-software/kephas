@@ -96,6 +96,9 @@
     <Compile Include="..\Kephas.Data.Tests\DefaultDataContextFactoryTest.cs">
       <Link>DefaultDataContextFactoryTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Linq\Expressions\SubstituteTypeExpressionVisitorTest.cs">
+      <Link>Linq\Expressions\SubstituteTypeExpressionVisitorTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Linq\QueryableHelperTest.cs">
       <Link>Linq\QueryableHelperTest.cs</Link>
     </Compile>

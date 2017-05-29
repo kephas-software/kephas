@@ -85,7 +85,7 @@ namespace Kephas.Data.MongoDB
         public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
         {
             var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
-            var provider = new MongoQueryProvider(this, nativeQuery.Provider);
+            var provider = new MongoQueryProvider(queryOperationContext ?? new QueryOperationContext(this), nativeQuery.Provider);
             var query = new MongoQuery<T>(provider, nativeQuery);
             return query;
         }

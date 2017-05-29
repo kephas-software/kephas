@@ -293,6 +293,12 @@
     <Compile Include="..\Kephas.Data\IRef.cs">
       <Link>IRef.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Linq\DataContextQuery.cs">
+      <Link>Linq\DataContextQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Linq\DataContextQueryProvider.cs">
+      <Link>Linq\DataContextQueryProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Linq\Expressions\DataContextQueryableSubstituteTypeConstantHandler.cs">
       <Link>Linq\Expressions\DataContextQueryableSubstituteTypeConstantHandler.cs</Link>
     </Compile>
