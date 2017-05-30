@@ -56,6 +56,9 @@
     <Compile Include="..\Kephas.Data\AttributedModel\EntityForAttribute.cs">
       <Link>AttributedModel\EntityForAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\AttributedModel\RequiredRefAttribute.cs">
+      <Link>AttributedModel\RequiredRefAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Behaviors\Composition\DataBehaviorMetadata.cs">
       <Link>Behaviors\Composition\DataBehaviorMetadata.cs</Link>
     </Compile>
