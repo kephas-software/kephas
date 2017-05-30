@@ -350,8 +350,8 @@
     <Compile Include="..\Kephas.Data\QueryOperationContext.cs">
       <Link>QueryOperationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\RefBase.cs">
-      <Link>RefBase.cs</Link>
+    <Compile Include="..\Kephas.Data\Ref.cs">
+      <Link>Ref.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
