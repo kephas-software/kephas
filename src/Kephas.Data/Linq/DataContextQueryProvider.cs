@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Linq
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -128,7 +129,9 @@ namespace Kephas.Data.Linq
         {
             Requires.NotNull(expression, nameof(expression));
 
-            return this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
+            var executionResult = this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
+            this.AttachEntitiesToDataContext(executionResult);
+            return executionResult;
         }
 
         /// <summary>
@@ -208,6 +211,62 @@ namespace Kephas.Data.Linq
         protected virtual IQueryable<TElement> CreateQuery<TElement>(IQueryable<TElement> nativeQuery)
         {
             return new DataContextQuery<TElement>(this, nativeQuery);
+        }
+
+        /// <summary>
+        /// Attach entities to data context.
+        /// </summary>
+        /// <param name="executionResult">The execution result.</param>
+        protected virtual void AttachEntitiesToDataContext(object executionResult)
+        {
+            if (executionResult == null)
+            {
+                return;
+            }
+
+            var enumerableItemType = executionResult.GetType().TryGetEnumerableItemType();
+            if (enumerableItemType != null && this.IsAttachableType(enumerableItemType))
+            {
+                foreach (var entity in (IEnumerable<object>)executionResult)
+                {
+                    if (this.IsAttachable(entity))
+                    {
+                        this.DataContext.AttachEntity(entity);
+                    }
+                }
+            }
+            else
+            {
+                var entity = executionResult;
+                if (this.IsAttachable(entity))
+                {
+                    this.DataContext.AttachEntity(entity);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether an entity is attachable.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// True if the entity is attachable, false if not.
+        /// </returns>
+        protected virtual bool IsAttachable(object entity)
+        {
+            return entity is IIdentifiable;
+        }
+
+        /// <summary>
+        /// Indicates whether an entity type is attachable.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <returns>
+        /// True if the entity type is attachable, false if not.
+        /// </returns>
+        protected virtual bool IsAttachableType(Type entityType)
+        {
+            return typeof(IIdentifiable).GetTypeInfo().IsAssignableFrom(entityType.GetTypeInfo());
         }
     }
 }
