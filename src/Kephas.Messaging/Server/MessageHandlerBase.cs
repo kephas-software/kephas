@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Server
     using System.Threading.Tasks;
 
     using Kephas.Messaging.Resources;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Provides a base implementation of a message handler.
@@ -46,7 +47,7 @@ namespace Kephas.Messaging.Server
         /// </returns>
         async Task<IMessage> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var response = await this.ProcessAsync(message, context, token);
+            var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
             return response;
         }
 
@@ -67,7 +68,7 @@ namespace Kephas.Messaging.Server
                 throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
             }
 
-            var response = await this.ProcessAsync(typedRequest, context, token);
+            var response = await this.ProcessAsync(typedRequest, context, token).PreserveThreadContext();
             return response;
         }
 
