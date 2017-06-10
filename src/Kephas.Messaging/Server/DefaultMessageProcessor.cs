@@ -24,6 +24,7 @@ namespace Kephas.Messaging.Server
     using Kephas.Messaging.Resources;
     using Kephas.Messaging.Server.Composition;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
@@ -111,10 +112,10 @@ namespace Kephas.Messaging.Server
                 {
                     foreach (var filter in filters)
                     {
-                        await filter.BeforeProcessAsync(context, token);
+                        await filter.BeforeProcessAsync(context, token).PreserveThreadContext();
                     }
 
-                    var response = await messageHandler.ProcessAsync(message, context, token);
+                    var response = await messageHandler.ProcessAsync(message, context, token).PreserveThreadContext();
                     context.Response = response;
                 }
                 catch (Exception ex)
@@ -124,7 +125,7 @@ namespace Kephas.Messaging.Server
 
                 foreach (var filter in filters.Reverse())
                 {
-                    await filter.AfterProcessAsync(context, token);
+                    await filter.AfterProcessAsync(context, token).PreserveThreadContext();
                 }
 
                 if (context.Exception != null)
