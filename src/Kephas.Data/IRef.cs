@@ -13,8 +13,6 @@ namespace Kephas.Data
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Commands;
-
     /// <summary>
     /// Contract used to define and retrieve a referenced entity.
     /// </summary>
@@ -39,12 +37,12 @@ namespace Kephas.Data
         /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>
-        /// <param name="operationContext">The context for finding the entity (optional).</param>
+        /// <param name="throwIfNotFound">If true and the referenced entity is not found, an exception occurs.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        Task<object> GetAsync(IFindContext operationContext = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     /// <summary>
@@ -57,11 +55,11 @@ namespace Kephas.Data
         /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>
-        /// <param name="operationContext">The operationContext for finding the entity (optional).</param>
+        /// <param name="throwIfNotFound">If true and the referenced entity is not found, an exception occurs.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        Task<T> GetAsync(IFindContext<T> operationContext = null, CancellationToken cancellationToken = default(CancellationToken));
+        new Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

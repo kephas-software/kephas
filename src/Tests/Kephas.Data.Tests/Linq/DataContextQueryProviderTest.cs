@@ -97,5 +97,81 @@ namespace Kephas.Data.Tests.Linq
             Assert.AreEqual(2, result.Count);
             Assert.IsTrue(result.All(i => i > 1));
         }
+
+        [Test]
+        public void Execute_attaches_identifiable_entities_collection()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var context = new QueryOperationContext(dataContext);
+
+            var item1 = Substitute.For<IIdentifiable>();
+            item1.Id.Returns(1);
+            var item2 = Substitute.For<IIdentifiable>();
+            item2.Id.Returns(2);
+            var item3 = Substitute.For<IIdentifiable>();
+            item3.Id.Returns(3);
+            var query = new List<IIdentifiable>(new[] { item1, item2, item3 }).AsQueryable().Where(i => (int)i.Id > 1);
+            var provider = new DataContextQueryProvider(context, query.Provider);
+            var result = ((IEnumerable<IIdentifiable>)provider.Execute(query.Expression)).ToList();
+            Assert.AreEqual(2, result.Count);
+
+            dataContext.AttachEntity(Arg.Any<object>()).Received(2);
+        }
+
+        [Test]
+        public void Execute_does_not_attach_non_identifiable_entities_collection()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var context = new QueryOperationContext(dataContext);
+
+            var item2 = Substitute.For<IIdentifiable>();
+            item2.Id.Returns(2);
+            var item3 = Substitute.For<IIdentifiable>();
+            item3.Id.Returns(3);
+            var query = new List<object>(new object[] { 1, item2, item3 }).AsQueryable();
+            var provider = new DataContextQueryProvider(context, query.Provider);
+            var result = ((IEnumerable<object>)provider.Execute(query.Expression)).ToList();
+            Assert.AreEqual(3, result.Count);
+
+            dataContext.AttachEntity(Arg.Any<object>()).Received(2);
+        }
+
+        [Test]
+        public void Execute_attaches_identifiable_entities_single_entity()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var context = new QueryOperationContext(dataContext);
+
+            var item1 = Substitute.For<IIdentifiable>();
+            item1.Id.Returns(1);
+            var item2 = Substitute.For<IIdentifiable>();
+            item2.Id.Returns(2);
+            var item3 = Substitute.For<IIdentifiable>();
+            item3.Id.Returns(3);
+            var query = new List<IIdentifiable>(new[] { item1, item2, item3 }).AsQueryable();
+            var provider = new DataContextQueryProvider(context, query.Provider);
+            var result = provider.CreateQuery<IIdentifiable>(query.Expression).FirstOrDefault();
+            Assert.AreSame(item1, result);
+
+            dataContext.AttachEntity(Arg.Any<object>()).Received(1);
+        }
+
+        [Test]
+        public void Execute_does_not_attach_non_identifiable_entities_single_entity()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var context = new QueryOperationContext(dataContext);
+
+            var item2 = Substitute.For<IIdentifiable>();
+            item2.Id.Returns(2);
+            var item3 = Substitute.For<IIdentifiable>();
+            item3.Id.Returns(3);
+            var query = new List<object>(new object[] { 1, item2, item3 }).AsQueryable();
+            var provider = new DataContextQueryProvider(context, query.Provider);
+            var result = provider.CreateQuery<object>(query.Expression).FirstOrDefault();
+            Assert.AreEqual(1, result);
+
+            dataContext.AttachEntity(Arg.Any<object>()).Received(0);
+        }
     }
 }

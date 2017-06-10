@@ -203,6 +203,11 @@ namespace Kephas.Data.Caching
             if (entityInfo == null)
             {
                 this.entityInfoMappings.TryGetValue(entity, out entityInfo);
+                if (entityInfo != null)
+                {
+                    // cache the entity info for later use in the entity.
+                    entityInfoAware?.SetEntityInfo(entityInfo);
+                }
             }
 
             return entityInfo;
