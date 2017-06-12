@@ -16,6 +16,7 @@ namespace Kephas.Data
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Threading.Tasks;
 
     using IdType = Kephas.Data.Id;
@@ -69,6 +70,37 @@ namespace Kephas.Data
         public Type EntityType { get; }
 
         /// <summary>
+        /// Gets or sets the identifier of the referenced entity.
+        /// </summary>
+        /// <value>
+        /// The identifier of the referenced entity.
+        /// </value>
+        public object Id
+        {
+            get
+            {
+                var entity = this.GetEntityInfo().Entity;
+                var expandoEntity = entity as IIndexable;
+                return expandoEntity != null
+                    ? expandoEntity[this.refIdName]
+                    : entity.GetPropertyValue(this.refIdName);
+            }
+            set
+            {
+                var entity = this.GetEntityInfo().Entity;
+                var expandoEntity = entity as IIndexable;
+                if (expandoEntity != null)
+                {
+                    expandoEntity[this.refIdName] = value;
+                }
+                else
+                {
+                    entity.SetPropertyValue(this.refIdName, value);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>
         /// <param name="throwIfNotFound">If true and the referenced entity is not found, an exception occurs.</param>
@@ -105,21 +137,9 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets or sets the identifier of the referenced entity.
-        /// </summary>
-        /// <value>
-        /// The identifier of the referenced entity.
-        /// </value>
-        public object Id
-        {
-            get => this.GetEntityInfo().Entity.GetPropertyValue(this.refIdName);
-            set => this.GetEntityInfo().Entity.SetPropertyValue(this.refIdName, value);
-        }
-
-        /// <summary>
         /// Gets entity information.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">Thrown when a supplied object has been disposed.</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when the entity has been disposed.</exception>
         /// <returns>
         /// The entity information.
         /// </returns>
