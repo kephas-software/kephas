@@ -21,7 +21,7 @@ namespace Kephas.Data.Linq
     /// A data context query.
     /// </summary>
     /// <typeparam name="T">The query element type.</typeparam>
-    public class DataContextQuery<T> : IQueryable<T>
+    public class DataContextQuery<T> : IOrderedQueryable<T>
     {
         /// <summary>
         /// The query provider.
