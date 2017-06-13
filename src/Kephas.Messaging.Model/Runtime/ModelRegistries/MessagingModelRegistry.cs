@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -72,11 +73,36 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
                     t =>
                         {
                             var ti = t.GetTypeInfo();
-                            return !Equals(ti, markerInterface) && markerInterface.IsAssignableFrom(ti) && ti.IsClass;
+                            return this.IsMessage(ti, markerInterface) || this.IsMessagePart(ti);
                         }));
             }
 
             return types;
+        }
+
+        /// <summary>
+        /// Query if 'type' is message.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="markerInterface">The marker interface.</param>
+        /// <returns>
+        /// True if the type is a message, false if not.
+        /// </returns>
+        private bool IsMessage(TypeInfo type, TypeInfo markerInterface)
+        {
+            return type.IsClass && !type.IsAbstract && markerInterface.IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Query if 'type' is a message part.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// True if the type is a message part, false if not.
+        /// </returns>
+        private bool IsMessagePart(TypeInfo type)
+        {
+            return type.IsClass && !type.IsAbstract && type.GetCustomAttribute<MessagePartAttribute>() != null;
         }
     }
 }
