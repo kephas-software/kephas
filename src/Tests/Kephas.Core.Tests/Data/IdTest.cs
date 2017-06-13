@@ -25,39 +25,55 @@ namespace Kephas.Core.Tests.Data
     {
         private static readonly object SyncObject = new object();
         [Test]
-        public void IsUnset_default()
+        public void IsEmpty_default()
         {
             lock (SyncObject)
             {
-                Assert.IsTrue(Id.IsUnset(null));
-                Assert.IsTrue(Id.IsUnset(0));
-                Assert.IsTrue(Id.IsUnset(0L));
-                Assert.IsTrue(Id.IsUnset(string.Empty));
-                Assert.IsTrue(Id.IsUnset(Guid.Empty));
+                Assert.IsTrue(Id.IsEmpty(null));
+                Assert.IsTrue(Id.IsEmpty(0));
+                Assert.IsTrue(Id.IsEmpty(0L));
+                Assert.IsTrue(Id.IsEmpty(string.Empty));
+                Assert.IsTrue(Id.IsEmpty(Guid.Empty));
             }
         }
 
         [Test]
-        public void IsUnset_custom()
+        public void IsEmpty_custom()
         {
             lock (SyncObject)
             {
-                var originalIsUnset = Id.IsUnset;
-                Id.IsUnset = obj => obj == null || (obj is int && (int)obj <= 0);
+                var originalIsEmpty = Id.IsEmpty;
+                Id.IsEmpty = obj => obj == null || (obj is int && (int)obj <= 0);
 
-                Assert.IsTrue(Id.IsUnset(0));
-                Assert.IsTrue(Id.IsUnset(-1));
+                Assert.IsTrue(Id.IsEmpty(0));
+                Assert.IsTrue(Id.IsEmpty(-1));
 
-                Assert.IsFalse(Id.IsUnset(1));
+                Assert.IsFalse(Id.IsEmpty(1));
 
-                Id.IsUnset = originalIsUnset;
+                Id.IsEmpty = originalIsEmpty;
             }
         }
 
         [Test]
-        public void IsUnset_Exception()
+        public void IsEmpty_Exception()
         {
-            Assert.Throws<ArgumentNullException>(() => Id.IsUnset = null);
+            Assert.Throws<ArgumentNullException>(() => Id.IsEmpty = null);
+        }
+
+        [Test]
+        public void IsTemporary_default()
+        {
+            lock (SyncObject)
+            {
+                Assert.IsFalse(Id.IsTemporary(null));
+                Assert.IsFalse(Id.IsTemporary(0));
+                Assert.IsFalse(Id.IsTemporary(0L));
+                Assert.IsFalse(Id.IsTemporary(string.Empty));
+                Assert.IsFalse(Id.IsTemporary(Guid.Empty));
+
+                Assert.IsTrue(Id.IsTemporary(-1));
+                Assert.IsTrue(Id.IsTemporary(-5L));
+            }
         }
     }
 }

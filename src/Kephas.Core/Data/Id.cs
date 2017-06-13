@@ -10,6 +10,9 @@
 namespace Kephas.Data
 {
     using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
 
@@ -19,42 +22,117 @@ namespace Kephas.Data
     public static class Id
     {
         /// <summary>
-        /// The is unset value tester predicate.
+        /// Gets the list of unset values.
         /// </summary>
-        private static Func<object, bool> isUnsetTester;
+        private static readonly List<object> EmptyValues = new List<object> { 0, 0L, 0d, string.Empty, Guid.Empty };
+
+        /// <summary>
+        /// The predicate for <see cref="IsEmpty"/>.
+        /// </summary>
+        private static Func<object, bool> isEmpty;
+
+        /// <summary>
+        /// The predicate for <see cref="IsTemporary"/>.
+        /// </summary>
+        private static Func<object, bool> isTemporary;
 
         /// <summary>
         /// Initializes static members of the <see cref="Id"/> class.
         /// </summary>
         static Id()
         {
-            isUnsetTester = value =>
-            {
-                if (ReferenceEquals(value, null))
+            isEmpty = value =>
                 {
-                    return true;
-                }
+                    if (ReferenceEquals(value, null))
+                    {
+                        return true;
+                    }
 
-                return 0.Equals(value) ||
-                        0L.Equals(value) ||
-                        string.Empty.Equals(value) ||
-                        Guid.Empty.Equals(value);
-            };
+                    return EmptyValues.Any(v => v.Equals(value));
+                };
+
+            isTemporary = value =>
+                {
+                    if (ReferenceEquals(value, null))
+                    {
+                        return false;
+                    }
+
+                    if (value is int)
+                    {
+                        return (int)value < 0;
+                    }
+
+                    if (value is long)
+                    {
+                        return (long)value < 0;
+                    }
+
+                    return false;
+                };
         }
 
         /// <summary>
-        /// Gets or sets a function to determine whether a specified value is considered unset.
+        /// Gets or sets a function to determine whether a specified value is considered temporary.
         /// </summary>
-        public static Func<object, bool> IsUnset
+        /// <remarks>
+        /// A temporary value indicate that a proper id will be provided at a later time,
+        /// for example when creating a new entity.
+        /// </remarks>
+        public static Func<object, bool> IsTemporary
         {
-            get => isUnsetTester;
+            get => isTemporary;
 
             set
             {
                 Requires.NotNull(value, nameof(value));
 
-                isUnsetTester = value;
+                isTemporary = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets a function to determine whether a specified value is considered empty.
+        /// </summary>
+        public static Func<object, bool> IsEmpty
+        {
+            get => isEmpty;
+
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+
+                isEmpty = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds a value considered empty.
+        /// </summary>
+        /// <param name="value">The empty value.</param>
+        public static void AddEmptyValue(object value)
+        {
+            if (value != null && !EmptyValues.Contains(value))
+            {
+                EmptyValues.Add(value);
+            }
+        }
+
+        /// <summary>
+        /// Removes a value considered empty.
+        /// </summary>
+        /// <param name="value">The empty value to be removed.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        public static bool RemoveEmptyValue(object value)
+        {
+            if (value != null)
+            {
+                return EmptyValues.Remove(value);
+            }
+
+            return false;
         }
     }
 }
