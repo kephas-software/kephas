@@ -23,6 +23,7 @@ nuget pack ..\Kephas.Data.Model\Package.nuspec -BasePath ..\Kephas.Data.Model -S
 nuget pack ..\Kephas.Data.MongoDB\Package.nuspec -BasePath ..\Kephas.Data.MongoDB -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Data.InMemory\Package.nuspec -BasePath ..\Kephas.Data.InMemory -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Data.IO\Package.nuspec -BasePath ..\Kephas.Data.IO -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Kephas.Data.Endpoints\Package.nuspec -BasePath ..\Kephas.Data.Client -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Serialization.Json\Package.nuspec -BasePath ..\Kephas.Serialization.Json -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Platform\Package.nuspec -BasePath ..\Kephas.Platform -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.CodeAnalysis\Package.nuspec -BasePath ..\Kephas.CodeAnalysis -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
