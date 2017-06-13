@@ -14,11 +14,13 @@ namespace Kephas.Data.Model.AttributedModel
     /// <summary>
     /// Marks a navigation property as modelling an entity part,
     /// meaning that the property content is an aggregated part of the declaring entity.
+    /// If applied to an entity, marks it as being a second class entity used only
+    /// as an aggregate of another entity.
     /// </summary>
     /// <remarks>
     /// Entity parts can be both self contained entities or collections.
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class EntityPartAttribute : Attribute
     {
     }
