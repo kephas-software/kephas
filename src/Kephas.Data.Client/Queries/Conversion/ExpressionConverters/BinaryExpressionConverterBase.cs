@@ -51,7 +51,38 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
                 throw new DataException(string.Format(Strings.ExpressionConverter_BadArgumentsCount_Exception, args.Count, 2));
             }
 
+            args = this.PreProcessArguments(args);
             return this.binaryExpressionFactory(args[0], args[1]);
+        }
+
+        /// <summary>
+        /// Pre processes the arguments to make their types match.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// A list of preprocessed arguments.
+        /// </returns>
+        protected virtual IList<Expression> PreProcessArguments(IList<Expression> args)
+        {
+            if (args[0].Type == args[1].Type)
+            {
+                return args;
+            }
+
+            if (args[0].NodeType == ExpressionType.MemberAccess)
+            {
+                if (args[1].NodeType == ExpressionType.Constant)
+                {
+                    var value = ((ConstantExpression)args[1]).Value;
+                    if (!ReferenceEquals(value, null))
+                    {
+                        var convertedValue = Convert.ChangeType(value, args[0].Type);
+                        return new List<Expression> { args[0], Expression.Constant(convertedValue) };
+                    }
+                }
+            }
+
+            return args;
         }
     }
 }
