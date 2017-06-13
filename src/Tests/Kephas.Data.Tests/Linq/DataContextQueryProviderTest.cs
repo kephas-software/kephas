@@ -173,5 +173,17 @@ namespace Kephas.Data.Tests.Linq
 
             dataContext.AttachEntity(Arg.Any<object>()).Received(0);
         }
+
+        [Test]
+        public void CreateQuery_is_orderable()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var context = new QueryOperationContext(dataContext);
+
+            var query = new List<int>(new[] { 3, 1, 2 }).AsQueryable();
+            var provider = new DataContextQueryProvider(context, query.Provider);
+            var orderableQuery = provider.CreateQuery<int>(query.Expression).OrderBy(e => e);
+            Assert.IsInstanceOf<IOrderedQueryable<int>>(orderableQuery);
+        }
     }
 }
