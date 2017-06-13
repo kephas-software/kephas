@@ -46,6 +46,9 @@
     <Compile Include="..\Kephas.Data.Client\Queries\ClientQuery.cs">
       <Link>Queries\ClientQuery.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\ClientQueryExecutorBase.cs">
+      <Link>Queries\ClientQueryExecutorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ClientQueryConversionContext.cs">
       <Link>Queries\Conversion\ClientQueryConversionContext.cs</Link>
     </Compile>
@@ -123,6 +126,12 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Expression.cs">
       <Link>Queries\Expression.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\IClientQueryExecutor.cs">
+      <Link>Queries\IClientQueryExecutor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\NullClientQueryExecutor.cs">
+      <Link>Queries\NullClientQueryExecutor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
