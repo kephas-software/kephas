@@ -145,10 +145,11 @@ namespace Kephas.Data.Client.Queries
                 var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
                 var domainEntities = await query.ToListAsync(token).PreserveThreadContext();
 
+                var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
                 foreach (var entity in domainEntities)
                 {
-                    var context = new DataConversionContext(this.ConversionService, sourceDataContext: dataContext, targetDataContext: clientDataContext, rootTargetType: typeof(TClientEntity));
-                    var result = await this.ConversionService.ConvertAsync(entity, (TClientEntity)null, context, token).PreserveThreadContext();
+                    var context = new DataConversionContext(this.ConversionService, sourceDataContext: dataContext, targetDataContext: clientDataContext, rootTargetType: clientEntityTypeInfo.Type);
+                    var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
                     mappings.Add(Tuple.Create((TClientEntity)result.Target, entity));
                 }
             }
