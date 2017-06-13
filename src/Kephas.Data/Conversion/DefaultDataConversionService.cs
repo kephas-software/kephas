@@ -224,7 +224,7 @@ namespace Kephas.Data.Conversion
             }
             else if (sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
-                if (!Id.IsUnset(sourceId))
+                if (!Id.IsEmpty(sourceId))
                 {
                     target = await this.FindTargetEntityAsync(
                                  targetDataContext,
