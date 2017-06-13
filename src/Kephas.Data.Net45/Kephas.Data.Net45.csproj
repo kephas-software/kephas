@@ -167,6 +167,12 @@
     <Compile Include="..\Kephas.Data\Commands\FindContext.cs">
       <Link>Commands\FindContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Commands\FindOneCommand.cs">
+      <Link>Commands\FindOneCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\FindOneContext.cs">
+      <Link>Commands\FindOneContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Commands\FindResult.cs">
       <Link>Commands\FindResult.cs</Link>
     </Compile>
@@ -199,6 +205,12 @@
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\IFindContext.cs">
       <Link>Commands\IFindContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IFindOneCommand.cs">
+      <Link>Commands\IFindOneCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IFindOneContext.cs">
+      <Link>Commands\IFindOneContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\IFindResult.cs">
       <Link>Commands\IFindResult.cs</Link>

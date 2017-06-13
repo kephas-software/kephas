@@ -81,6 +81,9 @@
     <Compile Include="..\Kephas.Data.Tests\Commands\FindCommandTest.cs">
       <Link>Commands\FindCommandTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Commands\FindOneCommandTest.cs">
+      <Link>Commands\FindOneCommandTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Commands\PersistChangesCommandTest.cs">
       <Link>Commands\PersistChangesCommandTest.cs</Link>
     </Compile>

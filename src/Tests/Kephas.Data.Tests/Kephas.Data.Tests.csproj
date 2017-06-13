@@ -63,6 +63,7 @@
     <Compile Include="Commands\DiscardChangesCommandTest.cs" />
     <Compile Include="Commands\Factory\DataCommandFactoryTest.cs" />
     <Compile Include="Commands\FindCommandTest.cs" />
+    <Compile Include="Commands\FindOneCommandTest.cs" />
     <Compile Include="Commands\PersistChangesCommandTest.cs" />
     <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
     <Compile Include="DataContextBaseTest.cs" />

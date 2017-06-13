@@ -256,20 +256,8 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(criteria, nameof(criteria));
 
-            var queryContext = new QueryOperationContext(dataContext);
-            var query = dataContext.Query<T>(queryContext).Where(criteria).Take(2);
-            var result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
-            if (result.Count > 1)
-            {
-                throw new AmbiguousMatchDataException(string.Format(Strings.DataContext_FindOneAsync_AmbiguousMatch_Exception, criteria));
-            }
-
-            if (result.Count == 0 && throwIfNotFound)
-            {
-                throw new NotFoundDataException(string.Format(Strings.DataContext_FindOneAsync_NotFound_Exception, criteria));
-            }
-
-            return result.Count == 0 ? default(T) : result[0];
+            var findOneContext = new FindOneContext<T>(dataContext, criteria, throwIfNotFound);
+            return (T)await FindOneCoreAsync(dataContext, findOneContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -360,6 +348,25 @@ namespace Kephas.Data
             CancellationToken cancellationToken)
         {
             var command = (IFindCommand)dataContext.CreateCommand(typeof(IFindCommand));
+            var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
+            return result.Entity;
+        }
+
+        /// <summary>
+        /// Searches for the entity with the provided criteria in the find context and returns it asynchronously.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="findContext">The find context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        private static async Task<object> FindOneCoreAsync(
+            this IDataContext dataContext,
+            IFindOneContext findContext,
+            CancellationToken cancellationToken)
+        {
+            var command = (IFindOneCommand)dataContext.CreateCommand(typeof(IFindOneCommand));
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
         }

@@ -1,48 +1,50 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FindContext.cs" company="Quartz Software SRL">
+// <copyright file="FindOneContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   The default implementation of a find operationContext.
+//   Implements the find one context class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Commands
 {
     using System;
+    using System.Linq.Expressions;
 
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// The context for the <see cref="IFindCommand"/>.
+    /// A find one context.
     /// </summary>
-    public class FindContext : DataOperationContext, IFindContext
+    public class FindOneContext : DataOperationContext, IFindOneContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FindContext"/> class.
+        /// Initializes a new instance of the <see cref="FindOneContext"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
         /// <param name="entityType">Type of the entity.</param>
-        /// <param name="id">The identifier of the entity.</param>
+        /// <param name="criteria">The criteria for finding the entity.</param>
         /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c> (optional).</param>
-        public FindContext(IDataContext dataContext, Type entityType, object id, bool throwIfNotFound = true)
+        public FindOneContext(IDataContext dataContext, Type entityType, Expression criteria, bool throwIfNotFound = true)
             : base(dataContext)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entityType, nameof(entityType));
+            Requires.NotNull(criteria, nameof(criteria));
 
             this.EntityType = entityType;
-            this.Id = id;
+            this.Criteria = criteria;
             this.ThrowIfNotFound = throwIfNotFound;
         }
 
         /// <summary>
-        /// Gets or sets the identifier of the entity to find.
+        /// Gets or sets the criteria for finding the entity.
         /// </summary>
         /// <value>
-        /// The identifier of the entity.
+        /// The criteria for finding the entity.
         /// </value>
-        public object Id { get; set; }
+        public Expression Criteria { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw an exception if an entity is not found.
@@ -62,21 +64,33 @@ namespace Kephas.Data.Commands
     }
 
     /// <summary>
-    /// The generic context for the <see cref="IFindCommand"/>.
+    /// The default implementation of a find operationContext.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
-    public class FindContext<T> : FindContext, IFindContext<T>
+    public class FindOneContext<T> : FindOneContext, IFindOneContext<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FindContext{T}"/> class.
+        /// Initializes a new instance of the <see cref="FindOneContext{T}"/> class.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="id">The identifier of the entity.</param>
+        /// <param name="criteria">The criteria for finding the entity.</param>
         /// <param name="throwIfNotFound"><c>true</c> to throw an exception if an entity is not found, otherwise <c>false</c> (optional).</param>
-        public FindContext(IDataContext dataContext, object id, bool throwIfNotFound = true)
-            : base(dataContext, typeof(T), id, throwIfNotFound)
+        public FindOneContext(IDataContext dataContext, Expression<Func<T, bool>> criteria, bool throwIfNotFound = true)
+            : base(dataContext, typeof(T), criteria, throwIfNotFound)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
+        }
+
+        /// <summary>
+        /// Gets or sets the criteria for finding the entity.
+        /// </summary>
+        /// <value>
+        /// The criteria for finding the entity.
+        /// </value>
+        public new Expression<Func<T, bool>> Criteria
+        {
+            get => (Expression<Func<T, bool>>)base.Criteria;
+            set => base.Criteria = value;
         }
     }
 }
