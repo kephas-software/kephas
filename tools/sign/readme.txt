@@ -1,4 +1,4 @@
-1. Start the Visual Studio Command Prompt (for ildasm and ilasm).
+1. Start the Visual Studio Developer Command Prompt (for ildasm and ilasm).
 2. Copy in some subfolder the assembly to sign.
 3. Optional: copy in the same folder with sign.bat the strong name key file (*.snk). You can however indicate a path when starting signing.
 4. Type in command prompt: 
