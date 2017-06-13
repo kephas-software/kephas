@@ -23,7 +23,7 @@ namespace Kephas.Data
     /// Implementation of an entity reference.
     /// </summary>
     /// <typeparam name="T">The referenced entity type.</typeparam>
-    public abstract class Ref<T> : IRef<T>
+    public class Ref<T> : IRef<T>
         where T : class
     {
         /// <summary>
@@ -41,7 +41,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="entityInfoAware">The entity information provider.</param>
         /// <param name="refIdName">Name of the reference identifier.</param>
-        protected Ref(IEntityInfoAware entityInfoAware, string refIdName)
+        public Ref(IEntityInfoAware entityInfoAware, string refIdName)
         {
             Requires.NotNull(entityInfoAware, nameof(entityInfoAware));
             Requires.NotNullOrEmpty(refIdName, nameof(refIdName));
