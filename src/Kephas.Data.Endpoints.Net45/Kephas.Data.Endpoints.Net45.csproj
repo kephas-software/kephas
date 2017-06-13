@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kephas.Data.Endpoints</RootNamespace>
+    <AssemblyName>Kephas.Data.Endpoints</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Data.Endpoints.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Data.Endpoints.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Kephas.Data.Endpoints\QueryHandler.cs">
+      <Link>QueryHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Endpoints\QueryMessage.cs">
+      <Link>QueryMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Data.Client.Net45\Kephas.Data.Client.Net45.csproj">
+      <Project>{47ca5fae-2c28-431f-b41e-db9cf8293545}</Project>
+      <Name>Kephas.Data.Client.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Data.Net45\Kephas.Data.Net45.csproj">
+      <Project>{27926b67-08ce-4fe4-9338-0b11da98e930}</Project>
+      <Name>Kephas.Data.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Messaging.Net45\Kephas.Messaging.Net45.csproj">
+      <Project>{dea2cc67-ded4-4ac7-85e1-bb1c6d9d4378}</Project>
+      <Name>Kephas.Messaging.Net45</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

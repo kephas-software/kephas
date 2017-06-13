@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <TargetFramework>netstandard1.3</TargetFramework>
+      <SignAssembly>True</SignAssembly>
+      <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+      <Company>Quartz Software SRL</Company>
+      <Product>Kephas Framework</Product>
+      <AssemblyVersion>3.9.0.0</AssemblyVersion>
+      <FileVersion>3.9.0.0</FileVersion>
+      <Copyright>Copyright © Quartz Software SRL 2010-2017</Copyright>
+      <Description>Provides the endpoints for the data flow.</Description>
+      <Version>3.9.0</Version>
+      <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+      <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+      <PackageTags>kephas framework data endpoints quartz-software</PackageTags>
+      <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
+    <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
+    <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Data.Endpoints</id>
+        <version>$version$</version>
+        <title>Kephas.Data.Endpoints</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides the endpoints for the data flow.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides the endpoints for the data flow.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Data" version="$refversion$" />
+                <dependency id="Kephas.Data.Client" version="$refversion$" />
+                <dependency id="Kephas.Messaging" version="$refversion$" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.Endpoints.dll" />
+        </references>
+        <tags>kephas framework data endpoints quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Endpoints.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Endpoints.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Endpoints.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Data.Endpoints.Net45\bin\$configuration$\Kephas.Data.Endpoints.dll" target="lib\net45" />
+        <file src="..\Kephas.Data.Endpoints.Net45\bin\$configuration$\Kephas.Data.Endpoints.pdb" target="lib\net45" />
+        <file src="..\Kephas.Data.Endpoints.Net45\bin\$configuration$\Kephas.Data.Endpoints.xml" target="lib\net45" />
+    </files>
+</package>
