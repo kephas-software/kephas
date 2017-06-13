@@ -19,8 +19,6 @@ namespace Kephas.Data
     using Kephas.Dynamic;
     using Kephas.Threading.Tasks;
 
-    using IdType = Kephas.Data.Id;
-
     /// <summary>
     /// Implementation of an entity reference.
     /// </summary>
@@ -110,7 +108,7 @@ namespace Kephas.Data
         /// </returns>
         public async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (IdType.IsUnset(this.Id))
+            if (Data.Id.IsEmpty(this.Id))
             {
                 return null;
             }
