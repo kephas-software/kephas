@@ -15,6 +15,8 @@ namespace Kephas.Data.MongoDB.Application
     using Kephas.Application;
     using Kephas.Threading.Tasks;
 
+    using global::MongoDB.Bson;
+
     /// <summary>
     /// Feature manager for MongoDB.
     /// </summary>
@@ -30,6 +32,19 @@ namespace Kephas.Data.MongoDB.Application
         /// </returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
+            var originalIsTemporary = Id.IsTemporary;
+            Id.IsTemporary = value =>
+                {
+                    if (value is ObjectId)
+                    {
+                        return (ObjectId)value < ObjectId.Empty;
+                    }
+
+                    return originalIsTemporary(value);
+                };
+
+            Id.AddEmptyValue(ObjectId.Empty);
+
             return TaskHelper.CompletedTask;
         }
     }
