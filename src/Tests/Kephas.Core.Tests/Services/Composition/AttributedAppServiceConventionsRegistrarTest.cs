@@ -14,7 +14,12 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Composition.Metadata;
     using Kephas.Core.Tests.Composition;
+    using Kephas.Core.Tests.Services.Composition.CustomNamedValueAppServiceMetadata;
+    using Kephas.Core.Tests.Services.Composition.CustomValueAppServiceMetadata;
+    using Kephas.Core.Tests.Services.Composition.DefaultAppServiceMetadata;
+    using Kephas.Core.Tests.Services.Composition.DefaultExplicitAppServiceMetadata;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -136,12 +141,12 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(ISimpleMetadataAppService).GetTypeInfo(),
-                        typeof(SimpleMetadataAppService).GetTypeInfo(),
+                        typeof(IDefaultMetadataAppService).GetTypeInfo(),
+                        typeof(DefaultMetadataAppService).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
 
-            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(SimpleMetadataAppService)];
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
 
             Assert.AreEqual(4, metadata.Count);
@@ -151,17 +156,17 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.AppServiceImplementationType)));
 
             var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.AppServiceImplementationType)];
-            Assert.AreEqual(typeof(ISimpleMetadataAppService), valueGetter(typeof(ISimpleMetadataAppService)));
+            Assert.AreEqual(typeof(IDefaultMetadataAppService), valueGetter(typeof(IDefaultMetadataAppService)));
             Assert.AreEqual(null, valueGetter(null));
 
             valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
-            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+            Assert.AreEqual(null, valueGetter(typeof(IDefaultMetadataAppService)));
 
             valueGetter = (Func<Type, object>)metadata["OverridePriority"];
-            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+            Assert.AreEqual(null, valueGetter(typeof(IDefaultMetadataAppService)));
 
             valueGetter = (Func<Type, object>)metadata["OptionalService"];
-            Assert.AreEqual(null, valueGetter(typeof(ISimpleMetadataAppService)));
+            Assert.AreEqual(null, valueGetter(typeof(IDefaultMetadataAppService)));
         }
 
         [Test]
@@ -245,15 +250,15 @@ namespace Kephas.Core.Tests.Services.Composition
                 conventions,
                 new[]
                     {
-                        typeof(IMetadataAppService).GetTypeInfo(),
-                        typeof(MetadataAppService).GetTypeInfo(),
-                        typeof(NullMetadataAppService).GetTypeInfo(),
+                        typeof(IExplicitMetadataAppService).GetTypeInfo(),
+                        typeof(ExplicitMetadataAppService).GetTypeInfo(),
+                        typeof(NullExplicitMetadataAppService).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
 
             Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
             var builderEntry = conventions.MatchingConventionsBuilders.First();
-            Assert.IsTrue(builderEntry.Key(typeof(NullMetadataAppService)));
+            Assert.IsTrue(builderEntry.Key(typeof(NullExplicitMetadataAppService)));
 
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
@@ -262,8 +267,106 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
 
             var valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
-            Assert.AreEqual(100, valueGetter(typeof(MetadataAppService)));
-            Assert.IsNull(valueGetter(typeof(NullMetadataAppService)));
+            Assert.AreEqual(100, valueGetter(typeof(ExplicitMetadataAppService)));
+            Assert.IsNull(valueGetter(typeof(NullExplicitMetadataAppService)));
+        }
+
+        [Test]
+        public void RegisterConventions_metadata_IMetadataValue()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AttributedAppServiceConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(ICustomValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
+
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var metadata = testBuilder.ExportBuilder.Metadata;
+
+            Assert.AreEqual(5, metadata.Count);
+            Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
+
+            var valueGetter = (Func<Type, object>)metadata["CustomValueMetadata"];
+            Assert.AreEqual("hi there", valueGetter(typeof(CustomValueMetadataAppService)));
+            Assert.IsNull(valueGetter(typeof(CustomValueNullMetadataAppService)));
+        }
+
+        [Test]
+        public void RegisterConventions_metadata_MetadataValue_properties()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AttributedAppServiceConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(ICustomValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
+
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(CustomValueNullMetadataAppService)));
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var metadata = testBuilder.ExportBuilder.Metadata;
+
+            Assert.AreEqual(5, metadata.Count);
+            Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
+
+            var valueGetter = (Func<Type, object>)metadata["CustomValueMetadata"];
+            Assert.AreEqual("hi there", valueGetter(typeof(CustomValueMetadataAppService)));
+            Assert.IsNull(valueGetter(typeof(CustomValueNullMetadataAppService)));
+        }
+
+        [Test]
+        public void RegisterConventions_metadata_MetadataNamedValue_properties()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AttributedAppServiceConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(ICustomNamedValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomNamedValueMetadataAppService).GetTypeInfo(),
+                        typeof(CustomNamedValueNullMetadataAppService).GetTypeInfo(),
+                    },
+                new TestRegistrationContext());
+
+            Assert.AreEqual(1, conventions.MatchingConventionsBuilders.Count);
+            var builderEntry = conventions.MatchingConventionsBuilders.First();
+            Assert.IsTrue(builderEntry.Key(typeof(CustomNamedValueNullMetadataAppService)));
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
+            var metadata = testBuilder.ExportBuilder.Metadata;
+
+            Assert.AreEqual(6, metadata.Count);
+            Assert.IsTrue(metadata.ContainsKey("CustomNamedValueMetadataName"));
+            Assert.IsTrue(metadata.ContainsKey("Icon"));
+            Assert.IsFalse(metadata.ContainsKey("CustomNamedValueMetadataDescription"));
+
+            var valueGetter = (Func<Type, object>)metadata["CustomNamedValueMetadataName"];
+            var iconValueGetter = (Func<Type, object>)metadata["Icon"];
+            Assert.AreEqual("hi there", valueGetter(typeof(CustomNamedValueMetadataAppService)));
+            Assert.AreEqual("ICXP", iconValueGetter(typeof(CustomNamedValueMetadataAppService)));
+            Assert.IsNull(valueGetter(typeof(CustomNamedValueNullMetadataAppService)));
+            Assert.IsNull(iconValueGetter(typeof(CustomNamedValueNullMetadataAppService)));
         }
 
         [Test]
@@ -300,22 +403,6 @@ namespace Kephas.Core.Tests.Services.Composition
         public class NewMultipleTestService : IMultipleTestAppService { }
 
 
-        [AppServiceContract]
-        public interface ISimpleMetadataAppService { }
-
-        public class SimpleMetadataAppService : ISimpleMetadataAppService
-        {
-        }
-
-        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
-        public interface IMetadataAppService { }
-
-        [ProcessingPriority(100)]
-        public class MetadataAppService : IMetadataAppService { }
-
-        public class NullMetadataAppService : IMetadataAppService { }
-
-
         [SharedAppServiceContract]
         public interface IGenericAppService<T> { }
 
@@ -339,5 +426,77 @@ namespace Kephas.Core.Tests.Services.Composition
         public interface IBadAppService { }
 
         public class BadAppService : IBadAppService { }
+    }
+
+    namespace CustomValueAppServiceMetadata
+    {
+        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomValueMetadataAttribute) })]
+        public interface ICustomValueMetadataAppService { }
+
+        [CustomValueMetadata("hi there")]
+        public class CustomValueMetadataAppService : ICustomValueMetadataAppService { }
+
+        public class CustomValueNullMetadataAppService : ICustomValueMetadataAppService { }
+
+        public class CustomValueMetadataAttribute : Attribute, IMetadataValue<string>
+        {
+            public CustomValueMetadataAttribute(string value)
+            {
+                this.Value = value;
+            }
+
+            object IMetadataValue.Value => this.Value;
+
+            public string Value { get; }
+        }
+    }
+
+    namespace CustomNamedValueAppServiceMetadata
+    {
+        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomNamedValueMetadataAttribute) })]
+        public interface ICustomNamedValueMetadataAppService { }
+
+        [CustomNamedValueMetadata("hi there", "bob", IconName = "ICXP")]
+        public class CustomNamedValueMetadataAppService : ICustomNamedValueMetadataAppService { }
+
+        public class CustomNamedValueNullMetadataAppService : ICustomNamedValueMetadataAppService { }
+
+        public class CustomNamedValueMetadataAttribute : Attribute
+        {
+            public CustomNamedValueMetadataAttribute(string value, string description)
+            {
+                this.Name = value;
+                this.Description = description;
+            }
+
+            [MetadataValue]
+            public string Name { get; }
+
+            [MetadataValue("Icon")]
+            public string IconName { get; set; }
+
+            public string Description { get; }
+        }
+    }
+
+    namespace DefaultAppServiceMetadata
+    {
+        [AppServiceContract]
+        public interface IDefaultMetadataAppService { }
+
+        public class DefaultMetadataAppService : IDefaultMetadataAppService
+        {
+        }
+    }
+
+    namespace DefaultExplicitAppServiceMetadata
+    {
+        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        public interface IExplicitMetadataAppService { }
+
+        [ProcessingPriority(100)]
+        public class ExplicitMetadataAppService : IExplicitMetadataAppService { }
+
+        public class NullExplicitMetadataAppService : IExplicitMetadataAppService { }
     }
 }

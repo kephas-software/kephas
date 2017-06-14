@@ -20,7 +20,9 @@ namespace Kephas.Services.Composition
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Metadata;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base for conventions registrars of application services.
@@ -51,6 +53,20 @@ namespace Kephas.Services.Composition
                 typeof(OverridePriorityAttribute),
                 typeof(OptionalServiceAttribute),
             };
+
+        /// <summary>
+        /// Information describing the metadata value type.
+        /// </summary>
+        private static IRuntimeTypeInfo metadataValueTypeInfo;
+
+        /// <summary>
+        /// Gets information describing the metadata value type.
+        /// </summary>
+        /// <value>
+        /// Information describing the metadata value type.
+        /// </value>
+        private static IRuntimeTypeInfo MetadataValueTypeInfo 
+            => metadataValueTypeInfo ?? (metadataValueTypeInfo = typeof(IMetadataValue).AsRuntimeTypeInfo());
 
         /// <summary>
         /// Registers the conventions.
@@ -109,15 +125,18 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="partType">Type of the part.</param>
         /// <param name="attributeType">Type of the attribute.</param>
-        /// <returns>The metadata value from attribute.</returns>
-        internal static object GetMetadataValueFromAttribute(Type partType, Type attributeType)
+        /// <param name="property">The metadata property.</param>
+        /// <returns>
+        /// The metadata value from attribute.
+        /// </returns>
+        internal static object GetMetadataValueFromAttribute(Type partType, Type attributeType, IPropertyInfo property)
         {
-            var value =
+            var attr =
                 partType.GetTypeInfo()
                     .GetCustomAttributes(attributeType, inherit: true)
-                    .OfType<IMetadataValue>()
-                    .Select(a => a.Value)
                     .FirstOrDefault();
+
+            var value = attr == null ? null : property.GetValue(attr);
             return value;
         }
 
@@ -521,11 +540,68 @@ namespace Kephas.Services.Composition
 
             foreach (var attributeType in attributeTypes)
             {
-                var attrType = attributeType;
-                builder.AddMetadata(
-                    GetMetadataNameFromAttributeType(attrType),
-                    t => GetMetadataValueFromAttribute(t, attrType));
+                var attrTypeInfo = attributeType.AsRuntimeTypeInfo();
+                var valueProperties = this.GetMetadataValueProperties(attrTypeInfo);
+                foreach (var valuePropertyEntry in valueProperties)
+                {
+                    builder.AddMetadata(
+                        valuePropertyEntry.Key,
+                        t => GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
+                }
             }
+        }
+
+        /// <summary>
+        /// Gets the metadata value properties which should be retrieved from the attribute.
+        /// </summary>
+        /// <param name="attributeTypeInfo">Information describing the attribute type.</param>
+        /// <returns>
+        /// The metadata properties.
+        /// </returns>
+        private IDictionary<string, IPropertyInfo> GetMetadataValueProperties(IRuntimeTypeInfo attributeTypeInfo)
+        {
+            const string MetadataValuePropertiesName = "Kephas_MetadataValueProperties";
+            var metadataValueProperties = attributeTypeInfo[MetadataValuePropertiesName] as IDictionary<string, IPropertyInfo>;
+            if (metadataValueProperties == null)
+            {
+                metadataValueProperties = new Dictionary<string, IPropertyInfo>();
+                var baseMetadataName = GetMetadataNameFromAttributeType(attributeTypeInfo.Type);
+
+                foreach (var attrPropInfo in attributeTypeInfo.Properties.Values)
+                {
+                    var metadataValueAttribute = attrPropInfo.GetAttribute<MetadataValueAttribute>();
+                    var explicitName = metadataValueAttribute?.ValueName;
+                    var metadataValueName = !string.IsNullOrEmpty(explicitName)
+                                                ? explicitName
+                                                : attrPropInfo.Name == nameof(IMetadataValue.Value)
+                                                    ? baseMetadataName
+                                                    : baseMetadataName + attrPropInfo.Name;
+                    if (metadataValueAttribute != null)
+                    {
+                        metadataValueProperties.Add(metadataValueName, attrPropInfo);
+                    }
+                    else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeTypeInfo))
+                    {
+                        metadataValueProperties.Add(metadataValueName, attrPropInfo);
+                    }
+                }
+
+                attributeTypeInfo[MetadataValuePropertiesName] = metadataValueProperties;
+            }
+
+            return metadataValueProperties;
+        }
+
+        /// <summary>
+        /// Query if 'attributeType' is metadata value attribute.
+        /// </summary>
+        /// <param name="attributeType">Type of the attribute.</param>
+        /// <returns>
+        /// True if metadata value attribute, false if not.
+        /// </returns>
+        private bool IsMetadataValueAttribute(IRuntimeTypeInfo attributeType)
+        {
+            return MetadataValueTypeInfo.TypeInfo.IsAssignableFrom(attributeType.TypeInfo);
         }
 
         /// <summary>

@@ -569,6 +569,9 @@
     <Compile Include="..\Kephas.Core\Services\IInitializable.cs">
       <Link>Services\IInitializable.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\MetadataValueAttribute.cs">
+      <Link>Services\MetadataValueAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\NullServiceException.cs">
       <Link>Services\NullServiceException.cs</Link>
     </Compile>
