@@ -10,15 +10,12 @@
 namespace Kephas.Data
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-    using Kephas.Data.Linq;
-    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
@@ -233,6 +230,48 @@ namespace Kephas.Data
 
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
             return (T)await FindCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="findContext">The find context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        public static async Task<object> FindOneAsync(
+            this IDataContext dataContext,
+            IFindOneContext findContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(findContext, nameof(findContext));
+
+            return await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Searches for the first entity matching the provided criteria and returns it asynchronously.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="findContext">The find context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the found entity.
+        /// </returns>
+        public static async Task<T> FindOneAsync<T>(
+            this IDataContext dataContext,
+            IFindOneContext findContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : class
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(findContext, nameof(findContext));
+
+            return (T)await FindOneCoreAsync(dataContext, findContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
