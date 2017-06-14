@@ -406,6 +406,28 @@ namespace Kephas.Core.Tests.Runtime
             Assert.AreSame(typeof(TestClass).Assembly, declaringContainer.GetUnderlyingAssemblyInfo());
         }
 
+        [Test]
+        public void GetAttributes_default()
+        {
+            var runtimeTypeInfo = new RuntimeTypeInfo(typeof(GetAttributes.BaseType));
+            var attrs = runtimeTypeInfo.GetAttributes<Attribute>().ToList();
+
+            Assert.AreEqual(2, attrs.Count);
+            Assert.IsTrue(attrs.OfType<GetAttributes.InheritableAttribute>().Any());
+            Assert.IsTrue(attrs.OfType<GetAttributes.NonInheritableAttribute>().Any());
+        }
+
+        [Test]
+        public void GetAttributes_inherited()
+        {
+            var runtimeTypeInfo = new RuntimeTypeInfo(typeof(GetAttributes.DerivedType));
+            var attrs = runtimeTypeInfo.GetAttributes<Attribute>().ToList();
+
+            Assert.AreEqual(2, attrs.Count);
+            Assert.IsTrue(attrs.OfType<GetAttributes.InheritableAttribute>().Any());
+            Assert.IsTrue(attrs.OfType<GetAttributes.NonDerivedInheritableAttribute>().Any());
+        }
+
         public class TestClass
         {
             public string PublicField;
@@ -471,5 +493,24 @@ namespace Kephas.Core.Tests.Runtime
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
             public T Value;
         }
+    }
+
+    namespace GetAttributes
+    {
+        [Inheritable]
+        [NonInheritable]
+        public class BaseType { }
+
+        [NonDerivedInheritable]
+        public class DerivedType : BaseType { }
+
+        [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+        public class InheritableAttribute : Attribute { }
+
+        [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+        public class NonInheritableAttribute : Attribute { }
+
+        [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+        public class NonDerivedInheritableAttribute : Attribute { }
     }
 }

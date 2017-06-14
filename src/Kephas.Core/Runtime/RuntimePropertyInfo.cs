@@ -153,7 +153,7 @@ namespace Kephas.Runtime
         public IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute
         {
-            return this.PropertyInfo.GetCustomAttributes<TAttribute>();
+            return this.PropertyInfo.GetCustomAttributes<TAttribute>(inherit: true);
         }
 
         /// <summary>
