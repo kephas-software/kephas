@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Server
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -29,6 +30,8 @@ namespace Kephas.Messaging.Server
         /// <returns>A task.</returns>
         Task IMessageProcessingFilter.BeforeProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
+            Requires.NotNull(context, nameof(context));
+
             var message = (TMessage)context.Message;
             return this.BeforeProcessAsync(message, context, token);
         }
@@ -45,6 +48,8 @@ namespace Kephas.Messaging.Server
         /// </remarks>
         Task IMessageProcessingFilter.AfterProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
+            Requires.NotNull(context, nameof(context));
+
             var message = (TMessage)context.Message;
             return this.AfterProcessAsync(message, context, token);
         }
