@@ -12,6 +12,7 @@ namespace CalculatorConsole.Operations
     using System;
 
     using Kephas.Composition.Metadata;
+    using Kephas.Services;
 
     /// <summary>
     /// Metadata attribute for operation.
@@ -42,5 +43,14 @@ namespace CalculatorConsole.Operations
         /// The metadata value.
         /// </value>
         public string Value { get; }
+
+        /// <summary>
+        /// Gets or sets the operation name.
+        /// </summary>
+        /// <value>
+        /// The operation name.
+        /// </value>
+        [MetadataValue]
+        public string Name { get; set; }
     }
 }

@@ -32,6 +32,7 @@ namespace CalculatorConsole.Operations
             }
 
             this.Operation = (string)metadata.TryGetValue(nameof(this.Operation), string.Empty);
+            this.OperationName = (string)metadata.TryGetValue(nameof(this.OperationName), string.Empty);
         }
 
         /// <summary>
@@ -41,5 +42,13 @@ namespace CalculatorConsole.Operations
         /// The operation.
         /// </value>
         public string Operation { get; }
+
+        /// <summary>
+        /// Gets the name of the operation.
+        /// </summary>
+        /// <value>
+        /// The name of the operation.
+        /// </value>
+        public string OperationName { get; }
     }
 }

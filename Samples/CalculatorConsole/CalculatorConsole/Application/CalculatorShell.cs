@@ -56,7 +56,7 @@
                 try
                 {
                     var result = calculator.Compute(input);
-                    Console.WriteLine($"Result is: {result}.");
+                    Console.WriteLine($"Result is: {result.Value} (using {result.OperationName}).");
                     Console.WriteLine();
                 }
                 catch (Exception ex)

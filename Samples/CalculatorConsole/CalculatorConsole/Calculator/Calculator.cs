@@ -16,16 +16,16 @@
             this.parser = parser;
             this.OperationsDictionary = operationFactories.ToDictionary(
                 e => e.Metadata.Operation,
-                e => e.CreateExport().Value);
+                e => e);
         }
 
-        public IDictionary<string, IOperation> OperationsDictionary { get; set; }
+        public IDictionary<string, IExportFactory<IOperation, OperationMetadata>> OperationsDictionary { get; set; }
 
-        public int Compute(string input)
+        public (int Value, string OperationName) Compute(string input)
         {
             var parsedOperation = this.parser.Parse(input, this.OperationsDictionary.Select(op => op.Key));
             var operation = this.OperationsDictionary[parsedOperation.Item2];
-            return operation.Compute(parsedOperation.Item1, parsedOperation.Item3);
+            return (operation.CreateExportedValue().Compute(parsedOperation.Item1, parsedOperation.Item3), operation.Metadata.OperationName);
         }
     }
 }
