@@ -24,6 +24,11 @@ namespace Kephas.Reflection
     public static class TypeExtensions
     {
         /// <summary>
+        /// The object type.
+        /// </summary>
+        internal static readonly Type ObjectType = typeof(object);
+
+        /// <summary>
         /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="Type"/> instance.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -179,6 +184,48 @@ namespace Kephas.Reflection
             Requires.NotNull(type, nameof(type));
 
             return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType;
+        }
+
+        /// <summary>
+        /// A Type extension method that gets the base constructed generic of a provided type.
+        /// The base can be either an interface or a class.
+        /// </summary>
+        /// <param name="type">The type to act on.</param>
+        /// <param name="openGenericType">The open generic type of which constructed generic type is requested.</param>
+        /// <returns>
+        /// The base constructed generic.
+        /// </returns>
+        /// <example>
+        /// var type = typeof(string).GetBaseConstructedGenericOf(typeof(IEnumerable&lt;&gt;));
+        /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;));
+        /// </example>
+        public static Type GetBaseConstructedGenericOf(this Type type, Type openGenericType)
+        {
+            Requires.NotNull(type, nameof(type));
+            Requires.NotNull(openGenericType, nameof(openGenericType));
+
+            var openGenericTypeInfo = IntrospectionExtensions.GetTypeInfo(openGenericType);
+            if (openGenericTypeInfo.IsClass)
+            {
+                while (type != ObjectType)
+                {
+                    if (type.IsConstructedGenericType && type.GetGenericTypeDefinition() == openGenericType)
+                    {
+                        return type;
+                    }
+
+                    type = IntrospectionExtensions.GetTypeInfo(type).BaseType;
+                }
+            }
+            else if (openGenericTypeInfo.IsInterface)
+            {
+                var implementedInterfaces = IntrospectionExtensions.GetTypeInfo(type).ImplementedInterfaces;
+                var constructedInterface = implementedInterfaces.FirstOrDefault(
+                    t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
+                return constructedInterface;
+            }
+
+            return null;
         }
 
         /// <summary>

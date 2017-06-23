@@ -1,9 +1,11 @@
 ﻿namespace Kephas.Core.Tests.Reflection
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Graphs;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -84,6 +86,24 @@
             var declaredMembers = typeInfo.GetDeclaredMembers().ToList();
             Assert.AreEqual(1, declaredMembers.Count);
             Assert.AreEqual(nameof(IRuntimeElementInfo.GetUnderlyingMemberInfo), declaredMembers[0].Name);
+        }
+
+        [Test]
+        public void GetBaseConstructedGenericOf_interface()
+        {
+            var typeInfo = typeof(string).GetTypeInfo();
+            var constructedGenericType = typeInfo.GetBaseConstructedGenericOf(typeof(IEnumerable<>).GetTypeInfo());
+
+            Assert.AreSame(constructedGenericType, typeof(IEnumerable<char>).GetTypeInfo());
+        }
+
+        [Test]
+        public void GetBaseConstructedGenericOf_class()
+        {
+            var typeInfo = typeof(UnorientedGraph<string>).GetTypeInfo();
+            var constructedGenericType = typeInfo.GetBaseConstructedGenericOf(typeof(Graph<>).GetTypeInfo());
+
+            Assert.AreSame(constructedGenericType, typeof(Graph<string>).GetTypeInfo());
         }
     }
 }

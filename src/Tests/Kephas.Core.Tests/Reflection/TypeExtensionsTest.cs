@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
 
+    using Kephas.Graphs;
     using Kephas.Reflection;
 
     using NUnit.Framework;
@@ -38,6 +39,24 @@
             var type = typeof(string);
 
             Assert.AreEqual(type.AssemblyQualifiedName, type.GetQualifiedFullName(stripVersionInfo: false));
+        }
+
+        [Test]
+        public void GetBaseConstructedGenericOf_interface()
+        {
+            var type = typeof(string);
+            var constructedGenericType = type.GetBaseConstructedGenericOf(typeof(IEnumerable<>));
+
+            Assert.AreSame(constructedGenericType, typeof(IEnumerable<char>));
+        }
+
+        [Test]
+        public void GetBaseConstructedGenericOf_class()
+        {
+            var type = typeof(UnorientedGraph<string>);
+            var constructedGenericType = type.GetBaseConstructedGenericOf(typeof(Graph<>));
+
+            Assert.AreSame(constructedGenericType, typeof(Graph<string>));
         }
     }
 }
