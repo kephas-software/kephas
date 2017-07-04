@@ -23,7 +23,9 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="M:AmbientServices.Instance"/> will be considered.</param>
-        public Context(IAmbientServices ambientServices = null)
+        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
+        public Context(IAmbientServices ambientServices = null, bool isThreadSafe = false)
+            : base(isThreadSafe)
         {
             this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
         }
