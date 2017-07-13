@@ -9,8 +9,6 @@
 
 namespace Kephas.Logging.Log4Net
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
