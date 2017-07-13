@@ -10,15 +10,12 @@
 namespace Kephas.Logging
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Manager service for loggers.
     /// </summary>
-    [ContractClass(typeof(LogManagerContractClass))]
     public interface ILogManager
     {
         /// <summary>
@@ -63,29 +60,6 @@ namespace Kephas.Logging
             Requires.NotNull(logManager, nameof(logManager));
 
             return logManager.GetLogger(typeof(TTarget));
-        }
-    }
-
-    /// <summary>
-    /// Contract class for <see cref="ILogManager"/>.
-    /// </summary>
-    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK for contract classes.")]
-    [ContractClassFor(typeof(ILogManager))]
-    internal abstract class LogManagerContractClass : ILogManager
-    {
-        /// <summary>
-        /// Gets the logger with the provided name.
-        /// </summary>
-        /// <param name="loggerName">Name of the logger.</param>
-        /// <returns>
-        /// A logger for the provided name.
-        /// </returns>
-        public ILogger GetLogger(string loggerName)
-        {
-            Contract.Requires(!string.IsNullOrEmpty(loggerName));
-            Contract.Ensures(Contract.Result<ILogger>() != null);
-
-            return null;
         }
     }
 }
