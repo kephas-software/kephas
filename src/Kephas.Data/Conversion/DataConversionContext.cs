@@ -37,12 +37,21 @@ namespace Kephas.Data.Conversion
         {
             Contract.Requires(conversionService != null);
 
+            this.DataConversionService = conversionService;
             this.SourceDataContext = sourceDataContext;
             this.TargetDataContext = targetDataContext;
             this.RootSourceType = rootSourceType;
             this.RootTargetType = rootTargetType;
             this.ThrowOnError = true;
         }
+
+        /// <summary>
+        /// Gets the data conversion service.
+        /// </summary>
+        /// <value>
+        /// The data conversion service.
+        /// </value>
+        public IDataConversionService DataConversionService { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw an exception when an error occurs.

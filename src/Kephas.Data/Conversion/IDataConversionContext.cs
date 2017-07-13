@@ -19,6 +19,14 @@ namespace Kephas.Data.Conversion
     public interface IDataConversionContext : IContext
     {
         /// <summary>
+        /// Gets the data conversion service.
+        /// </summary>
+        /// <value>
+        /// The data conversion service.
+        /// </value>
+        IDataConversionService DataConversionService { get; }
+
+        /// <summary>
         /// Gets a value indicating whether to throw an exception when an error occurs.
         /// </summary>
         /// <value>
