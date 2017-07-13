@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{ECCB2F9D-7095-4708-9725-87CACE62C7F7}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,15 +12,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{ECCB2F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{816692E7-24DC-46B5-97FB-D314B52D815D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef", "Kephas.Composition.Mef\Kephas.Composition.Mef.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Mef", "Kephas.Composition.Mef\Kephas.Composition.Mef.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging", "Kephas.Messaging\Kephas.Messaging.csproj", "{1B8691E7-C070-4EBA-B999-DE4989589409}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging", "Kephas.Messaging\Kephas.Messaging.csproj", "{1B8691E7-C070-4EBA-B999-DE4989589409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog", "Kephas.Logging.NLog\Kephas.Logging.NLog.csproj", "{8CB50297-39C4-45F5-9195-14A75D699710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.NLog", "Kephas.Logging.NLog\Kephas.Logging.NLog.csproj", "{8CB50297-39C4-45F5-9195-14A75D699710}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model", "Kephas.Model\Kephas.Model.csproj", "{965E1983-D19C-4D22-B6B9-8A3221520542}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Model", "Kephas.Model\Kephas.Model.csproj", "{965E1983-D19C-4D22-B6B9-8A3221520542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data", "Kephas.Data\Kephas.Data.csproj", "{8591C924-3C04-413F-A530-7A5575B45966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data", "Kephas.Data\Kephas.Data.csproj", "{8591C924-3C04-413F-A530-7A5575B45966}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Tests", "Tests\Kephas.Data.Tests\Kephas.Data.Tests.csproj", "{3722480D-43A7-4FB3-9227-E80D7F26C242}"
 EndProject
@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail", "Kephas.Mail\Kephas.Mail.csproj", "{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail", "Kephas.Mail\Kephas.Mail.csproj", "{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.Owin", "Kephas.Web.Owin\Kephas.Web.Owin.csproj", "{D4A22CB1-1DD0-4C40-A79A-81B939C58059}"
 EndProject
@@ -53,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net46", "Kephas.Platform.Net46\Kephas.Platform.Net46.csproj", "{E4C34864-2654-4DD3-992C-AA56AB141016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Composition.Mef", "TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj", "{00BE907B-3852-480F-9ABC-5B4C5D4595B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Composition.Mef", "TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj", "{00BE907B-3852-480F-9ABC-5B4C5D4595B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.NLog.Net45", "Kephas.Logging.NLog.Net45\Kephas.Logging.NLog.Net45.csproj", "{52829664-67BD-4E26-B5E4-1D5E1FC5597B}"
 EndProject
@@ -61,37 +61,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform.Net45", "Ke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Mef.Net45", "Kephas.Composition.Mef.Net45\Kephas.Composition.Mef.Net45.csproj", "{2F644DAB-EBE5-4548-AF2A-DD43948503DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.MongoDB", "Kephas.Data.MongoDB\Kephas.Data.MongoDB.csproj", "{39F25EA0-9404-44FF-B3E3-B9C1152C1A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.InMemory", "Kephas.Data.InMemory\Kephas.Data.InMemory.csproj", "{62A0E16C-CBB6-4363-8781-FC9F346BC311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.InMemory", "Kephas.Data.InMemory\Kephas.Data.InMemory.csproj", "{62A0E16C-CBB6-4363-8781-FC9F346BC311}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.InMemory.Tests", "Tests\Kephas.Data.InMemory.Tests\Kephas.Data.InMemory.Tests.csproj", "{4E119285-ABC4-4890-B758-F64D950B8CF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model", "Kephas.Data.Model\Kephas.Data.Model.csproj", "{F31D9535-1390-4F3A-9D79-912AA01D6CAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model", "Kephas.Data.Model\Kephas.Data.Model.csproj", "{F31D9535-1390-4F3A-9D79-912AA01D6CAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Model", "Kephas.Messaging.Model\Kephas.Messaging.Model.csproj", "{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Model", "Kephas.Messaging.Model\Kephas.Messaging.Model.csproj", "{56C8B0AE-7C3D-4897-89C8-C0DC6CBA5F1C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net45", "Net45", "{4375A35B-0C26-4994-B947-1BA73DE968EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client", "Kephas.Data.Client\Kephas.Data.Client.csproj", "{67D81331-1EB2-47BC-A1C8-9A5A4728B44C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Client", "Kephas.Data.Client\Kephas.Data.Client.csproj", "{67D81331-1EB2-47BC-A1C8-9A5A4728B44C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Client", "Kephas.Messaging.Client\Kephas.Messaging.Client.csproj", "{C374DCF4-BE88-47B8-9FAA-6327F333BC91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Client", "Kephas.Messaging.Client\Kephas.Messaging.Client.csproj", "{C374DCF4-BE88-47B8-9FAA-6327F333BC91}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Client.Tests", "Tests\Kephas.Data.Client.Tests\Kephas.Data.Client.Tests.csproj", "{32F7F2B8-BC61-466F-8EAA-CCD77DD4D45B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{C7EE16CC-1BBA-4BE2-971E-39B0E90C62A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Npgsql.Net45", "Adapters\Kephas.Npgsql.Net45\Kephas.Npgsql.Net45.csproj", "{23B9F754-5FFC-47B1-9956-1CDFC6019627}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Npgsql", "Adapters\Kephas.Npgsql\Kephas.Npgsql.csproj", "{7CDCA54A-3816-44CC-B709-4EC790ADC534}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Npgsql", "Adapters\Kephas.Npgsql\Kephas.Npgsql.csproj", "{7CDCA54A-3816-44CC-B709-4EC790ADC534}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapters", "Adapters", "{658FF5E4-1802-48B1-BF77-C011B7CF08E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Net45", "Kephas.Core.Net45\Kephas.Core.Net45.csproj", "{82F31B59-1FA4-4451-A2CA-356F546501CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Platform", "Kephas.Platform\Kephas.Platform.csproj", "{C0FF1F2E-6077-46F3-877D-5FD916EE5031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Platform", "Kephas.Platform\Kephas.Platform.csproj", "{C0FF1F2E-6077-46F3-877D-5FD916EE5031}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Model.Net45", "Kephas.Model.Net45\Kephas.Model.Net45.csproj", "{0E4D7EB1-19F1-4344-89BD-402455C398C4}"
 EndProject
@@ -153,7 +153,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.MongoDB.Net45",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Tests.Net45", "Tests\Kephas.Data.Tests.Net45\Kephas.Data.Tests.Net45.csproj", "{73122BB6-D992-44EB-9106-63F34CCF2723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization", "Kephas.Localization\Kephas.Localization.csproj", "{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Localization", "Kephas.Localization\Kephas.Localization.csproj", "{C477B316-FFC6-4BD8-81B5-8642D1D71CC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Net45", "Kephas.Localization.Net45\Kephas.Localization.Net45.csproj", "{92C3FFC4-C530-4AC3-9521-0E5E91F9C9BF}"
 EndProject
@@ -161,7 +161,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Localization.Tests.Net45", "Tests\Kephas.Localization.Tests.Net45\Kephas.Localization.Tests.Net45.csproj", "{47AEC9C7-3211-45CF-8DF1-2DC4CED2AD14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis", "Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj", "{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.CodeAnalysis", "Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj", "{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Net45", "Kephas.CodeAnalysis.Net45\Kephas.CodeAnalysis.Net45.csproj", "{52122F2C-2E49-4CC7-8C1E-153B4D8B19DE}"
 EndProject
@@ -169,7 +169,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Tests.Net45", "Tests\Kephas.CodeAnalysis.Tests.Net45\Kephas.CodeAnalysis.Tests.Net45.csproj", "{6C3FB728-ED01-4EB3-8C49-A25EE3F7DA8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO", "Kephas.Data.IO\Kephas.Data.IO.csproj", "{BFA5C4D6-DA23-40F1-82D6-57C4FEB30243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.IO", "Kephas.Data.IO\Kephas.Data.IO.csproj", "{BFA5C4D6-DA23-40F1-82D6-57C4FEB30243}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Net45", "Kephas.Data.IO.Net45\Kephas.Data.IO.Net45.csproj", "{0BDCAFAD-4E92-4CA5-96B7-4A0C0B56DFDB}"
 EndProject
@@ -181,7 +181,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.IO.Tests.Net45", "Tests\Kephas.Data.IO.Tests.Net45\Kephas.Data.IO.Tests.Net45.csproj", "{676FDE9E-F917-4ADD-B6D2-D2A322134DC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit", "Kephas.Mail.MailKit\Kephas.Mail.MailKit.csproj", "{52669F27-358D-4F07-849A-4543A257DEE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail.MailKit", "Kephas.Mail.MailKit\Kephas.Mail.MailKit.csproj", "{52669F27-358D-4F07-849A-4543A257DEE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.MailKit.Net45", "Kephas.Mail.MailKit.Net45\Kephas.Mail.MailKit.Net45.csproj", "{104F79B0-1E7E-48DE-873A-2FADE46533B0}"
 EndProject
@@ -189,9 +189,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Tests.Net45", "Tests\Kephas.Data.Model.Tests.Net45\Kephas.Data.Model.Tests.Net45.csproj", "{D9542655-DB2A-4880-B98F-AB51EDB47B8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Endpoints", "Kephas.Data.Endpoints\Kephas.Data.Endpoints.csproj", "{61FE8D05-CCA6-40D2-BF8B-CFF792054DE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Endpoints", "Kephas.Data.Endpoints\Kephas.Data.Endpoints.csproj", "{61FE8D05-CCA6-40D2-BF8B-CFF792054DE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Endpoints.Net45", "Kephas.Data.Endpoints.Net45\Kephas.Data.Endpoints.Net45.csproj", "{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net.Net45", "Kephas.Logging.Log4Net.Net45\Kephas.Logging.Log4Net.Net45.csproj", "{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -503,6 +505,10 @@ Global
 		{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -565,5 +571,6 @@ Global
 		{8A3883B1-34A0-4697-9336-7A1D58E24E4E} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{D9542655-DB2A-4880-B98F-AB51EDB47B8D} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 	EndGlobalSection
 EndGlobal
