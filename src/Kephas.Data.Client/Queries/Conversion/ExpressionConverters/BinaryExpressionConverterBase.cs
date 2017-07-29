@@ -15,6 +15,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
 
     using Kephas.Data.Client.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base class for binary expression converters.
@@ -76,8 +77,14 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
                     var value = ((ConstantExpression)args[1]).Value;
                     if (!ReferenceEquals(value, null))
                     {
-                        var convertedValue = Convert.ChangeType(value, args[0].Type);
-                        return new List<Expression> { args[0], Expression.Constant(convertedValue) };
+                        var memberType = args[0].Type;
+                        var nonNullableMemberType = memberType.GetNonNullableType();
+                        var convertedValue = Convert.ChangeType(value, nonNullableMemberType);
+                        var valueExpression = memberType == nonNullableMemberType
+                                                  ? (Expression)Expression.Constant(convertedValue)
+                                                  : Expression.Convert(Expression.Constant(convertedValue), memberType);
+
+                        return new List<Expression> { args[0], valueExpression };
                     }
                 }
             }
