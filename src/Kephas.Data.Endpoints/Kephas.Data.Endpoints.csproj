@@ -8,11 +8,11 @@
       <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
       <Company>Quartz Software SRL</Company>
       <Product>Kephas Framework</Product>
-      <AssemblyVersion>3.9.2.0</AssemblyVersion>
-      <FileVersion>3.9.2.0</FileVersion>
+      <AssemblyVersion>3.10.0.0</AssemblyVersion>
+      <FileVersion>3.10.0.0</FileVersion>
       <Copyright>Copyright © Quartz Software SRL 2010-2017</Copyright>
       <Description>Provides the endpoints for the data flow.</Description>
-      <Version>3.9.2</Version>
+      <Version>3.10.0</Version>
       <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
       <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
       <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
