@@ -94,6 +94,9 @@
     <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamWriteService.cs">
       <Link>DataStreams\IDataStreamWriteService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\DefaultDataIOResourceService.cs">
+      <Link>DefaultDataIOResourceService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Export\DataExportContext.cs">
       <Link>Export\DataExportContext.cs</Link>
     </Compile>
@@ -111,6 +114,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.IO\IDataIOMessage.cs">
       <Link>IDataIOMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\IDataIOResourceService.cs">
+      <Link>IDataIOResourceService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.IO\IDataIOResult.cs">
       <Link>IDataIOResult.cs</Link>
