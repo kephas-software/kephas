@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 		Deployment\PushNugetPackages.bat = Deployment\PushNugetPackages.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail", "Kephas.Mail\Kephas.Mail.csproj", "{81636A6E-F3CA-4B4F-9D94-05AD1BCFF98D}"
 EndProject

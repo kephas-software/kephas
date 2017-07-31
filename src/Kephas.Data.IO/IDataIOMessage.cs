@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataIOContext.cs" company="Quartz Software SRL">
+// <copyright file="IDataIOMessage.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the data i/o context class.
+//   Contract for data I/O messages.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,19 +11,25 @@ namespace Kephas.Data.IO
 {
     using System;
 
-    using Kephas.Services;
-
     /// <summary>
-    /// A data I/O context.
+    /// Contract for data exchange messages.
     /// </summary>
-    public class DataIOContext : Context, IDataIOContext
+    public interface IDataIOMessage
     {
         /// <summary>
-        /// Gets or sets the type of the root object.
+        /// Gets the message.
         /// </summary>
         /// <value>
-        /// The type of the root object.
+        /// The message.
         /// </value>
-        public Type RootObjectType { get; set; }
+        string Message { get; }
+
+        /// <summary>
+        /// Gets the timestamp.
+        /// </summary>
+        /// <value>
+        /// The timestamp.
+        /// </value>
+        DateTimeOffset Timestamp { get; }
     }
 }

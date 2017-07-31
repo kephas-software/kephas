@@ -70,6 +70,24 @@ namespace Kephas.Data.IO.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unexpected exception. See the inner exception for more details..
+        /// </summary>
+        internal static string DataIOException_FromException_UnexpectedMessage {
+            get {
+                return ResourceManager.GetString("DataIOException_FromException_UnexpectedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot merge the task result, the task is not completed..
+        /// </summary>
+        internal static string DataIOResult_Merge_TaskNotCompleteException {
+            get {
+                return ResourceManager.GetString("DataIOResult_Merge_TaskNotCompleteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data stream reader not found for {0}..
         /// </summary>
         internal static string DefaultDataStreamReadService_ReaderNotFound_Exception {
@@ -84,6 +102,33 @@ namespace Kephas.Data.IO.Resources {
         internal static string DefaultDataStreamWriteService_WriterNotFound_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataStreamWriteService_WriterNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error importing data source {0}. See the inner exception for more information..
+        /// </summary>
+        internal static string ImportDataSourceException_Message {
+            get {
+                return ResourceManager.GetString("ImportDataSourceException_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error importing {0} with value {1}. Reason: {2}.
+        /// </summary>
+        internal static string ImportEntityException_Message {
+            get {
+                return ResourceManager.GetString("ImportEntityException_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully imported {0} ({1}). {2}.
+        /// </summary>
+        internal static string ImportEntitySuccessfulMessage_Message {
+            get {
+                return ResourceManager.GetString("ImportEntitySuccessfulMessage_Message", resourceCulture);
             }
         }
     }

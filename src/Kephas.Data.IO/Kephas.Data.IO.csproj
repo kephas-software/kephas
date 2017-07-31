@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
     <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
   </ItemGroup>
 

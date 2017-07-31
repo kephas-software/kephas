@@ -49,6 +49,15 @@
     <Compile Include="..\Kephas.Data.IO\DataIOException.cs">
       <Link>DataIOException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataIOMessage.cs">
+      <Link>DataIOMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataIOOperationState.cs">
+      <Link>DataIOOperationState.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\DataIOResult.cs">
+      <Link>DataIOResult.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\DataStreams\Composition\DataStreamReaderMetadata.cs">
       <Link>DataStreams\Composition\DataStreamReaderMetadata.cs</Link>
     </Compile>
@@ -85,8 +94,53 @@
     <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamWriteService.cs">
       <Link>DataStreams\IDataStreamWriteService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Export\DataExportContext.cs">
+      <Link>Export\DataExportContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Export\DefaultDataExportService.cs">
+      <Link>Export\DefaultDataExportService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Export\IDataExportContext.cs">
+      <Link>Export\IDataExportContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Export\IDataExportService.cs">
+      <Link>Export\IDataExportService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\IDataIOContext.cs">
       <Link>IDataIOContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\IDataIOMessage.cs">
+      <Link>IDataIOMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\IDataIOResult.cs">
+      <Link>IDataIOResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\DataImportContext.cs">
+      <Link>Import\DataImportContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\DefaultDataImportProjectedTypeResolver.cs">
+      <Link>Import\DefaultDataImportProjectedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\DefaultDataImportService.cs">
+      <Link>Import\DefaultDataImportService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\IDataImportContext.cs">
+      <Link>Import\IDataImportContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\IDataImportProjectedTypeResolver.cs">
+      <Link>Import\IDataImportProjectedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\IDataImportService.cs">
+      <Link>Import\IDataImportService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\ImportDataSourceException.cs">
+      <Link>Import\ImportDataSourceException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\ImportEntityException.cs">
+      <Link>Import\ImportEntityException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\ImportEntitySuccessfulMessage.cs">
+      <Link>Import\ImportEntitySuccessfulMessage.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
@@ -108,6 +162,10 @@
     <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kephas.Data.Client.Net45\Kephas.Data.Client.Net45.csproj">
+      <Project>{47ca5fae-2c28-431f-b41e-db9cf8293545}</Project>
+      <Name>Kephas.Data.Client.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kephas.Data.Net45\Kephas.Data.Net45.csproj">
       <Project>{27926b67-08ce-4fe4-9338-0b11da98e930}</Project>

@@ -126,4 +126,19 @@
   <data name="DataIOContext_NoCancellationTokenSource_Exception" xml:space="preserve">
     <value>No cancellation token source could be identified in the data I/O context.</value>
   </data>
+  <data name="DataIOException_FromException_UnexpectedMessage" xml:space="preserve">
+    <value>Unexpected exception. See the inner exception for more details.</value>
+  </data>
+  <data name="DataIOResult_Merge_TaskNotCompleteException" xml:space="preserve">
+    <value>Cannot merge the task result, the task is not completed.</value>
+  </data>
+  <data name="ImportDataSourceException_Message" xml:space="preserve">
+    <value>Error importing data source {0}. See the inner exception for more information.</value>
+  </data>
+  <data name="ImportEntityException_Message" xml:space="preserve">
+    <value>Error importing {0} with value {1}. Reason: {2}</value>
+  </data>
+  <data name="ImportEntitySuccessfulMessage_Message" xml:space="preserve">
+    <value>Successfully imported {0} ({1}). {2}</value>
+  </data>
 </root>

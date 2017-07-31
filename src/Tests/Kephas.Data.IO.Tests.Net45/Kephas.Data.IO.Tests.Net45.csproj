@@ -46,6 +46,12 @@
     <Compile Include="..\Kephas.Data.IO.Tests\DataStreams\DataStreamWriterTest.cs">
       <Link>DataStreams\DataStreamWriterTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\Export\DefaultDataExportServiceTest.cs">
+      <Link>Export\DefaultDataExportServiceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\Import\DefaultDataImportServiceTest.cs">
+      <Link>Import\DefaultDataImportServiceTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +61,10 @@
     <ProjectReference Include="..\..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Data.Client.Net45\Kephas.Data.Client.Net45.csproj">
+      <Project>{47ca5fae-2c28-431f-b41e-db9cf8293545}</Project>
+      <Name>Kephas.Data.Client.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Data.IO.Net45\Kephas.Data.IO.Net45.csproj">
       <Project>{0bdcafad-4e92-4ca5-96b7-4a0c0b56dfdb}</Project>
