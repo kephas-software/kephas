@@ -90,6 +90,20 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             Assert.IsTrue((bool)result);
         }
 
+        [Test]
+        public void Convert_member_eq_constant_nullable_member_explicit_convert()
+        {
+            var converter = new TestBinaryExpressionConverter(Expression.Equal);
+
+            var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
+                                                                         {
+                                                                             Expression.MakeMemberAccess(Expression.Constant(new NullableAge { Age = 3 }), typeof(NullableAge).GetProperty("Age")),
+                                                                             Expression.Constant(new Age(3)),
+                                                                         });
+            var result = Expression.Lambda(expr).Compile().DynamicInvoke();
+            Assert.IsTrue((bool)result);
+        }
+
         public class NullableAge
         {
             public int? Age { get; set; }
@@ -100,6 +114,21 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             public TestBinaryExpressionConverter(Func<Expression, Expression, BinaryExpression> binaryExpressionFactory)
                 : base(binaryExpressionFactory)
             {
+            }
+        }
+
+        public class Age
+        {
+            private readonly int age;
+
+            public Age(int age)
+            {
+                this.age = age;
+            }
+
+            public static explicit operator int(Age age)
+            {
+                return age.age;
             }
         }
     }

@@ -77,19 +77,40 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
                     var value = ((ConstantExpression)args[1]).Value;
                     if (!ReferenceEquals(value, null))
                     {
-                        var memberType = args[0].Type;
-                        var nonNullableMemberType = memberType.GetNonNullableType();
-                        var convertedValue = Convert.ChangeType(value, nonNullableMemberType);
-                        var valueExpression = memberType == nonNullableMemberType
-                                                  ? (Expression)Expression.Constant(convertedValue)
-                                                  : Expression.Convert(Expression.Constant(convertedValue), memberType);
-
+                        var valueExpression = this.GetConvertedValueExpression(value, args[0].Type);
                         return new List<Expression> { args[0], valueExpression };
                     }
                 }
             }
 
             return args;
+        }
+
+        /// <summary>
+        /// Gets an expression for the value so that it has a compatible type with the member type.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="memberType">Type of the member.</param>
+        /// <returns>
+        /// The converted value expression.
+        /// </returns>
+        protected virtual Expression GetConvertedValueExpression(object value, Type memberType)
+        {
+            object convertedValue;
+            var nonNullableMemberType = memberType.GetNonNullableType();
+            try
+            {
+                convertedValue = Convert.ChangeType(value, nonNullableMemberType);
+            }
+            catch
+            {
+                return Expression.Convert(Expression.Constant(value), memberType);
+            }
+
+            var valueExpression = memberType == nonNullableMemberType
+                                      ? (Expression)Expression.Constant(convertedValue)
+                                      : Expression.Convert(Expression.Constant(convertedValue), memberType);
+            return valueExpression;
         }
     }
 }
