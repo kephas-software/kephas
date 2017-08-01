@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Construction
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Model.Runtime.Construction;
@@ -54,5 +55,13 @@ namespace Kephas.Model.Construction
         /// The constructed classifiers.
         /// </value>
         IEnumerable<IClassifier> ConstructedClassifiers { get; set; }
+
+        /// <summary>
+        /// Gets or sets a function to try to get a model element based on a native element information.
+        /// </summary>
+        /// <value>
+        /// A function for getting a model element.
+        /// </value>
+        Func<IElementInfo, IElementInfo> TryGetElementInfo { get; set; }
     }
 }

@@ -9,6 +9,7 @@
 
 namespace Kephas.Model.Runtime
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Threading;
@@ -74,6 +75,23 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
+        /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.
+        /// </summary>
+        /// <param name="nativeElementInfo">The native element information.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// The constructed generic type or <c>null</c> if the provider cannot handle the provided type information.
+        /// </returns>
+        /// <remarks>
+        /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
+        /// For any other errors an exception should be thrown.
+        /// </remarks>
+        public virtual IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Gets the element infos used for building the model space (core implementation).
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -81,6 +99,8 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        protected abstract Task<IEnumerable<IElementInfo>> GetElementInfosCoreAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken);
+        protected abstract Task<IEnumerable<IElementInfo>> GetElementInfosCoreAsync(
+            IModelConstructionContext constructionContext,
+            CancellationToken cancellationToken);
     }
 }

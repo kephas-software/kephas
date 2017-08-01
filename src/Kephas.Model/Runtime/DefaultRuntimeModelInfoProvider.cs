@@ -56,6 +56,31 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
+        /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.
+        /// </summary>
+        /// <param name="nativeElementInfo">The native element information.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// The constructed generic type or <c>null</c> if the provider cannot handle the provided type information.
+        /// </returns>
+        /// <remarks>
+        /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
+        /// For any other errors an exception should be thrown.
+        /// </remarks>
+        public override IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
+        {
+            var runtimeTypeInfo = nativeElementInfo as IRuntimeTypeInfo;
+            if (runtimeTypeInfo == null)
+            {
+                return null;
+            }
+
+            constructionContext.RuntimeModelElementFactory = this.RuntimeModelElementFactory;
+            var constructedTypeInfo = this.RuntimeModelElementFactory.TryCreateModelElement(constructionContext, runtimeTypeInfo);
+            return constructedTypeInfo;
+        }
+
+        /// <summary>
         /// Gets the element infos used for building the model space.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -67,7 +92,7 @@ namespace Kephas.Model.Runtime
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var runtimeElements = await this.GetRuntimeElementInfos(cancellationToken).PreserveThreadContext();
+            var runtimeElements = await this.GetRuntimeElementInfosAsync(cancellationToken).PreserveThreadContext();
 
             constructionContext.RuntimeModelElementFactory = this.RuntimeModelElementFactory;
             var elementInfos = new List<INamedElement>();
@@ -101,13 +126,12 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// The runtime element infos.
         /// </returns>
-        private async Task<HashSet<IRuntimeTypeInfo>> GetRuntimeElementInfos(CancellationToken cancellationToken)
+        private async Task<HashSet<IRuntimeTypeInfo>> GetRuntimeElementInfosAsync(CancellationToken cancellationToken)
         {
             var runtimeElements = new HashSet<IRuntimeTypeInfo>();
             foreach (var modelRegistry in this.modelRegistries)
             {
-                var registryElements =
-                    await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
+                var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
                 runtimeElements.AddRange(registryElements.Select(this.ToRuntimeTypeInfo));
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -123,16 +147,16 @@ namespace Kephas.Model.Runtime
         /// <returns>The normalized runtime type.</returns>
         private IRuntimeTypeInfo ToRuntimeTypeInfo(object runtimeElement)
         {
-            var runtimeType = runtimeElement as Type;
-            if (runtimeType != null)
-            {
-                return runtimeType.AsRuntimeTypeInfo();
-            }
-
             var runtimeTypeInfo = runtimeElement as TypeInfo;
             if (runtimeTypeInfo != null)
             {
                 return runtimeTypeInfo.AsRuntimeTypeInfo();
+            }
+
+            var runtimeType = runtimeElement as Type;
+            if (runtimeType != null)
+            {
+                return runtimeType.AsRuntimeTypeInfo();
             }
 
             return runtimeElement as IRuntimeTypeInfo;

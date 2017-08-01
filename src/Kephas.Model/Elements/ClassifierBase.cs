@@ -226,24 +226,14 @@ namespace Kephas.Model.Elements
         /// Constructs a generic type baed on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
-        /// <param name="context">The construction context (optional).</param>
+        /// <param name="constructionContext">The construction context (optional).</param>
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext context = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
         {
-            return null;
-
-            // TODO complete implementation
-            var constructionContext = context as IModelConstructionContext;
-            var modelSpace = constructionContext?.ModelSpace ?? this.ModelSpace;
-            var classifierArguments = typeArguments.Select(t => modelSpace.TryGetClassifier(t, context) ?? t).ToList();
-
-            var thisTypeInfo = this.GetType().AsRuntimeTypeInfo();
-            var constructedType = (IConstructableElement)thisTypeInfo.CreateInstance(new object[] { constructionContext, $"{this.Name}_{Guid.NewGuid()}" });
-            constructedType.ConstructGenericClassifier(this, classifierArguments, context);
-
-            return (ITypeInfo)constructedType;
+            // TODO redirect generic type creation through ModelSpace
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -303,22 +293,6 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Gets the model element dependencies.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        /// <returns>
-        /// An enumeration of dependencies.
-        /// </returns>
-        protected override IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext)
-        {
-            var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
-            var eligibleTypes = parts.SelectMany(this.GetDependencies)
-                .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
-                .ToList();
-            return eligibleTypes;
-        }
-
-        /// <summary>
         /// Calculates the base types.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -328,9 +302,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected virtual IList<ITypeInfo> ComputeBaseTypes(IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
         {
-            var eligibleTypes = parts.SelectMany(this.GetDependencies)
-                                     .Select(t => this.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
-                                     .ToList();
+            var eligibleTypes = this.GetClassifierDependencies(constructionContext, parts);
 
             var baseTypesList = new List<ITypeInfo>();
             foreach (var eligibleType in eligibleTypes)
@@ -338,6 +310,13 @@ namespace Kephas.Model.Elements
                 // TODO the next sentence should apply at any level.
                 // ignore types which are already base for one of the eligible types.
                 if (eligibleTypes.Any(t => t.BaseTypes.Contains(eligibleType)))
+                {
+                    continue;
+                }
+
+                // ignore open generics if a closed generic is a dependency
+                if (eligibleType.IsGenericTypeDefinition()
+                    && eligibleTypes.Any(t => t.GenericTypeDefinition == eligibleType))
                 {
                     continue;
                 }
@@ -377,21 +356,6 @@ namespace Kephas.Model.Elements
             IEnumerable<ITypeInfo> baseTypes)
         {
             return new ReadOnlyCollection<IClassifier>(baseTypes.OfType<IClassifier>().Where(c => c.IsMixin).ToList());
-        }
-
-        /// <summary>
-        /// Constructs the generic classifier.
-        /// </summary>
-        /// <param name="genericDefinition">The generic definition.</param>
-        /// <param name="classifierArguments">The classifier arguments.</param>
-        /// <param name="context">The context.</param>
-        protected override void ConstructGenericClassifier(IClassifier genericDefinition, IEnumerable<ITypeInfo> classifierArguments, IContext context)
-        {
-            this.GenericTypeDefinition = genericDefinition;
-            this.GenericTypeArguments = new ReadOnlyCollection<ITypeInfo>(new List<ITypeInfo>(classifierArguments));
-
-            // TODO clone members and add type arguments
-            // TODO clone base types and add type arguments
         }
 
         /// <summary>
@@ -557,36 +521,6 @@ namespace Kephas.Model.Elements
             }
 
             return resolvedMember;
-        }
-
-        /// <summary>
-        /// Gets the model element dependencies.
-        /// </summary>
-        /// <param name="typeInfo">Information describing the type.</param>
-        /// <returns>
-        /// An enumeration of dependencies.
-        /// </returns>
-        private IEnumerable<ITypeInfo> GetDependencies(ITypeInfo typeInfo)
-        {
-            var aspect = typeInfo as IClassifier;
-            if (aspect != null)
-            {
-                if (aspect.IsAspectOf(this))
-                {
-                    yield return aspect;
-                    yield break;
-                }
-            }
-
-            foreach (var baseType in typeInfo.BaseTypes)
-            {
-                if (baseType.IsConstructedGenericType())
-                {
-                    yield return baseType.GenericTypeDefinition;
-                }
-
-                yield return baseType;
-            }
         }
     }
 }

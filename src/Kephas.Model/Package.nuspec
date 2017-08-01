@@ -22,6 +22,7 @@
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
+            <dependency id="System.ValueTuple" version="4.3.0" />
         </dependencies>
         <references>
             <reference file="Kephas.Model.dll" />

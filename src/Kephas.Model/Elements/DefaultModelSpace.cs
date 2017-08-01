@@ -107,6 +107,14 @@ namespace Kephas.Model.Elements
         public IEnumerable<IClassifier> Classifiers { get; private set; }
 
         /// <summary>
+        /// Gets the context for construction.
+        /// </summary>
+        /// <value>
+        /// The construction context.
+        /// </value>
+        public IModelConstructionContext ConstructionContext { get; private set; }
+
+        /// <summary>
         /// Tries to get the classifier associated to the provided <see cref="ITypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
@@ -135,11 +143,19 @@ namespace Kephas.Model.Elements
             }
 
             var classifiers = constructionContext?.ConstructedClassifiers ?? this.Classifiers;
-            classifier = this.TryComputeClassifier(typeInfo, classifiers, findContext);
+            var isNew = false;
+            (classifier, isNew) = this.TryComputeClassifier(typeInfo, classifiers, constructionContext);
             if (classifier != null)
             {
                 // set the cached value.
                 typeInfo[cacheKey] = classifier;
+
+                if (isNew)
+                {
+                    // TODO lock the list to avoid problems in multi threaded environments
+                    var listClassifiers = classifiers as IList<IClassifier>;
+                    listClassifiers?.Add(classifier);
+                }
             }
 
             return classifier;
@@ -202,29 +218,34 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected internal virtual IEnumerable<IClassifier> ComputeClassifiers(IModelConstructionContext constructionContext)
         {
-            // first, get the classifiers and collect from them all other classifier references/dependencies
+            // 1. get the classifiers and collect from them all other classifier references/dependencies
             // to be able to get a proper sorting upon construction completion
             var unsortedClassifiers = constructionContext.ElementInfos.OfType<IClassifier>().ToList();
-            // TODO get the dependencies from:
-            // 1. Parts (do not resolve yet the classifiers!). This is the only complete information so far.
-            // 2. Constructed Generics
-            // 3. Property/Field/Method parameter Types ? not sure if required.
+
+            // 2. identify the constructed generics dependencies (from the base types)
+            // and add them to the unsorted classifiers.
+            // Note: there is no need to include Property/Field/Method parameter types,
+            // because they can be solved at a later time. Now it is important to resolve the
+            // type inheritance graph.
+            var constructedGenericsDependencies = this.ComputeConstructedGenericDependencies(constructionContext, unsortedClassifiers);
+            unsortedClassifiers.AddRange(
+                constructedGenericsDependencies
+                    .Select(d => constructionContext.TryGetElementInfo?.Invoke(d) as IClassifier)
+                    .Where(c => c != null));
+
             // When constructing generics, must change the signature to include (param, arg) mappings
             
-            // second, construct the required generics. In this phase, the classifier contain brute information.
-            // TODO...
+            // 3. resolve the aspects.
+            // TODO aspects can be applied only to non-generic or open-generics
+            this.ResolveAspects(unsortedClassifiers, this.GetAspects(unsortedClassifiers));
 
-            // third, resolve their aspects.
-            // TODO aspects are can be applied only to non-generic or open-generics
-            this.ResolveAspects(unsortedClassifiers);
-
-            // then sort them, to be able to have all the dependencies constructed completely
+            // 4. sort them, to be able to have all the dependencies completely constructed
             // before moving on.
             constructionContext.ConstructedClassifiers = unsortedClassifiers;
             var orderGraphNodes = unsortedClassifiers.Select(
                 c => new KeyValuePair<IClassifier, IEnumerable<IElementInfo>>(
                     c,
-                    ((IConstructableElement)c).GetDependencies(constructionContext)));
+                    c.GetClassifierDependencies(constructionContext)));
             var orderedSet = new PartialOrderedSet<KeyValuePair<IClassifier, IEnumerable<IElementInfo>>>(orderGraphNodes, ClassifierDependencyComparer);
             var classifiers = orderedSet.Select(cd => cd.Key).ToList();
 
@@ -253,6 +274,8 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
+            this.ConstructionContext = constructionContext;
+
             // collect the model dimensions and dimension elements, completing their construction
             this.Dimensions = this.ComputeDimensions(constructionContext);
 
@@ -315,11 +338,11 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="typeInfo">The <see cref="ITypeInfo"/>.</param>
         /// <param name="classifiers">The classifiers.</param>
-        /// <param name="constructionContext">The construction context (optional).</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>
         /// An IClassifier.
         /// </returns>
-        private IClassifier TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IContext constructionContext)
+        private (IClassifier Classifier, bool IsNew) TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IModelConstructionContext constructionContext)
         {
             // TODO 
             // return only aggregated classifiers, not partial ones.
@@ -335,32 +358,91 @@ namespace Kephas.Model.Elements
                     var resolvedGenericDefinition = classifiers.FirstOrDefault(c => c == genericTypeDefinition || c.Aggregates(genericTypeDefinition));
                     if (resolvedGenericDefinition != null)
                     {
-                        var constructedType = resolvedGenericDefinition.MakeGenericType(typeInfo.GenericTypeArguments, constructionContext);
-                        return constructedType as IClassifier;
+                        constructionContext = constructionContext ?? this.ConstructionContext;
+                        var constructedType = (IClassifier)constructionContext.TryGetElementInfo(typeInfo);
+                        this.ResolveAspects(new[] { constructedType }, this.GetAspects(classifiers));
+
+                        // TODO: maybe do not complete construction yet, if the model space is still constructing
+                        ((IConstructableElement)constructedType).CompleteConstruction(constructionContext);
+
+                        return (constructedType, true);
                     }
                 }
             }
 
-            return resolvedClassifier;
+            return (resolvedClassifier, false);
         }
 
         /// <summary>
         /// Resolves the aspects by adding them as parts to the targeted classifiers.
         /// </summary>
         /// <param name="classifiers">The classifiers.</param>
-        private void ResolveAspects(IReadOnlyCollection<IClassifier> classifiers)
+        /// <param name="aspects">The classifier aspects.</param>
+        private void ResolveAspects(IReadOnlyCollection<IClassifier> classifiers, IEnumerable<IClassifier> aspects)
         {
-            var aspects = classifiers.Where(c => c.IsAspect).ToList();
             foreach (var aspect in aspects)
             {
                 foreach (var classifier in classifiers)
                 {
+                    // TODO apply open generic aspects to open generic classifiers
+                    // and constructed generic aspects to constructed generic classifiers
                     if (aspect != classifier && aspect.IsAspectOf(classifier))
                     {
                         ((IConstructableElement)classifier).AddPart(aspect);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the aspects from the classifiers.
+        /// </summary>
+        /// <param name="classifiers">The classifiers.</param>
+        /// <returns>
+        /// The aspects.
+        /// </returns>
+        private IEnumerable<IClassifier> GetAspects(IEnumerable<IClassifier> classifiers)
+        {
+            return classifiers.Where(c => c.IsAspect);
+        }
+
+        /// <summary>
+        /// Calculates the constructed generic dependencies.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="unsortedClassifiers">The unsorted classifiers.</param>
+        /// <returns>
+        /// The calculated constructed generic dependencies.
+        /// </returns>
+        private HashSet<ITypeInfo> ComputeConstructedGenericDependencies(
+            IModelConstructionContext constructionContext,
+            IList<IClassifier> unsortedClassifiers)
+        {
+            var genericDefinitions = unsortedClassifiers
+                .SelectMany(c => c.Parts)
+                .OfType<ITypeInfo>()
+                .Where(p => p.IsGenericTypeDefinition())
+                .ToList();
+            var constructedGenericsDependencies = new HashSet<ITypeInfo>(
+                unsortedClassifiers
+                    .SelectMany(c => c.GetDependencies(constructionContext))
+                    .Where(t => t.IsConstructedGenericType() && genericDefinitions.Contains(t.GenericTypeDefinition)));
+            while (true)
+            {
+                var newDependencies = constructedGenericsDependencies
+                    .SelectMany(d => d.GenericTypeArguments)
+                    .Where(t => !constructedGenericsDependencies.Contains(t) && 
+                                t.IsConstructedGenericType() && genericDefinitions.Contains(t.GenericTypeDefinition))
+                    .ToList();
+                if (!newDependencies.Any())
+                {
+                    break;
+                }
+
+                constructedGenericsDependencies.AddRange(newDependencies);
+            }
+
+            return constructedGenericsDependencies;
         }
     }
 }

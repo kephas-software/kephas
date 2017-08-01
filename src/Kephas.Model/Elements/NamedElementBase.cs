@@ -252,18 +252,6 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
-        /// Gets the model element dependencies.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        /// <returns>
-        /// An enumeration of dependencies.
-        /// </returns>
-        IEnumerable<IElementInfo> IConstructableElement.GetDependencies(IModelConstructionContext constructionContext)
-        {
-            return this.GetDependencies(constructionContext);
-        }
-
-        /// <summary>
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
@@ -281,32 +269,6 @@ namespace Kephas.Model.Elements
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddPart(part);
-        }
-
-        /// <summary>
-        /// Constructs the generic classifier.
-        /// </summary>
-        /// <param name="genericDefinition">The generic definition.</param>
-        /// <param name="classifierArguments">The classifier arguments.</param>
-        /// <param name="context">The context.</param>
-        void IConstructableElement.ConstructGenericClassifier(
-            IClassifier genericDefinition,
-            IEnumerable<ITypeInfo> classifierArguments,
-            IContext context)
-        {
-            this.ConstructGenericClassifier(genericDefinition, classifierArguments, context);
-        }
-
-        /// <summary>
-        /// Gets the model element dependencies.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        /// <returns>
-        /// An enumeration of dependencies.
-        /// </returns>
-        protected virtual IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext)
-        {
-            return ModelHelper.EmptyModelElements;
         }
 
         /// <summary>
@@ -334,19 +296,6 @@ namespace Kephas.Model.Elements
         protected virtual void AddMember(INamedElement member)
         {
             Contract.Requires(member != null);
-        }
-
-        /// <summary>
-        /// Constructs the generic classifier.
-        /// </summary>
-        /// <param name="genericDefinition">The generic definition.</param>
-        /// <param name="classifierArguments">The classifier arguments.</param>
-        /// <param name="context">The context.</param>
-        protected virtual void ConstructGenericClassifier(
-            IClassifier genericDefinition,
-            IEnumerable<ITypeInfo> classifierArguments,
-            IContext context)
-        {
         }
     }
 }

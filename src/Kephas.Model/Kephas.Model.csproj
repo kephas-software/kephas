@@ -36,6 +36,10 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
   </ItemGroup>
 

@@ -14,10 +14,13 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Construction;
+    using Kephas.Reflection;
     using Kephas.Runtime;
 
     /// <summary>
@@ -105,6 +108,82 @@ namespace Kephas.Model.Elements
             }
 
             element["RuntimeProjection"] = projection;
+        }
+
+        /// <summary>
+        /// Gets the model element classifier dependencies.
+        /// </summary>
+        /// <param name="classifier">The classifier to act on.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        public static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
+        {
+            var parts = classifier.Parts.OfType<ITypeInfo>().ToList();
+            return classifier.GetClassifierDependencies(constructionContext, parts);
+        }
+
+        /// <summary>
+        /// Gets the model element classifier dependencies.
+        /// </summary>
+        /// <param name="classifier">The classifier to act on.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="parts">The parts.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        public static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
+        {
+            var eligibleTypes = parts.SelectMany(classifier.GetDependencies)
+                .Select(t => constructionContext.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
+                .ToList();
+            return eligibleTypes;
+        }
+
+        /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="classifier">The classifier to act on.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        public static IEnumerable<ITypeInfo> GetDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
+        {
+            var parts = classifier.Parts.OfType<ITypeInfo>().ToList();
+            return parts.SelectMany(classifier.GetDependencies);
+        }
+
+        /// <summary>
+        /// Gets the model element dependencies.
+        /// </summary>
+        /// <param name="classifier">The classifier to act on.</param>
+        /// <param name="typeInfo">Information describing the type.</param>
+        /// <returns>
+        /// An enumeration of dependencies.
+        /// </returns>
+        public static IEnumerable<ITypeInfo> GetDependencies(this IClassifier classifier, ITypeInfo typeInfo)
+        {
+            var aspect = typeInfo as IClassifier;
+            if (aspect != null)
+            {
+                if (aspect.IsAspectOf(classifier))
+                {
+                    yield return aspect;
+                    yield break;
+                }
+            }
+
+            foreach (var baseType in typeInfo.BaseTypes)
+            {
+                yield return baseType;
+
+                if (baseType.IsConstructedGenericType())
+                {
+                    yield return baseType.GenericTypeDefinition;
+                }
+            }
         }
     }
 }

@@ -53,22 +53,5 @@ namespace Kephas.Model.Construction.Internal
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         void CompleteConstruction(IModelConstructionContext constructionContext);
-
-        /// <summary>
-        /// Gets the model element dependencies.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        /// <returns>
-        /// An enumeration of dependencies.
-        /// </returns>
-        IEnumerable<IElementInfo> GetDependencies(IModelConstructionContext constructionContext);
-
-        /// <summary>
-        /// Constructs the generic classifier.
-        /// </summary>
-        /// <param name="genericDefinition">The generic definition.</param>
-        /// <param name="classifierArguments">The classifier arguments.</param>
-        /// <param name="context">The context.</param>
-        void ConstructGenericClassifier(IClassifier genericDefinition, IEnumerable<ITypeInfo> classifierArguments, IContext context);
     }
 }

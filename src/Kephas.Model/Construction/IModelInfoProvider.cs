@@ -31,5 +31,19 @@ namespace Kephas.Model.Construction
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
         Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.
+        /// </summary>
+        /// <param name="nativeElementInfo">The native element information.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <returns>
+        /// The constructed generic type or <c>null</c> if the provider cannot handle the provided type information.
+        /// </returns>
+        /// <remarks>
+        /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
+        /// For any other errors an exception should be thrown.
+        /// </remarks>
+        IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext);
     }
 }

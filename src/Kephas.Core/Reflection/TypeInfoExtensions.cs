@@ -93,7 +93,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeInfo.GenericTypeParameters.Count > 0 && typeInfo.GenericTypeDefinition == null;
+            return typeInfo.GenericTypeParameters?.Count > 0 && typeInfo.GenericTypeDefinition == null;
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeInfo.GenericTypeArguments.Count > 0 && typeInfo.GenericTypeDefinition != null;
+            return typeInfo.GenericTypeArguments?.Count > 0 && typeInfo.GenericTypeDefinition != null;
         }
 
         /// <summary>

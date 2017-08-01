@@ -113,7 +113,7 @@ namespace Kephas.Model.Services
         {
             this.initialization.Start();
 
-            var constructionContext = new ModelConstructionContext(this.AmbientServices) { RuntimeModelElementFactory = this.runtimeModelElementFactory };
+            var constructionContext = this.CreateModelConstructionContext();
             var constructedModelSpace = this.CreateModelSpace(constructionContext);
             constructionContext.ModelSpace = constructedModelSpace;
 
@@ -122,7 +122,7 @@ namespace Kephas.Model.Services
                 var elementInfosCollectorTask = Task.WhenAll(this.ModelInfoProviders.Select(p => p.GetElementInfosAsync(constructionContext, cancellationToken)));
                 var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
 
-                constructionContext[nameof(IModelConstructionContext.ElementInfos)] = elementInfos;
+                constructionContext.ElementInfos = elementInfos;
                 var writableModelSpace = (IConstructableElement)constructedModelSpace;
                 writableModelSpace.CompleteConstruction(constructionContext);
                 if (writableModelSpace.ConstructionState.IsFaulted)
@@ -139,6 +139,27 @@ namespace Kephas.Model.Services
                 this.initialization.Fault(exception);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Creates the model construction context.
+        /// </summary>
+        /// <returns>
+        /// The new model construction context.
+        /// </returns>
+        protected virtual ModelConstructionContext CreateModelConstructionContext()
+        {
+            var constructionContext = new ModelConstructionContext(this.AmbientServices)
+                {
+                    RuntimeModelElementFactory = this.runtimeModelElementFactory,
+                };
+
+            constructionContext.TryGetElementInfo = 
+                nativeElementInfo => this.ModelInfoProviders
+                    .Select(p => p.TryGetElementInfo(nativeElementInfo, constructionContext))
+                    .FirstOrDefault(p => p != null);
+
+            return constructionContext;
         }
 
         /// <summary>
