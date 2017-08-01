@@ -71,6 +71,8 @@
     <Compile Include="Models\DiamondInheritanceModel\DiamondInheritance.cs" />
     <Compile Include="Elements\NamedElementBaseTest.cs" />
     <Compile Include="Models\DiamondInheritanceModel\DiamondInheritanceTest.cs" />
+    <Compile Include="Models\GenericModel\Generic.cs" />
+    <Compile Include="Models\GenericModel\GenericTest.cs" />
     <Compile Include="Models\MixinInheritanceModel\MixinInheritanceTest.cs" />
     <Compile Include="Models\MixinInheritanceModel\MixinInheritance.cs" />
     <Compile Include="ModelTestBase.cs" />
@@ -96,6 +98,7 @@
     </None>
     <None Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd" />
     <None Include="Models\DiamondInheritanceModel\DiamondInheritance.cd" />
+    <None Include="Models\GenericModel\Generic.cd" />
     <None Include="Models\MixinInheritanceModel\MixinInheritance.cd" />
     <None Include="packages.config" />
   </ItemGroup>

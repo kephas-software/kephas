@@ -573,11 +573,20 @@ namespace Kephas.Model.Elements
             {
                 if (aspect.IsAspectOf(this))
                 {
-                    return new[] { aspect };
+                    yield return aspect;
+                    yield break;
                 }
             }
 
-            return typeInfo.BaseTypes;
+            foreach (var baseType in typeInfo.BaseTypes)
+            {
+                if (baseType.IsConstructedGenericType())
+                {
+                    yield return baseType.GenericTypeDefinition;
+                }
+
+                yield return baseType;
+            }
         }
     }
 }

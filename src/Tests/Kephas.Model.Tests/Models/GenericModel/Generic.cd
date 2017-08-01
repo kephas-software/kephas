@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Kephas.Model.Tests.Models.GenericModel.IComplex&lt;T1, T2&gt;" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\GenericModel\Generic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.Tests.Models.GenericModel.IIntComplex" Collapsed="true">
+    <Position X="7.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GenericModel\Generic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.Tests.Models.GenericModel.IFloatComplex" Collapsed="true">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GenericModel\Generic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
