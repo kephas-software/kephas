@@ -60,5 +60,12 @@ namespace Kephas.Data.IO
             var dex = ex as DataIOException;
             return dex ?? new DataIOException(Strings.DataIOException_FromException_UnexpectedMessage, ex);
         }
+
+        /// <summary>Creates and returns a string representation of the current exception.</summary>
+        /// <returns>A string representation of the current exception.</returns>
+        public override string ToString()
+        {
+            return $"{this.Timestamp:s} {base.ToString()}";
+        }
     }
 }

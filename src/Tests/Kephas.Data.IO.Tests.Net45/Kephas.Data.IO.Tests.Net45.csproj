@@ -40,6 +40,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.IO.Tests\DataIOExceptionTest.cs">
+      <Link>DataIOExceptionTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\DataIOMessageTest.cs">
+      <Link>DataIOMessageTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO.Tests\DataStreams\DataStreamReaderTest.cs">
       <Link>DataStreams\DataStreamReaderTest.cs</Link>
     </Compile>

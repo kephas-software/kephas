@@ -41,6 +41,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataIOExceptionTest.cs" />
+    <Compile Include="DataIOMessageTest.cs" />
     <Compile Include="DataStreams\DataStreamReaderTest.cs" />
     <Compile Include="DataStreams\DataStreamWriterTest.cs" />
     <Compile Include="Export\DefaultDataExportServiceTest.cs" />
