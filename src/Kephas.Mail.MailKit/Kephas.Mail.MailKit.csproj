@@ -6,9 +6,9 @@
       <RootNamespace>Kephas.Mail.MailKit</RootNamespace>
       <SignAssembly>True</SignAssembly>
       <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-      <Version>3.10.0</Version>
-      <AssemblyVersion>3.10.0.0</AssemblyVersion>
-      <FileVersion>3.10.0.0</FileVersion>
+      <Version>3.11.0</Version>
+      <AssemblyVersion>3.11.0.0</AssemblyVersion>
+      <FileVersion>3.11.0.0</FileVersion>
       <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
       <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
       <Authors>Quartz Software SRL</Authors>
