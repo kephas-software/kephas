@@ -48,12 +48,12 @@ namespace Kephas.Data.Linq.Expressions
         /// <param name="activator">The activator.</param>
         public SubstituteTypeExpressionVisitor(IActivator activator)
             : this(
-                  activator, 
+                  activator,
                   new ISubstituteTypeConstantHandler[]
                                   {
-                                      new ListSubstituteTypeConstantHandler(), 
-                                      new EnumerableQuerySubstituteTypeConstantHandler(), 
-                                      new DataContextQueryableSubstituteTypeConstantHandler(), 
+                                      new ListSubstituteTypeConstantHandler(),
+                                      new EnumerableQuerySubstituteTypeConstantHandler(),
+                                      new DataContextQueryableSubstituteTypeConstantHandler(),
                                   })
         {
         }
@@ -140,7 +140,19 @@ namespace Kephas.Data.Linq.Expressions
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
-                var otherMember = concreteType.AsRuntimeTypeInfo().Properties[memberName];
+                IRuntimeElementInfo otherMember;
+                switch (node.Member)
+                {
+                    case FieldInfo _:
+                        otherMember = concreteType.AsRuntimeTypeInfo().Fields[memberName];
+                        break;
+                    case PropertyInfo _:
+                        otherMember = concreteType.AsRuntimeTypeInfo().Properties[memberName];
+                        break;
+                    default:
+                        return base.VisitMember(node);
+                }
+
                 var expr = this.Visit(node.Expression);
                 if (expr.Type.GetTypeInfo().IsInterface)
                 {

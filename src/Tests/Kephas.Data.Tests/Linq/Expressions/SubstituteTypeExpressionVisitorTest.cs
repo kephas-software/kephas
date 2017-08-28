@@ -51,6 +51,60 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
+        public void Visit_Where_captured_local_variable()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
+            activator.GetImplementationType(typeof(string).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(string).AsRuntimeTypeInfo());
+
+            var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
+                                                                  {
+                                                                      new Test { Name = "gigi" },
+                                                                      new Test { Name = "belogea" }
+                                                                  }).AsQueryable();
+            var gigi = "gigi";
+            var query = baseQuery.Where(t => t.Name == gigi);
+            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(Test), genericArg);
+
+            var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void Visit_Where_captured_local_variable_member_access()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
+            activator.GetImplementationType(typeof(string).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(string).AsRuntimeTypeInfo());
+
+            var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
+                                                                  {
+                                                                      new Test { Name = "gigi" },
+                                                                      new Test { Name = "belogea" }
+                                                                  }).AsQueryable();
+            var gigi = "gigi";
+            var query = baseQuery.Where(t => t.Name.Length == gigi.Length);
+            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(Test), genericArg);
+
+            var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
         public void Visit_OfType()
         {
             var activator = Substitute.For<IActivator>();
