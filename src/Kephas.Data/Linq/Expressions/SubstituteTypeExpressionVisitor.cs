@@ -78,8 +78,7 @@ namespace Kephas.Data.Linq.Expressions
         /// </returns>
         public override Expression Visit(Expression node)
         {
-            var lambdaExpression = node as LambdaExpression;
-            if (lambdaExpression != null)
+            if (node is LambdaExpression lambdaExpression)
             {
                 var parameters = lambdaExpression.Parameters.Select(p => (ParameterExpression)this.VisitParameter(p));
                 var body = this.Visit(lambdaExpression.Body);
