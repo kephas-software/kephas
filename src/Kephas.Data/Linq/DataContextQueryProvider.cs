@@ -193,9 +193,21 @@ namespace Kephas.Data.Linq
                 return expression;
             }
 
-            var substituteTypeExpressionVisitor = new SubstituteTypeExpressionVisitor(entityActivator);
-            expression = substituteTypeExpressionVisitor.Visit(expression);
+            var expressionVisitor = this.CreateQueryExpressionVisitor(entityActivator);
+            expression = expressionVisitor.Visit(expression);
             return expression;
+        }
+
+        /// <summary>
+        /// Creates an expression visitor used to visit the query expression.
+        /// </summary>
+        /// <param name="activator">The activator.</param>
+        /// <returns>
+        /// The new query expression visitor.
+        /// </returns>
+        protected virtual ExpressionVisitor CreateQueryExpressionVisitor(IActivator activator)
+        {
+            return new SubstituteTypeExpressionVisitor(activator);
         }
 
         /// <summary>
