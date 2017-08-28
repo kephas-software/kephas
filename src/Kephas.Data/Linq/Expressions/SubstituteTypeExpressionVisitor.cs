@@ -136,7 +136,7 @@ namespace Kephas.Data.Linq.Expressions
                 return node;
             }
 
-            var concreteType = this.TryGetConcreteType(node.Expression.Type);
+            var concreteType = this.TryGetConcreteType(node.Expression?.Type);
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
@@ -235,6 +235,11 @@ namespace Kephas.Data.Linq.Expressions
         /// <returns>The concerete type for an interface.</returns>
         private Type TryGetConcreteType(Type abstractType)
         {
+            if (abstractType == null)
+            {
+                return null;
+            }
+
             var collectionItemType = abstractType.TryGetCollectionItemType();
             if (collectionItemType == null)
             {
