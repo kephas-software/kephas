@@ -10,7 +10,6 @@
 namespace Kephas.Threading.Tasks
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
@@ -56,7 +55,7 @@ namespace Kephas.Threading.Tasks
         /// However, if there is no other chance than waiting for a task to complete synchronously,
         /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
         /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
-        /// the task chain must be exactly the same way configured, which is not practicable.
+        /// the task chain must be exactly the same way configured, which may not not be always the case.
         /// An alternative implementation might be the one provided below, but this must be tried if it really works:
         /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
         /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html

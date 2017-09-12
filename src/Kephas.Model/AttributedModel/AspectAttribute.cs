@@ -12,6 +12,8 @@ namespace Kephas.Model.AttributedModel
     using System;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Marks a mixin classifier as being an aspect of an other classifiers matching some condition.
     /// </summary>
@@ -27,7 +29,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="classifierFilter">The classifier filter.</param>
         public AspectAttribute(Func<IClassifier, bool> classifierFilter)
         {
-            Contract.Requires(classifierFilter != null);
+            Requires.NotNull(classifierFilter, nameof(classifierFilter));
 
             this.ClassifierFilter = classifierFilter;
         }

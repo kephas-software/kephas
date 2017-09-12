@@ -54,6 +54,9 @@ namespace Kephas.Data.Commands.Factory
         /// </returns>
         public IDataCommand CreateCommand(Type dataContextType, Type commandType)
         {
+            Requires.NotNull(dataContextType, nameof(dataContextType));
+            Requires.NotNull(commandType, nameof(commandType));
+
             var key = new DataCommandFactoryKey(dataContextType, commandType);
             var factory = this.commandFactories.GetOrAdd(key, _ => this.CreateCommandFactory(dataContextType, commandType));
             var dataCommand = factory();

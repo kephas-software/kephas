@@ -14,6 +14,7 @@ namespace Kephas.Reflection
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Services;
 
@@ -39,7 +40,7 @@ namespace Kephas.Reflection
         /// <param name="assemblyLoader">The assembly loader.</param>
         public DefaultTypeResolver(IAssemblyLoader assemblyLoader)
         {
-            Contract.Requires(assemblyLoader != null);
+            Requires.NotNull(assemblyLoader, nameof(assemblyLoader));
 
             this.assemblyLoader = assemblyLoader;
         }

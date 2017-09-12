@@ -12,7 +12,6 @@ namespace Kephas.Reflection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.Contracts;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -193,7 +192,7 @@ namespace Kephas.Reflection
         /// <returns>A static delegate for the provided static method.</returns>
         public static T CreateStaticDelegate<T>(this MethodInfo methodInfo)
         {
-            Contract.Requires(methodInfo != null);
+            Requires.NotNull(methodInfo, nameof(methodInfo));
 
             return (T)(object)methodInfo.CreateDelegate(typeof(T));
         }

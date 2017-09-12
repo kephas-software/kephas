@@ -90,6 +90,8 @@ namespace Kephas.Data.Conversion
         /// </returns>
         public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))
         {
+            Requires.NotNull(conversionContext, nameof(conversionContext));
+
             if (source == null)
             {
                 var exception = new DataConversionException(Strings.DefaultDataConversionService_NonTypedSourceIsNull_Exception);

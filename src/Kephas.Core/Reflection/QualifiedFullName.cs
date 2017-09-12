@@ -9,8 +9,9 @@
 
 namespace Kephas.Reflection
 {
-    using System.Diagnostics.Contracts;
     using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A qualified full name.
@@ -35,12 +36,12 @@ namespace Kephas.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="QualifiedFullName"/> class.
         /// </summary>
-        /// <param name="typeDefinition">The type definition.</param>
-        public QualifiedFullName(string typeDefinition)
+        /// <param name="qualifiedFullName">The qualified full name.</param>
+        public QualifiedFullName(string qualifiedFullName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(typeDefinition));
+            Requires.NotNullOrEmpty(qualifiedFullName, nameof(qualifiedFullName));
 
-            var parts = typeDefinition.Split(TypeDefinitionSeperator);
+            var parts = qualifiedFullName.Split(TypeDefinitionSeperator);
             this.TypeName = parts[TypeNameIndex].Trim();
             var assemblyName = (parts.Length > AssemblyNameIndex) ? parts[AssemblyNameIndex].Trim() : null;
             this.AssemblyName = string.IsNullOrWhiteSpace(assemblyName) ? null : new AssemblyName(assemblyName);

@@ -32,7 +32,7 @@ namespace Kephas
         public static ILogger GetLogger(this IAmbientServices ambientServices, string loggerName)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(!string.IsNullOrWhiteSpace(loggerName));
+            Requires.NotNullOrEmpty(loggerName, nameof(loggerName));
 
             return ambientServices.LogManager.GetLogger(loggerName);
         }

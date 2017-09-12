@@ -10,7 +10,6 @@
 namespace Kephas.Graphs
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
@@ -103,7 +102,7 @@ namespace Kephas.Graphs
         /// </returns>
         protected internal bool AddNode(IGraphNode node)
         {
-            Contract.Requires(node != null);
+            Requires.NotNull(node, nameof(node));
 
             if (this.nodes.Contains(node))
             {
