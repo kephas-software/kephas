@@ -360,7 +360,10 @@ namespace Kephas.Tests.Composition.Mef
             var mockConfiguration = Substitute.For<IAppConfiguration>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
-            var context = new CompositionContainerBuilderContext(new AmbientServices().RegisterService(mockLoggerManager).RegisterService(mockConfiguration).RegisterService(mockPlatformManager));
+            var context = new CompositionRegistrationContext(new AmbientServices()
+                                    .RegisterService(mockLoggerManager)
+                                    .RegisterService(mockConfiguration)
+                                    .RegisterService(mockPlatformManager));
             var factory = new MefCompositionContainerBuilder(context);
             return factory;
         }

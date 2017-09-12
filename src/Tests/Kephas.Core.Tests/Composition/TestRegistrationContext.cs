@@ -9,19 +9,21 @@
 
 namespace Kephas.Testing.Core.Services.Composition
 {
-    using Kephas.Services;
+    using Kephas.Composition.Hosting;
+
+    using NSubstitute;
 
     /// <summary>
     /// The test registration context.
     /// </summary>
-    public class TestRegistrationContext : Context
+    public class TestRegistrationContext : CompositionRegistrationContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestRegistrationContext"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional).</param>
         public TestRegistrationContext(IAmbientServices ambientServices = null)
-            : base(ambientServices)
+            : base(ambientServices ?? Substitute.For<IAmbientServices>())
         {
         }
     }

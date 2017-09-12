@@ -43,9 +43,9 @@ namespace Kephas.Composition.Hosting
         public const string AssemblyNamePatternConfigurationKey = "composition:assemblyFileNamePattern";
 
         /// <summary>
-        /// The context.
+        /// The composition builder context.
         /// </summary>
-        private readonly IContext context;
+        private readonly ICompositionRegistrationContext context;
 
         /// <summary>
         /// The composition assemblies.
@@ -62,10 +62,10 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="context">The context.</param>
         [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "Must register the ambient services in the composition context.")]
-        protected CompositionContainerBuilderBase(IContext context)
+        protected CompositionContainerBuilderBase(ICompositionRegistrationContext context)
         {
             Requires.NotNull(context, nameof(context));
-            Contract.Requires(context.AmbientServices != null);
+            Requires.NotNull(context.AmbientServices, nameof(context.AmbientServices));
 
             this.context = context;
             this.ExportProviders = new List<IExportProvider>();
@@ -308,8 +308,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
         {
-            Contract.Requires(factory != null);
-            Contract.Ensures(Contract.Result<TBuilder>() != null);
+            Requires.NotNull(factory, nameof(factory));
 
             var exportProvider = this.CreateFactoryExportProvider(factory, isShared);
             this.ExportProviders.Add(exportProvider);
@@ -332,10 +331,30 @@ namespace Kephas.Composition.Hosting
         {
             Requires.NotNull(serviceProvider, nameof(serviceProvider));
             Requires.NotNull(isServiceRegisteredFunc, nameof(isServiceRegisteredFunc));
-            Contract.Ensures(Contract.Result<TBuilder>() != null);
 
             var exportProvider = this.CreateServiceProviderExportProvider(serviceProvider, isServiceRegisteredFunc);
             this.ExportProviders.Add(exportProvider);
+
+            return (TBuilder)this;
+        }
+
+        /// <summary>
+        /// Adds the export provider.
+        /// </summary>
+        /// <remarks>
+        /// Can be used multiple times, the factories are added to the existing ones.
+        /// </remarks>
+        /// <param name="conventionsRegistrar">The conventions registrar.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public virtual TBuilder WithConventionsRegistrar(IConventionsRegistrar conventionsRegistrar)
+        {
+            Requires.NotNull(conventionsRegistrar, nameof(conventionsRegistrar));
+
+            var registrars = this.context.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
+            registrars.Add(conventionsRegistrar);
+            this.context.Registrars = registrars;
 
             return (TBuilder)this;
         }
@@ -352,8 +371,7 @@ namespace Kephas.Composition.Hosting
         /// </returns>
         public virtual TBuilder WithExportProvider(IExportProvider exportProvider)
         {
-            Contract.Requires(exportProvider != null);
-            Contract.Ensures(Contract.Result<TBuilder>() != null);
+            Requires.NotNull(exportProvider, nameof(exportProvider));
 
             this.ExportProviders.Add(exportProvider);
 

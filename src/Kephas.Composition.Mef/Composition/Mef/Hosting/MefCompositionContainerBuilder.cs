@@ -49,7 +49,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// Initializes a new instance of the <see cref="MefCompositionContainerBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public MefCompositionContainerBuilder(IContext context)
+        public MefCompositionContainerBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
             Requires.NotNull(context, nameof(context));

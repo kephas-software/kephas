@@ -18,7 +18,9 @@ namespace Kephas.Services.Composition
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Metadata;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -74,8 +76,12 @@ namespace Kephas.Services.Composition
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
+            Requires.NotNull(builder, nameof(builder));
+            Requires.NotNull(candidateTypes, nameof(candidateTypes));
+            Requires.NotNull(registrationContext, nameof(registrationContext));
+
             var logger = this.GetLogger(registrationContext);
 
             var conventions = builder;

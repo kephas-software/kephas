@@ -391,7 +391,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [SharedAppServiceContract(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
-        public class SingleTestService : ISingleTestAppService { }
+        public class SingleTestService : AttributedAppServiceConventionsRegistrarTest.ISingleTestAppService { }
 
         [OverridePriority(Priority.High)]
         public class SingleOverrideTestService : ISingleTestAppService { }

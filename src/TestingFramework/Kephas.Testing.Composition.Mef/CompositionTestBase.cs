@@ -53,7 +53,7 @@ namespace Kephas.Testing.Composition.Mef
                 .RegisterService(logManager)
                 .RegisterService(appConfiguration)
                 .RegisterService(appRuntime);
-            return new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServices));
+            return new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)

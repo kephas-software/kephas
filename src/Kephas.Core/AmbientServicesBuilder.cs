@@ -131,7 +131,7 @@ namespace Kephas
             where TContainerBuilder : ICompositionContainerBuilder
         {
             var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
-            var context = new CompositionContainerBuilderContext(this.AmbientServices);
+            var context = new CompositionRegistrationContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
 
@@ -151,7 +151,7 @@ namespace Kephas
             where TContainerBuilder : ICompositionContainerBuilder
         {
             var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
-            var context = new CompositionContainerBuilderContext(this.AmbientServices);
+            var context = new CompositionRegistrationContext(this.AmbientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
 

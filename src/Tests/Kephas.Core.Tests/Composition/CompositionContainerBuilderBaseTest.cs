@@ -82,12 +82,12 @@ namespace Kephas.Core.Tests.Composition
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             public TestCompositionContainerBuilder()
-                : base(new CompositionContainerBuilderContext(new AmbientServices()))
+                : base(new CompositionRegistrationContext(new AmbientServices()))
             {
             }
 
             public TestCompositionContainerBuilder(ILogManager logManager, IAppConfiguration appConfiguration, IAppRuntime appRuntime)
-                : base(new CompositionContainerBuilderContext(new AmbientServices().RegisterService(logManager).RegisterService(appConfiguration).RegisterService(appRuntime)))
+                : base(new CompositionRegistrationContext(new AmbientServices().RegisterService(logManager).RegisterService(appConfiguration).RegisterService(appRuntime)))
             {
             }
 

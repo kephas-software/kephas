@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests
             /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
             /// </summary>
             /// <param name="context">The context.</param>
-            public TestCompositionContainerBuilder(IContext context)
+            public TestCompositionContainerBuilder(ICompositionRegistrationContext context)
                 : base(context)
             {
             }
@@ -121,10 +121,10 @@ namespace Kephas.Core.Tests
         /// <summary>
         /// Missing required constructor with parameter of type ICompositionContainerBuilderContext.
         /// </summary>
-        public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<BadTestCompositionContainerBuilder>
+        public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<AmbientServicesBuilderTest.BadTestCompositionContainerBuilder>
         {
             public BadTestCompositionContainerBuilder()
-                : base(Substitute.For<IContext>())
+                : base(Substitute.For<ICompositionRegistrationContext>())
             {
             }
 

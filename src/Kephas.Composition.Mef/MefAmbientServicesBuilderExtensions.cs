@@ -32,7 +32,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
             
-            var containerBuilder = new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServicesBuilder.AmbientServices));
+            var containerBuilder = new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServicesBuilder.AmbientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
@@ -49,7 +49,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
-            var containerBuilder = new MefCompositionContainerBuilder(new CompositionContainerBuilderContext(ambientServicesBuilder.AmbientServices));
+            var containerBuilder = new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServicesBuilder.AmbientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 

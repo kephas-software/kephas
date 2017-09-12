@@ -15,7 +15,9 @@ namespace Kephas.Composition.Mef.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Resources;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -30,8 +32,12 @@ namespace Kephas.Composition.Mef.Conventions
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext)
+        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
+            Requires.NotNull(builder, nameof(builder));
+            Requires.NotNull(candidateTypes, nameof(candidateTypes));
+            Requires.NotNull(registrationContext, nameof(registrationContext));
+
             var mefBuilder = builder as IMefConventionBuilderProvider;
             if (mefBuilder == null)
             {
@@ -47,6 +53,6 @@ namespace Kephas.Composition.Mef.Conventions
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
-        protected abstract void RegisterConventions(ConventionBuilder builder, IEnumerable<TypeInfo> candidateTypes, IContext registrationContext);
+        protected abstract void RegisterConventions(ConventionBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext);
     }
 }

@@ -11,16 +11,15 @@ namespace Kephas.Composition.Conventions
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
 
     /// <summary>
     /// Extension methods for <see cref="IConventionsBuilder"/>.
@@ -37,18 +36,20 @@ namespace Kephas.Composition.Conventions
         /// <see cref="IConventionsRegistrar" />.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <param name="conventionTypes">The convention types.</param>
+        /// <param name="registrarTypes">The convention registrar types.</param>
         /// <param name="parts">The parts.</param>
         /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> conventionTypes, IEnumerable<Type> parts, IContext registrationContext)
+        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> registrarTypes, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
-            Contract.Requires(conventionTypes != null);
+            Requires.NotNull(registrarTypes, nameof(registrarTypes));
+            Requires.NotNull(parts, nameof(parts));
+            Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            return RegisterConventionsCore(builder, () => conventionTypes.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
+            return RegisterConventionsCore(builder, () => registrarTypes.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
         }
 
         /// <summary>
@@ -62,11 +63,12 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts, IContext registrationContext)
+        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(assemblies, nameof(assemblies));
             Requires.NotNull(parts, nameof(parts));
+            Requires.NotNull(registrationContext, nameof(registrationContext));
 
             return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
         }
@@ -81,13 +83,24 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts, IContext registrationContext)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
 
-            var partInfos = parts.Select(p => p.GetTypeInfo()).ToList();
+            var partsList = parts.ToList();
+            if (registrationContext.Parts != null)
+            {
+                partsList.AddRange(registrationContext.Parts);
+            }
+
+            var partInfos = partsList.Select(p => p.GetTypeInfo()).ToList();
             var registrarTypes = registrarTypesProvider();
             var registrars = registrarTypes.Select(t => (IConventionsRegistrar)t.CreateInstance()).ToList();
+            if (registrationContext.Registrars != null)
+            {
+                registrars.AddRange(registrationContext.Registrars);
+            }
+
             var logger = typeof(ConventionsBuilderExtensions).GetLogger(registrationContext);
 
             // apply the convention builders
