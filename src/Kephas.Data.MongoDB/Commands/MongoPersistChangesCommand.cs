@@ -28,7 +28,7 @@ namespace Kephas.Data.MongoDB.Commands
     using global::MongoDB.Driver;
 
     /// <summary>
-    /// Command for persisting changes for <see cref="MongoDataContext"/>.
+    /// Command for persisting changes targeting <see cref="MongoDataContext"/>.
     /// </summary>
     [DataContextType(typeof(MongoDataContext))]
     public class MongoPersistChangesCommand : PersistChangesCommand

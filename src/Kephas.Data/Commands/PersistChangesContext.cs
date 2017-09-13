@@ -9,12 +9,10 @@
 
 namespace Kephas.Data.Commands
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// A operationContext for persisting changes.
+    /// An operation context for persisting changes.
     /// </summary>
     public class PersistChangesContext : DataOperationContext, IPersistChangesContext
     {

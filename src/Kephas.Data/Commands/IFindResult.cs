@@ -10,7 +10,7 @@
 namespace Kephas.Data.Commands
 {
     /// <summary>
-    /// Contract for the find result.
+    /// Interface for the find result.
     /// </summary>
     public interface IFindResult : IDataCommandResult
     {
