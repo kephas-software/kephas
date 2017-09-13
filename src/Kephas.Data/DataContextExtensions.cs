@@ -331,7 +331,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
 
             var command = (IDiscardChangesCommand)dataContext.CreateCommand(typeof(IDiscardChangesCommand));
-            var persistContext = new DataOperationContext(dataContext);
+            var persistContext = new DiscardChangesContext(dataContext);
             var result = command.Execute(persistContext);
             return result;
         }

@@ -38,7 +38,7 @@ namespace Kephas.Data.Tests.Commands
             entityInfo = new EntityInfo("notchanged") { ChangeState = ChangeState.NotChanged };
             localCache.Add(entityInfo);
 
-            var result = cmd.Execute(new DataOperationContext(dataContext));
+            var result = cmd.Execute(new DiscardChangesContext(dataContext));
             Assert.AreSame(DataCommandResult.Success, result);
             Assert.AreEqual(3, localCache.Count);
             Assert.IsTrue(localCache.All(e => e.Value.ChangeState == ChangeState.NotChanged));
