@@ -154,7 +154,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task InitializeAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task InitializeAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
         {
             this.Initialize(entity, entityInfo, operationContext);
 
@@ -186,7 +186,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
-        public virtual Task<IDataValidationResult> ValidateAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<IDataValidationResult> ValidateAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(this.Validate(entity, entityInfo, operationContext));
         }
