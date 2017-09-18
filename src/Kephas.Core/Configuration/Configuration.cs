@@ -43,7 +43,7 @@ namespace Kephas.Configuration
         /// Initializes a new instance of the <see cref="Configuration{TSettings}"/> class.
         /// </summary>
         /// <param name="providerFactories">The provider factories.</param>
-        protected Configuration(ICollection<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>> providerFactories)
+        public Configuration(ICollection<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>> providerFactories)
         {
             Requires.NotNull(providerFactories, nameof(providerFactories));
 
@@ -74,7 +74,7 @@ namespace Kephas.Configuration
             var factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == typeof(TSettings));
             if (factory == null)
             {
-                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType.GetTypeInfo().IsAssignableFrom(typeof(TSettings).GetTypeInfo()));
+                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType?.GetTypeInfo().IsAssignableFrom(typeof(TSettings).GetTypeInfo()) ?? false);
                 if (factory == null)
                 {
                     factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == null);

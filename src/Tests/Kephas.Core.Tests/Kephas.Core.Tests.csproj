@@ -64,6 +64,7 @@
     <Compile Include="Composition\Conventions\ConventionsBuilderExtensionsTest.cs" />
     <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapterTest.cs" />
     <Compile Include="Composition\TestRegistrationContext.cs" />
+    <Compile Include="Configuration\ConfigurationTest.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />

@@ -41,9 +41,9 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata" /> class.
         /// </summary>
-        /// <param name="processingPriority">The processing priority.</param>
-        /// <param name="overridePriority">  The override priority.</param>
-        /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
         public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(null)
         {
