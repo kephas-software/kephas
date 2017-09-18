@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -194,6 +194,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Endpoints.Net45", "Kephas.Data.Endpoints.Net45\Kephas.Data.Endpoints.Net45.csproj", "{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Log4Net.Net45", "Kephas.Logging.Log4Net.Net45\Kephas.Logging.Log4Net.Net45.csproj", "{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore", "Kephas.AspNetCore\Kephas.AspNetCore.csproj", "{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -509,6 +511,10 @@ Global
 		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -572,5 +578,8 @@ Global
 		{D9542655-DB2A-4880-B98F-AB51EDB47B8D} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{11B23B24-BFFC-4ECB-B31F-B00DF6F08ACB} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{B29C5428-A15E-4318-A8CF-5EF8E4E10FBA} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
 	EndGlobalSection
 EndGlobal
