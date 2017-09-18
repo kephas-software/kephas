@@ -134,14 +134,14 @@
     <Compile Include="..\Kephas.Platform.Net46\Application\PreserveCultureThreadContextFeatureManager.cs">
       <Link>Application\PreserveCultureThreadContextFeatureManager.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Platform.Net46\Configuration\AppSettingsConfiguration.cs">
-      <Link>Configuration\AppSettingsConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Platform.Net46\Platform\Net\NetAmbientServicesBuilderExtensions.cs">
       <Link>Platform\Net\NetAmbientServicesBuilderExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Platform.Net46\Reflection\NetAssemblyLoader.cs">
       <Link>Reflection\NetAssemblyLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Platform\Configuration\AppSettingsConfiguration.cs">
+      <Link>Configuration\AppSettingsConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

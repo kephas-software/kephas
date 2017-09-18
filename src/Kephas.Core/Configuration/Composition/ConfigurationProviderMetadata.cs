@@ -1,0 +1,46 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ConfigurationProviderMetadata.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the configuration provider metadata class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Configuration.Composition
+{
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Collections;
+    using Kephas.Services.Composition;
+
+    /// <summary>
+    /// A configuration provider metadata.
+    /// </summary>
+    public class ConfigurationProviderMetadata : AppServiceMetadata
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationProviderMetadata"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        public ConfigurationProviderMetadata(IDictionary<string, object> metadata)
+            : base(metadata)
+        {
+            if (metadata == null)
+            {
+                return;
+            }
+
+            this.SettingsType = (Type)metadata.TryGetValue(nameof(this.SettingsType));
+        }
+
+        /// <summary>
+        /// Gets the type of the settings.
+        /// </summary>
+        /// <value>
+        /// The type of the settings.
+        /// </value>
+        public Type SettingsType { get; }
+    }
+}

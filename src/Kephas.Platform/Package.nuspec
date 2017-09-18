@@ -26,11 +26,9 @@
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
-            <group targetFramework="net46">
-                <dependency id="System.IO.FileSystem" version="4.3.0" />
-            </group>
-            <group targetFramework="netstandard1.5">
-                <dependency id="System.IO.FileSystem" version="4.3.0" />
+            <group targetFramework="netstandard2.0">
+                <dependency id="System.Runtime.Loader" version="4.3.0" />
+                <dependency id="System.Configuration.ConfigurationManager" version="4.4.0" />
             </group>
         </dependencies>
         <references>
@@ -39,9 +37,9 @@
         <tags>kephas framework platform net quartz-software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.dll" target="lib\netstandard1.5" />
-        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.pdb" target="lib\netstandard1.5" />
-        <file src="bin\$configuration$\netstandard1.5\Kephas.Platform.xml" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.xml" target="lib\netstandard2.0" />
         <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.dll" target="lib\net46" />
         <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.pdb" target="lib\net46" />
         <file src="..\Kephas.Platform.Net46\bin\$configuration$\Kephas.Platform.xml" target="lib\net46" />
