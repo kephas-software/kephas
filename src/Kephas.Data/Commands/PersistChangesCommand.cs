@@ -83,7 +83,7 @@ namespace Kephas.Data.Commands
                             var currentIteration = 0;
                             const int MaxIterations = 10;
 
-                            var modifiedEntries = await this.DetectModifiedEntriesAsync(operationContext, cancellationToken).PreserveThreadContext();
+                            var modifiedEntries = this.DetectModifiedEntries(operationContext);
 
                             while (modifiedEntries.Count > 0)
                             {
@@ -102,7 +102,7 @@ namespace Kephas.Data.Commands
                                 await this.ExecuteAfterSaveBehaviorsAsync(operationContext, modifiedEntries, cancellationToken).PreserveThreadContext();
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
-                                modifiedEntries = await this.DetectModifiedEntriesAsync(operationContext, cancellationToken).PreserveThreadContext();
+                                modifiedEntries = this.DetectModifiedEntries(operationContext);
                                 currentIteration++;
                             }
                         }
@@ -217,25 +217,22 @@ namespace Kephas.Data.Commands
         /// Detects the modified entries and returns them.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A list of modified entries tuples.
+        /// A list of modified entries.
         /// </returns>
-        protected virtual Task<IList<IEntityInfo>> DetectModifiedEntriesAsync(
-            IPersistChangesContext operationContext,
-            CancellationToken cancellationToken)
+        protected virtual IList<IEntityInfo> DetectModifiedEntries(IPersistChangesContext operationContext)
         {
             var localCache = this.TryGetLocalCache(operationContext.DataContext);
             if (localCache == null)
             {
-                return Task.FromResult<IList<IEntityInfo>>(new List<IEntityInfo>());
+                return new List<IEntityInfo>();
             }
 
             var changes = localCache.Values
                 .Where(e => e.ChangeState != ChangeState.NotChanged)
                 .ToList();
 
-            return Task.FromResult<IList<IEntityInfo>>(changes);
+            return changes;
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Kephas.Data
     public interface IDataContext : IContext, IIdentifiable, IDisposable, IInitializable
     {
         /// <summary>
-        /// Gets a query over the entity type for the given query operationContext, if any is provided.
+        /// Gets a query over the entity type for the given query operation context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="queryOperationContext">Context for the query.</param>

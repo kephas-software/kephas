@@ -13,15 +13,15 @@ namespace Kephas.Data.Commands
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Interface for find one context.
+    /// Interface for data operation contexts of the <see cref="IFindOneCommand"/>.
     /// </summary>
     public interface IFindOneContext : IDataOperationContext
     {
         /// <summary>
-        /// Gets the identifier of the entity to find.
+        /// Gets the criteria of the entity to find.
         /// </summary>
         /// <value>
-        /// The identifier of the entity.
+        /// The criteria of the entity to find.
         /// </value>
         Expression Criteria { get; }
 
@@ -43,16 +43,20 @@ namespace Kephas.Data.Commands
     }
 
     /// <summary>
-    /// Generic contract for find one contexts.
+    /// Generic interface for data operation contexts of the <see cref="IFindOneCommand"/>.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
     public interface IFindOneContext<TEntity> : IFindOneContext
     {
         /// <summary>
-        /// Gets the criteria.
+        /// Gets the criteria of the entity to find.
         /// </summary>
+        /// <remarks>
+        /// Overrides the untyped expression from the base interface
+        /// to provide LINQ-support.
+        /// </remarks>
         /// <value>
-        /// The criteria.
+        /// The criteria of the entity to find.
         /// </value>
         new Expression<Func<TEntity, bool>> Criteria { get; }
     }

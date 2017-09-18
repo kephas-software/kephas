@@ -10,7 +10,7 @@
 namespace Kephas.Data.Commands
 {
     /// <summary>
-    /// Contract for persisting changes operationContext.
+    /// Context interface for persisting changes operation.
     /// </summary>
     public interface IPersistChangesContext : IDataOperationContext
     {
