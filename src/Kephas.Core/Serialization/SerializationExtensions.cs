@@ -40,7 +40,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -73,7 +73,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -103,7 +103,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -125,7 +125,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -146,7 +146,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -168,7 +168,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -193,7 +193,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             object obj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -224,7 +224,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             object obj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -246,7 +246,7 @@ namespace Kephas.Serialization
             this ISerializationService serializationService,
             object obj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -267,7 +267,7 @@ namespace Kephas.Serialization
             this ISerializer serializer,
             object obj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializer, nameof(serializer));
 
@@ -297,7 +297,7 @@ namespace Kephas.Serialization
             this ISerializer serializer,
             string serializedObj,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(serializer, nameof(serializer));
 

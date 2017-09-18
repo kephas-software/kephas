@@ -40,7 +40,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public override async Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
         {
             var getMatchingEntities = GetMatchingEntitiesMethod.MakeGenericMethod(operationContext.EntityType);
             var entitiesPromise = (Task<IEnumerable<object>>)getMatchingEntities.Call(this, operationContext, cancellationToken);

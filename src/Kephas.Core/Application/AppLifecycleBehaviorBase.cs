@@ -28,7 +28,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }
@@ -41,7 +41,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }
@@ -58,7 +58,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }
@@ -71,7 +71,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }

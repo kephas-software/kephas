@@ -35,7 +35,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous initialization.
@@ -45,7 +45,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called before a feature starts its asynchronous finalization.
@@ -59,7 +59,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous finalization.
@@ -69,6 +69,6 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
     }
 }

@@ -54,7 +54,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override Task<TResult> ExecuteAsync(
             TOperationContext operationContext, 
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(this.Execute(operationContext));
         }

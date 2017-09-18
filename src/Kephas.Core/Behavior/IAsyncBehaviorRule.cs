@@ -26,7 +26,7 @@ namespace Kephas.Behavior
         /// <returns>
         /// A promise of a value indicating whether the rule may be applied or not.
         /// </returns>
-        Task<bool> CanApplyAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> CanApplyAsync(TContext context, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the behavior value asynchronously.
@@ -36,7 +36,7 @@ namespace Kephas.Behavior
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        Task<IBehaviorValue> GetValueAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IBehaviorValue> GetValueAsync(TContext context, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -54,6 +54,6 @@ namespace Kephas.Behavior
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        new Task<IBehaviorValue<TValue>> GetValueAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        new Task<IBehaviorValue<TValue>> GetValueAsync(TContext context, CancellationToken cancellationToken = default);
     }
 }

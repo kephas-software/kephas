@@ -45,7 +45,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Finalizes the application asynchronously.
@@ -55,6 +55,6 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default);
     }
 }

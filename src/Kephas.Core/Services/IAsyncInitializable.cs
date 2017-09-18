@@ -25,6 +25,6 @@ namespace Kephas.Services
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default);
     }
 }

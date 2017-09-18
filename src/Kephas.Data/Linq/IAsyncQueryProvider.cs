@@ -30,7 +30,7 @@ namespace Kephas.Data.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Asynchronously executes the strongly-typed query represented by a specified expression tree.
@@ -44,6 +44,6 @@ namespace Kephas.Data.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default);
     }
 }

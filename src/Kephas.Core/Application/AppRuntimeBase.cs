@@ -90,7 +90,7 @@ namespace Kephas.Application
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        public virtual async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default)
         {
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.

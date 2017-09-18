@@ -31,6 +31,6 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default);
     }
 }

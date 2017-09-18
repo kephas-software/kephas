@@ -28,6 +28,6 @@ namespace Kephas.Model.Runtime
         /// <returns>
         /// A promise of an enumeration of runtime elements.
         /// </returns>
-        Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -35,7 +35,7 @@ namespace Kephas.Messaging.Server
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default(CancellationToken));
+        Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default);
     }
 
     /// <summary>

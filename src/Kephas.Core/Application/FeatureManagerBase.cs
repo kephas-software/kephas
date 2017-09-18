@@ -50,7 +50,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             this.InitializationMonitor.Start();
 
@@ -74,7 +74,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             this.FinalizationMonitor.Start();
 

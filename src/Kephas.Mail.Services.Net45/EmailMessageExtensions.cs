@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Mail.Net46
+namespace Kephas.Mail
 {
     using System.Diagnostics.Contracts;
     using System.Net.Mail;

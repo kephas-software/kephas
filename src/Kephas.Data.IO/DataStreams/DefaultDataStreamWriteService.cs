@@ -52,7 +52,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A task to await.
         /// </returns>
-        public Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataStream, nameof(dataStream));
 

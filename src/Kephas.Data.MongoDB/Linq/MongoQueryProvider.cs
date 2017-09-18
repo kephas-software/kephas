@@ -45,7 +45,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
             var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
@@ -66,7 +66,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();

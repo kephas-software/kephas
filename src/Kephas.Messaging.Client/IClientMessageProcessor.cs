@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Client
         /// <returns>
         /// The response promise.
         /// </returns>
-        Task<IMessage> ProcessAsync(IMessage message, CancellationToken token = default(CancellationToken));
+        Task<IMessage> ProcessAsync(IMessage message, CancellationToken token = default);
 
         /// <summary>
         /// Processes the specified message asynchronously by sending it to the server without waiting for a response.

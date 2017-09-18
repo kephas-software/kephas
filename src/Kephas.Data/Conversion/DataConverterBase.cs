@@ -33,7 +33,7 @@ namespace Kephas.Data.Conversion
             TSource source,
             TTarget target,
             IDataConversionContext conversionContext,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.
@@ -49,7 +49,7 @@ namespace Kephas.Data.Conversion
             object source,
             object target,
             IDataConversionContext conversionContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return this.ConvertAsync((TSource)source, (TTarget)target, conversionContext, cancellationToken);
         }

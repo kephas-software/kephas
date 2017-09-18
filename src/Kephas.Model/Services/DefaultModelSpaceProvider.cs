@@ -109,7 +109,7 @@ namespace Kephas.Model.Services
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
             this.initialization.Start();
 

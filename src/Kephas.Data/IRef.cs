@@ -42,7 +42,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        Task<object> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -60,6 +60,6 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        new Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken));
+        new Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
     }
 }

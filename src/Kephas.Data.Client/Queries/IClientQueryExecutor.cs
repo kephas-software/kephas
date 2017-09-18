@@ -31,6 +31,6 @@ namespace Kephas.Data.Client.Queries
         /// </returns>
         Task<IList<object>> ExecuteQueryAsync(
             ClientQuery query,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

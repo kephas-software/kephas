@@ -25,7 +25,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataCommandResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -45,6 +45,6 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

@@ -82,7 +82,7 @@ namespace Kephas.Messaging.Tests.Server
             compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(new ExportFactory<IMessageHandler>(() => handler));
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
 
             Assert.AreSame(expectedResponse, result);
         }
@@ -94,7 +94,7 @@ namespace Kephas.Messaging.Tests.Server
             compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(null);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<MissingHandlerException>());
+            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default), Throws.InstanceOf<MissingHandlerException>());
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Kephas.Messaging.Tests.Server
             compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
                 .Returns(new ExportFactory<IMessageHandler>(() => handler));
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken)), Throws.InstanceOf<InvalidOperationException>());
+            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default), Throws.InstanceOf<InvalidOperationException>());
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Kephas.Messaging.Tests.Server
                 .Returns(new ExportFactory<IMessageHandler>(() => handler));
 
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
 
             Assert.LessOrEqual(1, handler.ReceivedCalls().Count());
         }
@@ -154,7 +154,7 @@ namespace Kephas.Messaging.Tests.Server
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
 
             Assert.AreEqual(2, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -188,7 +188,7 @@ namespace Kephas.Messaging.Tests.Server
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
+            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
 
             Assert.AreEqual(1, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -218,7 +218,7 @@ namespace Kephas.Messaging.Tests.Server
             InvalidOperationException thrownException = null;
             try
             {
-                var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default(CancellationToken));
+                var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
             }
             catch (InvalidOperationException ex)
             {

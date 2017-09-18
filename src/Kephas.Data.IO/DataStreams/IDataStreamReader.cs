@@ -40,6 +40,6 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A promise of the deserialized entities.
         /// </returns>
-        Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default);
     }
 }

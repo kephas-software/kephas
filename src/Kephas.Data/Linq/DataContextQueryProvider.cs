@@ -145,7 +145,7 @@ namespace Kephas.Data.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public virtual Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(this.Execute(expression));
         }
@@ -162,7 +162,7 @@ namespace Kephas.Data.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(this.Execute<TResult>(expression));
         }

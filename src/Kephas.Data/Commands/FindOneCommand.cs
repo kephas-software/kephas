@@ -43,7 +43,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public override async Task<IFindResult> ExecuteAsync(IFindOneContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<IFindResult> ExecuteAsync(IFindOneContext operationContext, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(operationContext, nameof(operationContext));
             Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));

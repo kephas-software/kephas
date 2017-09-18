@@ -29,7 +29,7 @@ namespace Kephas.Data.Client.Queries
         /// <returns>
         /// A list of client entities.
         /// </returns>
-        public Task<IList<object>> ExecuteQueryAsync(ClientQuery query, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IList<object>> ExecuteQueryAsync(ClientQuery query, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IList<object>>(null);
         }

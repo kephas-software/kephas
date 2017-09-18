@@ -29,7 +29,7 @@ namespace Kephas.Behavior
         /// <returns>
         /// A promise of a value indicating whether the rule may be applied or not.
         /// </returns>
-        public virtual Task<bool> CanApplyAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<bool> CanApplyAsync(TContext context, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
         }
@@ -56,6 +56,6 @@ namespace Kephas.Behavior
         /// <returns>
         /// A promise of the behavior value.
         /// </returns>
-        public abstract Task<IBehaviorValue<TValue>> GetValueAsync(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        public abstract Task<IBehaviorValue<TValue>> GetValueAsync(TContext context, CancellationToken cancellationToken = default);
     }
 }

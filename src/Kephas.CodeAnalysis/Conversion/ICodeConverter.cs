@@ -32,6 +32,6 @@ namespace Kephas.Conversion
         Task<IEnumerable<IElementInfo>> ConvertCodeAsync(
             IEnumerable<IElementInfo> codeElements,
             ICodeConversionContext codeConversionContext,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

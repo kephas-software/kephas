@@ -29,6 +29,6 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        Task InitializeAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task InitializeAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

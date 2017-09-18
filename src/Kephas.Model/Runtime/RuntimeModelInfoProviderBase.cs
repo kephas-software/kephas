@@ -64,7 +64,7 @@ namespace Kephas.Model.Runtime
         /// </returns>
         public async Task<IEnumerable<IElementInfo>> GetElementInfosAsync(
             IModelConstructionContext constructionContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IEnumerable<IElementInfo> elementInfos = null;
             await Profiler.WithInfoStopwatchAsync(

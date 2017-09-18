@@ -28,7 +28,7 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        Task<IDataConversionResult> ConvertAsync(object source, object target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataConversionResult> ConvertAsync(object source, object target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -49,6 +49,6 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        Task<IDataConversionResult> ConvertAsync(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataConversionResult> ConvertAsync(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default);
     }
 }

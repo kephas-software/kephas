@@ -69,7 +69,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override async Task<IDataCommandResult> ExecuteAsync(
             IPersistChangesContext operationContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var changes = 0;
             Exception exception = null;

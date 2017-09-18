@@ -48,7 +48,7 @@ namespace Kephas.Web.Owin.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             var owinAppContext = appContext as IOwinAppContext;
             if (owinAppContext == null)
@@ -67,7 +67,7 @@ namespace Kephas.Web.Owin.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             var owinAppContext = appContext as IOwinAppContext;
             if (owinAppContext == null)

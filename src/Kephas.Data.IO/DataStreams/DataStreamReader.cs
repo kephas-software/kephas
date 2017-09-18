@@ -70,7 +70,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A promise of the deserialized entities.
         /// </returns>
-        public virtual async Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual async Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataStream, nameof(dataStream));
 

@@ -17,7 +17,7 @@ namespace Kephas.Configuration
     /// </summary>
     /// <typeparam name="TSettings">Type of the settings.</typeparam>
     [SharedAppServiceContract]
-    public interface IConfiguration<out TSettings>: IExpando
+    public interface IConfiguration<out TSettings> : IExpando
     {
         /// <summary>
         /// Gets the settings associated to this configuration.

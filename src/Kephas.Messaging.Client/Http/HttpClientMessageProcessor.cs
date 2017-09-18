@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Client.Http
         /// <returns>
         /// The response promise.
         /// </returns>
-        public Task<IMessage> ProcessAsync(IMessage message, CancellationToken token = default(CancellationToken))
+        public Task<IMessage> ProcessAsync(IMessage message, CancellationToken token = default)
         {
             throw new System.NotImplementedException();
         }

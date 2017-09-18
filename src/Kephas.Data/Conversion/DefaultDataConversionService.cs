@@ -88,7 +88,7 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(conversionContext, nameof(conversionContext));
 
@@ -155,7 +155,7 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        protected virtual async Task<IDataConversionResult> ConvertCoreAsync(object source, TypeInfo sourceType, object target, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))
+        protected virtual async Task<IDataConversionResult> ConvertCoreAsync(object source, TypeInfo sourceType, object target, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken = default)
         {
             var matchingConvertersDictionary = this.convertersCache.GetOrAdd(sourceType, _ => new ConcurrentDictionary<TypeInfo, IList<IDataConverter>>());
             var matchingConverters = matchingConvertersDictionary.GetOrAdd(targetType, _ => this.ComputeMatchingConverters(sourceType, targetType));

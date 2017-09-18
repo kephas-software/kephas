@@ -31,6 +31,6 @@ namespace Kephas.Data.IO.DataStreams
         /// <returns>
         /// A task to await.
         /// </returns>
-        Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default);
     }
 }

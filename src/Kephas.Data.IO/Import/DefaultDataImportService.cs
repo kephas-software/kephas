@@ -90,7 +90,7 @@ namespace Kephas.Data.IO.Import
         public async Task<IDataIOResult> ImportDataAsync(
             DataStream dataSource,
             IDataImportContext context,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context.SourceDataContext, nameof(context.SourceDataContext));
 
@@ -230,7 +230,7 @@ namespace Kephas.Data.IO.Import
             /// <returns>
             /// A data exchange result.
             /// </returns>
-            public async Task<IDataIOResult> ExecuteAsync(CancellationToken cancellationToken = default(CancellationToken))
+            public async Task<IDataIOResult> ExecuteAsync(CancellationToken cancellationToken = default)
             {
                 var result = new DataIOResult();
 
@@ -285,7 +285,7 @@ namespace Kephas.Data.IO.Import
             /// <param name="result">The result.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>A task for continuation.</returns>
-            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IDataIOResult result, CancellationToken cancellationToken = default(CancellationToken))
+            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IDataIOResult result, CancellationToken cancellationToken = default)
             {
                 var importEntries = sourceEntities.Select(this.AttachSourceEntity).ToList();
 
@@ -354,7 +354,7 @@ namespace Kephas.Data.IO.Import
             /// <returns>
             /// A task for continuation.
             /// </returns>
-            private async Task ImportEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default(CancellationToken))
+            private async Task ImportEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityInfo.Entity;
                 var conversionContext = new DataConversionContext(

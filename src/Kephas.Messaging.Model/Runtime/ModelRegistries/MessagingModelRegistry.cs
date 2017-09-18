@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         /// <returns>
         /// A promise of an enumeration of runtime elements.
         /// </returns>
-        public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
             var assemblies = await this.appRuntime.GetAppAssembliesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 

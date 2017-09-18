@@ -38,7 +38,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default(CancellationToken));
+        Task BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous initialization.
@@ -49,7 +49,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default(CancellationToken));
+        Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called before a feature starts its asynchronous finalization.
@@ -64,7 +64,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default(CancellationToken));
+        Task BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous finalization.
@@ -75,6 +75,6 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default(CancellationToken));
+        Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
     }
 }

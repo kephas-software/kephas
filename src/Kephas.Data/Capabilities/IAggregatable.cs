@@ -46,6 +46,6 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         Task<IEnumerable<object>> GetFlattenedEntityGraphAsync(
           IGraphOperationContext operationContext,
-          CancellationToken cancellationToken = default(CancellationToken));
+          CancellationToken cancellationToken = default);
     }
 }

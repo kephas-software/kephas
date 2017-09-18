@@ -213,7 +213,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         public Task<IEnumerable<object>> GetFlattenedEntityGraphAsync(
             IGraphOperationContext operationContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var entityGraph = this.TryGetEntityGraph();
             if (entityGraph == null)

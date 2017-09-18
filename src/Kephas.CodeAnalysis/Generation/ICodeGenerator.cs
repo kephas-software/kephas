@@ -32,6 +32,6 @@ namespace Kephas.Generation
         Task<IEnumerable<ICodeGenerationUnit>> GenerateCodeAsync(
             IEnumerable<IElementInfo> codeElements,
             ICodeGenerationContext codeGenerationContext,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

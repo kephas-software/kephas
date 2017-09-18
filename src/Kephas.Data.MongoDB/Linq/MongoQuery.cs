@@ -49,7 +49,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A cursor.</returns>
-        public IAsyncCursor<T> ToCursor(CancellationToken cancellationToken = default(CancellationToken))
+        public IAsyncCursor<T> ToCursor(CancellationToken cancellationToken = default)
         {
             return this.GetNativeExecutableQuery().ToCursor(cancellationToken);
         }
@@ -59,7 +59,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A Task whose result is a cursor.</returns>
-        public Task<IAsyncCursor<T>> ToCursorAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IAsyncCursor<T>> ToCursorAsync(CancellationToken cancellationToken = default)
         {
             return this.GetNativeExecutableQuery().ToCursorAsync(cancellationToken);
         }

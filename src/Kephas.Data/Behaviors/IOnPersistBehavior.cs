@@ -29,7 +29,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforePersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task BeforePersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Callback invoked after an entity was persisted.
@@ -41,6 +41,6 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterPersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task AfterPersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

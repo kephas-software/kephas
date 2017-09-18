@@ -30,7 +30,7 @@ namespace Kephas.Model.Construction
         /// <returns>
         /// An awaitable task promising an enumeration of element information.
         /// </returns>
-        Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<IElementInfo>> GetElementInfosAsync(IModelConstructionContext constructionContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.

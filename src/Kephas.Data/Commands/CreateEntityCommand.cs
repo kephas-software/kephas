@@ -52,7 +52,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="ICreateEntityResult" />.
         /// </returns>
-        public override async Task<ICreateEntityResult> ExecuteAsync(ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<ICreateEntityResult> ExecuteAsync(ICreateEntityContext operationContext, CancellationToken cancellationToken = default)
         {
             var entity = this.CreateEntity(operationContext);
 

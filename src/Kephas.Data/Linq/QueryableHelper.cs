@@ -32,7 +32,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of a long that represents the number of elements in a sequence.</returns>
-        public static Task<long> LongCountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<long> LongCountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -56,7 +56,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of a long that represents the number of elements in a sequence.</returns>
-        public static Task<long> LongCountAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<long> LongCountAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -70,7 +70,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the number of elements in a sequence.</returns>
-        public static Task<int> CountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<int> CountAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -94,7 +94,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the number of elements in a sequence.</returns>
-        public static Task<int> CountAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<int> CountAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -109,7 +109,7 @@ namespace Kephas.Data.Linq
         /// <param name="predicate">The condition to be satisfied.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
@@ -135,7 +135,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> SingleOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -159,7 +159,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<object> SingleOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<object> SingleOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -174,7 +174,7 @@ namespace Kephas.Data.Linq
         /// <param name="predicate">The condition to be satisfied.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<T> SingleAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> SingleAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
@@ -200,7 +200,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<T> SingleAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> SingleAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -224,7 +224,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the single element of a sequence.</returns>
-        public static Task<object> SingleAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<object> SingleAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -239,7 +239,7 @@ namespace Kephas.Data.Linq
         /// <param name="predicate">The condition to be satisfied.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
@@ -265,7 +265,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> FirstOrDefaultAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -289,7 +289,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<object> FirstOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<object> FirstOrDefaultAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -304,7 +304,7 @@ namespace Kephas.Data.Linq
         /// <param name="predicate">The condition to be satisfied.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<T> FirstAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> FirstAsync<T>(this IQueryable<T> query, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
             Requires.NotNull(predicate, nameof(predicate));
@@ -330,7 +330,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<T> FirstAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<T> FirstAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -354,7 +354,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of the first element of a sequence.</returns>
-        public static Task<object> FirstAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<object> FirstAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -368,7 +368,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A promise of a boolean value indicating whether a sequence contains any elements.</returns>
-        public static Task<bool> AnyAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<bool> AnyAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -394,7 +394,7 @@ namespace Kephas.Data.Linq
         /// <returns>A promise of a boolean value indicating whether a sequence contains any elements.</returns>
         public static Task<bool> AnyAsync(
             this IQueryable query,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -408,7 +408,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A list of items.</returns>
-        public static async Task<IList<T>> ToListAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<IList<T>> ToListAsync<T>(this IQueryable<T> query, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(query, nameof(query));
 
@@ -441,7 +441,7 @@ namespace Kephas.Data.Linq
         /// <param name="query">The query.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A list of items.</returns>
-        public static Task<IList<object>> ToListAsync(this IQueryable query, CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<IList<object>> ToListAsync(this IQueryable query, CancellationToken cancellationToken = default)
         {
             return ToListAsync<object>((IQueryable<object>)query, cancellationToken);
         }

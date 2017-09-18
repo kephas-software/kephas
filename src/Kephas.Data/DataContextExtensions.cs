@@ -69,7 +69,7 @@ namespace Kephas.Data
         public static Task<object> CreateEntityAsync(
             this IDataContext dataContext,
             Type entityType,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entityType, nameof(entityType));
@@ -91,7 +91,7 @@ namespace Kephas.Data
         public static Task<object> CreateEntityAsync(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(operationContext, nameof(operationContext));
@@ -110,7 +110,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<T> CreateEntityAsync<T>(
             this IDataContext dataContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -132,7 +132,7 @@ namespace Kephas.Data
         public static async Task<T> CreateEntityAsync<T>(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -157,7 +157,7 @@ namespace Kephas.Data
             Type entityType,
             object id,
             bool throwIfNotFound = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entityType, nameof(entityType));
@@ -178,7 +178,7 @@ namespace Kephas.Data
         public static Task<object> FindAsync(
             this IDataContext dataContext,
             IFindContext findContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
@@ -199,7 +199,7 @@ namespace Kephas.Data
         public static async Task<T> FindAsync<T>(
             this IDataContext dataContext,
             IFindContext findContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -223,7 +223,7 @@ namespace Kephas.Data
             this IDataContext dataContext,
             object id,
             bool throwIfNotFound = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -244,7 +244,7 @@ namespace Kephas.Data
         public static async Task<object> FindOneAsync(
             this IDataContext dataContext,
             IFindOneContext findContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(findContext, nameof(findContext));
@@ -265,7 +265,7 @@ namespace Kephas.Data
         public static async Task<T> FindOneAsync<T>(
             this IDataContext dataContext,
             IFindOneContext findContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -289,7 +289,7 @@ namespace Kephas.Data
             this IDataContext dataContext, 
             Expression<Func<T, bool>> criteria,
             bool throwIfNotFound = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -309,7 +309,7 @@ namespace Kephas.Data
         /// </returns>
         public static async Task<IDataCommandResult> PersistChangesAsync(
             this IDataContext dataContext,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 

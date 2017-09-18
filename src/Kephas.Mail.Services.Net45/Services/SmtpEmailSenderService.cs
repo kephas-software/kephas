@@ -7,13 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Mail.Net46.Services
+namespace Kephas.Mail.Services
 {
     using System.Net.Mail;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Mail.Services;
 
     /// <summary>
     /// A SMTP email sender service.
@@ -28,7 +26,7 @@ namespace Kephas.Mail.Net46.Services
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
         {
             var smtpClient = this.CreateSmtpClient();
 

@@ -90,7 +90,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task BeforePersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task BeforePersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
         {
             this.BeforePersist(entity, entityInfo, operationContext);
 
@@ -122,7 +122,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task AfterPersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task AfterPersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
         {
             this.AfterPersist(entity, entityInfo, operationContext);
 

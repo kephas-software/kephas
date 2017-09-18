@@ -38,6 +38,6 @@ namespace Kephas.Application
         /// <returns>
         /// A promise of an enumeration of application assemblies.
         /// </returns>
-        Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default);
     }
 }

@@ -37,7 +37,7 @@ namespace Kephas.Serialization
             object obj,
             TextWriter textWriter,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deserialize an object asynchronously.
@@ -51,7 +51,7 @@ namespace Kephas.Serialization
         Task<object> DeserializeAsync(
             TextReader textReader,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Kephas.Serialization
             object obj,
             TextWriter textWriter,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Contract.Requires(textWriter != null);
             Contract.Ensures(Contract.Result<Task>() != null);
@@ -104,7 +104,7 @@ namespace Kephas.Serialization
         public Task<object> DeserializeAsync(
             TextReader textReader,
             ISerializationContext context = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Contract.Requires(textReader != null);
             Contract.Ensures(Contract.Result<Task>() != null);

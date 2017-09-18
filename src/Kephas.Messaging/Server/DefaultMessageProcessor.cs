@@ -92,7 +92,7 @@ namespace Kephas.Messaging.Server
         /// <returns>
         /// The response promise.
         /// </returns>
-        public async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default(CancellationToken))
+        public async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default)
         {
             using (var messageHandler = this.CreateMessageHandler(message))
             {

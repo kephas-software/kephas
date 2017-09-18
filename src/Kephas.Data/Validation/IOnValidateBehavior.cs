@@ -29,6 +29,6 @@ namespace Kephas.Data.Validation
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
-        Task<IDataValidationResult> ValidateAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataValidationResult> ValidateAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

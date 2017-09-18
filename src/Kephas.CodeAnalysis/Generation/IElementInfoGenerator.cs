@@ -46,6 +46,6 @@ namespace Kephas.Generation
             StringBuilder text,
             IElementInfo elementInfo,
             ICodeGenerationContext codeGenerationContext,
-            CancellationToken cancellationToken = default(CancellationToken));
+            CancellationToken cancellationToken = default);
     }
 }

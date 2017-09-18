@@ -106,7 +106,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        public async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
         {
             if (Data.Id.IsEmpty(this.Id))
             {

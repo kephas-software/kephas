@@ -28,6 +28,6 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// A data export result.
         /// </returns>
-        Task<IDataIOResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IDataIOResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default);
     }
 }
