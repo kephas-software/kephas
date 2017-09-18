@@ -29,7 +29,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default(CancellationToken))
+        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
         {
             return TaskHelper.CompletedTask;
         }

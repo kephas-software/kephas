@@ -22,11 +22,12 @@
       <dependency id="Kephas.Core" version="$refversion$" />
       <dependency id="Kephas.Mail" version="$refversion$" />
       <dependency id="MailKit" version="1.16.1" />
+      <dependency id="System.ValueTuple" version="4.3.0" />
     </dependencies>
     <references>
       <reference file="Kephas.Mail.MailKit.dll" />
     </references>
-    <tags>kephas framework mail quartz-software</tags>
+    <tags>kephas framework mail mailkit quartz-software</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.MailKit.dll" target="lib\netstandard1.3" />
