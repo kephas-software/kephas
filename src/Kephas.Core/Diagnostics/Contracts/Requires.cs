@@ -65,7 +65,8 @@ namespace Kephas.Diagnostics.Contracts
         /// <summary>
         /// Requires that the argument is not null or empty.
         /// </summary>
-        /// <exception cref="ArgumentException">Thrown when the required argument is null or empty.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when the required argument is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the required argument is empty.</exception>
         /// <typeparam name="T">The array item type.</typeparam>
         /// <param name="value">The value.</param>
         /// <param name="parameterName">Name of the parameter.</param>
@@ -76,6 +77,29 @@ namespace Kephas.Diagnostics.Contracts
             NotNull(value, parameterName);
 
             if (value.Count == 0)
+            {
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
+            }
+
+            Contract.EndContractBlock();
+        }
+
+        /// <summary>
+        /// Requires that the argument is not null or empty.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Thrown when the required argument is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the required argument is empty.</exception>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        [DebuggerStepThrough]
+        [ContractArgumentValidator]
+        public static void NotNullOrEmpty<T>(T[] value, string parameterName)
+            where T : class
+        {
+            NotNull(value, parameterName);
+
+            if (value.Length == 0)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
