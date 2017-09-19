@@ -9,10 +9,10 @@
 
 namespace Kephas.Mail
 {
-    using System.Diagnostics.Contracts;
     using System.Net.Mail;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extensions for <see cref="IEmailMessage"/>.
@@ -28,7 +28,7 @@ namespace Kephas.Mail
         /// </returns>
         public static MailMessage ToMailMessage(this IEmailMessage emailMessage)
         {
-            Contract.Requires(emailMessage != null);
+            Requires.NotNull(emailMessage, nameof(emailMessage));
 
             var message = new MailMessage
                               {
@@ -56,7 +56,7 @@ namespace Kephas.Mail
         /// </returns>
         public static MailAddress ToMailAddress(this IEmailAddress emailAddress)
         {
-            Contract.Requires(emailAddress != null);
+            Requires.NotNull(emailAddress, nameof(emailAddress));
 
             return string.IsNullOrEmpty(emailAddress.DisplayName)
                        ? new MailAddress(emailAddress.Address)
@@ -72,7 +72,7 @@ namespace Kephas.Mail
         /// </returns>
         public static Attachment ToAttachment(this IEmailAttachment emailAttachment)
         {
-            Contract.Requires(emailAttachment != null);
+            Requires.NotNull(emailAttachment, nameof(emailAttachment));
 
             return new Attachment(emailAttachment.Content, emailAttachment.Name);
         }

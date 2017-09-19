@@ -11,7 +11,8 @@ namespace Kephas.Services.Transitioning
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Class monitoring the state of a service transition.
@@ -200,7 +201,7 @@ namespace Kephas.Services.Transitioning
         /// <param name="exception">The exception which occured.</param>
         public void Fault(Exception exception)
         {
-            Contract.Requires(exception != null);
+            Requires.NotNull(exception, nameof(exception));
 
             if (this.IsFaulted)
             {
@@ -284,7 +285,7 @@ namespace Kephas.Services.Transitioning
         public TransitionMonitor(string transitionName, Type serviceImplementationType)
             : base(transitionName, ComputeServiceName(serviceImplementationType))
         {
-            Contract.Requires(serviceImplementationType != null);
+            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
         }
 
         /// <summary>

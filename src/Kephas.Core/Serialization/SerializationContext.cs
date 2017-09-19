@@ -10,7 +10,6 @@
 namespace Kephas.Serialization
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
@@ -30,7 +29,7 @@ namespace Kephas.Serialization
             : base(serializationService.AmbientServices)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
-            Contract.Requires(mediaType != null);
+            Requires.NotNull(mediaType, nameof(mediaType));
 
             this.SerializationService = serializationService;
             this.MediaType = mediaType;

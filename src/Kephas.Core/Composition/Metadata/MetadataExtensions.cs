@@ -10,7 +10,6 @@
 namespace Kephas.Composition.Metadata
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
@@ -33,7 +32,7 @@ namespace Kephas.Composition.Metadata
           where TAttribute : Attribute
         {
             Requires.NotNull(type, nameof(type));
-            Contract.Requires(valueExtractor != null);
+            Requires.NotNull(valueExtractor, nameof(valueExtractor));
 
             var attr = type.GetTypeInfo().GetCustomAttribute<TAttribute>();
             if (attr == null)

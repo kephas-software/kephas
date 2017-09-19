@@ -13,6 +13,7 @@ namespace Kephas.Serialization.Json
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
 
     using Newtonsoft.Json;
@@ -53,6 +54,8 @@ namespace Kephas.Serialization.Json
             ISerializationContext context = null,
             CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(textWriter, nameof(textWriter));
+
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 
@@ -78,6 +81,8 @@ namespace Kephas.Serialization.Json
             ISerializationContext context = null,
             CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(textReader, nameof(textReader));
+
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 

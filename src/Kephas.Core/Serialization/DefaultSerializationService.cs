@@ -11,7 +11,6 @@ namespace Kephas.Serialization
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Collections;
@@ -41,7 +40,7 @@ namespace Kephas.Serialization
             ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(serializerFactories != null);
+            Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
             this.AmbientServices = ambientServices;
             foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
