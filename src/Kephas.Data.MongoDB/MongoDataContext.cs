@@ -11,10 +11,7 @@ namespace Kephas.Data.MongoDB
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Diagnostics.Contracts;
     using System.Linq;
-
-    using global::MongoDB.Driver;
 
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
@@ -24,6 +21,8 @@ namespace Kephas.Data.MongoDB
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Security;
+
+    using global::MongoDB.Driver;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -47,7 +46,7 @@ namespace Kephas.Data.MongoDB
             : base(ambientServices, dataCommandProvider, identityProvider: identityProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Contract.Requires(dataCommandProvider != null);
+            Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
         }
 
         /// <summary>
