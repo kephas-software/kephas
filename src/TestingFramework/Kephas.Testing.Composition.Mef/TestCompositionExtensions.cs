@@ -11,16 +11,16 @@ namespace Kephas.Testing.Composition.Mef
 {
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Diagnostics.Contracts;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public static class TestCompositionExtensions
     {
         public static MefCompositionContainer CreateCompositionContainer(this ContainerConfiguration configuration)
         {
-            Contract.Requires(configuration != null);
+            Requires.NotNull(configuration, nameof(configuration));
 
             return new MefCompositionContainer(configuration);
         }
