@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullDistributedMessageBroker.cs" company="Quartz Software SRL">
+// <copyright file="BrokeredMessageHandler.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the null distributed message broker class.
+//   Implements the brokered message handler class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Services;
 
     /// <summary>
-    /// A distributed message broker sending the messages to the message processor.
+    /// A brokered message handler.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
-    public class NullDistributedMessageBroker : IDistributedMessageBroker
+    [OverridePriority(Priority.Low)]
+    public class BrokeredMessageHandler : MessageHandlerBase<BrokeredMessage, IMessage>
     {
         /// <summary>
         /// The message processor.
@@ -27,10 +27,10 @@ namespace Kephas.Messaging.Distributed
         private readonly IMessageProcessor messageProcessor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NullDistributedMessageBroker"/> class.
+        /// Initializes a new instance of the <see cref="BrokeredMessageHandler"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
-        public NullDistributedMessageBroker(IMessageProcessor messageProcessor)
+        public BrokeredMessageHandler(IMessageProcessor messageProcessor)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
@@ -38,16 +38,17 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Sends the message envelope asynchronously.
+        /// Processes the provided message asynchronously and returns a response promise.
         /// </summary>
-        /// <param name="envelope">The envelope.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result that yields an IMessage.
+        /// The response promise.
         /// </returns>
-        public Task<IMessage> SendAsync(IMessageEnvelope envelope, CancellationToken cancellationToken)
+        public override Task<IMessage> ProcessAsync(BrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return this.messageProcessor.ProcessAsync(envelope.Message, null, cancellationToken);
+            return this.messageProcessor.ProcessAsync(message.Message, null, token);
         }
     }
 }

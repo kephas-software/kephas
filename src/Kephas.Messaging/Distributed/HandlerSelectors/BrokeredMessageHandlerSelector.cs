@@ -1,0 +1,46 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BrokeredMessageHandlerSelector.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the brokered message handler selector class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Messaging.Distributed.HandlerSelectors
+{
+    using System;
+    using System.Reflection;
+
+    using Kephas.Composition;
+    using Kephas.Messaging.HandlerSelectors;
+    using Kephas.Services;
+
+    /// <summary>
+    /// A brokered message handler selector.
+    /// </summary>
+    [ProcessingPriority(Priority.Low)]
+    public class BrokeredMessageHandlerSelector : SingleMessageHandlerSelectorBase
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BrokeredMessageHandlerSelector"/> class.
+        /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
+        public BrokeredMessageHandlerSelector(ICompositionContext compositionContext)
+            : base(compositionContext)
+        {
+        }
+
+        /// <summary>
+        /// Indicates whether the selector can handle the indicated message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <returns>
+        /// True if the selector can handle the message type, false if not.
+        /// </returns>
+        public override bool CanHandle(Type messageType)
+        {
+            return typeof(IBrokeredMessage).GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo());
+        }
+    }
+}

@@ -15,19 +15,19 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for distributed message broker.
+    /// Shared application service contract for distributed message broker.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IDistributedMessageBroker
+    public interface IMessageBroker
     {
         /// <summary>
-        /// Sends the message envelope asynchronously.
+        /// Dispatches the brokered message asynchronously.
         /// </summary>
-        /// <param name="envelope">The envelope.</param>
+        /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        Task<IMessage> SendAsync(IMessageEnvelope envelope, CancellationToken cancellationToken = default);
+        Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default);
     }
 }

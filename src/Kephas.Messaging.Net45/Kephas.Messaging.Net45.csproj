@@ -57,23 +57,32 @@
     <Compile Include="..\Kephas.Messaging\Distributed\AttributedModel\UseChannelAttribute.cs">
       <Link>Distributed\AttributedModel\UseChannelAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\IDistributedMessageBroker.cs">
-      <Link>Distributed\IDistributedMessageBroker.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Distributed\BrokeredMessage.cs">
+      <Link>Distributed\BrokeredMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\IMessageEnvelope.cs">
-      <Link>Distributed\IMessageEnvelope.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Distributed\BrokeredMessageHandler.cs">
+      <Link>Distributed\BrokeredMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\HandlerSelectors\BrokeredMessageHandlerSelector.cs">
+      <Link>Distributed\HandlerSelectors\BrokeredMessageHandlerSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\IBrokeredMessage.cs">
+      <Link>Distributed\IBrokeredMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\IMessageBroker.cs">
+      <Link>Distributed\IMessageBroker.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\IMessageSender.cs">
       <Link>Distributed\IMessageSender.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\MessageEnvelope.cs">
-      <Link>Distributed\MessageEnvelope.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerExtensions.cs">
+      <Link>Distributed\MessageBrokerExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\MessageSender.cs">
       <Link>Distributed\MessageSender.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\NullDistributedMessageBroker.cs">
-      <Link>Distributed\NullDistributedMessageBroker.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Distributed\NullMessageBroker.cs">
+      <Link>Distributed\NullMessageBroker.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\HandlerSelectors\DefaultMessageHandlerSelector.cs">
       <Link>HandlerSelectors\DefaultMessageHandlerSelector.cs</Link>
