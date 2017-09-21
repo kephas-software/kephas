@@ -13,6 +13,7 @@ namespace Kephas.Messaging
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Resources;
     using Kephas.Threading.Tasks;
 
@@ -47,6 +48,9 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<IMessage> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
+            Requires.NotNull(message, nameof(message));
+            Requires.NotNull(context, nameof(context));
+
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
             return response;
         }
@@ -62,8 +66,7 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<IMessage> IMessageHandler.ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var typedRequest = message as TMessage;
-            if (typedRequest == null)
+            if (!(message is TMessage typedRequest))
             {
                 throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
             }

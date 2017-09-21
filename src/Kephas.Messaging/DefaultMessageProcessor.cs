@@ -94,6 +94,8 @@ namespace Kephas.Messaging
         /// </returns>
         public async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default)
         {
+            Requires.NotNull(message, nameof(message));
+
             using (var messageHandler = this.CreateMessageHandler(message))
             {
                 if (context == null)
