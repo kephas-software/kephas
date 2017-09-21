@@ -33,6 +33,14 @@ namespace Kephas.Messaging.Distributed
         IMessage Message { get; }
 
         /// <summary>
+        /// Gets the channel.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        IMessageChannel Channel { get; }
+
+        /// <summary>
         /// Gets the identifier of the message which this message is a reply to.
         /// </summary>
         /// <value>

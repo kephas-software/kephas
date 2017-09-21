@@ -72,6 +72,9 @@
     <Compile Include="..\Kephas.Messaging\Distributed\IMessageBroker.cs">
       <Link>Distributed\IMessageBroker.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\IMessageChannel.cs">
+      <Link>Distributed\IMessageChannel.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\IMessageSender.cs">
       <Link>Distributed\IMessageSender.cs</Link>
     </Compile>

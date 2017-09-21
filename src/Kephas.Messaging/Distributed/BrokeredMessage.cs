@@ -49,6 +49,14 @@ namespace Kephas.Messaging.Distributed
         public IMessage Message { get; set; }
 
         /// <summary>
+        /// Gets or sets the channel.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        public IMessageChannel Channel { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the message which this message is a reply to.
         /// </summary>
         /// <value>
