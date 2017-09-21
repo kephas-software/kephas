@@ -19,11 +19,15 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Ping;
+    using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
@@ -76,24 +80,73 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
+            var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreSame(expectedResponse, result);
+        }
+
+        [Test]
+        public async Task ProcessAsync_override_handler()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler1 = Substitute.For<IMessageHandler>();
+            var handler2 = Substitute.For<IMessageHandler>();
+            var expectedResponse1 = Substitute.For<IMessage>();
+            var expectedResponse2 = Substitute.For<IMessage>();
+
+            var message = Substitute.For<IMessage>();
+            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(expectedResponse1));
+            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(expectedResponse2));
+            this.ConfigureHandlersForMessage(
+                compositionContainer,
+                message, 
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler1, new AppServiceMetadata(overridePriority: (int)Priority.Low)),
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler2, new AppServiceMetadata(overridePriority: (int)Priority.High)));
+            var processor = this.CreateRequestProcessor(compositionContainer);
+            var result = await processor.ProcessAsync(message, null, default);
+
+            Assert.AreSame(expectedResponse2, result);
+        }
+
+        [Test]
+        public async Task ProcessAsync_ambiguous_handler()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler1 = Substitute.For<IMessageHandler>();
+            var handler2 = Substitute.For<IMessageHandler>();
+            var expectedResponse1 = Substitute.For<IMessage>();
+            var expectedResponse2 = Substitute.For<IMessage>();
+
+            var message = Substitute.For<IMessage>();
+            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(expectedResponse1));
+            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(expectedResponse2));
+            this.ConfigureHandlersForMessage(
+                compositionContainer,
+                message,
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler1, new AppServiceMetadata(overridePriority: (int)Priority.Low)),
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler2, new AppServiceMetadata(overridePriority: (int)Priority.Low)));
+            var processor = this.CreateRequestProcessor(compositionContainer);
+
+            Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<AmbiguousMatchException>());
         }
 
         [Test]
         public void ProcessAsync_missing_handler_exception()
         {
             var compositionContainer = Substitute.For<ICompositionContext>();
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(null);
+            var message = Substitute.For<IMessage>();
+            this.ConfigureHandlersForMessage(compositionContainer, message,  new IMessageHandler[0]);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default), Throws.InstanceOf<MissingHandlerException>());
+            Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<MissingHandlerException>());
         }
 
         [Test]
@@ -102,12 +155,12 @@ namespace Kephas.Messaging.Tests
             var compositionContainer = Substitute.For<ICompositionContext>();
             var handler = Substitute.For<IMessageHandler>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
             var processor = this.CreateRequestProcessor(compositionContainer);
-            Assert.That(() => processor.ProcessAsync(Substitute.For<IMessage>(), null, default), Throws.InstanceOf<InvalidOperationException>());
+            Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<InvalidOperationException>());
         }
 
         [Test]
@@ -117,14 +170,14 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
 
             var processor = this.CreateRequestProcessor(compositionContainer);
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
+            var result = await processor.ProcessAsync(message, null, default);
 
             Assert.LessOrEqual(1, handler.ReceivedCalls().Count());
         }
@@ -136,10 +189,10 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
 
             var beforelist = new List<int>();
             var afterlist = new List<int>();
@@ -153,7 +206,7 @@ namespace Kephas.Messaging.Tests
                 processingPriority: 1);
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
+            var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreEqual(2, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -171,10 +224,10 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
 
             var beforelist = new List<int>();
             var afterlist = new List<int>();
@@ -187,7 +240,7 @@ namespace Kephas.Messaging.Tests
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
             var processor = this.CreateRequestProcessor(compositionContainer, new[] { f1, f2 });
-            var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
+            var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreEqual(1, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
@@ -202,10 +255,10 @@ namespace Kephas.Messaging.Tests
             var compositionContainer = Substitute.For<ICompositionContext>();
             var handler = Substitute.For<IMessageHandler>();
 
-            handler.ProcessAsync(Arg.Any<IMessage>(), Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            compositionContainer.TryGetExport(Arg.Any<Type>(), Arg.Any<string>())
-                .Returns(new ExportFactory<IMessageHandler>(() => handler));
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
 
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
@@ -217,7 +270,7 @@ namespace Kephas.Messaging.Tests
             InvalidOperationException thrownException = null;
             try
             {
-                var result = await processor.ProcessAsync(Substitute.For<IMessage>(), null, default);
+                var result = await processor.ProcessAsync(message, null, default);
             }
             catch (InvalidOperationException ex)
             {
@@ -231,6 +284,67 @@ namespace Kephas.Messaging.Tests
 
             Assert.AreEqual(1, afterlist.Count);
             Assert.IsInstanceOf<InvalidOperationException>(afterlist[0]);
+        }
+
+        [Test]
+        public async Task ProcessAsync_multi_cast_event()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler1 = Substitute.For<IMessageHandler>();
+            var handler2 = Substitute.For<IMessageHandler>();
+
+            var message = Substitute.For<IEvent>();
+            this.ConfigureHandlersForMessage(
+                compositionContainer,
+                message,
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler1, new AppServiceMetadata(overridePriority: (int)Priority.Low)),
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler2, new AppServiceMetadata(overridePriority: (int)Priority.Low)));
+            var processor = this.CreateRequestProcessor(
+                compositionContainer,
+                handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
+                                              {
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(compositionContainer), new AppServiceMetadata())
+                                              });
+            await processor.ProcessAsync(message, null, default);
+
+            handler1.Received(1).ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            handler2.Received(1).ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public async Task ProcessAsync_selector_works_properly()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+
+            var eventMessage = Substitute.For<IEvent>();
+            var eventHandler = Substitute.For<IMessageHandler>();
+            this.ConfigureHandlersForMessage(
+                compositionContainer,
+                eventMessage,
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => eventHandler, new AppServiceMetadata()));
+
+            var plainMessage = Substitute.For<IMessage>();
+            var plainHandler = Substitute.For<IMessageHandler>();
+            this.ConfigureHandlersForMessage(
+                compositionContainer,
+                plainMessage,
+                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => plainHandler, new AppServiceMetadata()));
+
+            var processor = this.CreateRequestProcessor(
+                compositionContainer,
+                handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
+                                              {
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(compositionContainer), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(compositionContainer), new AppServiceMetadata(processingPriority: (int)Priority.High))
+                                              });
+
+            await processor.ProcessAsync(eventMessage, null, default);
+            eventHandler.Received(1).ProcessAsync(eventMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            plainHandler.Received(0).ProcessAsync(eventMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+
+            await processor.ProcessAsync(plainMessage, null, default);
+            eventHandler.Received(0).ProcessAsync(plainMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            plainHandler.Received(1).ProcessAsync(plainMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
         }
 
         private IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata> CreateFilterFactory(
@@ -255,11 +369,70 @@ namespace Kephas.Messaging.Tests
             return factory;
         } 
 
-        private DefaultMessageProcessor CreateRequestProcessor(ICompositionContext compositionContainer, IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories = null)
+        private DefaultMessageProcessor CreateRequestProcessor(ICompositionContext compositionContainer,
+            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories = null,
+            IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null)
         {
             filterFactories = filterFactories
                               ?? new List<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>>();
-            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), compositionContainer, filterFactories);
+
+            handlerSelectorFactories = handlerSelectorFactories
+                                       ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
+                                              {
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(compositionContainer), new AppServiceMetadata())
+                                              };
+
+            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), handlerSelectorFactories, filterFactories);
+        }
+
+        public void ConfigureHandlersForMessage(ICompositionContext compositionContext, IMessage message, params IMessageHandler[] handlers)
+        {
+            var mi = this.GetType().GetMethod(nameof(this.ConfigureHandlersForMessageGeneric));
+            var configureHandlers = mi.MakeGenericMethod(message.GetType());
+            configureHandlers.Call(this, compositionContext, handlers.Select(h => new ExportFactory<IMessageHandler, AppServiceMetadata>(() => h, new AppServiceMetadata())).ToArray());
+        }
+
+        public void ConfigureHandlersForMessage(ICompositionContext compositionContext, IMessage message, params IExportFactory<IMessageHandler, AppServiceMetadata>[] handlerFactories)
+        {
+            var mi = this.GetType().GetMethod(nameof(this.ConfigureHandlersForMessageGeneric));
+            var configureHandlers = mi.MakeGenericMethod(message.GetType());
+            configureHandlers.Call(this, compositionContext, handlerFactories);
+        }
+
+        public void ConfigureHandlersForMessageGeneric<TMessage>(ICompositionContext compositionContext, params IExportFactory<IMessageHandler, AppServiceMetadata>[] handlerFactories)
+            where TMessage : IMessage
+        {
+            var factoryImporterType = typeof(ICollectionExportFactoryImporter<IMessageHandler<TMessage>, AppServiceMetadata>);
+            var factoryImporter = Substitute.For<ICollectionExportFactoryImporter<IMessageHandler<TMessage>, AppServiceMetadata>>();
+            compositionContext.GetExport(factoryImporterType, Arg.Any<string>())
+                .Returns(factoryImporter);
+
+            var typedHandlerFactories = handlerFactories.Select(
+                h =>
+                    {
+                        var typedHandler = Substitute.For<IMessageHandler<TMessage>>();
+                        typedHandler
+                            .ProcessAsync(
+                                Arg.Any<TMessage>(),
+                                Arg.Any<IMessageProcessingContext>(),
+                                Arg.Any<CancellationToken>()).Returns(
+                                ci => h.CreateExportedValue().ProcessAsync(
+                                    ci.Arg<TMessage>(),
+                                    ci.Arg<IMessageProcessingContext>(),
+                                    ci.Arg<CancellationToken>()));
+                        typedHandler
+                            .ProcessAsync(
+                                Arg.Any<IMessage>(),
+                                Arg.Any<IMessageProcessingContext>(),
+                                Arg.Any<CancellationToken>()).Returns(
+                                ci => h.CreateExportedValue().ProcessAsync(
+                                    ci.Arg<IMessage>(),
+                                    ci.Arg<IMessageProcessingContext>(),
+                                    ci.Arg<CancellationToken>()));
+                        return new ExportFactory<IMessageHandler<TMessage>, AppServiceMetadata>(() => typedHandler, h.Metadata);
+                    }).ToList();
+            factoryImporter.ExportFactories.Returns(typedHandlerFactories);
+            ((ICollectionExportFactoryImporter)factoryImporter).ExportFactories.Returns(typedHandlerFactories);
         }
     }
 }

@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultMessageProcessor_MissingHandler_Excception" xml:space="preserve">
+  <data name="DefaultMessageProcessor_AmbiguousHandler_Exception" xml:space="preserve">
+    <value>Multiple handlers found for the '{0}' message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them.</value>
+  </data>
+  <data name="DefaultMessageProcessor_MissingHandler_Exception" xml:space="preserve">
     <value>Could not find a handler for the '{0}' message type.</value>
   </data>
   <data name="MessageHandler_BadMessageType_Exception" xml:space="preserve">

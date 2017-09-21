@@ -21,8 +21,10 @@ namespace Kephas.Messaging
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -32,6 +34,11 @@ namespace Kephas.Messaging
     public class DefaultMessageProcessor : IMessageProcessor
     {
         /// <summary>
+        /// The handler selector factories.
+        /// </summary>
+        private readonly IList<IMessageHandlerSelector> handlerSelectors;
+
+        /// <summary>
         /// The filter factories.
         /// </summary>
         private readonly IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories;
@@ -39,23 +46,31 @@ namespace Kephas.Messaging
         /// <summary>
         /// The handler factories.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, Func<IMessageHandler>> handlerFactories = new ConcurrentDictionary<Type, Func<IMessageHandler>>();
+        private readonly ConcurrentDictionary<Type, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<Type, Func<IEnumerable<IMessageHandler>>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="handlerSelectorFactories">The handler selector factories.</param>
         /// <param name="filterFactories">The filter factories.</param>
-        public DefaultMessageProcessor(IAmbientServices ambientServices, ICompositionContext compositionContext, IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
+        public DefaultMessageProcessor(
+            IAmbientServices ambientServices,
+            IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
+            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
             Requires.NotNull(filterFactories, nameof(filterFactories));
 
             this.AmbientServices = ambientServices;
-            this.CompositionContext = compositionContext;
-            this.filterFactories = filterFactories;
+            this.handlerSelectors = handlerSelectorFactories
+                .OrderBy(f => f.Metadata.ProcessingPriority)
+                .Select(f => f.CreateExportedValue())
+                .ToList();
+            this.filterFactories = filterFactories
+                .OrderBy(f => f.Metadata.ProcessingPriority)
+                .ToList();
         }
 
         /// <summary>
@@ -65,14 +80,6 @@ namespace Kephas.Messaging
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
-
-        /// <summary>
-        /// Gets the composition context.
-        /// </summary>
-        /// <value>
-        /// The composition context.
-        /// </value>
-        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -95,73 +102,74 @@ namespace Kephas.Messaging
         {
             Requires.NotNull(message, nameof(message));
 
-            using (var messageHandler = this.CreateMessageHandler(message))
+            var filters = this.GetOrderedFilters(message);
+            var reversedFilters = filters.Reverse();
+
+            foreach (var messageHandler in this.ResolveMessageHandlers(message))
             {
-                if (context == null)
+                using (messageHandler)
                 {
-                    context = this.CreateProcessingContext(message, messageHandler);
-                }
-                else
-                {
-                    context.Message = message;
-                    context.Handler = messageHandler;
-                }
-
-                var filters = this.GetOrderedFilters(context);
-
-                try
-                {
-                    foreach (var filter in filters)
+                    if (context == null)
                     {
-                        await filter.BeforeProcessAsync(context, token).PreserveThreadContext();
+                        context = this.CreateProcessingContext(message, messageHandler);
+                    }
+                    else
+                    {
+                        context.Message = message;
+                        context.Handler = messageHandler;
                     }
 
-                    var response = await messageHandler.ProcessAsync(message, context, token).PreserveThreadContext();
-                    context.Response = response;
-                }
-                catch (Exception ex)
-                {
-                    context.Exception = ex;
-                }
+                    try
+                    {
+                        foreach (var filter in filters)
+                        {
+                            await filter.BeforeProcessAsync(context, token).PreserveThreadContext();
+                        }
 
-                foreach (var filter in filters.Reverse())
-                {
-                    await filter.AfterProcessAsync(context, token).PreserveThreadContext();
-                }
+                        var response = await messageHandler.ProcessAsync(message, context, token).PreserveThreadContext();
+                        context.Response = response;
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Exception = ex;
+                    }
 
-                if (context.Exception != null)
-                {
-                    throw context.Exception;
+                    foreach (var filter in reversedFilters)
+                    {
+                        await filter.AfterProcessAsync(context, token).PreserveThreadContext();
+                    }
                 }
-
-                return context.Response;
             }
+
+            if (context.Exception != null)
+            {
+                throw context.Exception;
+            }
+
+            return context.Response;
         }
 
         /// <summary>
-        /// Creates the message handler.
+        /// Resolves the message handlers for the provided message.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <returns>The newly created message handler.</returns>
-        protected virtual IMessageHandler CreateMessageHandler(IMessage message)
+        /// <returns>The message handlers.</returns>
+        protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
         {
             var messageType = message.GetType();
-            var messageHandlerFactory = this.handlerFactories.GetOrAdd(messageType, _ =>
-            {
-                var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(message.GetType());
-                var exportFactoryType = typeof(IExportFactory<>).MakeGenericType(messageHandlerType);
-                var exportFactory = (IExportFactory)this.CompositionContext.TryGetExport(exportFactoryType);
-                Func<IMessageHandler> factory = () => (IMessageHandler)exportFactory?.CreateExport().Value;
-                return factory;
-            });
+            var messageHandlersFactory = this.handlerFactories.GetOrAdd(messageType, _ =>
+                {
+                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType));
+                    if (handlerSelector == null)
+                    {
+                        return () => null;
+                    }
 
-            var handler = messageHandlerFactory();
-            if (handler == null)
-            {
-                throw new MissingHandlerException(string.Format(Strings.DefaultMessageProcessor_MissingHandler_Excception, messageType.FullName));
-            }
+                    return handlerSelector.GetHandlersFactory(messageType);
+                });
 
-            return handler;
+            var handlers = messageHandlersFactory();
+            return handlers ?? new IMessageHandler[0];
         }
 
         /// <summary>
@@ -178,15 +186,16 @@ namespace Kephas.Messaging
         /// <summary>
         /// Gets the ordered filters to be applied.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>An ordered list of filters which can be applied to the provided context.</returns>
-        protected virtual IList<IMessageProcessingFilter> GetOrderedFilters(IMessageProcessingContext context)
+        /// <param name="message">The message.</param>
+        /// <returns>
+        /// An ordered list of filters which can be applied to the provided message.
+        /// </returns>
+        protected virtual IList<IMessageProcessingFilter> GetOrderedFilters(IMessage message)
         {
-            var requestTypeInfo = context.Message.GetType().GetTypeInfo();
-            var behaviors = (from b in this.filterFactories
-                             where b.Metadata.MessageType.GetTypeInfo().IsAssignableFrom(requestTypeInfo)
-                             orderby b.Metadata.ProcessingPriority
-                             select b.CreateExport().Value).ToList();
+            var requestTypeInfo = message.GetType().GetTypeInfo();
+            var behaviors = (from f in this.filterFactories
+                             where f.Metadata.MessageType.GetTypeInfo().IsAssignableFrom(requestTypeInfo)
+                             select f.CreateExport().Value).ToList();
 
             // TODO optimize to cache the ordered filters/message type.
             return behaviors;
