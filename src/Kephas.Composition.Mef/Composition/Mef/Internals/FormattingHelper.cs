@@ -40,17 +40,21 @@ namespace Kephas.Composition.Mef.Internals
         /// <summary>
         /// Formats the closed generic type.
         /// </summary>
-        /// <param name="closedGenericType">Type of the closed generic.</param>
+        /// <param name="closedGenericType">The constructed generic type.</param>
         /// <returns>A string containing the formatted type.</returns>
         public static string FormatClosedGeneric(Type closedGenericType)
         {
-            Contract.Requires(closedGenericType != null);
-            Contract.Requires(closedGenericType.IsConstructedGenericType);
+            Requires.NotNull(closedGenericType, nameof(closedGenericType));
+            if (!closedGenericType.IsConstructedGenericType)
+            {
+                // TODO localization
+                throw new ArgumentException("Please provide a constructed generic type.", nameof(closedGenericType));
+            }
 
             // ReSharper disable once StringIndexOfIsCultureSpecific.1
             var name = closedGenericType.Name.Substring(0, closedGenericType.Name.IndexOf("`"));
             var args = closedGenericType.GenericTypeArguments.Select(Format);
-            return string.Format("{0}<{1}>", name, string.Join(", ", args));
+            return $"{name}<{string.Join(", ", args)}>";
         }
     }
 }

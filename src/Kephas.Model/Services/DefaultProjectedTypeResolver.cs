@@ -10,9 +10,9 @@
 namespace Kephas.Model.Services
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
@@ -35,7 +35,7 @@ namespace Kephas.Model.Services
         /// <param name="typeResolver">The type resolver.</param>
         public DefaultProjectedTypeResolver(ITypeResolver typeResolver)
         {
-            Contract.Requires(typeResolver != null);
+            Requires.NotNull(typeResolver, nameof(typeResolver));
 
             this.typeResolver = typeResolver;
         }
@@ -50,7 +50,7 @@ namespace Kephas.Model.Services
         /// </returns>
         public Type ResolveProjectedType(Type projectionType, bool throwOnNotFound = true)
         {
-            Contract.Requires(projectionType != null);
+            Requires.NotNull(projectionType, nameof(projectionType));
 
             var projectionAttr = projectionType.GetTypeInfo().GetCustomAttribute<ProjectionForAttribute>();
             if (projectionAttr == null)

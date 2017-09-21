@@ -11,7 +11,6 @@ namespace Kephas.Model.Elements
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
@@ -21,7 +20,6 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Resources;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Services.Transitioning;
 
     /// <summary>
@@ -295,7 +293,7 @@ namespace Kephas.Model.Elements
         /// <param name="member">The member.</param>
         protected virtual void AddMember(INamedElement member)
         {
-            Contract.Requires(member != null);
+            Requires.NotNull(member, nameof(member));
         }
     }
 }

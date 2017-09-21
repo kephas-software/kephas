@@ -10,8 +10,8 @@
 namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
 
     /// <summary>
@@ -28,7 +28,7 @@ namespace Kephas.Model.Elements
         public ModelProjection(IModelConstructionContext constructionContext, string name, string aggregatedProjectionName)
             : base(constructionContext, name)
         {
-            Contract.Requires(aggregatedProjectionName != null);
+            Requires.NotNull(aggregatedProjectionName, nameof(aggregatedProjectionName));
 
             this.Annotations = new List<IAnnotation>();
             this.AggregatedProjectionName = aggregatedProjectionName;

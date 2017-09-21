@@ -13,12 +13,12 @@ namespace Kephas.Data.Behaviors
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Data.Behaviors.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="dataBehaviorFactories">The data behavior factories.</param>
         public DefaultDataBehaviorProvider(ICollection<IExportFactory<IDataBehavior, DataBehaviorMetadata>> dataBehaviorFactories)
         {
-            Contract.Requires(dataBehaviorFactories != null);
+            Requires.NotNull(dataBehaviorFactories, nameof(dataBehaviorFactories));
 
             this.dataBehaviorFactories = dataBehaviorFactories;
         }

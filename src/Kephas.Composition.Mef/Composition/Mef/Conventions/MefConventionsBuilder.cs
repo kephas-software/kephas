@@ -13,6 +13,7 @@ namespace Kephas.Composition.Mef.Conventions
     using System.Composition.Convention;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Conventions builder for MEF.
@@ -50,6 +51,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
         public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
         {
+            Requires.NotNull(type, nameof(type));
+
             return new MefPartConventionsBuilder(this.innerConventionBuilder.ForTypesDerivedFrom(type));
         }
 
@@ -62,6 +65,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
         {
+            Requires.NotNull(typePredicate, nameof(typePredicate));
+
             return new MefPartConventionsBuilder(this.innerConventionBuilder.ForTypesMatching(typePredicate));
         }
 
@@ -72,6 +77,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>A <see cref="IPartConventionsBuilder"/> that must be used to specify the rule.</returns>
         public IPartConventionsBuilder ForType(Type type)
         {
+            Requires.NotNull(type, nameof(type));
+
             return new MefPartConventionsBuilder(this.innerConventionBuilder.ForType(type));
         }
     }

@@ -16,6 +16,7 @@ namespace Kephas.Composition.Mef.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Conventions builder for a specific part.
@@ -57,6 +58,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
         {
+            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
+
             this.innerConventionBuilder.Shared(scopeName);
             return this;
         }
@@ -122,6 +125,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
         {
+            Requires.NotNull(constructorSelector, nameof(constructorSelector));
+
             if (importConfiguration == null)
             {
                 this.innerConventionBuilder.SelectConstructor(constructorSelector);
@@ -144,6 +149,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>A part builder allowing further configuration of the part.</returns>
         public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
         {
+            Requires.NotNull(propertyFilter, nameof(propertyFilter));
+
             if (importConfiguration == null)
             {
                 this.innerConventionBuilder.ImportProperties(propertyFilter);

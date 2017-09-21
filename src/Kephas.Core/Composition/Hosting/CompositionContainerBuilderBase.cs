@@ -12,7 +12,6 @@ namespace Kephas.Composition.Hosting
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -27,7 +26,6 @@ namespace Kephas.Composition.Hosting
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -201,7 +199,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>This builder.</returns>
         public virtual TBuilder WithConventions(IConventionsBuilder conventions)
         {
-            Contract.Requires(conventions != null);
+            Requires.NotNull(conventions, nameof(conventions));
 
             this.ConventionsBuilder = conventions;
 
@@ -289,7 +287,7 @@ namespace Kephas.Composition.Hosting
         /// </remarks>
         public virtual TBuilder WithPart(Type part)
         {
-            Contract.Requires(part != null);
+            Requires.NotNull(part, nameof(part));
 
             return this.WithParts(new[] { part });
         }

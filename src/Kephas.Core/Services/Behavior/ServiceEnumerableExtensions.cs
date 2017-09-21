@@ -10,7 +10,6 @@
 namespace Kephas.Services.Behavior
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Application;
@@ -35,7 +34,7 @@ namespace Kephas.Services.Behavior
         public static IEnumerable<TService> WhereEnabled<TService>(this IEnumerable<TService> services, IAmbientServices ambientServices, IAppContext appContext = null)
             where TService : class
         {
-            Contract.Requires(services != null);
+            Requires.NotNull(services, nameof(services));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
@@ -55,7 +54,7 @@ namespace Kephas.Services.Behavior
         public static IEnumerable<IExport<TService>> WhereEnabled<TService>(this IEnumerable<IExport<TService>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
             where TService : class
         {
-            Contract.Requires(serviceExports != null);
+            Requires.NotNull(serviceExports, nameof(serviceExports));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);
@@ -76,7 +75,7 @@ namespace Kephas.Services.Behavior
         public static IEnumerable<IExport<TService, TMetadata>> WhereEnabled<TService, TMetadata>(this IEnumerable<IExport<TService, TMetadata>> serviceExports, IAmbientServices ambientServices, IAppContext appContext = null)
             where TService : class
         {
-            Contract.Requires(serviceExports != null);
+            Requires.NotNull(serviceExports, nameof(serviceExports));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var enabledRules = GetEnabledServiceBehaviorRules<TService>(ambientServices.CompositionContainer);

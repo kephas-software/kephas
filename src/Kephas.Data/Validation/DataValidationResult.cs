@@ -11,7 +11,6 @@ namespace Kephas.Data.Validation
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
@@ -45,7 +44,7 @@ namespace Kephas.Data.Validation
         /// <param name="items">The items to add.</param>
         public DataValidationResult(params IDataValidationResultItem[] items)
         {
-            Contract.Requires(items != null);
+            Requires.NotNull(items, nameof(items));
 
             this.Add(items);
         }
@@ -95,7 +94,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public DataValidationResult Add(params IDataValidationResultItem[] items)
         {
-            Contract.Requires(items != null);
+            Requires.NotNull(items, nameof(items));
 
             this.items.AddRange(items);
             return this;
@@ -105,8 +104,8 @@ namespace Kephas.Data.Validation
         /// Adds a result item to the validation result.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="memberName">(Optional) name of the member.</param>
-        /// <param name="severity">(Optional) the severity.</param>
+        /// <param name="memberName">Name of the member (optional).</param>
+        /// <param name="severity">The severity (optional). Default value is <see cref="DataValidationSeverity.Error"/></param>
         /// <returns>
         /// This <see cref="DataValidationResult"/>.
         /// </returns>

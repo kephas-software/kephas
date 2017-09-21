@@ -10,8 +10,8 @@
 namespace Kephas.Data.Conversion
 {
     using System;
-    using System.Diagnostics.Contracts;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -35,7 +35,7 @@ namespace Kephas.Data.Conversion
                 Type rootTargetType = null)
             : base(conversionService.AmbientServices)
         {
-            Contract.Requires(conversionService != null);
+            Requires.NotNull(conversionService, nameof(conversionService));
 
             this.DataConversionService = conversionService;
             this.SourceDataContext = sourceDataContext;
