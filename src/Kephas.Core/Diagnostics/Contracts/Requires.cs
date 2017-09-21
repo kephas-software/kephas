@@ -95,7 +95,6 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         public static void NotNullOrEmpty<T>(T[] value, string parameterName)
-            where T : class
         {
             NotNull(value, parameterName);
 

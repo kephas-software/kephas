@@ -10,9 +10,9 @@
 namespace Kephas.Composition.Mef.ScopeFactory
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Composition.Metadata;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Attribute for MEF scope.
@@ -26,7 +26,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
         /// <param name="scopeName">Name of the scope.</param>
         public SharingBoundaryScopeAttribute(string scopeName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(scopeName));
+            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
 
             this.Value = scopeName;
         }

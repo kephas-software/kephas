@@ -10,7 +10,8 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Attribute for classifier kind.
@@ -23,7 +24,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="classifierType">The type of the classifier.</param>
         protected ClassifierKindAttribute(Type classifierType)
         {
-            Contract.Requires(classifierType != null);
+            Requires.NotNull(classifierType, nameof(classifierType));
 
             this.ClassifierType = classifierType;
         }

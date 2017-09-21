@@ -10,7 +10,6 @@
 namespace Kephas.Messaging
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
@@ -29,9 +28,9 @@ namespace Kephas.Messaging
         public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message, IMessageHandler handler)
             : base(messageProcessor.AmbientServices)
         {
-            Contract.Requires(messageProcessor != null);
+            Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(message, nameof(message));
-            Contract.Requires(handler != null);
+            Requires.NotNull(handler, nameof(handler));
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;

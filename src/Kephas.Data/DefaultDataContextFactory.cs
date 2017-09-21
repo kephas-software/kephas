@@ -21,6 +21,7 @@ namespace Kephas.Data
     using Kephas.Data.Composition;
     using Kephas.Data.Resources;
     using Kephas.Data.Store;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -54,8 +55,8 @@ namespace Kephas.Data
             ICollection<IExportFactory<IDataContext, DataContextMetadata>> dataContextFactories,
             IDataStoreProvider dataStoreProvider)
         {
-            Contract.Requires(dataContextFactories != null);
-            Contract.Requires(dataStoreProvider != null);
+            Requires.NotNull(dataContextFactories, nameof(dataContextFactories));
+            Requires.NotNull(dataStoreProvider, nameof(dataStoreProvider));
 
             var factoriesByDataStoreKind =
                 dataContextFactories.SelectMany(

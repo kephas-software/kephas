@@ -11,10 +11,10 @@ namespace Kephas.Data.Store
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Composition.Metadata;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Metadata attribute for supported data store kinds.
@@ -27,8 +27,7 @@ namespace Kephas.Data.Store
         /// <param name="dataStoreKinds">A variable-length parameters list containing data store kinds.</param>
         public SupportedDataStoreKindsAttribute(params DataStoreKind[] dataStoreKinds)
         {
-            Contract.Requires(dataStoreKinds != null);
-            Contract.Requires(dataStoreKinds.Length > 0);
+            Requires.NotNullOrEmpty(dataStoreKinds, nameof(dataStoreKinds));
 
             this.Value = dataStoreKinds.Select(k => k.ToString()).ToArray();
         }
@@ -39,8 +38,7 @@ namespace Kephas.Data.Store
         /// <param name="dataStoreKinds">A variable-length parameters list containing data store kinds.</param>
         public SupportedDataStoreKindsAttribute(params string[] dataStoreKinds)
         {
-            Contract.Requires(dataStoreKinds != null);
-            Contract.Requires(dataStoreKinds.Length > 0);
+            Requires.NotNullOrEmpty(dataStoreKinds, nameof(dataStoreKinds));
 
             this.Value = dataStoreKinds;
         }

@@ -10,7 +10,8 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Attribute for indicating a name discriminator used by the qualified name.
@@ -24,7 +25,7 @@ namespace Kephas.Model.AttributedModel
         /// <param name="nameDiscriminator">The name discriminator.</param>
         public MemberNameDiscriminatorAttribute(string nameDiscriminator)
         {
-            Contract.Requires(!string.IsNullOrEmpty(nameDiscriminator));
+            Requires.NotNullOrEmpty(nameDiscriminator, nameof(nameDiscriminator));
 
             this.NameDiscriminator = nameDiscriminator;
         }

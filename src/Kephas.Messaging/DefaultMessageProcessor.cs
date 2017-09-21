@@ -12,7 +12,6 @@ namespace Kephas.Messaging
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -52,7 +51,7 @@ namespace Kephas.Messaging
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(compositionContext, nameof(compositionContext));
-            Contract.Requires(filterFactories != null);
+            Requires.NotNull(filterFactories, nameof(filterFactories));
 
             this.AmbientServices = ambientServices;
             this.CompositionContext = compositionContext;
@@ -173,8 +172,6 @@ namespace Kephas.Messaging
         /// <returns>The processing context.</returns>
         protected virtual IMessageProcessingContext CreateProcessingContext(IMessage message, IMessageHandler handler)
         {
-            Contract.Ensures(Contract.Result<IMessageProcessingContext>() != null);
-
             return new MessageProcessingContext(this, message, handler);
         }
 
@@ -185,8 +182,6 @@ namespace Kephas.Messaging
         /// <returns>An ordered list of filters which can be applied to the provided context.</returns>
         protected virtual IList<IMessageProcessingFilter> GetOrderedFilters(IMessageProcessingContext context)
         {
-            Contract.Ensures(Contract.Result<IList<IMessageProcessingFilter>>() != null);
-
             var requestTypeInfo = context.Message.GetType().GetTypeInfo();
             var behaviors = (from b in this.filterFactories
                              where b.Metadata.MessageType.GetTypeInfo().IsAssignableFrom(requestTypeInfo)

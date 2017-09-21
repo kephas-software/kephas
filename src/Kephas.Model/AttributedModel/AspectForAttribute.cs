@@ -10,9 +10,9 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -29,7 +29,7 @@ namespace Kephas.Model.AttributedModel
         public AspectForAttribute(params Type[] runtimeTypes)
             : base(GetRuntimeTypesFilter(runtimeTypes))
         {
-            Contract.Requires(runtimeTypes != null && runtimeTypes.Length > 0);
+            Requires.NotNullOrEmpty(runtimeTypes, nameof(runtimeTypes));
         }
 
         /// <summary>
