@@ -45,8 +45,38 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Messaging\Composition\MessageHandlerMetadata.cs">
+      <Link>Composition\MessageHandlerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Composition\MessageProcessingFilterMetadata.cs">
+      <Link>Composition\MessageProcessingFilterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\DefaultMessageProcessor.cs">
+      <Link>DefaultMessageProcessor.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\IMessage.cs">
       <Link>IMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageHandler.cs">
+      <Link>IMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageProcessingContext.cs">
+      <Link>IMessageProcessingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageProcessingFilter.cs">
+      <Link>IMessageProcessingFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageProcessor.cs">
+      <Link>IMessageProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageHandlerBase.cs">
+      <Link>MessageHandlerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageProcessingContext.cs">
+      <Link>MessageProcessingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageProcessingFilterBase.cs">
+      <Link>MessageProcessingFilterBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessagingException.cs">
       <Link>MessagingException.cs</Link>
@@ -68,36 +98,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\Composition\MessageHandlerMetadata.cs">
-      <Link>Server\Composition\MessageHandlerMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\Composition\MessageProcessingFilterMetadata.cs">
-      <Link>Server\Composition\MessageProcessingFilterMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\DefaultMessageProcessor.cs">
-      <Link>Server\DefaultMessageProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\IMessageHandler.cs">
-      <Link>Server\IMessageHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessingContext.cs">
-      <Link>Server\IMessageProcessingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessingFilter.cs">
-      <Link>Server\IMessageProcessingFilter.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\IMessageProcessor.cs">
-      <Link>Server\IMessageProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\MessageHandlerBase.cs">
-      <Link>Server\MessageHandlerBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\MessageProcessingContext.cs">
-      <Link>Server\MessageProcessingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Server\MessageProcessingFilterBase.cs">
-      <Link>Server\MessageProcessingFilterBase.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

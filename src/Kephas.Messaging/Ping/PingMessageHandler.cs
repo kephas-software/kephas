@@ -13,8 +13,6 @@ namespace Kephas.Messaging.Ping
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Messaging.Server;
-
     /// <summary>
     /// Message handler for the <see cref="PingMessage"/>.
     /// </summary>

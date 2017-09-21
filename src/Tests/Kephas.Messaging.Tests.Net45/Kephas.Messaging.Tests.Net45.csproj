@@ -67,11 +67,11 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Tests\Server\Composition\MessageHandlerMetadataTest.cs">
-      <Link>Server\Composition\MessageHandlerMetadataTest.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Tests\Composition\MessageHandlerMetadataTest.cs">
+      <Link>Composition\MessageHandlerMetadataTest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Tests\Server\DefaultMessageProcessorTest.cs">
-      <Link>Server\DefaultMessageProcessorTest.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Tests\DefaultMessageProcessorTest.cs">
+      <Link>DefaultMessageProcessorTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

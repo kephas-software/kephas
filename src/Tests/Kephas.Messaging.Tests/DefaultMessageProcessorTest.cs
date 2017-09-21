@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Tests.Server
+namespace Kephas.Messaging.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -21,9 +21,8 @@ namespace Kephas.Messaging.Tests.Server
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Ping;
-    using Kephas.Messaging.Server;
-    using Kephas.Messaging.Server.Composition;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
 

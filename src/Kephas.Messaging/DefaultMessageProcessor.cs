@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Server
+namespace Kephas.Messaging
 {
     using System;
     using System.Collections.Concurrent;
@@ -21,8 +21,8 @@ namespace Kephas.Messaging.Server
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Resources;
-    using Kephas.Messaging.Server.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

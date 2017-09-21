@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Tests.Server.Composition
+namespace Kephas.Messaging.Tests.Composition
 {
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Messaging.Server.Composition;
+    using Kephas.Messaging.Composition;
 
     using NUnit.Framework;
 
