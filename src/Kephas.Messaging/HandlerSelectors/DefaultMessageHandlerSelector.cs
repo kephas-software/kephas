@@ -32,11 +32,12 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
-        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageType">The type of the message.</param>
+        /// <param name="messageName">The message name.</param>
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public override bool CanHandle(Type messageType)
+        public override bool CanHandle(Type messageType, string messageName)
         {
             return true;
         }

@@ -46,7 +46,7 @@ namespace Kephas.Messaging
         /// <summary>
         /// The handler factories.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<Type, Func<IEnumerable<IMessageHandler>>>();
+        private readonly ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
@@ -173,20 +173,45 @@ namespace Kephas.Messaging
         /// <returns>The message handlers.</returns>
         protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
         {
-            var messageType = message.GetType();
-            var messageHandlersFactory = this.handlerFactories.GetOrAdd(messageType, _ =>
+            var messageType = this.GetMessageType(message);
+            var messageName = this.GetMessageName(message);
+            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{messageType.FullName}/{messageName}", _ =>
                 {
-                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType));
+                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType, messageName));
                     if (handlerSelector == null)
                     {
                         return () => null;
                     }
 
-                    return handlerSelector.GetHandlersFactory(messageType);
+                    return handlerSelector.GetHandlersFactory(messageType, messageName);
                 });
 
             var handlers = messageHandlersFactory();
             return handlers ?? new IMessageHandler[0];
+        }
+
+        /// <summary>
+        /// Gets the message type.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>
+        /// The message type.
+        /// </returns>
+        protected virtual Type GetMessageType(IMessage message)
+        {
+            return message.GetType();
+        }
+
+        /// <summary>
+        /// Gets the message name.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>
+        /// The message name.
+        /// </returns>
+        protected virtual string GetMessageName(IMessage message)
+        {
+            return string.Empty;
         }
 
         /// <summary>

@@ -41,33 +41,36 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
-        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageType">The type of the message.</param>
+        /// <param name="messageName">The message name.</param>
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public abstract bool CanHandle(Type messageType);
+        public abstract bool CanHandle(Type messageType, string messageName);
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
-        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageType">The type of the message.</param>
+        /// <param name="messageName">The message name.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType)
+        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, string messageName)
         {
-            var orderedHandlers = this.GetOrderedMessageHandlerFactories(messageType);
+            var orderedHandlers = this.GetOrderedMessageHandlerFactories(messageType, messageName);
             return () => orderedHandlers.Select(f => f.CreateExportedValue()).ToList();
         }
 
         /// <summary>
         /// Gets the ordered message handler factories.
         /// </summary>
-        /// <param name="messageType">Type of the message.</param>
+        /// <param name="messageType">The type of the message.</param>
+        /// <param name="messageName">The message name.</param>
         /// <returns>
         /// The ordered message handler factories.
         /// </returns>
-        protected virtual IList<IExportFactory<IMessageHandler, AppServiceMetadata>> GetOrderedMessageHandlerFactories(Type messageType)
+        protected virtual IList<IExportFactory<IMessageHandler, AppServiceMetadata>> GetOrderedMessageHandlerFactories(Type messageType, string messageName)
         {
             var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(messageType);
             var untypedExportFactories = this.CompositionContext.GetExportFactories(messageHandlerType, typeof(AppServiceMetadata));
