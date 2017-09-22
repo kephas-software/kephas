@@ -49,7 +49,7 @@ namespace Kephas.Messaging.HandlerSelectors
                 throw new MissingHandlerException(
                     string.Format(
                         Strings.DefaultMessageProcessor_MissingHandler_Exception,
-                        messageType.FullName));
+                        $"'{messageType.FullName}/{messageName}'"));
             }
 
             if (orderedFactories.Count > 1)
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.HandlerSelectors
                     throw new AmbiguousMatchException(
                         string.Format(
                             Strings.DefaultMessageProcessor_AmbiguousHandler_Exception,
-                            messageType.FullName,
+                            $"'{messageType.FullName}/{messageName}'",
                             string.Join(", ", orderedFactories.Select(f => f.Metadata.AppServiceImplementationType?.FullName))));
                 }
             }

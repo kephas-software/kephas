@@ -24,26 +24,62 @@ namespace Kephas.Messaging.Tests
     public class MessageHandlerTest : CompositionTestBase
     {
         [Test]
-        public void Composition()
+        public void Composition_single_handler()
         {
             var container = this.CreateContainer(parts: new[]
                                                             {
+                                                                typeof(IMessageHandler),
                                                                 typeof(IMessageHandler<>),
                                                                 typeof(HiTestHandler)
                                                             });
 
-            var handlers = container.GetExports<IMessageHandler<IMessage>>().ToList();
+            var handlers = container.GetExports<IMessageHandler>().ToList();
 
             Assert.AreEqual(1, handlers.Count);
             Assert.IsInstanceOf<HiTestHandler>(handlers[0]);
 
-            var handlerFactories = container.GetExportFactories<IMessageHandler<IMessage>, MessageHandlerMetadata>().ToList();
+            var handlerFactories = container.GetExportFactories<IMessageHandler, MessageHandlerMetadata>()
+                .OrderBy(f => f.Metadata.MessageName)
+                .ToList();
             Assert.AreEqual(1, handlerFactories.Count);
             Assert.AreEqual("Hi", handlerFactories[0].Metadata.MessageName);
         }
 
+        [Test]
+        public void Composition_two_handlers()
+        {
+            var container = this.CreateContainer(parts: new[]
+                                                            {
+                                                                typeof(IMessageHandler),
+                                                                typeof(IMessageHandler<>),
+                                                                typeof(HiTestHandler),
+                                                                typeof(ThereTestHandler)
+                                                            });
+
+            var handlers = container.GetExports<IMessageHandler>().ToList();
+
+            Assert.AreEqual(2, handlers.Count);
+            Assert.IsInstanceOf<HiTestHandler>(handlers[0]);
+
+            var handlerFactories = container.GetExportFactories<IMessageHandler, MessageHandlerMetadata>()
+                .OrderBy(f => f.Metadata.MessageName)
+                .ToList();
+            Assert.AreEqual(2, handlerFactories.Count);
+            Assert.AreEqual("Hi", handlerFactories[0].Metadata.MessageName);
+            Assert.AreEqual("There", handlerFactories[1].Metadata.MessageName);
+        }
+
         [MessageName("Hi")]
         public class HiTestHandler : MessageHandlerBase<IMessage, IMessage>
+        {
+            public override async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [MessageName("There")]
+        public class ThereTestHandler : MessageHandlerBase<IMessage, IMessage>
         {
             public override async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
             {

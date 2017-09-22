@@ -22,7 +22,6 @@ namespace Kephas.Messaging
     using Kephas.Logging;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
-    using Kephas.Messaging.Resources;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -211,7 +210,9 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual string GetMessageName(IMessage message)
         {
-            return null;
+            var expandoMessage = message.ToExpando();
+            var messageName = expandoMessage[nameof(MessageHandlerMetadata.MessageName)] as string;
+            return messageName;
         }
 
         /// <summary>
