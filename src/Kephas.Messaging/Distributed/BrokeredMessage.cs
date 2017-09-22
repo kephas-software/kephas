@@ -57,6 +57,14 @@ namespace Kephas.Messaging.Distributed
         public IMessageChannel Channel { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this message is one way.
+        /// </summary>
+        /// <value>
+        /// True if this message is one way, false if not.
+        /// </value>
+        public bool IsOneWay { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the message which this message is a reply to.
         /// </summary>
         /// <value>

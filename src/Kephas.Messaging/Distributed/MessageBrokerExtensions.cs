@@ -9,7 +9,6 @@
 
 namespace Kephas.Messaging.Distributed
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -24,13 +23,17 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <param name="messageBroker">The messageBroker to act on.</param>
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers,
+        /// just for the aknowledgement of the message being sent.
+        /// </remarks>
+        /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// The asynchronous result yielding the message ID.
+        /// The asynchronous result.
         /// </returns>
-        public static async Task<object> PublishAsync(
+        public static Task PublishAsync(
             this IMessageBroker messageBroker,
             IEvent @event,
             CancellationToken cancellationToken = default)
@@ -38,14 +41,63 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
 
-            var brokeredMessage = new BrokeredMessage
-                                      {
-                                          Message = @event,
-                                      };
+            var brokeredMessage = new BrokeredMessageBuilder()
+                .WithMessage(@event)
+                .OneWay()
+                .BrokeredMessage;
 
-            await messageBroker.DispatchAsync(brokeredMessage, cancellationToken).PreserveThreadContext();
+            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+        }
 
-            return brokeredMessage.Id;
+        /// <summary>
+        /// Processes a message asynchronously, waiting for a response from the handler.
+        /// </summary>
+        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result yielding the response message.
+        /// </returns>
+        public static async Task<IMessage> ProcessAsync(
+            this IMessageBroker messageBroker,
+            IMessage message,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(message, nameof(message));
+
+            var brokeredMessage = new BrokeredMessageBuilder()
+                .WithMessage(message)
+                .BrokeredMessage;
+
+            var response = await messageBroker.DispatchAsync(brokeredMessage, cancellationToken).PreserveThreadContext();
+
+            return response;
+        }
+
+        /// <summary>
+        /// Processes a message asynchronously without waiting for a response from the handler.
+        /// </summary>
+        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public static Task<IMessage> ProcessOneWayAsync(
+            this IMessageBroker messageBroker,
+            IMessage message,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(message, nameof(message));
+
+            var brokeredMessage = new BrokeredMessageBuilder()
+                .WithMessage(message)
+                .OneWay()
+                .BrokeredMessage;
+
+            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Kephas.Messaging.Distributed
     /// A distributed message broker sending the messages to the message processor.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullMessageBroker : IMessageBroker
+    public class InProcessMessageBroker : IMessageBroker
     {
         /// <summary>
         /// The message processor.
@@ -27,10 +27,10 @@ namespace Kephas.Messaging.Distributed
         private readonly IMessageProcessor messageProcessor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NullMessageBroker"/> class.
+        /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
-        public NullMessageBroker(IMessageProcessor messageProcessor)
+        public InProcessMessageBroker(IMessageProcessor messageProcessor)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
@@ -47,6 +47,8 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken)
         {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
             return this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken);
         }
     }

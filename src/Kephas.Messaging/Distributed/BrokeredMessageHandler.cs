@@ -48,7 +48,16 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override Task<IMessage> ProcessAsync(BrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return this.messageProcessor.ProcessAsync(message.Message, null, token);
+            if (message.IsOneWay)
+            {
+                // do not wait for the processing.
+                this.messageProcessor.ProcessAsync(message.Message, context, token);
+
+                return Task.FromResult<IMessage>(new EmptyMessage());
+            }
+
+            // wait for the processing and return the result.
+            return this.messageProcessor.ProcessAsync(message.Message, context, token);
         }
     }
 }
