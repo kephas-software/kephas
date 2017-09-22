@@ -202,7 +202,16 @@ namespace Kephas.Services.Composition
 
                     if (metadataAttributes.Length > 0)
                     {
-                        logger.Warn(string.Format(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract));
+                        var hasCustomMetadataAttributes = metadataAttributes.Any(
+                            a => a != typeof(SharedAppServiceContractAttribute)
+                                 && a != typeof(ScopeSharedAppServiceContractAttribute)
+                                 && a != typeof(AppServiceContractAttribute));
+
+                        // warn about metadata on open generic exports only if custom attributes are provided.
+                        if (hasCustomMetadataAttributes)
+                        {
+                            logger.Warn(string.Format(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract));
+                        }
                     }
                 }
                 else
