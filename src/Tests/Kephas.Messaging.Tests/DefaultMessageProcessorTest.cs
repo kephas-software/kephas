@@ -74,6 +74,37 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
+        public async Task ProcessAsync_context_handler_and_message_preserved()
+        {
+            var compositionContainer = Substitute.For<ICompositionContext>();
+            var handler = Substitute.For<IMessageHandler>();
+            var contextHandler = Substitute.For<IMessageHandler>();
+            var contextMessage = Substitute.For<IMessage>();
+
+            var expectedResponse = Substitute.For<IMessage>();
+
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(
+                    ci =>
+                        {
+                            var ctx = ci.Arg<IMessageProcessingContext>();
+                            ctx.Message = Substitute.For<IMessage>();
+                            ctx.Handler = Substitute.For<IMessageHandler>();
+                            return Task.FromResult(expectedResponse);
+                        });
+            this.ConfigureHandlersForMessage(compositionContainer, message, handler);
+            var processor = this.CreateRequestProcessor(compositionContainer);
+
+            var context = new MessageProcessingContext(processor, contextMessage, contextHandler);
+
+            var result = await processor.ProcessAsync(message, context, default);
+
+            Assert.AreSame(contextMessage, context.Message);
+            Assert.AreSame(contextHandler, context.Handler);
+        }
+
+        [Test]
         public async Task ProcessAsync_result()
         {
             var compositionContainer = Substitute.For<ICompositionContext>();

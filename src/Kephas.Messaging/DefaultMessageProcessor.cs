@@ -105,6 +105,8 @@ namespace Kephas.Messaging
             var filters = this.GetOrderedFilters(message);
             var reversedFilters = filters.Reverse();
 
+            var contextHandler = context?.Handler;
+            var contextMessage = context?.Message;
             foreach (var messageHandler in this.ResolveMessageHandlers(message))
             {
                 using (messageHandler)
@@ -126,12 +128,20 @@ namespace Kephas.Messaging
                             await filter.BeforeProcessAsync(context, token).PreserveThreadContext();
                         }
 
-                        var response = await messageHandler.ProcessAsync(message, context, token).PreserveThreadContext();
+                        var response = await messageHandler.ProcessAsync(message, context, token)
+                                           .PreserveThreadContext();
                         context.Response = response;
                     }
                     catch (Exception ex)
                     {
                         context.Exception = ex;
+                    }
+                    finally
+                    {
+                        // restore the message and handler that could be changed 
+                        // by a nested message processor ProcessAsync call.
+                        context.Handler = messageHandler;
+                        context.Message = message;
                     }
 
                     foreach (var filter in reversedFilters)
@@ -139,6 +149,13 @@ namespace Kephas.Messaging
                         await filter.AfterProcessAsync(context, token).PreserveThreadContext();
                     }
                 }
+            }
+
+            if (context != null)
+            {
+                // restore the previous context handler and message.
+                context.Handler = contextHandler;
+                context.Message = contextMessage;
             }
 
             if (context.Exception != null)
