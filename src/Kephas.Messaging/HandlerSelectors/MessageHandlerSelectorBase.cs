@@ -15,7 +15,7 @@ namespace Kephas.Messaging.HandlerSelectors
 
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Composition;
+    using Kephas.Messaging.Composition;
 
     /// <summary>
     /// Base class for message handler selectors.
@@ -25,18 +25,21 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerSelectorBase"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        protected MessageHandlerSelectorBase(ICompositionContext compositionContext)
+        /// <param name="handlerFactories">The message handler factories.</param>
+        protected MessageHandlerSelectorBase(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
-            this.CompositionContext = compositionContext;
+            this.HandlerFactories = handlerFactories;
         }
 
         /// <summary>
-        /// Gets the context for the composition.
+        /// Gets the handler factories.
         /// </summary>
-        public ICompositionContext CompositionContext { get; }
+        /// <value>
+        /// The handler factories.
+        /// </value>
+        protected IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> HandlerFactories { get; }
 
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
@@ -70,12 +73,10 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <returns>
         /// The ordered message handler factories.
         /// </returns>
-        protected virtual IList<IExportFactory<IMessageHandler, AppServiceMetadata>> GetOrderedMessageHandlerFactories(Type messageType, string messageName)
+        protected virtual IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> GetOrderedMessageHandlerFactories(Type messageType, string messageName)
         {
-            var messageHandlerType = typeof(IMessageHandler<>).MakeGenericType(messageType);
-            var untypedExportFactories = this.CompositionContext.GetExportFactories(messageHandlerType, typeof(AppServiceMetadata));
-            var exportFactories = (IEnumerable<IExportFactory<IMessageHandler, AppServiceMetadata>>)untypedExportFactories;
-            var orderedFactories = exportFactories
+            var orderedFactories = this.HandlerFactories
+                .Where(f => f.Metadata.MessageType == messageType && f.Metadata.MessageName == messageName)
                 .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ToList();

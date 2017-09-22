@@ -211,7 +211,7 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual string GetMessageName(IMessage message)
         {
-            return string.Empty;
+            return null;
         }
 
         /// <summary>

@@ -32,18 +32,23 @@ namespace Kephas.Messaging.Composition
                 return;
             }
 
-            this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType), null);
+            this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType));
+            this.MessageName = (string)metadata.TryGetValue(nameof(this.MessageName));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageHandlerMetadata" /> class.
+        /// Initializes a new instance of the <see cref="MessageHandlerMetadata"/> class.
         /// </summary>
         /// <param name="messageType">Type of the message.</param>
-        /// <param name="overridePriority">The override priority.</param>
-        public MessageHandlerMetadata(Type messageType, int overridePriority = 0)
-            : base(0, overridePriority)
+        /// <param name="messageName">The name of the message (optional).</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
+        public MessageHandlerMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+            : base(processingPriority, overridePriority, optionalService)
         {
             this.MessageType = messageType;
+            this.MessageName = messageName;
         }
 
         /// <summary>
@@ -53,5 +58,13 @@ namespace Kephas.Messaging.Composition
         /// The type of the message.
         /// </value>
         public Type MessageType { get; }
+
+        /// <summary>
+        /// Gets the name of the message.
+        /// </summary>
+        /// <value>
+        /// The name of the message.
+        /// </value>
+        public string MessageName { get; }
     }
 }

@@ -15,6 +15,7 @@ namespace Kephas.Messaging.HandlerSelectors
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Resources;
 
     /// <summary>
@@ -25,9 +26,9 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleMessageHandlerSelectorBase"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
-        protected SingleMessageHandlerSelectorBase(ICompositionContext compositionContext)
-            : base(compositionContext)
+        /// <param name="handlerFactories">The message handler factories.</param>
+        protected SingleMessageHandlerSelectorBase(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
+            : base(handlerFactories)
         {
         }
 

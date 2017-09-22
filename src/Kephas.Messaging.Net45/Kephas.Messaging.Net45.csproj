@@ -129,6 +129,9 @@
     <Compile Include="..\Kephas.Messaging\MessageHandlerBase.cs">
       <Link>MessageHandlerBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageNameAttribute.cs">
+      <Link>MessageNameAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\MessageProcessingContext.cs">
       <Link>MessageProcessingContext.cs</Link>
     </Compile>

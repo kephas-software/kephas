@@ -325,16 +325,16 @@ namespace Kephas.Messaging.Tests
             var handler2 = Substitute.For<IMessageHandler>();
 
             var message = Substitute.For<IEvent>();
-            this.ConfigureHandlersForMessage(
-                compositionContainer,
-                message,
-                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler1, new AppServiceMetadata(overridePriority: (int)Priority.Low)),
-                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => handler2, new AppServiceMetadata(overridePriority: (int)Priority.Low)));
+            var handlerFactories = new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                                       {
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low))
+                                       };
             var processor = this.CreateRequestProcessor(
                 compositionContainer,
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(compositionContainer), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(handlerFactories), new AppServiceMetadata())
                                               });
             await processor.ProcessAsync(message, null, default);
 
@@ -349,24 +349,21 @@ namespace Kephas.Messaging.Tests
 
             var eventMessage = Substitute.For<IEvent>();
             var eventHandler = Substitute.For<IMessageHandler>();
-            this.ConfigureHandlersForMessage(
-                compositionContainer,
-                eventMessage,
-                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => eventHandler, new AppServiceMetadata()));
-
             var plainMessage = Substitute.For<IMessage>();
             var plainHandler = Substitute.For<IMessageHandler>();
-            this.ConfigureHandlersForMessage(
-                compositionContainer,
-                plainMessage,
-                new ExportFactory<IMessageHandler, AppServiceMetadata>(() => plainHandler, new AppServiceMetadata()));
+
+            var handlerFactories = new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                                       {
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => eventHandler, new MessageHandlerMetadata(eventMessage.GetType())),
+                                           new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => plainHandler, new MessageHandlerMetadata(plainMessage.GetType()))
+                                       };
 
             var processor = this.CreateRequestProcessor(
                 compositionContainer,
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(compositionContainer), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(compositionContainer), new AppServiceMetadata(processingPriority: (int)Priority.High))
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.High))
                                               });
 
             await processor.ProcessAsync(eventMessage, null, default);
@@ -414,56 +411,6 @@ namespace Kephas.Messaging.Tests
                                               };
 
             return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), handlerSelectorFactories, filterFactories);
-        }
-
-        public void ConfigureHandlersForMessage(ICompositionContext compositionContext, IMessage message, params IMessageHandler[] handlers)
-        {
-            var mi = this.GetType().GetMethod(nameof(this.ConfigureHandlersForMessageGeneric));
-            var configureHandlers = mi.MakeGenericMethod(message.GetType());
-            configureHandlers.Call(this, compositionContext, handlers.Select(h => new ExportFactory<IMessageHandler, AppServiceMetadata>(() => h, new AppServiceMetadata())).ToArray());
-        }
-
-        public void ConfigureHandlersForMessage(ICompositionContext compositionContext, IMessage message, params IExportFactory<IMessageHandler, AppServiceMetadata>[] handlerFactories)
-        {
-            var mi = this.GetType().GetMethod(nameof(this.ConfigureHandlersForMessageGeneric));
-            var configureHandlers = mi.MakeGenericMethod(message.GetType());
-            configureHandlers.Call(this, compositionContext, handlerFactories);
-        }
-
-        public void ConfigureHandlersForMessageGeneric<TMessage>(ICompositionContext compositionContext, params IExportFactory<IMessageHandler, AppServiceMetadata>[] handlerFactories)
-            where TMessage : IMessage
-        {
-            var factoryImporterType = typeof(ICollectionExportFactoryImporter<IMessageHandler<TMessage>, AppServiceMetadata>);
-            var factoryImporter = Substitute.For<ICollectionExportFactoryImporter<IMessageHandler<TMessage>, AppServiceMetadata>>();
-            compositionContext.GetExport(factoryImporterType, Arg.Any<string>())
-                .Returns(factoryImporter);
-
-            var typedHandlerFactories = handlerFactories.Select(
-                h =>
-                    {
-                        var typedHandler = Substitute.For<IMessageHandler<TMessage>>();
-                        typedHandler
-                            .ProcessAsync(
-                                Arg.Any<TMessage>(),
-                                Arg.Any<IMessageProcessingContext>(),
-                                Arg.Any<CancellationToken>()).Returns(
-                                ci => h.CreateExportedValue().ProcessAsync(
-                                    ci.Arg<TMessage>(),
-                                    ci.Arg<IMessageProcessingContext>(),
-                                    ci.Arg<CancellationToken>()));
-                        typedHandler
-                            .ProcessAsync(
-                                Arg.Any<IMessage>(),
-                                Arg.Any<IMessageProcessingContext>(),
-                                Arg.Any<CancellationToken>()).Returns(
-                                ci => h.CreateExportedValue().ProcessAsync(
-                                    ci.Arg<IMessage>(),
-                                    ci.Arg<IMessageProcessingContext>(),
-                                    ci.Arg<CancellationToken>()));
-                        return new ExportFactory<IMessageHandler<TMessage>, AppServiceMetadata>(() => typedHandler, h.Metadata);
-                    }).ToList();
-            factoryImporter.ExportFactories.Returns(typedHandlerFactories);
-            ((ICollectionExportFactoryImporter)factoryImporter).ExportFactories.Returns(typedHandlerFactories);
         }
     }
 }
