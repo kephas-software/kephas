@@ -11,7 +11,6 @@ namespace Kephas.Composition.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
@@ -21,6 +20,9 @@ namespace Kephas.Composition.Internal
     /// </summary>
     internal class CompositionContextServiceProviderAdapter : IServiceProvider
     {
+        /// <summary>
+        /// Context for the composition.
+        /// </summary>
         private readonly ICompositionContext compositionContext;
 
         /// <summary>

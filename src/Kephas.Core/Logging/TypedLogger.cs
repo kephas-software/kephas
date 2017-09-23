@@ -10,7 +10,6 @@
 namespace Kephas.Logging
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;

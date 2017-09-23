@@ -10,7 +10,6 @@
 namespace Kephas.Platform.Net45
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;

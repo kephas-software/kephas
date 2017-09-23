@@ -11,7 +11,6 @@ namespace Kephas.Threading.Tasks
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Diagnostics.Contracts;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 

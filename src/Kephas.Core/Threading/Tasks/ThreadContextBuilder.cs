@@ -11,7 +11,6 @@ namespace Kephas.Threading.Tasks
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 
@@ -65,7 +64,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public ThreadContextBuilder WithStoreAction(Action<ThreadContext> storeAction)
         {
-            Contract.Requires(storeAction != null);
+            Requires.NotNull(storeAction, nameof(storeAction));
 
             var storeActions = this.GetOrCreateContextActions(ThreadingContextStoreActionsKey);
             storeActions.Add(storeAction);
@@ -82,7 +81,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public ThreadContextBuilder WithRestoreAction(Action<ThreadContext> restoreAction)
         {
-            Contract.Requires(restoreAction != null);
+            Requires.NotNull(restoreAction, nameof(restoreAction));
 
             var restoreActions = this.GetOrCreateContextActions(ThreadingContextRestoreActionsKey);
             restoreActions.Add(restoreAction);

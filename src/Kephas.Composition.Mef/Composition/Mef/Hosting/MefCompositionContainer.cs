@@ -11,10 +11,10 @@ namespace Kephas.Composition.Mef.Hosting
 {
     using System.Composition;
     using System.Composition.Hosting;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.ExportProviders;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The MEF composition container.
@@ -27,7 +27,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="configuration">The configuration.</param>
         protected internal MefCompositionContainer(ContainerConfiguration configuration)
         {
-            Contract.Requires(configuration != null);
+            Requires.NotNull(configuration, nameof(configuration));
 
             this.Initialize(this.CreateCompositionContext(configuration));
         }

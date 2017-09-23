@@ -13,6 +13,7 @@ namespace Kephas.Composition.Mef.Conventions
     using System.Composition.Convention;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Export conventions builder for MEF.
@@ -42,6 +43,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IExportConventionsBuilder AsContractType(Type contractType)
         {
+            Requires.NotNull(contractType, nameof(contractType));
+
             this.innerExportConventionBuilder.AsContractType(contractType);
 
             return this;
@@ -57,6 +60,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, object value)
         {
+            Requires.NotNullOrEmpty(name, nameof(name));
+
             this.innerExportConventionBuilder.AddMetadata(name, value);
 
             return this;
@@ -72,6 +77,9 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
         {
+            Requires.NotNullOrEmpty(name, nameof(name));
+            Requires.NotNull(getValueFromPartType, nameof(getValueFromPartType));
+
             this.innerExportConventionBuilder.AddMetadata(name, getValueFromPartType);
 
             return this;

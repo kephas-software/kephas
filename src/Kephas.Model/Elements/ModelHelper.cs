@@ -13,7 +13,6 @@ namespace Kephas.Model.Elements
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
@@ -85,8 +84,6 @@ namespace Kephas.Model.Elements
         /// </returns>
         public static IReadOnlyList<IRuntimeTypeInfo> GetRuntimeProjection(this INamedElement element)
         {
-            Contract.Ensures(Contract.Result<IReadOnlyList<IRuntimeTypeInfo>>() != null);
-
             if (element == null)
             {
                 return EmptyProjection;

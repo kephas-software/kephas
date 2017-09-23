@@ -13,7 +13,6 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Hosting;
-    using Kephas.Services;
 
     /// <summary>
     /// Registrar for composition conventions.

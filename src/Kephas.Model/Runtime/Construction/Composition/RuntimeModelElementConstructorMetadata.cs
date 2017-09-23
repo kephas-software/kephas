@@ -11,12 +11,9 @@ namespace Kephas.Model.Runtime.Construction.Composition
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
-    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>

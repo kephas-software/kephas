@@ -10,7 +10,6 @@
 namespace Kephas.Model.AttributedModel
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 

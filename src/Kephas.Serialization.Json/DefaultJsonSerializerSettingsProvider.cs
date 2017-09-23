@@ -10,7 +10,6 @@
 namespace Kephas.Serialization.Json
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Collections;
@@ -149,8 +148,6 @@ namespace Kephas.Serialization.Json
         /// </returns>
         protected virtual IContractResolver GetContractResolver(bool camelCase)
         {
-            Contract.Ensures(Contract.Result<IContractResolver>() != null);
-
             return camelCase ? new CamelCasePropertyNamesContractResolver() : new DefaultContractResolver();
         }
 

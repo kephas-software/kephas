@@ -10,7 +10,8 @@
 namespace Kephas.Composition.Mef.Hosting
 {
     using System.Composition;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The MEF composition container.
@@ -28,7 +29,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="export">The export.</param>
         public MefScopedCompositionContext(Export<CompositionContext> export)
         {
-            Contract.Requires(export != null);
+            Requires.NotNull(export, nameof(export));
 
             this.export = export;
             this.Initialize(this.export.Value);

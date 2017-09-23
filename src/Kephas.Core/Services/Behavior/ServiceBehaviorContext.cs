@@ -9,8 +9,6 @@
 
 namespace Kephas.Services.Behavior
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
 

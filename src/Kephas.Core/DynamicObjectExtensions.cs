@@ -9,7 +9,6 @@
 
 namespace Kephas
 {
-    using System.Diagnostics.Contracts;
     using System.Dynamic;
 
     using Kephas.Diagnostics.Contracts;

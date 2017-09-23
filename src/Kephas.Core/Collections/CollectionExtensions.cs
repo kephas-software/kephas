@@ -12,7 +12,6 @@ namespace Kephas.Collections
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;

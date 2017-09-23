@@ -12,7 +12,6 @@ namespace Kephas.Composition.Mef.Hosting
     using System;
     using System.Collections.Generic;
     using System.Composition;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Composition.Mef.Resources;
     using Kephas.Composition.Mef.ScopeFactory;

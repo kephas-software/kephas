@@ -11,10 +11,9 @@ namespace Kephas.Data.Commands.Composition
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Collections;
-    using Kephas.Services;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -47,7 +46,7 @@ namespace Kephas.Data.Commands.Composition
         public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(processingPriority, overridePriority, optionalService)
         {
-            Contract.Requires(dataContextType != null);
+            Requires.NotNull(dataContextType, nameof(dataContextType));
 
             this.DataContextType = dataContextType;
         }

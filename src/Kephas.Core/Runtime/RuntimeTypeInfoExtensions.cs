@@ -10,7 +10,6 @@
 namespace Kephas.Runtime
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
 

@@ -11,6 +11,7 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Text;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
@@ -51,6 +52,9 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         public virtual INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
         {
+            Requires.NotNull(constructionContext, nameof(constructionContext));
+            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+
             var runtimeInfo = runtimeElement as TRuntime;
             if (runtimeInfo == null)
             {
@@ -82,6 +86,9 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         public string TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
         {
+            Requires.NotNull(constructionContext, nameof(constructionContext));
+            Requires.NotNull(runtimeElement, nameof(runtimeElement));
+
             return this.TryComputeNameCore(runtimeElement);
         }
 

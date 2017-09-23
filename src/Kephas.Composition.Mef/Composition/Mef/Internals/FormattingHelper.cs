@@ -10,7 +10,6 @@
 namespace Kephas.Composition.Mef.Internals
 {
     using System;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Diagnostics.Contracts;

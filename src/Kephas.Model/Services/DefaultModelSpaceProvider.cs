@@ -11,7 +11,6 @@ namespace Kephas.Model.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -57,7 +56,7 @@ namespace Kephas.Model.Services
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
-            Contract.Requires(modelInfoProviders != null);
+            Requires.NotNull(modelInfoProviders, nameof(modelInfoProviders));
 
             this.AmbientServices = ambientServices;
             this.ModelInfoProviders = modelInfoProviders;

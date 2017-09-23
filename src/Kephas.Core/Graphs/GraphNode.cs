@@ -10,7 +10,6 @@
 namespace Kephas.Graphs
 {
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;

@@ -9,8 +9,6 @@
 
 namespace Kephas.Data.Validation
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

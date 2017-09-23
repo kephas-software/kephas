@@ -14,7 +14,6 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition.Convention;
     using System.Composition.Hosting;
     using System.Composition.Hosting.Core;
-    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using Kephas.Composition.Conventions;
@@ -25,7 +24,6 @@ namespace Kephas.Composition.Mef.Hosting
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Composition.Metadata;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
 
     /// <summary>
     /// Builder for the MEF composition container.
@@ -79,7 +77,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>This builder.</returns>
         public MefCompositionContainerBuilder WithConfiguration(ContainerConfiguration containerConfiguration)
         {
-            Contract.Requires(containerConfiguration != null);
+            Requires.NotNull(containerConfiguration, nameof(containerConfiguration));
 
             this.configuration = containerConfiguration;
 

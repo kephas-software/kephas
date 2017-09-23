@@ -11,7 +11,6 @@ namespace Kephas.Threading.Tasks
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Globalization;
 
     using Kephas.Diagnostics.Contracts;

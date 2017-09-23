@@ -9,11 +9,11 @@
 
 namespace Kephas.Web.Owin.Application
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Application;
 
     using global::Owin;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// The OWIN web application context.
@@ -28,7 +28,7 @@ namespace Kephas.Web.Owin.Application
         public OwinAppContext(IAppBuilder appBuilder, IAmbientServices ambientServices = null)
             : base(ambientServices)
         {
-            Contract.Requires(appBuilder != null);
+            Requires.NotNull(appBuilder, nameof(appBuilder));
 
             this.AppBuilder = appBuilder;
         }

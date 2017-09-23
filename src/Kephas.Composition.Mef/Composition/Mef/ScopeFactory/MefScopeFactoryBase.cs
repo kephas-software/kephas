@@ -10,13 +10,17 @@
 namespace Kephas.Composition.Mef.ScopeFactory
 {
     using System.Composition;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A MEF scope provider.
     /// </summary>
     public abstract class MefScopeFactoryBase : IMefScopeFactory
     {
+        /// <summary>
+        /// The scoped context factory.
+        /// </summary>
         private readonly ExportFactory<CompositionContext> scopedContextFactory;
 
         /// <summary>
@@ -25,7 +29,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
         /// <param name="scopedContextFactory">The scoped context factory.</param>
         protected MefScopeFactoryBase(ExportFactory<CompositionContext> scopedContextFactory)
         {
-            Contract.Requires(scopedContextFactory != null);
+            Requires.NotNull(scopedContextFactory, nameof(scopedContextFactory));
 
             this.scopedContextFactory = scopedContextFactory;
         }

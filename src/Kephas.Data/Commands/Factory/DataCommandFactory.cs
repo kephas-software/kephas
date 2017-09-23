@@ -11,13 +11,13 @@ namespace Kephas.Data.Commands.Factory
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Data.Commands.Composition;
     using Kephas.Data.Resources;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// A data command factory.
@@ -37,7 +37,7 @@ namespace Kephas.Data.Commands.Factory
         /// <param name="commandFactories">The command factories.</param>
         public DataCommandFactory(ICollection<IExportFactory<TCommand, DataCommandMetadata>> commandFactories)
         {
-            Contract.Requires(commandFactories != null);
+            Requires.NotNull(commandFactories, nameof(commandFactories));
 
             this.commandFactories = commandFactories.OrderBy(f => f.Metadata.OverridePriority).ToList();
         }

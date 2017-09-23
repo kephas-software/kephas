@@ -84,7 +84,6 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(service, nameof(service));
-            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             return ambientServices.RegisterService(typeof(TService), service);
         }
@@ -103,7 +102,6 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
-            Contract.Ensures(Contract.Result<IAmbientServices>() != null);
 
             return ambientServices.RegisterService(typeof(TService), serviceFactory);
         }

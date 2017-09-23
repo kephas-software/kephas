@@ -12,7 +12,6 @@ namespace Kephas.Composition.Mef.Conventions
     using System;
     using System.Collections.Generic;
     using System.Composition.Convention;
-    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Composition.Conventions;
@@ -34,7 +33,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <param name="innerConventionBuilder">The inner convention builder.</param>
         internal MefPartConventionsBuilder(PartConventionBuilder innerConventionBuilder)
         {
-            Contract.Requires(innerConventionBuilder != null);
+            Requires.NotNull(innerConventionBuilder, nameof(innerConventionBuilder));
 
             this.innerConventionBuilder = innerConventionBuilder;
         }

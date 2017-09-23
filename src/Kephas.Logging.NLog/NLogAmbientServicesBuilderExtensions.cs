@@ -9,8 +9,6 @@
 
 namespace Kephas.Logging.NLog
 {
-    using System.Diagnostics.Contracts;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

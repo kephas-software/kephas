@@ -12,7 +12,8 @@ namespace Kephas.Composition.Mef.ExportProviders
     using System;
     using System.Collections.Generic;
     using System.Composition.Hosting.Core;
-    using System.Diagnostics.Contracts;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Factory export descriptor provider.
@@ -46,7 +47,7 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
         public FactoryExportDescriptorProvider(Func<TContract> factory, bool isShared)
         {
-            Contract.Requires(factory != null);
+            Requires.NotNull(factory, nameof(factory));
 
             this.factory = factory;
             this.isShared = isShared;
@@ -74,25 +75,24 @@ namespace Kephas.Composition.Mef.ExportProviders
             }
 
             return new[]
-               {
-                 new ExportDescriptorPromise(
-                   contract,
-                   contract.ContractType.Name,
-                   this.isShared,
-                   ExportDescriptorProvider.NoDependencies,
-                   dependencies => ExportDescriptor.Create(
-                     (c, o) =>
-                       {
-                       var instance = this.factory();
-                       var disposable = instance as IDisposable;
-                       if (disposable != null)
-                       {
-                         c.AddBoundInstance(disposable);
-                       }
+                {
+                    new ExportDescriptorPromise(
+                        contract,
+                        contract.ContractType.Name,
+                        this.isShared,
+                        ExportDescriptorProvider.NoDependencies,
+                        dependencies => ExportDescriptor.Create(
+                            (c, o) =>
+                                {
+                                    var instance = this.factory();
+                                    if (instance is IDisposable disposable)
+                                    {
+                                        c.AddBoundInstance(disposable);
+                                    }
 
-                       return instance;
-                     }, 
-                     ExportDescriptorProvider.NoMetadata))
+                                    return instance;
+                                },
+                        ExportDescriptorProvider.NoMetadata))
                };
         }
     }
