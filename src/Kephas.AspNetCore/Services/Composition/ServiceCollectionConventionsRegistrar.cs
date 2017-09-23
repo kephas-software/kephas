@@ -12,14 +12,28 @@ namespace Kephas.AspNetCore.Services.Composition
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A conventions registrar for a collection of service definitions.
     /// </summary>
+    [ExcludeFromComposition]
     public class ServiceCollectionConventionsRegistrar : IConventionsRegistrar
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCollectionConventionsRegistrar"/>
+        /// class.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public ServiceCollectionConventionsRegistrar(IServiceCollection services)
+        {
+            
+        }
+
         /// <summary>
         /// Registers the conventions.
         /// </summary>

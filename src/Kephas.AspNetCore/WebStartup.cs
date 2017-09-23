@@ -12,6 +12,10 @@ namespace Kephas.AspNetCore
     using System;
     using System.ComponentModel;
 
+    using Kephas.AspNetCore.Services.Composition;
+    using Kephas.Composition;
+    using Kephas.Composition.Hosting;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -41,11 +45,25 @@ namespace Kephas.AspNetCore
 
         public IConfigurationRoot Configuration { get; private set; }
 
-        // ConfigureServices is where you register dependencies. This gets
-        // called by the runtime before the Configure method, below.
+        /// <summary>
+        /// ConfigureServices is where you register dependencies. This gets called by the runtime before
+        /// the Configure method, below.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <returns>
+        /// An IServiceProvider.
+        /// </returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // TODO
+
+            var ambientServicesBuilder = new AmbientServicesBuilder();
+
+            var serviceCollectionRegistrar = new ServiceCollectionConventionsRegistrar(services);
+            
+            //...
+
+            // use it in creating the composition container
 
             ////// Create the container builder.
             ////var builder = new ContainerBuilder();
@@ -61,7 +79,7 @@ namespace Kephas.AspNetCore
             ////// Create the IServiceProvider based on the container.
             ////return new AutofacServiceProvider(this.ApplicationContainer);
 
-            return null;
+            return ambientServicesBuilder.AmbientServices.CompositionContainer.ToServiceProvider();
         }
 
         // Configure is where you add middleware. This is called after
