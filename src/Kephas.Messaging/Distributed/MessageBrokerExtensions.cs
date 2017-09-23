@@ -13,7 +13,6 @@ namespace Kephas.Messaging.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Extension methods for <see cref="IMessageBroker"/>.
@@ -41,12 +40,13 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
 
-            var brokeredMessage = new BrokeredMessageBuilder()
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
+            var brokeredMessage = brokeredMessageBuilder
                 .WithMessage(@event)
                 .OneWay()
                 .BrokeredMessage;
 
-            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+            return messageBroker.PublishAsync(brokeredMessage, cancellationToken);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result yielding the response message.
         /// </returns>
-        public static async Task<IMessage> ProcessAsync(
+        public static Task<IMessage> ProcessAsync(
             this IMessageBroker messageBroker,
             IMessage message,
             CancellationToken cancellationToken = default)
@@ -66,13 +66,12 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessage = new BrokeredMessageBuilder()
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
+            var brokeredMessage = brokeredMessageBuilder
                 .WithMessage(message)
                 .BrokeredMessage;
 
-            var response = await messageBroker.DispatchAsync(brokeredMessage, cancellationToken).PreserveThreadContext();
-
-            return response;
+            return messageBroker.ProcessAsync(brokeredMessage, cancellationToken);
         }
 
         /// <summary>
@@ -92,12 +91,13 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessage = new BrokeredMessageBuilder()
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
+            var brokeredMessage = brokeredMessageBuilder
                 .WithMessage(message)
                 .OneWay()
                 .BrokeredMessage;
 
-            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+            return messageBroker.ProcessAsync(brokeredMessage, cancellationToken);
         }
     }
 }

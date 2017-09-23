@@ -28,6 +28,44 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default);
+        Task<IMessage> DispatchAsync(
+            IBrokeredMessage brokeredMessage,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Publishes an event asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers,
+        /// just for the aknowledgement of the message being sent.
+        /// </remarks>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        Task PublishAsync(
+            IBrokeredMessage brokeredMessage,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Processes a message asynchronously, waiting for a response from the handler.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result yielding the response message.
+        /// </returns>
+        Task<IMessage> ProcessAsync(
+            IBrokeredMessage brokeredMessage,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Creates a brokered message builder.
+        /// </summary>
+        /// <returns>
+        /// The new brokered message builder.
+        /// </returns>
+        BrokeredMessageBuilder CreateBrokeredMessageBuilder();
     }
 }
