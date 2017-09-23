@@ -67,6 +67,7 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Distributed\InProcessMessageBrokerTest.cs" />
     <Compile Include="MessageHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Composition\MessageHandlerMetadataTest.cs" />
