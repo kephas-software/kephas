@@ -21,6 +21,7 @@
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
         <dependencies>
+            <dependency id="Microsoft.CSharp" version="4.3.0" />
             <dependency id="Kephas.Core" version="$refversion$" />
         </dependencies>
         <references>

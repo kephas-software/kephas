@@ -210,8 +210,8 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual string GetMessageName(IMessage message)
         {
-            var expandoMessage = message.ToExpando();
-            var messageName = expandoMessage[nameof(MessageHandlerMetadata.MessageName)] as string;
+            var expandoMessage = message.ToDynamic();
+            var messageName = expandoMessage.MessageName as string;
             return messageName;
         }
 
