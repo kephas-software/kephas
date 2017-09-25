@@ -285,9 +285,8 @@ namespace Kephas.Model.Elements
             // complete the construction of the other model elements, assigning them to the right projection
             this.Classifiers = this.ComputeClassifiers(constructionContext);
 
-            // aggregate the model elements, adding them to the right aggregated projection
-
-            // TODO...;
+            // TODO aggregate the model elements, adding them to the right aggregated projection
+            // ...
         }
 
         /// <summary>
@@ -344,8 +343,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         private (IClassifier Classifier, bool IsNew) TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IModelConstructionContext constructionContext)
         {
-            // TODO 
-            // return only aggregated classifiers, not partial ones.
+            // TODO return only aggregated classifiers, not partial ones.
             // try to find in all classifiers, in all parts, the provided type info
             // if one is found, the containing classifier is the searched one.
 

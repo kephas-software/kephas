@@ -51,7 +51,7 @@ namespace Kephas.Messaging
         /// The handler factories.
         /// </summary>
         private readonly
-            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>)> filterFactoriesDictionary =
+            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter> filters, IEnumerable<IMessageProcessingFilter> reversedFilters)> filterFactoriesDictionary =
                 new ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>)>();
 
         /// <summary>
@@ -233,13 +233,13 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Gets the ordered filters to be applied.
+        /// Gets the ordered filters (direct and reversed) to be applied.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
-        /// An ordered list of filters which can be applied to the provided message.
+        /// An ordered list of filters which can be applied to the provided message, with their reversed counterpart.
         /// </returns>
-        protected virtual (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>) GetOrderedFilters(IMessage message)
+        protected virtual (IEnumerable<IMessageProcessingFilter> filters, IEnumerable<IMessageProcessingFilter> reversedFilters) GetOrderedFilters(IMessage message)
         {
             var messageType = this.GetMessageType(message);
             var messageName = this.GetMessageName(message);
