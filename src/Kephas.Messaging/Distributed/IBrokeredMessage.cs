@@ -9,6 +9,8 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
+
     using Kephas.Data;
 
     /// <summary>
@@ -47,6 +49,14 @@ namespace Kephas.Messaging.Distributed
         /// True if this message is one way, false if not.
         /// </value>
         bool IsOneWay { get; }
+
+        /// <summary>
+        /// Gets the timeout when waiting for responses.
+        /// </summary>
+        /// <value>
+        /// The response timeout.
+        /// </value>
+        TimeSpan Timeout { get; }
 
         /// <summary>
         /// Gets the identifier of the message which this message is a reply to.

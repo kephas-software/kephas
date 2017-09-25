@@ -9,6 +9,8 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -26,8 +28,14 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         public BrokeredMessageBuilder()
         {
+            // ReSharper disable once VirtualMemberCallInConstructor
             this.brokeredMessage = this.CreateBrokeredMessage();
         }
+
+        /// <summary>
+        /// Gets the default timeout.
+        /// </summary>
+        public static TimeSpan DefaultTimeout => TimeSpan.FromSeconds(30);
 
         /// <summary>
         /// Gets the brokered message.
@@ -67,6 +75,27 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Sets the timeout when waiting for an answer.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when the timeout is negative.</exception>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public BrokeredMessageBuilder Timeout(TimeSpan timeout)
+        {
+            if (timeout < TimeSpan.Zero)
+            {
+                // TODO localization
+                throw new ArgumentException("Cannot specify a negative time span.", nameof(timeout));
+            }
+
+            this.brokeredMessage.Timeout = timeout;
+
+            return this;
+        }
+
+        /// <summary>
         /// Creates the brokered message.
         /// </summary>
         /// <returns>
@@ -74,7 +103,10 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual BrokeredMessage CreateBrokeredMessage()
         {
-            return new BrokeredMessage();
+            return new BrokeredMessage
+                       {
+                           Timeout = DefaultTimeout
+                       };
         }
     }
 }

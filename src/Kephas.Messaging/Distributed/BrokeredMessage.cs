@@ -65,6 +65,18 @@ namespace Kephas.Messaging.Distributed
         public bool IsOneWay { get; set; }
 
         /// <summary>
+        /// Gets or sets the timeout when waiting for responses.
+        /// </summary>
+        /// <remarks>
+        /// A value of <see cref="Timeout.Zero"/> means indefinitely waiting.
+        /// It is strongly discouraged to wait indefinitely for a response, the default value is .
+        /// </remarks>
+        /// <value>
+        /// The response timeout.
+        /// </value>
+        public TimeSpan Timeout { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the message which this message is a reply to.
         /// </summary>
         /// <value>
