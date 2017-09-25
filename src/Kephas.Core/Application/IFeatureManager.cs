@@ -25,7 +25,7 @@ namespace Kephas.Application
     public interface IFeatureManager
     {
         /// <summary>
-        /// Initializes the application feature asynchronously.
+        /// Performs initialization tasks within the application feature boundary.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -35,7 +35,7 @@ namespace Kephas.Application
         Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Finalizes the application feature asynchronously.
+        /// Performs finalization tasks within the application feature boundary.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
