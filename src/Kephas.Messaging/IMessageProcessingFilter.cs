@@ -46,7 +46,8 @@ namespace Kephas.Messaging
     /// <typeparam name="TMessage">The type of the message.</typeparam>
     [AppServiceContract(
         AllowMultiple = true,
-        ContractType = typeof(IMessageProcessingFilter))]
+        ContractType = typeof(IMessageProcessingFilter),
+        MetadataAttributes = new[] { typeof(MessageNameAttribute) })]
     public interface IMessageProcessingFilter<TMessage> : IMessageProcessingFilter
         where TMessage : IMessage
     {

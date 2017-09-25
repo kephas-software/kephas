@@ -95,7 +95,7 @@ namespace Kephas.Messaging.Tests
 
             var context = new MessageProcessingContext(processor, contextMessage, contextHandler);
 
-            var result = await processor.ProcessAsync(message, context, default);
+            var result = await processor.ProcessAsync(message, context);
 
             Assert.AreSame(contextMessage, context.Message);
             Assert.AreSame(contextHandler, context.Handler);
@@ -111,7 +111,7 @@ namespace Kephas.Messaging.Tests
             handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
             var processor = this.CreateRequestProcessor(handler, message);
-            var result = await processor.ProcessAsync(message, null, default);
+            var result = await processor.ProcessAsync(message);
 
             Assert.AreSame(expectedResponse, result);
         }
@@ -416,7 +416,7 @@ namespace Kephas.Messaging.Tests
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingFilter, MessageProcessingFilterMetadata>(
                     () => Tuple.Create(filter, (Action)(() => { })),
-                    new MessageProcessingFilterMetadata(requestType, processingPriority, (int)overridePriority));
+                    new MessageProcessingFilterMetadata(requestType, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 

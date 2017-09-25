@@ -43,9 +43,8 @@ namespace Kephas.Messaging.Composition
         /// <param name="messageName">The name of the message (optional).</param>
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        public MessageHandlerMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        public MessageHandlerMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;
             this.MessageName = messageName;

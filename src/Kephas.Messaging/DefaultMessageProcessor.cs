@@ -48,6 +48,13 @@ namespace Kephas.Messaging
         private readonly ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>>();
 
         /// <summary>
+        /// The handler factories.
+        /// </summary>
+        private readonly
+            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>)> filterFactoriesDictionary =
+                new ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>)>();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
@@ -101,8 +108,7 @@ namespace Kephas.Messaging
         {
             Requires.NotNull(message, nameof(message));
 
-            var filters = this.GetOrderedFilters(message);
-            var reversedFilters = filters.Reverse();
+            (var filters, var reversedFilters) = this.GetOrderedFilters(message);
 
             var contextHandler = context?.Handler;
             var contextMessage = context?.Message;
@@ -233,15 +239,23 @@ namespace Kephas.Messaging
         /// <returns>
         /// An ordered list of filters which can be applied to the provided message.
         /// </returns>
-        protected virtual IList<IMessageProcessingFilter> GetOrderedFilters(IMessage message)
+        protected virtual (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>) GetOrderedFilters(IMessage message)
         {
-            var requestTypeInfo = message.GetType().GetTypeInfo();
-            var behaviors = (from f in this.filterFactories
-                             where f.Metadata.MessageType.GetTypeInfo().IsAssignableFrom(requestTypeInfo)
-                             select f.CreateExport().Value).ToList();
+            var messageType = this.GetMessageType(message);
+            var messageName = this.GetMessageName(message);
 
-            // TODO optimize to cache the ordered filters/message type.
-            return behaviors;
+            var orderedFiltersEntry = this.filterFactoriesDictionary.GetOrAdd($"{messageType.FullName}/{messageName}",
+                _ =>
+                    {
+                        var orderedFilters = (from f in this.filterFactories
+                                              where (f.Metadata.MessageType?.GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()) ?? true)
+                                                    && (f.Metadata.MessageName == null || messageName == f.Metadata.MessageName)
+                                              select f.CreateExport().Value).ToList();
+
+                        return (orderedFilters, ((IEnumerable<IMessageProcessingFilter>)orderedFilters).Reverse().ToList());
+                    });
+
+            return orderedFiltersEntry;
         }
     }
 }
