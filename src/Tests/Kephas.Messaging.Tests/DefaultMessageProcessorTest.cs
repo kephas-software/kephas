@@ -295,7 +295,7 @@ namespace Kephas.Messaging.Tests
             var f1 = this.CreateFilterFactory(
                 (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
-                requestType: typeof(PingMessage));
+                messageType: typeof(PingMessage));
             var f2 = this.CreateFilterFactory(
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
@@ -308,6 +308,47 @@ namespace Kephas.Messaging.Tests
 
             Assert.AreEqual(1, afterlist.Count);
             Assert.AreEqual(2, afterlist[0]);
+        }
+
+        [Test]
+        public async Task ProcessAsync_matching_filter_with_name()
+        {
+            var handler = Substitute.For<IMessageHandler>();
+            var expectedResponse = Substitute.For<IMessage>();
+
+            var message = new NamedMessage { MessageName = "hello" };
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(expectedResponse));
+
+            var beforelist = new List<int>();
+            var afterlist = new List<int>();
+            var f1 = this.CreateFilterFactory(
+                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
+                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
+                messageType: typeof(NamedMessage),
+                messageName: "hi");
+            var f2 = this.CreateFilterFactory(
+                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
+                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
+                messageType: typeof(NamedMessage),
+                messageName: "hello");
+            var f3 = this.CreateFilterFactory(
+                (c, t) => { beforelist.Add(3); return TaskHelper.CompletedTask; },
+                (c, t) => { afterlist.Add(3); return TaskHelper.CompletedTask; },
+                messageType: typeof(NamedMessage),
+                messageName: null);
+
+            var processor = this.CreateRequestProcessor(new[] { f1, f2, f3 }, 
+                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, new MessageHandlerMetadata(message.GetType(), "hello")));
+            var result = await processor.ProcessAsync(message, null, default);
+
+            Assert.AreEqual(2, beforelist.Count);
+            Assert.AreEqual(2, beforelist[0]);
+            Assert.AreEqual(3, beforelist[1]);
+
+            Assert.AreEqual(2, afterlist.Count);
+            Assert.AreEqual(3, afterlist[0]);
+            Assert.AreEqual(2, afterlist[1]);
         }
 
         [Test]
@@ -401,11 +442,12 @@ namespace Kephas.Messaging.Tests
         private IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata> CreateFilterFactory(
             Func<IMessageProcessingContext, CancellationToken, Task> beforeFunc = null,
             Func<IMessageProcessingContext, CancellationToken, Task> afterFunc = null,
-            Type requestType = null,
+            Type messageType = null,
+            string messageName = null,
             int processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
-            requestType = requestType ?? typeof(IMessage);
+            messageType = messageType ?? typeof(IMessage);
             beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
             afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
             var filter = Substitute.For<IMessageProcessingFilter>();
@@ -416,8 +458,19 @@ namespace Kephas.Messaging.Tests
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingFilter, MessageProcessingFilterMetadata>(
                     () => Tuple.Create(filter, (Action)(() => { })),
-                    new MessageProcessingFilterMetadata(requestType, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessageProcessingFilterMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
+        }
+
+        private DefaultMessageProcessor CreateRequestProcessor(
+            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories,
+            ExportFactory<IMessageHandler, MessageHandlerMetadata> handlerFactory)
+        {
+            return this.CreateRequestProcessor(
+                filterFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                                           {
+                                               handlerFactory
+                                           });
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(
