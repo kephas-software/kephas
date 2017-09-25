@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
                 .OneWay()
                 .BrokeredMessage;
 
-            return messageBroker.PublishAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Kephas.Messaging.Distributed
                 .WithMessage(message)
                 .BrokeredMessage;
 
-            return messageBroker.ProcessAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Distributed
                 .OneWay()
                 .BrokeredMessage;
 
-            return messageBroker.ProcessAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
     }
 }
