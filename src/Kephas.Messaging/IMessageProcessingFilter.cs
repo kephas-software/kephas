@@ -44,7 +44,7 @@ namespace Kephas.Messaging
     /// Application service for message processing interception.
     /// </summary>
     /// <typeparam name="TMessage">The type of the message.</typeparam>
-    [AppServiceContract(
+    [SharedAppServiceContract(
         AllowMultiple = true,
         ContractType = typeof(IMessageProcessingFilter),
         MetadataAttributes = new[] { typeof(MessageNameAttribute) })]
