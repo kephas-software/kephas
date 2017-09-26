@@ -31,7 +31,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeInitializeAsync(
+        public virtual Task BeforeInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
@@ -48,7 +48,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterInitializeAsync(
+        public virtual Task AfterInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
@@ -69,7 +69,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeFinalizeAsync(
+        public virtual Task BeforeFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
@@ -86,7 +86,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterFinalizeAsync(
+        public virtual Task AfterFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
