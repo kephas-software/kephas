@@ -56,7 +56,8 @@ namespace Kephas.Application
             this.AmbientServices = ambientServices;
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
                                                         ?? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>();
-            this.FeatureManagerFactories = this.SortEnabledFeatureManagerFactories(featureManagerFactories?.WhereEnabled(ambientServices).ToList());
+            this.FeatureManagerFactories = this.SortEnabledFeatureManagerFactories(featureManagerFactories?.WhereEnabled(ambientServices).ToList()
+                                                        ?? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>());
             this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
                                                         ?? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>();
         }
@@ -516,11 +517,6 @@ namespace Kephas.Application
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
         {
-            if (featureManagerFactories == null)
-            {
-                return new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>();
-            }
-
             // ensure that all feature managers have the FeatureInfo property set.
             foreach (var fmFactory in featureManagerFactories)
             {
