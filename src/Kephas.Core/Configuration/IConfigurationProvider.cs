@@ -16,7 +16,7 @@ namespace Kephas.Configuration
     /// <summary>
     /// Interface for configuration provider.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SettingsTypeAttribute) })]
     public interface IConfigurationProvider
     {
         /// <summary>

@@ -18,8 +18,8 @@ namespace Kephas.Configuration
     /// <summary>
     /// Configuration provider from application settings.
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    [ProcessingPriority(Priority.Low)]
+    [OverridePriority(Priority.Lowest)]
+    [ProcessingPriority(Priority.Lowest)]
     public class AppConfigurationProvider : IConfigurationProvider
     {
         /// <summary>

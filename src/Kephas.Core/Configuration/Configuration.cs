@@ -83,6 +83,7 @@ namespace Kephas.Configuration
 
             if (factory == null)
             {
+                // TODO provide a more explicit exception information.
                 throw new NotSupportedException();
             }
 
