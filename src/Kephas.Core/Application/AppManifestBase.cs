@@ -25,7 +25,7 @@ namespace Kephas.Application
         /// <summary>
         /// The version zero.
         /// </summary>
-        protected static readonly Version VersionZero = new Version("0.0.0.0");
+        protected internal static readonly Version VersionZero = new Version("0.0.0.0");
 
         /// <summary>
         /// The application assembly.

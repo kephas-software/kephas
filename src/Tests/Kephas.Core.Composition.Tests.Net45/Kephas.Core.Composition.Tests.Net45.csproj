@@ -56,6 +56,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Core.Composition.Tests\Application\DefaultAppManagerTest.cs">
+      <Link>Application\DefaultAppManagerTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Composition.Tests\Configuration\ConfigurationTest.cs">
       <Link>Configuration\ConfigurationTest.cs</Link>
     </Compile>

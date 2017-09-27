@@ -31,12 +31,25 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="FeatureInfo"/> class.
         /// </summary>
         /// <param name="name">The feature name.</param>
+        /// <param name="version">The feature version (optional).</param>
         /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfo(string name, string[] dependencies = null)
+        public FeatureInfo(string name, string version = null, string[] dependencies = null)
+            : this(name, version == null ? null : new Version(version), dependencies)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureInfo"/> class.
+        /// </summary>
+        /// <param name="name">The feature name.</param>
+        /// <param name="version">The feature version (optional).</param>
+        /// <param name="dependencies">The feature dependencies (optional).</param>
+        public FeatureInfo(string name, Version version = null, string[] dependencies = null)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
+            this.Version = version ?? new Version(0, 0);
             this.Dependencies = dependencies ?? new string[0];
         }
 
@@ -55,6 +68,14 @@ namespace Kephas.Application
         /// The dependencies.
         /// </value>
         public string[] Dependencies { get; }
+
+        /// <summary>
+        /// Gets the feature version.
+        /// </summary>
+        /// <value>
+        /// The feature version.
+        /// </value>
+        public Version Version { get; }
 
         /// <summary>
         /// Full name of the <see cref="FeatureInfo"/>.

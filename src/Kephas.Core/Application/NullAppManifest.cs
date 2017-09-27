@@ -21,7 +21,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="NullAppManifest"/> class.
         /// </summary>
         public NullAppManifest()
-            : base("null", VersionZero)
+            : base("null", AppManifestBase.VersionZero)
         {
         }
     }

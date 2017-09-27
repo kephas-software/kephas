@@ -123,8 +123,7 @@ namespace Kephas.Application
                 var features = this.FeatureManagerFactories
                     .Select(f => f.Metadata.FeatureInfo)
                     .ToList();
-                var appManifest = this.AppManifest as AppManifestBase;
-                if (appManifest != null)
+                if (this.AppManifest is AppManifestBase appManifest)
                 {
                     appManifest.Features = features;
                 }
@@ -522,7 +521,7 @@ namespace Kephas.Application
             {
                 if (fmFactory.Metadata.FeatureInfo == null)
                 {
-                    fmFactory.Metadata.FeatureInfo = this.ComputeFeatureInfo(fmFactory.Metadata);
+                    fmFactory.Metadata.FeatureInfo = this.ComputeAutoFeatureInfo(fmFactory.Metadata);
                 }
             }
 
@@ -531,19 +530,21 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Calculates the feature information based on the <see cref="AppServiceMetadata"/>
+        /// Calculates the feature information based on the <see cref="FeatureManagerMetadata"/>
         /// if not explicitely provided.
         /// </summary>
         /// <param name="featureManagerFactoryMetadata">The feature manager factory metadata.</param>
         /// <returns>
         /// The calculated feature information.
         /// </returns>
-        protected virtual FeatureInfo ComputeFeatureInfo(FeatureManagerMetadata featureManagerFactoryMetadata)
+        protected virtual FeatureInfo ComputeAutoFeatureInfo(FeatureManagerMetadata featureManagerFactoryMetadata)
         {
+            var autoVersion = AppManifestBase.VersionZero;
+
             var name = featureManagerFactoryMetadata.AppServiceImplementationType?.Name;
             if (string.IsNullOrEmpty(name))
             {
-                return new FeatureInfo($"unnamed-{Guid.NewGuid()}");
+                return new FeatureInfo($"unnamed-{Guid.NewGuid()}", autoVersion);
             }
 
             var wellKnownEndings = new[] { "FeatureManager", "Manager", "AppInitializer", "AppFinalizer" };
@@ -555,12 +556,12 @@ namespace Kephas.Application
                     var featureName = name.Substring(0, name.Length - ending.Length);
                     if (!string.IsNullOrEmpty(featureName))
                     {
-                        return new FeatureInfo(featureName);
+                        return new FeatureInfo(featureName, autoVersion);
                     }
                 }
             }
 
-            return new FeatureInfo(name);
+            return new FeatureInfo(name, autoVersion);
         }
 
         /// <summary>

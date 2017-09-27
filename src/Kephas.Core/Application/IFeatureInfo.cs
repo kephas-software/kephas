@@ -9,6 +9,8 @@
 
 namespace Kephas.Application
 {
+    using System;
+
     using Kephas.Reflection;
 
     /// <summary>
@@ -23,5 +25,13 @@ namespace Kephas.Application
         /// The names of features upon which this feature depends.
         /// </value>
         string[] Dependencies { get; }
+
+        /// <summary>
+        /// Gets the feature version.
+        /// </summary>
+        /// <value>
+        /// The feature version.
+        /// </value>
+        Version Version { get; }
     }
 }

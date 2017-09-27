@@ -125,9 +125,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "3" }))),
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(new FeatureInfo("3"))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => featureManager3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
                     },
                 null);
 
@@ -296,9 +296,9 @@ namespace Kephas.Core.Tests.Application
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", new[] { "3" }))),
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", new[] { "1" }))),
-                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3"))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", new[] { "1" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
                     },
                 null);
 
