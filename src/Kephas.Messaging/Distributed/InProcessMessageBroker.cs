@@ -20,7 +20,7 @@ namespace Kephas.Messaging.Distributed
     /// A distributed message broker sending the messages to the message processor.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InProcessMessageBroker : IMessageBroker
+    public class InProcessMessageBroker : MessageBrokerBase
     {
         /// <summary>
         /// The message processor.
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        public virtual async Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken)
+        public override async Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
@@ -58,17 +58,6 @@ namespace Kephas.Messaging.Distributed
             }
 
             return await processTask.PreserveThreadContext();
-        }
-
-        /// <summary>
-        /// Creates a brokered message builder.
-        /// </summary>
-        /// <returns>
-        /// The new brokered message builder.
-        /// </returns>
-        public virtual BrokeredMessageBuilder CreateBrokeredMessageBuilder()
-        {
-            return new BrokeredMessageBuilder();
         }
     }
 }

@@ -87,6 +87,9 @@
     <Compile Include="..\Kephas.Messaging\Distributed\InProcessMessageBroker.cs">
       <Link>Distributed\InProcessMessageBroker.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerBase.cs">
+      <Link>Distributed\MessageBrokerBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerExtensions.cs">
       <Link>Distributed\MessageBrokerExtensions.cs</Link>
     </Compile>
