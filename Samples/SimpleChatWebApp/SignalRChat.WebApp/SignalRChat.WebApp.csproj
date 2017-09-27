@@ -45,26 +45,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kephas.Composition.Mef, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.3.11.0\lib\net45\Kephas.Composition.Mef.dll</HintPath>
+    <Reference Include="Kephas.Composition.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.0.0-beta4\lib\net45\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Core, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.3.11.0\lib\net45\Kephas.Core.dll</HintPath>
+    <Reference Include="Kephas.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Core.4.0.0-beta4\lib\net45\Kephas.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Logging.NLog, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.3.11.0\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+    <Reference Include="Kephas.Logging.NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.0.0-beta4\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Messaging, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Messaging.3.11.0\lib\net45\Kephas.Messaging.dll</HintPath>
+    <Reference Include="Kephas.Messaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Messaging.4.0.0-beta4\lib\net45\Kephas.Messaging.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Platform, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Platform.3.11.0\lib\net46\Kephas.Platform.dll</HintPath>
+    <Reference Include="Kephas.Platform, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Platform.4.0.0-beta4\lib\net46\Kephas.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Serialization.Json, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.3.11.0\lib\net45\Kephas.Serialization.Json.dll</HintPath>
+    <Reference Include="Kephas.Serialization.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.4.0.0-beta4\lib\net45\Kephas.Serialization.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Web.Owin, Version=3.11.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Web.Owin.3.11.0\lib\net461\Kephas.Web.Owin.dll</HintPath>
+    <Reference Include="Kephas.Web.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Web.Owin.4.0.0-beta4\lib\net461\Kephas.Web.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -95,6 +95,7 @@
       <HintPath>..\..\..\Packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
@@ -110,6 +111,9 @@
     <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Configuration.ConfigurationManager.4.4.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -118,9 +122,15 @@
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Loader, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Runtime.Loader.4.3.0\lib\netstandard1.5\System.Runtime.Loader.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />

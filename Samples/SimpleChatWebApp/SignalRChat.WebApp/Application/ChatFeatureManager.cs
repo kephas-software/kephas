@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Messaging.Server;
+    using Kephas.Messaging;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;

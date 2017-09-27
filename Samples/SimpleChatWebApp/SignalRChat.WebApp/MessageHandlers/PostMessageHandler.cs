@@ -3,11 +3,13 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Messaging.Server;
+    using Kephas.Messaging;
 
     using Microsoft.AspNet.SignalR;
 
     using SignalRChat.WebApp.Messages;
+
+    using EmptyMessage = SignalRChat.WebApp.Messages.EmptyMessage;
 
     public class PostMessageHandler : MessageHandlerBase<PostMessage, EmptyMessage>
     {

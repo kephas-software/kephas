@@ -3,13 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Net;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Messaging;
-    using Kephas.Messaging.Server;
     using Kephas.Serialization;
-    using Kephas.Serialization.Json;
     using Kephas.Threading.Tasks;
 
     using Microsoft.Owin;
