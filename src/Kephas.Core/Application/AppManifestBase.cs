@@ -65,7 +65,7 @@ namespace Kephas.Application
         {
             Requires.NotNullOrEmpty(appId, nameof(appId));
 
-            this.Initialize(appId, appVersion);
+            this.Initialize(appId, appVersion, features: features);
         }
 
         /// <summary>
