@@ -5,6 +5,6 @@
     [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(OperationAttribute) })]
     public interface IOperation
     {
-        int Compute(int op1, int op2);
+        double Compute(double op1, double op2);
     }
 }

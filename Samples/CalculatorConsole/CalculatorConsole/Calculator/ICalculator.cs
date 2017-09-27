@@ -5,6 +5,6 @@
     [SharedAppServiceContract]
     public interface ICalculator
     {
-        (int Value, string OperationName) Compute(string input);
+        (double Value, string OperationName) Compute(string input);
     }
 }

@@ -13,7 +13,7 @@
         /// <returns>
         /// A Tuple&lt;int,string,int&gt;
         /// </returns>
-        public Tuple<int, string, int> Parse(string input, IEnumerable<string> operations)
+        public Tuple<double, string, double> Parse(string input, IEnumerable<string> operations)
         {
             foreach (var op in operations)
             {
@@ -22,7 +22,7 @@
                 {
                     var term1 = input.Substring(0, opPos);
                     var term2 = input.Substring(opPos + op.Length);
-                    return Tuple.Create(int.Parse(term1), op, int.Parse(term2));
+                    return Tuple.Create(double.Parse(term1), op, double.Parse(term2));
                 }
             }
 
