@@ -52,11 +52,11 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public BrokeredMessageBuilder WithMessage(IMessage message)
+        public BrokeredMessageBuilder WithContent(IMessage message)
         {
             Requires.NotNull(message, nameof(message));
 
-            this.brokeredMessage.Message = message;
+            this.brokeredMessage.Content = message;
 
             return this;
         }

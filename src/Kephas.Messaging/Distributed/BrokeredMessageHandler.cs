@@ -51,13 +51,13 @@ namespace Kephas.Messaging.Distributed
             if (message.IsOneWay)
             {
                 // do not wait for the processing.
-                this.messageProcessor.ProcessAsync(message.Message, context, token);
+                this.messageProcessor.ProcessAsync(message.Content, context, token);
 
                 return Task.FromResult<IMessage>(new EmptyMessage());
             }
 
             // wait for the processing and return the result.
-            return this.messageProcessor.ProcessAsync(message.Message, context, token);
+            return this.messageProcessor.ProcessAsync(message.Content, context, token);
         }
     }
 }

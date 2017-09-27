@@ -42,7 +42,7 @@ namespace Kephas.Messaging.Distributed
 
             var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
             var brokeredMessage = brokeredMessageBuilder
-                .WithMessage(@event)
+                .WithContent(@event)
                 .OneWay()
                 .BrokeredMessage;
 
@@ -68,7 +68,7 @@ namespace Kephas.Messaging.Distributed
 
             var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
             var brokeredMessage = brokeredMessageBuilder
-                .WithMessage(message)
+                .WithContent(message)
                 .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
@@ -93,7 +93,7 @@ namespace Kephas.Messaging.Distributed
 
             var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder() ?? new BrokeredMessageBuilder();
             var brokeredMessage = brokeredMessageBuilder
-                .WithMessage(message)
+                .WithContent(message)
                 .OneWay()
                 .BrokeredMessage;
 

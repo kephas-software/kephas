@@ -44,9 +44,9 @@ namespace Kephas.Messaging.Distributed
         /// Gets or sets the message to send.
         /// </summary>
         /// <value>
-        /// The message.
+        /// The message to send.
         /// </value>
-        public IMessage Message { get; set; }
+        public IMessage Content { get; set; }
 
         /// <summary>
         /// Gets or sets the channel.

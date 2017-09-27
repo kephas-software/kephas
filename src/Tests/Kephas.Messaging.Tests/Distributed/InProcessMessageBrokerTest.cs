@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage { Message = new PingMessage() });
+            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage { Content = new PingMessage() });
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var pingBack = await messageBroker.ProcessAsync(new BrokeredMessage { Message = new PingMessage() });
+            var pingBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = new PingMessage() });
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -71,7 +71,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = container.GetExport<IMessageBroker>();
 
             var message = new TestEvent();
-            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Message = message });
+            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = message });
 
             Assert.IsNull(eventBack);
             Assert.AreEqual("ok", message["received"]);
@@ -84,7 +84,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = container.GetExport<IMessageBroker>();
 
             var message = new TestEvent();
-            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Message = message, IsOneWay = true });
+            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = message, IsOneWay = true });
 
             Assert.IsInstanceOf<EmptyMessage>(eventBack);
             Assert.IsNull(message["received"]);

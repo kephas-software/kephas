@@ -76,6 +76,9 @@
     <Compile Include="..\Kephas.Messaging.Tests\DefaultMessageProcessorTest.cs">
       <Link>DefaultMessageProcessorTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Distributed\BrokeredMessageBuilderTest.cs">
+      <Link>Distributed\BrokeredMessageBuilderTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\Distributed\InProcessMessageBrokerTest.cs">
       <Link>Distributed\InProcessMessageBrokerTest.cs</Link>
     </Compile>

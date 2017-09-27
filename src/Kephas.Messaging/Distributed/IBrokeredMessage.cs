@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message.
         /// </value>
-        IMessage Message { get; }
+        IMessage Content { get; }
 
         /// <summary>
         /// Gets the channel.
