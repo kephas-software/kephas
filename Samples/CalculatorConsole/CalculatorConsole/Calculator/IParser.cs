@@ -17,8 +17,8 @@
         /// <param name="input">The input.</param>
         /// <param name="operations">The operations.</param>
         /// <returns>
-        /// A Tuple&lt;int,string,int&gt;
+        /// A tuple of (term1, operation, term2).
         /// </returns>
-        Tuple<int, string, int> Parse(string input, IEnumerable<string> operations);
+        Tuple<double, string, double> Parse(string input, IEnumerable<string> operations);
     }
 }

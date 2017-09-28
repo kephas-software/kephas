@@ -99,9 +99,12 @@
     <Compile Include="Operations\AddOperation.cs" />
     <Compile Include="Operations\DivideOperation.cs" />
     <Compile Include="Operations\IOperation.cs" />
+    <Compile Include="Operations\ModulusOperation.cs" />
     <Compile Include="Operations\MultiplyOperation.cs" />
     <Compile Include="Operations\OperationAttribute.cs" />
     <Compile Include="Operations\OperationMetadata.cs" />
+    <Compile Include="Operations\PowerOperation.cs" />
+    <Compile Include="Operations\RootOperation.cs" />
     <Compile Include="Operations\SubtractOperation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

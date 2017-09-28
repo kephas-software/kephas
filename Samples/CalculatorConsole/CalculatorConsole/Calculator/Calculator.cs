@@ -21,7 +21,7 @@
 
         public IDictionary<string, IExportFactory<IOperation, OperationMetadata>> OperationsDictionary { get; set; }
 
-        public (int Value, string OperationName) Compute(string input)
+        public (double Value, string OperationName) Compute(string input)
         {
             var parsedOperation = this.parser.Parse(input, this.OperationsDictionary.Select(op => op.Key));
             var operation = this.OperationsDictionary[parsedOperation.Item2];

@@ -3,6 +3,6 @@
     [Operation("+", Name = "Addition")]
     public class AddOperation : IOperation
     {
-        public int Compute(int op1, int op2) => op1 + op2;
+        public double Compute(double op1, double op2) => op1 + op2;
     }
 }
