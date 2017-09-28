@@ -85,6 +85,19 @@ namespace Kephas.Application
         public Version AppVersion { get; private set; }
 
         /// <summary>
+        /// Gets the identifier of the application instance.
+        /// </summary>
+        /// <remarks>
+        /// This identifier is provided to uniquely identify an instance
+        /// of the application across the distributed environment.
+        /// This can be potentially used in message exchanging.
+        /// </remarks>
+        /// <value>
+        /// The identifier of the application instance.
+        /// </value>
+        public virtual string AppInstanceId { get; private set; }
+
+        /// <summary>
         /// Gets the features provided by the application.
         /// </summary>
         /// <value>
@@ -126,6 +139,7 @@ namespace Kephas.Application
             this.AppId = appId;
             this.AppVersion = appVersion ?? this.GetAppVersion(appAssembly ?? this.AppAssembly);
             this.Features = features ?? new IFeatureInfo[0];
+            this.AppInstanceId = $"{this.AppId}-{this.AppVersion}-{Guid.NewGuid()}";
         }
 
         /// <summary>

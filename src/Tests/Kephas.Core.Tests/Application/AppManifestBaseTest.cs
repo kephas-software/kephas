@@ -39,6 +39,18 @@
         }
 
         [Test]
+        public void AppManifestBase_AppInstanceId()
+        {
+            var appManifest = new AppIdAndVersionManifest("hello", new Version("2.3.4"));
+            var appInstanceId = appManifest.AppInstanceId;
+            Assert.IsTrue(appInstanceId.StartsWith("hello-2.3.4-"));
+
+            var appManifest2 = new AppIdAndVersionManifest("hello", new Version("2.3.4"));
+            var appInstanceId2 = appManifest2.AppInstanceId;
+            Assert.AreNotEqual(appInstanceId, appInstanceId2);
+        }
+
+        [Test]
         public void AppManifestBase_AppId_success()
         {
             var appManifest = new AppIdAndVersionManifest("hello");
