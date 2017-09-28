@@ -119,6 +119,12 @@ namespace Kephas.Configuration
             }
 
             var settings = (NameValueCollection)ConfigurationManager.GetSection(section);
+            if (settings == null)
+            {
+                sectionSettings = null;
+                return false;
+            }
+
             if (!isWildCard)
             {
                 object setting = settings[searchPattern];

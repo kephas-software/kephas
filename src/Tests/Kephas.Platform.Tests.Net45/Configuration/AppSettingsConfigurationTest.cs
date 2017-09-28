@@ -53,6 +53,14 @@ namespace Kephas.Platform.Tests.Configuration
             Assert.AreEqual("v1", settings["name1"]);
         }
 
+        [Test]
+        public void GetSettings_not_found_then_empty()
+        {
+            var service = new AppSettingsConfiguration();
+            var settings = service.GetSettings<Expando>(":not-found:*");
+            Assert.AreEqual(0, settings.ToDictionary().Count);
+        }
+
         public class MySettings
         {
             public string MySetting { get; set; }
