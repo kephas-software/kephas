@@ -54,11 +54,9 @@ namespace Kephas.Dynamic
         /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
         /// off the internal dictionary and any public properties of this object.
         /// </summary>
-        /// <param name="dictionary">The properties.</param>
-        public Expando(IDictionary<string, object> dictionary)
-            : base(dictionary)
+        public Expando()
+            : this(isThreadSafe: false)
         {
-            Requires.NotNull(dictionary, nameof(dictionary));
         }
 
         /// <summary>
@@ -66,9 +64,20 @@ namespace Kephas.Dynamic
         /// off the internal dictionary and any public properties of this object.
         /// </summary>
         /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
-        public Expando(bool isThreadSafe = false)
+        public Expando(bool isThreadSafe)
             : base(GetDictionary(isThreadSafe))
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Expando"/> class. This constructor just works
+        /// off the internal dictionary and any public properties of this object.
+        /// </summary>
+        /// <param name="dictionary">The properties.</param>
+        public Expando(IDictionary<string, object> dictionary)
+            : base(dictionary)
+        {
+            Requires.NotNull(dictionary, nameof(dictionary));
         }
 
         /// <summary>
