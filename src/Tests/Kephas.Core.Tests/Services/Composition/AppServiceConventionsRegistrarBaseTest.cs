@@ -19,7 +19,6 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
-    using Kephas.Testing.Core.Services.Composition;
 
     using NUnit.Framework;
 

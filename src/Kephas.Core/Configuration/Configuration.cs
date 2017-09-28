@@ -16,6 +16,7 @@ namespace Kephas.Configuration
 
     using Kephas.Composition;
     using Kephas.Configuration.Composition;
+    using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 

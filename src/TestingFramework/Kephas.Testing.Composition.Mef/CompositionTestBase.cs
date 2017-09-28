@@ -16,6 +16,7 @@ namespace Kephas.Testing.Composition.Mef
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.ExportProviders;

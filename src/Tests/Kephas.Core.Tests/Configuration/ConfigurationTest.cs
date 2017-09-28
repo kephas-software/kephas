@@ -15,6 +15,7 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
     using Kephas.Configuration.Composition;
+    using Kephas.Configuration.Providers;
 
     using NSubstitute;
 

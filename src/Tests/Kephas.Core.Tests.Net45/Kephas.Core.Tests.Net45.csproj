@@ -92,11 +92,11 @@
     <Compile Include="..\Kephas.Core.Tests\Composition\TestRegistrationContext.cs">
       <Link>Composition\TestRegistrationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core.Tests\Configuration\AppConfigurationProviderTest.cs">
-      <Link>Configuration\AppConfigurationProviderTest.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Configuration\ConfigurationTest.cs">
       <Link>Configuration\ConfigurationTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Configuration\Providers\AppConfigurationProviderTest.cs">
+      <Link>Configuration\Providers\AppConfigurationProviderTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Data\IdTest.cs">
       <Link>Data\IdTest.cs</Link>

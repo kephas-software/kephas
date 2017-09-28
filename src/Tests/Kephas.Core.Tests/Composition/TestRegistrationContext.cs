@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Core.Services.Composition
+namespace Kephas.Core.Tests.Composition
 {
     using Kephas.Composition.Hosting;
 

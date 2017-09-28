@@ -7,9 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Configuration
+namespace Kephas.Core.Tests.Configuration.Providers
 {
-    using Kephas.Configuration;
+    using Kephas.Application.Configuration;
+    using Kephas.Configuration.Providers;
 
     using NSubstitute;
 
@@ -22,11 +23,13 @@ namespace Kephas.Core.Tests.Configuration
         public void GetSettings()
         {
             var appConfiguration = Substitute.For<IAppConfiguration>();
-            var settings = new object();
-            appConfiguration.GetSettings(":string:*;string*", typeof(string)).Returns(settings);
+            var settings = new TestSettings();
+            appConfiguration["test"].Returns(settings);
             var provider = new AppConfigurationProvider(appConfiguration);
-            var actual = provider.GetSettings(typeof(string));
+            var actual = provider.GetSettings(typeof(TestSettings));
             Assert.AreSame(settings, actual);
         }
+
+        public class TestSettings { }
     }
 }

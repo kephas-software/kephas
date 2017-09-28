@@ -17,6 +17,7 @@ namespace Kephas.Tests.Composition.Mef
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
@@ -24,7 +25,6 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Composition.Mef.ScopeFactory;
-    using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;

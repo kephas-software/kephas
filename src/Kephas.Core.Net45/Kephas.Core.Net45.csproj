@@ -82,6 +82,15 @@
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
       <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\Configuration\AppSettingsSections.cs">
+      <Link>Application\Configuration\AppSettingsSections.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\Configuration\IAppConfiguration.cs">
+      <Link>Application\Configuration\IAppConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\Configuration\NullAppConfiguration.cs">
+      <Link>Application\Configuration\NullAppConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\DefaultAppManager.cs">
       <Link>Application\DefaultAppManager.cs</Link>
     </Compile>
@@ -178,6 +187,9 @@
     <Compile Include="..\Kephas.Core\Composition\CompositionException.cs">
       <Link>Composition\CompositionException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Configuration\CompositionSettings.cs">
+      <Link>Composition\Configuration\CompositionSettings.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\Conventions\ConventionsBuilderExtensions.cs">
       <Link>Composition\Conventions\ConventionsBuilderExtensions.cs</Link>
     </Compile>
@@ -253,32 +265,23 @@
     <Compile Include="..\Kephas.Core\Composition\ScopeNames.cs">
       <Link>Composition\ScopeNames.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\AppConfigurationBase.cs">
-      <Link>Configuration\AppConfigurationBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\AppConfigurationProvider.cs">
-      <Link>Configuration\AppConfigurationProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Configuration\Composition\ConfigurationProviderMetadata.cs">
       <Link>Configuration\Composition\ConfigurationProviderMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Configuration\Configuration.cs">
       <Link>Configuration\Configuration.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\IAppConfiguration.cs">
-      <Link>Configuration\IAppConfiguration.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Configuration\IConfiguration.cs">
       <Link>Configuration\IConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\IConfigurationProvider.cs">
-      <Link>Configuration\IConfigurationProvider.cs</Link>
+    <Compile Include="..\Kephas.Core\Configuration\Providers\AppConfigurationProvider.cs">
+      <Link>Configuration\Providers\AppConfigurationProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\NullAppConfiguration.cs">
-      <Link>Configuration\NullAppConfiguration.cs</Link>
+    <Compile Include="..\Kephas.Core\Configuration\Providers\IConfigurationProvider.cs">
+      <Link>Configuration\Providers\IConfigurationProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Configuration\SettingsTypeAttribute.cs">
-      <Link>Configuration\SettingsTypeAttribute.cs</Link>
+    <Compile Include="..\Kephas.Core\Configuration\Providers\SettingsTypeAttribute.cs">
+      <Link>Configuration\Providers\SettingsTypeAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Data\Id.cs">
       <Link>Data\Id.cs</Link>

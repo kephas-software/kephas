@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Configuration
+namespace Kephas.Configuration.Providers
 {
     using System;
 

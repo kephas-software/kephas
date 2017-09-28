@@ -16,6 +16,7 @@ namespace Kephas.Core.Tests.Composition
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;

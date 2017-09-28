@@ -50,8 +50,8 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Platform.Tests.Net45\Configuration\AppSettingsConfigurationTest.cs">
-      <Link>Configuration\AppSettingsConfigurationTest.cs</Link>
+    <Compile Include="..\kephas.platform.tests\application\configuration\DefaultAppConfigurationTest.cs">
+      <Link>Application\Configuration\DefaultAppConfigurationTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Platform.Tests\Application\NetAppRuntimeTest.cs">
       <Link>Application\NetAppRuntimeTest.cs</Link>
@@ -62,7 +62,7 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
-    <None Include="..\Kephas.Platform.Tests.Net45\app.config">
+    <None Include="..\Kephas.Platform.Tests\app.config">
       <Link>app.config</Link>
     </None>
     <None Include="packages.config">

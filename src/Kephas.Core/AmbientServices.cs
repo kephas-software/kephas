@@ -14,6 +14,7 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;

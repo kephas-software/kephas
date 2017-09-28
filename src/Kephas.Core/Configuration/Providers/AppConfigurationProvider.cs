@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Configuration
+namespace Kephas.Configuration.Providers
 {
     using System;
 
+    using Kephas.Application.Configuration;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -50,26 +50,23 @@ namespace Kephas.Configuration
         /// </returns>
         public virtual object GetSettings(Type settingsType)
         {
-            Requires.NotNull(settingsType, nameof(settingsType));
-
-            return this.AppConfiguration.GetSettings(this.GetSettingsPattern(settingsType), settingsType);
+            return this.AppConfiguration.GetSettings(settingsType, this.GetSectionName(settingsType));
         }
 
         /// <summary>
-        /// Gets the settings pattern.
+        /// Gets the section name out of the provided settings type.
         /// </summary>
         /// <remarks>
-        /// By default, it returns the section having the same name as the settings type name and the
-        /// settings having the name starting with the settings type name.
+        /// The section name is computed the name of the type without the 'Settings' ending,
+        /// using the camel case convention.
         /// </remarks>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>
-        /// The settings pattern.
+        /// The section name.
         /// </returns>
-        protected virtual string GetSettingsPattern(Type settingsType)
+        protected virtual string GetSectionName(Type settingsType)
         {
-            var settingsTypeName = settingsType.Name.ToCamelCase();
-            return $":{settingsTypeName}:*;{settingsTypeName}*";
+            return AppConfigurationExtensions.GetSettingsSectionName(settingsType);
         }
     }
 }

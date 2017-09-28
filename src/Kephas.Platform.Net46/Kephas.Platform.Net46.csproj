@@ -132,8 +132,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Platform\Configuration\AppSettingsConfiguration.cs">
-      <Link>Configuration\AppSettingsConfiguration.cs</Link>
+    <Compile Include="..\Kephas.Platform\Application\Configuration\DefaultAppConfiguration.cs">
+      <Link>Application\Configuration\DefaultAppConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

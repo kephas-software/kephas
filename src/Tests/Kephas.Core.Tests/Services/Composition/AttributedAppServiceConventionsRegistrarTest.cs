@@ -24,7 +24,6 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Services.Composition;
 
     using NUnit.Framework;
-    using Kephas.Testing.Core.Services.Composition;
 
     /// <summary>
     /// Test class for <see cref="AttributedAppServiceConventionsRegistrar"/>.

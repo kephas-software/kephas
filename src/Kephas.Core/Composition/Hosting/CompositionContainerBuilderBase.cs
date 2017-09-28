@@ -18,7 +18,9 @@ namespace Kephas.Composition.Hosting
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Collections;
+    using Kephas.Composition.Configuration;
     using Kephas.Composition.Conventions;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
@@ -35,11 +37,6 @@ namespace Kephas.Composition.Hosting
     public abstract class CompositionContainerBuilderBase<TBuilder> : ICompositionContainerBuilder
         where TBuilder : CompositionContainerBuilderBase<TBuilder>
     {
-        /// <summary>
-        /// The composition assembly file name pattern configuration key.
-        /// </summary>
-        public const string AssemblyNamePatternConfigurationKey = "composition:assemblyFileNamePattern";
-
         /// <summary>
         /// The composition builder context.
         /// </summary>
@@ -529,7 +526,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>The assemblies.</returns>
         private async Task<IList<Assembly>> GetAssembliesAsync(string searchPattern = null)
         {
-            searchPattern = searchPattern ?? (string)this.AppConfiguration.GetSetting(AssemblyNamePatternConfigurationKey);
+            searchPattern = searchPattern ?? this.AppConfiguration.GetSettings<CompositionSettings>()?.AssemblyFileNamePattern;
 
             this.Logger.Debug($"{nameof(this.GetAssembliesAsync)}. With assemblies matching pattern '{searchPattern}'.");
 

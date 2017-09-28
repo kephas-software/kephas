@@ -12,6 +12,7 @@ namespace Kephas
     using System;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Dynamic;

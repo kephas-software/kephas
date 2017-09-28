@@ -12,6 +12,7 @@ namespace Kephas.Core.Tests.Configuration
     using System;
 
     using Kephas.Configuration;
+    using Kephas.Configuration.Providers;
     using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
