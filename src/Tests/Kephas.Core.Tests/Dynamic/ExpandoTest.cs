@@ -252,6 +252,24 @@ namespace Kephas.Core.Tests.Dynamic
             return isOld;
         }
 
+        [Test]
+        public void ToDictionary_wrapped()
+        {
+            var instance = new WrapperExpando(new TestClass());
+            var dictionary = instance.ToDictionary();
+            Assert.AreEqual(3, dictionary.Count);
+            Assert.IsTrue((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
+        }
+
+        [Test]
+        public void ToDictionary_non_wrapped()
+        {
+            var instance = new WrapperExpando();
+            var dictionary = instance.ToDictionary();
+            Assert.AreEqual(1, dictionary.Count);
+            Assert.IsFalse((bool)dictionary[nameof(WrapperExpando.HasWrappedObject)]);
+        }
+
         public class TestClass
         {
             public string Name { get; set; }
@@ -285,6 +303,20 @@ namespace Kephas.Core.Tests.Dynamic
             {
                 return this.Age >= 70;
             }
+        }
+
+        public class WrapperExpando : Expando
+        {
+            public WrapperExpando()
+            {
+            }
+
+            public WrapperExpando(object innerObject)
+                : base(innerObject)
+            {
+            }
+
+            public bool HasWrappedObject => this.GetInnerObjectTypeInfo() != null;
         }
     }
 }

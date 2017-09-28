@@ -259,9 +259,12 @@ namespace Kephas.Dynamic
             var dictionary = new Dictionary<string, object>(this.innerDictionary);
 
             // second, the values in this expando's properties
-            foreach (var prop in this.GetThisTypeInfo().Properties)
+            if (this != this.innerObject)
             {
-                dictionary.Add(prop.Name, prop.GetValue(this.innerObject));
+                foreach (var prop in this.GetThisTypeInfo().Properties)
+                {
+                    dictionary.Add(prop.Name, prop.GetValue(this));
+                }
             }
 
             // last, the values in the inner object
