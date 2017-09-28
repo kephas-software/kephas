@@ -138,6 +138,40 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Returns the enumeration of all dynamic member names.
+        /// </summary>
+        /// <returns>
+        /// A sequence that contains dynamic member names.
+        /// </returns>
+        public override IEnumerable<string> GetDynamicMemberNames()
+        {
+            // TODO check that the member names are not returned twice.
+
+            // First check for public properties via reflection
+            if (this.innerObject != null)
+            {
+                var typeInfo = this.GetInnerObjectTypeInfo();
+                foreach (var property in typeInfo.Properties)
+                {
+                    yield return property.Name;
+                }
+            }
+
+            // then, check the properties in this object
+            var thisTypeInfo = this.GetThisTypeInfo();
+            foreach (var property in thisTypeInfo.Properties)
+            {
+                yield return property.Name;
+            }
+
+            // last, check the dictionary for members.
+            foreach (var key in this.innerDictionary.Keys)
+            {
+                yield return key;
+            }
+        }
+
+        /// <summary>
         /// Indicates whether the <paramref name="memberName"/> is defined in the expando.
         /// </summary>
         /// <param name="memberName">Name of the member.</param>
@@ -229,11 +263,9 @@ namespace Kephas.Dynamic
                 return true;
             }
 
-            object method;
-            if (this.innerDictionary.TryGetValue(binder.Name, out method))
+            if (this.innerDictionary.TryGetValue(binder.Name, out var method))
             {
-                var delegateProperty = method as Delegate;
-                if (delegateProperty == null)
+                if (!(method is Delegate delegateProperty))
                 {
                     throw new MemberAccessException(string.Format(Strings.ExpandoBase_CannotInvokeNonDelegate_Exception, binder.Name, method?.GetType()));
                 }
@@ -252,7 +284,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public IDictionary<string, object> ToDictionary()
+        public virtual IDictionary<string, object> ToDictionary()
         {
             // add the properties in their overwrite order:
             // first, the values in the dictionary
