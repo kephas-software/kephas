@@ -78,8 +78,7 @@ namespace Kephas.Configuration
                 return keys;
             }
 
-            object setting;
-            this.appSettings.TryGetValue(searchPattern, out setting);
+            this.appSettings.TryGetValue(searchPattern, out var setting);
             return new[] { new KeyValuePair<string, object>(searchPattern, setting) };
         }
 

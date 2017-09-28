@@ -92,6 +92,9 @@
     <Compile Include="..\Kephas.Core.Tests\Composition\TestRegistrationContext.cs">
       <Link>Composition\TestRegistrationContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Configuration\AppConfigurationProviderTest.cs">
+      <Link>Configuration\AppConfigurationProviderTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Configuration\ConfigurationTest.cs">
       <Link>Configuration\ConfigurationTest.cs</Link>
     </Compile>

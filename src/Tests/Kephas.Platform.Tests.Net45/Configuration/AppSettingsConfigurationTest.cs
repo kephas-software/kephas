@@ -61,11 +61,29 @@ namespace Kephas.Platform.Tests.Configuration
             Assert.AreEqual(0, settings.ToDictionary().Count);
         }
 
+        [Test]
+        public void Indexer_sets_runtime_settings()
+        {
+            var service = new AppSettingsConfiguration();
+            service["ServerUrl"] = "http://server.com";
+            service["ServerPort"] = 101;
+            var settings = service.GetSettings<RuntimeSettings>("Server*");
+            Assert.AreEqual("http://server.com", settings.ServerUrl);
+            Assert.AreEqual(101, settings.ServerPort);
+        }
+
         public class MySettings
         {
             public string MySetting { get; set; }
 
             public string MyOtherSetting { get; set; }
+        }
+
+        public class RuntimeSettings
+        {
+            public string ServerUrl { get; set; }
+
+            public int ServerPort { get; set; }
         }
     }
 }
