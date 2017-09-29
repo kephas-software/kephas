@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Ping;
     using Kephas.Testing.Composition.Mef;
 

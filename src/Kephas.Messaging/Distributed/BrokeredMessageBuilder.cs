@@ -141,6 +141,24 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Makes the message as a reply to another message.
+        /// </summary>
+        /// <param name="messageId">Identifier for the message.</param>
+        /// <param name="recipients">A variable-length parameters list containing recipients.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public BrokeredMessageBuilder ReplyTo(object messageId, params IEndpoint[] recipients)
+        {
+            Requires.NotNull(messageId, nameof(messageId));
+
+            this.brokeredMessage.ReplyToMessageId = messageId;
+            this.brokeredMessage.Recipients = recipients;
+
+            return this;
+        }
+
+        /// <summary>
         /// Creates the brokered message.
         /// </summary>
         /// <returns>

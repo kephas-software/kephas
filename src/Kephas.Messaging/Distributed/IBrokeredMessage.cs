@@ -70,5 +70,13 @@ namespace Kephas.Messaging.Distributed
         /// The response timeout.
         /// </value>
         TimeSpan Timeout { get; }
+
+        /// <summary>
+        /// Gets the identifier of the message to reply to.
+        /// </summary>
+        /// <value>
+        /// The identifier of the reply to message.
+        /// </value>
+        object ReplyToMessageId { get; }
     }
 }

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+namespace Kephas.Messaging.Messages
 {
     /// <summary>
     /// An empty message.

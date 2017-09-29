@@ -93,9 +93,6 @@
     <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerExtensions.cs">
       <Link>Distributed\MessageBrokerExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\EmptyMessage.cs">
-      <Link>EmptyMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Messaging\HandlerSelectors\DefaultMessageHandlerSelector.cs">
       <Link>HandlerSelectors\DefaultMessageHandlerSelector.cs</Link>
     </Compile>
@@ -140,6 +137,12 @@
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessageProcessingFilterBase.cs">
       <Link>MessageProcessingFilterBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Messages\EmptyMessage.cs">
+      <Link>Messages\EmptyMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Messages\ExceptionMessage.cs">
+      <Link>Messages\ExceptionMessage.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessagingException.cs">
       <Link>MessagingException.cs</Link>
