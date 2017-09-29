@@ -9,6 +9,7 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -60,6 +61,26 @@ namespace Kephas.Messaging.Distributed
         public BrokeredMessageBuilder CreateBrokeredMessageBuilder()
         {
             return new BrokeredMessageBuilder(this.AppManifest);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Messaging.Distributed.MessageBrokerBase
+        /// and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
