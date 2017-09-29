@@ -10,6 +10,7 @@
 namespace Kephas.Messaging.Distributed
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A message envelope.
@@ -38,7 +39,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message sender.
         /// </value>
-        public IMessageSender Sender { get; set; }
+        public IEndpoint Sender { get; set; }
 
         /// <summary>
         /// Gets or sets the message to send.
@@ -49,12 +50,20 @@ namespace Kephas.Messaging.Distributed
         public IMessage Content { get; set; }
 
         /// <summary>
+        /// Gets or sets the recipients.
+        /// </summary>
+        /// <value>
+        /// The recipients.
+        /// </value>
+        public IEnumerable<IEndpoint> Recipients { get; set; }
+
+        /// <summary>
         /// Gets or sets the channel.
         /// </summary>
         /// <value>
         /// The channel.
         /// </value>
-        public IMessageChannel Channel { get; set; }
+        public string Channel { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this message is one way.
@@ -68,20 +77,12 @@ namespace Kephas.Messaging.Distributed
         /// Gets or sets the timeout when waiting for responses.
         /// </summary>
         /// <remarks>
-        /// A value of <see cref="Timeout.Zero"/> means indefinitely waiting.
+        /// A value of <see cref="TimeSpan.Zero"/> means indefinitely waiting.
         /// It is strongly discouraged to wait indefinitely for a response, the default value is .
         /// </remarks>
         /// <value>
         /// The response timeout.
         /// </value>
         public TimeSpan Timeout { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of the message which this message is a reply to.
-        /// </summary>
-        /// <value>
-        /// The identifier of the reply to message.
-        /// </value>
-        public object ReplyToMessageId { get; set; }
     }
 }

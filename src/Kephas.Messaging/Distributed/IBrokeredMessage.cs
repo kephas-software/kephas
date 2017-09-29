@@ -10,6 +10,7 @@
 namespace Kephas.Messaging.Distributed
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Data;
 
@@ -24,7 +25,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message sender.
         /// </value>
-        IMessageSender Sender { get; }
+        IEndpoint Sender { get; }
 
         /// <summary>
         /// Gets the message to send.
@@ -35,12 +36,20 @@ namespace Kephas.Messaging.Distributed
         IMessage Content { get; }
 
         /// <summary>
+        /// Gets the recipients.
+        /// </summary>
+        /// <value>
+        /// The recipients.
+        /// </value>
+        IEnumerable<IEndpoint> Recipients { get; }
+
+        /// <summary>
         /// Gets the channel.
         /// </summary>
         /// <value>
         /// The channel.
         /// </value>
-        IMessageChannel Channel { get; }
+        string Channel { get; }
 
         /// <summary>
         /// Gets a value indicating whether this message is one way.
@@ -53,17 +62,13 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Gets the timeout when waiting for responses.
         /// </summary>
+        /// <remarks>
+        /// A value of <see cref="TimeSpan.Zero"/> means indefinitely waiting.
+        /// It is strongly discouraged to wait indefinitely for a response, the default value is .
+        /// </remarks>
         /// <value>
         /// The response timeout.
         /// </value>
         TimeSpan Timeout { get; }
-
-        /// <summary>
-        /// Gets the identifier of the message which this message is a reply to.
-        /// </summary>
-        /// <value>
-        /// The identifier of the reply to message.
-        /// </value>
-        object ReplyToMessageId { get; }
     }
 }

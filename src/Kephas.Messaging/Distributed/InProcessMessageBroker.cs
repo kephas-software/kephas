@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -30,8 +31,10 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
+        /// <param name="appManifest">The application manifest.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageBroker(IMessageProcessor messageProcessor)
+        public InProcessMessageBroker(IAppManifest appManifest, IMessageProcessor messageProcessor)
+            : base(appManifest)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
@@ -46,7 +49,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        public override async Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken)
+        public override async Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 

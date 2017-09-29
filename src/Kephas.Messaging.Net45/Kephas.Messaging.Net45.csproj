@@ -69,20 +69,20 @@
     <Compile Include="..\Kephas.Messaging\Distributed\BrokeredMessageHandler.cs">
       <Link>Distributed\BrokeredMessageHandler.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\Endpoint.cs">
+      <Link>Distributed\Endpoint.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\HandlerSelectors\BrokeredMessageHandlerSelector.cs">
       <Link>Distributed\HandlerSelectors\BrokeredMessageHandlerSelector.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\IBrokeredMessage.cs">
       <Link>Distributed\IBrokeredMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\IEndpoint.cs">
+      <Link>Distributed\IEndpoint.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\IMessageBroker.cs">
       <Link>Distributed\IMessageBroker.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\IMessageChannel.cs">
-      <Link>Distributed\IMessageChannel.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\IMessageSender.cs">
-      <Link>Distributed\IMessageSender.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\InProcessMessageBroker.cs">
       <Link>Distributed\InProcessMessageBroker.cs</Link>
@@ -92,9 +92,6 @@
     </Compile>
     <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerExtensions.cs">
       <Link>Distributed\MessageBrokerExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Distributed\MessageSender.cs">
-      <Link>Distributed\MessageSender.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\EmptyMessage.cs">
       <Link>EmptyMessage.cs</Link>

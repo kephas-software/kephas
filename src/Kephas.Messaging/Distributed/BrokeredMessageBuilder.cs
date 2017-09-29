@@ -11,6 +11,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
 
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -19,6 +20,11 @@ namespace Kephas.Messaging.Distributed
     public class BrokeredMessageBuilder
     {
         /// <summary>
+        /// The application manifest.
+        /// </summary>
+        private readonly IAppManifest appManifest;
+
+        /// <summary>
         /// The brokered message.
         /// </summary>
         private BrokeredMessage brokeredMessage;
@@ -26,10 +32,17 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder"/> class.
         /// </summary>
-        public BrokeredMessageBuilder()
+        /// <param name="appManifest">The application manifest.</param>
+        public BrokeredMessageBuilder(IAppManifest appManifest)
         {
+            Requires.NotNull(appManifest, nameof(appManifest));
+
+            this.appManifest = appManifest;
+
             // ReSharper disable once VirtualMemberCallInConstructor
             this.brokeredMessage = this.CreateBrokeredMessage();
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.brokeredMessage.Sender = this.CreateEndpoint(null);
         }
 
         /// <summary>
@@ -57,6 +70,38 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(message, nameof(message));
 
             this.brokeredMessage.Content = message;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the message to broker.
+        /// </summary>
+        /// <param name="senderId">The ID of the message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public BrokeredMessageBuilder WithSender(string senderId)
+        {
+            Requires.NotNullOrEmpty(senderId, nameof(senderId));
+
+            this.brokeredMessage.Sender = this.CreateEndpoint(senderId);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the message to broker.
+        /// </summary>
+        /// <param name="sender">The message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public BrokeredMessageBuilder WithSender(IEndpoint sender)
+        {
+            Requires.NotNull(sender, nameof(sender));
+
+            this.brokeredMessage.Sender = sender;
 
             return this;
         }
@@ -107,6 +152,23 @@ namespace Kephas.Messaging.Distributed
                        {
                            Timeout = DefaultTimeout
                        };
+        }
+
+        /// <summary>
+        /// Creates an endpoint.
+        /// </summary>
+        /// <param name="senderId">The ID of the message sender.</param>
+        /// <returns>
+        /// The new endpoint.
+        /// </returns>
+        protected virtual IEndpoint CreateEndpoint(string senderId)
+        {
+            return new Endpoint
+                {
+                    EndpointId = senderId,
+                    AppId = this.appManifest.AppId,
+                    AppInstanceId = this.appManifest.AppInstanceId,
+                };
         }
     }
 }

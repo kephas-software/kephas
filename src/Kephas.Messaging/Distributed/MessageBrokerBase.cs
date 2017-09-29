@@ -12,11 +12,33 @@ namespace Kephas.Messaging.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Base implementation of a <see cref="IMessageBroker"/>.
     /// </summary>
     public abstract class MessageBrokerBase : IMessageBroker
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
+        /// </summary>
+        /// <param name="appManifest">The application manifest.</param>
+        protected MessageBrokerBase(IAppManifest appManifest)
+        {
+            Requires.NotNull(appManifest, nameof(appManifest));
+
+            this.AppManifest = appManifest;
+        }
+
+        /// <summary>
+        /// Gets the application manifest.
+        /// </summary>
+        /// <value>
+        /// The application manifest.
+        /// </value>
+        public IAppManifest AppManifest { get; }
+
         /// <summary>
         /// Dispatches the brokered message asynchronously.
         /// </summary>
@@ -37,7 +59,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public BrokeredMessageBuilder CreateBrokeredMessageBuilder()
         {
-            return new BrokeredMessageBuilder();
+            return new BrokeredMessageBuilder(this.AppManifest);
         }
     }
 }
