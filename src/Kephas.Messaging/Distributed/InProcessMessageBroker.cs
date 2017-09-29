@@ -62,5 +62,18 @@ namespace Kephas.Messaging.Distributed
 
             return await processTask.PreserveThreadContext();
         }
+
+        /// <summary>
+        /// Notification method for a received reply.
+        /// </summary>
+        /// <param name="replyMessage">Message describing the reply.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public override Task ReplyReceivedAsync(IBrokeredMessage replyMessage, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(0);
+        }
     }
 }

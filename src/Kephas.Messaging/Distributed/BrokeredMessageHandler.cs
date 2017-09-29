@@ -63,16 +63,21 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override async Task<IMessage> ProcessAsync(BrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            if (message.IsOneWay)
+            if (message.ReplyToMessageId != null)
+            {
+                // do not wait for the processing.
+                Task.Factory.StartNew(() => this.ProcessReplyAsync(message, context, token));
+            }
+            else if (message.IsOneWay)
             {
                 // do not wait for the processing.
                 Task.Factory.StartNew(() => this.ProcessOneWayAsync(message, context, token));
-
-                return null;
             }
-
-            // wait for the processing and return the result through the message broker.
-            Task.Factory.StartNew(() => this.ProcessAndRespondAsync(message, context, token));
+            else
+            {
+                // wait for the processing and return the result through the message broker.
+                Task.Factory.StartNew(() => this.ProcessAndRespondAsync(message, context, token));
+            }
 
             return null;
         }
@@ -92,6 +97,25 @@ namespace Kephas.Messaging.Distributed
             CancellationToken token)
         {
             return this.messageProcessor.ProcessAsync(message.Content, context, token);
+        }
+
+        /// <summary>
+        /// Process the reply asynchronously.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        private async Task ProcessReplyAsync(
+            BrokeredMessage message,
+            IMessageProcessingContext context,
+            CancellationToken token)
+        {
+            var broker = this.messageBrokerFactory.CreateExportedValue();
+
+            await broker.ReplyReceivedAsync(message, token);
         }
 
         /// <summary>

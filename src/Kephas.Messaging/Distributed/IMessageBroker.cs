@@ -34,6 +34,18 @@ namespace Kephas.Messaging.Distributed
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Notification method for a received reply.
+        /// </summary>
+        /// <param name="replyMessage">Message describing the reply.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        Task ReplyReceivedAsync(
+            IBrokeredMessage replyMessage,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Creates a brokered message builder.
         /// </summary>
         /// <returns>
