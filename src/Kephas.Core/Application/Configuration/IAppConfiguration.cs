@@ -32,6 +32,35 @@ namespace Kephas.Application.Configuration
     public static class AppConfigurationExtensions
     {
         /// <summary>
+        /// Gets the 'appSettings' section.
+        /// </summary>
+        /// <param name="appConfiguration">The application configuration.</param>
+        /// <returns>
+        /// The application settings.
+        /// </returns>
+        public static IExpando GetAppSettings(this IAppConfiguration appConfiguration)
+        {
+            Requires.NotNull(appConfiguration, nameof(appConfiguration));
+
+            return appConfiguration[AppConfigurationSections.AppSettings]?.ToExpando();
+        }
+
+        /// <summary>
+        /// Gets the 'appSettings' section mapped to the <typeparamref name="TSettings"/> type.
+        /// </summary>
+        /// <typeparam name="TSettings">Type of the settings.</typeparam>
+        /// <param name="appConfiguration">The application configuration.</param>
+        /// <returns>
+        /// The application settings.
+        /// </returns>
+        public static TSettings GetAppSettings<TSettings>(this IAppConfiguration appConfiguration)
+        {
+            Requires.NotNull(appConfiguration, nameof(appConfiguration));
+
+            return (TSettings)GetSettings(appConfiguration, typeof(TSettings), AppConfigurationSections.AppSettings);
+        }
+
+        /// <summary>
         /// Gets the settings as a typed object.
         /// </summary>
         /// <param name="appConfiguration">The application configuration.</param>
@@ -45,7 +74,6 @@ namespace Kephas.Application.Configuration
         public static object GetSettings(this IAppConfiguration appConfiguration, Type settingsType, string sectionName = null)
         {
             Requires.NotNull(appConfiguration, nameof(appConfiguration));
-            Requires.NotNull(settingsType, nameof(settingsType));
             Requires.NotNull(settingsType, nameof(settingsType));
 
             var settingsTypeInfo = settingsType.AsRuntimeTypeInfo();

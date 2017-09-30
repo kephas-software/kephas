@@ -25,7 +25,6 @@ namespace Kephas.Dynamic
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Runtime;
 
     /// <summary>
     /// <para>

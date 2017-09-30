@@ -31,16 +31,28 @@ namespace Kephas.Platform.Tests.Application.Configuration
         public void GetSettings_from_appSettings()
         {
             var service = new DefaultAppConfiguration();
-            var settings = service.GetSettings<Expando>(AppSettingsSections.Default);
+            var settings = service.GetSettings<Expando>(AppConfigurationSections.AppSettings);
             Assert.AreEqual("myValue", settings["MySetting"]);
             Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
+        }
+
+        [Test]
+        public void GetSettings_from_appSettings_read_write()
+        {
+            var service = new DefaultAppConfiguration();
+            var settings = service.GetAppSettings();
+            Assert.AreEqual("myValue", settings["MySetting"]);
+            Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
+
+            settings["MySettings"] = "myNewValue";
+            Assert.AreEqual("myNewValue", settings["MySettings"]);
         }
 
         [Test]
         public void GetSettings_typed_from_appSettings()
         {
             var service = new DefaultAppConfiguration();
-            var settings = service.GetSettings<MySettings>(AppSettingsSections.Default);
+            var settings = service.GetSettings<MySettings>(AppConfigurationSections.AppSettings);
             Assert.AreEqual("myValue", settings.MySetting);
             Assert.AreEqual("myOtherValue", settings.MyOtherSetting);
         }

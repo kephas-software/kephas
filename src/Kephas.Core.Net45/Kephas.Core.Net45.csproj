@@ -82,8 +82,8 @@
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
       <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\Configuration\AppSettingsSections.cs">
-      <Link>Application\Configuration\AppSettingsSections.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\Configuration\AppConfigurationSections.cs">
+      <Link>Application\Configuration\AppConfigurationSections.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\Configuration\IAppConfiguration.cs">
       <Link>Application\Configuration\IAppConfiguration.cs</Link>
