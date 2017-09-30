@@ -44,12 +44,30 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
+        public async Task DispatchAsync_Ping_timeout()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+
+            var brokeredMessage = new BrokeredMessage
+                                      {
+                                          Content = new TimeoutMessage(),
+                                          Timeout = TimeSpan.FromSeconds(0)
+                                      };
+            Assert.That(() => messageBroker.DispatchAsync(brokeredMessage), Throws.InstanceOf<TimeoutException>());
+        }
+
+        [Test]
         public async Task DispatchAsync_Ping_success()
         {
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage { Content = new PingMessage() });
+            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
+                                                                 {
+                                                                     Content = new PingMessage(),
+                                                                     Timeout = TimeSpan.FromSeconds(10)
+                                                                 });
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -60,9 +78,20 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var pingBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = new PingMessage() });
+            var pingBack = await messageBroker.ProcessAsync(new PingMessage());
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
+        }
+
+        [Test]
+        public async Task ProcessAsync_null_response()
+        {
+            var container = this.CreateContainer();
+            var messageBroker = container.GetExport<IMessageBroker>();
+
+            var nullResponse = await messageBroker.ProcessAsync(new TestEvent());
+
+            Assert.IsNull(nullResponse);
         }
 
         [Test]
@@ -71,11 +100,11 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer(parts: new[] { typeof(TestEventHandler) });
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var message = new TestEvent();
-            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = message });
+            var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<string>() };
+            await messageBroker.PublishAsync(message);
 
-            Assert.IsNull(eventBack);
-            Assert.AreEqual("ok", message["received"]);
+            var response = await message.TaskCompletionSource.Task;
+            Assert.AreEqual("ok", response);
         }
 
         [Test]
@@ -84,14 +113,19 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer(parts: new[] { typeof(TestEventHandler) });
             var messageBroker = container.GetExport<IMessageBroker>();
 
-            var message = new TestEvent();
-            var eventBack = await messageBroker.ProcessAsync(new BrokeredMessage { Content = message, IsOneWay = true });
+            var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<string>() };
+            await messageBroker.PublishAsync(message);
 
-            Assert.IsInstanceOf<EmptyMessage>(eventBack);
-            Assert.IsNull(message["received"]);
+            var response = await message.TaskCompletionSource.Task;
+            Assert.AreEqual("ok", response);
         }
 
-        public class TestEvent : Expando, IEvent { }
+        public class TestEvent : Expando, IEvent
+        {
+            public TaskCompletionSource<string> TaskCompletionSource { get; set; }
+
+            public IMessage Response { get; set; }
+        }
 
         public class TestEventHandler : MessageHandlerBase<TestEvent, IMessage>
         {
@@ -106,14 +140,30 @@ namespace Kephas.Messaging.Tests.Distributed
             /// </returns>
             public override async Task<IMessage> ProcessAsync(TestEvent message, IMessageProcessingContext context, CancellationToken token)
             {
-                await Task.Factory.StartNew(
-                    () =>
-                        {
-                            Thread.Sleep(100);
-                            message["received"] = "ok";
-                        });
+                message.TaskCompletionSource?.SetResult("ok");
 
-                return null;
+                return message.Response;
+            }
+        }
+
+        public class TimeoutMessage : IMessage { }
+
+        public class TimeoutMessageHandler : MessageHandlerBase<TimeoutMessage, IMessage>
+        {
+            /// <summary>
+            /// Processes the provided message asynchronously and returns a response promise.
+            /// </summary>
+            /// <param name="message">The message to be handled.</param>
+            /// <param name="context">The processing context.</param>
+            /// <param name="token">The cancellation token.</param>
+            /// <returns>
+            /// The response promise.
+            /// </returns>
+            public override async Task<IMessage> ProcessAsync(TimeoutMessage message, IMessageProcessingContext context, CancellationToken token)
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+
+                return new EmptyMessage();
             }
         }
     }

@@ -77,13 +77,14 @@ namespace Kephas.Messaging.Distributed
         /// Gets or sets the timeout when waiting for responses.
         /// </summary>
         /// <remarks>
-        /// A value of <see cref="TimeSpan.Zero"/> means indefinitely waiting.
-        /// It is strongly discouraged to wait indefinitely for a response, the default value is .
+        /// A value of <c>null</c> means indefinitely waiting, but
+        /// it is strongly discouraged to wait indefinitely for a response.
+        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
         /// </value>
-        public TimeSpan Timeout { get; set; }
+        public TimeSpan? Timeout { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the message to reply to.

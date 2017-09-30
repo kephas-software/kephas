@@ -150,9 +150,9 @@ namespace Kephas.Messaging.Distributed
 
             var broker = this.messageBrokerFactory.CreateExportedValue();
             var responseMessage = broker.CreateBrokeredMessageBuilder()
+                .ReplyTo(message.Id, message.Sender)
                 .WithContent(response)
                 .OneWay()
-                .ReplyTo(message.Id, message.Sender)
                 .BrokeredMessage;
 
             await broker.DispatchAsync(responseMessage, token).PreserveThreadContext();

@@ -10,17 +10,26 @@
 namespace Kephas.Messaging.Distributed
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
+    using Kephas.Messaging.Messages;
+    using Kephas.Messaging.Resources;
 
     /// <summary>
     /// Base implementation of a <see cref="IMessageBroker"/>.
     /// </summary>
     public abstract class MessageBrokerBase : IMessageBroker
     {
+        /// <summary>
+        /// The dictionary for message synchronization.
+        /// </summary>
+        private readonly ConcurrentDictionary<object, (CancellationTokenSource cancellationTokenSource, TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary = new ConcurrentDictionary<object, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
         /// </summary>
@@ -31,6 +40,14 @@ namespace Kephas.Messaging.Distributed
 
             this.AppManifest = appManifest;
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<IMessageBroker> Logger { get; set; }
 
         /// <summary>
         /// Gets the application manifest.
@@ -48,9 +65,45 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        public abstract Task<IMessage> DispatchAsync(
+        public virtual Task<IMessage> DispatchAsync(
             IBrokeredMessage brokeredMessage,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
+            this.SendAsync(brokeredMessage, cancellationToken);
+
+            if (brokeredMessage.IsOneWay)
+            {
+                return Task.FromResult((IMessage)null);
+            }
+
+            var taskCompletionSource = new TaskCompletionSource<IMessage>();
+            var cancellationTokenSource = brokeredMessage.Timeout.HasValue
+                ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
+                : null;
+            cancellationTokenSource?.Token.Register(
+                () =>
+                    {
+                        cancellationTokenSource.Dispose();
+
+                        if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
+                        {
+                            if (this.messageSyncDictionary.TryRemove(brokeredMessage.Id, out var _))
+                            {
+                                taskCompletionSource.TrySetException(new TimeoutException());
+                            }
+                        }
+                    });
+
+            if (!this.messageSyncDictionary.TryAdd(brokeredMessage.Id, (cancellationTokenSource, taskCompletionSource)))
+            {
+                return taskCompletionSource.Task;
+            }
+
+            // Returns an awaiter for the answer, must pair with the original message ID.
+            return taskCompletionSource.Task;
+        }
 
         /// <summary>
         /// Notification method for a received reply.
@@ -60,9 +113,36 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public abstract Task ReplyReceivedAsync(
+        public virtual Task ReplyReceivedAsync(
             IBrokeredMessage replyMessage,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            if (replyMessage.ReplyToMessageId == null)
+            {
+                this.Logger.Warn(Strings.MessageBrokerBase_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyToMessageId), replyMessage.Content);
+                return Task.FromResult(0);
+            }
+
+            if (!this.messageSyncDictionary.TryRemove(replyMessage.ReplyToMessageId, out var syncEntry))
+            {
+                this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyMessage.ReplyToMessageId, replyMessage.Content);
+                return Task.FromResult(0);
+            }
+
+            syncEntry.cancellationTokenSource.Dispose();
+
+            if (replyMessage.Content is ExceptionMessage exceptionMessage)
+            {
+                var exception = new MessagingException(exceptionMessage.Exception.Message);
+                syncEntry.taskCompletionSource.SetException(exception);
+            }
+            else
+            {
+                syncEntry.taskCompletionSource.SetResult(replyMessage.Content);
+            }
+
+            return Task.FromResult(0);
+        }
 
         /// <summary>
         /// Creates a brokered message builder.
@@ -76,6 +156,16 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Messaging.Distributed.MessageBrokerBase
         /// and optionally releases the managed resources.
         /// </summary>
@@ -86,13 +176,15 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
+        /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result that yields an IMessage.
+        /// </returns>
+        protected abstract Task SendAsync(
+            IBrokeredMessage brokeredMessage,
+            CancellationToken cancellationToken = default);
     }
 }

@@ -126,4 +126,13 @@
   <data name="MessageHandler_BadMessageType_Exception" xml:space="preserve">
     <value>The message to process must be of type '{0}'.</value>
   </data>
+  <data name="MessageBrokerBase_MissingReplyToMessageId_Exception" xml:space="preserve">
+    <value>Received a reply message without the {0} being set. Content: {1}.</value>
+  </data>
+  <data name="MessageBrokerBase_ReplyToMessageNotFound_Exception" xml:space="preserve">
+    <value>Received a reply to '{0}' for which the corresponding original message was not found. Content: {1}.</value>
+  </data>
+  <data name="BrokeredMessageBuilder_ContentNullWhenNotReply_Exception" xml:space="preserve">
+    <value>The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply.</value>
+  </data>
 </root>

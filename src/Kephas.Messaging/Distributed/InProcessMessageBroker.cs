@@ -15,7 +15,6 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A distributed message broker sending the messages to the message processor.
@@ -42,38 +41,16 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Dispatches the brokered message asynchronously.
+        /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        public override async Task<IMessage> DispatchAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
+        protected override Task SendAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
-
-            var processTask = this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken);
-
-            if (brokeredMessage.IsOneWay)
-            {
-                return null;
-            }
-
-            return await processTask.PreserveThreadContext();
-        }
-
-        /// <summary>
-        /// Notification method for a received reply.
-        /// </summary>
-        /// <param name="replyMessage">Message describing the reply.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public override Task ReplyReceivedAsync(IBrokeredMessage replyMessage, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(0);
+            return this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken);
         }
     }
 }

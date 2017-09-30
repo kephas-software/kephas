@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Resources;
 
     /// <summary>
     /// A brokered message builder.
@@ -67,7 +68,10 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public BrokeredMessageBuilder WithContent(IMessage message)
         {
-            Requires.NotNull(message, nameof(message));
+            if (this.brokeredMessage.ReplyToMessageId == null && message == null)
+            {
+                throw new ArgumentNullException(nameof(message), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+            }
 
             this.brokeredMessage.Content = message;
 

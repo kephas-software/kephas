@@ -61,6 +61,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply..
+        /// </summary>
+        internal static string BrokeredMessageBuilder_ContentNullWhenNotReply_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessageBuilder_ContentNullWhenNotReply_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple handlers found for the &apos;{0}&apos; message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them..
         /// </summary>
         internal static string DefaultMessageProcessor_AmbiguousHandler_Exception {
@@ -75,6 +84,24 @@ namespace Kephas.Messaging.Resources {
         internal static string DefaultMessageProcessor_MissingHandler_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageProcessor_MissingHandler_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received a reply message without the {0} being set. Content: {1}..
+        /// </summary>
+        internal static string MessageBrokerBase_MissingReplyToMessageId_Exception {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_MissingReplyToMessageId_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received a reply to &apos;{0}&apos; for which the corresponding original message was not found. Content: {1}..
+        /// </summary>
+        internal static string MessageBrokerBase_ReplyToMessageNotFound_Exception {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_ReplyToMessageNotFound_Exception", resourceCulture);
             }
         }
         
