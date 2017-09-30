@@ -179,12 +179,12 @@ namespace Kephas.Messaging.Distributed
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
         protected abstract Task SendAsync(
             IBrokeredMessage brokeredMessage,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken);
     }
 }
