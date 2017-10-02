@@ -96,6 +96,7 @@ namespace Kephas.Messaging.Distributed
             IMessageProcessingContext context,
             CancellationToken token)
         {
+            context.SetBrokeredMessage(message);
             return this.messageProcessor.ProcessAsync(message.Content, context, token);
         }
 
