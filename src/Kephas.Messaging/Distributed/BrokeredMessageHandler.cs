@@ -136,6 +136,7 @@ namespace Kephas.Messaging.Distributed
             Exception exception = null;
             try
             {
+                context.SetBrokeredMessage(message);
                 response = await this.messageProcessor.ProcessAsync(message.Content, context, token).PreserveThreadContext();
             }
             catch (Exception ex)

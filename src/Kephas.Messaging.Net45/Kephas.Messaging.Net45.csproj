@@ -93,6 +93,9 @@
     <Compile Include="..\Kephas.Messaging\Distributed\MessageBrokerExtensions.cs">
       <Link>Distributed\MessageBrokerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Distributed\MessageProcessingContextExtensions.cs">
+      <Link>Distributed\MessageProcessingContextExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\HandlerSelectors\DefaultMessageHandlerSelector.cs">
       <Link>HandlerSelectors\DefaultMessageHandlerSelector.cs</Link>
     </Compile>
