@@ -81,7 +81,7 @@ namespace Kephas.Messaging
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        public Task AfterProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
+        public virtual Task AfterProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
             return TaskHelper.CompletedTask;
         }
