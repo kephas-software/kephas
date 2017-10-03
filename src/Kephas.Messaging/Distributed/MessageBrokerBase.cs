@@ -71,40 +71,15 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            this.SendAsync(brokeredMessage, cancellationToken);
-
             if (brokeredMessage.IsOneWay)
             {
+                this.SendAsync(brokeredMessage, cancellationToken);
                 return Task.FromResult((IMessage)null);
             }
 
-            var taskCompletionSource = new TaskCompletionSource<IMessage>();
-            var cancellationTokenSource = brokeredMessage.Timeout.HasValue
-                ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
-                : null;
-            cancellationTokenSource?.Token.Register(
-                () =>
-                    {
-                        cancellationTokenSource.Dispose();
+            var taskCompletionSource = this.GetTaskCompletionSource(brokeredMessage);
 
-                        if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
-                        {
-                            if (this.messageSyncDictionary.TryRemove(brokeredMessage.Id, out var _))
-                            {
-                                taskCompletionSource.TrySetException(
-                                    new TimeoutException(
-                                        string.Format(
-                                            Strings.MessageBrokerBase_Timeout_Exception,
-                                            brokeredMessage.Timeout,
-                                            brokeredMessage)));
-                            }
-                        }
-                    });
-
-            if (!this.messageSyncDictionary.TryAdd(brokeredMessage.Id, (cancellationTokenSource, taskCompletionSource)))
-            {
-                return taskCompletionSource.Task;
-            }
+            this.SendAsync(brokeredMessage, cancellationToken);
 
             // Returns an awaiter for the answer, must pair with the original message ID.
             return taskCompletionSource.Task;
@@ -192,5 +167,41 @@ namespace Kephas.Messaging.Distributed
         protected abstract Task SendAsync(
             IBrokeredMessage brokeredMessage,
             CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the task completion source for the sent message.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <returns>
+        /// The task completion source.
+        /// </returns>
+        private TaskCompletionSource<IMessage> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
+        {
+            var taskCompletionSource = new TaskCompletionSource<IMessage>();
+            var cancellationTokenSource = brokeredMessage.Timeout.HasValue
+                                              ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
+                                              : null;
+            cancellationTokenSource?.Token.Register(
+                () =>
+                    {
+                        cancellationTokenSource.Dispose();
+
+                        if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
+                        {
+                            if (this.messageSyncDictionary.TryRemove(brokeredMessage.Id, out var _))
+                            {
+                                taskCompletionSource.TrySetException(
+                                    new TimeoutException(
+                                        string.Format(
+                                            Strings.MessageBrokerBase_Timeout_Exception,
+                                            brokeredMessage.Timeout,
+                                            brokeredMessage)));
+                            }
+                        }
+                    });
+
+            this.messageSyncDictionary.TryAdd(brokeredMessage.Id, (cancellationTokenSource, taskCompletionSource));
+            return taskCompletionSource;
+        }
     }
 }

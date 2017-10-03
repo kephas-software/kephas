@@ -48,9 +48,11 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
-        protected override Task SendAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
+        protected override Task SendAsync(
+            IBrokeredMessage brokeredMessage,
+            CancellationToken cancellationToken = default)
         {
-            return this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken);
+            return Task.Factory.StartNew(() => this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken), cancellationToken);
         }
     }
 }

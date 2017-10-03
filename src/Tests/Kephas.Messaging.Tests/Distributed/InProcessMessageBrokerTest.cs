@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public async Task DispatchAsync_Ping_success()
+        public async Task DispatchAsync_Ping_success_with_timeout()
         {
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
