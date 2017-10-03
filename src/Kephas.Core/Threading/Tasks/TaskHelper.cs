@@ -20,17 +20,26 @@ namespace Kephas.Threading.Tasks
     public static class TaskHelper
     {
         /// <summary>
-        /// The default value of milliseconds to wait when simulating synchronous calls.
-        /// </summary>
-        public const int DefaultWaitMilliseconds = 20;
-
-        /// <summary>
         /// Initializes static members of the <see cref="TaskHelper"/> class.
         /// </summary>
         static TaskHelper()
         {
             CompletedTask = Task.FromResult(0);
+            DefaultWaitMilliseconds = 20;
+            DefaultTimeout = TimeSpan.FromSeconds(30);
         }
+
+        /// <summary>
+        /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
+        /// The default value is 20 milliseconds, but it can be changed to accomodate application needs.
+        /// </summary>
+        public static int DefaultWaitMilliseconds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
+        /// The default value is 30 seconds, but it can be changed to accomodate application needs.
+        /// </summary>
+        public static TimeSpan DefaultTimeout { get; set; }
 
         /// <summary>
         /// Gets a task that has already completed successfully.
@@ -44,8 +53,8 @@ namespace Kephas.Threading.Tasks
         /// Waits the task avoiding the current thread to be locked.
         /// </summary>
         /// <param name="task">The task.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task.</param>
+        /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
+        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
         /// <param name="throwOnTimeout">If set to <c>true</c> an exception is thrown on timeout.</param>
         /// <returns>
         ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
@@ -61,10 +70,11 @@ namespace Kephas.Threading.Tasks
         /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
         /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
         /// </remarks>
-        public static bool WaitNonLocking(this Task task, TimeSpan timeout, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        public static bool WaitNonLocking(this Task task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
             Requires.NotNull(task, nameof(task));
 
+            timeout = timeout ?? DefaultTimeout;
             var timeoutOccurred = false;
             var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
             var startTime = DateTime.Now;
@@ -97,13 +107,13 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         /// <typeparam name="T">The return type.</typeparam>
         /// <param name="task">The task.</param>
-        /// <param name="timeout">The timeout.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task.</param>
+        /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
+        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
         /// <param name="throwOnTimeout">If set to <c>true</c> an exception is thrown on timeout.</param>
         /// <returns>
         /// The task result.
         /// </returns>
-        public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan timeout, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        public static T GetResultNonLocking<T>(this Task<T> task, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
         {
             Requires.NotNull(task, nameof(task));
 
