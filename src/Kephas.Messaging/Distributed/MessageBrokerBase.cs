@@ -91,7 +91,12 @@ namespace Kephas.Messaging.Distributed
                         {
                             if (this.messageSyncDictionary.TryRemove(brokeredMessage.Id, out var _))
                             {
-                                taskCompletionSource.TrySetException(new TimeoutException());
+                                taskCompletionSource.TrySetException(
+                                    new TimeoutException(
+                                        string.Format(
+                                            Strings.MessageBrokerBase_Timeout_Exception,
+                                            brokeredMessage.Timeout,
+                                            brokeredMessage)));
                             }
                         }
                     });

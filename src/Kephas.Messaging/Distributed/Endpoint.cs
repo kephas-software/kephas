@@ -37,5 +37,16 @@ namespace Kephas.Messaging.Distributed
         /// The identifier of the application.
         /// </value>
         public string AppId { get; set; }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return string.IsNullOrEmpty(this.EndpointId)
+                       ? string.IsNullOrEmpty(this.AppInstanceId)
+                             ? this.AppId
+                             : this.AppInstanceId
+                       : this.EndpointId;
+        }
     }
 }

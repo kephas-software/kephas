@@ -115,6 +115,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The maximum alloted time of {0} expired for {1}..
+        /// </summary>
+        internal static string MessageBrokerBase_Timeout_Exception {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_Timeout_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;..
         /// </summary>
         internal static string MessageHandler_BadMessageType_Exception {

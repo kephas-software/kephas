@@ -11,6 +11,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// A message envelope.
@@ -79,7 +80,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
+        /// The default value <see cref="BrokeredMessageBuilder{TMessage}.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
@@ -93,5 +94,20 @@ namespace Kephas.Messaging.Distributed
         /// The identifier of the reply to message.
         /// </value>
         public object ReplyToMessageId { get; set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder(this.GetType().Name);
+            var contentType = this.Content?.GetType().Name;
+            var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
+            sb.Append($" (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}");
+            return sb.ToString();
+        }
     }
 }

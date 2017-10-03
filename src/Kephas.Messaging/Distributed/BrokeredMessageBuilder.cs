@@ -45,8 +45,6 @@ namespace Kephas.Messaging.Distributed
 
             // ReSharper disable once VirtualMemberCallInConstructor
             this.brokeredMessage = this.CreateBrokeredMessage();
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.brokeredMessage.Sender = this.CreateEndpoint(null);
         }
 
         /// <summary>
@@ -206,7 +204,8 @@ namespace Kephas.Messaging.Distributed
         {
             return new TMessage
             {
-                Timeout = DefaultTimeout
+                Timeout = DefaultTimeout,
+                Sender = this.CreateEndpoint(null)
             };
         }
 
