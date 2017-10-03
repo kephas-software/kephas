@@ -67,7 +67,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
             {
                 Content = new PingMessage(),
-                Timeout = TimeSpan.FromSeconds(10)
+                Timeout = TimeSpan.FromSeconds(100)
             });
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
