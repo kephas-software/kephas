@@ -70,6 +70,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot specify a negative timeout value..
+        /// </summary>
+        internal static string BrokeredMessageBuilder_NonNegativeTimeout_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessageBuilder_NonNegativeTimeout_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple handlers found for the &apos;{0}&apos; message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them..
         /// </summary>
         internal static string DefaultMessageProcessor_AmbiguousHandler_Exception {

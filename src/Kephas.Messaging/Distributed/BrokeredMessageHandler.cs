@@ -92,7 +92,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         private Task ProcessOneWayAsync(
-            BrokeredMessage message,
+            IBrokeredMessage message,
             IMessageProcessingContext context,
             CancellationToken token)
         {
@@ -110,7 +110,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         private async Task ProcessReplyAsync(
-            BrokeredMessage message,
+            IBrokeredMessage message,
             IMessageProcessingContext context,
             CancellationToken token)
         {
@@ -129,7 +129,7 @@ namespace Kephas.Messaging.Distributed
         /// The asynchronous result.
         /// </returns>
         private async Task ProcessAndRespondAsync(
-            BrokeredMessage message,
+            IBrokeredMessage message,
             IMessageProcessingContext context,
             CancellationToken token)
         {
@@ -151,7 +151,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             var broker = this.messageBrokerFactory.CreateExportedValue();
-            var responseMessage = broker.CreateBrokeredMessageBuilder()
+            var responseMessage = broker.CreateBrokeredMessageBuilder<BrokeredMessage>()
                 .ReplyTo(message.Id, message.Sender)
                 .WithContent(response)
                 .OneWay()

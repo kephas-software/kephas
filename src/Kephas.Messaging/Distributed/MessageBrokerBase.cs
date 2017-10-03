@@ -150,9 +150,10 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
-        public BrokeredMessageBuilder CreateBrokeredMessageBuilder()
+        public virtual BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>()
+            where TMessage : BrokeredMessage, new()
         {
-            return new BrokeredMessageBuilder(this.AppManifest);
+            return new BrokeredMessageBuilder<TMessage>(this.AppManifest);
         }
 
         /// <summary>

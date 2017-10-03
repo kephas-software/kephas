@@ -51,6 +51,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
-        BrokeredMessageBuilder CreateBrokeredMessageBuilder();
+        BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>()
+            where TMessage : BrokeredMessage, new();
     }
 }

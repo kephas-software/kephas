@@ -40,7 +40,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
             var brokeredMessage = brokeredMessageBuilder
                 .WithContent(@event)
                 .OneWay()
@@ -66,7 +66,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
             var brokeredMessage = brokeredMessageBuilder
                 .WithContent(message)
                 .BrokeredMessage;
@@ -91,7 +91,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
             var brokeredMessage = brokeredMessageBuilder
                 .WithContent(message)
                 .OneWay()
