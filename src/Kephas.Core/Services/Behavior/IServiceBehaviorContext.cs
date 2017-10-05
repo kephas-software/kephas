@@ -9,7 +9,7 @@
 
 namespace Kephas.Services.Behavior
 {
-    using Kephas.Application;
+    using Kephas.Composition;
 
     /// <summary>
     /// Interface for service behavior context.
@@ -18,12 +18,12 @@ namespace Kephas.Services.Behavior
     public interface IServiceBehaviorContext<out TServiceContract> : IContext
     {
         /// <summary>
-        /// Gets the application context.
+        /// Gets the behavior context.
         /// </summary>
         /// <value>
-        /// The application context.
+        /// The behavior context.
         /// </value>
-        IAppContext AppContext { get; }
+        IContext Context { get; }
 
         /// <summary>
         /// Gets the service.
@@ -32,5 +32,21 @@ namespace Kephas.Services.Behavior
         /// The service.
         /// </value>
         TServiceContract Service { get; }
+
+        /// <summary>
+        /// Gets the service factory.
+        /// </summary>
+        /// <value>
+        /// The service factory.
+        /// </value>
+        IExportFactory<TServiceContract> ServiceFactory { get; }
+
+        /// <summary>
+        /// Gets the service metadata.
+        /// </summary>
+        /// <value>
+        /// The service metadata.
+        /// </value>
+        object Metadata { get; }
     }
 }

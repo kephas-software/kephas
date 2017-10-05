@@ -31,10 +31,13 @@ namespace Kephas.Web.Owin.Application
         /// </returns>
         protected override sealed Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var owinAppContext = appContext as IOwinAppContext;
-            if (owinAppContext == null)
+            if (!(appContext is IOwinAppContext owinAppContext))
             {
-                throw new InvalidOperationException(string.Format(Strings.OwinFeatureManager_InvalidOwinAppContext_Exception, appContext?.GetType().FullName, typeof(IOwinAppContext).FullName));
+                throw new InvalidOperationException(
+                    string.Format(
+                        Strings.OwinFeatureManager_InvalidOwinAppContext_Exception,
+                        appContext?.GetType().FullName,
+                        typeof(IOwinAppContext).FullName));
             }
 
             return this.InitializeCoreAsync(owinAppContext, cancellationToken);

@@ -20,8 +20,14 @@ namespace Kephas.Data.MongoDB.Application
     /// <summary>
     /// Feature manager for MongoDB.
     /// </summary>
+    [FeatureInfo(FeatureName, isRequired: true)]
     public class MongoFeatureManager : FeatureManagerBase
     {
+        /// <summary>
+        /// Name of the feature.
+        /// </summary>
+        public const string FeatureName = "MongoDB";
+
         /// <summary>
         /// Initializes the MongoDB infrastructure asynchronously.
         /// </summary>

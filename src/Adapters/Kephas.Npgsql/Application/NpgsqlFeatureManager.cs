@@ -22,9 +22,14 @@ namespace Kephas.Npgsql.Application
     /// A Npgsql feature manager.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    [FeatureInfo(NpgsqlFeature.Driver)]
+    [FeatureInfo(FeatureName, isRequired: true)]
     public class NpgsqlFeatureManager : FeatureManagerBase
     {
+        /// <summary>
+        /// Name of the feature.
+        /// </summary>
+        public const string FeatureName = "npgsql";
+
         /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>

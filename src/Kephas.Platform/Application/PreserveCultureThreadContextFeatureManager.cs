@@ -20,8 +20,14 @@ namespace Kephas.Application
     /// Feature manager configuring the <see cref="ThreadContextAwaiter"/> to preserve the thread culture.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
+    [FeatureInfo(FeatureName, isRequired: true)]
     public class PreserveCultureThreadContextFeatureManager : FeatureManagerBase
     {
+        /// <summary>
+        /// Name of the feature.
+        /// </summary>
+        public const string FeatureName = "PreserveCultureThreadContext";
+
         /// <summary>
         /// Initializes the <see cref="ThreadContextAwaiter"/> asynchronously.
         /// </summary>

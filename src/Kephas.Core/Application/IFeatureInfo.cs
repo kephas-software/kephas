@@ -33,5 +33,13 @@ namespace Kephas.Application
         /// The feature version.
         /// </value>
         Version Version { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this feature is required.
+        /// </summary>
+        /// <value>
+        /// True if this feature is required, false if not.
+        /// </value>
+        bool IsRequired { get; }
     }
 }

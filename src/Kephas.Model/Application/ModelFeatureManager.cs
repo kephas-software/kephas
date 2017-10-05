@@ -20,8 +20,14 @@ namespace Kephas.Model.Application
     /// Feature manager for the model.
     /// </summary>
     [ProcessingPriority(Priority.High)]
+    [FeatureInfo(FeatureName, isRequired: true)]
     public class ModelFeatureManager : FeatureManagerBase
     {
+        /// <summary>
+        /// Name of the feature.
+        /// </summary>
+        public const string FeatureName = "Model";
+
         /// <summary>
         /// The model space provider.
         /// </summary>

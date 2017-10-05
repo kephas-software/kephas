@@ -14,7 +14,10 @@ namespace Kephas.Core.Tests.Services.Behavior
 
     using Kephas.Behavior;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
+    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Services.Behavior;
+    using Kephas.Services.Behavior.Composition;
 
     using NSubstitute;
 
@@ -70,14 +73,22 @@ namespace Kephas.Core.Tests.Services.Behavior
             Assert.AreEqual(0, filteredServices.Count);
         }
 
+
         private IAmbientServices CreateAmbientServicesMock(params IEnabledServiceBehaviorRule<ITestService>[] rules)
         {
-            var compositionContextMock = Substitute.For<ICompositionContext>();
-            compositionContextMock.GetExports<IEnabledServiceBehaviorRule<ITestService>>(Arg.Any<string>())
-                .Returns(new List<IEnabledServiceBehaviorRule<ITestService>>(rules));
+            var exporter = Substitute.For<ICollectionExportFactoryImporter>();
+            exporter.ExportFactories.Returns(
+                rules.Select(
+                    r => new ExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>(
+                        () => r,
+                        new ServiceBehaviorRuleMetadata(null))).ToList());
+
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
+                .Returns(exporter);
 
             var ambientServicesMock = Substitute.For<IAmbientServices>();
-            ambientServicesMock.CompositionContainer.Returns(compositionContextMock);
+            ambientServicesMock.CompositionContainer.Returns(compositionContext);
             return ambientServicesMock;
         }
 

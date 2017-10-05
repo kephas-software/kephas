@@ -62,9 +62,6 @@
     <Compile Include="..\Kephas.Npgsql\Logging\NpgsqlLoggingProviderAdapter.cs">
       <Link>Logging\NpgsqlLoggingProviderAdapter.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Npgsql\NpgsqlFeature.cs">
-      <Link>NpgsqlFeature.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

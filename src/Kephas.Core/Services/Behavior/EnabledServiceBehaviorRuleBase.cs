@@ -18,6 +18,41 @@ namespace Kephas.Services.Behavior
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract> : BehaviorRuleBase<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule<TServiceContract>
     {
+        /// <summary>
+        /// Gets a value indicating whether the rule may be applied or not.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// A value indicating whether the rule may be applied or not.
+        /// </returns>
+        bool IBehaviorRule<IContext>.CanApply(IContext context)
+        {
+            return this.CanApply((IServiceBehaviorContext<TServiceContract>)context);
+        }
+
+        /// <summary>
+        /// Gets the behavior value asynchronously.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// A promise of the behavior value.
+        /// </returns>
+        IBehaviorValue<bool> IBehaviorRule<IContext, bool>.GetValue(IContext context)
+        {
+            return this.GetValue((IServiceBehaviorContext<TServiceContract>)context);
+        }
+
+        /// <summary>
+        /// Gets the behavior value.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The behavior value.
+        /// </returns>
+        IBehaviorValue IBehaviorRule<IContext>.GetValue(IContext context)
+        {
+            return this.GetValue((IServiceBehaviorContext<TServiceContract>)context);
+        }
     }
 
     /// <summary>

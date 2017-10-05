@@ -64,14 +64,17 @@ namespace Kephas.Testing.Composition.Mef
 
         public virtual ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
         {
-            var containerBuilder = this.WithContainerBuilder()
+            var ambientServices = new AmbientServices();
+            var containerBuilder = this.WithContainerBuilder(ambientServices)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .WithParts(parts ?? new Type[0]);
 
             config?.Invoke(containerBuilder);
 
-            return containerBuilder.CreateContainer();
+            var container = containerBuilder.CreateContainer();
+            ambientServices.RegisterService(container);
+            return container;
         }
 
         public ICompositionContext CreateContainerWithBuilder(params Type[] types)

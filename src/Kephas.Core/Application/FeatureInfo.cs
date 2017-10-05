@@ -32,9 +32,10 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="version">The feature version (optional).</param>
+        /// <param name="isRequired">True if this feature is required, false if not (optional).</param>
         /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfo(string name, string version = null, string[] dependencies = null)
-            : this(name, version == null ? null : new Version(version), dependencies)
+        public FeatureInfo(string name, string version = null, bool isRequired = false, string[] dependencies = null)
+            : this(name, version == null ? null : new Version(version), isRequired, dependencies)
         {
         }
 
@@ -43,12 +44,14 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="version">The feature version (optional).</param>
+        /// <param name="isRequired">True if this feature is required, false if not (optional).</param>
         /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfo(string name, Version version = null, string[] dependencies = null)
+        public FeatureInfo(string name, Version version = null, bool isRequired = false, string[] dependencies = null)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
+            this.IsRequired = isRequired;
             this.Version = version ?? new Version(0, 0);
             this.Dependencies = dependencies ?? new string[0];
         }
@@ -76,6 +79,14 @@ namespace Kephas.Application
         /// The feature version.
         /// </value>
         public Version Version { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this feature is required.
+        /// </summary>
+        /// <value>
+        /// True if this feature is required, false if not.
+        /// </value>
+        public bool IsRequired { get; }
 
         /// <summary>
         /// Full name of the <see cref="FeatureInfo"/>.
