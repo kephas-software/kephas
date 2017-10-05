@@ -35,11 +35,6 @@ namespace Kephas.Application
     public class DefaultAppManager : IAppManager
     {
         /// <summary>
-        /// The service behavior provider.
-        /// </summary>
-        private readonly IServiceBehaviorProvider serviceBehaviorProvider;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
@@ -56,22 +51,26 @@ namespace Kephas.Application
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
         {
-            this.serviceBehaviorProvider = serviceBehaviorProvider;
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceBehaviorProvider, nameof(serviceBehaviorProvider));
 
             this.AppManifest = appManifest;
             this.AmbientServices = ambientServices;
+            this.ServiceBehaviorProvider = serviceBehaviorProvider;
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
                                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
-                                                     : this.serviceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).ToList();
+                                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).ToList();
+
+            this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
             this.FeatureManagerFactories = featureManagerFactories == null
                                                ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
                                                : this.SortEnabledFeatureManagerFactories(
-                                                   this.serviceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
+                                                   this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
+
             this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
                                                          ? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>()
-                                                         : this.serviceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
+                                                         : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
         }
 
         /// <summary>
@@ -94,6 +93,11 @@ namespace Kephas.Application
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
+        /// Gets the service behavior provider.
+        /// </summary>
+        public IServiceBehaviorProvider ServiceBehaviorProvider { get; }
 
         /// <summary>
         /// Gets the application lifecycle behavior factories.
@@ -151,7 +155,7 @@ namespace Kephas.Application
                         await this.BeforeAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.InitializeFeatureManagersAsync(appContext, cancellationToken).PreserveThreadContext();
+                        await this.InitializeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
                         await this.AfterAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
@@ -191,7 +195,7 @@ namespace Kephas.Application
                         await this.BeforeAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.FinalizeFeatureManagersAsync(appContext, cancellationToken).PreserveThreadContext();
+                        await this.FinalizeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
                         await this.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
@@ -261,7 +265,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task InitializeFeatureManagersAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task InitializeFeaturesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             var orderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
@@ -292,9 +296,9 @@ namespace Kephas.Application
                     await Profiler.WithInfoStopwatchAsync(
                         async () =>
                         {
-                            await this.InvokeBeforeInitializeBehaviorsAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
-                            await featureManager.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
-                            await this.InvokeAfterInitializeBehaviorsAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.BeforeFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.InitializeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
+                            await this.AfterFeatureInitializeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
                         featureManagerIdentifier).PreserveThreadContext();
@@ -306,11 +310,12 @@ namespace Kephas.Application
                 }
                 catch (Exception ex)
                 {
-                    var initializerKind = featureManagerMetadata.OptionalService ? "optional" : "required";
+                    var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
+                    var initializerKind = isRequiredFeature ? "required" : "optional";
                     this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to initialize. See the inner exception for more details.");
 
                     // interrupt the initialization if a required feature manager failed to initialize.
-                    if (!featureManagerMetadata.OptionalService)
+                    if (isRequiredFeature)
                     {
                         throw;
                     }
@@ -318,6 +323,23 @@ namespace Kephas.Application
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        /// <summary>
+        /// Initializes the feature asynchronously.
+        /// </summary>
+        /// <param name="featureManager">Manager for feature.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        protected virtual Task InitializeFeatureAsync(
+            IFeatureManager featureManager,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
+        {
+            return featureManager.InitializeAsync(appContext, cancellationToken);
         }
 
         /// <summary>
@@ -330,7 +352,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task InvokeBeforeInitializeBehaviorsAsync(
+        protected virtual async Task BeforeFeatureInitializeAsync(
             ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
@@ -352,7 +374,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task InvokeAfterInitializeBehaviorsAsync(
+        protected virtual async Task AfterFeatureInitializeAsync(
             ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
@@ -414,7 +436,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task FinalizeFeatureManagersAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task FinalizeFeaturesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
@@ -446,9 +468,9 @@ namespace Kephas.Application
                     await Profiler.WithInfoStopwatchAsync(
                         async () =>
                         {
-                            await this.InvokeBeforeFinalizeBehaviorsAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
-                            await featureManager.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
-                            await this.InvokeAfterFinalizeBehaviorsAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.BeforeFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.FinalizeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
+                            await this.AfterFeatureFinalizeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
                         featureManagerIdentifier).PreserveThreadContext();
@@ -460,11 +482,12 @@ namespace Kephas.Application
                 }
                 catch (Exception ex)
                 {
-                    var initializerKind = featureManagerMetadata.OptionalService ? "optional" : "required";
+                    var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
+                    var initializerKind = isRequiredFeature ? "required" : "optional";
                     this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to finalize. See the inner exception for more details.");
 
                     // interrupt the finalization if a required feature manager failed to finalize.
-                    if (!featureManagerMetadata.OptionalService)
+                    if (isRequiredFeature)
                     {
                         throw;
                     }
@@ -472,6 +495,23 @@ namespace Kephas.Application
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        /// <summary>
+        /// Finalizes the feature asynchronously.
+        /// </summary>
+        /// <param name="featureManager">Manager for feature.</param>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        protected virtual Task FinalizeFeatureAsync(
+            IFeatureManager featureManager,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
+        {
+            return featureManager.FinalizeAsync(appContext, cancellationToken);
         }
 
         /// <summary>
@@ -484,7 +524,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task InvokeBeforeFinalizeBehaviorsAsync(
+        protected virtual async Task BeforeFeatureFinalizeAsync(
             ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
@@ -506,7 +546,7 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task InvokeAfterFinalizeBehaviorsAsync(
+        protected virtual async Task AfterFeatureFinalizeAsync(
             ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
@@ -528,15 +568,6 @@ namespace Kephas.Application
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
         {
-            // ensure that all feature managers have the FeatureInfo property set.
-            foreach (var fmFactory in featureManagerFactories)
-            {
-                if (fmFactory.Metadata.FeatureInfo == null)
-                {
-                    fmFactory.Metadata.FeatureInfo = this.ComputeAutoFeatureInfo(fmFactory.Metadata);
-                }
-            }
-
             var partialOrderedSet = new PartialOrderedSet<IExportFactory<IFeatureManager, FeatureManagerMetadata>>(featureManagerFactories, this.CompareFeatureManagers);
             return partialOrderedSet.ToList();
         }
@@ -612,6 +643,26 @@ namespace Kephas.Application
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Ensures that all feature managers have the FeatureInfo property set.
+        /// </summary>
+        /// <param name="featureManagerFactories">The feature manager factories.</param>
+        private void EnsureMetadataHasFeatureInfo(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
+        {
+            if (featureManagerFactories == null)
+            {
+                return;
+            }
+
+            foreach (var fmFactory in featureManagerFactories)
+            {
+                if (fmFactory.Metadata.FeatureInfo == null)
+                {
+                    fmFactory.Metadata.FeatureInfo = this.ComputeAutoFeatureInfo(fmFactory.Metadata);
+                }
+            }
         }
     }
 }
