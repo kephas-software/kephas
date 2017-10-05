@@ -165,12 +165,12 @@ namespace Kephas.Application
             }
             catch (OperationCanceledException)
             {
-                this.Logger.Error(Strings.DefaultAppBootstrapper_StartCanceled_Exception, DateTimeOffset.Now);
+                this.Logger.Error(Strings.DefaultAppManager_InitializeCanceled_Exception, DateTimeOffset.Now);
                 throw;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, Strings.DefaultAppBootstrapper_StartFaulted_Exception, DateTimeOffset.Now);
+                this.Logger.Error(ex, Strings.DefaultAppManager_InitializeFaulted_Exception, DateTimeOffset.Now);
                 throw;
             }
         }
@@ -205,12 +205,12 @@ namespace Kephas.Application
             }
             catch (OperationCanceledException)
             {
-                this.Logger.Error(Strings.DefaultAppBootstrapper_StartCanceled_Exception, DateTimeOffset.Now);
+                this.Logger.Error(Strings.DefaultAppManager_FinalizeCanceled_Exception, DateTimeOffset.Now);
                 throw;
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, Strings.DefaultAppBootstrapper_StartFaulted_Exception, DateTimeOffset.Now);
+                this.Logger.Error(ex, Strings.DefaultAppManager_FinalizeFaulted_Exception, DateTimeOffset.Now);
                 throw;
             }
         }

@@ -132,11 +132,11 @@
   <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
     <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
   </data>
-  <data name="DefaultAppBootstrapper_StartCanceled_Exception" xml:space="preserve">
-    <value>The boostrapper start procedure was canceled, at {0:s}.</value>
+  <data name="DefaultAppManager_InitializeCanceled_Exception" xml:space="preserve">
+    <value>The application's initialize procedure was canceled, at {0:s}.</value>
   </data>
-  <data name="DefaultAppBootstrapper_StartFaulted_Exception" xml:space="preserve">
-    <value>The boostrapper encountered an exception while starting, at {0:s}.</value>
+  <data name="DefaultAppManager_InitializeFaulted_Exception" xml:space="preserve">
+    <value>The application's initialize procedure encountered an exception at {0:s}.</value>
   </data>
   <data name="DefaultSerializationService_SerializerNotFound_Exception" xml:space="preserve">
     <value>A serializer for the media type '{0}' was not found.</value>
@@ -195,11 +195,11 @@
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
     <value>Cannot load assembly '{0}'. See the exception for more information.</value>
   </data>
-  <data name="DefaultAppDisposer_DisposeCanceled_Exception" xml:space="preserve">
-    <value>The application dispose procedure was canceled, at {0:s}.</value>
+  <data name="DefaultAppManager_FinalizeCanceled_Exception" xml:space="preserve">
+    <value>The application's finalize procedure was canceled, at {0:s}.</value>
   </data>
-  <data name="DefaultAppDisposer_DisposeFaulted_Exception" xml:space="preserve">
-    <value>The application disposer encountered an exception while disposing, at {0:s}.</value>
+  <data name="DefaultAppManager_FinalizeFaulted_Exception" xml:space="preserve">
+    <value>The application's finalize procedure encountered an exception at {0:s}.</value>
   </data>
   <data name="DefaultTypeResolver_ResolveType_NotFound_Exception" xml:space="preserve">
     <value>The type '{0}' could not be found.</value>

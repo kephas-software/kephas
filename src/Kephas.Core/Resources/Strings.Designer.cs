@@ -19,7 +19,7 @@ namespace Kephas.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -242,38 +242,38 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The boostrapper start procedure was canceled, at {0:s}..
+        ///   Looks up a localized string similar to The application&apos;s finalize procedure was canceled, at {0:s}..
         /// </summary>
-        internal static string DefaultAppBootstrapper_StartCanceled_Exception {
+        internal static string DefaultAppManager_FinalizeCanceled_Exception {
             get {
-                return ResourceManager.GetString("DefaultAppBootstrapper_StartCanceled_Exception", resourceCulture);
+                return ResourceManager.GetString("DefaultAppManager_FinalizeCanceled_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The boostrapper encountered an exception while starting, at {0:s}..
+        ///   Looks up a localized string similar to The application&apos;s finalize procedure encountered an exception at {0:s}..
         /// </summary>
-        internal static string DefaultAppBootstrapper_StartFaulted_Exception {
+        internal static string DefaultAppManager_FinalizeFaulted_Exception {
             get {
-                return ResourceManager.GetString("DefaultAppBootstrapper_StartFaulted_Exception", resourceCulture);
+                return ResourceManager.GetString("DefaultAppManager_FinalizeFaulted_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The application dispose procedure was canceled, at {0:s}..
+        ///   Looks up a localized string similar to The application&apos;s initialize procedure was canceled, at {0:s}..
         /// </summary>
-        internal static string DefaultAppDisposer_DisposeCanceled_Exception {
+        internal static string DefaultAppManager_InitializeCanceled_Exception {
             get {
-                return ResourceManager.GetString("DefaultAppDisposer_DisposeCanceled_Exception", resourceCulture);
+                return ResourceManager.GetString("DefaultAppManager_InitializeCanceled_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The application disposer encountered an exception while disposing, at {0:s}..
+        ///   Looks up a localized string similar to The application&apos;s initialize procedure encountered an exception at {0:s}..
         /// </summary>
-        internal static string DefaultAppDisposer_DisposeFaulted_Exception {
+        internal static string DefaultAppManager_InitializeFaulted_Exception {
             get {
-                return ResourceManager.GetString("DefaultAppDisposer_DisposeFaulted_Exception", resourceCulture);
+                return ResourceManager.GetString("DefaultAppManager_InitializeFaulted_Exception", resourceCulture);
             }
         }
         
