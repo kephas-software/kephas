@@ -35,31 +35,43 @@ namespace Kephas.Application
     public class DefaultAppManager : IAppManager
     {
         /// <summary>
+        /// The service behavior provider.
+        /// </summary>
+        private readonly IServiceBehaviorProvider serviceBehaviorProvider;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
             IAppManifest appManifest,
             IAmbientServices ambientServices,
+            IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
         {
+            this.serviceBehaviorProvider = serviceBehaviorProvider;
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.AppManifest = appManifest;
             this.AmbientServices = ambientServices;
-            this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
-                                                        ?? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>();
-            this.FeatureManagerFactories = this.SortEnabledFeatureManagerFactories(featureManagerFactories?.WhereEnabled(ambientServices).ToList()
-                                                        ?? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>());
-            this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories?.WhereEnabled(ambientServices).ToList()
-                                                        ?? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>();
+            this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
+                                                     ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
+                                                     : this.serviceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).ToList();
+            this.FeatureManagerFactories = featureManagerFactories == null
+                                               ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
+                                               : this.SortEnabledFeatureManagerFactories(
+                                                   this.serviceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
+            this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
+                                                         ? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>()
+                                                         : this.serviceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
         }
 
         /// <summary>

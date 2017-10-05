@@ -57,6 +57,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
+      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
     <Compile Include="Application\DefaultAppManagerTest.cs" />
     <Compile Include="Configuration\ConfigurationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

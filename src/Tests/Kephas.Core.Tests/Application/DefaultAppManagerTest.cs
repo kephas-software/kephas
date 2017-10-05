@@ -25,6 +25,7 @@ namespace Kephas.Core.Tests.Application
 
     using NUnit.Framework;
     using Kephas.Composition.ExportFactoryImporters;
+    using Kephas.Services;
 
     [TestFixture]
     public class DefaultAppManagerTest
@@ -47,6 +48,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -85,6 +87,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -125,6 +128,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -174,6 +178,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -217,6 +222,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -256,6 +262,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -296,6 +303,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -345,6 +353,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
                 this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -368,6 +377,12 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("Before2", order[5]);
             Assert.AreEqual("After2", order[6]);
             Assert.AreEqual("After1", order[7]);
+        }
+
+        private IServiceBehaviorProvider GetServiceBehaviorProvider()
+        {
+            var provider = new DefaultServiceBehaviorProvider(Substitute.For<IAmbientServices>(), new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>());
+            return provider;
         }
 
         private IAmbientServices GetAmbientServices()

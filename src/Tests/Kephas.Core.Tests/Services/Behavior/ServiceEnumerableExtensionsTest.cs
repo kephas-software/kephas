@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceEnumerableExtensionsTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultServiceProviderTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -24,7 +24,7 @@ namespace Kephas.Core.Tests.Services.Behavior
     using NUnit.Framework;
 
     [TestFixture]
-    public class ServiceEnumerableExtensionsTest
+    public class DefaultServiceProviderTest
     {
         [Test]
         public void WhereEnabled_no_behaviors()
@@ -81,7 +81,7 @@ namespace Kephas.Core.Tests.Services.Behavior
                 rules.Select(
                     r => new ExportFactory<IEnabledServiceBehaviorRule<ITestService>, ServiceBehaviorRuleMetadata>(
                         () => r,
-                        new ServiceBehaviorRuleMetadata(null))).ToList());
+                        new ServiceBehaviorRuleMetadata(typeof(ITestService)))).ToList());
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport(typeof(ICollectionExportFactoryImporter<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>), null)
@@ -95,7 +95,9 @@ namespace Kephas.Core.Tests.Services.Behavior
         private IEnabledServiceBehaviorRule<ITestService> CreateEnabledServiceBehaviorRule(bool canApply, bool isEndRule, bool value, int processingPriority = 0)
         {
             var behaviorMock = Substitute.For<IEnabledServiceBehaviorRule<ITestService>>();
-            behaviorMock.CanApply(Arg.Any<IServiceBehaviorContext<ITestService>>()).Returns(canApply);
+            behaviorMock
+                .CanApply(Arg.Any<IServiceBehaviorContext<ITestService>>())
+                .ReturnsForAnyArgs(canApply);
             behaviorMock.IsEndRule.Returns(isEndRule);
             behaviorMock.ProcessingPriority.Returns(processingPriority);
             behaviorMock.GetValue(Arg.Any<IServiceBehaviorContext<ITestService>>())

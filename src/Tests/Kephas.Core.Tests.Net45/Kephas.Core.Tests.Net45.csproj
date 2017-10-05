@@ -143,11 +143,11 @@
     <Compile Include="..\Kephas.Core.Tests\Serialization\SerializationExtensionsTest.cs">
       <Link>Serialization\SerializationExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Services\Behavior\DefaultServiceBehaviorProviderTest.cs">
+      <Link>Services\Behavior\DefaultServiceBehaviorProviderTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs">
       <Link>Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core.Tests\Services\Behavior\ServiceEnumerableExtensionsTest.cs">
-      <Link>Services\Behavior\ServiceEnumerableExtensionsTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\Composition\AppServiceConventionsRegistrarBaseTest.cs">
       <Link>Services\Composition\AppServiceConventionsRegistrarBaseTest.cs</Link>

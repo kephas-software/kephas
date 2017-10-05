@@ -553,6 +553,9 @@
     <Compile Include="..\Kephas.Core\Services\Behavior\Composition\ServiceBehaviorRuleMetadata.cs">
       <Link>Services\Behavior\Composition\ServiceBehaviorRuleMetadata.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\DefaultServiceBehaviorProvider.cs">
+      <Link>Services\Behavior\DefaultServiceBehaviorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\Behavior\EnabledServiceBehaviorRuleBase.cs">
       <Link>Services\Behavior\EnabledServiceBehaviorRuleBase.cs</Link>
     </Compile>
@@ -562,11 +565,11 @@
     <Compile Include="..\Kephas.Core\Services\Behavior\IServiceBehaviorContext.cs">
       <Link>Services\Behavior\IServiceBehaviorContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\Behavior\IServiceBehaviorProvider.cs">
+      <Link>Services\Behavior\IServiceBehaviorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\Behavior\ServiceBehaviorContext.cs">
       <Link>Services\Behavior\ServiceBehaviorContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Services\Behavior\ServiceEnumerableExtensions.cs">
-      <Link>Services\Behavior\ServiceEnumerableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Composition\AppServiceConventionsRegistrarBase.cs">
       <Link>Services\Composition\AppServiceConventionsRegistrarBase.cs</Link>

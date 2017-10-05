@@ -86,7 +86,7 @@
     <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />
     <Compile Include="Serialization\SerializationExtensionsTest.cs" />
     <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs" />
-    <Compile Include="Services\Behavior\ServiceEnumerableExtensionsTest.cs" />
+    <Compile Include="Services\Behavior\DefaultServiceBehaviorProviderTest.cs" />
     <Compile Include="Services\Composition\AppServiceConventionsRegistrarBaseTest.cs" />
     <Compile Include="Services\Composition\AppServiceMetadataTest.cs" />
     <Compile Include="Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs" />
