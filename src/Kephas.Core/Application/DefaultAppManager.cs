@@ -152,13 +152,18 @@ namespace Kephas.Application
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.BeforeAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        var orderedBehaviors = this.AppLifecycleBehaviorFactories
+                            .Select(factory => factory.CreateExport())
+                            .OrderBy(export => export.Metadata.ProcessingPriority)
+                            .ToList();
+
+                        await this.BeforeAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
                         await this.InitializeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.AfterAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        await this.AfterAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
                     },
                     this.Logger).PreserveThreadContext();
@@ -192,13 +197,18 @@ namespace Kephas.Application
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.BeforeAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        var orderedBehaviors = this.AppLifecycleBehaviorFactories
+                            .Select(factory => factory.CreateExport())
+                            .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                            .ToList();
+
+                        await this.BeforeAppFinalizeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
                         await this.FinalizeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+                        await this.AfterAppFinalizeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
                     },
                     this.Logger).PreserveThreadContext();
@@ -218,19 +228,18 @@ namespace Kephas.Application
         /// <summary>
         /// Overridable method called before actually initializing the application.
         /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task BeforeAppInitializeAsync(
+            ICollection<IExport<IAppLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
         {
-            var orderedBehaviors = this.AppLifecycleBehaviorFactories
-                                          .Select(factory => factory.CreateExport())
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            foreach (var behavior in orderedBehaviors)
+            foreach (var behavior in behaviors)
             {
                 await behavior.Value.BeforeAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
@@ -239,19 +248,18 @@ namespace Kephas.Application
         /// <summary>
         /// Overridable method called after the application was initialized.
         /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task AfterAppInitializeAsync(
+            ICollection<IExport<IAppLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
         {
-            var orderedBehaviors = this.AppLifecycleBehaviorFactories
-                                          .Select(factory => factory.CreateExport())
-                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            foreach (var behavior in orderedBehaviors)
+            foreach (var behavior in behaviors)
             {
                 await behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
@@ -389,19 +397,18 @@ namespace Kephas.Application
         /// <summary>
         /// Overridable method called before actually finalizing the application.
         /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task BeforeAppFinalizeAsync(
+            ICollection<IExport<IAppLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
         {
-            var orderedBehaviors = this.AppLifecycleBehaviorFactories
-                                          .Select(factory => factory.CreateExport())
-                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            foreach (var behavior in orderedBehaviors)
+            foreach (var behavior in behaviors)
             {
                 await behavior.Value.BeforeAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
@@ -410,21 +417,20 @@ namespace Kephas.Application
         /// <summary>
         /// Overridable method called after the application was finalized.
         /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task AfterAppFinalizeAsync(
+            ICollection<IExport<IAppLifecycleBehavior, AppServiceMetadata>> behaviors,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
         {
-            var orderedBehaviors = this.AppLifecycleBehaviorFactories
-                                          .Select(factory => factory.CreateExport())
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            foreach (var behavior in orderedBehaviors)
+            foreach (var behavior in behaviors)
             {
-                await behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+                await behavior.Value.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
         }
 
