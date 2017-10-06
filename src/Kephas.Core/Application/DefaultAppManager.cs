@@ -447,14 +447,11 @@ namespace Kephas.Application
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
                                           .ToList();
+            // the feature manager are in the right order for initializing, now reverse that order
             reversedOrderedFeatureManagers.Reverse();
 
-            var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
+            var reverseOrderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            var reverseOrderedBehaviors = orderedBehaviors
                                           .OrderByDescending(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
@@ -476,7 +473,7 @@ namespace Kephas.Application
                         {
                             await this.BeforeFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                             await this.FinalizeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
-                            await this.AfterFeatureFinalizeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.AfterFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
                         featureManagerIdentifier).PreserveThreadContext();
