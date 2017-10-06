@@ -298,7 +298,7 @@ namespace Kephas.Application
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
                 var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"Feature manager '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
+                var featureManagerIdentifier = $"Initialize feature '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
@@ -465,7 +465,7 @@ namespace Kephas.Application
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
                 var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"Feature manager '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
+                var featureManagerIdentifier = $"Finalize feature '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
