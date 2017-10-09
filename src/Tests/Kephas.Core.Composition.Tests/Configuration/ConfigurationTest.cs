@@ -11,6 +11,7 @@ namespace Kephas.Core.Tests.Configuration
 {
     using System;
 
+    using Kephas.Application.Configuration;
     using Kephas.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Testing.Composition.Mef;
@@ -39,7 +40,21 @@ namespace Kephas.Core.Tests.Configuration
             Assert.AreNotSame(TestConfigurationProvider.Settings, config.Settings);
         }
 
-        public class TestSettings { }
+        [Test]
+        public void Composition_Configuration_app_config_provider()
+        {
+            var container = this.CreateContainer();
+            var ambientServices = container.GetExport<IAmbientServices>();
+            ambientServices.RegisterService<IAppConfiguration>(new DefaultAppConfiguration());
+
+            var config = container.GetExport<IConfiguration<TestSettings>>();
+            Assert.AreEqual("hello", config.Settings.Say);
+        }
+
+        public class TestSettings
+        {
+            public string Say { get; set; }
+        }
 
         [SettingsType(typeof(TestSettings))]
         public class TestConfigurationProvider : IConfigurationProvider

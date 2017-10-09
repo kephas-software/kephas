@@ -21,7 +21,6 @@ namespace Kephas.Testing.Composition.Mef
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Composition.Mef.Hosting;
-    using Kephas.Configuration;
     using Kephas.Logging;
 
     /// <summary>

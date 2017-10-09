@@ -73,12 +73,17 @@
       <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
       <Name>Kephas.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Platform.Net46\Kephas.Platform.Net46.csproj">
+      <Project>{e4c34864-2654-4dd3-992c-aa56ab141016}</Project>
+      <Name>Kephas.Platform.Net46</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj">
       <Project>{00be907b-3852-480f-9abc-5b4c5d4595b6}</Project>
       <Name>Kephas.Testing.Composition.Mef</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
