@@ -40,11 +40,15 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
-            var brokeredMessage = brokeredMessageBuilder
-                .WithContent(@event)
-                .OneWay()
-                .BrokeredMessage;
+            if (!(@event is IBrokeredMessage brokeredMessage))
+            {
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                brokeredMessage = brokeredMessageBuilder.WithContent(@event).OneWay().BrokeredMessage;
+            }
+            else
+            {
+                // TODO check the message broker content
+            }
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
@@ -66,10 +70,17 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
-            var brokeredMessage = brokeredMessageBuilder
-                .WithContent(message)
-                .BrokeredMessage;
+            if (!(message is IBrokeredMessage brokeredMessage))
+            {
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                brokeredMessage = brokeredMessageBuilder
+                                    .WithContent(message)
+                                    .BrokeredMessage;
+            }
+            else
+            {
+                // TODO check the message broker content
+            }
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
         }
@@ -91,13 +102,35 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
-            var brokeredMessage = brokeredMessageBuilder
-                .WithContent(message)
-                .OneWay()
-                .BrokeredMessage;
+            if (!(message is IBrokeredMessage brokeredMessage))
+            {
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                brokeredMessage = brokeredMessageBuilder
+                    .WithContent(message)
+                    .OneWay()
+                    .BrokeredMessage;
+            }
+            else
+            {
+                // TODO check the message broker content
+            }
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a untyped brokered message builder.
+        /// </summary>
+        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <returns>
+        /// The new untyped brokered message builder.
+        /// </returns>
+        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(
+            this IMessageBroker messageBroker)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+
+            return messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
         }
     }
 }
