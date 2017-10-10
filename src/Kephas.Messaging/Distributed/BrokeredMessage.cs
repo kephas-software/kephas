@@ -12,7 +12,7 @@ namespace Kephas.Messaging.Distributed
     using System;
     using System.Collections.Generic;
     using System.Text;
-
+    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -23,14 +23,14 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// The identifier.
         /// </summary>
-        private object id;
+        private string id;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
         /// </summary>
         public BrokeredMessage()
         {
-            this.Id = Guid.NewGuid();
+            this.Id = Guid.NewGuid().ToString("N");
         }
 
         /// <summary>
@@ -39,15 +39,23 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier.
         /// </value>
-        public object Id
+        public string Id
         {
             get => this.id;
             set
             {
-                Requires.NotNull(value, nameof(value));
+                Requires.NotNullOrEmpty(value, nameof(value));
                 this.id = value;
             }
         }
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        object IIdentifiable.Id => this.id;
 
         /// <summary>
         /// Gets or sets the sender of the message.
