@@ -80,6 +80,7 @@ namespace Kephas.Messaging.Distributed
             else
             {
                 // TODO check the message broker content
+                // brokeredMessage.IsOneWay = false
             }
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
@@ -113,6 +114,7 @@ namespace Kephas.Messaging.Distributed
             else
             {
                 // TODO check the message broker content
+                // brokeredMessage.IsOneWay = true
             }
 
             return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
@@ -125,8 +127,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new untyped brokered message builder.
         /// </returns>
-        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(
-            this IMessageBroker messageBroker)
+        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(this IMessageBroker messageBroker)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
 

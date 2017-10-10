@@ -13,11 +13,18 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
     using System.Text;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// A message envelope.
     /// </summary>
     public class BrokeredMessage : IBrokeredMessage
     {
+        /// <summary>
+        /// The identifier.
+        /// </summary>
+        private object id;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
         /// </summary>
@@ -27,12 +34,20 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Gets the identifier for this instance.
+        /// Gets or sets the identifier for this instance.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
-        public object Id { get; }
+        public object Id
+        {
+            get => this.id;
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+                this.id = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the sender of the message.

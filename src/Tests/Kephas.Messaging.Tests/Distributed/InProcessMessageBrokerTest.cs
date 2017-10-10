@@ -15,12 +15,15 @@ namespace Kephas.Messaging.Tests.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Ping;
+    using Kephas.Serialization;
+    using Kephas.Serialization.Json;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
 
@@ -69,6 +72,17 @@ namespace Kephas.Messaging.Tests.Distributed
                 Content = new PingMessage(),
                 Timeout = TimeSpan.FromSeconds(100)
             });
+
+            Assert.IsInstanceOf<PingBackMessage>(pingBack);
+        }
+
+        [Test]
+        public async Task ProcessAsync_Ping_over_serialization_success()
+        {
+            var container = this.CreateContainer(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+
+            var pingBack = await messageBroker.ProcessAsync(new PingMessage());
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -193,6 +207,37 @@ namespace Kephas.Messaging.Tests.Distributed
                 Thread.Sleep(TimeSpan.FromSeconds(10));
 
                 return new EmptyMessage();
+            }
+        }
+
+        [OverridePriority(Priority.Normal)]
+        public class RemoteMessageBroker : InProcessMessageBroker
+        {
+            private readonly ISerializationService serializationService;
+
+            public RemoteMessageBroker(IAppManifest appManifest, IMessageProcessor messageProcessor, ISerializationService serializationService)
+                : base(appManifest, messageProcessor)
+            {
+                this.serializationService = serializationService;
+            }
+
+            /// <summary>
+            /// Sends the brokered message asynchronously over the physical medium.
+            /// </summary>
+            /// <param name="brokeredMessage">The brokered message.</param>
+            /// <param name="cancellationToken">The cancellation token (optional).</param>
+            /// <returns>
+            /// The asynchronous result that yields an IMessage.
+            /// </returns>
+            protected override async Task SendAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
+            {
+                var serializedMessage = await this.serializationService.JsonSerializeAsync(
+                                            brokeredMessage,
+                                            cancellationToken: cancellationToken);
+                var deserializedMessage = await this.serializationService.JsonDeserializeAsync(
+                                              serializedMessage,
+                                              cancellationToken: cancellationToken);
+                await base.SendAsync((IBrokeredMessage)deserializedMessage, cancellationToken);
             }
         }
     }

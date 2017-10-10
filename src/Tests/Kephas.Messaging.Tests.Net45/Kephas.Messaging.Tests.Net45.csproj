@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\..\..\Packages\NSubstitute.2.0.3\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
@@ -108,6 +111,10 @@
     <ProjectReference Include="..\..\Kephas.Messaging.Net45\Kephas.Messaging.Net45.csproj">
       <Project>{dea2cc67-ded4-4ac7-85e1-bb1c6d9d4378}</Project>
       <Name>Kephas.Messaging.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Kephas.Serialization.Json.Net45\Kephas.Serialization.Json.Net45.csproj">
+      <Project>{33bf84a0-7458-48b4-9cfc-c6d2a067072a}</Project>
+      <Name>Kephas.Serialization.Json.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef.Net45\Kephas.Testing.Composition.Mef.Net45.csproj">
       <Project>{5e6c23b7-191a-40c1-9aab-326d190cafa3}</Project>

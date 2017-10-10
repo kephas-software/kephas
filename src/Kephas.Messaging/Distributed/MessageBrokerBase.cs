@@ -11,6 +11,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -28,7 +29,10 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// The dictionary for message synchronization.
         /// </summary>
-        private readonly ConcurrentDictionary<object, (CancellationTokenSource cancellationTokenSource, TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary = new ConcurrentDictionary<object, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
+        private readonly
+            ConcurrentDictionary<string, (CancellationTokenSource cancellationTokenSource,
+                TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary =
+                new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
@@ -73,12 +77,14 @@ namespace Kephas.Messaging.Distributed
 
             if (brokeredMessage.IsOneWay)
             {
+                this.LogBeforeSend(brokeredMessage);
                 this.SendAsync(brokeredMessage, cancellationToken);
                 return Task.FromResult((IMessage)null);
             }
 
             var taskCompletionSource = this.GetTaskCompletionSource(brokeredMessage);
 
+            this.LogBeforeSend(brokeredMessage);
             this.SendAsync(brokeredMessage, cancellationToken);
 
             // Returns an awaiter for the answer, must pair with the original message ID.
@@ -103,11 +109,14 @@ namespace Kephas.Messaging.Distributed
                 return Task.FromResult(0);
             }
 
-            if (!this.messageSyncDictionary.TryRemove(replyMessage.ReplyToMessageId, out var syncEntry))
+            var replyToMessageId = replyMessage.ReplyToMessageId.ToString();
+            if (!this.messageSyncDictionary.TryRemove(replyToMessageId, out var syncEntry))
             {
-                this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyMessage.ReplyToMessageId, replyMessage.Content);
+                this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyToMessageId, replyMessage.Content);
                 return Task.FromResult(0);
             }
+
+            this.LogOnReceive(replyMessage);
 
             syncEntry.cancellationTokenSource.Dispose();
 
@@ -181,6 +190,8 @@ namespace Kephas.Messaging.Distributed
             var cancellationTokenSource = brokeredMessage.Timeout.HasValue
                                               ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
                                               : null;
+
+            var messageId = brokeredMessage.Id.ToString();
             cancellationTokenSource?.Token.Register(
                 () =>
                     {
@@ -188,20 +199,118 @@ namespace Kephas.Messaging.Distributed
 
                         if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
                         {
-                            if (this.messageSyncDictionary.TryRemove(brokeredMessage.Id, out var _))
+                            if (this.messageSyncDictionary.TryRemove(messageId, out var _))
                             {
-                                taskCompletionSource.TrySetException(
-                                    new TimeoutException(
-                                        string.Format(
-                                            Strings.MessageBrokerBase_Timeout_Exception,
-                                            brokeredMessage.Timeout,
-                                            brokeredMessage)));
+                                var timeoutException = new TimeoutException(
+                                    string.Format(
+                                        Strings.MessageBrokerBase_Timeout_Exception,
+                                        brokeredMessage.Timeout,
+                                        brokeredMessage));
+                                this.LogOnTimeout(brokeredMessage, timeoutException);
+                                taskCompletionSource.TrySetException(timeoutException);
                             }
                         }
                     });
 
-            this.messageSyncDictionary.TryAdd(brokeredMessage.Id, (cancellationTokenSource, taskCompletionSource));
+            var added = this.messageSyncDictionary.TryAdd(messageId, (cancellationTokenSource, taskCompletionSource));
+            this.LogOnEnqueue(brokeredMessage, added);
             return taskCompletionSource;
+        }
+
+        /// <summary>
+        /// Logs the message on enqueuing for reply.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="added">True if could be added.</param>
+        private void LogOnEnqueue(IBrokeredMessage brokeredMessage, bool added)
+        {
+            if (!added)
+            {
+                // TODO localization
+                this.Logger.Error($"Could not enqueue brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) timeout: {brokeredMessage.Timeout}.");
+                return;
+            }
+
+            if (!this.Logger.IsDebugEnabled())
+            {
+                return;
+            }
+
+            // TODO localization
+            this.Logger.Debug($"Enqueue brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) timeout: {brokeredMessage.Timeout}.");
+        }
+
+        /// <summary>
+        /// Logs the message before send.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        private void LogBeforeSend(IBrokeredMessage brokeredMessage)
+        {
+            if (!this.Logger.IsDebugEnabled())
+            {
+                return;
+            }
+
+            // TODO localization
+            var direction = brokeredMessage.IsOneWay ? "one way" : "with reply";
+            this.Logger.Debug($"Sending brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {direction}.");
+        }
+
+        /// <summary>
+        /// Logs the message on receive.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        private void LogOnReceive(IBrokeredMessage brokeredMessage)
+        {
+            if (!this.Logger.IsDebugEnabled())
+            {
+                return;
+            }
+
+            // TODO localization
+            var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
+            this.Logger.Debug($"Received brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {reply}.");
+        }
+
+        /// <summary>
+        /// Logs the message on timeout.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="timeoutException">.</param>
+        private void LogOnTimeout(IBrokeredMessage brokeredMessage, TimeoutException timeoutException)
+        {
+            if (!this.Logger.IsDebugEnabled())
+            {
+                return;
+            }
+
+            // TODO localization
+            var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
+            this.Logger.Debug(timeoutException, $"Timeout brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {reply}.");
+        }
+
+        /// <summary>
+        /// A message identifier comparer.
+        /// </summary>
+        private class MessageIdComparer : IEqualityComparer<object>
+        {
+            /// <summary>Determines whether the specified objects are equal.</summary>
+            /// <returns>true if the specified objects are equal; otherwise, false.</returns>
+            /// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
+            /// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
+            public bool Equals(object x, object y)
+            {
+                return x?.Equals(y) ?? y == null;
+            }
+
+            /// <summary>Returns a hash code for the specified object.</summary>
+            /// <returns>A hash code for the specified object.</returns>
+            /// <param name="obj">The <see cref="T:System.Object" /> for which a hash code is to be returned.</param>
+            /// <exception cref="T:System.ArgumentNullException">The type of <paramref name="obj" /> is a reference type and <paramref name="obj" /> is null.</exception>
+            public int GetHashCode(object obj)
+            {
+                return obj?.GetHashCode() ?? 0;
+            }
         }
     }
 }
