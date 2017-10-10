@@ -11,7 +11,6 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -103,13 +102,13 @@ namespace Kephas.Messaging.Distributed
             IBrokeredMessage replyMessage,
             CancellationToken cancellationToken = default)
         {
-            if (replyMessage.ReplyToMessageId == null)
+            var replyToMessageId = replyMessage.ReplyToMessageId;
+            if (string.IsNullOrEmpty(replyToMessageId))
             {
                 this.Logger.Warn(Strings.MessageBrokerBase_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyToMessageId), replyMessage.Content);
                 return Task.FromResult(0);
             }
 
-            var replyToMessageId = replyMessage.ReplyToMessageId.ToString();
             if (!this.messageSyncDictionary.TryRemove(replyToMessageId, out var syncEntry))
             {
                 this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyToMessageId, replyMessage.Content);
@@ -191,7 +190,7 @@ namespace Kephas.Messaging.Distributed
                                               ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
                                               : null;
 
-            var messageId = brokeredMessage.Id.ToString();
+            var brokeredMessageId = brokeredMessage.Id;
             cancellationTokenSource?.Token.Register(
                 () =>
                     {
@@ -199,7 +198,7 @@ namespace Kephas.Messaging.Distributed
 
                         if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
                         {
-                            if (this.messageSyncDictionary.TryRemove(messageId, out var _))
+                            if (this.messageSyncDictionary.TryRemove(brokeredMessageId, out var _))
                             {
                                 var timeoutException = new TimeoutException(
                                     string.Format(
@@ -212,7 +211,7 @@ namespace Kephas.Messaging.Distributed
                         }
                     });
 
-            var added = this.messageSyncDictionary.TryAdd(messageId, (cancellationTokenSource, taskCompletionSource));
+            var added = this.messageSyncDictionary.TryAdd(brokeredMessageId, (cancellationTokenSource, taskCompletionSource));
             this.LogOnEnqueue(brokeredMessage, added);
             return taskCompletionSource;
         }
@@ -287,30 +286,6 @@ namespace Kephas.Messaging.Distributed
             // TODO localization
             var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
             this.Logger.Debug(timeoutException, $"Timeout brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {reply}.");
-        }
-
-        /// <summary>
-        /// A message identifier comparer.
-        /// </summary>
-        private class MessageIdComparer : IEqualityComparer<object>
-        {
-            /// <summary>Determines whether the specified objects are equal.</summary>
-            /// <returns>true if the specified objects are equal; otherwise, false.</returns>
-            /// <param name="x">The first object of type <paramref name="T" /> to compare.</param>
-            /// <param name="y">The second object of type <paramref name="T" /> to compare.</param>
-            public bool Equals(object x, object y)
-            {
-                return x?.Equals(y) ?? y == null;
-            }
-
-            /// <summary>Returns a hash code for the specified object.</summary>
-            /// <returns>A hash code for the specified object.</returns>
-            /// <param name="obj">The <see cref="T:System.Object" /> for which a hash code is to be returned.</param>
-            /// <exception cref="T:System.ArgumentNullException">The type of <paramref name="obj" /> is a reference type and <paramref name="obj" /> is null.</exception>
-            public int GetHashCode(object obj)
-            {
-                return obj?.GetHashCode() ?? 0;
-            }
         }
     }
 }

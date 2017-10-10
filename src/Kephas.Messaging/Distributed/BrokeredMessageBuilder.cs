@@ -184,7 +184,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A BrokeredMessageBuilder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> ReplyTo(object messageId, params IEndpoint[] recipients)
+        public virtual BrokeredMessageBuilder<TMessage> ReplyTo(string messageId, params IEndpoint[] recipients)
         {
             Requires.NotNull(messageId, nameof(messageId));
 

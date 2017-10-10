@@ -116,7 +116,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        public object ReplyToMessageId { get; set; }
+        public string ReplyToMessageId { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current object.

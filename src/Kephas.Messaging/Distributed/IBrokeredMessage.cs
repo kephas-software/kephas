@@ -20,6 +20,14 @@ namespace Kephas.Messaging.Distributed
     public interface IBrokeredMessage : IIdentifiable, IMessage
     {
         /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        new string Id { get; }
+
+        /// <summary>
         /// Gets the sender of the message.
         /// </summary>
         /// <value>
@@ -65,7 +73,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
+        /// The default value <see cref="BrokeredMessageBuilder{T}.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
@@ -78,6 +86,6 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        object ReplyToMessageId { get; }
+        string ReplyToMessageId { get; }
     }
 }
