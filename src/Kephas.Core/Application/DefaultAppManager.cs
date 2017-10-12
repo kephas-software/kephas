@@ -298,7 +298,7 @@ namespace Kephas.Application
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
                 var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"Initialize feature '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
+                var featureManagerIdentifier = $"'{featureManagerMetadata.FeatureInfo.Name}' ({featureManagerType})";
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
@@ -309,7 +309,7 @@ namespace Kephas.Application
                             await this.AfterFeatureInitializeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
-                        featureManagerIdentifier).PreserveThreadContext();
+                        "Initialize feature " + featureManagerIdentifier).PreserveThreadContext();
                 }
                 catch (OperationCanceledException cex)
                 {
