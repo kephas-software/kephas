@@ -85,11 +85,11 @@
     <Compile Include="..\Kephas.Core\Application\Configuration\AppConfigurationSections.cs">
       <Link>Application\Configuration\AppConfigurationSections.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\Configuration\DynamicAppConfiguration.cs">
+      <Link>Application\Configuration\DynamicAppConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\Configuration\IAppConfiguration.cs">
       <Link>Application\Configuration\IAppConfiguration.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Application\Configuration\NullAppConfiguration.cs">
-      <Link>Application\Configuration\NullAppConfiguration.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\DefaultAppManager.cs">
       <Link>Application\DefaultAppManager.cs</Link>

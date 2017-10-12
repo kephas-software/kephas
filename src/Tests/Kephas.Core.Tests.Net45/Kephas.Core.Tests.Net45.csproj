@@ -65,6 +65,9 @@
     <Compile Include="..\Kephas.Core.Tests\Application\AppManifestBaseTest.cs">
       <Link>Application\AppManifestBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Application\Configuration\DynamicAppConfigurationTest.cs">
+      <Link>Application\Configuration\DynamicAppConfigurationTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Application\DefaultAppManagerTest.cs">
       <Link>Application\DefaultAppManagerTest.cs</Link>
     </Compile>

@@ -45,7 +45,7 @@ namespace Kephas.Testing.Composition.Mef
         public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppConfiguration appConfiguration = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
-            appConfiguration = appConfiguration ?? new NullAppConfiguration();
+            appConfiguration = appConfiguration ?? new DynamicAppConfiguration();
             appRuntime = appRuntime ?? new NullAppRuntime();
 
             ambientServices = ambientServices ?? new AmbientServices();

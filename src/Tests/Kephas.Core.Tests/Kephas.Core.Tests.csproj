@@ -58,6 +58,7 @@
     <Compile Include="AmbientServicesBuilderTest.cs" />
     <Compile Include="AmbientServicesTest.cs" />
     <Compile Include="Application\AppManifestBaseTest.cs" />
+    <Compile Include="Application\Configuration\DynamicAppConfigurationTest.cs" />
     <Compile Include="Application\DefaultAppManagerTest.cs" />
     <Compile Include="Application\FeatureManagerBaseTest.cs" />
     <Compile Include="Application\NullAppManifestTest.cs" />
