@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleChatApp", "SimpleChatApp", "{9335AC7A-1C21-44AD-8817-C127DEFFD24F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat.WebApp", "SimpleChatWebApp\SignalRChat.WebApp\SignalRChat.WebApp.csproj", "{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{74A641A7-24A2-4782-A959-F5FAA515C17C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationConsole", "Configuration\ConfigurationConsole\ConfigurationConsole.csproj", "{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +66,10 @@ Global
 		{2B436BEA-5734-47FA-A193-564F3FC0B17E} = {07B8ABA1-319F-45F0-8298-E55370522BC5}
 		{9335AC7A-1C21-44AD-8817-C127DEFFD24F} = {5D739283-D925-4F6C-B7A2-64459E50405E}
 		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6} = {9335AC7A-1C21-44AD-8817-C127DEFFD24F}
+		{74A641A7-24A2-4782-A959-F5FAA515C17C} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
+		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C} = {74A641A7-24A2-4782-A959-F5FAA515C17C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B337414D-EBA0-4DCD-9CC5-3F736C99372C}
 	EndGlobalSection
 EndGlobal
