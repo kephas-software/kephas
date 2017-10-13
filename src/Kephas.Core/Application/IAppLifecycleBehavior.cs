@@ -38,7 +38,7 @@ namespace Kephas.Application
         Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Interceptor called after a feature completes its asynchronous initialization.
+        /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -48,7 +48,7 @@ namespace Kephas.Application
         Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Interceptor called before a feature starts its asynchronous finalization.
+        /// Interceptor called before the application starts its asynchronous finalization.
         /// </summary>
         /// <remarks>
         /// To interrupt finalization, simply throw any appropriate exception.
@@ -62,7 +62,7 @@ namespace Kephas.Application
         Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Interceptor called after a feature completes its asynchronous finalization.
+        /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
