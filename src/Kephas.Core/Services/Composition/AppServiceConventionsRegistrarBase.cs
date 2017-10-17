@@ -631,12 +631,22 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The part builder or <c>null</c>.
         /// </returns>
-        private IPartConventionsBuilder TryGetPartBuilder(AppServiceContractAttribute serviceContractMetadata, TypeInfo serviceContract, IConventionsBuilder conventions, IEnumerable<TypeInfo> typeInfos, ILogger logger)
+        private IPartConventionsBuilder TryGetPartBuilder(
+            AppServiceContractAttribute serviceContractMetadata,
+            TypeInfo serviceContract,
+            IConventionsBuilder conventions,
+            IEnumerable<TypeInfo> typeInfos,
+            ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
 
             if (serviceContract.IsGenericTypeDefinition)
             {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches open generic contract types.");
+                }
+
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
                 return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType));
@@ -644,6 +654,11 @@ namespace Kephas.Services.Composition
 
             if (serviceContractMetadata.AllowMultiple)
             {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches multiple derived from it.");
+                }
+
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
                 return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract));
@@ -652,7 +667,14 @@ namespace Kephas.Services.Composition
             var parts = typeInfos.Where(part => this.MatchDerivedFromContractType(part, serviceContract)).ToList();
             if (parts.Count == 1)
             {
-                return conventions.ForType(parts[0].AsType());
+                var selectedPart = parts[0].AsType();
+
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
+                }
+
+                return conventions.ForType(selectedPart);
             }
 
             if (parts.Count > 1)
@@ -674,6 +696,11 @@ namespace Kephas.Services.Composition
                             serviceContract,
                             selectedPart,
                             string.Join(", ", overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
+                }
+
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
                 }
 
                 return conventions.ForType(selectedPart.AsType());
