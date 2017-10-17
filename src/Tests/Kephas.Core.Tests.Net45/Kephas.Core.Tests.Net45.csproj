@@ -104,6 +104,9 @@
     <Compile Include="..\Kephas.Core.Tests\Data\IdTest.cs">
       <Link>Data\IdTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Diagnostics\Logging\DebugLogManagerTest.cs">
+      <Link>Diagnostics\Logging\DebugLogManagerTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\DynamicObjectExtensionsTest.cs">
       <Link>DynamicObjectExtensionsTest.cs</Link>
     </Compile>

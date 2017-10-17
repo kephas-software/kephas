@@ -20,9 +20,23 @@ namespace Kephas.Diagnostics.Logging
     public class DebugLogManager : ILogManager
     {
         /// <summary>
+        /// The log callback.
+        /// </summary>
+        private readonly Action<string, string, object, Exception> logCallback;
+
+        /// <summary>
         /// The cached loggers.
         /// </summary>
         private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DebugLogManager"/> class.
+        /// </summary>
+        /// <param name="logCallback">The log callback (optional).</param>
+        public DebugLogManager(Action<string, string, object, Exception> logCallback = null)
+        {
+            this.logCallback = logCallback;
+        }
 
         /// <summary>
         /// Gets the logger with the provided name.
@@ -33,7 +47,7 @@ namespace Kephas.Diagnostics.Logging
         /// </returns>
         public ILogger GetLogger(string loggerName)
         {
-            return this.loggers.GetOrAdd(loggerName, name => new DebugLogger(name));
+            return this.loggers.GetOrAdd(loggerName, name => new DebugLogger(name, this.logCallback));
         }
 
         /// <summary>
@@ -47,12 +61,19 @@ namespace Kephas.Diagnostics.Logging
             private readonly string name;
 
             /// <summary>
+            /// The log callback.
+            /// </summary>
+            private readonly Action<string, string, object, Exception> logCallback;
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="DebugLogger"/> class.
             /// </summary>
             /// <param name="name">The name.</param>
-            public DebugLogger(string name)
+            /// <param name="logCallback">The log callback.</param>
+            public DebugLogger(string name, Action<string, string, object, Exception> logCallback)
             {
                 this.name = name;
+                this.logCallback = logCallback;
             }
 
             /// <summary>
@@ -87,7 +108,14 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="exception">The exception.</param>
             private void LogCore(string level, object message, Exception exception = null)
             {
-                System.Diagnostics.Debug.WriteLine("{0}: {1}: {2} {3}", this.name, level, message, exception);
+                if (this.logCallback == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("{0}: {1}: {2} {3}", this.name, level, message, exception);
+                }
+                else
+                {
+                    this.logCallback(this.name, level, message, exception);
+                }
             }
         }
     }

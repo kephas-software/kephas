@@ -71,6 +71,7 @@
     <Compile Include="Configuration\Providers\AppConfigurationProviderTest.cs" />
     <Compile Include="Configuration\ConfigurationTest.cs" />
     <Compile Include="Data\IdTest.cs" />
+    <Compile Include="Diagnostics\Logging\DebugLogManagerTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
     <Compile Include="Graphs\GraphEdgeOfTNodeValueTest.cs" />

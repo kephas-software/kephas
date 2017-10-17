@@ -9,6 +9,8 @@
 
 namespace Kephas.Diagnostics.Logging
 {
+    using System;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -20,14 +22,15 @@ namespace Kephas.Diagnostics.Logging
         /// Sets the debug log manager to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="logCallback">The log callback (optional).</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithDebugLogManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithDebugLogManager(this AmbientServicesBuilder ambientServicesBuilder, Action<string, string, object, Exception> logCallback = null)
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
-            return ambientServicesBuilder.WithLogManager(new DebugLogManager());
+            return ambientServicesBuilder.WithLogManager(new DebugLogManager(logCallback));
         }
     }
 }
