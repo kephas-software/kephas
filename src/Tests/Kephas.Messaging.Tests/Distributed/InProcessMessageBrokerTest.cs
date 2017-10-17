@@ -20,12 +20,13 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Ping;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -206,7 +207,7 @@ namespace Kephas.Messaging.Tests.Distributed
             {
                 Thread.Sleep(TimeSpan.FromSeconds(10));
 
-                return new EmptyMessage();
+                return Substitute.For<IMessage>();
             }
         }
 

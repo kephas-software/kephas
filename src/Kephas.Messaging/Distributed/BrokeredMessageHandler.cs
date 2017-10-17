@@ -147,7 +147,7 @@ namespace Kephas.Messaging.Distributed
 
             if (exception != null)
             {
-                response = new ExceptionMessage { Exception = new ExceptionData(exception) };
+                response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
             }
 
             var broker = this.messageBrokerFactory.CreateExportedValue();

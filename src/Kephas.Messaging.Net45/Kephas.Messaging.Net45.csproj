@@ -141,11 +141,11 @@
     <Compile Include="..\Kephas.Messaging\MessageProcessingFilterBase.cs">
       <Link>MessageProcessingFilterBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Messages\EmptyMessage.cs">
-      <Link>Messages\EmptyMessage.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Messages\EmptyResponseMessage.cs">
+      <Link>Messages\EmptyResponseMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Messages\ExceptionMessage.cs">
-      <Link>Messages\ExceptionMessage.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Messages\ExceptionResponseMessage.cs">
+      <Link>Messages\ExceptionResponseMessage.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessagingException.cs">
       <Link>MessagingException.cs</Link>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExceptionMessage.cs" company="Quartz Software SRL">
+// <copyright file="ExceptionResponseMessage.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -14,7 +14,7 @@ namespace Kephas.Messaging.Messages
     /// <summary>
     /// An exception message.
     /// </summary>
-    public class ExceptionMessage : IMessage
+    public class ExceptionResponseMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the exception.
