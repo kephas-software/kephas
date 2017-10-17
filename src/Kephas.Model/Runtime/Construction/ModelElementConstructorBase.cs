@@ -17,6 +17,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
+    using Kephas.Model.Reflection;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -101,15 +102,14 @@ namespace Kephas.Model.Runtime.Construction
         protected virtual IEnumerable<INamedElement> ComputeMemberProperties(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
             var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
-            var typeInfo = runtimeElement as IRuntimeTypeInfo;
-            if (typeInfo == null)
+            if (!(runtimeElement is IRuntimeTypeInfo typeInfo))
             {
                 return new List<INamedElement>();
             }
 
             // TODO optimize typeInfo.DeclaredProperties
             var properties = typeInfo.Properties.Values
-                .Where(p => p.DeclaringContainer == typeInfo && p.PropertyInfo.GetCustomAttribute<ExcludeFromModelAttribute>() == null)
+                .Where(p => p.DeclaringContainer == typeInfo && !p.PropertyInfo.IsExcludedFromModel())
                 .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
                 .Where(property => property != null);
             return properties;

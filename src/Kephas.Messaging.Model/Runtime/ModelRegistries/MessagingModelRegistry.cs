@@ -20,6 +20,8 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Model.AttributedModel;
+    using Kephas.Model.AttributedModel;
+    using Kephas.Model.Reflection;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
@@ -73,7 +75,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
                     t =>
                         {
                             var ti = t.GetTypeInfo();
-                            return this.IsMessage(ti, markerInterface) || this.IsMessagePart(ti);
+                            return (this.IsMessage(ti, markerInterface) || this.IsMessagePart(ti)) && !ti.IsExcludedFromModel();
                         }));
             }
 

@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
     using Kephas.Messaging.Model.Elements;
     using Kephas.Messaging.Model.Runtime.ModelRegistries;
     using Kephas.Messaging.Ping;
+    using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
 
     using NSubstitute;
@@ -45,6 +46,27 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreSame(typeof(PingMessage), result[0]);
+        }
+
+        [Test]
+        public async Task GetRuntimeElementsAsync_ExcludeFromModel()
+        {
+            var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime
+                .GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), Arg.Any<CancellationToken>())
+                .Returns(new[] { this.GetType().Assembly });
+
+            var typeLoader = Substitute.For<ITypeLoader>();
+            typeLoader.GetLoadableExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(Model.IMessage), typeof(Message), typeof(string), typeof(ExcludedMessage) });
+
+            var registry = new MessagingModelRegistry(appRuntime, typeLoader);
+            var result = (await registry.GetRuntimeElementsAsync()).ToList();
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [ExcludeFromModel]
+        public class ExcludedMessage : IMessage
+        {
         }
     }
 }

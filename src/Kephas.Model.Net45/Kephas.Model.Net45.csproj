@@ -324,6 +324,12 @@
     <Compile Include="..\Kephas.Model\Runtime\IRuntimeModelRegistry.cs">
       <Link>Runtime\IRuntimeModelRegistry.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\ModelRegistries\DefaultModelAssemblyAttributeProvider.cs">
+      <Link>Runtime\ModelRegistries\DefaultModelAssemblyAttributeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\ModelRegistries\IModelAssemblyAttributeProvider.cs">
+      <Link>Runtime\ModelRegistries\IModelAssemblyAttributeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Runtime\ModelRegistries\ModelAssemblyRegistry.cs">
       <Link>Runtime\ModelRegistries\ModelAssemblyRegistry.cs</Link>
     </Compile>

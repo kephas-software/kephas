@@ -41,16 +41,25 @@ namespace Kephas.Model.Runtime.ModelRegistries
         private readonly ITypeLoader typeLoader;
 
         /// <summary>
+        /// The model assembly attribute provider.
+        /// </summary>
+        private readonly IModelAssemblyAttributeProvider modelAssemblyAttributeProvider;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
-        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
+        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
+            Requires.NotNull(typeLoader, nameof(typeLoader));
+            Requires.NotNull(modelAssemblyAttributeProvider, nameof(modelAssemblyAttributeProvider));
 
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;
+            this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider;
         }
 
         /// <summary>
@@ -68,7 +77,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                                                     select
                                                     new KeyValuePair<Assembly, IList<ModelAssemblyAttribute>>(
                                                         a,
-                                                        a.GetCustomAttributes<ModelAssemblyAttribute>().ToList())
+                                                        this.modelAssemblyAttributeProvider.GetModelAssemblyAttributes(a).ToList())
                                          where kv.Value.Count > 0
                                          select kv).ToList();
 
@@ -86,8 +95,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                     // first of all process all explicitely provided model types.
                     if (attr.ModelTypes != null && attr.ModelTypes.Length > 0)
                     {
-                        this.ProcessModelTypes(attr.ModelTypes, attr);
-                        types.AddRange(attr.ModelTypes);
+                        this.AddModelTypes(types, attr.ModelTypes, attr);
                         filterSet = true;
                     }
 
@@ -102,22 +110,33 @@ namespace Kephas.Model.Runtime.ModelRegistries
                         }
 
                         var namespaceTypes = eligibleTypes.ToList();
-                        this.ProcessModelTypes(namespaceTypes, attr);
 
-                        types.AddRange(namespaceTypes);
+                        this.AddModelTypes(types, namespaceTypes, attr);
                         filterSet = true;
                     }
 
                     // if no filter was set, then add all the types in the assembly
                     if (!filterSet)
                     {
-                        this.ProcessModelTypes(assemblyTypes, attr);
-                        types.AddRange(assemblyTypes);
+                        this.AddModelTypes(types, assemblyTypes, attr);
                     }
                 }
             }
 
             return types;
+        }
+
+        /// <summary>
+        /// Adds the model types to the collection.
+        /// </summary>
+        /// <param name="types">The types.</param>
+        /// <param name="collectedTypes">List of collected types.</param>
+        /// <param name="attr"></param>
+        private void AddModelTypes(HashSet<Type> types, IEnumerable<Type> collectedTypes, ModelAssemblyAttribute attr)
+        {
+            var nonExcludedTypes = collectedTypes.Where(t => !t.IsExcludedFromModel()).ToList();
+            this.ProcessModelTypes(nonExcludedTypes, attr);
+            types.AddRange(nonExcludedTypes);
         }
 
         /// <summary>
@@ -135,6 +154,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 if (defaultClassifierKind != null)
                 {
                     runtimeTypeInfo.SetClassifierKind(defaultClassifierKind);
+                    runtimeTypeInfo.SetIsModelType(true);
                 }
             }
         }

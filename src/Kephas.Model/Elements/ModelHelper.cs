@@ -162,8 +162,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         public static IEnumerable<ITypeInfo> GetDependencies(this IClassifier classifier, ITypeInfo typeInfo)
         {
-            var aspect = typeInfo as IClassifier;
-            if (aspect != null)
+            if (typeInfo is IClassifier aspect)
             {
                 if (aspect.IsAspectOf(classifier))
                 {
