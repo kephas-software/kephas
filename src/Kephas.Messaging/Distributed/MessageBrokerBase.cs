@@ -278,14 +278,14 @@ namespace Kephas.Messaging.Distributed
         /// <param name="timeoutException">.</param>
         private void LogOnTimeout(IBrokeredMessage brokeredMessage, TimeoutException timeoutException)
         {
-            if (!this.Logger.IsDebugEnabled())
+            if (!this.Logger.IsWarningEnabled())
             {
                 return;
             }
 
             // TODO localization
             var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
-            this.Logger.Debug(timeoutException, $"Timeout brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {reply}.");
+            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for {brokeredMessage}.");
         }
     }
 }

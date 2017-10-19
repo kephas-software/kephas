@@ -126,11 +126,11 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override string ToString()
         {
-            var sb = new StringBuilder(this.GetType().Name);
             var contentType = this.Content?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
-            sb.Append($" (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}");
-            return sb.ToString();
+            var channel = string.IsNullOrEmpty(this.Channel) ? string.Empty : $" over channel '{this.Channel}'";
+            var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $" as reply to #{this.ReplyToMessageId}";
+            return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{channel}{reply}";
         }
     }
 }

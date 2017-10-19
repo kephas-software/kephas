@@ -106,7 +106,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received a reply to &apos;{0}&apos; for which the corresponding original message was not found. Content: {1}..
+        ///   Looks up a localized string similar to Received a reply to &apos;{0}&apos; for which the corresponding original message was not found. Possible cause: a timeout may have had interrupted the communication. Content: {1}..
         /// </summary>
         internal static string MessageBrokerBase_ReplyToMessageNotFound_Exception {
             get {

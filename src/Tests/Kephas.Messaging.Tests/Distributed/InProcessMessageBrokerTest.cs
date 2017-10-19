@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Ping;
     using Kephas.Serialization;
@@ -49,10 +51,10 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public async Task DispatchAsync_Ping_timeout()
+        public async Task DispatchAsync_timeout()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
-            var messageBroker = container.GetExport<IMessageBroker>();
+            var messageBroker = (InProcessMessageBroker)container.GetExport<IMessageBroker>();
 
             var brokeredMessage = new BrokeredMessage
             {
@@ -60,6 +62,36 @@ namespace Kephas.Messaging.Tests.Distributed
                 Timeout = TimeSpan.FromSeconds(0)
             };
             Assert.That(() => messageBroker.DispatchAsync(brokeredMessage), Throws.InstanceOf<TimeoutException>());
+        }
+
+        [Test]
+        public async Task DispatchAsync_timeout_logging()
+        {
+            var sb = new StringBuilder();
+            var logger = this.GetLogger<IMessageBroker>(sb);
+
+            var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
+            var messageBroker = (InProcessMessageBroker)container.GetExport<IMessageBroker>();
+            messageBroker.Logger = logger;
+
+            var brokeredMessage = new BrokeredMessage
+                                      {
+                                          Content = new TimeoutMessage(),
+                                          Timeout = TimeSpan.FromSeconds(0)
+                                      };
+
+            try
+            {
+                await messageBroker.DispatchAsync(brokeredMessage);
+                throw new InvalidOperationException("Should have timed out.");
+            }
+            catch (TimeoutException tex)
+            {
+            }
+
+            var log = sb.ToString();
+            Assert.IsTrue(log.Contains("Warning"));
+            Assert.IsTrue(log.Contains("Timeout"));
         }
 
         [Test]
@@ -144,6 +176,15 @@ namespace Kephas.Messaging.Tests.Distributed
             var response = await message.TaskCompletionSource.Task;
             Assert.AreEqual("ok", response.response);
             Assert.AreSame(message, response.brokeredMessage.Content);
+        }
+
+        private ILogger<T> GetLogger<T>(StringBuilder sb)
+        {
+            var logger = Substitute.For<ILogger<T>>();
+            logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
+            logger.WhenForAnyArgs(l => l.Log(LogLevel.Debug, null, null, new object[0])).Do(
+                ci => { sb.Append($"{ci.Arg<LogLevel>()} {ci.Arg<string>()} {ci.Arg<Exception>()?.GetType().Name}"); });
+            return logger;
         }
 
         public class TestEvent : Expando, IEvent
