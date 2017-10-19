@@ -70,6 +70,8 @@
     <Compile Include="Composition\TestRegistrationContext.cs" />
     <Compile Include="Configuration\Providers\AppConfigurationProviderTest.cs" />
     <Compile Include="Configuration\ConfigurationTest.cs" />
+    <Compile Include="Cryptography\EncryptionServiceExtensionsTest.cs" />
+    <Compile Include="Cryptography\NullEncryptionServiceTest.cs" />
     <Compile Include="Data\IdTest.cs" />
     <Compile Include="Diagnostics\Logging\DebugLogManagerTest.cs" />
     <Compile Include="DynamicObjectExtensionsTest.cs" />

@@ -283,6 +283,24 @@
     <Compile Include="..\Kephas.Core\Configuration\Providers\SettingsTypeAttribute.cs">
       <Link>Configuration\Providers\SettingsTypeAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\EncryptedAttribute.cs">
+      <Link>Cryptography\EncryptedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\EncryptionContext.cs">
+      <Link>Cryptography\EncryptionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\EncryptionServiceExtensions.cs">
+      <Link>Cryptography\EncryptionServiceExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\IEncryptionContext.cs">
+      <Link>Cryptography\IEncryptionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\IEncryptionService.cs">
+      <Link>Cryptography\IEncryptionService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\NullEncryptionService.cs">
+      <Link>Cryptography\NullEncryptionService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Data\Id.cs">
       <Link>Data\Id.cs</Link>
     </Compile>

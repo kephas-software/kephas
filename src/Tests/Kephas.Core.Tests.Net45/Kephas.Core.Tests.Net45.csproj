@@ -101,6 +101,12 @@
     <Compile Include="..\Kephas.Core.Tests\Configuration\Providers\AppConfigurationProviderTest.cs">
       <Link>Configuration\Providers\AppConfigurationProviderTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Cryptography\EncryptionServiceExtensionsTest.cs">
+      <Link>Cryptography\EncryptionServiceExtensionsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Cryptography\NullEncryptionServiceTest.cs">
+      <Link>Cryptography\NullEncryptionServiceTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Data\IdTest.cs">
       <Link>Data\IdTest.cs</Link>
     </Compile>
