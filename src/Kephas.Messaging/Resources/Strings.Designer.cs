@@ -97,6 +97,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred in the message processor. Please check the exception details for more information..
+        /// </summary>
+        internal static string InProcessMessageBroker_MessageProcessor_Async_Exception {
+            get {
+                return ResourceManager.GetString("InProcessMessageBroker_MessageProcessor_Async_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received a reply message without the {0} being set. Content: {1}..
         /// </summary>
         internal static string MessageBrokerBase_MissingReplyToMessageId_Exception {

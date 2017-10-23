@@ -9,12 +9,16 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
+    using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A distributed message broker sending the messages to the message processor.
@@ -52,7 +56,19 @@ namespace Kephas.Messaging.Distributed
             IBrokeredMessage brokeredMessage,
             CancellationToken cancellationToken = default)
         {
-            return Task.Factory.StartNew(() => this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken), cancellationToken);
+            return Task.Factory.StartNew(async () =>
+                {
+                    try
+                    {
+                        return await this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken)
+                                   .PreserveThreadContext();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.Warn(ex, Strings.InProcessMessageBroker_MessageProcessor_Async_Exception);
+                        return null;
+                    }
+                }, cancellationToken);
         }
     }
 }

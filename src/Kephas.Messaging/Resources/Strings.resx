@@ -141,4 +141,7 @@
   <data name="MessageBrokerBase_Timeout_Exception" xml:space="preserve">
     <value>The maximum alloted time of {0} expired for {1}.</value>
   </data>
+  <data name="InProcessMessageBroker_MessageProcessor_Async_Exception" xml:space="preserve">
+    <value>An error occurred in the message processor. Please check the exception details for more information.</value>
+  </data>
 </root>

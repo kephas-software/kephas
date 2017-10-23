@@ -186,11 +186,11 @@ namespace Kephas.Messaging.Distributed
         private TaskCompletionSource<IMessage> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
         {
             var taskCompletionSource = new TaskCompletionSource<IMessage>();
+
+            var brokeredMessageId = brokeredMessage.Id;
             var cancellationTokenSource = brokeredMessage.Timeout.HasValue
                                               ? new CancellationTokenSource(brokeredMessage.Timeout.Value)
                                               : null;
-
-            var brokeredMessageId = brokeredMessage.Id;
             cancellationTokenSource?.Token.Register(
                 () =>
                     {

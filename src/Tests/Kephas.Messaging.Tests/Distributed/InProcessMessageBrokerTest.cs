@@ -27,6 +27,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Serialization.Json;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
+    using Kephas.Threading.Tasks;
 
     using NSubstitute;
 
@@ -59,7 +60,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var brokeredMessage = new BrokeredMessage
             {
                 Content = new TimeoutMessage(),
-                Timeout = TimeSpan.FromSeconds(0)
+                Timeout = TimeSpan.FromMilliseconds(30)
             };
             Assert.That(() => messageBroker.DispatchAsync(brokeredMessage), Throws.InstanceOf<TimeoutException>());
         }
@@ -77,12 +78,12 @@ namespace Kephas.Messaging.Tests.Distributed
             var brokeredMessage = new BrokeredMessage
                                       {
                                           Content = new TimeoutMessage(),
-                                          Timeout = TimeSpan.FromSeconds(0)
+                                          Timeout = TimeSpan.FromMilliseconds(30)
                                       };
 
             try
             {
-                await messageBroker.DispatchAsync(brokeredMessage);
+                await messageBroker.DispatchAsync(brokeredMessage).PreserveThreadContext();
                 throw new InvalidOperationException("Should have timed out.");
             }
             catch (TimeoutException tex)
