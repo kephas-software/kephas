@@ -15,11 +15,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kephas.Composition.Mef" Version="4.0.0-rc03" />
-        <PackageReference Include="Kephas.Core" Version="4.0.0-rc03" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="4.0.0-rc03" />
-        <PackageReference Include="Kephas.Platform" Version="4.0.0-rc03" />
-        <PackageReference Include="Kephas.Serialization.Json" Version="4.0.0-rc03" />
+        <PackageReference Include="Kephas.Composition.Mef" Version="4.0.0" />
+        <PackageReference Include="Kephas.Core" Version="4.0.0" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="4.0.0" />
+        <PackageReference Include="Kephas.Platform" Version="4.0.0" />
+        <PackageReference Include="Kephas.Serialization.Json" Version="4.0.0" />
     </ItemGroup>
 
     <ItemGroup>
