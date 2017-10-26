@@ -9,7 +9,9 @@
 
 namespace Kephas.Core.Tests.Application
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -18,17 +20,47 @@ namespace Kephas.Core.Tests.Application
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
+    using Kephas.Services;
     using Kephas.Services.Behavior;
     using Kephas.Services.Behavior.Composition;
     using Kephas.Services.Composition;
 
     using NSubstitute;
+    using NSubstitute.Core;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class DefaultAppManagerTest
     {
+        [Test]
+        public void Constructor_order_dependencies_with_processing_priority()
+        {
+            var featureManager1 = this.CreateFeatureManager();
+            var featureManager2 = this.CreateFeatureManager();
+            var featureManager3 = this.CreateFeatureManager();
+
+            var appManager = new DefaultAppManager(
+                Substitute.For<IAppManifest>(),
+                this.GetAmbientServices(),
+                this.GetServiceBehaviorProvider(),
+                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
+                new[]
+                    {
+                        this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
+                        this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
+                        // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
+                        this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
+                    },
+                null);
+
+            var orderedManagers = appManager.FeatureManagerFactories.Select(f => f.CreateExportedValue()).ToList();
+
+            Assert.AreSame(featureManager1, orderedManagers[1]);
+            Assert.AreSame(featureManager2, orderedManagers[2]);
+            Assert.AreSame(featureManager3, orderedManagers[0]);
+        }
+
         [Test]
         public async Task InitializeAppAsync_right_app_behavior_order()
         {
@@ -400,20 +432,9 @@ namespace Kephas.Core.Tests.Application
         {
             var order = new List<int>();
 
-            var finalizer1 = Substitute.For<IFeatureManager>();
-            finalizer1.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add(1));
-
-            var finalizer2 = Substitute.For<IFeatureManager>();
-            finalizer2.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add(2));
-
-            var finalizer3 = Substitute.For<IFeatureManager>();
-            finalizer3.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add(3));
+            var finalizer1 = this.CreateFeatureManager(finalization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(finalization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(finalization: _ => order.Add(3));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
@@ -441,13 +462,8 @@ namespace Kephas.Core.Tests.Application
         {
             var order = new List<string>();
 
-            var featureManager1 = Substitute.For<IFeatureManager>();
-            featureManager1.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0));
-
-            var featureManager2 = Substitute.For<IFeatureManager>();
-            featureManager2.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0));
+            var featureManager1 = this.CreateFeatureManager();
+            var featureManager2 = this.CreateFeatureManager();
 
             var behavior1 = Substitute.For<IFeatureLifecycleBehavior>();
             behavior1.BeforeFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
@@ -492,6 +508,32 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("Before2", order[5]);
             Assert.AreEqual("After1", order[6]);
             Assert.AreEqual("After2", order[7]);
+        }
+
+        private ExportFactory<IFeatureManager, FeatureManagerMetadata> CreateFeatureManagerFactory(
+            IFeatureManager featureManager,
+            string name,
+            string version = null,
+            bool isRequired = false,
+            string[] dependencies = null,
+            Priority processingPriority = Priority.Normal)
+        {
+            return new ExportFactory<IFeatureManager, FeatureManagerMetadata>(
+                () => featureManager,
+                new FeatureManagerMetadata(new FeatureInfo(name, version, isRequired, dependencies), processingPriority: (int)processingPriority));
+        }
+
+        private IFeatureManager CreateFeatureManager(Action<CallInfo> initialization = null, Action<CallInfo> finalization = null)
+        {
+            var featureManager = Substitute.For<IFeatureManager>();
+            featureManager.InitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => initialization?.Invoke(_));
+            featureManager.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => finalization?.Invoke(_));
+
+            return featureManager;
         }
 
         private IServiceBehaviorProvider GetServiceBehaviorProvider()
