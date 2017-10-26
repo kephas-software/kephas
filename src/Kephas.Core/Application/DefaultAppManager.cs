@@ -579,35 +579,13 @@ namespace Kephas.Application
         /// Calculates the feature information based on the <see cref="FeatureManagerMetadata"/>
         /// if not explicitely provided.
         /// </summary>
-        /// <param name="featureManagerFactoryMetadata">The feature manager factory metadata.</param>
+        /// <param name="featureManagerMetadata">The feature manager metadata.</param>
         /// <returns>
         /// The calculated feature information.
         /// </returns>
-        protected virtual FeatureInfo ComputeAutoFeatureInfo(FeatureManagerMetadata featureManagerFactoryMetadata)
+        protected virtual FeatureInfo ComputeDefaultFeatureInfo(FeatureManagerMetadata featureManagerMetadata)
         {
-            var autoVersion = AppManifestBase.VersionZero;
-
-            var name = featureManagerFactoryMetadata.AppServiceImplementationType?.Name;
-            if (string.IsNullOrEmpty(name))
-            {
-                return new FeatureInfo($"unnamed-{Guid.NewGuid()}", autoVersion);
-            }
-
-            var wellKnownEndings = new[] { "FeatureManager", "Manager", "AppInitializer", "AppFinalizer" };
-
-            foreach (var ending in wellKnownEndings)
-            {
-                if (name.EndsWith(ending))
-                {
-                    var featureName = name.Substring(0, name.Length - ending.Length);
-                    if (!string.IsNullOrEmpty(featureName))
-                    {
-                        return new FeatureInfo(featureName, autoVersion);
-                    }
-                }
-            }
-
-            return new FeatureInfo(name, autoVersion);
+            return FeatureInfo.FromMetadata(featureManagerMetadata);
         }
 
         /// <summary>
@@ -663,7 +641,7 @@ namespace Kephas.Application
             {
                 if (fmFactory.Metadata.FeatureInfo == null)
                 {
-                    fmFactory.Metadata.FeatureInfo = this.ComputeAutoFeatureInfo(fmFactory.Metadata);
+                    fmFactory.Metadata.FeatureInfo = this.ComputeDefaultFeatureInfo(fmFactory.Metadata);
                 }
             }
         }

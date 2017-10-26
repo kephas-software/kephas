@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Kephas.Application.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -102,6 +103,47 @@ namespace Kephas.Application
         /// Declaring container of the <see cref="FeatureInfo"/>.
         /// </summary>
         IElementInfo IElementInfo.DeclaringContainer => null;
+
+        /// <summary>
+        /// Gets the <see cref="FeatureInfo"/> from the given metadata.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        /// <returns>
+        /// A <see cref="FeatureInfo"/>.
+        /// </returns>
+        public static FeatureInfo FromMetadata(FeatureManagerMetadata metadata)
+        {
+            Requires.NotNull(metadata, nameof(metadata));
+
+            if (metadata.FeatureInfo != null)
+            {
+                return metadata.FeatureInfo;
+            }
+
+            var autoVersion = AppManifestBase.VersionZero;
+
+            var name = metadata.AppServiceImplementationType?.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                return new FeatureInfo($"unnamed-{Guid.NewGuid()}", autoVersion);
+            }
+
+            var wellKnownEndings = new[] { "FeatureManager", "Manager", "AppInitializer", "AppFinalizer" };
+
+            foreach (var ending in wellKnownEndings)
+            {
+                if (name.EndsWith(ending))
+                {
+                    var featureName = name.Substring(0, name.Length - ending.Length);
+                    if (!string.IsNullOrEmpty(featureName))
+                    {
+                        return new FeatureInfo(featureName, autoVersion);
+                    }
+                }
+            }
+
+            return new FeatureInfo(name, autoVersion);
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.
