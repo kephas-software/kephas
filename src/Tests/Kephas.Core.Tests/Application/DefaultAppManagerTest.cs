@@ -290,7 +290,6 @@ namespace Kephas.Core.Tests.Application
             Assert.IsTrue(log.Contains("(InvalidOperationException)"));
         }
 
-
         [Test]
         public async Task InitializeAppAsync_exception_failed_required_feature()
         {
