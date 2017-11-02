@@ -34,31 +34,26 @@ namespace Kephas.Core.Tests.Application
     public class DefaultAppManagerTest
     {
         [Test]
-        public void Constructor_order_dependencies_with_processing_priority()
+        public void Constructor_order_dependencies_with_processing_priority_with_cyclic_dependencies()
         {
             var featureManager1 = this.CreateFeatureManager();
             var featureManager2 = this.CreateFeatureManager();
             var featureManager3 = this.CreateFeatureManager();
 
-            var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
-                this.GetAmbientServices(),
-                this.GetServiceBehaviorProvider(),
-                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                new[]
-                    {
-                        this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
-                        this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
-                        // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
-                        this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
-                    },
-                null);
-
-            var orderedManagers = appManager.FeatureManagerFactories.Select(f => f.CreateExportedValue()).ToList();
-
-            Assert.AreSame(featureManager1, orderedManagers[1]);
-            Assert.AreSame(featureManager2, orderedManagers[2]);
-            Assert.AreSame(featureManager3, orderedManagers[0]);
+            Assert.Throws<InvalidOperationException>(() => 
+                new DefaultAppManager(
+                    Substitute.For<IAppManifest>(),
+                    this.GetAmbientServices(),
+                    this.GetServiceBehaviorProvider(),
+                    new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
+                    new[]
+                        {
+                            this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
+                            this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
+                            // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
+                            this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
+                        },
+                    null));
         }
 
         [Test]
