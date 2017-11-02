@@ -29,7 +29,7 @@ namespace Kephas.Application
         public AppContext(IAmbientServices ambientServices = null, IAppManifest appManifest = null)
             : base(ambientServices)
         {
-            this.AppManifest = appManifest ?? new NullAppManifest();
+            this.AppManifest = appManifest ?? this.AmbientServices?.CompositionContainer.GetExport<IAppManifest>();
         }
 
         /// <summary>

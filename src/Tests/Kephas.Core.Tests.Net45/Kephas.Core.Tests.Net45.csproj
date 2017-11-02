@@ -62,6 +62,9 @@
     <Compile Include="..\Kephas.Core.Tests\AmbientServicesTest.cs">
       <Link>AmbientServicesTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Application\AppContextTest.cs">
+      <Link>Application\AppContextTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Application\AppManifestBaseTest.cs">
       <Link>Application\AppManifestBaseTest.cs</Link>
     </Compile>
