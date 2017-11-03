@@ -59,14 +59,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Mail.MailKit\Configuration\SystemEmailSenderSettings.cs">
-      <Link>Configuration\SystemEmailSenderSettings.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Mail.MailKit\EmailMessageExtensions.cs">
       <Link>EmailMessageExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Mail.MailKit\Services\MailKitEmailSenderService.cs">
-      <Link>Services\MailKitEmailSenderService.cs</Link>
+    <Compile Include="..\Kephas.Mail.MailKit\Services\MailKitEmailSenderServiceBase.cs">
+      <Link>Services\MailKitEmailSenderServiceBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail.MailKit\Services\MailKitSystemEmailSenderService.cs">
       <Link>Services\MailKitSystemEmailSenderService.cs</Link>

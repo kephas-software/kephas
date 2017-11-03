@@ -45,6 +45,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Mail\Configuration\EmailSenderSettings.cs">
+      <Link>Configuration\EmailSenderSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail\Configuration\SystemEmailSenderSettings.cs">
+      <Link>Configuration\SystemEmailSenderSettings.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Mail\IEmailAddress.cs">
       <Link>IEmailAddress.cs</Link>
     </Compile>

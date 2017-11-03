@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemEmailSenderSettings.cs" company="Quartz Software SRL">
+// <copyright file="EmailSenderSettings.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the system email sender settings class.
+//   Implements the email sender settings class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,9 +12,9 @@ namespace Kephas.Mail.Configuration
     using Kephas.Cryptography;
 
     /// <summary>
-    /// A system email sender settings.
+    /// A email sender settings.
     /// </summary>
-    public class SystemEmailSenderSettings
+    public class EmailSenderSettings
     {
         /// <summary>
         /// Gets or sets the name of the user.

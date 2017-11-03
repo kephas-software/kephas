@@ -20,17 +20,12 @@ namespace Kephas.Mail.Services
     /// A MailKit system email sender service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class MailKitSystemEmailSenderService : MailKitEmailSenderService, ISystemEmailSenderService
+    public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, ISystemEmailSenderService
     {
         /// <summary>
         /// The system email sender configuration.
         /// </summary>
         private readonly IConfiguration<SystemEmailSenderSettings> systemEmailSenderConfig;
-
-        /// <summary>
-        /// Information describing the connection.
-        /// </summary>
-        private (ICredentials credentials, string host, int port)? connectionData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MailKitSystemEmailSenderService"/> class.
@@ -44,27 +39,11 @@ namespace Kephas.Mail.Services
         }
 
         /// <summary>
-        /// Gets the connection data.
-        /// </summary>
-        /// <param name="emailMessage">The email message.</param>
-        /// <returns>
-        /// The connection data.
-        /// </returns>
-        protected override (ICredentials credentials, string host, int port) GetConnectionData(IEmailMessage emailMessage)
-        {
-            return this.connectionData ?? (this.connectionData = this.ComputeConnectionData()).Value;
-        }
-
-        /// <summary>
-        /// Calculates the connection data.
+        /// Gets the email sender settings.
         /// </summary>
         /// <returns>
-        /// The calculated connection data.
+        /// The email sender settings.
         /// </returns>
-        private (NetworkCredential, string Host, int) ComputeConnectionData()
-        {
-            var settings = this.systemEmailSenderConfig.Settings;
-            return (new NetworkCredential(settings.UserName, settings.Password), settings.Host, int.Parse(settings.Port));
-        }
+        protected override EmailSenderSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.Settings;
     }
 }

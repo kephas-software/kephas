@@ -13,6 +13,7 @@ namespace Kephas.Mail.Services
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Mail.Configuration;
     using Kephas.Threading.Tasks;
 
     using MailKit.Net.Smtp;
@@ -21,8 +22,13 @@ namespace Kephas.Mail.Services
     /// <summary>
     /// A MailKit email sender service.
     /// </summary>
-    public class MailKitEmailSenderService : IEmailSenderService
+    public abstract class MailKitEmailSenderServiceBase : IEmailSenderService
     {
+        /// <summary>
+        /// Information describing the connection.
+        /// </summary>
+        private (ICredentials credentials, string host, int port)? connectionData;
+
         /// <summary>
         /// Sends an email asynchronously.
         /// </summary>
@@ -50,6 +56,14 @@ namespace Kephas.Mail.Services
         }
 
         /// <summary>
+        /// Gets the email sender settings.
+        /// </summary>
+        /// <returns>
+        /// The email sender settings.
+        /// </returns>
+        protected abstract EmailSenderSettings GetEmailSenderSettings();
+
+        /// <summary>
         /// Gets the connection data.
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
@@ -58,8 +72,19 @@ namespace Kephas.Mail.Services
         /// </returns>
         protected virtual (ICredentials credentials, string host, int port) GetConnectionData(IEmailMessage emailMessage)
         {
-            // TODO get the connection data from the configuration service (IConfiguration<Type>).
-            return (null, null, 0);
+            return this.connectionData ?? (this.connectionData = this.ComputeConnectionData()).Value;
+        }
+
+        /// <summary>
+        /// Calculates the connection data.
+        /// </summary>
+        /// <returns>
+        /// The calculated connection data.
+        /// </returns>
+        private (NetworkCredential, string Host, int) ComputeConnectionData()
+        {
+            var settings = this.GetEmailSenderSettings();
+            return (new NetworkCredential(settings.UserName, settings.Password), settings.Host, int.Parse(settings.Port));
         }
     }
 }
