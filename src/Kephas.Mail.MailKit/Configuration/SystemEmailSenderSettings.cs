@@ -9,6 +9,8 @@
 
 namespace Kephas.Mail.Configuration
 {
+    using Kephas.Cryptography;
+
     /// <summary>
     /// A system email sender settings.
     /// </summary>
@@ -28,6 +30,7 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The password.
         /// </value>
+        [Encrypted]
         public string Password { get; set; }
 
         /// <summary>
