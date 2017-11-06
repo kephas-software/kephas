@@ -10,6 +10,7 @@
 namespace ConfigurationConsole
 {
     using System;
+    using System.Runtime.Loader;
     using System.Threading.Tasks;
 
     using StartupConsole.Application;
@@ -18,6 +19,16 @@ namespace ConfigurationConsole
     {
         public static async Task Main(string[] args)
         {
+            AssemblyLoadContext.Default.Resolving += (context, name) =>
+                {
+                    if (name.Name.EndsWith(".resources"))
+                    {
+                        return null;
+                    }
+
+                    return null;
+                };
+
             await new ConsoleShell().StartAppAsync();
 
             Console.ReadLine();

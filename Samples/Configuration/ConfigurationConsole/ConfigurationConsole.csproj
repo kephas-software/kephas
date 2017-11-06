@@ -14,12 +14,17 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Kephas.Composition.Mef" Version="4.0.0" />
         <PackageReference Include="Kephas.Core" Version="4.0.0" />
         <PackageReference Include="Kephas.Logging.NLog" Version="4.0.0" />
         <PackageReference Include="Kephas.Platform" Version="4.0.0" />
         <PackageReference Include="Kephas.Serialization.Json" Version="4.0.0" />
+        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
