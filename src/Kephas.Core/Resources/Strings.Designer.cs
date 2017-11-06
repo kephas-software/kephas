@@ -97,6 +97,78 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuring ambient services....
+        /// </summary>
+        internal static string App_StartApplication_ConfiguringAmbientServices_Message {
+            get {
+                return ResourceManager.GetString("App_StartApplication_ConfiguringAmbientServices_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during the application start procedure, please check the exception details for more information..
+        /// </summary>
+        internal static string App_StartApplication_ErrorDuringInitialization_Exception {
+            get {
+                return ResourceManager.GetString("App_StartApplication_ErrorDuringInitialization_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing the app manager....
+        /// </summary>
+        internal static string App_StartApplication_InitializingAppManager_Message {
+            get {
+                return ResourceManager.GetString("App_StartApplication_InitializingAppManager_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application started successfully..
+        /// </summary>
+        internal static string App_StartApplication_StartComplete_Message {
+            get {
+                return ResourceManager.GetString("App_StartApplication_StartComplete_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Starting application....
+        /// </summary>
+        internal static string App_StartApplication_Starting_Message {
+            get {
+                return ResourceManager.GetString("App_StartApplication_Starting_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during the application stop procedure, please check the exception details for more information..
+        /// </summary>
+        internal static string App_StopApplication_ErrorDuringFinalization_Exception {
+            get {
+                return ResourceManager.GetString("App_StopApplication_ErrorDuringFinalization_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application stopped successfully. Good bye!.
+        /// </summary>
+        internal static string App_StopApplication_StopComplete_Message {
+            get {
+                return ResourceManager.GetString("App_StopApplication_StopComplete_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping application....
+        /// </summary>
+        internal static string App_StopApplication_Stopping_Message {
+            get {
+                return ResourceManager.GetString("App_StopApplication_Stopping_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application start procedure was canceled, at {0:s}..
         /// </summary>
         internal static string Application_StartCanceled_Exception {
@@ -377,7 +449,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set..
+        ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}..
         /// </summary>
         internal static string PartialOrderedSet_BadComparer_ProducesCycles_Exception {
             get {

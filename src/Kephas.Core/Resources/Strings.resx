@@ -261,4 +261,28 @@
   <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
+  <data name="App_StartApplication_Starting_Message" xml:space="preserve">
+    <value>Starting application...</value>
+  </data>
+  <data name="App_StartApplication_ConfiguringAmbientServices_Message" xml:space="preserve">
+    <value>Configuring ambient services...</value>
+  </data>
+  <data name="App_StartApplication_InitializingAppManager_Message" xml:space="preserve">
+    <value>Initializing the app manager...</value>
+  </data>
+  <data name="App_StartApplication_ErrorDuringInitialization_Exception" xml:space="preserve">
+    <value>Errors occurred during the application start procedure, please check the exception details for more information.</value>
+  </data>
+  <data name="App_StartApplication_StartComplete_Message" xml:space="preserve">
+    <value>Application started successfully.</value>
+  </data>
+  <data name="App_StopApplication_Stopping_Message" xml:space="preserve">
+    <value>Stopping application...</value>
+  </data>
+  <data name="App_StopApplication_ErrorDuringFinalization_Exception" xml:space="preserve">
+    <value>Errors occurred during the application stop procedure, please check the exception details for more information.</value>
+  </data>
+  <data name="App_StopApplication_StopComplete_Message" xml:space="preserve">
+    <value>Application stopped successfully. Good bye!</value>
+  </data>
 </root>

@@ -16,7 +16,6 @@ namespace Kephas
     using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
-    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;

@@ -24,7 +24,7 @@ namespace Kephas.Application
     /// <code language="csharp">
     /// var appManager = compositionContext.GetExport&lt;IAppManager&gt;();
     /// var appContext = new AppContext();
-    /// await appManager.InitializeAppAsync(appContext);
+    /// await appManager.InitializeAppManagerAsync(appContext);
     /// ...
     /// await appManager.FinalizeAppAsync(appContext);
     /// </code>

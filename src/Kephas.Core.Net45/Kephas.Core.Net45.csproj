@@ -64,6 +64,9 @@
     <Compile Include="..\Kephas.Core\AmbientServicesExtensions.cs">
       <Link>AmbientServicesExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppBase.cs">
+      <Link>Application\AppBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\AppContext.cs">
       <Link>Application\AppContext.cs</Link>
     </Compile>
