@@ -139,10 +139,7 @@ namespace Kephas.Application
                 var features = this.FeatureManagerFactories
                     .Select(f => f.Metadata.FeatureInfo)
                     .ToList();
-                if (this.AppManifest is AppManifestBase appManifest)
-                {
-                    appManifest.Features = features;
-                }
+                this.SetAppManifestFeatures(features);
 
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.RegisterService(appContext);
@@ -327,6 +324,9 @@ namespace Kephas.Application
                     {
                         throw;
                     }
+
+                    // remove the failed feature from the app manifest.
+                    this.RemoveFailedAppManifestFeature(featureManagerMetadata.FeatureInfo);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -559,6 +559,28 @@ namespace Kephas.Application
             {
                 await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
             }
+        }
+
+        /// <summary>
+        /// Sets the features in the application manifest.
+        /// </summary>
+        /// <param name="features">The features.</param>
+        protected virtual void SetAppManifestFeatures(IList<FeatureInfo> features)
+        {
+            if (this.AppManifest is AppManifestBase appManifest)
+            {
+                appManifest.Features = features;
+            }
+        }
+
+        /// <summary>
+        /// Removes the failed feature from the application manifest.
+        /// </summary>
+        /// <param name="featureInfo">Information describing the feature.</param>
+        protected virtual void RemoveFailedAppManifestFeature(FeatureInfo featureInfo)
+        {
+            var featureInfoList = this.AppManifest.Features as IList<FeatureInfo>;
+            featureInfoList?.Remove(featureInfo);
         }
 
         /// <summary>
