@@ -11,6 +11,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Dynamic;
     using Kephas.Services;
@@ -57,5 +58,32 @@ namespace Kephas.Application
         /// The application features.
         /// </value>
         IEnumerable<IFeatureInfo> Features { get; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IAppManifest"/>.
+    /// </summary>
+    public static class AppManifestExtensions
+    {
+        /// <summary>
+        /// Indicates whether the application manifest contains the indicated feature.
+        /// </summary>
+        /// <remarks>
+        /// The name comparison is case insensitive.
+        /// </remarks>
+        /// <param name="appManifest">The application manifest to act on.</param>
+        /// <param name="featureName">Name of the feature.</param>
+        /// <returns>
+        /// True if the application manifest contains the indicated feature, false otherwise.
+        /// </returns>
+        public static bool ContainsFeature(this IAppManifest appManifest, string featureName)
+        {
+            if (appManifest == null || featureName == null)
+            {
+                return false;
+            }
+
+            return appManifest.Features.Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }
