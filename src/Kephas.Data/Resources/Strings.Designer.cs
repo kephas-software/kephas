@@ -19,7 +19,7 @@ namespace Kephas.Data.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -111,6 +111,15 @@ namespace Kephas.Data.Resources {
         internal static string DataContext_FindOneAsync_NotFound_Exception {
             get {
                 return ResourceManager.GetString("DataContext_FindOneAsync_NotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided command execution context targets a different data context than the one supposed to execute the command..
+        /// </summary>
+        internal static string DataContext_MismatchedDataContextInCommand_Exception {
+            get {
+                return ResourceManager.GetString("DataContext_MismatchedDataContextInCommand_Exception", resourceCulture);
             }
         }
         

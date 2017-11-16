@@ -154,6 +154,15 @@
     <Compile Include="..\Kephas.Data\Commands\DiscardChangesContext.cs">
       <Link>Commands\DiscardChangesContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ExecuteCommandBase.cs">
+      <Link>Commands\ExecuteCommandBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ExecuteContext.cs">
+      <Link>Commands\ExecuteContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\ExecuteResult.cs">
+      <Link>Commands\ExecuteResult.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Commands\Factory\DataCommandFactory.cs">
       <Link>Commands\Factory\DataCommandFactory.cs</Link>
     </Compile>
@@ -207,6 +216,15 @@
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\IDiscardChangesContext.cs">
       <Link>Commands\IDiscardChangesContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IExecuteCommand.cs">
+      <Link>Commands\IExecuteCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IExecuteContext.cs">
+      <Link>Commands\IExecuteContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Commands\IExecuteResult.cs">
+      <Link>Commands\IExecuteResult.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Commands\IFindCommand.cs">
       <Link>Commands\IFindCommand.cs</Link>

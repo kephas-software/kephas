@@ -187,4 +187,7 @@
   <data name="DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception" xml:space="preserve">
     <value>Expected a {0} provider in query {1}.</value>
   </data>
+  <data name="DataContext_MismatchedDataContextInCommand_Exception" xml:space="preserve">
+    <value>The provided command execution context targets a different data context than the one supposed to execute the command.</value>
+  </data>
 </root>

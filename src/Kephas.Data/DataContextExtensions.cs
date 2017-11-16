@@ -16,6 +16,7 @@ namespace Kephas.Data
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
@@ -337,7 +338,7 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Marks the provided entity for deletion in the provided context.
+        /// Marks the provided entity for deletion in the data context.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataContext">The data context.</param>
@@ -351,6 +352,53 @@ namespace Kephas.Data
             var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
             var deleteContext = new DeleteEntityContext(dataContext, entity);
             command.Execute(deleteContext);
+        }
+
+        /// <summary>
+        /// Executes the provided command in the data context.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="commandText">The command text.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the command execution result.
+        /// </returns>
+        public static async Task<object> ExecuteAsync(this IDataContext dataContext, string commandText, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNullOrEmpty(commandText, nameof(commandText));
+
+            var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
+            var executeContext = new ExecuteContext(dataContext) { CommandText = commandText };
+
+            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
+            return commandResult.Result;
+        }
+
+        /// <summary>
+        /// Executes the provided command in the data context.
+        /// </summary>
+        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="executeContext">Context for the execution.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// A promise of the command execution result.
+        /// </returns>
+        public static async Task<object> ExecuteAsync(this IDataContext dataContext, IExecuteContext executeContext, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(executeContext, nameof(executeContext));
+
+            if (executeContext.DataContext != dataContext)
+            {
+                throw new DataException(Strings.DataContext_MismatchedDataContextInCommand_Exception);
+            }
+
+            var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
+
+            var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
+            return commandResult.Result;
         }
 
         /// <summary>
