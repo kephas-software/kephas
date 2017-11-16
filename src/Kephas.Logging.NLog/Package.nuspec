@@ -29,8 +29,8 @@
             <group targetFramework="net45">
                 <dependency id="NLog" version="4.4.0" />
             </group>
-            <group targetFramework="netstandard1.3">
-                <dependency id="NLog" version="5.0.0-beta06" />
+            <group targetFramework="netstandard1.5">
+                <dependency id="NLog" version="4.5.0-beta07" />
             </group>
         </dependencies>
         <references>
@@ -39,9 +39,9 @@
         <tags>kephas framework logging nlog quartz-software</tags>
     </metadata>
     <files>
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Logging.NLog.dll" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Logging.NLog.pdb" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Logging.NLog.xml" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.dll" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.pdb" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.xml" target="lib\netstandard1.5" />
         <file src="..\Kephas.Logging.NLog.Net45\bin\$configuration$\Kephas.Logging.NLog.dll" target="lib\net45" />
         <file src="..\Kephas.Logging.NLog.Net45\bin\$configuration$\Kephas.Logging.NLog.pdb" target="lib\net45" />
         <file src="..\Kephas.Logging.NLog.Net45\bin\$configuration$\Kephas.Logging.NLog.xml" target="lib\net45" />
