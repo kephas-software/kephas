@@ -323,8 +323,7 @@ namespace Kephas.Data.IO.Import
             /// </returns>
             private IEntityInfo AttachSourceEntity(object source)
             {
-                var sourceEntityInfo = source as IEntityInfo;
-                if (sourceEntityInfo != null)
+                if (source is IEntityInfo sourceEntityInfo)
                 {
                     // the imported entity is already an IEntityInfo wrapper. Adjust only the change state.
                     var changeState = sourceEntityInfo.ChangeState;
