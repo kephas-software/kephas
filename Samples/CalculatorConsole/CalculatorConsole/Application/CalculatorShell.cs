@@ -1,46 +1,86 @@
-﻿namespace CalculatorConsole.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="CalculatorShell.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the calculator shell class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace CalculatorConsole.Application
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
     using Kephas.Application;
     using Kephas.Diagnostics;
-    using Kephas.Platform.Net;
     using Kephas.Logging.NLog;
+    using Kephas.Platform.Net;
+    using Kephas.Threading.Tasks;
 
     using AppContext = Kephas.Application.AppContext;
 
-    public class CalculatorShell
+    public class CalculatorShell : AppBase
     {
         /// <summary>
         /// Starts the application asynchronously.
         /// </summary>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A task.
+        /// The asynchronous result that yields the provided or the created
+        /// <see cref="T:Kephas.IAmbientServices" />.
         /// </returns>
-        public async Task StartAppAsync()
+        public override async Task<IAmbientServices> StartApplicationAsync(
+            string[] appArgs = null,
+            IAmbientServices ambientServices = null,
+            CancellationToken cancellationToken = new CancellationToken())
         {
             Console.WriteLine("Application initializing...");
 
-            var ambientServicesBuilder = new AmbientServicesBuilder();
             var elapsed = await Profiler.WithStopwatchAsync(
-                async () =>
-                {
-                    await ambientServicesBuilder
-                            .WithNLogManager()
-                            .WithNetAppRuntime()
-                            .WithMefCompositionContainerAsync();
+                              async () =>
+                                  {
+                                      ambientServices = await base.StartApplicationAsync(appArgs, ambientServices, cancellationToken).PreserveThreadContext();
+                                  });
 
-                    var compositionContainer = ambientServicesBuilder.AmbientServices.CompositionContainer;
-                    var appBootstrapper = compositionContainer.GetExport<IAppManager>();
-                    await appBootstrapper.InitializeAppAsync(new AppContext());
-                });
-
-            var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
+            var appManifest = ambientServices.CompositionContainer.GetExport<IAppManifest>();
             Console.WriteLine();
             Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started. Elapsed: {elapsed:c}.");
 
+            this.RunCalculator(appManifest);
+
+            await this.StopApplicationAsync(ambientServices, cancellationToken).PreserveThreadContext();
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Configures the ambient services asynchronously.
+        /// </summary>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        protected override async Task ConfigureAmbientServicesAsync(
+            string[] appArgs,
+            IAmbientServices ambientServices,
+            CancellationToken cancellationToken)
+        {
+            var ambientServicesBuilder = new AmbientServicesBuilder((AmbientServices)ambientServices);
+            await ambientServicesBuilder
+                .WithNLogManager()
+                .WithNetAppRuntime()
+                .WithMefCompositionContainerAsync();
+        }
+
+        private void RunCalculator(IAppManifest appManifest)
+        {
             Console.WriteLine();
             Console.WriteLine("Provide an operation in form of: term1 op term2. End the program with q instead of an operation.");
 

@@ -150,7 +150,7 @@ namespace Kephas.Application
         protected virtual Task RunAsync(
             string[] appArgs,
             IAmbientServices ambientServices,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

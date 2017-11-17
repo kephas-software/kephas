@@ -52,6 +52,22 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
+        public async Task StartApplicationAsync_runAsync_invoked()
+        {
+            var appManager = Substitute.For<IAppManager>();
+
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
+
+            string runCalled = null;
+            AmbientServicesBuilder builder = null;
+            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext), svc => Task.FromResult(runCalled = "run called"));
+            await app.StartApplicationAsync();
+
+            Assert.AreEqual("run called", runCalled);
+        }
+
+        [Test]
         public async Task StopApplicationAsync_appManager_invoked()
         {
             var appManager = Substitute.For<IAppManager>();
@@ -112,8 +128,13 @@ namespace Kephas.Core.Tests.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        protected override Task RunAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken = default)
+        protected override Task RunAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken)
         {
+            if (this.asyncRun != null)
+            {
+                return this.asyncRun(ambientServices);
+            }
+
             return base.RunAsync(appArgs, ambientServices, cancellationToken);
         }
     }

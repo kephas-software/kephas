@@ -9,7 +9,7 @@
 
 namespace CalculatorConsole
 {
-    using System;
+    using System.Threading.Tasks;
 
     using CalculatorConsole.Application;
 
@@ -18,14 +18,9 @@ namespace CalculatorConsole
     /// </summary>
     internal class Program
     {
-        /// <summary>
-        /// Main entry-point for this application.
-        /// </summary>
-        /// <param name="args">Array of command-line argument strings.</param>
-        public static void Main(string[] args)
+        public static Task Main(string[] args)
         {
-            var shell = new CalculatorShell();
-            shell.StartAppAsync();
+            return new CalculatorShell().StartApplicationAsync(args);
         }
     }
 }
