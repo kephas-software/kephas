@@ -37,7 +37,7 @@ namespace Kephas.Application
         /// Starts the application asynchronously.
         /// </summary>
         /// <param name="appArgs">The application arguments (optional).</param>
-        /// <param name="ambientServices">The ambient services (optional). If no ambient services is provided, a default one will be created.</param>
+        /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields the provided or the created <see cref="IAmbientServices"/>.
@@ -89,18 +89,20 @@ namespace Kephas.Application
         /// <summary>
         /// Stops the application asynchronously.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         public virtual async Task StopApplicationAsync(
-            IAmbientServices ambientServices,
+            IAmbientServices ambientServices = null,
             CancellationToken cancellationToken = default)
         {
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_StopApplication_Stopping_Message);
+
+                ambientServices = ambientServices ?? AmbientServices.Instance;
 
                 var appContext = ambientServices.CompositionContainer.GetExport<IAppContext>();
                 var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
