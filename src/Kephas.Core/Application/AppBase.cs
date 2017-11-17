@@ -51,7 +51,7 @@ namespace Kephas.Application
             {
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_Starting_Message);
 
-                ambientServices = ambientServices ?? new AmbientServices();
+                ambientServices = ambientServices ?? AmbientServices.Instance;
 
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_ConfiguringAmbientServices_Message);
                 var ambientServicesBuilder = new AmbientServicesBuilder(ambientServices);

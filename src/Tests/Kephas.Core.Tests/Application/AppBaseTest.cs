@@ -24,16 +24,32 @@ namespace Kephas.Core.Tests.Application
     public class AppBaseTest
     {
         [Test]
-        public async Task ConfigureAmbientServicesAsync_ambient_services_set()
+        public async Task ConfigureAmbientServicesAsync_ambient_services_static_instance_set()
         {
             var compositionContext = Substitute.For<ICompositionContext>();
 
             AmbientServicesBuilder builder = null;
             var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
-            await app.StartApplicationAsync();
+            var workingAmbientServices = await app.StartApplicationAsync();
 
             Assert.IsNotNull(builder);
             Assert.IsNotNull(builder.AmbientServices);
+            Assert.AreSame(AmbientServices.Instance, builder.AmbientServices);
+            Assert.AreSame(AmbientServices.Instance, workingAmbientServices);
+        }
+
+        [Test]
+        public async Task ConfigureAmbientServicesAsync_ambient_services_explicit_instance_set()
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+
+            AmbientServicesBuilder builder = null;
+            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
+            var ambientServices = new AmbientServices();
+            var workingAmbientServices = await app.StartApplicationAsync(ambientServices: ambientServices);
+
+            Assert.AreSame(ambientServices, builder.AmbientServices);
+            Assert.AreSame(ambientServices, workingAmbientServices);
         }
 
         [Test]
