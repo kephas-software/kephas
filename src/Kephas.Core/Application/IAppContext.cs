@@ -9,7 +9,9 @@
 
 namespace Kephas.Application
 {
-    using Kephas.Dynamic;
+    using System;
+    using System.Threading.Tasks;
+
     using Kephas.Services;
 
     /// <summary>
@@ -29,5 +31,13 @@ namespace Kephas.Application
         /// The application arguments.
         /// </value>
         string[] AppArgs { get; }
+
+        /// <summary>
+        /// Gets a function for signalling the application to shutdown.
+        /// </summary>
+        /// <value>
+        /// The signal shutdown.
+        /// </value>
+        Func<IContext, Task<IAppContext>> SignalShutdown { get; }
     }
 }

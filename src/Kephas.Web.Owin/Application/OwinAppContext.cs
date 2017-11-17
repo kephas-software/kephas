@@ -9,11 +9,17 @@
 
 namespace Kephas.Web.Owin.Application
 {
+    using System;
+    using System.Threading.Tasks;
+
     using Kephas.Application;
 
     using global::Owin;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
+
+    using AppContext = Kephas.Application.AppContext;
 
     /// <summary>
     /// The OWIN web application context.
@@ -25,8 +31,16 @@ namespace Kephas.Web.Owin.Application
         /// </summary>
         /// <param name="appBuilder">The application builder.</param>
         /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
-        public OwinAppContext(IAppBuilder appBuilder, IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        /// <param name="appManifest">The application manifest (optional).</param>
+        /// <param name="appArgs">The application arguments (optional).</param>
+        /// <param name="signalShutdown">Function for signalling the application shutdown.</param>
+        public OwinAppContext(
+            IAppBuilder appBuilder,
+            IAmbientServices ambientServices = null,
+            IAppManifest appManifest = null,
+            string[] appArgs = null,
+            Func<IContext, Task<IAppContext>> signalShutdown = null)
+            : base(ambientServices, appManifest, appArgs, signalShutdown)
         {
             Requires.NotNull(appBuilder, nameof(appBuilder));
 

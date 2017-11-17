@@ -34,15 +34,15 @@ namespace Kephas.Application
         protected ILogger Logger { get; set; }
 
         /// <summary>
-        /// Starts the application asynchronously.
+        /// Bootstraps the application asynchronously.
         /// </summary>
         /// <param name="appArgs">The application arguments (optional).</param>
         /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// The asynchronous result that yields the provided or the created <see cref="IAmbientServices"/>.
+        /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<IAmbientServices> StartApplicationAsync(
+        public virtual async Task<IAppContext> BootstrapAsync(
             string[] appArgs = null,
             IAmbientServices ambientServices = null,
             CancellationToken cancellationToken = default)
@@ -60,41 +60,28 @@ namespace Kephas.Application
                 this.Logger = this.Logger ?? ambientServices.GetLogger(this.GetType());
 
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_InitializingAppManager_Message);
-                await this.InitializeAppManagerAsync(appArgs, ambientServices, cancellationToken);
+                var appContext = await this.InitializeAppManagerAsync(appArgs, ambientServices, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_StartComplete_Message);
+
+                return appContext;
             }
             catch (Exception ex)
             {
                 this.Log(LogLevel.Fatal, ex, Strings.App_StartApplication_ErrorDuringInitialization_Exception);
                 throw;
             }
-
-            try
-            {
-                await this.RunAsync(appArgs, ambientServices, cancellationToken).PreserveThreadContext();
-            }
-            catch (Exception ex)
-            {
-                this.Log(LogLevel.Error, ex, Strings.App_RunApplication_Exception);
-            }
-            finally
-            {
-                await this.StopApplicationAsync(ambientServices, cancellationToken).PreserveThreadContext();
-            }
-
-            return ambientServices;
         }
 
         /// <summary>
-        /// Stops the application asynchronously.
+        /// Shuts down the application asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// The asynchronous result.
+        /// A promise of the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task StopApplicationAsync(
+        public virtual async Task<IAppContext> ShutdownAsync(
             IAmbientServices ambientServices = null,
             CancellationToken cancellationToken = default)
         {
@@ -103,12 +90,11 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_StopApplication_Stopping_Message);
 
                 ambientServices = ambientServices ?? AmbientServices.Instance;
+                var appContext = await this.FinalizeAppManagerAsync(ambientServices, cancellationToken);
 
-                var appContext = ambientServices.CompositionContainer.GetExport<IAppContext>();
-                var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
-
-                await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
                 this.Log(LogLevel.Info, null, Strings.App_StopApplication_StopComplete_Message);
+
+                return appContext;
             }
             catch (Exception ex)
             {
@@ -138,40 +124,38 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Executes the application main functionality asynchronously.
-        /// </summary>
-        /// <remarks>
-        /// This method should be overwritten to provide a meaningful content.
-        /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServices">The configured ambient services.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        protected virtual Task RunAsync(
-            string[] appArgs,
-            IAmbientServices ambientServices,
-            CancellationToken cancellationToken)
-        {
-            return Task.FromResult(0);
-        }
-
-        /// <summary>
         /// Initializes the application manager asynchronously.
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// A promise of the <see cref="IAppContext"/>.
         /// </returns>
-        protected virtual async Task InitializeAppManagerAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken)
+        protected virtual async Task<IAppContext> InitializeAppManagerAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken)
         {
             var container = ambientServices.CompositionContainer;
             var appContext = this.CreateAppContext(appArgs, ambientServices);
             var appManager = container.GetExport<IAppManager>();
             await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+            return appContext;
+        }
+
+        /// <summary>
+        /// Finalizes the application manager asynchronously.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the <see cref="IAppContext"/>.
+        /// </returns>
+        protected virtual async Task<IAppContext> FinalizeAppManagerAsync(IAmbientServices ambientServices, CancellationToken cancellationToken)
+        {
+            var appContext = ambientServices.CompositionContainer.GetExport<IAppContext>();
+            var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
+
+            await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+            return appContext;
         }
 
         /// <summary>
@@ -184,8 +168,10 @@ namespace Kephas.Application
         /// </returns>
         protected virtual IAppContext CreateAppContext(string[] appArgs, IAmbientServices ambientServices)
         {
-            var appManifest = ambientServices.CompositionContainer.GetExport<IAppManifest>();
-            var appContext = new AppContext(ambientServices, appManifest, appArgs);
+            var appContext = new AppContext(
+                ambientServices,
+                appArgs: appArgs,
+                signalShutdown: c => this.ShutdownAsync(ambientServices));
             return appContext;
         }
 

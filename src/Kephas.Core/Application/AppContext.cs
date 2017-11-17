@@ -9,7 +9,9 @@
 
 namespace Kephas.Application
 {
-    using Kephas.Dynamic;
+    using System;
+    using System.Threading.Tasks;
+
     using Kephas.Services;
 
     /// <summary>
@@ -24,11 +26,17 @@ namespace Kephas.Application
         ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
         /// <param name="appManifest">The application manifest (optional).</param>
         /// <param name="appArgs">The application arguments (optional).</param>
-        public AppContext(IAmbientServices ambientServices = null, IAppManifest appManifest = null, string[] appArgs = null)
+        /// <param name="signalShutdown">Function for signalling the application shutdown.</param>
+        public AppContext(
+            IAmbientServices ambientServices = null,
+            IAppManifest appManifest = null,
+            string[] appArgs = null,
+            Func<IContext, Task<IAppContext>> signalShutdown = null)
             : base(ambientServices)
         {
             this.AppManifest = appManifest ?? this.AmbientServices?.CompositionContainer.GetExport<IAppManifest>();
             this.AppArgs = appArgs;
+            this.SignalShutdown = signalShutdown;
         }
 
         /// <summary>
@@ -43,5 +51,13 @@ namespace Kephas.Application
         /// The application arguments.
         /// </value>
         public string[] AppArgs { get; }
+
+        /// <summary>
+        /// Gets a function for signalling the application to shutdown.
+        /// </summary>
+        /// <value>
+        /// The signal shutdown.
+        /// </value>
+        public Func<IContext, Task<IAppContext>> SignalShutdown { get; }
     }
 }
