@@ -17,7 +17,7 @@ namespace RoleGame
     {
         static Task Main(string[] args)
         {
-            return new RoleGameShell().StartApplicationAsync(args);
+            return new RoleGameShell().BootstrapAsync(args);
         }
     }
 }

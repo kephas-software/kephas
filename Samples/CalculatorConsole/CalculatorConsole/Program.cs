@@ -20,7 +20,7 @@ namespace CalculatorConsole
     {
         public static Task Main(string[] args)
         {
-            return new CalculatorShell().StartApplicationAsync(args);
+            return new CalculatorShell().BootstrapAsync(args);
         }
     }
 }

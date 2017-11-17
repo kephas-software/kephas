@@ -28,7 +28,7 @@ namespace ConfigurationConsole
                     return null;
                 };
 
-            await new ConsoleShell().StartApplicationAsync(args);
+            await new ConsoleShell().BootstrapAsync(args);
         }
     }
 }

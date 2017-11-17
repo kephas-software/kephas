@@ -37,16 +37,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kephas.Composition.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.1.0-beta02\lib\net45\Kephas.Composition.Mef.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.1.0-beta03\lib\net45\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.4.1.0-beta02\lib\net45\Kephas.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Core.4.1.0-beta03\lib\net45\Kephas.Core.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.1.0-beta02\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.1.0-beta03\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Platform, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Platform.4.1.0-beta02\lib\net46\Kephas.Platform.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Platform.4.1.0-beta03\lib\net46\Kephas.Platform.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NLog.4.4.0\lib\net45\NLog.dll</HintPath>

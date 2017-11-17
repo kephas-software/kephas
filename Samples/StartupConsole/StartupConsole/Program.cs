@@ -25,7 +25,7 @@ namespace StartupConsole
         /// <param name="args">Array of command-line argument strings.</param>
         public static Task Main(string[] args)
         {
-            return new ConsoleShell().StartApplicationAsync(args);
+            return new ConsoleShell().BootstrapAsync(args);
         }
     }
 }

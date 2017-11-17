@@ -6,42 +6,22 @@ using SignalRChat.WebApp;
 
 namespace SignalRChat.WebApp
 {
-    using System;
-    using System.Threading.Tasks;
-
-    using Kephas;
-    using Kephas.Application;
-    using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
     using Kephas.Threading.Tasks;
-    using Kephas.Web.Owin.Application;
+
+    using Microsoft.Owin.BuilderProperties;
 
     using Owin;
 
+    using SignalRChat.WebApp.Application;
+
     public class Startup
     {
+        private WebApp webApp;
+
         public void Configuration(IAppBuilder app)
         {
-            this.ConfigurationAsync(app).WaitNonLocking(TimeSpan.FromMinutes(5));
-        }
-
-        private async Task ConfigurationAsync(IAppBuilder app)
-        {
-            var ambientServices = await this.InitializeAmbientServicesAsync().PreserveThreadContext();
-
-            var appContext = new OwinAppContext(app);
-            var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
-            await appManager.InitializeAppAsync(appContext).PreserveThreadContext();
-        }
-
-        private async Task<IAmbientServices> InitializeAmbientServicesAsync()
-        {
-            var ambientServicesBuilder = new AmbientServicesBuilder();
-            await ambientServicesBuilder
-                    .WithNLogManager()
-                    .WithNetAppRuntime()
-                    .WithMefCompositionContainerAsync();
-            return ambientServicesBuilder.AmbientServices;
+            this.webApp = new WebApp(app);
+            this.webApp.BootstrapAsync().WaitNonLocking();
         }
     }
 }
