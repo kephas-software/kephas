@@ -31,7 +31,7 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServicesBuilder"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        public AmbientServicesBuilder(AmbientServices ambientServices)
+        public AmbientServicesBuilder(IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
@@ -42,7 +42,7 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServicesBuilder"/> class.
         /// </summary>
         public AmbientServicesBuilder()
-            : this((AmbientServices)AmbientServices.Instance)
+            : this(Kephas.AmbientServices.Instance)
         {
         }
 
@@ -52,7 +52,7 @@ namespace Kephas
         /// <value>
         /// The ambient services.
         /// </value>
-        public AmbientServices AmbientServices { get; }
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Sets the log manager to the ambient services.
