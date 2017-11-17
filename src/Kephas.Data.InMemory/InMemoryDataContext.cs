@@ -147,7 +147,7 @@ namespace Kephas.Data.InMemory
             var config = dataInitializationContext?.DataStore.DataContextConfiguration;
             var connectionStringValues = string.IsNullOrWhiteSpace(config?.ConnectionString)
                                              ? new Dictionary<string, string>()
-                                             : ConnectionStringParser.Parse(config.ConnectionString);
+                                             : ConnectionStringParser.AsDictionary(config.ConnectionString);
 
             this.InitializeLocalCache(config as InMemoryDataContextConfiguration, connectionStringValues);
 

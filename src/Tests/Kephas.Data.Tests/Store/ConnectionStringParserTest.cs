@@ -17,9 +17,9 @@ namespace Kephas.Data.Tests.Store
     public class ConnectionStringParserTest
     {
         [Test]
-        public void Parse_common_case()
+        public void AsDictionary_common_case()
         {
-            var values = ConnectionStringParser.Parse("Key1=val1;Key2=val2");
+            var values = ConnectionStringParser.AsDictionary("Key1=val1;Key2=val2");
 
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual("val1", values["Key1"]);
@@ -27,9 +27,9 @@ namespace Kephas.Data.Tests.Store
         }
 
         [Test]
-        public void Parse_ignore_empty_entries()
+        public void AsDictionary_ignore_empty_entries()
         {
-            var values = ConnectionStringParser.Parse("Key1=val1;;Key2=val2");
+            var values = ConnectionStringParser.AsDictionary("Key1=val1;;Key2=val2");
 
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual("val1", values["Key1"]);
@@ -37,22 +37,57 @@ namespace Kephas.Data.Tests.Store
         }
 
         [Test]
-        public void Parse_missing_param_value()
+        public void AsDictionary_missing_param_value()
         {
-            var values = ConnectionStringParser.Parse("Key1=val1;Key2");
+            var values = ConnectionStringParser.AsDictionary("Key1=val1;Key2");
 
             Assert.AreEqual(1, values.Count);
             Assert.AreEqual("val1", values["Key1"]);
         }
 
         [Test]
-        public void Parse_param_value_is_empty()
+        public void AsDictionary_param_value_is_empty()
         {
-            var values = ConnectionStringParser.Parse("Key1=val1;Key2=");
+            var values = ConnectionStringParser.AsDictionary("Key1=val1;Key2=");
 
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual("val1", values["Key1"]);
             Assert.AreEqual(string.Empty, values["Key2"]);
+        }
+
+        [Test]
+        public void AsExpando_common_case()
+        {
+            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2=val2");
+
+            Assert.AreEqual("val1", values.Key1);
+            Assert.AreEqual("val2", values.Key2);
+        }
+
+        [Test]
+        public void AsExpando_ignore_empty_entries()
+        {
+            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;;Key2=val2");
+
+            Assert.AreEqual("val1", values.Key1);
+            Assert.AreEqual("val2", values.Key2);
+        }
+
+        [Test]
+        public void AsExpando_missing_param_value()
+        {
+            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2");
+
+            Assert.AreEqual("val1", values.Key1);
+        }
+
+        [Test]
+        public void AsExpando_param_value_is_empty()
+        {
+            dynamic values = ConnectionStringParser.AsExpando("Key1=val1;Key2=");
+
+            Assert.AreEqual("val1", values.Key1);
+            Assert.AreEqual(string.Empty, values.Key2);
         }
     }
 }
