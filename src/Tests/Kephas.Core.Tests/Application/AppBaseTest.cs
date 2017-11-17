@@ -61,7 +61,7 @@ namespace Kephas.Core.Tests.Application
 
             string runCalled = null;
             AmbientServicesBuilder builder = null;
-            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext), svc => Task.FromResult(runCalled = "run called"));
+            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext), async svc => runCalled = "run called");
             await app.StartApplicationAsync();
 
             Assert.AreEqual("run called", runCalled);
