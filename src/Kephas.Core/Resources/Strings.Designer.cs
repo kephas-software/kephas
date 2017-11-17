@@ -97,101 +97,74 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during application run. Check the exception details for more information..
+        ///   Looks up a localized string similar to Bootstrapping application....
         /// </summary>
-        internal static string App_RunApplication_Exception {
+        internal static string App_BootstrapAsync_Bootstrapping_Message {
             get {
-                return ResourceManager.GetString("App_RunApplication_Exception", resourceCulture);
+                return ResourceManager.GetString("App_BootstrapAsync_Bootstrapping_Message", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Configuring ambient services....
         /// </summary>
-        internal static string App_StartApplication_ConfiguringAmbientServices_Message {
+        internal static string App_BootstrapAsync_ConfiguringAmbientServices_Message {
             get {
-                return ResourceManager.GetString("App_StartApplication_ConfiguringAmbientServices_Message", resourceCulture);
+                return ResourceManager.GetString("App_BootstrapAsync_ConfiguringAmbientServices_Message", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during the application start procedure, please check the exception details for more information..
+        ///   Looks up a localized string similar to Errors occurred during the application bootstrap procedure, please check the exception details for more information..
         /// </summary>
-        internal static string App_StartApplication_ErrorDuringInitialization_Exception {
+        internal static string App_BootstrapAsync_ErrorDuringInitialization_Exception {
             get {
-                return ResourceManager.GetString("App_StartApplication_ErrorDuringInitialization_Exception", resourceCulture);
+                return ResourceManager.GetString("App_BootstrapAsync_ErrorDuringInitialization_Exception", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Initializing the app manager....
         /// </summary>
-        internal static string App_StartApplication_InitializingAppManager_Message {
+        internal static string App_BootstrapAsync_InitializingAppManager_Message {
             get {
-                return ResourceManager.GetString("App_StartApplication_InitializingAppManager_Message", resourceCulture);
+                return ResourceManager.GetString("App_BootstrapAsync_InitializingAppManager_Message", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application started successfully..
+        ///   Looks up a localized string similar to Application bootstrapped successfully..
         /// </summary>
-        internal static string App_StartApplication_StartComplete_Message {
+        internal static string App_BootstrapAsync_StartComplete_Message {
             get {
-                return ResourceManager.GetString("App_StartApplication_StartComplete_Message", resourceCulture);
+                return ResourceManager.GetString("App_BootstrapAsync_StartComplete_Message", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starting application....
+        ///   Looks up a localized string similar to Application shutdown successfully. Good bye!.
         /// </summary>
-        internal static string App_StartApplication_Starting_Message {
+        internal static string App_ShutdownAsync_Complete_Message {
             get {
-                return ResourceManager.GetString("App_StartApplication_Starting_Message", resourceCulture);
+                return ResourceManager.GetString("App_ShutdownAsync_Complete_Message", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during the application stop procedure, please check the exception details for more information..
+        ///   Looks up a localized string similar to Errors occurred during the application shutdown procedure, please check the exception details for more information..
         /// </summary>
-        internal static string App_StopApplication_ErrorDuringFinalization_Exception {
+        internal static string App_ShutdownAsync_ErrorDuringFinalization_Exception {
             get {
-                return ResourceManager.GetString("App_StopApplication_ErrorDuringFinalization_Exception", resourceCulture);
+                return ResourceManager.GetString("App_ShutdownAsync_ErrorDuringFinalization_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application stopped successfully. Good bye!.
+        ///   Looks up a localized string similar to Shutting down application....
         /// </summary>
-        internal static string App_StopApplication_StopComplete_Message {
+        internal static string App_ShutdownAsync_ShuttingDown_Message {
             get {
-                return ResourceManager.GetString("App_StopApplication_StopComplete_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stopping application....
-        /// </summary>
-        internal static string App_StopApplication_Stopping_Message {
-            get {
-                return ResourceManager.GetString("App_StopApplication_Stopping_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The application start procedure was canceled, at {0:s}..
-        /// </summary>
-        internal static string Application_StartCanceled_Exception {
-            get {
-                return ResourceManager.GetString("Application_StartCanceled_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The application encountered an exception while starting, at {0:s}..
-        /// </summary>
-        internal static string Application_StartFaulted_Exception {
-            get {
-                return ResourceManager.GetString("Application_StartFaulted_Exception", resourceCulture);
+                return ResourceManager.GetString("App_ShutdownAsync_ShuttingDown_Message", resourceCulture);
             }
         }
         

@@ -49,26 +49,26 @@ namespace Kephas.Application
         {
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_StartApplication_Starting_Message);
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
                 ambientServices = ambientServices ?? AmbientServices.Instance;
 
-                this.Log(LogLevel.Info, null, Strings.App_StartApplication_ConfiguringAmbientServices_Message);
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
                 var ambientServicesBuilder = new AmbientServicesBuilder(ambientServices);
                 await this.ConfigureAmbientServicesAsync(appArgs, ambientServicesBuilder, cancellationToken).PreserveThreadContext();
 
                 this.Logger = this.Logger ?? ambientServices.GetLogger(this.GetType());
 
-                this.Log(LogLevel.Info, null, Strings.App_StartApplication_InitializingAppManager_Message);
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
                 var appContext = await this.InitializeAppManagerAsync(appArgs, ambientServices, cancellationToken);
 
-                this.Log(LogLevel.Info, null, Strings.App_StartApplication_StartComplete_Message);
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
 
                 return appContext;
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_StartApplication_ErrorDuringInitialization_Exception);
+                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringInitialization_Exception);
                 throw;
             }
         }
@@ -87,18 +87,18 @@ namespace Kephas.Application
         {
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_StopApplication_Stopping_Message);
+                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
                 ambientServices = ambientServices ?? AmbientServices.Instance;
                 var appContext = await this.FinalizeAppManagerAsync(ambientServices, cancellationToken);
 
-                this.Log(LogLevel.Info, null, Strings.App_StopApplication_StopComplete_Message);
+                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 
                 return appContext;
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_StopApplication_ErrorDuringFinalization_Exception);
+                this.Log(LogLevel.Fatal, ex, Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception);
                 throw;
             }
         }
@@ -137,6 +137,7 @@ namespace Kephas.Application
             var container = ambientServices.CompositionContainer;
             var appContext = this.CreateAppContext(appArgs, ambientServices);
             var appManager = container.GetExport<IAppManager>();
+
             await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
             return appContext;
         }

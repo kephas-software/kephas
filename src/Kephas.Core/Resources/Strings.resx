@@ -123,12 +123,6 @@
   <data name="AmbiguousOverrideForAppServiceContract" xml:space="preserve">
     <value>Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}.</value>
   </data>
-  <data name="Application_StartCanceled_Exception" xml:space="preserve">
-    <value>The application start procedure was canceled, at {0:s}.</value>
-  </data>
-  <data name="Application_StartFaulted_Exception" xml:space="preserve">
-    <value>The application encountered an exception while starting, at {0:s}.</value>
-  </data>
   <data name="CreateContainerRequiresCompositionAssembliesSet" xml:space="preserve">
     <value>Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead.</value>
   </data>
@@ -261,31 +255,28 @@
   <data name="DefaultMediaTypeProvider_NotFound_Exception" xml:space="preserve">
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
-  <data name="App_StartApplication_Starting_Message" xml:space="preserve">
-    <value>Starting application...</value>
+  <data name="App_BootstrapAsync_Bootstrapping_Message" xml:space="preserve">
+    <value>Bootstrapping application...</value>
   </data>
-  <data name="App_StartApplication_ConfiguringAmbientServices_Message" xml:space="preserve">
+  <data name="App_BootstrapAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
     <value>Configuring ambient services...</value>
   </data>
-  <data name="App_StartApplication_InitializingAppManager_Message" xml:space="preserve">
+  <data name="App_BootstrapAsync_InitializingAppManager_Message" xml:space="preserve">
     <value>Initializing the app manager...</value>
   </data>
-  <data name="App_StartApplication_ErrorDuringInitialization_Exception" xml:space="preserve">
-    <value>Errors occurred during the application start procedure, please check the exception details for more information.</value>
+  <data name="App_BootstrapAsync_ErrorDuringInitialization_Exception" xml:space="preserve">
+    <value>Errors occurred during the application bootstrap procedure, please check the exception details for more information.</value>
   </data>
-  <data name="App_StartApplication_StartComplete_Message" xml:space="preserve">
-    <value>Application started successfully.</value>
+  <data name="App_BootstrapAsync_StartComplete_Message" xml:space="preserve">
+    <value>Application bootstrapped successfully.</value>
   </data>
-  <data name="App_StopApplication_Stopping_Message" xml:space="preserve">
-    <value>Stopping application...</value>
+  <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
+    <value>Shutting down application...</value>
   </data>
-  <data name="App_StopApplication_ErrorDuringFinalization_Exception" xml:space="preserve">
-    <value>Errors occurred during the application stop procedure, please check the exception details for more information.</value>
+  <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
+    <value>Errors occurred during the application shutdown procedure, please check the exception details for more information.</value>
   </data>
-  <data name="App_StopApplication_StopComplete_Message" xml:space="preserve">
-    <value>Application stopped successfully. Good bye!</value>
-  </data>
-  <data name="App_RunApplication_Exception" xml:space="preserve">
-    <value>Errors occurred during application run. Check the exception details for more information.</value>
+  <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
+    <value>Application shutdown successfully. Good bye!</value>
   </data>
 </root>
