@@ -1,6 +1,7 @@
 ﻿namespace StartupConsole.Application
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
@@ -15,41 +16,48 @@
     /// <summary>
     /// A console shell.
     /// </summary>
-    public class ConsoleShell
+    public class ConsoleShell : AppBase
     {
-        /// <summary>
-        /// Starts the application asynchronously.
-        /// </summary>
-        /// <returns>
-        /// A task.
-        /// </returns>
-        public async Task StartAppAsync()
+        /// <summary>Configures the ambient services asynchronously.</summary>
+        /// <remarks>
+        /// This method should be overwritten to provide a meaningful content.
+        /// </remarks>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected override Task ConfigureAmbientServicesAsync(
+            string[] appArgs,
+            AmbientServicesBuilder ambientServicesBuilder,
+            CancellationToken cancellationToken)
         {
-            Console.WriteLine("Application starting...");
+            return ambientServicesBuilder
+                .WithNLogManager()
+                .WithNetAppRuntime()
+                .WithMefCompositionContainerAsync();
+        }
 
-            var ambientServicesBuilder = new AmbientServicesBuilder();
-            IAppManager appManager = null;
-            var appContext = new AppContext();
-            var elapsed = await Profiler.WithStopwatchAsync(
-                async () =>
-                    {
-                        await ambientServicesBuilder
-                                .WithNLogManager()
-                                .WithNetAppRuntime()
-                                .WithMefCompositionContainerAsync();
-
-                        appManager = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManager>();
-                        await appManager.InitializeAppAsync(appContext);
-                    });
-
-            var appManifest = ambientServicesBuilder.AmbientServices.CompositionContainer.GetExport<IAppManifest>();
+        /// <summary>
+        /// Executes the application main functionality asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// This method should be overwritten to provide a meaningful content.
+        /// </remarks>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServices">The configured ambient services.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected override Task RunAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken)
+        {
+            var appManifest = ambientServices.CompositionContainer.GetExport<IAppManifest>();
             Console.WriteLine();
-            Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started. Elapsed: {elapsed:c}.");
+            Console.WriteLine($"Application '{appManifest.AppId} V{appManifest.AppVersion}' started.");
 
             Console.WriteLine();
             Console.WriteLine("Press any key to end the program.");
+            Console.ReadLine();
 
-            await appManager.FinalizeAppAsync(appContext).PreserveThreadContext();
+            return base.RunAsync(appArgs, ambientServices, cancellationToken);
         }
     }
 }

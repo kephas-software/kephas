@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the program class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace RoleGame
 {
+    using System.Threading.Tasks;
+
     using RoleGame.Application;
 
     class Program
     {
-        static void Main(string[] args)
+        static Task Main(string[] args)
         {
-            var shell = new RoleGameShell();
-            shell.StartAppAsync();
-
-            Console.ReadLine();
+            return new RoleGameShell().StartApplicationAsync(args);
         }
     }
 }

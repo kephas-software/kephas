@@ -9,7 +9,6 @@
 
 namespace ConfigurationConsole
 {
-    using System;
     using System.Runtime.Loader;
     using System.Threading.Tasks;
 
@@ -29,9 +28,7 @@ namespace ConfigurationConsole
                     return null;
                 };
 
-            await new ConsoleShell().StartAppAsync();
-
-            Console.ReadLine();
+            await new ConsoleShell().StartApplicationAsync(args);
         }
     }
 }

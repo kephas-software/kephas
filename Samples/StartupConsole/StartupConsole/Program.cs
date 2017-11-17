@@ -10,6 +10,7 @@
 namespace StartupConsole
 {
     using System;
+    using System.Threading.Tasks;
 
     using StartupConsole.Application;
 
@@ -22,12 +23,9 @@ namespace StartupConsole
         /// Main entry-point for this application.
         /// </summary>
         /// <param name="args">Array of command-line argument strings.</param>
-        public static void Main(string[] args)
+        public static Task Main(string[] args)
         {
-            var shell = new ConsoleShell();
-            shell.StartAppAsync();
-
-            Console.ReadLine();
+            return new ConsoleShell().StartApplicationAsync(args);
         }
     }
 }

@@ -46,25 +46,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Kephas.Composition.Mef, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.1.0-beta01\lib\net45\Kephas.Composition.Mef.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.1.0-beta02\lib\net45\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.4.1.0-beta01\lib\net45\Kephas.Core.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Core.4.1.0-beta02\lib\net45\Kephas.Core.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Logging.NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.1.0-beta01\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.1.0-beta02\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Messaging, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Messaging.4.1.0-beta01\lib\net45\Kephas.Messaging.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Messaging.4.1.0-beta02\lib\net45\Kephas.Messaging.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Platform, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Platform.4.1.0-beta01\lib\net46\Kephas.Platform.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Platform.4.1.0-beta02\lib\net46\Kephas.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Serialization.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.4.1.0-beta01\lib\net45\Kephas.Serialization.Json.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.4.1.0-beta02\lib\net45\Kephas.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Kephas.Web.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Web.Owin.4.1.0-beta01\lib\net461\Kephas.Web.Owin.dll</HintPath>
+      <HintPath>..\..\..\Packages\Kephas.Web.Owin.4.1.0-beta02\lib\net461\Kephas.Web.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
