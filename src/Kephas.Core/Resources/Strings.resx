@@ -285,4 +285,7 @@
   <data name="App_StopApplication_StopComplete_Message" xml:space="preserve">
     <value>Application stopped successfully. Good bye!</value>
   </data>
+  <data name="App_RunApplication_Exception" xml:space="preserve">
+    <value>Errors occurred during application run. Check the exception details for more information.</value>
+  </data>
 </root>

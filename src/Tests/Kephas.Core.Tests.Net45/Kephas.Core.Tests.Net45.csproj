@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -61,6 +63,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\AmbientServicesTest.cs">
       <Link>AmbientServicesTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Application\AppBaseTest.cs">
+      <Link>Application\AppBaseTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Application\AppContextTest.cs">
       <Link>Application\AppContextTest.cs</Link>

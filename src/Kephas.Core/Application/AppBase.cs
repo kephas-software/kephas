@@ -54,7 +54,8 @@ namespace Kephas.Application
                 ambientServices = ambientServices ?? new AmbientServices();
 
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_ConfiguringAmbientServices_Message);
-                await this.ConfigureAmbientServicesAsync(appArgs, ambientServices, cancellationToken).PreserveThreadContext();
+                var ambientServicesBuilder = new AmbientServicesBuilder(ambientServices);
+                await this.ConfigureAmbientServicesAsync(appArgs, ambientServicesBuilder, cancellationToken).PreserveThreadContext();
 
                 this.Logger = this.Logger ?? ambientServices.GetLogger(this.GetType());
 
@@ -62,13 +63,27 @@ namespace Kephas.Application
                 await this.InitializeAppManagerAsync(appArgs, ambientServices, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_StartApplication_StartComplete_Message);
-                return ambientServices;
             }
             catch (Exception ex)
             {
                 this.Log(LogLevel.Fatal, ex, Strings.App_StartApplication_ErrorDuringInitialization_Exception);
                 throw;
             }
+
+            try
+            {
+                await this.RunAsync(appArgs, ambientServices, cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Log(LogLevel.Error, ex, Strings.App_RunApplication_Exception);
+            }
+            finally
+            {
+                await this.StopApplicationAsync(ambientServices, cancellationToken).PreserveThreadContext();
+            }
+
+            return ambientServices;
         }
 
         /// <summary>
@@ -103,16 +118,39 @@ namespace Kephas.Application
         /// <summary>
         /// Configures the ambient services asynchronously.
         /// </summary>
+        /// <remarks>
+        /// This method should be overwritten to provide a meaningful content.
+        /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         protected virtual Task ConfigureAmbientServicesAsync(
             string[] appArgs,
-            IAmbientServices ambientServices,
+            AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
+        {
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Executes the application main functionality asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// This method should be overwritten to provide a meaningful content.
+        /// </remarks>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServices">The configured ambient services.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        protected virtual Task RunAsync(
+            string[] appArgs,
+            IAmbientServices ambientServices,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
         }

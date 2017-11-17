@@ -97,6 +97,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during application run. Check the exception details for more information..
+        /// </summary>
+        internal static string App_RunApplication_Exception {
+            get {
+                return ResourceManager.GetString("App_RunApplication_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuring ambient services....
         /// </summary>
         internal static string App_StartApplication_ConfiguringAmbientServices_Message {
