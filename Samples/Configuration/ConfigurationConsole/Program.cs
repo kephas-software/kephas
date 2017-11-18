@@ -18,15 +18,15 @@ namespace ConfigurationConsole
     {
         public static async Task Main(string[] args)
         {
-            AssemblyLoadContext.Default.Resolving += (context, name) =>
-                {
-                    if (name.Name.EndsWith(".resources"))
-                    {
-                        return null;
-                    }
+            //AssemblyLoadContext.Default.Resolving += (context, name) =>
+            //    {
+            //        if (name.Name.EndsWith(".resources"))
+            //        {
+            //            return null;
+            //        }
 
-                    return null;
-                };
+            //        return null;
+            //    };
 
             await new ConsoleShell().BootstrapAsync(args);
         }
