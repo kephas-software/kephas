@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MongoPersistChangesCommand
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MongoPersistChangesCommand
+   ">
+    <meta name="generator" content="docfx 2.27.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand">
+  
+  
+  <h1 id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand" class="text-break">Class MongoPersistChangesCommand
+  </h1>
+  <div class="markdown level0 summary"><p>Command for persisting changes targeting <a class="xref" href="Kephas.Data.MongoDB.MongoDataContext.html">MongoDataContext</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a></div>
+    <div class="level3"><span class="xref">MongoPersistChangesCommand</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a></div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_BehaviorProvider">PersistChangesCommand.BehaviorProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_Logger">PersistChangesCommand.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ExecuteAsync(IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_AcceptChanges_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__">PersistChangesCommand.AcceptChanges(IPersistChangesContext, IList&lt;IEntityInfo&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteAfterSaveBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Threading_CancellationToken_">PersistChangesCommand.ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityInfo&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteBeforeSaveBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Threading_CancellationToken_">PersistChangesCommand.ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityInfo&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_DetectModifiedEntries_Kephas_Data_Commands_IPersistChangesContext_">PersistChangesCommand.DetectModifiedEntries(IPersistChangesContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateAndPersistModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Int32_Kephas_Data_Commands_IPersistChangesContext_System_Text_StringBuilder_System_Threading_CancellationToken_">PersistChangesCommand.ValidateAndPersistModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, Int32, IPersistChangesContext, StringBuilder, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ValidateModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateModifiedEntryAsync_System_Object_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">PersistChangesCommand.ValidateModifiedEntryAsync(Object, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PreProcessModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PreProcessModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PostProcessModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PostProcessModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_ExecuteAsync__0_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.ExecuteAsync(IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetLocalCache_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetLocalCache(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.MongoDB.Commands.html">Kephas.Data.MongoDB.Commands</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.MongoDB.dll</h6>
+  <h5 id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataContextType(typeof (MongoDataContext))]
+public class MongoPersistChangesCommand : PersistChangesCommand, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand__ctor_Kephas_Data_Behaviors_IDataBehaviorProvider_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.%23ctor(Kephas.Data.Behaviors.IDataBehaviorProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/Commands/MongoPersistChangesCommand.cs/#L45">View Source</a>
+  </span>
+  <a id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand__ctor_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.#ctor*"></a>
+  <h4 id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand__ctor_Kephas_Data_Behaviors_IDataBehaviorProvider_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.#ctor(Kephas.Data.Behaviors.IDataBehaviorProvider)">MongoPersistChangesCommand(IDataBehaviorProvider)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.html">MongoPersistChangesCommand</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Behaviors.IDataBehaviorProvider.html">IDataBehaviorProvider</a></td>
+        <td><span class="parametername">behaviorProvider</span></td>
+        <td><p>The behavior provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_BulkWriteAsync__1_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.BulkWriteAsync%60%601(Kephas.Data.Commands.IPersistChangesContext%2CSystem.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityInfo%7D%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/Commands/MongoPersistChangesCommand.cs/#L97">View Source</a>
+  </span>
+  <a id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_BulkWriteAsync_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.BulkWriteAsync*"></a>
+  <h4 id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_BulkWriteAsync__1_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_String_System_Threading_CancellationToken_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.BulkWriteAsync``1(Kephas.Data.Commands.IPersistChangesContext,System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityInfo},System.String,System.Threading.CancellationToken)">BulkWriteAsync&lt;T&gt;(IPersistChangesContext, IList&lt;IEntityInfo&gt;, String, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Writes the changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task BulkWriteAsync&lt;T&gt;(IPersistChangesContext operationContext, IList&lt;IEntityInfo&gt; modifiedEntries, string collectionName, CancellationToken cancellationToken)where T : IIdentifiable</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a></td>
+        <td><span class="parametername">operationContext</span></td>
+        <td><p>The data operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a>&gt;</td>
+        <td><span class="parametername">modifiedEntries</span></td>
+        <td><p>The modified entries.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">collectionName</span></td>
+        <td><p>The collection name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>The task for async chaining.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_PersistModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.PersistModifiedEntriesAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityInfo%7D%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/Commands/MongoPersistChangesCommand.cs/#L59">View Source</a>
+  </span>
+  <a id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_PersistModifiedEntriesAsync_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.PersistModifiedEntriesAsync*"></a>
+  <h4 id="Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand_PersistModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.PersistModifiedEntriesAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityInfo},Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">PersistModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Persists the modified entries asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Task PersistModifiedEntriesAsync(IList&lt;IEntityInfo&gt; modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a>&gt;</td>
+        <td><span class="parametername">modifiedEntries</span></td>
+        <td><p>The modified entries.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a></td>
+        <td><span class="parametername">operationContext</span></td>
+        <td><p>The data operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A Task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PersistModifiedEntriesAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PersistModifiedEntriesAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand&lt;TOperationContext, TResult&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_Commands_MongoPersistChangesCommand.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/Commands/MongoPersistChangesCommand.cs/#L33" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

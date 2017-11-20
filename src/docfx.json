@@ -1,0 +1,277 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.CodeAnalysis.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Composition.Mef.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Core.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.Client.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.Endpoints.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.InMemory.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.IO.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.Model.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Data.MongoDB.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Localization.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Logging.Log4Net.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Logging.NLog.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Mail.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Mail.MailKit.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Messaging.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Messaging.Model.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Model.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Platform.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Serialization.Json.Net45",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        }
+      ],
+      "dest": "obj/api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "api/**.yml"
+        ],
+        "cwd": "obj"
+      },
+      {
+        "files": [
+          "api/*.md",
+          "articles/**.md",
+          "toc.yml",
+          "*.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": [
+          "apidoc/**.md"
+        ],
+        "exclude": [
+          "obj/**",
+          "_site/**"
+        ]
+      }
+    ],
+    "dest": "../docs/api",
+    "template": [
+      "default"
+    ]
+  }
+}
