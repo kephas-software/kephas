@@ -1,0 +1,625 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TypeInfoExtensions
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TypeInfoExtensions
+   ">
+    <meta name="generator" content="docfx 2.27.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Reflection.TypeInfoExtensions">
+  
+  
+  <h1 id="Kephas_Reflection_TypeInfoExtensions" data-uid="Kephas.Reflection.TypeInfoExtensions" class="text-break">Class TypeInfoExtensions
+  </h1>
+  <div class="markdown level0 summary"><p>Extension methods for type information.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TypeInfoExtensions</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Reflection.html">Kephas.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Reflection_TypeInfoExtensions_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TypeInfoExtensions</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_AsRuntimeTypeInfo_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.AsRuntimeTypeInfo(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L37">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_AsRuntimeTypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.AsRuntimeTypeInfo*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_AsRuntimeTypeInfo_System_Reflection_TypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.AsRuntimeTypeInfo(System.Reflection.TypeInfo)">AsRuntimeTypeInfo(TypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Kephas.Runtime.IRuntimeTypeInfo.html">IRuntimeTypeInfo</a> for the provided <span class="xref">System.Reflection.TypeInfo</span> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Runtime.IRuntimeTypeInfo.html">IRuntimeTypeInfo</a></td>
+        <td><p>The provided <span class="xref">System.Reflection.TypeInfo</span>&apos;s associated <a class="xref" href="Kephas.Runtime.IRuntimeTypeInfo.html">IRuntimeTypeInfo</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_GetBaseConstructedGenericOf_System_Reflection_TypeInfo_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.GetBaseConstructedGenericOf(System.Reflection.TypeInfo%2CSystem.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L126">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_GetBaseConstructedGenericOf_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetBaseConstructedGenericOf*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_GetBaseConstructedGenericOf_System_Reflection_TypeInfo_System_Reflection_TypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetBaseConstructedGenericOf(System.Reflection.TypeInfo,System.Reflection.TypeInfo)">GetBaseConstructedGenericOf(TypeInfo, TypeInfo)</h4>
+  <div class="markdown level1 summary"><p>A TypeInfo extension method that gets the base constructed generic of a provided type.
+The base can be either an interface or a class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TypeInfo GetBaseConstructedGenericOf(this TypeInfo typeInfo, TypeInfo openGenericTypeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">openGenericTypeInfo</span></td>
+        <td><p>The open generic type of which constructed generic type is requested.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><p>The base constructed generic.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Reflection_TypeInfoExtensions_GetBaseConstructedGenericOf_System_Reflection_TypeInfo_System_Reflection_TypeInfo__examples">Examples</h5>
+  <p>var type = typeof(string).GetTypeInfo().GetBaseConstructedGenericOf(typeof(IEnumerable&lt;&gt;).GetTypeInfo());
+Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;).GetTypeInfo());</p>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_GetDeclaredMembers_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.GetDeclaredMembers(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L198">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_GetDeclaredMembers_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetDeclaredMembers*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_GetDeclaredMembers_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetDeclaredMembers(Kephas.Reflection.ITypeInfo)">GetDeclaredMembers(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the model element&apos;s own members, excluding those declared by the base element or mixins.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;IElementInfo&gt; GetDeclaredMembers(this ITypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Reflection.IElementInfo.html">IElementInfo</a>&gt;</td>
+        <td><p>The members declared exclusively at the type level.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_GetNonNullableType_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.GetNonNullableType(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L50">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_GetNonNullableType_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetNonNullableType*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_GetNonNullableType_System_Reflection_TypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetNonNullableType(System.Reflection.TypeInfo)">GetNonNullableType(TypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the type wrapped by the <span class="xref">System.Nullable&lt;T&gt;</span> or,
+if the type is not a nullable type, the type itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type to be checked.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><p>A <span class="xref">System.Type</span> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_GetQualifiedFullName_System_Reflection_TypeInfo_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.GetQualifiedFullName(System.Reflection.TypeInfo%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L165">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_GetQualifiedFullName_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetQualifiedFullName*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_GetQualifiedFullName_System_Reflection_TypeInfo_System_Boolean_" data-uid="Kephas.Reflection.TypeInfoExtensions.GetQualifiedFullName(System.Reflection.TypeInfo,System.Boolean)">GetQualifiedFullName(TypeInfo, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Gets the qualified full name of a <span class="xref">System.Reflection.TypeInfo</span>. Optionally, strips away the version information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetQualifiedFullName(this TypeInfo typeInfo, bool stripVersionInfo = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">stripVersionInfo</span></td>
+        <td><p><code>true</code> to strip away the version information (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The qualified full name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_IsConstructedGenericType_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.IsConstructedGenericType(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L106">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_IsConstructedGenericType_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsConstructedGenericType*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_IsConstructedGenericType_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsConstructedGenericType(Kephas.Reflection.ITypeInfo)">IsConstructedGenericType(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> is a generic type definition (aka open generic).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsConstructedGenericType(this ITypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the type is a generic type definition; <code>false</code> if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_IsGenericType_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.IsGenericType(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L78">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_IsGenericType_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsGenericType*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_IsGenericType_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsGenericType(Kephas.Reflection.ITypeInfo)">IsGenericType(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> is a generic type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsGenericType(this ITypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the type is generic, either closed or open; <code>false</code> if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_IsGenericTypeDefinition_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.IsGenericTypeDefinition(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L92">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_IsGenericTypeDefinition_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsGenericTypeDefinition*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_IsGenericTypeDefinition_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsGenericTypeDefinition(Kephas.Reflection.ITypeInfo)">IsGenericTypeDefinition(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> is a generic type definition (aka open generic).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsGenericTypeDefinition(this ITypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the type is a generic type definition; <code>false</code> if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions_IsNullableType_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions.IsNullableType(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L64">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_TypeInfoExtensions_IsNullableType_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsNullableType*"></a>
+  <h4 id="Kephas_Reflection_TypeInfoExtensions_IsNullableType_System_Reflection_TypeInfo_" data-uid="Kephas.Reflection.TypeInfoExtensions.IsNullableType(System.Reflection.TypeInfo)">IsNullableType(TypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the type is an instance of the generic <span class="xref">System.Nullable&lt;T&gt;</span> type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsNullableType(this TypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type to check.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the type is nullable; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_TypeInfoExtensions.md&amp;value=---%0Auid%3A%20Kephas.Reflection.TypeInfoExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/TypeInfoExtensions.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

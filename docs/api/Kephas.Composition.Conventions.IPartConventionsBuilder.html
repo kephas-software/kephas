@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IPartConventionsBuilder
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IPartConventionsBuilder
+   ">
+    <meta name="generator" content="docfx 2.27.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder">
+  
+  
+  <h1 id="Kephas_Composition_Conventions_IPartConventionsBuilder" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder" class="text-break">Interface IPartConventionsBuilder
+  </h1>
+  <div class="markdown level0 summary"><p>Contract for part conventions builders.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Composition.Conventions.html">Kephas.Composition.Conventions</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Composition_Conventions_IPartConventionsBuilder_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IPartConventionsBuilder</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Export_System_Action_Kephas_Composition_Conventions_IExportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Export(System.Action%7BKephas.Composition.Conventions.IExportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L41">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Export_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Export*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Export_System_Action_Kephas_Composition_Conventions_IExportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Export(System.Action{Kephas.Composition.Conventions.IExportConventionsBuilder})">Export(Action&lt;IExportConventionsBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Exports the part using the specified conventions builder.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder Export(Action&lt;IExportConventionsBuilder&gt; conventionsBuilder = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<a class="xref" href="Kephas.Composition.Conventions.IExportConventionsBuilder.html">IExportConventionsBuilder</a>&gt;</td>
+        <td><span class="parametername">conventionsBuilder</span></td>
+        <td><p>The conventions builder.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_System_Predicate_System_Type__System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces(System.Predicate%7BSystem.Type%7D%2CSystem.Action%7BSystem.Type%2CKephas.Composition.Conventions.IExportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L51">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_System_Predicate_System_Type__System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces(System.Predicate{System.Type},System.Action{System.Type,Kephas.Composition.Conventions.IExportConventionsBuilder})">ExportInterfaces(Predicate&lt;Type&gt;, Action&lt;Type, IExportConventionsBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Select the interfaces on the part type that will be exported.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ExportInterfaces(Predicate&lt;Type&gt; interfaceFilter = null, Action&lt;Type, IExportConventionsBuilder&gt; exportConfiguration = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Predicate</span>&lt;<span class="xref">System.Type</span>&gt;</td>
+        <td><span class="parametername">interfaceFilter</span></td>
+        <td><p>The interface filter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Type</span>, <a class="xref" href="Kephas.Composition.Conventions.IExportConventionsBuilder.html">IExportConventionsBuilder</a>&gt;</td>
+        <td><span class="parametername">exportConfiguration</span></td>
+        <td><p>The export configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_System_Predicate_System_Reflection_PropertyInfo__System_Action_System_Reflection_PropertyInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties(System.Predicate%7BSystem.Reflection.PropertyInfo%7D%2CSystem.Action%7BSystem.Reflection.PropertyInfo%2CKephas.Composition.Conventions.IImportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L68">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_System_Predicate_System_Reflection_PropertyInfo__System_Action_System_Reflection_PropertyInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties(System.Predicate{System.Reflection.PropertyInfo},System.Action{System.Reflection.PropertyInfo,Kephas.Composition.Conventions.IImportConventionsBuilder})">ImportProperties(Predicate&lt;PropertyInfo&gt;, Action&lt;PropertyInfo, IImportConventionsBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Select properties to import into the part.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ImportProperties(Predicate&lt;PropertyInfo&gt; propertyFilter, Action&lt;PropertyInfo, IImportConventionsBuilder&gt; importConfiguration = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Predicate</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>&gt;</td>
+        <td><span class="parametername">propertyFilter</span></td>
+        <td><p>Filter to select matching properties.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>, <a class="xref" href="Kephas.Composition.Conventions.IImportConventionsBuilder.html">IImportConventionsBuilder</a>&gt;</td>
+        <td><span class="parametername">importConfiguration</span></td>
+        <td><p>Action to configure selected properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L34">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_System_String_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared(System.String)">ScopeShared(String)</h4>
+  <div class="markdown level1 summary"><p>Mark the part as being shared within the scope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ScopeShared(string scopeName = &quot;default&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">scopeName</span></td>
+        <td><p>Name of the scope.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_System_Func_System_Collections_Generic_IEnumerable_System_Reflection_ConstructorInfo__System_Reflection_ConstructorInfo__System_Action_System_Reflection_ParameterInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor(System.Func%7BSystem.Collections.Generic.IEnumerable%7BSystem.Reflection.ConstructorInfo%7D%2CSystem.Reflection.ConstructorInfo%7D%2CSystem.Action%7BSystem.Reflection.ParameterInfo%2CKephas.Composition.Conventions.IImportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L60">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_System_Func_System_Collections_Generic_IEnumerable_System_Reflection_ConstructorInfo__System_Reflection_ConstructorInfo__System_Action_System_Reflection_ParameterInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor(System.Func{System.Collections.Generic.IEnumerable{System.Reflection.ConstructorInfo},System.Reflection.ConstructorInfo},System.Action{System.Reflection.ParameterInfo,Kephas.Composition.Conventions.IImportConventionsBuilder})">SelectConstructor(Func&lt;IEnumerable&lt;ConstructorInfo&gt;, ConstructorInfo&gt;, Action&lt;ParameterInfo, IImportConventionsBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Select which of the available constructors will be used to instantiate the part.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder SelectConstructor(Func&lt;IEnumerable&lt;ConstructorInfo&gt;, ConstructorInfo&gt; constructorSelector, Action&lt;ParameterInfo, IImportConventionsBuilder&gt; importConfiguration = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.ConstructorInfo</span>&gt;, <span class="xref">System.Reflection.ConstructorInfo</span>&gt;</td>
+        <td><span class="parametername">constructorSelector</span></td>
+        <td><p>Filter that selects a single constructor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Reflection.ParameterInfo</span>, <a class="xref" href="Kephas.Composition.Conventions.IImportConventionsBuilder.html">IImportConventionsBuilder</a>&gt;</td>
+        <td><span class="parametername">importConfiguration</span></td>
+        <td><p>Action configuring the parameters of the selected constructor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Shared.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Shared%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L25">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Shared_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Shared*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Shared" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Shared">Shared()</h4>
+  <div class="markdown level1 summary"><p>Mark the part as being shared within the entire composition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder Shared()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

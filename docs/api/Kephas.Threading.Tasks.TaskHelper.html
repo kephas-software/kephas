@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TaskHelper
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TaskHelper
+   ">
+    <meta name="generator" content="docfx 2.27.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Threading.Tasks.TaskHelper">
+  
+  
+  <h1 id="Kephas_Threading_Tasks_TaskHelper" data-uid="Kephas.Threading.Tasks.TaskHelper" class="text-break">Class TaskHelper
+  </h1>
+  <div class="markdown level0 summary"><p>Extension methods for the <span class="xref">System.Threading.Tasks.Task</span> and <span class="xref">System.Threading.Tasks.Task&lt;TResult&gt;</span> classes.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TaskHelper</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Threading.Tasks.html">Kephas.Threading.Tasks</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Threading_Tasks_TaskHelper_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TaskHelper</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_CompletedTask.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.CompletedTask%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L50">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_CompletedTask_" data-uid="Kephas.Threading.Tasks.TaskHelper.CompletedTask*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_CompletedTask" data-uid="Kephas.Threading.Tasks.TaskHelper.CompletedTask">CompletedTask</h4>
+  <div class="markdown level1 summary"><p>Gets a task that has already completed successfully.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task CompletedTask { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A successfully completed task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_DefaultTimeout.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.DefaultTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L42">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_DefaultTimeout_" data-uid="Kephas.Threading.Tasks.TaskHelper.DefaultTimeout*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_DefaultTimeout" data-uid="Kephas.Threading.Tasks.TaskHelper.DefaultTimeout">DefaultTimeout</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
+The default value is 30 seconds, but it can be changed to accomodate application needs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TimeSpan DefaultTimeout { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_DefaultWaitMilliseconds.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.DefaultWaitMilliseconds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L36">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_DefaultWaitMilliseconds_" data-uid="Kephas.Threading.Tasks.TaskHelper.DefaultWaitMilliseconds*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_DefaultWaitMilliseconds" data-uid="Kephas.Threading.Tasks.TaskHelper.DefaultWaitMilliseconds">DefaultWaitMilliseconds</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
+The default value is 20 milliseconds, but it can be changed to accomodate application needs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int DefaultWaitMilliseconds { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_GetResultNonLocking__1_System_Threading_Tasks_Task___0__System_Nullable_System_TimeSpan__System_Nullable_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.GetResultNonLocking%60%601(System.Threading.Tasks.Task%7B%60%600%7D%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L116">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_GetResultNonLocking_" data-uid="Kephas.Threading.Tasks.TaskHelper.GetResultNonLocking*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_GetResultNonLocking__1_System_Threading_Tasks_Task___0__System_Nullable_System_TimeSpan__System_Nullable_System_Int32__System_Boolean_" data-uid="Kephas.Threading.Tasks.TaskHelper.GetResultNonLocking``1(System.Threading.Tasks.Task{``0},System.Nullable{System.TimeSpan},System.Nullable{System.Int32},System.Boolean)">GetResultNonLocking&lt;T&gt;(Task&lt;T&gt;, Nullable&lt;TimeSpan&gt;, Nullable&lt;Int32&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Waits the task avoiding the current thread to be locked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T GetResultNonLocking&lt;T&gt;(this Task&lt;T&gt; task, TimeSpan? timeout = default (TimeSpan? ), int ? waitMilliseconds = default (int ? ), bool throwOnTimeout = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
+        <td><span class="parametername">task</span></td>
+        <td><p>The task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>The timeout (optional). The default value is <a class="xref" href="Kephas.Threading.Tasks.TaskHelper.html#Kephas_Threading_Tasks_TaskHelper_DefaultTimeout">DefaultTimeout</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">waitMilliseconds</span></td>
+        <td><p>The milliseconds used to wait until checking again the state of the task (optional). The default value is <a class="xref" href="Kephas.Threading.Tasks.TaskHelper.html#Kephas_Threading_Tasks_TaskHelper_DefaultWaitMilliseconds">DefaultWaitMilliseconds</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnTimeout</span></td>
+        <td><p>If set to <code>true</code> an exception is thrown on timeout.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The task result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The return type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext_System_Threading_Tasks_Task_.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext(System.Threading.Tasks.Task)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L160">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext_" data-uid="Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext_System_Threading_Tasks_Task_" data-uid="Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext(System.Threading.Tasks.Task)">PreserveThreadContext(Task)</h4>
+  <div class="markdown level1 summary"><p>Gets a task awaiter preserving the current context upon continuation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ThreadContextAwaiter PreserveThreadContext(this Task task)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>The task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Threading.Tasks.ThreadContextAwaiter.html">ThreadContextAwaiter</a></td>
+        <td><p>A <a class="xref" href="Kephas.Threading.Tasks.ThreadContextAwaiter.html">ThreadContextAwaiter</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext_System_Threading_Tasks_Task__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The returned awaiter does not continue on the captured context (<span class="xref">System.Threading.Tasks.Task.ConfigureAwait(System.Boolean)</span><code>(false)</code> is called), 
+but it can be configured to preserve some thread properties.
+This awaiter is useful on the server, where <code>await</code> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext__1_System_Threading_Tasks_Task___0__.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext%60%601(System.Threading.Tasks.Task%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L141">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext_" data-uid="Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext__1_System_Threading_Tasks_Task___0__" data-uid="Kephas.Threading.Tasks.TaskHelper.PreserveThreadContext``1(System.Threading.Tasks.Task{``0})">PreserveThreadContext&lt;TResult&gt;(Task&lt;TResult&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets a task awaiter preserving the current context upon continuation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ThreadContextAwaiter&lt;TResult&gt; PreserveThreadContext&lt;TResult&gt;(this Task&lt;TResult&gt; task)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;TResult&gt;</td>
+        <td><span class="parametername">task</span></td>
+        <td><p>The task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Threading.Tasks.ThreadContextAwaiter-1.html">ThreadContextAwaiter</a>&lt;TResult&gt;</td>
+        <td><p>A <a class="xref" href="Kephas.Threading.Tasks.ThreadContextAwaiter-1.html">ThreadContextAwaiter&lt;TResult&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TResult</span></td>
+        <td><p>Type of the result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Threading_Tasks_TaskHelper_PreserveThreadContext__1_System_Threading_Tasks_Task___0___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The returned awaiter does not continue on the captured context (<span class="xref">System.Threading.Tasks.Task.ConfigureAwait(System.Boolean)</span><code>(false)</code> is called), 
+but it can be configured to preserve some thread properties.
+This awaiter is useful on the server, where <code>await</code> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper_WaitNonLocking_System_Threading_Tasks_Task_System_Nullable_System_TimeSpan__System_Nullable_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper.WaitNonLocking(System.Threading.Tasks.Task%2CSystem.Nullable%7BSystem.TimeSpan%7D%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L73">View Source</a>
+  </span>
+  <a id="Kephas_Threading_Tasks_TaskHelper_WaitNonLocking_" data-uid="Kephas.Threading.Tasks.TaskHelper.WaitNonLocking*"></a>
+  <h4 id="Kephas_Threading_Tasks_TaskHelper_WaitNonLocking_System_Threading_Tasks_Task_System_Nullable_System_TimeSpan__System_Nullable_System_Int32__System_Boolean_" data-uid="Kephas.Threading.Tasks.TaskHelper.WaitNonLocking(System.Threading.Tasks.Task,System.Nullable{System.TimeSpan},System.Nullable{System.Int32},System.Boolean)">WaitNonLocking(Task, Nullable&lt;TimeSpan&gt;, Nullable&lt;Int32&gt;, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Waits the task avoiding the current thread to be locked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool WaitNonLocking(this Task task, TimeSpan? timeout = default (TimeSpan? ), int ? waitMilliseconds = default (int ? ), bool throwOnTimeout = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><span class="parametername">task</span></td>
+        <td><p>The task.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.TimeSpan</span>&gt;</td>
+        <td><span class="parametername">timeout</span></td>
+        <td><p>The timeout (optional). The default value is <a class="xref" href="Kephas.Threading.Tasks.TaskHelper.html#Kephas_Threading_Tasks_TaskHelper_DefaultTimeout">DefaultTimeout</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="parametername">waitMilliseconds</span></td>
+        <td><p>The milliseconds used to wait until checking again the state of the task (optional). The default value is <a class="xref" href="Kephas.Threading.Tasks.TaskHelper.html#Kephas_Threading_Tasks_TaskHelper_DefaultWaitMilliseconds">DefaultWaitMilliseconds</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnTimeout</span></td>
+        <td><p>If set to <code>true</code> an exception is thrown on timeout.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the task completed execution within the allotted time; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Threading_Tasks_TaskHelper_WaitNonLocking_System_Threading_Tasks_Task_System_Nullable_System_TimeSpan__System_Nullable_System_Int32__System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is a bad practice to run synchronously tasks meant to be async &quot;by birth&quot;.
+However, if there is no other chance than waiting for a task to complete synchronously,
+DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+the task chain must be exactly the same way configured, which may not not be always the case.
+An alternative implementation might be the one provided below, but this must be tried if it really works:
+<a href="http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously">http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously</a>.
+For more information see also <a href="http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html">http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html</a>
+and <a href="http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx">http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx</a>.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_TaskHelper.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.TaskHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/TaskHelper.cs/#L20" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

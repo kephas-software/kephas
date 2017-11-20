@@ -1,0 +1,960 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ReflectionHelper
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ReflectionHelper
+   ">
+    <meta name="generator" content="docfx 2.27.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Reflection.ReflectionHelper">
+  
+  
+  <h1 id="Kephas_Reflection_ReflectionHelper" data-uid="Kephas.Reflection.ReflectionHelper" class="text-break">Class ReflectionHelper
+  </h1>
+  <div class="markdown level0 summary"><p>Helper class for reflection.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ReflectionHelper</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Reflection.html">Kephas.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Reflection_ReflectionHelper_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class ReflectionHelper</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_AsRuntimeAssemblyInfo_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.AsRuntimeAssemblyInfo(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L234">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_AsRuntimeAssemblyInfo_" data-uid="Kephas.Reflection.ReflectionHelper.AsRuntimeAssemblyInfo*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_AsRuntimeAssemblyInfo_System_Reflection_Assembly_" data-uid="Kephas.Reflection.ReflectionHelper.AsRuntimeAssemblyInfo(System.Reflection.Assembly)">AsRuntimeAssemblyInfo(Assembly)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Kephas.Runtime.IRuntimeAssemblyInfo.html">IRuntimeAssemblyInfo</a> for the provided <span class="xref">System.Reflection.Assembly</span> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Runtime.IRuntimeAssemblyInfo.html">IRuntimeAssemblyInfo</a></td>
+        <td><p>The provided <span class="xref">System.Reflection.Assembly</span>&apos;s associated <a class="xref" href="Kephas.Runtime.IRuntimeAssemblyInfo.html">IRuntimeAssemblyInfo</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_Call_System_Reflection_MethodInfo_System_Object_System_Object___.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.Call(System.Reflection.MethodInfo%2CSystem.Object%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L251">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_Call_" data-uid="Kephas.Reflection.ReflectionHelper.Call*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_Call_System_Reflection_MethodInfo_System_Object_System_Object___" data-uid="Kephas.Reflection.ReflectionHelper.Call(System.Reflection.MethodInfo,System.Object,System.Object[])">Call(MethodInfo, Object, Object[])</h4>
+  <div class="markdown level1 summary"><p>Invokes the <code data-dev-comment-type="paramref" class="paramref">methodInfo</code> with the provided parameters,
+ensuring in case of an exception that the original exception is thrown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static object Call(this MethodInfo methodInfo, object instance, params object[] arguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><span class="parametername">methodInfo</span></td>
+        <td><p>The method information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">instance</span></td>
+        <td><p>The instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">arguments</span></td>
+        <td><p>A variable-length parameters list containing arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The invocation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_CreateStaticDelegate__1_System_Reflection_MethodInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.CreateStaticDelegate%60%601(System.Reflection.MethodInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L193">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_CreateStaticDelegate_" data-uid="Kephas.Reflection.ReflectionHelper.CreateStaticDelegate*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_CreateStaticDelegate__1_System_Reflection_MethodInfo_" data-uid="Kephas.Reflection.ReflectionHelper.CreateStaticDelegate``1(System.Reflection.MethodInfo)">CreateStaticDelegate&lt;T&gt;(MethodInfo)</h4>
+  <div class="markdown level1 summary"><p>Creates the static delegate for the provided static method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateStaticDelegate&lt;T&gt;(this MethodInfo methodInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><span class="parametername">methodInfo</span></td>
+        <td><p>The method information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>A static delegate for the provided static method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The delegate type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetAssemblyQualifiedShortName_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetAssemblyQualifiedShortName(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L147">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetAssemblyQualifiedShortName_" data-uid="Kephas.Reflection.ReflectionHelper.GetAssemblyQualifiedShortName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetAssemblyQualifiedShortName_System_Type_" data-uid="Kephas.Reflection.ReflectionHelper.GetAssemblyQualifiedShortName(System.Type)">GetAssemblyQualifiedShortName(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly qualified name without the version and public key information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetAssemblyQualifiedShortName(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The assembly qualified name without the version and public key information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetGenericMethodOf_System_Linq_Expressions_Expression_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetGenericMethodOf(System.Linq.Expressions.Expression)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L123">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetGenericMethodOf_" data-uid="Kephas.Reflection.ReflectionHelper.GetGenericMethodOf*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetGenericMethodOf_System_Linq_Expressions_Expression_" data-uid="Kephas.Reflection.ReflectionHelper.GetGenericMethodOf(System.Linq.Expressions.Expression)">GetGenericMethodOf(Expression)</h4>
+  <div class="markdown level1 summary"><p>Gets the generic method indicated by the given expression.
+The given expression must be a lambda expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MethodInfo GetGenericMethodOf(Expression expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span></td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>The expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><p>A <span class="xref">System.Reflection.MethodInfo</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetGenericMethodOf__1_System_Linq_Expressions_Expression_System_Func_System_Object___0___.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetGenericMethodOf%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7BSystem.Object%2C%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L135">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetGenericMethodOf_" data-uid="Kephas.Reflection.ReflectionHelper.GetGenericMethodOf*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetGenericMethodOf__1_System_Linq_Expressions_Expression_System_Func_System_Object___0___" data-uid="Kephas.Reflection.ReflectionHelper.GetGenericMethodOf``1(System.Linq.Expressions.Expression{System.Func{System.Object,``0}})">GetGenericMethodOf&lt;TReturn&gt;(Expression&lt;Func&lt;Object, TReturn&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the generic method indicated by the given expression.
+The given expression must be a lambda expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MethodInfo GetGenericMethodOf&lt;TReturn&gt;(Expression&lt;Func&lt;object, TReturn&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>, TReturn&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>The expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td><p>A <span class="xref">System.Reflection.MethodInfo</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TReturn</span></td>
+        <td><p>The type of the return.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetNonGenericFullName(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L159">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_" data-uid="Kephas.Reflection.ReflectionHelper.GetNonGenericFullName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_System_Reflection_TypeInfo_" data-uid="Kephas.Reflection.ReflectionHelper.GetNonGenericFullName(System.Reflection.TypeInfo)">GetNonGenericFullName(TypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the full name of the non generic type with the same base name as the provided type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetNonGenericFullName(this TypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>The type information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The full name of the non generic type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetNonGenericFullName(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L180">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_" data-uid="Kephas.Reflection.ReflectionHelper.GetNonGenericFullName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetNonGenericFullName_System_Type_" data-uid="Kephas.Reflection.ReflectionHelper.GetNonGenericFullName(System.Type)">GetNonGenericFullName(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the full name of the non generic type with the same base name as the provided type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetNonGenericFullName(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The full name of the non generic type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetPropertyName__1_System_Linq_Expressions_Expression_System_Func___0_System_Object___.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetPropertyName%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L45">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetPropertyName_" data-uid="Kephas.Reflection.ReflectionHelper.GetPropertyName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetPropertyName__1_System_Linq_Expressions_Expression_System_Func___0_System_Object___" data-uid="Kephas.Reflection.ReflectionHelper.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">GetPropertyName&lt;T&gt;(Expression&lt;Func&lt;T, Object&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the property name from a lambda expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetPropertyName&lt;T&gt;(Expression&lt;Func&lt;T, object&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Object</span>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>The property expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The property name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type from which the property name is extracted.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetPropertyName__2_System_Linq_Expressions_Expression_System_Func___0___1___.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetPropertyName%60%602(System.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2C%60%601%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L60">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetPropertyName_" data-uid="Kephas.Reflection.ReflectionHelper.GetPropertyName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetPropertyName__2_System_Linq_Expressions_Expression_System_Func___0___1___" data-uid="Kephas.Reflection.ReflectionHelper.GetPropertyName``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">GetPropertyName&lt;T, TValue&gt;(Expression&lt;Func&lt;T, TValue&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the property name from a lambda expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetPropertyName&lt;T, TValue&gt;(Expression&lt;Func&lt;T, TValue&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, TValue&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>The property expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The property name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type from which the property name is extracted.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TValue</span></td>
+        <td><p>The type of the value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Expected property expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetStaticPropertyName_System_Linq_Expressions_Expression_System_Func_System_Object___.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetStaticPropertyName(System.Linq.Expressions.Expression%7BSystem.Func%7BSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L91">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetStaticPropertyName_" data-uid="Kephas.Reflection.ReflectionHelper.GetStaticPropertyName*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetStaticPropertyName_System_Linq_Expressions_Expression_System_Func_System_Object___" data-uid="Kephas.Reflection.ReflectionHelper.GetStaticPropertyName(System.Linq.Expressions.Expression{System.Func{System.Object}})">GetStaticPropertyName(Expression&lt;Func&lt;Object&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Retrieves the property name from a lambda expression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetStaticPropertyName(Expression&lt;Func&lt;object&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>The property expression.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The property name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.GetTypeInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L272">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_GetTypeInfo_" data-uid="Kephas.Reflection.ReflectionHelper.GetTypeInfo*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_" data-uid="Kephas.Reflection.ReflectionHelper.GetTypeInfo(System.Object)">GetTypeInfo(Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the most specific type information out of the provided instance.
+If the object implements <a class="xref" href="Kephas.IInstance.html">IInstance</a>, then it returns
+the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> provided by it, otherwise it returns the <a class="xref" href="Kephas.Runtime.IRuntimeTypeInfo.html">IRuntimeTypeInfo</a>
+of its runtime type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ITypeInfo GetTypeInfo(this object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><p>A type information for the provided object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_IsSystemAssembly_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.IsSystemAssembly(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L207">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_IsSystemAssembly_" data-uid="Kephas.Reflection.ReflectionHelper.IsSystemAssembly*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_IsSystemAssembly_System_Reflection_Assembly_" data-uid="Kephas.Reflection.ReflectionHelper.IsSystemAssembly(System.Reflection.Assembly)">IsSystemAssembly(Assembly)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the provided assembly is a system assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsSystemAssembly(this Assembly assembly)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The assembly to be checked.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the assembly is a system assembly, <code>false</code> if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper_IsSystemAssembly_System_Reflection_AssemblyName_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper.IsSystemAssembly(System.Reflection.AssemblyName)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L219">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_ReflectionHelper_IsSystemAssembly_" data-uid="Kephas.Reflection.ReflectionHelper.IsSystemAssembly*"></a>
+  <h4 id="Kephas_Reflection_ReflectionHelper_IsSystemAssembly_System_Reflection_AssemblyName_" data-uid="Kephas.Reflection.ReflectionHelper.IsSystemAssembly(System.Reflection.AssemblyName)">IsSystemAssembly(AssemblyName)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the provided assembly is a system assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsSystemAssembly(this AssemblyName assemblyName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.AssemblyName</span></td>
+        <td><span class="parametername">assemblyName</span></td>
+        <td><p>The assembly to be checked.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the assembly is a system assembly, <code>false</code> if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_ReflectionHelper.md&amp;value=---%0Auid%3A%20Kephas.Reflection.ReflectionHelper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/ReflectionHelper.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
