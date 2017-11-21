@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Validation
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -54,13 +55,27 @@ namespace Kephas.Data.Validation
         /// by adding a new item with the provided parameters.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="memberName">(Optional) name of the member.</param>
-        /// <param name="severity">(Optional) the severity.</param>
+        /// <param name="memberName">The name of the member.</param>
+        /// <param name="severity">The severity.</param>
         public DataValidationResult(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
             Requires.NotNull(message, nameof(message));
 
             this.Add(message, memberName, severity);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataValidationResult"/> class
+        /// by adding a new item with the provided parameters.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <param name="memberName">The name of the member.</param>
+        /// <param name="severity">The severity.</param>
+        public DataValidationResult(Exception exception, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        {
+            Requires.NotNull(exception, nameof(exception));
+
+            this.Add(exception.Message, memberName, severity);
         }
 
         /// <summary>
