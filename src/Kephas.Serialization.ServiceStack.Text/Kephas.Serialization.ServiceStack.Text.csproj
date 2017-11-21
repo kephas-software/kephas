@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
       <RootNamespace>Kephas.Serialization.ServiceStack.Text</RootNamespace>
       <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
       <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ServiceStack.Text" Version="4.5.0" />
+    <PackageReference Include="ServiceStack.Text.Core" Version="1.0.40" />
   </ItemGroup>
 
   <ItemGroup>
