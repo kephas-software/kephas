@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Kephas.Serialization.ServiceStack.Text</id>
+    <version>$version$</version>
+    <title>Kephas.Serialization.ServiceStack.Text</title>
+    <authors>Quartz Software SRL</authors>
+    <owners>Quartz Software SRL</owners>
+    <description>
+      Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+    </description>
+    <releaseNotes>
+    </releaseNotes>
+    <summary>
+      Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+    </summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+    <dependencies>
+        <group>
+            <dependency id="Kephas.Core" version="$refversion$" />
+        </group>
+        <group targetFramework="net45">
+            <dependency id="ServiceStack.Text" version="4.0.62" />
+        </group>
+        <group targetFramework="netstandard2.0">
+            <dependency id="ServiceStack.Text" version="4.5.0" />
+        </group>
+    </dependencies>
+    <references>
+      <reference file="Kephas.Serialization.ServiceStack.Text.dll" />
+    </references>
+    <tags>kephas framework serialization json xml servicestack quartz-software</tags>
+  </metadata>
+  <files>
+    <file src="bin\$configuration$\netstandard2.0\Kephas.Serialization.ServiceStack.Text.dll" target="lib\netstandard2.0" />
+    <file src="bin\$configuration$\netstandard2.0\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\netstandard2.0" />
+    <file src="bin\$configuration$\netstandard2.0\Kephas.Serialization.ServiceStack.Text.xml" target="lib\netstandard2.0" />
+    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.dll" target="lib\net45" />
+    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\net45" />
+    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.xml" target="lib\net45" />
+  </files>
+</package>

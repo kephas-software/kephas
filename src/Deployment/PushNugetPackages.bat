@@ -16,6 +16,7 @@ nuget push Kephas.Data.InMemory.%1.nupkg -Source https://www.nuget.org/api/v2/pa
 nuget push Kephas.Data.IO.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Endpoints.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Serialization.Json.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Serialization.ServiceStack.Text.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Messaging.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Messaging.Model.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.CodeAnalysis.%1.nupkg -Source https://www.nuget.org/api/v2/package

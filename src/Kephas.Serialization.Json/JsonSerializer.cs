@@ -15,12 +15,14 @@ namespace Kephas.Serialization.Json
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
+    using Kephas.Services;
 
     using Newtonsoft.Json;
 
     /// <summary>
     /// JSON serializer.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class JsonSerializer : ISerializer<JsonMediaType>
     {
         /// <summary>
