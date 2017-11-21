@@ -6,7 +6,7 @@
       <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
       <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
       <Version>4.1.0</Version>
-      <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      <AssemblyVersion>4.1.0.0</AssemblyVersion>
       <FileVersion>4.1.0.0</FileVersion>
       <Authors>Quartz Software SRL</Authors>
       <Company>Quartz Software SRL</Company>
@@ -30,10 +30,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

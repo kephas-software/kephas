@@ -2,6 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+      <Description>Provides data access implementation using Microsoft Entity Framework.</Description>
+      <Version>4.1.0</Version>
+      <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      <FileVersion>4.1.0.0</FileVersion>
+      <Authors>Quartz Software SRL</Authors>
+      <Company>Quartz Software SRL</Company>
+      <Product>Kephas Framework</Product>
+      <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
+      <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+      <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+      <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+      <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+      <RepositoryType>github</RepositoryType>
+      <PackageTags>kephas framework core quartz-software</PackageTags>
+      <PackageReleaseNotes>
+          Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+          Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
+      </PackageReleaseNotes>
+      <NeutralLanguage>en</NeutralLanguage>
+      <SignAssembly>True</SignAssembly>
+      <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

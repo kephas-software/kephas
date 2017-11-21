@@ -8,7 +8,7 @@
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
     <FileVersion>4.1.0.0</FileVersion>
     <Description>Provides a common infrastructure for code analysis, conversion, and generation.</Description>
     <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>

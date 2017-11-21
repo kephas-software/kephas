@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Debug\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Release\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ServiceStack.Text, Version=4.0.62.0, Culture=neutral, processorArchitecture=MSIL">

@@ -10,7 +10,7 @@
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
     <FileVersion>4.1.0.0</FileVersion>
     <Description>Provides the composition services implementation using the System.Composition framework.</Description>
     <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
