@@ -70,7 +70,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// A Type.
         /// </returns>
-        protected Type ResolveTypeCore(string typeName)
+        protected virtual Type ResolveTypeCore(string typeName)
         {
             var type = Type.GetType(typeName, throwOnError: false);
             if (type != null)
