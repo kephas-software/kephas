@@ -12,8 +12,10 @@ namespace Kephas.Reflection
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
 
@@ -45,6 +47,14 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<DefaultTypeResolver> Logger { get; set; }
+
+        /// <summary>
         /// Resolves a type based on the provided type name.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
@@ -57,7 +67,7 @@ namespace Kephas.Reflection
             var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName));
             if (type == null && throwOnNotFound)
             {
-                throw new KeyNotFoundException(string.Format(Strings.DefaultTypeResolver_ResolveType_NotFound_Exception, typeName));
+                throw new TypeLoadException(string.Format(Strings.DefaultTypeResolver_ResolveType_NotFound_Exception, typeName));
             }
 
             return type;
@@ -72,28 +82,36 @@ namespace Kephas.Reflection
         /// </returns>
         protected virtual Type ResolveTypeCore(string typeName)
         {
-            var type = Type.GetType(typeName, throwOnError: false);
-            if (type != null)
+            try
             {
+                var type = Type.GetType(typeName, throwOnError: false);
+                if (type != null)
+                {
+                    return type;
+                }
+
+                var qualifiedName = new QualifiedFullName(typeName);
+
+                if (qualifiedName.AssemblyName == null)
+                {
+                    return null;
+                }
+
+                var assembly = this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
+                if (assembly == null)
+                {
+                    return null;
+                }
+
+                type = assembly.GetType(qualifiedName.TypeName);
+
                 return type;
             }
-
-            var qualifiedName = new QualifiedFullName(typeName);
-
-            if (qualifiedName.AssemblyName == null)
+            catch (Exception ex)
             {
+                this.Logger.Warn(ex, string.Format(Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName));
                 return null;
             }
-
-            var assembly = this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
-            if (assembly == null)
-            {
-                return null;
-            }
-
-            type = assembly.GetType(qualifiedName.TypeName);
-
-            return type;
         }
     }
 }

@@ -279,4 +279,7 @@
   <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
     <value>Application shutdown successfully. Good bye!</value>
   </data>
+  <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
+    <value>Errors occurred when trying to resolve type '{0}'.</value>
+  </data>
 </root>

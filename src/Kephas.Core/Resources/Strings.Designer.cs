@@ -377,6 +377,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors occurred when trying to resolve type &apos;{0}&apos;..
+        /// </summary>
+        internal static string DefaultTypeResolver_ResolveTypeCore_Exception {
+            get {
+                return ResourceManager.GetString("DefaultTypeResolver_ResolveTypeCore_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duplicate type with full name &apos;{0}&apos; in &apos;{1}&apos;..
         /// </summary>
         internal static string DynamicAssemblyInfo_AddType_Duplicate_Exception {
