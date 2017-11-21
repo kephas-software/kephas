@@ -40,6 +40,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Serialization.ServiceStack.Text\DefaultJsonSerializerConfigurator.cs">
+      <Link>DefaultJsonSerializerConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Serialization.ServiceStack.Text\IJsonSerializerConfigurator.cs">
+      <Link>IJsonSerializerConfigurator.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text\JsonSerializer.cs">
       <Link>JsonSerializer.cs</Link>
     </Compile>
