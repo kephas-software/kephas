@@ -1,33 +1,36 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataImportProjectedTypeResolver.cs" company="Quartz Software SRL">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultDataIOProjectedTypeResolver.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IDataImportProjectedTypeResolver interface.
+//   Implements the default data import projected type resolver class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO.Import
+namespace Kephas.Data.IO
 {
     using System;
 
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for data import projected type resolver.
+    /// A default data I/O projected type resolver.
     /// </summary>
-    [SharedAppServiceContract]
-    public interface IDataImportProjectedTypeResolver
+    [OverridePriority(Priority.Low)]
+    public class DefaultDataIOProjectedTypeResolver : IDataIOProjectedTypeResolver
     {
         /// <summary>
         /// Resolves the projected type of the type provided as projection.
         /// </summary>
         /// <param name="projectionType">The projection type.</param>
-        /// <param name="context">The data import context.</param>
+        /// <param name="context">The data I/O context.</param>
         /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found (optional).</param>
         /// <returns>
         /// The projected type.
         /// </returns>
-        Type ResolveProjectedType(Type projectionType, IDataImportContext context, bool throwOnNotFound = true);
+        public Type ResolveProjectedType(Type projectionType, IDataIOContext context, bool throwOnNotFound = true)
+        {
+            return projectionType;
+        }
     }
 }

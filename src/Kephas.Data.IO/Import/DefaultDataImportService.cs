@@ -20,6 +20,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Composition;
     using Kephas.Data;
     using Kephas.Data.Capabilities;
+    using Kephas.Data.Commands;
     using Kephas.Data.Conversion;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Diagnostics;
@@ -39,7 +40,7 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// The projected type resolver.
         /// </summary>
-        private readonly IDataImportProjectedTypeResolver projectedTypeResolver;
+        private readonly IDataIOProjectedTypeResolver projectedTypeResolver;
 
         /// <summary>
         /// The behavior behaviorFactories.
@@ -61,7 +62,7 @@ namespace Kephas.Data.IO.Import
         public DefaultDataImportService(
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
-            IDataImportProjectedTypeResolver projectedTypeResolver,
+            IDataIOProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
         {
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
@@ -180,7 +181,7 @@ namespace Kephas.Data.IO.Import
             /// <summary>
             /// The projected type resolver.
             /// </summary>
-            private readonly IDataImportProjectedTypeResolver projectedTypeResolver;
+            private readonly IDataIOProjectedTypeResolver projectedTypeResolver;
 
             /// <summary>
             /// The behavior factories.
@@ -206,7 +207,7 @@ namespace Kephas.Data.IO.Import
                 IDataImportContext context,
                 IDataStreamReadService dataSourceReader,
                 IDataConversionService conversionService,
-                IDataImportProjectedTypeResolver projectedTypeResolver,
+                IDataIOProjectedTypeResolver projectedTypeResolver,
                 ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories)
             {
                 this.dataSource = dataSource;
@@ -354,7 +355,9 @@ namespace Kephas.Data.IO.Import
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        await this.targetDataContext.PersistChangesAsync(cancellationToken).PreserveThreadContext();
+                        var persistContext = new PersistChangesContext(this.targetDataContext);
+                        this.context.PersistChangesContextConfig?.Invoke(persistContext);
+                        await this.targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
 
                         importEntry.AcceptChanges();
                         result.MergeMessage(new ImportEntitySuccessfulMessage(importEntry.Entity));
@@ -431,6 +434,7 @@ namespace Kephas.Data.IO.Import
                     // TODO check whether we can use such a flag
                     // EntityNotFoundHandling = EntityNotFoundHandling.ForceCreateNew,
                 }
+                this.context.DataConversionContextConfig?.Invoke(sourceEntity, conversionContext);
 
                 cancellationToken.ThrowIfCancellationRequested();
 

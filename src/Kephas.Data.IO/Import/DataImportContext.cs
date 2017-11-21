@@ -12,6 +12,8 @@ namespace Kephas.Data.IO.Import
     using System;
 
     using Kephas.Data;
+    using Kephas.Data.Commands;
+    using Kephas.Data.Conversion;
     using Kephas.Data.IO;
     using Kephas.Diagnostics.Contracts;
 
@@ -49,6 +51,22 @@ namespace Kephas.Data.IO.Import
         /// The target data context.
         /// </value>
         public IDataContext TargetDataContext { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data conversion context configuration.
+        /// </summary>
+        /// <value>
+        /// The data conversion context configuration.
+        /// </value>
+        public Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets the persist changes context configuration.
+        /// </summary>
+        /// <value>
+        /// The persist changes context configuration.
+        /// </value>
+        public Action<IPersistChangesContext> PersistChangesContextConfig { get; set; }
     }
 
     /// <summary>

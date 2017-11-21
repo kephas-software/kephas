@@ -96,6 +96,9 @@
     <Compile Include="..\Kephas.Data.IO\DataStreams\IDataStreamWriteService.cs">
       <Link>DataStreams\IDataStreamWriteService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\DefaultDataIOProjectedTypeResolver.cs">
+      <Link>DefaultDataIOProjectedTypeResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\DefaultDataIOResourceService.cs">
       <Link>DefaultDataIOResourceService.cs</Link>
     </Compile>
@@ -117,6 +120,9 @@
     <Compile Include="..\Kephas.Data.IO\IDataIOMessage.cs">
       <Link>IDataIOMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\IDataIOProjectedTypeResolver.cs">
+      <Link>IDataIOProjectedTypeResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\IDataIOResourceService.cs">
       <Link>IDataIOResourceService.cs</Link>
     </Compile>
@@ -129,9 +135,6 @@
     <Compile Include="..\Kephas.Data.IO\Import\DataImportContext.cs">
       <Link>Import\DataImportContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.IO\Import\DefaultDataImportProjectedTypeResolver.cs">
-      <Link>Import\DefaultDataImportProjectedTypeResolver.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\DefaultDataImportService.cs">
       <Link>Import\DefaultDataImportService.cs</Link>
     </Compile>
@@ -140,9 +143,6 @@
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\IDataImportContext.cs">
       <Link>Import\IDataImportContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\Import\IDataImportProjectedTypeResolver.cs">
-      <Link>Import\IDataImportProjectedTypeResolver.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\IDataImportService.cs">
       <Link>Import\IDataImportService.cs</Link>

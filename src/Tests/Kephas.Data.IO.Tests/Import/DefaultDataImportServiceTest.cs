@@ -68,6 +68,43 @@ namespace Kephas.Data.IO.Tests.Import
         }
 
         [Test]
+        public async Task ImportDataAsync_config()
+        {
+            var reader = this.CreateDataStreamReadService();
+            var conversionService = Substitute.For<IDataConversionService>();
+            var resolver = this.CreateTypeResolver();
+
+            var changedTargetEntities = new List<IEntityInfo>();
+
+            var sourceDataContext = this.CreateSourceDataContext();
+            var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
+
+            var service = new DefaultDataImportService(reader, conversionService, resolver);
+            using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
+            {
+                reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
+                    .Returns(Task.FromResult((object)"hello"));
+
+                conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                    .Returns(ci => Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget((string)ci.Arg<IDataConversionContext>()["entity"] == "hello" ? "mimi" : "kitty")));
+
+                var context = new DataImportContext(sourceDataContext, targetDataContext)
+                                  {
+                                      DataConversionContextConfig = (e, ctx) => ctx["entity"] = e
+                                  };
+                var result = await service.ImportDataAsync(dataStream, context);
+
+                Assert.AreEqual(DataIOOperationState.CompletedSuccessfully, result.OperationState);
+                Assert.AreEqual(0, result.Exceptions.Count);
+                Assert.AreEqual(1, result.Messages.Count);
+            }
+
+            Assert.AreEqual(1, changedTargetEntities.Count);
+            Assert.AreEqual("mimi", changedTargetEntities[0].Entity);
+            Assert.AreEqual(ChangeState.AddedOrChanged, changedTargetEntities[0].ChangeState);
+        }
+
+        [Test]
         public async Task ImportDataAsync_behaviors()
         {
             var reader = this.CreateDataStreamReadService();
@@ -159,9 +196,9 @@ namespace Kephas.Data.IO.Tests.Import
             return new ExportFactory<IDataImportBehavior, AppServiceMetadata>(() => b, new AppServiceMetadata(processingPriority: (int)processingPriority));
         }
 
-        private IDataImportProjectedTypeResolver CreateTypeResolver()
+        private IDataIOProjectedTypeResolver CreateTypeResolver()
         {
-            var resolver = Substitute.For<IDataImportProjectedTypeResolver>();
+            var resolver = Substitute.For<IDataIOProjectedTypeResolver>();
             resolver.ResolveProjectedType(Arg.Any<Type>(), Arg.Any<IDataImportContext>(), Arg.Any<bool>())
                 .Returns(ci => ci.Arg<Type>());
 

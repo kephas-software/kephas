@@ -304,18 +304,25 @@ namespace Kephas.Data
         /// Persists the changes in the dataContext asynchronously.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
+        /// <param name="persistContext">The context for persisting changes (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the persist result.
         /// </returns>
         public static async Task<IDataCommandResult> PersistChangesAsync(
             this IDataContext dataContext,
+            IPersistChangesContext persistContext = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
+            persistContext = persistContext ?? new PersistChangesContext(dataContext);
+            if (persistContext.DataContext != dataContext)
+            {
+                throw new DataException(Strings.DataContext_MismatchedDataContextInCommand_Exception);
+            }
+
             var command = (IPersistChangesCommand)dataContext.CreateCommand(typeof(IPersistChangesCommand));
-            var persistContext = new PersistChangesContext(dataContext);
             var result = await command.ExecuteAsync(persistContext, cancellationToken).PreserveThreadContext();
             return result;
         }
