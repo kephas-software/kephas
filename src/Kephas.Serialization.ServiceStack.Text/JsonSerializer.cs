@@ -14,6 +14,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
@@ -40,12 +41,7 @@ namespace Kephas.Serialization.ServiceStack.Text
         public JsonSerializer(ITypeResolver typeResolver, ILogger<JsonSerializer> logger)
         {
             this.Logger = logger;
-
-            if (!jsonSerializationConfigured)
-            {
-                ConfigureJsonSerialization(typeResolver, logger);
-                jsonSerializationConfigured = true;
-            }
+            ConfigureJsonSerialization(typeResolver, logger);
         }
 
         /// <summary>
@@ -61,8 +57,22 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="logger">The logger.</param>
-        public static void ConfigureJsonSerialization(ITypeResolver typeResolver, ILogger logger)
+        /// <param name="overwriteConfiguration">True to overwrite, false to preserve the configuration.</param>
+        public static void ConfigureJsonSerialization(ITypeResolver typeResolver, ILogger logger, bool overwriteConfiguration = false)
         {
+            Requires.NotNull(typeResolver, nameof(typeResolver));
+
+            if (jsonSerializationConfigured)
+            {
+                if (!overwriteConfiguration)
+                {
+                    logger.Debug("JSON serialization already configured, the configuration will not be overwritten.");
+                    return;
+                }
+
+                logger.Debug("JSON serialization already configured, will be overwritten.");
+            }
+
             // https://groups.google.com/forum/#!topic/servicestack/Ymoug9a0MA8
             // The ServiceStack de/serialization is not safe in async scenarios
             // because it is thread bound.
@@ -101,6 +111,8 @@ namespace Kephas.Serialization.ServiceStack.Text
                     throw;
                 }
             };
+
+            jsonSerializationConfigured = true;
         }
 
         /// <summary>
