@@ -15,10 +15,12 @@ namespace Kephas.Data.IO
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// The default implementation of the <see cref="IDataIOResult"/>.
     /// </summary>
-    public class DataIOResult : IDataIOResult
+    public class DataIOResult : Expando, IDataIOResult
     {
         /// <summary>
         /// The operation state.

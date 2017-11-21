@@ -17,11 +17,12 @@ namespace Kephas.Data.IO
     using Kephas.Collections;
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
 
     /// <summary>
   /// Contract for data exchange result.
   /// </summary>
-  public interface IDataIOResult : INotifyPropertyChanged
+  public interface IDataIOResult : IExpando, INotifyPropertyChanged
   {
     /// <summary>
     /// Gets or sets the state of the operation.
