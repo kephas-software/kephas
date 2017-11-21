@@ -19,19 +19,21 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="ExecuteResult"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
+        /// <param name="result">The execution result.</param>
+        /// <param name="message">The message (optional).</param>
         /// <param name="exception">The exception (optional).</param>
-        public ExecuteResult(string message, Exception exception = null)
+        public ExecuteResult(object result = null, string message = null, Exception exception = null)
             : base(message, exception)
         {
+            this.Result = result;
         }
 
         /// <summary>
-        /// Gets or sets the execution result.
+        /// Gets the execution result.
         /// </summary>
         /// <value>
         /// The execution result.
         /// </value>
-        public object Result { get; set; }
+        public object Result { get; }
     }
 }
