@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -198,6 +198,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Composition.Tests", "Tests\Kephas.Core.Composition.Tests\Kephas.Core.Composition.Tests.csproj", "{1D19196A-195B-48B6-BE53-70688EB55E77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Composition.Tests.Net45", "Tests\Kephas.Core.Composition.Tests.Net45\Kephas.Core.Composition.Tests.Net45.csproj", "{54355F7D-7365-44CA-94A1-8103CCBD6086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Entity", "Kephas.Data.Entity\Kephas.Data.Entity.csproj", "{B0E74E32-A7F4-4FE8-B5B6-F8B8E3ACAF23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -521,6 +523,10 @@ Global
 		{54355F7D-7365-44CA-94A1-8103CCBD6086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54355F7D-7365-44CA-94A1-8103CCBD6086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54355F7D-7365-44CA-94A1-8103CCBD6086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E74E32-A7F4-4FE8-B5B6-F8B8E3ACAF23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E74E32-A7F4-4FE8-B5B6-F8B8E3ACAF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E74E32-A7F4-4FE8-B5B6-F8B8E3ACAF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E74E32-A7F4-4FE8-B5B6-F8B8E3ACAF23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

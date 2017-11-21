@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Data.Entity</id>
+        <version>$version$</version>
+        <title>Kephas.Data.Entity</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides data access implementation using Microsoft Entity Framework.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides abstractions for managing data: retrieving, persisting, querying, so on.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Data" version="$refversion$" />
+            </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="Microsoft.EntityFrameworkCore" version="2.0.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.Entity.dll" />
+        </references>
+        <tags>kephas framework data entity quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Entity.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Entity.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Entity.xml" target="lib\netstandard2.0" />
+    </files>
+</package>
