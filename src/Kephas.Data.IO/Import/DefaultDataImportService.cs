@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Import
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Conversion;
@@ -26,6 +27,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -40,6 +42,11 @@ namespace Kephas.Data.IO.Import
         private readonly IDataImportProjectedTypeResolver projectedTypeResolver;
 
         /// <summary>
+        /// The behavior behaviorFactories.
+        /// </summary>
+        private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
+
+        /// <summary>
         /// The data source reader provider.
         /// </summary>
         private readonly IDataStreamReadService dataStreamReadService;
@@ -50,15 +57,20 @@ namespace Kephas.Data.IO.Import
         /// <param name="dataStreamReadService">The data source read service.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
+        /// <param name="behaviorFactories">The behavior factories (optional).</param>
         public DefaultDataImportService(
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
-            IDataImportProjectedTypeResolver projectedTypeResolver)
+            IDataImportProjectedTypeResolver projectedTypeResolver,
+            ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
         {
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
 
             this.dataStreamReadService = dataStreamReadService;
             this.projectedTypeResolver = projectedTypeResolver;
+            this.behaviorFactories = (behaviorFactories ?? new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>>())
+                                        .OrderBy(f => f.Metadata.ProcessingPriority)
+                                        .ToList();
             this.ConversionService = conversionService;
         }
 
@@ -124,7 +136,7 @@ namespace Kephas.Data.IO.Import
         /// </returns>
         private DataSourceImportJob CreateImportJob(DataStream dataSource, IDataImportContext context, IDataIOResult result)
         {
-            var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver);
+            var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver, this.behaviorFactories);
             job.PropertyChanged += (j, ea) => result.PercentCompleted = ((DataSourceImportJob)j).PercentCompleted;
 
             return job;
@@ -171,6 +183,11 @@ namespace Kephas.Data.IO.Import
             private readonly IDataImportProjectedTypeResolver projectedTypeResolver;
 
             /// <summary>
+            /// The behavior factories.
+            /// </summary>
+            private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
+
+            /// <summary>
             /// The percent completed.
             /// </summary>
             private double percentCompleted;
@@ -183,12 +200,14 @@ namespace Kephas.Data.IO.Import
             /// <param name="dataSourceReader">The converter.</param>
             /// <param name="conversionService">The conversion service.</param>
             /// <param name="projectedTypeResolver">The projected type resolver.</param>
+            /// <param name="behaviorFactories">The behavior factories.</param>
             public DataSourceImportJob(
-              DataStream dataSource,
-              IDataImportContext context,
-              IDataStreamReadService dataSourceReader,
-              IDataConversionService conversionService,
-              IDataImportProjectedTypeResolver projectedTypeResolver)
+                DataStream dataSource,
+                IDataImportContext context,
+                IDataStreamReadService dataSourceReader,
+                IDataConversionService conversionService,
+                IDataImportProjectedTypeResolver projectedTypeResolver,
+                ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories)
             {
                 this.dataSource = dataSource;
                 this.context = context;
@@ -197,6 +216,7 @@ namespace Kephas.Data.IO.Import
                 this.targetDataContext = context.TargetDataContext;
                 this.conversionService = conversionService;
                 this.projectedTypeResolver = projectedTypeResolver;
+                this.behaviorFactories = behaviorFactories;
             }
 
             /// <summary>
@@ -234,6 +254,17 @@ namespace Kephas.Data.IO.Import
             {
                 var result = new DataIOResult();
 
+                var behaviors = this.behaviorFactories.Select(f => f.CreateExportedValue()).ToList();
+                var reversedBehaviors = new List<IDataImportBehavior>(behaviors);
+                reversedBehaviors.Reverse();
+
+                cancellationToken.ThrowIfCancellationRequested();
+                foreach (var behavior in behaviors)
+                {
+                    await behavior.BeforeReadDataSourceAsync(this.dataSource, this.context, cancellationToken)
+                        .PreserveThreadContext();
+                }
+
                 cancellationToken.ThrowIfCancellationRequested();
                 var readResult = await this.dataSourceReader.ReadAsync(this.dataSource, this.context, cancellationToken).PreserveThreadContext();
                 if (!readResult.GetType().IsCollection())
@@ -244,8 +275,14 @@ namespace Kephas.Data.IO.Import
                 var sourceEntities = ((IEnumerable<object>)readResult).ToList();
 
                 cancellationToken.ThrowIfCancellationRequested();
+                foreach (var behavior in reversedBehaviors)
+                {
+                    await behavior.AfterReadDataSourceAsync(this.dataSource, this.context, sourceEntities, cancellationToken)
+                        .PreserveThreadContext();
+                }
 
-                await this.ImportAsManyAsPossibleAsync(sourceEntities, result, cancellationToken).PreserveThreadContext();
+                cancellationToken.ThrowIfCancellationRequested();
+                await this.ImportAsManyAsPossibleAsync(sourceEntities, result, behaviors, reversedBehaviors, cancellationToken).PreserveThreadContext();
 
                 return result;
             }
@@ -283,23 +320,52 @@ namespace Kephas.Data.IO.Import
             /// </summary>
             /// <param name="sourceEntities">The source entities.</param>
             /// <param name="result">The result.</param>
-            /// <param name="cancellationToken">The cancellation token.</param>
-            /// <returns>A task for continuation.</returns>
-            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IDataIOResult result, CancellationToken cancellationToken = default)
+            /// <param name="behaviors">The behaviors.</param>
+            /// <param name="reversedBehaviors">The reversed behaviors.</param>
+            /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+            /// <returns>
+            /// A task for continuation.
+            /// </returns>
+            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IDataIOResult result, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
             {
                 var importEntries = sourceEntities.Select(this.AttachSourceEntity).ToList();
 
                 foreach (var importEntry in importEntries)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
                     try
                     {
-                        await this.ImportEntityAsync(importEntry, cancellationToken).PreserveThreadContext();
+                        // Convert the entity to import
+                        cancellationToken.ThrowIfCancellationRequested();
+                        foreach (var behavior in behaviors)
+                        {
+                            await behavior.BeforeConvertEntityAsync(importEntry, this.context, cancellationToken)
+                                .PreserveThreadContext();
+                        }
+
+                        cancellationToken.ThrowIfCancellationRequested();
+                        var targetEntry = await this.ConvertEntityAsync(importEntry, cancellationToken).PreserveThreadContext();
+
+                        // Persist the converted entity
+                        cancellationToken.ThrowIfCancellationRequested();
+                        foreach (var behavior in behaviors)
+                        {
+                            await behavior.BeforePersistEntityAsync(importEntry, targetEntry, this.context, cancellationToken)
+                                .PreserveThreadContext();
+                        }
+
+                        cancellationToken.ThrowIfCancellationRequested();
                         await this.targetDataContext.PersistChangesAsync(cancellationToken).PreserveThreadContext();
 
                         importEntry.AcceptChanges();
                         result.MergeMessage(new ImportEntitySuccessfulMessage(importEntry.Entity));
+
+                        // The converted entity is persisted
+                        cancellationToken.ThrowIfCancellationRequested();
+                        foreach (var behavior in reversedBehaviors)
+                        {
+                            await behavior.AfterPersistEntityAsync(importEntry, targetEntry, this.context, cancellationToken)
+                                .PreserveThreadContext();
+                        }
                     }
                     catch (OperationCanceledException)
                     {
@@ -346,14 +412,14 @@ namespace Kephas.Data.IO.Import
             }
 
             /// <summary>
-            /// Imports the entity.
+            /// Converts the entity.
             /// </summary>
             /// <param name="sourceEntityInfo">The source entity info.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>
-            /// A task for continuation.
+            /// A promise of the imported target entity.
             /// </returns>
-            private async Task ImportEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
+            private async Task<IEntityInfo> ConvertEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityInfo.Entity;
                 var conversionContext = new DataConversionContext(
@@ -383,6 +449,8 @@ namespace Kephas.Data.IO.Import
                 {
                     targetEntityInfo.ChangeState = sourceEntityInfo.ChangeState;
                 }
+
+                return targetEntityInfo;
             }
         }
     }

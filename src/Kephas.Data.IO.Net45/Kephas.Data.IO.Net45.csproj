@@ -123,6 +123,9 @@
     <Compile Include="..\Kephas.Data.IO\IDataIOResult.cs">
       <Link>IDataIOResult.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\DataImportBehaviorBase.cs">
+      <Link>Import\DataImportBehaviorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\DataImportContext.cs">
       <Link>Import\DataImportContext.cs</Link>
     </Compile>
@@ -131,6 +134,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\DefaultDataImportService.cs">
       <Link>Import\DefaultDataImportService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\IDataImportBehavior.cs">
+      <Link>Import\IDataImportBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\IDataImportContext.cs">
       <Link>Import\IDataImportContext.cs</Link>
