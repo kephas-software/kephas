@@ -36,8 +36,7 @@ namespace Kephas.Data.Linq
         {
             Requires.NotNull(query, nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var longCountExpression = Expression.Call(
                     null,
@@ -412,18 +411,15 @@ namespace Kephas.Data.Linq
         {
             Requires.NotNull(query, nameof(query));
 
-            var asyncProvider = query.Provider as IAsyncQueryProvider;
-            if (asyncProvider != null)
+            if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var result = await asyncProvider.ExecuteAsync(query.Expression, cancellationToken).PreserveThreadContext();
-                var listResult = result as IList<T>;
-                if (listResult != null)
+                if (result is IList<T> listResult)
                 {
                     return listResult;
                 }
 
-                var enumerableResult = result as IEnumerable<T>;
-                if (enumerableResult != null)
+                if (result is IEnumerable<T> enumerableResult)
                 {
                     return enumerableResult.ToList();
                 }

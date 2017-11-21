@@ -45,10 +45,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\ClientQueryExecutorBaseTest.cs">
+      <Link>Queries\ClientQueryExecutorBaseTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\DefaultClientQueryConverterTest.cs">
       <Link>Queries\Conversion\DefaultClientQueryConverterTest.cs</Link>

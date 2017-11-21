@@ -25,12 +25,14 @@ namespace Kephas.Data.Client.Queries
         /// Executes the query asynchronously.
         /// </summary>
         /// <param name="query">The query.</param>
+        /// <param name="executionContext">Context for the execution (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A list of client entities.
         /// </returns>
         Task<IList<object>> ExecuteQueryAsync(
             ClientQuery query,
+            IClientQueryExecutionContext executionContext = null,
             CancellationToken cancellationToken = default);
     }
 }

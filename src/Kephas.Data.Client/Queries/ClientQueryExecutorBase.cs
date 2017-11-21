@@ -33,7 +33,7 @@ namespace Kephas.Data.Client.Queries
         /// </summary>
         private static readonly MethodInfo ExecuteQueryAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(
-                _ => ((ClientQueryExecutorBase)null).ExecuteQueryAsync<string, string>(null, CancellationToken.None));
+                _ => ((ClientQueryExecutorBase)null).ExecuteQueryAsync<string, string>(null, null, CancellationToken.None));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryExecutorBase"/> class.
@@ -82,17 +82,22 @@ namespace Kephas.Data.Client.Queries
         /// Executes the query asynchronously.
         /// </summary>
         /// <param name="query">The query.</param>
+        /// <param name="executionContext">Context for the execution (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A list of client entities.
         /// </returns>
-        public async Task<IList<object>> ExecuteQueryAsync(ClientQuery query, CancellationToken cancellationToken = new CancellationToken())
+        public async Task<IList<object>> ExecuteQueryAsync(
+            ClientQuery query,
+            IClientQueryExecutionContext executionContext = null,
+            CancellationToken cancellationToken = default)
         {
             var clientEntityType = this.TypeResolver.ResolveType(query.EntityType, throwOnNotFound: false);
             var entityType = this.ResolveEntityType(clientEntityType);
+            executionContext = executionContext ?? new ClientQueryExecutionContext(this.ConversionService.AmbientServices);
 
             var executeQueryMethod = ExecuteQueryAsyncMethod.MakeGenericMethod(clientEntityType, entityType);
-            var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, cancellationToken);
+            var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, executionContext, cancellationToken);
             var clientEntities = await asyncResult.PreserveThreadContext();
             return clientEntities;
         }
@@ -128,20 +133,25 @@ namespace Kephas.Data.Client.Queries
         /// <typeparam name="TClientEntity">Type of the client entity.</typeparam>
         /// <typeparam name="TEntity">Type of the entity.</typeparam>
         /// <param name="clientQuery">The client query.</param>
+        /// <param name="executionContext">Context for the execution.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A list of.
         /// </returns>
-        private async Task<IList<object>> ExecuteQueryAsync<TClientEntity, TEntity>(ClientQuery clientQuery, CancellationToken token)
+        protected virtual async Task<IList<object>> ExecuteQueryAsync<TClientEntity, TEntity>(
+            ClientQuery clientQuery,
+            IClientQueryExecutionContext executionContext,
+            CancellationToken token)
             where TClientEntity : class
             where TEntity : class
         {
-            var mappings = new List<Tuple<TClientEntity, TEntity>>();
+            var mappings = new List<(TClientEntity clientEntity, TEntity entity)>();
 
             using (var dataContext = this.CreateDataContext())
             using (var clientDataContext = this.CreateClientDataContext())
             {
                 var queryConversionContext = new ClientQueryConversionContext(dataContext);
+                executionContext?.ClientQueryConversionContextConfig?.Invoke(queryConversionContext);
                 var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
                 var domainEntities = await query.ToListAsync(token).PreserveThreadContext();
 
@@ -149,12 +159,13 @@ namespace Kephas.Data.Client.Queries
                 foreach (var entity in domainEntities)
                 {
                     var context = new DataConversionContext(this.ConversionService, sourceDataContext: dataContext, targetDataContext: clientDataContext, rootTargetType: clientEntityTypeInfo.Type);
+                    executionContext?.DataConversionContextConfig?.Invoke(entity, context);
                     var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
-                    mappings.Add(Tuple.Create((TClientEntity)result.Target, entity));
+                    mappings.Add(((TClientEntity)result.Target, entity));
                 }
             }
 
-            return mappings.Select(m => (object)m.Item1).ToArray();
+            return mappings.Select(m => (object)m.clientEntity).ToArray();
         }
     }
 }

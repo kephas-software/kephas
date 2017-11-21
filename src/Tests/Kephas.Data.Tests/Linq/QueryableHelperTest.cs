@@ -390,7 +390,7 @@ namespace Kephas.Data.Tests.Linq
             /// A task that represents the asynchronous operation.
             /// The task result contains the value that results from executing the specified query.
             /// </returns>
-            public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = new CancellationToken())
+            public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(this.Execute(expression));
             }
@@ -407,7 +407,7 @@ namespace Kephas.Data.Tests.Linq
             /// A task that represents the asynchronous operation.
             /// The task result contains the value that results from executing the specified query.
             /// </returns>
-            public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = new CancellationToken())
+            public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(this.Execute<TResult>(expression));
             }

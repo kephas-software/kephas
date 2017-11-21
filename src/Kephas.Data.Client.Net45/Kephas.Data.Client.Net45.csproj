@@ -43,10 +43,16 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Kephas.Data.Client\Queries\ClientQuery.cs">
       <Link>Queries\ClientQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\ClientQueryExecutionContext.cs">
+      <Link>Queries\ClientQueryExecutionContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\ClientQueryExecutorBase.cs">
       <Link>Queries\ClientQueryExecutorBase.cs</Link>
@@ -129,6 +135,9 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Expression.cs">
       <Link>Queries\Expression.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\IClientQueryExecutionContext.cs">
+      <Link>Queries\IClientQueryExecutionContext.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\IClientQueryExecutor.cs">
       <Link>Queries\IClientQueryExecutor.cs</Link>
     </Compile>
@@ -150,6 +159,7 @@
     <None Include="..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">

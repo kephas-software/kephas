@@ -53,7 +53,7 @@ namespace Kephas.Data.Endpoints
             IMessageProcessingContext context,
             CancellationToken token)
         {
-            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, token)
+            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, null, token)
                                      .PreserveThreadContext();
 
             return new QueryResponseMessage { Entities = clientEntities.ToArray() };

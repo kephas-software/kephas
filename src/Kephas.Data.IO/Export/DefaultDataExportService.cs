@@ -31,6 +31,11 @@ namespace Kephas.Data.IO.Export
         private readonly IClientQueryExecutor clientQueryExecutor;
 
         /// <summary>
+        /// The ambient services.
+        /// </summary>
+        private readonly IAmbientServices ambientServices;
+
+        /// <summary>
         /// The data source write service.
         /// </summary>
         private readonly IDataStreamWriteService dataStreamWriteService;
@@ -38,15 +43,19 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataExportService"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataStreamWriteService">The data source write service.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public DefaultDataExportService(
+            IAmbientServices ambientServices,
             IDataStreamWriteService dataStreamWriteService,
             IClientQueryExecutor clientQueryExecutor)
         {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataStreamWriteService, nameof(dataStreamWriteService));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
+            this.ambientServices = ambientServices;
             this.dataStreamWriteService = dataStreamWriteService;
             this.clientQueryExecutor = clientQueryExecutor;
         }
@@ -61,11 +70,15 @@ namespace Kephas.Data.IO.Export
         /// </returns>
         public async Task<IDataIOResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(context, nameof(context));
+
             var result = context.EnsureResult();
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, cancellationToken)
+            var queryExecutionContext = new ClientQueryExecutionContext(this.ambientServices);
+            context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
+            var data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
                            .PreserveThreadContext();
 
             cancellationToken.ThrowIfCancellationRequested();

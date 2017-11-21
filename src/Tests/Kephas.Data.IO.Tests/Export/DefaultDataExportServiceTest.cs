@@ -32,13 +32,13 @@ namespace Kephas.Data.IO.Tests.Export
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
 
             var entities = new List<object> { "hello" };
-            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<CancellationToken>())
+            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IList<object>>(entities));
 
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(writer, queryExecutor);
+            var service = new DefaultDataExportService(Substitute.For<IAmbientServices>(), writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream);

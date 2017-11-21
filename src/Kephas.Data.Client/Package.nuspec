@@ -20,6 +20,7 @@
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Kephas.Data" version="$refversion$" />
+                <dependency id="System.ValueTuple" version="4.3.0" />
             </group>
         </dependencies>
         <references>

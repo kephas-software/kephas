@@ -57,6 +57,14 @@ namespace Kephas.Data.IO.Export
         /// The export output.
         /// </value>
         public DataStream Output { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client query execution context configuration.
+        /// </summary>
+        /// <value>
+        /// The client query execution context configuration.
+        /// </value>
+        public Action<IClientQueryExecutionContext> ClientQueryExecutionContextConfig { get; set; }
     }
 
     /// <summary>
