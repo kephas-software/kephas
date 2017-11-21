@@ -41,9 +41,9 @@ namespace Kephas.Data.MongoDB.Application
             var originalIsTemporary = Id.IsTemporary;
             Id.IsTemporary = value =>
                 {
-                    if (value is ObjectId)
+                    if (value is ObjectId id)
                     {
-                        return (ObjectId)value < ObjectId.Empty;
+                        return id < ObjectId.Empty;
                     }
 
                     return originalIsTemporary(value);
