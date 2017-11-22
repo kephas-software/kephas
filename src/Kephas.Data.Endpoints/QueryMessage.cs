@@ -24,6 +24,14 @@ namespace Kephas.Data.Endpoints
         /// The query to be executed.
         /// </value>
         public ClientQuery Query { get; set; }
+
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        public object Options { get; set; }
     }
 
     /// <summary>

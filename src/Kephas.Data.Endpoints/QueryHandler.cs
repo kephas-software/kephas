@@ -15,6 +15,7 @@ namespace Kephas.Data.Endpoints
 
     using Kephas.Data.Client.Queries;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Messaging;
     using Kephas.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace Kephas.Data.Endpoints
     public class QueryHandler : MessageHandlerBase<QueryMessage, QueryResponseMessage>
     {
         /// <summary>
+        /// The ambient services.
+        /// </summary>
+        private readonly IAmbientServices ambientServices;
+
+        /// <summary>
         /// The client query executor.
         /// </summary>
         private readonly IClientQueryExecutor clientQueryExecutor;
@@ -31,11 +37,14 @@ namespace Kephas.Data.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
-        public QueryHandler(IClientQueryExecutor clientQueryExecutor)
+        public QueryHandler(IAmbientServices ambientServices, IClientQueryExecutor clientQueryExecutor)
         {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
+            this.ambientServices = ambientServices;
             this.clientQueryExecutor = clientQueryExecutor;
         }
 
@@ -53,7 +62,10 @@ namespace Kephas.Data.Endpoints
             IMessageProcessingContext context,
             CancellationToken token)
         {
-            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, null, token)
+            var executionContext = new ClientQueryExecutionContext(this.ambientServices);
+            executionContext.Merge(message.Options);
+
+            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, executionContext, token)
                                      .PreserveThreadContext();
 
             return new QueryResponseMessage { Entities = clientEntities.ToArray() };
