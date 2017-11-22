@@ -176,6 +176,11 @@ namespace Kephas.Runtime
     public sealed class RuntimePropertyInfo<T, TMember> : RuntimePropertyInfo
     {
         /// <summary>
+        /// The empty arguments.
+        /// </summary>
+        private static readonly object[] EmptyArgs = new object[0];
+
+        /// <summary>
         /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
         /// </summary>
         private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
@@ -210,7 +215,7 @@ namespace Kephas.Runtime
             var setDelegate = this.GetMemberSetDelegate();
             if (setDelegate == null)
             {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException(String.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             setDelegate((T)obj, (TMember)value);
@@ -229,7 +234,7 @@ namespace Kephas.Runtime
             var getDelegate = this.GetMemberGetDelegate();
             if (getDelegate == null)
             {
-                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException(String.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             return getDelegate((T)obj);
@@ -262,7 +267,14 @@ namespace Kephas.Runtime
             var mi = this.PropertyInfo.GetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
+                try
+                {
+                    return this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
+                }
+                catch (ArgumentException)
+                {
+                    return this.getter = obj => (TMember)mi.Invoke(obj, EmptyArgs);
+                }
             }
 
             return null;
@@ -284,7 +296,14 @@ namespace Kephas.Runtime
             var mi = this.PropertyInfo.SetMethod;
             if (mi != null && mi.IsPublic)
             {
-                return this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
+                try
+                {
+                    return this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
+                }
+                catch (ArgumentException)
+                {
+                    return this.setter = (obj, v) => mi.Invoke(obj, new object[] { v });
+                }
             }
 
             return null;
