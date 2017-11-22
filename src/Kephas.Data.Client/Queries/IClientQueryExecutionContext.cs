@@ -13,6 +13,7 @@ namespace Kephas.Data.Client.Queries
 
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -35,5 +36,49 @@ namespace Kephas.Data.Client.Queries
         /// The data conversion context configuration.
         /// </value>
         Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IClientQueryExecutionContext"/>.
+    /// </summary>
+    public static class ClientQueryExecutionContextExtensions
+    {
+        /// <summary>
+        /// Sets the client query conversion context configuration.
+        /// </summary>
+        /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
+        /// <param name="clientQueryConversionContextConfig">The client query conversion context configuration.</param>
+        /// <returns>
+        /// The client query execution context.
+        /// </returns>
+        public static IClientQueryExecutionContext WithClientQueryConversionContextConfig(
+            this IClientQueryExecutionContext clientQueryExecutionContext,
+            Action<IClientQueryConversionContext> clientQueryConversionContextConfig)
+        {
+            Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
+
+            clientQueryExecutionContext.ClientQueryConversionContextConfig = clientQueryConversionContextConfig;
+
+            return clientQueryExecutionContext;
+        }
+
+        /// <summary>
+        /// Sets the client query execution context configuration.
+        /// </summary>
+        /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
+        /// <param name="dataConversionContextConfig">The data conversion context configuration.</param>
+        /// <returns>
+        /// The client query execution context.
+        /// </returns>
+        public static IClientQueryExecutionContext WithDataConversionContextConfig(
+            this IClientQueryExecutionContext clientQueryExecutionContext,
+            Action<object, IDataConversionContext> dataConversionContextConfig)
+        {
+            Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
+
+            clientQueryExecutionContext.DataConversionContextConfig = dataConversionContextConfig;
+
+            return clientQueryExecutionContext;
+        }
     }
 }
