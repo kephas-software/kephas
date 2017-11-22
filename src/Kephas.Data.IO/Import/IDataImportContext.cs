@@ -95,5 +95,43 @@ namespace Kephas.Data.IO.Import
 
             return self[ResultKey] as IDataIOResult;
         }
+
+        /// <summary>
+        /// Sets the data conversion context configuration.
+        /// </summary>
+        /// <param name="dataImportContext">The data import context to act on.</param>
+        /// <param name="dataConversionContextConfig">The data conversion context configuration.</param>
+        /// <returns>
+        /// The data import context.
+        /// </returns>
+        public static IDataImportContext WithDataConversionContextConfig(
+            this IDataImportContext dataImportContext,
+            Action<object, IDataConversionContext> dataConversionContextConfig)
+        {
+            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+
+            dataImportContext.DataConversionContextConfig = dataConversionContextConfig;
+
+            return dataImportContext;
+        }
+
+        /// <summary>
+        /// Sets the data conversion context configuration.
+        /// </summary>
+        /// <param name="dataImportContext">The data import context to act on.</param>
+        /// <param name="persistChangesContextConfig">The persist changes context configuration.</param>
+        /// <returns>
+        /// The data import context.
+        /// </returns>
+        public static IDataImportContext WithDataConversionContextConfig(
+            this IDataImportContext dataImportContext,
+            Action<IPersistChangesContext> persistChangesContextConfig)
+        {
+            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+
+            dataImportContext.PersistChangesContextConfig = persistChangesContextConfig;
+
+            return dataImportContext;
+        }
     }
 }

@@ -55,13 +55,7 @@ namespace Kephas.Data.IO.DataStreams
             IDataIOContext context = null,
             CancellationToken cancellationToken = default)
         {
-            if (context == null)
-            {
-                context = new DataIOContext();
-            }
-
-            context.RootObjectType = typeof(TRootObject);
-
+            context = (context ?? new DataIOContext()).WithRootObjectType(typeof(TRootObject));
             var result = (TRootObject)await dataStreamReadService.ReadAsync(dataStream, context, cancellationToken).PreserveThreadContext();
             return result;
         }

@@ -11,6 +11,7 @@ namespace Kephas.Data.IO
 {
     using System;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Serialization;
     using Kephas.Services;
 
@@ -34,5 +35,49 @@ namespace Kephas.Data.IO
         /// The serialization context configuration.
         /// </value>
         Action<ISerializationContext> SerializationContextConfig { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IDataIOContext"/>.
+    /// </summary>
+    public static class DataIOContextExtensions
+    {
+        /// <summary>
+        /// Sets the serialization context configuration.
+        /// </summary>
+        /// <param name="dataExportContext">The data I/O context to act on.</param>
+        /// <param name="serializationContextConfig">The serialization context configuration.</param>
+        /// <returns>
+        /// The data I/O context.
+        /// </returns>
+        public static IDataIOContext WithSerializationContextConfig(
+            this IDataIOContext dataExportContext,
+            Action<ISerializationContext> serializationContextConfig)
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.SerializationContextConfig = serializationContextConfig;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets the root object type.
+        /// </summary>
+        /// <param name="dataExportContext">The data I/O context to act on.</param>
+        /// <param name="rootObjectType">The root object type.</param>
+        /// <returns>
+        /// The data I/O context.
+        /// </returns>
+        public static IDataIOContext WithRootObjectType(
+            this IDataIOContext dataExportContext,
+            Type rootObjectType)
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.RootObjectType = rootObjectType;
+
+            return dataExportContext;
+        }
     }
 }

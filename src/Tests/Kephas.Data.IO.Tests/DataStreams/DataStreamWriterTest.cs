@@ -77,7 +77,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
-                await writer.WriteAsync(new[] { "abcd" }, dataStream, new DataIOContext { RootObjectType = typeof(bool) });
+                await writer.WriteAsync(new[] { "abcd" }, dataStream, new DataIOContext().WithRootObjectType(typeof(bool)));
                 Assert.IsNotNull(serializationContext);
                 Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
             }

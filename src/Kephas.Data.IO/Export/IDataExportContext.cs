@@ -105,5 +105,24 @@ namespace Kephas.Data.IO.Export
 
             return dataExportContext[ResultKey] as IDataIOResult;
         }
+
+        /// <summary>
+        /// Sets the client query execution context configuration.
+        /// </summary>
+        /// <param name="dataExportContext">The data export context to act on.</param>
+        /// <param name="clientQueryExecutionContextConfig">The client query execution context configuration.</param>
+        /// <returns>
+        /// The data export context.
+        /// </returns>
+        public static IDataExportContext WithClientQueryExecutionContext(
+            this IDataExportContext dataExportContext,
+            Action<IClientQueryExecutionContext> clientQueryExecutionContextConfig)
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.ClientQueryExecutionContextConfig = clientQueryExecutionContextConfig;
+
+            return dataExportContext;
+        }
     }
 }
