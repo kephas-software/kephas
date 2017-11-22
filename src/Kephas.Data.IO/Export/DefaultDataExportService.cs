@@ -10,6 +10,8 @@
 namespace Kephas.Data.IO.Export
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -76,10 +78,20 @@ namespace Kephas.Data.IO.Export
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var queryExecutionContext = new ClientQueryExecutionContext(this.ambientServices);
-            context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
-            var data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
+            IEnumerable<object> data;
+
+            if (context.Query != null)
+            {
+                var queryExecutionContext = new ClientQueryExecutionContext(this.ambientServices);
+                context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
+                data = await this.clientQueryExecutor
+                           .ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
                            .PreserveThreadContext();
+            }
+            else
+            {
+                data = context.Data;
+            }
 
             cancellationToken.ThrowIfCancellationRequested();
 

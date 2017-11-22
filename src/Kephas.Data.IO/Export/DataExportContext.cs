@@ -10,6 +10,7 @@
 namespace Kephas.Data.IO.Export
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO;
@@ -28,9 +29,24 @@ namespace Kephas.Data.IO.Export
         /// <param name="output">The export output.</param>
         public DataExportContext(ClientQuery query, DataStream output)
         {
+            Requires.NotNull(query, nameof(query));
             Requires.NotNull(output, nameof(output));
 
             this.Query = query;
+            this.Output = output;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataExportContext"/> class.
+        /// </summary>
+        /// <param name="data">The data to be exported.</param>
+        /// <param name="output">The export output.</param>
+        public DataExportContext(IEnumerable<object> data, DataStream output)
+        {
+            Requires.NotNull(data, nameof(data));
+            Requires.NotNull(output, nameof(output));
+
+            this.Data = data;
             this.Output = output;
         }
 
@@ -43,12 +59,20 @@ namespace Kephas.Data.IO.Export
         public Type DefaultRootTargetType { get; set; }
 
         /// <summary>
-        /// Gets the query.
+        /// Gets the query used to retrieve the data to be exported.
         /// </summary>
         /// <value>
-        /// The query.
+        /// The query to retrieve data.
         /// </value>
         public ClientQuery Query { get; }
+
+        /// <summary>
+        /// Gets the data to be exported.
+        /// </summary>
+        /// <value>
+        /// The data to be exported.
+        /// </value>
+        public IEnumerable<object> Data { get; }
 
         /// <summary>
         /// Gets or sets the export output.
@@ -65,50 +89,5 @@ namespace Kephas.Data.IO.Export
         /// The client query execution context configuration.
         /// </value>
         public Action<IClientQueryExecutionContext> ClientQueryExecutionContextConfig { get; set; }
-    }
-
-    /// <summary>
-    /// Extensions for <see cref="IDataExportContext"/>.
-    /// </summary>
-    public static class DataExportContextExtensions
-    {
-        /// <summary>
-        /// The result key.
-        /// </summary>
-        private const string ResultKey = "SYSTEM_Result";
-
-        /// <summary>
-        /// Ensures that a result is set in the options.
-        /// </summary>
-        /// <param name="dataExportContext">The data export context.</param>
-        /// <param name="resultFactory">The result factory (optional).</param>
-        /// <returns>
-        /// The result, once it is set into the context.
-        /// </returns>
-        public static IDataIOResult EnsureResult(this IDataExportContext dataExportContext, Func<IDataIOResult> resultFactory = null)
-        {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
-
-            var result = dataExportContext[ResultKey] as IDataIOResult;
-            if (result == null)
-            {
-                resultFactory = resultFactory ?? (() => new DataIOResult());
-                dataExportContext[ResultKey] = result = resultFactory();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the result from the options.
-        /// </summary>
-        /// <param name="dataExportContext">The data export context.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult GetResult(this IDataExportContext dataExportContext)
-        {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
-
-            return dataExportContext[ResultKey] as IDataIOResult;
-        }
     }
 }

@@ -16,6 +16,7 @@ namespace Kephas.Data.IO.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.IO.Export;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
@@ -83,6 +84,7 @@ namespace Kephas.Data.IO.DataStreams
                                            {
                                                RootObjectType = context?.RootObjectType ?? data.GetType()
                                            };
+            context?.SerializationContextConfig?.Invoke(serializationContext);
             var serializer = this.serializationService.GetSerializer(serializationContext);
 
             using (var writer = this.CreateEncodedStreamWriter(dataStream))

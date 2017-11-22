@@ -68,47 +68,4 @@ namespace Kephas.Data.IO.Import
         /// </value>
         public Action<IPersistChangesContext> PersistChangesContextConfig { get; set; }
     }
-
-    /// <summary>
-    /// Extensions for <see cref="IDataImportContext"/>.
-    /// </summary>
-    public static class DataImportContextExtensions
-    {
-        /// <summary>
-        /// The result key.
-        /// </summary>
-        private const string ResultKey = "SYSTEM_Result";
-
-        /// <summary>
-        /// Ensures that a result is set in the options.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <param name="resultFactory">The result factory.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult EnsureResult(this IDataImportContext self, Func<IDataIOResult> resultFactory = null)
-        {
-            Requires.NotNull(self, nameof(self));
-
-            var result = self[ResultKey] as IDataIOResult;
-            if (result == null)
-            {
-                resultFactory = resultFactory ?? (() => new DataIOResult());
-                self[ResultKey] = result = resultFactory();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the result from the options.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult GetResult(this IDataImportContext self)
-        {
-            Requires.NotNull(self, nameof(self));
-
-            return self[ResultKey] as IDataIOResult;
-        }
-    }
 }

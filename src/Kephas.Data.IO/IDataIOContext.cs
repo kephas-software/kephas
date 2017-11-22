@@ -11,6 +11,7 @@ namespace Kephas.Data.IO
 {
     using System;
 
+    using Kephas.Serialization;
     using Kephas.Services;
 
     /// <summary>
@@ -25,5 +26,13 @@ namespace Kephas.Data.IO
         /// The type of the root object.
         /// </value>
         Type RootObjectType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the serialization context configuration.
+        /// </summary>
+        /// <value>
+        /// The serialization context configuration.
+        /// </value>
+        Action<ISerializationContext> SerializationContextConfig { get; set; }
     }
 }

@@ -80,6 +80,7 @@ namespace Kephas.Data.IO.DataStreams
                                            {
                                                RootObjectType = context?.RootObjectType ?? typeof(List<object>)
                                            };
+            context?.SerializationContextConfig?.Invoke(serializationContext);
             var serializer = this.serializationService.GetSerializer(serializationContext);
 
             using (var reader = this.CreateEncodedStreamReader(dataStream))
