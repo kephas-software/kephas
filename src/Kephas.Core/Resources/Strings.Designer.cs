@@ -115,6 +115,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during the application configuration procedure, please check the exception details for more information..
+        /// </summary>
+        internal static string App_BootstrapAsync_ErrorDuringConfiguration_Exception {
+            get {
+                return ResourceManager.GetString("App_BootstrapAsync_ErrorDuringConfiguration_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during the application forced shut down procedure, please check the exception details for more information..
+        /// </summary>
+        internal static string App_BootstrapAsync_ErrorDuringForcedShutdown_Exception {
+            get {
+                return ResourceManager.GetString("App_BootstrapAsync_ErrorDuringForcedShutdown_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors occurred during the application bootstrap procedure, please check the exception details for more information..
         /// </summary>
         internal static string App_BootstrapAsync_ErrorDuringInitialization_Exception {

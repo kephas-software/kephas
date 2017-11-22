@@ -282,4 +282,10 @@
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{0}'.</value>
   </data>
+  <data name="App_BootstrapAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
+    <value>Errors occurred during the application configuration procedure, please check the exception details for more information.</value>
+  </data>
+  <data name="App_BootstrapAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
+    <value>Errors occurred during the application forced shut down procedure, please check the exception details for more information.</value>
+  </data>
 </root>
