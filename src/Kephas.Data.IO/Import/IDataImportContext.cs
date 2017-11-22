@@ -116,14 +116,14 @@ namespace Kephas.Data.IO.Import
         }
 
         /// <summary>
-        /// Sets the data conversion context configuration.
+        /// Sets the persist changes context configuration.
         /// </summary>
         /// <param name="dataImportContext">The data import context to act on.</param>
         /// <param name="persistChangesContextConfig">The persist changes context configuration.</param>
         /// <returns>
         /// The data import context.
         /// </returns>
-        public static IDataImportContext WithDataConversionContextConfig(
+        public static IDataImportContext WithPersistChangesContextConfig(
             this IDataImportContext dataImportContext,
             Action<IPersistChangesContext> persistChangesContextConfig)
         {
