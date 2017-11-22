@@ -114,7 +114,7 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// The data export context.
         /// </returns>
-        public static IDataExportContext WithClientQueryExecutionContext(
+        public static IDataExportContext WithClientQueryExecutionContextConfig(
             this IDataExportContext dataExportContext,
             Action<IClientQueryExecutionContext> clientQueryExecutionContextConfig)
         {
