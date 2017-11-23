@@ -10,6 +10,7 @@
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Serialization.Json;
+
+    using Newtonsoft.Json.Linq;
 
     using NSubstitute;
 
@@ -56,6 +59,36 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_untyped()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<JObject>(obj);
+
+            var dict = (JObject)obj;
+            Assert.AreEqual("there", dict["hi"].Value<string>());
+            Assert.AreEqual("friend", dict["my"].Value<string>());
+        }
+
+        [Test]
+        public async Task DeserializeAsync_dictionary()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
+
+            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
+
+            var dict = (IDictionary<string, object>)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
         }
 
         [Test]

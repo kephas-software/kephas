@@ -10,6 +10,7 @@
 namespace Kephas.Serialization.ServiceStack.Text.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading.Tasks;
@@ -57,6 +58,36 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_untyped()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
+
+            var dict = (IDictionary<string, object>)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_dictionary()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>)});
+
+            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
+
+            var dict = (IDictionary<string, object>)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
         }
 
         [Test]
