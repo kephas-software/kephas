@@ -109,6 +109,19 @@ namespace Kephas.Dynamic
         {
             Requires.NotNull(innerObject, nameof(innerObject));
 
+            if (innerObject is IDictionary<string, object> innerObjectDictionary)
+            {
+                if (innerDictionary == null)
+                {
+                    innerDictionary = innerObjectDictionary;
+                    innerObject = null;
+                }
+                else if (innerDictionary == innerObjectDictionary)
+                {
+                    innerObject = null;
+                }
+            }
+
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.InitializeExpando(innerObject, innerDictionary);
         }

@@ -41,6 +41,28 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void Constructor_dictionary()
+        {
+            var dict = new Dictionary<string, object>();
+            dynamic expando = new Expando(dict);
+
+            expando.Hi = "there";
+
+            Assert.AreEqual("there", dict["Hi"]);
+        }
+
+        [Test]
+        public void Constructor_dictionary_as_object()
+        {
+            var dict = new Dictionary<string, object>();
+            dynamic expando = new Expando((object)dict);
+
+            expando.Hi = "there";
+
+            Assert.AreEqual("there", dict["Hi"]);
+        }
+
+        [Test]
         public void PublicProperty_default()
         {
             dynamic expando = new Expando();

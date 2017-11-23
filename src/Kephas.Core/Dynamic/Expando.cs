@@ -65,7 +65,7 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
         public Expando(bool isThreadSafe)
-            : base(GetDictionary(isThreadSafe))
+            : base(GetDictionary(null, isThreadSafe))
         {
         }
 
@@ -91,7 +91,7 @@ namespace Kephas.Dynamic
         /// <param name="innerObject">The instance to be extended.</param>
         /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
         public Expando(object innerObject, bool isThreadSafe = false)
-            : base(innerObject, GetDictionary(isThreadSafe))
+            : base(innerObject, GetDictionary(innerObject, isThreadSafe))
         {
             Requires.NotNull(innerObject, nameof(innerObject));
         }
@@ -99,12 +99,19 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Gets a dictionary baed on the <paramref name="isThreadSafe"/> flag.
         /// </summary>
-        /// <param name="isThreadSafe"><c>true</c> if the internal dictionary should be thread safe, <c>false</c> otherwise.</param>
+        /// <param name="innerObject">The instance to be extended.</param>
+        /// <param name="isThreadSafe"><c>true</c> if the internal dictionary should be thread safe,
+        ///                            <c>false</c> otherwise.</param>
         /// <returns>
         /// The dictionary.
         /// </returns>
-        private static IDictionary<string, object> GetDictionary(bool isThreadSafe)
+        private static IDictionary<string, object> GetDictionary(object innerObject, bool isThreadSafe)
         {
+            if (innerObject is IDictionary<string, object> innerDictionary)
+            {
+                return innerDictionary;
+            }
+
             return isThreadSafe
                        ? (IDictionary<string, object>)new ConcurrentDictionary<string, object>()
                        : new Dictionary<string, object>();

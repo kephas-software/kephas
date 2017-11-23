@@ -124,6 +124,9 @@
     <Compile Include="..\Kephas.Core.Tests\DynamicObjectExtensionsTest.cs">
       <Link>DynamicObjectExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Dynamic\ExpandoBaseTest.cs">
+      <Link>Dynamic\ExpandoBaseTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Dynamic\ExpandoExtensionsTest.cs">
       <Link>Dynamic\ExpandoExtensionsTest.cs</Link>
     </Compile>
