@@ -14,6 +14,7 @@ namespace Kephas.Serialization.Json.Tests
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Serialization.Json;
@@ -44,6 +45,20 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
+        public async Task SerializeAsync_Expando()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new ExpandoEntity
+                          {
+                              Description = "John Doe"
+                          };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
         public async Task DeserializeAsync_with_serialized_types()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
@@ -56,6 +71,21 @@ namespace Kephas.Serialization.Json.Tests
             var testEntity = (TestEntity)obj;
 
             Assert.AreEqual("John Doe", testEntity.Name);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_with_serialized_types_expando()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<ExpandoEntity>(obj);
+
+            var testEntity = (ExpandoEntity)obj;
+
+            Assert.AreEqual("John Doe", testEntity.Description);
         }
 
         [Test]
@@ -113,6 +143,11 @@ namespace Kephas.Serialization.Json.Tests
         public class TestEntity
         {
             public string Name { get; set; }
+        }
+
+        public class ExpandoEntity : Expando
+        {
+            public string Description { get; set; }
         }
     }
 }
