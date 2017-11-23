@@ -61,7 +61,7 @@ namespace Kephas.Serialization.Json.Tests
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);
         }
 
-        [Test]
+        [Test, Ignore("The solution of deserializing objects by default in dictionaries still pending...")]
         public async Task DeserializeAsync_untyped()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
@@ -69,11 +69,11 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
-            Assert.IsInstanceOf<JObject>(obj);
+            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
-            var dict = (JObject)obj;
-            Assert.AreEqual("there", dict["hi"].Value<string>());
-            Assert.AreEqual("friend", dict["my"].Value<string>());
+            var dict = (IDictionary<string, object>)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
         }
 
         [Test]
