@@ -10,28 +10,18 @@
 namespace Kephas.Data.Commands
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
+    using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Linq;
-    using Kephas.Data.Resources;
-    using Kephas.Reflection;
-    using Kephas.Threading.Tasks;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Base class for find commands.
     /// </summary>
     [DataContextType(typeof(DataContextBase))]
-    public class FindCommand : DataCommandBase<IFindContext, IFindResult>, IFindCommand
+    public class FindCommand : FindCommandBase<IFindContext>, IFindCommand
     {
-        /// <summary>
-        /// The query method.
-        /// </summary>
-        private static readonly MethodInfo GetMatchingEntitiesMethod = ReflectionHelper.GetGenericMethodOf(_ => ((FindCommand)null).GetMatchingEntities<string>(null, CancellationToken.None));
-
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
@@ -40,65 +30,38 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
-        public override async Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
+        public override Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
         {
-            var getMatchingEntities = GetMatchingEntitiesMethod.MakeGenericMethod(operationContext.EntityType);
-            var entitiesPromise = (Task<IEnumerable<object>>)getMatchingEntities.Call(this, operationContext, cancellationToken);
-            var entities = (await entitiesPromise.PreserveThreadContext()).ToList();
-            if (entities.Count > 1)
-            {
-                throw new AmbiguousMatchDataException(string.Format(Strings.DataContext_FindOneAsync_AmbiguousMatch_Exception, $"Id == {operationContext.Id}"));
-            }
+            Requires.NotNull(operationContext.Id, nameof(operationContext.Id));
 
-            Exception exception = null;
-            if (entities.Count == 0)
-            {
-                exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, operationContext.Id));
-                if (operationContext.ThrowIfNotFound)
-                {
-                    throw exception;
-                }
-            }
-
-            var result = new FindResult(entities.Count == 0 ? null : entities[0], exception: exception);
-            return result;
+            return base.ExecuteAsync(operationContext, cancellationToken);
         }
 
         /// <summary>
-        /// Gets the matching entities.
+        /// Gets the find criteria.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
-        /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="findContext">The find context.</param>
         /// <returns>
-        /// The matching entities.
+        /// The find criteria.
         /// </returns>
-        public virtual async Task<IEnumerable<object>> GetMatchingEntities<T>(IFindContext operationContext, CancellationToken cancellationToken)
-            where T : class
+        protected override Expression<Func<T, bool>> GetFindCriteria<T>(IFindContext findContext)
         {
-            var entities = await this.GetEntityQuery<T>(operationContext)
-                                    .ToListAsync(cancellationToken: cancellationToken)
-                                    .PreserveThreadContext();
-            return entities;
+            return this.GetIdEqualityExpression<T>(findContext.DataContext, findContext.Id);
         }
 
         /// <summary>
-        /// Gets the entity query for filtering out the required entity.
+        /// Gets the criteria string for exception display.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="operationContext">The operation context.</param>
+        /// <param name="findContext">The find context.</param>
+        /// <param name="criteria">The criteria.</param>
         /// <returns>
-        /// The entity query.
+        /// The criteria string.
         /// </returns>
-        protected virtual IQueryable<T> GetEntityQuery<T>(IFindContext operationContext)
-            where T : class
+        protected override string GetCriteriaString<T>(IFindContext findContext, Expression<Func<T, bool>> criteria)
         {
-            var dataContext = operationContext.DataContext;
-            var query = dataContext
-                            .Query<T>(new QueryOperationContext(dataContext))
-                            .Where(this.GetIdEqualityExpression<T>(dataContext, operationContext.Id))
-                            .Take(2);
-            return query;
+            return $"{nameof(IIdentifiable.Id)} == {findContext.Id}";
         }
     }
 }

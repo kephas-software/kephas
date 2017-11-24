@@ -9,12 +9,10 @@
 
 namespace Kephas.Data.Commands
 {
-    using System;
-
     /// <summary>
     /// Contract for find contexts.
     /// </summary>
-    public interface IFindContext : IDataOperationContext
+    public interface IFindContext : IFindContextBase
     {
         /// <summary>
         /// Gets the identifier of the entity to find.
@@ -23,22 +21,6 @@ namespace Kephas.Data.Commands
         /// The identifier of the entity.
         /// </value>
         object Id { get; }
-
-        /// <summary>
-        /// Gets the type of the entity.
-        /// </summary>
-        /// <value>
-        /// The type of the entity.
-        /// </value>
-        Type EntityType { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether to throw an exception if an entity is not found.
-        /// </summary>
-        /// <value>
-        /// <c>true</c>true to throw an exception if an entity is not found, otherwise <c>false</c>.
-        /// </value>
-        bool ThrowIfNotFound { get; }
     }
 
     /// <summary>

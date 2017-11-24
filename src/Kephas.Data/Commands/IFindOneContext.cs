@@ -15,7 +15,7 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Interface for data operation contexts of the <see cref="IFindOneCommand"/>.
     /// </summary>
-    public interface IFindOneContext : IDataOperationContext
+    public interface IFindOneContext : IFindContextBase
     {
         /// <summary>
         /// Gets the criteria of the entity to find.
@@ -24,22 +24,6 @@ namespace Kephas.Data.Commands
         /// The criteria of the entity to find.
         /// </value>
         Expression Criteria { get; }
-
-        /// <summary>
-        /// Gets the type of the entity.
-        /// </summary>
-        /// <value>
-        /// The type of the entity.
-        /// </value>
-        Type EntityType { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether to throw an exception if an entity is not found.
-        /// </summary>
-        /// <value>
-        /// <c>true</c>true to throw an exception if an entity is not found, otherwise <c>false</c>.
-        /// </value>
-        bool ThrowIfNotFound { get; }
     }
 
     /// <summary>
