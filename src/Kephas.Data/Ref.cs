@@ -75,27 +75,8 @@ namespace Kephas.Data
         /// </value>
         public object Id
         {
-            get
-            {
-                var entity = this.GetEntityInfo().Entity;
-                var expandoEntity = entity as IIndexable;
-                return expandoEntity != null
-                    ? expandoEntity[this.refIdName]
-                    : entity.GetPropertyValue(this.refIdName);
-            }
-            set
-            {
-                var entity = this.GetEntityInfo().Entity;
-                var expandoEntity = entity as IIndexable;
-                if (expandoEntity != null)
-                {
-                    expandoEntity[this.refIdName] = value;
-                }
-                else
-                {
-                    entity.SetPropertyValue(this.refIdName, value);
-                }
-            }
+            get => this.GetEntityPropertyValue(this.refIdName);
+            set => this.SetEntityPropertyValue(this.refIdName, value);
         }
 
         /// <summary>
@@ -106,7 +87,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        public async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
+        public virtual async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
         {
             if (Data.Id.IsEmpty(this.Id))
             {
@@ -135,6 +116,39 @@ namespace Kephas.Data
         }
 
         /// <summary>
+        /// Gets the value of the indicated entity property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>
+        /// The value of the entity property.
+        /// </returns>
+        protected virtual object GetEntityPropertyValue(string propertyName)
+        {
+            var entity = this.GetEntityInfo().Entity;
+            return entity is IIndexable expandoEntity
+                       ? expandoEntity[propertyName]
+                       : entity.GetPropertyValue(propertyName);
+        }
+
+        /// <summary>
+        /// Sets the value of the indicated entity property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
+        protected virtual void SetEntityPropertyValue(string propertyName, object value)
+        {
+            var entity = this.GetEntityInfo().Entity;
+            if (entity is IIndexable expandoEntity)
+            {
+                expandoEntity[propertyName] = value;
+            }
+            else
+            {
+                entity.SetPropertyValue(propertyName, value);
+            }
+        }
+
+        /// <summary>
         /// Gets entity information.
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown when the entity has been disposed.</exception>
@@ -143,8 +157,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityInfo GetEntityInfo()
         {
-            IEntityInfoAware entity;
-            if (!this.entityRef.TryGetTarget(out entity))
+            if (!this.entityRef.TryGetTarget(out var entity))
             {
                 // TODO localization
                 throw new ObjectDisposedException(this.GetType().Name, "The entity has been disposed.");
