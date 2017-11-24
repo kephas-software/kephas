@@ -256,10 +256,10 @@
     <value>No media type class  found for '{0}'. Resolution: define a class implementing {1} with the indicated media type.</value>
   </data>
   <data name="App_BootstrapAsync_Bootstrapping_Message" xml:space="preserve">
-    <value>Bootstrapping application...</value>
+    <value>Bootstrapping the application...</value>
   </data>
   <data name="App_BootstrapAsync_ConfiguringAmbientServices_Message" xml:space="preserve">
-    <value>Configuring ambient services...</value>
+    <value>Configuring the ambient services...</value>
   </data>
   <data name="App_BootstrapAsync_InitializingAppManager_Message" xml:space="preserve">
     <value>Initializing the app manager...</value>
@@ -268,16 +268,16 @@
     <value>Errors occurred during the application bootstrap procedure, please check the exception details for more information.</value>
   </data>
   <data name="App_BootstrapAsync_StartComplete_Message" xml:space="preserve">
-    <value>Application bootstrapped successfully.</value>
+    <value>The application bootstrapped successfully.</value>
   </data>
   <data name="App_ShutdownAsync_ShuttingDown_Message" xml:space="preserve">
-    <value>Shutting down application...</value>
+    <value>Shutting down the application...</value>
   </data>
   <data name="App_ShutdownAsync_ErrorDuringFinalization_Exception" xml:space="preserve">
     <value>Errors occurred during the application shutdown procedure, please check the exception details for more information.</value>
   </data>
   <data name="App_ShutdownAsync_Complete_Message" xml:space="preserve">
-    <value>Application shutdown successfully. Good bye!</value>
+    <value>The application shut down successfully. Good bye!</value>
   </data>
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
     <value>Errors occurred when trying to resolve type '{0}'.</value>

@@ -97,7 +97,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bootstrapping application....
+        ///   Looks up a localized string similar to Bootstrapping the application....
         /// </summary>
         internal static string App_BootstrapAsync_Bootstrapping_Message {
             get {
@@ -106,7 +106,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Configuring ambient services....
+        ///   Looks up a localized string similar to Configuring the ambient services....
         /// </summary>
         internal static string App_BootstrapAsync_ConfiguringAmbientServices_Message {
             get {
@@ -151,7 +151,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application bootstrapped successfully..
+        ///   Looks up a localized string similar to The application bootstrapped successfully..
         /// </summary>
         internal static string App_BootstrapAsync_StartComplete_Message {
             get {
@@ -160,7 +160,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application shutdown successfully. Good bye!.
+        ///   Looks up a localized string similar to The application shut down successfully. Good bye!.
         /// </summary>
         internal static string App_ShutdownAsync_Complete_Message {
             get {
@@ -178,7 +178,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutting down application....
+        ///   Looks up a localized string similar to Shutting down the application....
         /// </summary>
         internal static string App_ShutdownAsync_ShuttingDown_Message {
             get {
