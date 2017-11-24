@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -32,7 +33,10 @@ namespace Kephas.Data.Commands
         /// </returns>
         public override Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(operationContext.Id, nameof(operationContext.Id));
+            if (Id.IsEmpty(operationContext.Id))
+            {
+                throw new ArgumentException(Strings.DataContext_FindAsync_IdEmpty_Exception, nameof(operationContext.Id));
+            }
 
             return base.ExecuteAsync(operationContext, cancellationToken);
         }

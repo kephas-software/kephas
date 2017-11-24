@@ -9,6 +9,7 @@
 
 namespace Kephas.Data.Tests.Commands
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -92,6 +93,23 @@ namespace Kephas.Data.Tests.Commands
 
             var findContext = new FindContext<TestEntity>(dataContext, 2);
             Assert.ThrowsAsync<AmbiguousMatchDataException>(() => cmd.ExecuteAsync(findContext));
+        }
+
+        [Test]
+        public async Task ExecuteAsync_empty_id_exception()
+        {
+            var localCache = new DataContextCache();
+            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var cmd = new FindCommand();
+
+            var findContext = new FindContext<TestEntity>(dataContext, 0);
+            Assert.ThrowsAsync<ArgumentException>(() => cmd.ExecuteAsync(findContext));
+
+            findContext = new FindContext<TestEntity>(dataContext, null);
+            Assert.ThrowsAsync<ArgumentException>(() => cmd.ExecuteAsync(findContext));
+
+            findContext = new FindContext<TestEntity>(dataContext, Guid.Empty);
+            Assert.ThrowsAsync<ArgumentException>(() => cmd.ExecuteAsync(findContext));
         }
 
         public class TestEntity : IIdentifiable

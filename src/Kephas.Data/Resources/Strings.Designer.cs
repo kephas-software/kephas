@@ -88,29 +88,29 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No entry was found with the provided ID {0}..
+        ///   Looks up a localized string similar to Multiple entries were found with the provided criteria {0}..
         /// </summary>
-        internal static string DataContext_FindAsync_NotFound_Exception {
+        internal static string DataContext_FindAsync_AmbiguousMatch_Exception {
             get {
-                return ResourceManager.GetString("DataContext_FindAsync_NotFound_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindAsync_AmbiguousMatch_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple entries were found with the provided criteria {0}..
+        ///   Looks up a localized string similar to The provided ID is empty..
         /// </summary>
-        internal static string DataContext_FindOneAsync_AmbiguousMatch_Exception {
+        internal static string DataContext_FindAsync_IdEmpty_Exception {
             get {
-                return ResourceManager.GetString("DataContext_FindOneAsync_AmbiguousMatch_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindAsync_IdEmpty_Exception", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided criteria {0}..
         /// </summary>
-        internal static string DataContext_FindOneAsync_NotFound_Exception {
+        internal static string DataContext_FindAsync_NotFound_Exception {
             get {
-                return ResourceManager.GetString("DataContext_FindOneAsync_NotFound_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContext_FindAsync_NotFound_Exception", resourceCulture);
             }
         }
         

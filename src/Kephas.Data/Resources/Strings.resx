@@ -123,13 +123,13 @@
   <data name="DataConverterNotFound_Exception" xml:space="preserve">
     <value>No data converters were found for source type '{0}' and target type '{1}'.</value>
   </data>
-  <data name="DataContext_FindAsync_NotFound_Exception" xml:space="preserve">
-    <value>No entry was found with the provided ID {0}.</value>
+  <data name="DataContext_FindAsync_IdEmpty_Exception" xml:space="preserve">
+    <value>The provided ID is empty.</value>
   </data>
-  <data name="DataContext_FindOneAsync_AmbiguousMatch_Exception" xml:space="preserve">
+  <data name="DataContext_FindAsync_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Multiple entries were found with the provided criteria {0}.</value>
   </data>
-  <data name="DataContext_FindOneAsync_NotFound_Exception" xml:space="preserve">
+  <data name="DataContext_FindAsync_NotFound_Exception" xml:space="preserve">
     <value>No entry was found with the provided criteria {0}.</value>
   </data>
   <data name="DefaultDataConversionService_NonTypedSourceIsNull_Exception" xml:space="preserve">
