@@ -156,6 +156,13 @@ namespace Kephas.Runtime
             return this.PropertyInfo.GetCustomAttributes<TAttribute>(inherit: true);
         }
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{this.PropertyInfo.Name}: {this.PropertyInfo.PropertyType.FullName}";
+        }
+
         /// <summary>
         /// Gets the <see cref="ITypeInfo"/> of this expando object.
         /// </summary>
