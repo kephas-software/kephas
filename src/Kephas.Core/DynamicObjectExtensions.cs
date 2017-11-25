@@ -31,8 +31,8 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var objectTypeAccessor = obj.GetType().AsRuntimeTypeInfo();
-            objectTypeAccessor.SetValue(obj, propertyName, value);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            runtimeTypeInfo.SetValue(obj, propertyName, value);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace Kephas
                 return false;
             }
 
-            var objectTypeAccessor = obj.GetType().AsRuntimeTypeInfo();
-            return objectTypeAccessor.TrySetValue(obj, propertyName, value);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            return runtimeTypeInfo.TrySetValue(obj, propertyName, value);
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var dynamicType = obj.GetType().AsRuntimeTypeInfo();
-            return dynamicType.GetValue(obj, propertyName);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            return runtimeTypeInfo.GetValue(obj, propertyName);
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var dynamicType = obj.GetType().AsRuntimeTypeInfo();
-            return dynamicType.TryGetValue(obj, propertyName, out value);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            return runtimeTypeInfo.TryGetValue(obj, propertyName, out value);
         }
 
         /// <summary>
