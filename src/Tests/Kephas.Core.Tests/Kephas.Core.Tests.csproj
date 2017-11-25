@@ -92,6 +92,7 @@
     <Compile Include="Reflection\TypeExtensionsTest.cs" />
     <Compile Include="Reflection\TypeInfoExtensionsTest.cs" />
     <Compile Include="Runtime\RuntimeAssemblyInfoTest.cs" />
+    <Compile Include="Runtime\RuntimePropertyInfoTest.cs" />
     <Compile Include="Runtime\RuntimeTypeInfoTest.cs" />
     <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />
     <Compile Include="Serialization\SerializationExtensionsTest.cs" />

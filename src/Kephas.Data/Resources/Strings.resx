@@ -190,4 +190,10 @@
   <data name="DataContext_MismatchedDataContextInCommand_Exception" xml:space="preserve">
     <value>The provided command execution context targets a different data context than the one supposed to execute the command.</value>
   </data>
+  <data name="Ref_GetEntityInfo_Disposed_Exception" xml:space="preserve">
+    <value>The entity has been disposed.</value>
+  </data>
+  <data name="Ref_GetDataContext_NullDataContext_Exception" xml:space="preserve">
+    <value>Cannot retrieve a data context.</value>
+  </data>
 </root>

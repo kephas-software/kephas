@@ -276,5 +276,23 @@ namespace Kephas.Data.Resources {
                 return ResourceManager.GetString("PersistChangesCommand_ResultMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot retrieve a data context..
+        /// </summary>
+        internal static string Ref_GetDataContext_NullDataContext_Exception {
+            get {
+                return ResourceManager.GetString("Ref_GetDataContext_NullDataContext_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entity has been disposed..
+        /// </summary>
+        internal static string Ref_GetEntityInfo_Disposed_Exception {
+            get {
+                return ResourceManager.GetString("Ref_GetEntityInfo_Disposed_Exception", resourceCulture);
+            }
+        }
     }
 }

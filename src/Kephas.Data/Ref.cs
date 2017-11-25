@@ -15,6 +15,7 @@ namespace Kephas.Data
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Threading.Tasks;
@@ -73,7 +74,7 @@ namespace Kephas.Data
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        public object Id
+        public virtual object Id
         {
             get => this.GetEntityPropertyValue(this.refIdName);
             set => this.SetEntityPropertyValue(this.refIdName, value);
@@ -159,8 +160,7 @@ namespace Kephas.Data
         {
             if (!this.entityRef.TryGetTarget(out var entity))
             {
-                // TODO localization
-                throw new ObjectDisposedException(this.GetType().Name, "The entity has been disposed.");
+                throw new ObjectDisposedException(this.GetType().Name, Strings.Ref_GetEntityInfo_Disposed_Exception);
             }
 
             return entity.GetEntityInfo();
@@ -178,8 +178,7 @@ namespace Kephas.Data
             var dataContext = entityInfo?.DataContext;
             if (dataContext == null)
             {
-                // TODO localization
-                throw new InvalidOperationException("Cannot retrieve a data context object.");
+                throw new ArgumentNullException($"{nameof(entityInfo)}.{nameof(entityInfo.DataContext)}", Strings.Ref_GetDataContext_NullDataContext_Exception);
             }
 
             return dataContext;
