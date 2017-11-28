@@ -67,6 +67,7 @@
     <Compile Include="Commands\FindCommandTest.cs" />
     <Compile Include="Commands\FindOneCommandTest.cs" />
     <Compile Include="Commands\PersistChangesCommandTest.cs" />
+    <Compile Include="Conversion\DataConversionContextBuilderTest.cs" />
     <Compile Include="Conversion\DefaultDataConversionServiceTest.cs" />
     <Compile Include="DataContextBaseTest.cs" />
     <Compile Include="DataContextExtensionsTest.cs" />

@@ -62,35 +62,35 @@ namespace Kephas.Data.Conversion
         public bool ThrowOnError { get; set; }
 
         /// <summary>
-        /// Gets a <see cref="IDataContext"/> for the source object.
+        /// Gets or sets a <see cref="IDataContext"/> for the source object.
         /// </summary>
         /// <value>
         /// The source data context.
         /// </value>
-        public IDataContext SourceDataContext { get; }
+        public IDataContext SourceDataContext { get; set; }
 
         /// <summary>
-        /// Gets a <see cref="IDataContext"/> for the target object.
+        /// Gets or sets a <see cref="IDataContext"/> for the target object.
         /// </summary>
         /// <value>
         /// The target data context.
         /// </value>
-        public IDataContext TargetDataContext { get; }
+        public IDataContext TargetDataContext { get; set; }
 
         /// <summary>
-        /// Gets the type of the source root object.
+        /// Gets or sets the type of the source root object.
         /// </summary>
         /// <value>
         /// The type of the source root object.
         /// </value>
-        public Type RootSourceType { get; }
+        public Type RootSourceType { get; set; }
 
         /// <summary>
-        /// Gets the type of the target root object.
+        /// Gets or sets the type of the target root object.
         /// </summary>
         /// <value>
         /// The type of the target root object.
         /// </value>
-        public Type RootTargetType { get; }
+        public Type RootTargetType { get; set; }
     }
 }
