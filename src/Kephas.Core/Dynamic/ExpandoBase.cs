@@ -242,7 +242,12 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            return this.TrySetValue(binder.Name, value);
+            if (this.TrySetValue(binder.Name, value))
+            {
+                return true;
+            }
+
+            throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, binder.Name, this.innerObject != null ? this.GetInnerObjectTypeInfo() : this.GetThisTypeInfo()));
         }
 
         /// <summary>
@@ -415,8 +420,13 @@ namespace Kephas.Dynamic
                 propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
                 if (propInfo != null)
                 {
-                    propInfo.SetValue(this.innerObject, value);
-                    return true;
+                    if (propInfo.CanWrite)
+                    {
+                        propInfo.SetValue(this.innerObject, value);
+                        return true;
+                    }
+
+                    return false;
                 }
             }
 
@@ -424,8 +434,13 @@ namespace Kephas.Dynamic
             propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
             if (propInfo != null)
             {
-                propInfo.SetValue(this, value);
-                return true;
+                if (propInfo.CanWrite)
+                {
+                    propInfo.SetValue(this, value);
+                    return true;
+                }
+
+                return false;
             }
 
             // last, check the dictionary for member
