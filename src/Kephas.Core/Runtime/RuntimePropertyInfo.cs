@@ -222,6 +222,22 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        public override bool CanRead => this.Getter != null && base.CanRead;
+
+        /// <summary>
+        /// Gets a value indicating whether the property can be written to.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// </value>
+        public override bool CanWrite => this.Setter != null && base.CanWrite;
+
+        /// <summary>
         /// Gets the getter.
         /// </summary>
         private Func<T, TMember> Getter
@@ -256,22 +272,6 @@ namespace Kephas.Runtime
                 return this.setter;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the property value can be read.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
-        /// </value>
-        public override bool CanRead => this.Getter != null && base.CanRead;
-
-        /// <summary>
-        /// Gets a value indicating whether the property can be written to.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
-        /// </value>
-        public override bool CanWrite => this.Setter != null && base.CanWrite;
 
         /// <summary>
         /// Sets the specified value.
