@@ -101,7 +101,7 @@ namespace Kephas.Runtime
         /// <value>
         /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
         /// </value>
-        public bool CanWrite => this.PropertyInfo.CanWrite;
+        public virtual bool CanWrite => this.PropertyInfo.CanWrite;
 
         /// <summary>
         /// Gets a value indicating whether the property value can be read.
@@ -109,7 +109,7 @@ namespace Kephas.Runtime
         /// <value>
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
-        public bool CanRead => this.PropertyInfo.CanRead;
+        public virtual bool CanRead => this.PropertyInfo.CanRead;
 
         /// <summary>
         /// Gets the underlying member information.
@@ -193,9 +193,19 @@ namespace Kephas.Runtime
         private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
 
         /// <summary>
+        /// True if getter computed.
+        /// </summary>
+        private bool getterComputed = false;
+
+        /// <summary>
         /// The getter.
         /// </summary>
         private Func<T, TMember> getter;
+
+        /// <summary>
+        /// True if setter computed.
+        /// </summary>
+        private bool setterComputed = false;
 
         /// <summary>
         /// The setter.
@@ -212,6 +222,58 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the getter.
+        /// </summary>
+        private Func<T, TMember> Getter
+        {
+            get
+            {
+                if (this.getterComputed)
+                {
+                    return this.getter;
+                }
+
+                this.getter = this.ComputeGetter();
+                this.getterComputed = true;
+                return this.getter;
+            }
+        }
+
+        /// <summary>
+        /// Gets the setter.
+        /// </summary>
+        private Action<T, TMember> Setter
+        {
+            get
+            {
+                if (this.setterComputed)
+                {
+                    return this.setter;
+                }
+
+                this.setter = this.ComputeSetter();
+                this.setterComputed = true;
+                return this.setter;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the property value can be read.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
+        /// </value>
+        public override bool CanRead => this.Getter != null && base.CanRead;
+
+        /// <summary>
+        /// Gets a value indicating whether the property can be written to.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the property can be written to; otherwise <c>false</c>.
+        /// </value>
+        public override bool CanWrite => this.Setter != null && base.CanWrite;
+
+        /// <summary>
         /// Sets the specified value.
         /// </summary>
         /// <param name="obj">The object.</param>
@@ -219,10 +281,10 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
         public override void SetValue(object obj, object value)
         {
-            var setDelegate = this.GetMemberSetDelegate();
+            var setDelegate = this.Setter;
             if (setDelegate == null)
             {
-                throw new MemberAccessException(String.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             setDelegate((T)obj, (TMember)value);
@@ -238,10 +300,10 @@ namespace Kephas.Runtime
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
         public override object GetValue(object obj)
         {
-            var getDelegate = this.GetMemberGetDelegate();
+            var getDelegate = this.Getter;
             if (getDelegate == null)
             {
-                throw new MemberAccessException(String.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
+                throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_GetValue_Exception, this.PropertyInfo.Name, typeof(T)));
             }
 
             return getDelegate((T)obj);
@@ -259,28 +321,23 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the member get delegate.
+        /// Computes the member get delegate.
         /// </summary>
         /// <returns>
         /// The member get delegate.
         /// </returns>
-        private Func<T, TMember> GetMemberGetDelegate()
+        private Func<T, TMember> ComputeGetter()
         {
-            if (this.getter != null)
-            {
-                return this.getter;
-            }
-
             var mi = this.PropertyInfo.GetMethod;
             if (mi != null && mi.IsPublic)
             {
                 try
                 {
-                    return this.getter = (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
+                    return (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
                 }
                 catch (ArgumentException)
                 {
-                    return this.getter = obj => (TMember)mi.Invoke(obj, EmptyArgs);
+                    return obj => (TMember)mi.Invoke(obj, EmptyArgs);
                 }
             }
 
@@ -288,28 +345,23 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the member set delegate.
+        /// Computes the member set delegate.
         /// </summary>
         /// <returns>
         /// The member set delegate.
         /// </returns>
-        private Action<T, TMember> GetMemberSetDelegate()
+        private Action<T, TMember> ComputeSetter()
         {
-            if (this.setter != null)
-            {
-                return this.setter;
-            }
-
             var mi = this.PropertyInfo.SetMethod;
             if (mi != null && mi.IsPublic)
             {
                 try
                 {
-                    return this.setter = (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
+                    return (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
                 }
                 catch (ArgumentException)
                 {
-                    return this.setter = (obj, v) => mi.Invoke(obj, new object[] { v });
+                    return (obj, v) => mi.Invoke(obj, new object[] { v });
                 }
             }
 
