@@ -293,16 +293,28 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task ValidateModifiedEntriesAsync(IList<IEntityInfo> modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
+            var dataContext = operationContext.DataContext;
             foreach (var entityInfo in modifiedEntries)
             {
                 var entityGraphParts = entityInfo.GetStructuralEntityGraph() ?? new[] { entityInfo.Entity };
 
                 foreach (var entityPart in entityGraphParts)
                 {
-                    var validationErrors = await this.ValidateModifiedEntryAsync(entityPart, operationContext, cancellationToken).PreserveThreadContext();
-                    if (validationErrors.HasErrors())
+                    var entityPartInfo = entityPart == entityInfo.Entity
+                                             ? entityInfo
+                                             : dataContext.GetEntityInfo(entityPart);
+                    if (entityPartInfo == null)
                     {
-                        throw new DataValidationException(entityPart, validationErrors);
+                        // TODO localization
+                        this.Logger.Warn($"No entity info provided for graph part '{entityPart}' ({entityPart.GetType()}), skipping validation.");
+                    }
+                    else
+                    {
+                        var validationErrors = await this.ValidateModifiedEntryAsync(entityPart, entityPartInfo, operationContext, cancellationToken).PreserveThreadContext();
+                        if (validationErrors.HasErrors())
+                        {
+                            throw new DataValidationException(entityPart, validationErrors);
+                        }
                     }
                 }
             }
@@ -312,6 +324,7 @@ namespace Kephas.Data.Commands
         /// Validates the modified entry asynchronously.
         /// </summary>
         /// <param name="entityPart">The entity part.</param>
+        /// <param name="entityPartInfo">Information describing the entity part.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
@@ -319,15 +332,15 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task<IDataValidationResult> ValidateModifiedEntryAsync(
             object entityPart,
+            IEntityInfo entityPartInfo,
             IDataOperationContext operationContext,
             CancellationToken cancellationToken)
         {
-            var dataContext = operationContext.DataContext;
             var validators = this.BehaviorProvider.GetDataBehaviors<IOnValidateBehavior>(entityPart);
             var result = new DataValidationResult();
             foreach (var validator in validators)
             {
-                var validatorResult = await validator.ValidateAsync(entityPart, dataContext.GetEntityInfo(entityPart), operationContext, cancellationToken).PreserveThreadContext();
+                var validatorResult = await validator.ValidateAsync(entityPart, entityPartInfo, operationContext, cancellationToken).PreserveThreadContext();
                 result.Add(validatorResult.ToArray());
             }
 
