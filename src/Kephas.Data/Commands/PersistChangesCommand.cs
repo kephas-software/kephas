@@ -83,6 +83,7 @@ namespace Kephas.Data.Commands
                             var currentIteration = 0;
                             const int MaxIterations = 10;
 
+                            operationContext.Iteration = currentIteration;
                             var modifiedEntries = this.DetectModifiedEntries(operationContext);
 
                             while (modifiedEntries.Count > 0)
@@ -102,8 +103,9 @@ namespace Kephas.Data.Commands
                                 await this.ExecuteAfterSaveBehaviorsAsync(operationContext, modifiedEntries, cancellationToken).PreserveThreadContext();
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
-                                modifiedEntries = this.DetectModifiedEntries(operationContext);
                                 currentIteration++;
+                                operationContext.Iteration = currentIteration;
+                                modifiedEntries = this.DetectModifiedEntries(operationContext);
                             }
                         }
                         catch (Exception ex)
@@ -117,11 +119,12 @@ namespace Kephas.Data.Commands
             {
                 this.Logger.Error(
                     exception,
-                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Data: {4}",
+                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
                         operationContext.DataContext.Id,
                         exception.Message,
                         elapsed,
                         changes,
+                        operationContext.Iteration,
                         sb);
                 throw exception;
             }
@@ -129,21 +132,23 @@ namespace Kephas.Data.Commands
             if (elapsed.TotalMilliseconds > 1000)
             {
                 this.Logger.Warn(
-                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Data: {4}",
+                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
                         operationContext.DataContext.Id,
                         "Elapsed time more than 1s",
                         elapsed,
                         changes,
+                        operationContext.Iteration,
                         sb);
             }
             else
             {
                 this.Logger.Debug(
-                    "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Data: {4}",
+                    "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
                     operationContext.DataContext.Id,
                     "OK",
                     elapsed,
                     changes,
+                    operationContext.Iteration,
                     sb);
             }
 
@@ -222,6 +227,16 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual IList<IEntityInfo> DetectModifiedEntries(IPersistChangesContext operationContext)
         {
+            if (operationContext.ChangeSet != null)
+            {
+                var dataContext = operationContext.DataContext;
+                var changeSet = operationContext.ChangeSet
+                                    .Select(e => dataContext.GetEntityInfo(e))
+                                    .Where(ei => ei != null && ei.ChangeState != ChangeState.NotChanged)
+                                    .ToList();
+                return changeSet;
+            }
+
             var localCache = this.TryGetLocalCache(operationContext.DataContext);
             if (localCache == null)
             {

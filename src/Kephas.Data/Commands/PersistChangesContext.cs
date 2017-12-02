@@ -9,6 +9,8 @@
 
 namespace Kephas.Data.Commands
 {
+    using System.Collections.Generic;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -25,5 +27,24 @@ namespace Kephas.Data.Commands
         {
             Requires.NotNull(dataContext, nameof(dataContext));
         }
+
+        /// <summary>
+        /// Gets or sets the change set to be persisted.
+        /// </summary>
+        /// <remarks>
+        /// If the change set is <c>null</c>, an automatic change set detection is performed.
+        /// </remarks>
+        /// <value>
+        /// The change set.
+        /// </value>
+        public IEnumerable<object> ChangeSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets the iteration during persistence workflow.
+        /// </summary>
+        /// <value>
+        /// The iteration.
+        /// </value>
+        public int Iteration { get; set; }
     }
 }
