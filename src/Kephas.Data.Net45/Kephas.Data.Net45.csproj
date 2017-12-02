@@ -274,6 +274,9 @@
     <Compile Include="..\Kephas.Data\Conversion\DataConversionContext.cs">
       <Link>Conversion\DataConversionContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\DataConversionContextBuilder.cs">
+      <Link>Conversion\DataConversionContextBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Conversion\DataConversionException.cs">
       <Link>Conversion\DataConversionException.cs</Link>
     </Compile>

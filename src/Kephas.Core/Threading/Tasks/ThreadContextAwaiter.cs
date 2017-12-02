@@ -10,6 +10,7 @@
 namespace Kephas.Threading.Tasks
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace Kephas.Threading.Tasks
     /// Awaiter preserving the thread context.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
+    [DebuggerStepThrough]
     public class ThreadContextAwaiter<TResult> : INotifyCompletion, ICriticalNotifyCompletion
     {
         /// <summary>
@@ -101,6 +103,7 @@ namespace Kephas.Threading.Tasks
     /// Awaiter preserving the thread context.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
+    [DebuggerStepThrough]
     public class ThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
     {
         /// <summary>

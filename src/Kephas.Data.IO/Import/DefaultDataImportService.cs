@@ -425,15 +425,12 @@ namespace Kephas.Data.IO.Import
             private async Task<IEntityInfo> ConvertEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityInfo.Entity;
-                var conversionContext = new DataConversionContext(
-                    this.conversionService,
-                    this.sourceDataContext,
-                    this.targetDataContext,
-                    rootTargetType: this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context));
-                {
-                    // TODO check whether we can use such a flag
-                    // EntityNotFoundHandling = EntityNotFoundHandling.ForceCreateNew,
-                }
+                var conversionContext = new DataConversionContextBuilder(this.conversionService)
+                    .WithSourceDataContext(this.sourceDataContext)
+                    .WithTargetDataContext(this.targetDataContext)
+                    .WithRootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context))
+                    .ConversionContext;
+
                 this.context.DataConversionContextConfig?.Invoke(sourceEntity, conversionContext);
 
                 cancellationToken.ThrowIfCancellationRequested();

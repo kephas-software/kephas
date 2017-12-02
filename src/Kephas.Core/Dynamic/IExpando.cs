@@ -58,14 +58,16 @@ namespace Kephas.Dynamic
         /// <remarks>
         /// Collections of key-value pairs (including dictionaries) are merged by their keys, provided the key has the type of string.
         /// </remarks>
+        /// <typeparam name="T">The expando type.</typeparam>
         /// <param name="expando">The expando to act on.</param>
         /// <param name="source">Source object to be merged into the expando.</param>
         /// <returns>
         /// The target expando object.
         /// </returns>
-        public static IExpando Merge(this IExpando expando, object source)
+        public static T Merge<T>(this T expando, object source)
+            where T : IExpando
         {
-            if (expando == null || source == null || expando == source)
+            if (expando == null || source == null || (object)expando == source)
             {
                 return expando;
             }

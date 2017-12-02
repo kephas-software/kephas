@@ -39,6 +39,16 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void Merge_readonly_obj_in_expando()
+        {
+            var expando = new ExpandoWithReadonlyProperties("gigi") { Age = 20 };
+            var result = expando.Merge(new ExpandoWithReadonlyProperties("belogea") { Age = 30 });
+
+            Assert.AreEqual("gigi", result.Name);
+            Assert.AreEqual(30, result.Age);
+        }
+
+        [Test]
         public void Merge_dictionary_of_string_in_expando()
         {
             var expando = new Expando();
@@ -72,6 +82,18 @@ namespace Kephas.Core.Tests.Dynamic
             Assert.AreEqual(1, expando["hi"]);
             Assert.AreEqual(2, expando["how"]);
             Assert.AreEqual(3, expando["you"]);
+        }
+
+        public class ExpandoWithReadonlyProperties : Expando
+        {
+            public ExpandoWithReadonlyProperties(string name)
+            {
+                this.Name = name;
+            }
+
+            public string Name { get; }
+
+            public int Age { get; set; }
         }
     }
 }
