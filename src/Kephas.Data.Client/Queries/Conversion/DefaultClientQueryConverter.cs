@@ -18,9 +18,11 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Data.Client.Queries.Conversion.Composition;
+    using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
     using Kephas.Data.Client.Resources;
     using Kephas.Data.Linq.Expressions;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -83,6 +85,14 @@ namespace Kephas.Data.Client.Queries.Conversion
         }
 
         /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<DefaultClientQueryConverter> Logger { get; set; }
+
+        /// <summary>
         /// Converts the provided client query to a queryable which can be executed.
         /// </summary>
         /// <param name="clientQuery">The client query.</param>
@@ -95,22 +105,47 @@ namespace Kephas.Data.Client.Queries.Conversion
             var queryClientEntityType = this.GetQueryClientEntityType(clientQuery);
             var queryEntityType = this.GetQueryEntityType(clientQuery, queryClientEntityType);
 
+            // create the query
             var queryMethod = DataContextQueryMethod.MakeGenericMethod(queryEntityType);
             var queryContext = new QueryOperationContext(context.DataContext);
             var queryable = (IQueryable)queryMethod.Call(context.DataContext, queryContext);
 
-            var filterLambdaExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter);
-            if (filterLambdaExpression != null)
+            // apply the filter expression
+            var filterExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter);
+            if (filterExpression != null)
             {
                 var whereMethod = QueryableMethods.QueryableWhereGeneric.MakeGenericMethod(queryEntityType);
-                queryable = (IQueryable)whereMethod.Call(null, queryable, filterLambdaExpression);
+                queryable = (IQueryable)whereMethod.Call(null, queryable, filterExpression);
+            }
+
+            // apply the order by expressions
+            var orderExpressions = this.ConvertOrder(queryEntityType, queryClientEntityType, clientQuery.Order)?.ToList();
+            if (orderExpressions != null && orderExpressions.Count > 0)
+            {
+                Func<LinqExpression, Type> extractKeySelectorType = e => e.Type.GetTypeInfo().GenericTypeArguments[1];
+
+                var firstOrder = orderExpressions[0];
+                var orderByGenericMethod = firstOrder.op == AscExpressionConverter.Operator
+                                        ? QueryableMethods.QueryableOrderByGeneric
+                                        : QueryableMethods.QueryableOrderByDescendingGeneric;
+                var orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, extractKeySelectorType(firstOrder.expression));
+                queryable = (IQueryable)orderByMethod.Call(null, queryable, firstOrder.expression);
+
+                foreach (var nextOrder in orderExpressions.Skip(1))
+                {
+                    orderByGenericMethod = nextOrder.op == AscExpressionConverter.Operator
+                                                   ? QueryableMethods.QueryableThenByGeneric
+                                                   : QueryableMethods.QueryableThenByDescendingGeneric;
+                    orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, extractKeySelectorType(nextOrder.expression));
+                    queryable = (IQueryable)orderByMethod.Call(null, queryable, nextOrder.expression);
+                }
             }
 
             return queryable;
         }
 
         /// <summary>
-        /// Convert the where clause.
+        /// Converts the where clause.
         /// </summary>
         /// <param name="itemType">The item type.</param>
         /// <param name="clientItemType">The client item type.</param>
@@ -120,9 +155,74 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         protected virtual LinqExpression ConvertFilter(Type itemType, Type clientItemType, Expression where)
         {
+            if (where == null)
+            {
+                return null;
+            }
+
             var lambdaArg = LinqExpression.Parameter(itemType, "e");
             var body = this.ConvertExpression(where, clientItemType, lambdaArg);
             return body == null ? null : LinqExpression.Lambda(body, lambdaArg);
+        }
+
+        /// <summary>
+        /// Converts the order clause.
+        /// </summary>
+        /// <param name="itemType">The item type.</param>
+        /// <param name="clientItemType">The client item type.</param>
+        /// <param name="order">The order clause.</param>
+        /// <returns>
+        /// The converted order clause.
+        /// </returns>
+        protected virtual IEnumerable<(string op, LinqExpression expression)> ConvertOrder(Type itemType, Type clientItemType, Expression order)
+        {
+            if (order?.Args == null || order.Args.Count == 0)
+            {
+                yield break;
+            }
+
+            var lambdaArg = LinqExpression.Parameter(itemType, "e");
+
+            (string op, LinqExpression expression)? GetOrder(object arg, string o, LinqExpression body)
+            {
+                if (body != null)
+                {
+                    return (o, LinqExpression.Lambda(body, lambdaArg));
+                }
+
+                this.Logger.Warn($"'{arg}' got converted to a <null> expression.");
+                return null;
+            }
+
+            for (var i = 0; i < order.Args.Count; i++)
+            {
+                var orderArg = order.Args[i];
+                var orderArgResult =
+                orderArg is Expression orderArgExpression
+                    // make expression
+                    ? GetOrder(
+                        orderArgExpression,
+                        orderArgExpression.Op == AscExpressionConverter.Operator
+                        || orderArgExpression.Op == DescExpressionConverter.Operator
+                            ? orderArgExpression.Op
+                            : AscExpressionConverter.Operator,
+                        this.ConvertExpression(orderArgExpression, clientItemType, lambdaArg))
+
+                    : this.IsMemberAccess(orderArg, i)
+                        // make member access
+                        ? GetOrder(
+                            orderArg,
+                            AscExpressionConverter.Operator,
+                            this.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
+
+                        // constants are not relevant for sorting, so just ignore them.
+                        : null;
+
+                if (orderArgResult != null)
+                {
+                    yield return orderArgResult.Value;
+                }
+            }
         }
 
         /// <summary>
@@ -174,9 +274,8 @@ namespace Kephas.Data.Client.Queries.Conversion
                 for (var i = 0; i < exprArgs.Count; i++)
                 {
                     var arg = exprArgs[i];
-                    var argExpression = arg as Expression;
                     args.Add(
-                        argExpression != null
+                        arg is Expression argExpression
                             ? this.ConvertExpression(argExpression, clientItemType, lambdaArg)
                             : this.IsMemberAccess(arg, i)
                                 ? this.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)

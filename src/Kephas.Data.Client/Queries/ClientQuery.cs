@@ -29,5 +29,13 @@ namespace Kephas.Data.Client.Queries
         /// The filter condition.
         /// </value>
         public Expression Filter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the order.
+        /// </summary>
+        /// <value>
+        /// The order.
+        /// </value>
+        public Expression Order { get; set; }
     }
 }

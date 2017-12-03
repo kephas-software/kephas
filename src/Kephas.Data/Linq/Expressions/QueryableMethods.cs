@@ -54,72 +54,72 @@ namespace Kephas.Data.Linq.Expressions
         /// <summary>
         /// Gets the queryable all generic.
         /// </summary>
-        public static MethodInfo QueryableAllGeneric { get; private set; }
+        public static MethodInfo QueryableAllGeneric { get; }
 
         /// <summary>
         /// Gets the queryable count generic.
         /// </summary>
-        public static MethodInfo QueryableCountGeneric { get; private set; }
+        public static MethodInfo QueryableCountGeneric { get; }
 
         /// <summary>
         /// Gets the queryable long count generic.
         /// </summary>
-        public static MethodInfo QueryableLongCountGeneric { get; private set; }
+        public static MethodInfo QueryableLongCountGeneric { get; }
 
         /// <summary>
         /// Gets the queryable empty any generic.
         /// </summary>
-        public static MethodInfo QueryableEmptyAnyGeneric { get; private set; }
+        public static MethodInfo QueryableEmptyAnyGeneric { get; }
 
         /// <summary>
         /// Gets the queryable non empty any generic.
         /// </summary>
-        public static MethodInfo QueryableNonEmptyAnyGeneric { get; private set; }
+        public static MethodInfo QueryableNonEmptyAnyGeneric { get; }
 
         /// <summary>
         /// Gets the type of the queryable of.
         /// </summary>
-        public static MethodInfo QueryableOfType { get; private set; }
+        public static MethodInfo QueryableOfType { get; }
 
         /// <summary>
         /// Gets the queryable order by descending generic.
         /// </summary>
-        public static MethodInfo QueryableOrderByDescendingGeneric { get; private set; }
+        public static MethodInfo QueryableOrderByDescendingGeneric { get; }
 
         /// <summary>
         /// Gets the queryable order by generic.
         /// </summary>
-        public static MethodInfo QueryableOrderByGeneric { get; private set; }
+        public static MethodInfo QueryableOrderByGeneric { get; }
 
         /// <summary>
         /// Gets the queryable select generic.
         /// </summary>
-        public static MethodInfo QueryableSelectGeneric { get; private set; }
+        public static MethodInfo QueryableSelectGeneric { get; }
 
         /// <summary>
         /// Gets the queryable skip generic.
         /// </summary>
-        public static MethodInfo QueryableSkipGeneric { get; private set; }
+        public static MethodInfo QueryableSkipGeneric { get; }
 
         /// <summary>
         /// Gets the queryable take generic.
         /// </summary>
-        public static MethodInfo QueryableTakeGeneric { get; private set; }
+        public static MethodInfo QueryableTakeGeneric { get; }
 
         /// <summary>
         /// Gets the queryable then by descending generic.
         /// </summary>
-        public static MethodInfo QueryableThenByDescendingGeneric { get; private set; }
+        public static MethodInfo QueryableThenByDescendingGeneric { get; }
 
         /// <summary>
         /// Gets the queryable then by generic.
         /// </summary>
-        public static MethodInfo QueryableThenByGeneric { get; private set; }
+        public static MethodInfo QueryableThenByGeneric { get; }
 
         /// <summary>
         /// Gets the queryable where generic.
         /// </summary>
-        public static MethodInfo QueryableWhereGeneric { get; private set; }
+        public static MethodInfo QueryableWhereGeneric { get; }
 
         /// <summary>
         /// Gets the queryable count non empty generic.
@@ -127,7 +127,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable count non empty generic.
         /// </value>
-        public static MethodInfo QueryableNonEmptyCountGeneric { get; private set; }
+        public static MethodInfo QueryableNonEmptyCountGeneric { get; }
 
         /// <summary>
         /// Gets the queryable long count non empty generic.
@@ -135,7 +135,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable long count non empty generic.
         /// </value>
-        public static MethodInfo QueryableNonEmptyLongCountGeneric { get; private set; }
+        public static MethodInfo QueryableNonEmptyLongCountGeneric { get; }
 
         /// <summary>
         /// Gets the queryable max generic.
@@ -143,7 +143,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable max generic.
         /// </value>
-        public static MethodInfo QueryableMaxGeneric { get; private set; }
+        public static MethodInfo QueryableMaxGeneric { get; }
 
         /// <summary>
         /// Gets the queryable max non-empty generic.
@@ -151,7 +151,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable max non-empty generic.
         /// </value>
-        public static MethodInfo QueryableMaxNonEmptyGeneric { get; private set; }
+        public static MethodInfo QueryableMaxNonEmptyGeneric { get; }
 
         /// <summary>
         /// Gets the queryable min generic.
@@ -159,7 +159,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable min generic.
         /// </value>
-        public static MethodInfo QueryableMinGeneric { get; private set; }
+        public static MethodInfo QueryableMinGeneric { get; }
 
         /// <summary>
         /// Gets the queryable min non-empty generic.
@@ -167,7 +167,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable min non-empty generic.
         /// </value>
-        public static MethodInfo QueryableMinNonEmptyGeneric { get; private set; }
+        public static MethodInfo QueryableMinNonEmptyGeneric { get; }
 
         /// <summary>
         /// Gets the queryable contains generic.
@@ -175,6 +175,6 @@ namespace Kephas.Data.Linq.Expressions
         /// <value>
         /// The queryable contains generic.
         /// </value>
-        public static MethodInfo QueryableContainsGeneric { get; private set; }
+        public static MethodInfo QueryableContainsGeneric { get; }
     }
 }

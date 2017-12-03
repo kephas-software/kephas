@@ -94,6 +94,63 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         }
 
         [Test]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
+        [TestCase(arg: new string[] { "hi", "all" })]
+        [TestCase(arg: new string[] { "hi" })]
+        public void ConvertQuery_orderby_asc(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.AscConverter() });
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+                            {
+                                EntityType = "item-type",
+                                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$asc", Args = new List<object> { ".Length" } } } }
+                            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
+            var result = queryable.ToList();
+
+            var orderedData = data.OrderBy(s => s.Length).ToArray();
+            Assert.AreEqual(orderedData.Length, result.Count);
+            for (var i = 0; i < orderedData.Length; i++)
+            {
+                Assert.AreEqual(orderedData[i], result[i]);
+            }
+        }
+
+
+        [Test]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
+        [TestCase(arg: new string[] { "hi", "all" })]
+        [TestCase(arg: new string[] { "hi" })]
+        public void ConvertQuery_orderby_desc(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.DescConverter() });
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+                            {
+                                EntityType = "item-type",
+                                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$desc", Args = new List<object> { ".Length" } } } }
+                            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
+            var result = queryable.ToList();
+
+            var orderedData = data.OrderByDescending(s => s.Length).ToArray();
+            Assert.AreEqual(orderedData.Length, result.Count);
+            for (var i = 0; i < orderedData.Length; i++)
+            {
+                Assert.AreEqual(orderedData[i], result[i]);
+            }
+        }
+
+        [Test]
         [TestCase(arg: new string[] { "doesn't matter" })]
         public void ConvertQuery_operator_not_supported(string[] data)
         {
@@ -126,6 +183,16 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             dataContext.Query<TValue>(Arg.Any<IQueryOperationContext>())
                 .Returns(data.AsQueryable());
             return dataContext;
+        }
+
+        private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> DescConverter()
+        {
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new DescExpressionConverter(), new ExpressionConverterMetadata(DescExpressionConverter.Operator));
+        }
+
+        private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> AscConverter()
+        {
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new AscExpressionConverter(), new ExpressionConverterMetadata(AscExpressionConverter.Operator));
         }
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> AndConverter()

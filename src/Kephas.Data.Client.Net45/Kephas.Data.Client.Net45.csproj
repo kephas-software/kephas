@@ -69,8 +69,14 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\AndExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\AndExpressionConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\AscExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\AscExpressionConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\BinaryExpressionConverterBase.cs">
       <Link>Queries\Conversion\ExpressionConverters\BinaryExpressionConverterBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\DescExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\DescExpressionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\EndsWithExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\EndsWithExpressionConverter.cs</Link>
