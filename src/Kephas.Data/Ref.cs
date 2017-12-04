@@ -69,6 +69,14 @@ namespace Kephas.Data
         public Type EntityType { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the reference is empty/not set.
+        /// </summary>
+        /// <value>
+        /// True if this reference is empty, false if not.
+        /// </value>
+        public virtual bool IsEmpty => Kephas.Data.Id.IsEmpty(this.Id);
+
+        /// <summary>
         /// Gets or sets the identifier of the referenced entity.
         /// </summary>
         /// <value>

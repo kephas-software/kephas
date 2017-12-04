@@ -35,6 +35,14 @@ namespace Kephas.Data
         Type EntityType { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the reference is empty/not set.
+        /// </summary>
+        /// <value>
+        /// True if this reference is empty, false if not.
+        /// </value>
+        bool IsEmpty { get; }
+
+        /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>
         /// <param name="throwIfNotFound">If true and the referenced entity is not found, an exception occurs.</param>

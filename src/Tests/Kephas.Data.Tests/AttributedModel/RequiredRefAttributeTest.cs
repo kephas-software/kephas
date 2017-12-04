@@ -36,17 +36,11 @@ namespace Kephas.Data.Tests.AttributedModel
             var r = Substitute.For<IRef>();
             var attr = new RequiredRefAttribute();
 
-            r.Id.Returns(0);
+            r.IsEmpty.Returns(true);
             Assert.IsFalse(attr.IsValid(r));
 
-            r.Id.Returns(-1);
+            r.IsEmpty.Returns(false);
             Assert.IsTrue(attr.IsValid(r));
-
-            r.Id.Returns(null);
-            Assert.IsFalse(attr.IsValid(r));
-
-            r.Id.Returns(Guid.Empty);
-            Assert.IsFalse(attr.IsValid(r));
         }
     }
 }

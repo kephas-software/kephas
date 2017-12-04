@@ -25,6 +25,27 @@ namespace Kephas.Data.Tests
     public class RefTest
     {
         [Test]
+        public void IsEmpty()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+
+            var entity = new TestEntity(dataContext);
+            var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
+
+            r.Id = null;
+            Assert.IsTrue(r.IsEmpty);
+
+            r.Id = 0;
+            Assert.IsTrue(r.IsEmpty);
+
+            r.Id = Guid.Empty;
+            Assert.IsTrue(r.IsEmpty);
+
+            r.Id = -1;
+            Assert.IsFalse(r.IsEmpty);
+        }
+
+        [Test]
         public async Task GetAsync_null_reference()
         {
             var refEntity = new RefEntity();

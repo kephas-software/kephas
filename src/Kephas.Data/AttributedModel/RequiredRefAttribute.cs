@@ -26,7 +26,7 @@ namespace Kephas.Data.AttributedModel
         {
             if (value is IRef refValue)
             {
-                return !Id.IsEmpty(refValue.Id);
+                return !refValue.IsEmpty;
             }
 
             return !Id.IsEmpty(value);
