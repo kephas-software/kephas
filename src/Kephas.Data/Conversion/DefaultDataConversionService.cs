@@ -220,35 +220,29 @@ namespace Kephas.Data.Conversion
             var sourceId = sourceEntityInfo?.EntityId;
 
             var sourceChangeState = sourceEntityInfo?.ChangeState;
-            if (sourceChangeState == ChangeState.Added)
+
+            if (!Id.IsEmpty(sourceId))
+            {
+                target = await this.FindTargetEntityAsync(
+                             targetDataContext,
+                             targetType,
+                             sourceId,
+                             throwIfNotFound: false,
+                             cancellationToken: cancellationToken).PreserveThreadContext();
+                if (target != null)
+                {
+                    return target;
+                }
+            }
+
+            if (sourceChangeState == ChangeState.Added || sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
                 target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
             }
-            else if (sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
-            {
-                if (!Id.IsEmpty(sourceId))
-                {
-                    target = await this.FindTargetEntityAsync(
-                                 targetDataContext,
-                                 targetType,
-                                 sourceId,
-                                 throwIfNotFound: false,
-                                 cancellationToken: cancellationToken).PreserveThreadContext();
-                }
-
-                if (target == null)
-                {
-                    target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
-                }
-            }
             else
             {
-                target = await this.FindTargetEntityAsync(
-                        targetDataContext,
-                        targetType,
-                        sourceId,
-                        throwIfNotFound: true,
-                        cancellationToken: cancellationToken).PreserveThreadContext();
+                var exception  = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, $"Id == {sourceId}"));
+                throw exception;
             }
 
             return target;
