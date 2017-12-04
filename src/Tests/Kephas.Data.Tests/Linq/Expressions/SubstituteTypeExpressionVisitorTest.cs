@@ -314,7 +314,6 @@ namespace Kephas.Data.Tests.Linq.Expressions
             activator.GetImplementationType(typeof(long?).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
                 .Returns(typeof(long?).AsRuntimeTypeInfo());
 
-
             var expression = Expression.Constant((long?)2, typeof(long?));
             var visitor = new SubstituteTypeExpressionVisitor(activator);
             var newExpression = (ConstantExpression)visitor.Visit(expression);
