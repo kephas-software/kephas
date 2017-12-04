@@ -1,47 +1,48 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Serialization.ServiceStack.Text</id>
-    <version>$version$</version>
-    <title>Kephas.Serialization.ServiceStack.Text</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>
-        Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-        Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
-    <dependencies>
-        <group>
-            <dependency id="Kephas.Core" version="$refversion$" />
-        </group>
-        <group targetFramework="net45">
-            <dependency id="ServiceStack.Text.Signed" version="4.0.62" />
-        </group>
-        <group targetFramework="netstandard1.3">
-            <dependency id="ServiceStack.Text.Core" version="1.0.40" />
-        </group>
-    </dependencies>
-    <references>
-      <reference file="Kephas.Serialization.ServiceStack.Text.dll" />
-    </references>
-    <tags>kephas framework serialization json xml servicestack quartz-software</tags>
-  </metadata>
-  <files>
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.dll" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml" target="lib\netstandard1.3" />
-    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.dll" target="lib\net45" />
-    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\net45" />
-    <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.xml" target="lib\net45" />
-  </files>
+    <metadata>
+        <id>Kephas.Serialization.ServiceStack.Text</id>
+        <version>$version$</version>
+        <title>Kephas.Serialization.ServiceStack.Text</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+            </group>
+            <group targetFramework="net45">
+                <dependency id="ServiceStack.Text.Signed" version="4.0.62" />
+            </group>
+            <group targetFramework="netstandard1.3">
+                <dependency id="ServiceStack.Text.Core" version="1.0.40" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Serialization.ServiceStack.Text.dll" />
+        </references>
+        <tags>kephas framework serialization json xml servicestack quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.dll" target="lib\net45" />
+        <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.pdb" target="lib\net45" />
+        <file src="..\Kephas.Serialization.ServiceStack.Text.Net45\bin\$configuration$\Kephas.Serialization.ServiceStack.Text.xml" target="lib\net45" />
+    </files>
 </package>

@@ -37,6 +37,7 @@
         <tags>kephas framework platform net quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Platform.xml" target="lib\netstandard2.0" />

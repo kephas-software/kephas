@@ -31,6 +31,7 @@
         <tags>kephas framework messaging request response service layer quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.xml" target="lib\netstandard1.3" />

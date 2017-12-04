@@ -38,6 +38,7 @@
         <tags>kephas framework core quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Core.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Core.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Core.xml" target="lib\netstandard1.3" />

@@ -30,6 +30,7 @@
         <tags>kephas framework code analysis quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.xml" target="lib\netstandard1.3" />

@@ -1,45 +1,46 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Npgsql</id>
-    <version>$version$</version>
-    <title>Kephas.Npgsql</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>
-        Provides the Kephas adapters for the Npgsql library.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-        Provides the Kephas adapters for the Npgsql library.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
-    <dependencies>
-        <group>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Npgsql" version="3.2.2" />
-        </group>
-        <group targetFramework="net45">
-            <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
-        </group>
-    </dependencies>
-    <references>
-      <reference file="Kephas.Npgsql.dll" />
-    </references>
-    <tags>kephas framework npgsql postgresql adapter quartz-software</tags>
-  </metadata>
-  <files>
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.dll" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.pdb" target="lib\netstandard1.3" />
-    <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.xml" target="lib\netstandard1.3" />
-    <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.dll" target="lib\net45" />
-    <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.pdb" target="lib\net45" />
-    <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.xml" target="lib\net45" />
-  </files>
+    <metadata>
+        <id>Kephas.Npgsql</id>
+        <version>$version$</version>
+        <title>Kephas.Npgsql</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides the Kephas adapters for the Npgsql library.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides the Kephas adapters for the Npgsql library.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Npgsql" version="3.2.2" />
+            </group>
+            <group targetFramework="net45">
+                <dependency id="System.Threading.Tasks.Extensions" version="4.3.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Npgsql.dll" />
+        </references>
+        <tags>kephas framework npgsql postgresql adapter quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Npgsql.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.dll" target="lib\net45" />
+        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.pdb" target="lib\net45" />
+        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.xml" target="lib\net45" />
+    </files>
 </package>

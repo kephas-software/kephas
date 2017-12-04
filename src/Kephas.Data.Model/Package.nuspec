@@ -31,6 +31,7 @@
         <tags>kephas framework data model quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.xml" target="lib\netstandard1.3" />

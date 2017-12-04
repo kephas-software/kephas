@@ -29,6 +29,7 @@
         <tags>kephas framework data client quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Client.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Client.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Client.xml" target="lib\netstandard1.3" />

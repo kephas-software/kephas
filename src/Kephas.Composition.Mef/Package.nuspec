@@ -39,6 +39,7 @@
         <tags>kephas framework composition mef quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.3\Kephas.Composition.Mef.dll" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Composition.Mef.pdb" target="lib\netstandard1.3" />
         <file src="bin\$configuration$\netstandard1.3\Kephas.Composition.Mef.xml" target="lib\netstandard1.3" />

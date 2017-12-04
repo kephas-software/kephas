@@ -1,37 +1,38 @@
 <?xml version="1.0"?>
 <package >
-  <metadata>
-    <id>Kephas.Data.MongoDB</id>
-    <version>$version$</version>
-    <title>Kephas.Data.MongoDB</title>
-    <authors>Quartz Software SRL</authors>
-    <owners>Quartz Software SRL</owners>
-    <description>Provides the MongoDB implementation for data context and associated commands.</description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>Provides the MongoDB implementation for data context and associated commands.</summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
-    <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
-    <dependencies>
-      <dependency id="Kephas.Core" version="$refversion$" />
-      <dependency id="Kephas.Data" version="$refversion$" />
-      <dependency id="MongoDB.Driver.signed" version="2.4.0" />
-    </dependencies>
-    <references>
-      <reference file="Kephas.Data.MongoDB.dll" />
-    </references>
-    <tags>kephas framework data mongo mongodb quartz-software</tags>
-  </metadata>
-  <files>
-    <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
-    <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
-    <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
-    <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.dll" target="lib\net45" />
-    <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.pdb" target="lib\net45" />
-    <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.xml" target="lib\net45" />
-  </files>
+    <metadata>
+        <id>Kephas.Data.MongoDB</id>
+        <version>$version$</version>
+        <title>Kephas.Data.MongoDB</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides the MongoDB implementation for data context and associated commands.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides the MongoDB implementation for data context and associated commands.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <dependency id="Kephas.Core" version="$refversion$" />
+            <dependency id="Kephas.Data" version="$refversion$" />
+            <dependency id="MongoDB.Driver.signed" version="2.4.0" />
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.MongoDB.dll" />
+        </references>
+        <tags>kephas framework data mongo mongodb quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.dll" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.pdb" target="lib\netstandard1.5" />
+        <file src="bin\$configuration$\netstandard1.5\Kephas.Data.MongoDB.xml" target="lib\netstandard1.5" />
+        <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.dll" target="lib\net45" />
+        <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.pdb" target="lib\net45" />
+        <file src="..\Kephas.Data.MongoDB.Net45\bin\$configuration$\Kephas.Data.MongoDB.xml" target="lib\net45" />
+    </files>
 </package>

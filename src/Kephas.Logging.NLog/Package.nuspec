@@ -39,6 +39,7 @@
         <tags>kephas framework logging nlog quartz-software</tags>
     </metadata>
     <files>
+        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.dll" target="lib\netstandard1.5" />
         <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.pdb" target="lib\netstandard1.5" />
         <file src="bin\$configuration$\netstandard1.5\Kephas.Logging.NLog.xml" target="lib\netstandard1.5" />
