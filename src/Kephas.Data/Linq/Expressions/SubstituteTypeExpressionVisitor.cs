@@ -178,7 +178,12 @@ namespace Kephas.Data.Linq.Expressions
             var concreteType = this.TryGetConcreteType(node.Type);
             if (concreteType != null)
             {
-                return Expression.Constant(Convert.ChangeType(node.Value, concreteType), concreteType);
+                if (concreteType != node.Type)
+                {
+                    return Expression.Constant(Convert.ChangeType(node.Value, concreteType), concreteType);
+                }
+
+                return base.VisitConstant(node);
             }
 
             if (nodeTypeInfo.IsGenericType)
