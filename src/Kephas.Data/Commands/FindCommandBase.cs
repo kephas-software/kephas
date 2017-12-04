@@ -85,12 +85,10 @@ namespace Kephas.Data.Commands
             var criteria = this.GetFindCriteria<T>(findContext);
             IList<T> result;
 
-            var localCache = this.TryGetLocalCache(dataContext);
-            if (localCache != null)
+            var localCacheQuery = this.TryGetLocalCacheQuery<T>(findContext);
+            if (localCacheQuery != null)
             {
-                result = localCache.Values
-                    .Select(ei => ei.Entity)
-                    .OfType<T>()
+                result = localCacheQuery
                     .Where(criteria.Compile())
                     .Take(2)
                     .ToList();
@@ -104,6 +102,21 @@ namespace Kephas.Data.Commands
             var query = dataContext.Query<T>(queryContext).Where(criteria).Take(2);
             result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
             return this.GetFindResult(findContext, result, criteria);
+        }
+
+        /// <summary>
+        /// Tries to get a query over the local cache entities of a particular type.
+        /// </summary>
+        /// <param name="findContext">The find context.</param>
+        /// <returns>
+        /// A query of local cache entities.
+        /// </returns>
+        protected virtual IEnumerable<T> TryGetLocalCacheQuery<T>(TFindContext findContext)
+            where T : class
+        {
+            var dataContext = findContext.DataContext;
+            var localCache = this.TryGetLocalCache(dataContext);
+            return localCache?.Values.Select(ei => ei.Entity).OfType<T>();
         }
 
         /// <summary>
