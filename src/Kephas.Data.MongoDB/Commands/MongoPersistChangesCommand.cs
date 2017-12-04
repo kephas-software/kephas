@@ -48,23 +48,23 @@ namespace Kephas.Data.MongoDB.Commands
         }
 
         /// <summary>
-        /// Persists the modified entries asynchronously.
+        /// Persists the modified entities asynchronously.
         /// </summary>
-        /// <param name="modifiedEntries">The modified entries.</param>
+        /// <param name="changeSet">The modified entities.</param>
         /// <param name="operationContext">The data operation context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override async Task PersistModifiedEntriesAsync(IList<IEntityInfo> modifiedEntries, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected override async Task PersistChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var modifiedMongoDocs =
-              modifiedEntries.Select(e => e.GetGraphRoot() ?? e.Entity)
+              changeSet.Select(e => e.GetGraphRoot() ?? e.Entity)
                 .Distinct()
                 .ToList();
 
-            if (modifiedMongoDocs.Count == 0 && modifiedEntries.Count > 0)
+            if (modifiedMongoDocs.Count == 0 && changeSet.Count > 0)
             {
                 throw new MongoDataException(Strings.MongoPersistChangesCommand_NoDocumentsToPersist_Exception);
             }
@@ -76,7 +76,7 @@ namespace Kephas.Data.MongoDB.Commands
                     await((Task)BulkWriteAsyncMethod.Call(
                          this,
                          operationContext,
-                         modifiedEntries,
+                         changeSet,
                          collectionName,
                          cancellationToken))
                         .PreserveThreadContext();
@@ -88,7 +88,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="operationContext">The data operation context.</param>
-        /// <param name="modifiedEntries">The modified entries.</param>
+        /// <param name="changeSet">The modified entities.</param>
         /// <param name="collectionName">The collection name.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
@@ -96,13 +96,13 @@ namespace Kephas.Data.MongoDB.Commands
         /// </returns>
         protected virtual async Task BulkWriteAsync<T>(
             IPersistChangesContext operationContext,
-            IList<IEntityInfo> modifiedEntries,
+            IList<IEntityInfo> changeSet,
             string collectionName,
             CancellationToken cancellationToken) where T : IIdentifiable
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var collection = dataContext.Database.GetCollection<T>(collectionName);
-            var eligibleModifiedEntries = modifiedEntries.Where(e => e.Entity is T).ToList();
+            var eligibleModifiedEntries = changeSet.Where(e => e.Entity is T).ToList();
 
             var writeRequests = this.GetBulkWriteRequests<T>(operationContext, eligibleModifiedEntries);
 
@@ -171,14 +171,14 @@ namespace Kephas.Data.MongoDB.Commands
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="eligibleEntityInfos">The eligible modified entries.</param>
+        /// <param name="eligibleChangeSet">The eligible modified entities.</param>
         /// <returns>
         /// The write requests for the bulk operation.
         /// </returns>
-        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityInfo> eligibleEntityInfos)
+        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityInfo> eligibleChangeSet)
         {
             var writeModel = new List<WriteModel<T>>();
-            foreach (var entityInfo in eligibleEntityInfos)
+            foreach (var entityInfo in eligibleChangeSet)
             {
                 var changeState = entityInfo.ChangeState;
                 var entity = (T)entityInfo.Entity;

@@ -11,6 +11,7 @@ namespace Kephas.Data.Commands
 {
     using System.Collections.Generic;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -38,6 +39,14 @@ namespace Kephas.Data.Commands
         /// The change set.
         /// </value>
         public IEnumerable<object> ChangeSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets the change set to be persisted within an iteration.
+        /// </summary>
+        /// <value>
+        /// The change set within an iteration.
+        /// </value>
+        public IEnumerable<IEntityInfo> IterationChangeSet { get; set; }
 
         /// <summary>
         /// Gets or sets the iteration during persistence workflow.
