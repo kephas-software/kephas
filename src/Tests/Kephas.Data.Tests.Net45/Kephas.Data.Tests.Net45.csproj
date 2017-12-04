@@ -56,6 +56,9 @@
     <Compile Include="..\Kephas.Data.Tests\Adapters\CollectionAdapterTest.cs">
       <Link>Adapters\CollectionAdapterTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\AttributedModel\RequiredRefAttributeTest.cs">
+      <Link>AttributedModel\RequiredRefAttributeTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Behaviors\DataAnnotationsBehaviorBaseTest.cs">
       <Link>Behaviors\DataAnnotationsBehaviorBaseTest.cs</Link>
     </Compile>

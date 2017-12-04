@@ -24,9 +24,12 @@ namespace Kephas.Data.AttributedModel
         /// <exception cref="T:System.ComponentModel.DataAnnotations.ValidationException">The data field value was null.</exception>
         public override bool IsValid(object value)
         {
-            var baseValid = base.IsValid(value);
-            var refValue = value as IRef;
-            return refValue == null ? baseValid : baseValid && base.IsValid(refValue.Id);
+            if (value is IRef refValue)
+            {
+                return !Id.IsEmpty(refValue.Id);
+            }
+
+            return !Id.IsEmpty(value);
         }
     }
 }

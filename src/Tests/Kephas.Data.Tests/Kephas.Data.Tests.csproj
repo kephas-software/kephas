@@ -56,6 +56,7 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Adapters\CollectionAdapterTest.cs" />
+    <Compile Include="AttributedModel\RequiredRefAttributeTest.cs" />
     <Compile Include="Behaviors\DataAnnotationsBehaviorBaseTest.cs" />
     <Compile Include="Behaviors\DataBehaviorBaseTest.cs" />
     <Compile Include="Caching\DataContextCacheTest.cs" />
