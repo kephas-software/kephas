@@ -350,7 +350,7 @@ namespace Kephas.Data.Commands
         protected virtual async Task<IDataValidationResult> ValidateEntityAsync(
             object entityPart,
             IEntityInfo entityPartInfo,
-            IDataOperationContext operationContext,
+            IPersistChangesContext operationContext,
             CancellationToken cancellationToken)
         {
             var validators = this.BehaviorProvider.GetDataBehaviors<IOnValidateBehavior>(entityPart);
