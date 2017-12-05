@@ -56,6 +56,9 @@
     <Compile Include="..\Kephas.Data.Model\AttributedModel\KeyAttribute.cs">
       <Link>AttributedModel\KeyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Model\AttributedModel\LooseEntityPartAttribute.cs">
+      <Link>AttributedModel\LooseEntityPartAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Model\AttributedModel\NaturalKeyAttribute.cs">
       <Link>AttributedModel\NaturalKeyAttribute.cs</Link>
     </Compile>

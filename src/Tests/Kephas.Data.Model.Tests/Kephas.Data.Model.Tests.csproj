@@ -65,7 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributedModel\EntityPartAttributeTest.cs" />
     <Compile Include="AttributedModel\KeyAttributeTest.cs" />
+    <Compile Include="AttributedModel\LooseEntityPartAttributeTest.cs" />
     <Compile Include="AttributedModel\NaturalKeyAttributeTest.cs" />
     <Compile Include="AttributedModel\PrimaryKeyAttributeTest.cs" />
     <Compile Include="DataModelTestBase.cs" />
