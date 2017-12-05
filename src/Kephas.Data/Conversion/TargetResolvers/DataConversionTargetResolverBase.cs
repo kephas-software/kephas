@@ -14,7 +14,6 @@ namespace Kephas.Data.Conversion.TargetResolvers
     using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
-    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -29,21 +28,23 @@ namespace Kephas.Data.Conversion.TargetResolvers
         /// </summary>
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
-        /// <param name="sourceEntityInfo">The source entity information.</param>
+        /// <param name="sourceEntity">The source entity.</param>
+        /// <param name="sourceEntityInfo">The source entity information, if available.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
         public async Task<object> TryResolveTargetEntityAsync(
-            IDataContext targetDataContext,
-            TypeInfo targetType,
-            IEntityInfo sourceEntityInfo,
+            IDataContext targetDataContext, 
+            TypeInfo targetType, 
+            object sourceEntity, 
+            IEntityInfo sourceEntityInfo, 
             CancellationToken cancellationToken = default)
         {
             return await this.TryResolveTargetEntityAsync(
                        targetDataContext,
                        targetType,
-                       (TSource)sourceEntityInfo.Entity,
+                       (TSource)sourceEntity,
                        sourceEntityInfo,
                        cancellationToken).PreserveThreadContext();
         }

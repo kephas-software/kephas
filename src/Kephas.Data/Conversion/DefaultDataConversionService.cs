@@ -239,6 +239,7 @@ namespace Kephas.Data.Conversion
             target = await this.TryResolveTargetEntityAsync(
                          targetDataContext,
                          targetType,
+                         source,
                          sourceEntityInfo,
                          cancellationToken: cancellationToken).PreserveThreadContext();
             if (target != null)
@@ -264,14 +265,15 @@ namespace Kephas.Data.Conversion
         /// </summary>
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
+        /// <param name="sourceEntity">The source entity.</param>
         /// <param name="sourceEntityInfo">The source entity information.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        protected virtual async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)
+        protected virtual async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)
         {
-            var sourceType = sourceEntityInfo.Entity.GetType().GetTypeInfo();
+            var sourceType = sourceEntity.GetType().GetTypeInfo();
             var matchingResolversDictionary = this.targetResolversCache.GetOrAdd(sourceType, _ => new ConcurrentDictionary<TypeInfo, IList<IDataConversionTargetResolver>>());
             var matchingResolvers = matchingResolversDictionary.GetOrAdd(targetType, _ => this.ComputeMatchingTargetResolvers(sourceType, targetType));
 
@@ -280,6 +282,7 @@ namespace Kephas.Data.Conversion
                 var target = await resolver.TryResolveTargetEntityAsync(
                                  targetDataContext,
                                  targetType,
+                                 sourceEntity,
                                  sourceEntityInfo,
                                  cancellationToken).PreserveThreadContext();
                 if (target != null)
