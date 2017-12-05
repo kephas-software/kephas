@@ -121,7 +121,7 @@ namespace Kephas.Model.Elements
                 return this.runtimePropertyInfo;
             }
 
-            this.runtimePropertyInfo = ((IAggregatedElementInfo)this).Parts.OfType<IRuntimePropertyInfo>().FirstOrDefault();
+            this.runtimePropertyInfo = this.TryGetFirstPart<IRuntimePropertyInfo>();
             return this.runtimePropertyInfo;
         }
 
@@ -134,7 +134,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected virtual ITypeInfo ComputePropertyType()
         {
-            var firstPart = ((IAggregatedElementInfo)this).Parts.OfType<IPropertyInfo>().FirstOrDefault();
+            var firstPart = this.TryGetFirstPart<IPropertyInfo>();
             if (firstPart == null)
             {
                 throw new ModelException(string.Format(Strings.Property_MissingPartsToComputePropertyType_Exception, this.Name, this.DeclaringContainer));
@@ -152,6 +152,18 @@ namespace Kephas.Model.Elements
             // TODO add members from multiple parts
             // TODO validate the property types of multiple parts
             base.OnCompleteConstruction(constructionContext);
+        }
+
+        /// <summary>
+        /// Tries to get a part of the provided generic type.
+        /// </summary>
+        /// <typeparam name="T">The part type.</typeparam>
+        /// <returns>
+        /// The part of the provided type.
+        /// </returns>
+        private T TryGetFirstPart<T>()
+        {
+            return this.Parts.OfType<T>().FirstOrDefault();
         }
     }
 }

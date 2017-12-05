@@ -47,8 +47,7 @@ namespace Kephas.Model.Elements
 
             if (constructionContext.ModelSpace == null)
             {
-                var thisModelSpace = this as IModelSpace;
-                if (thisModelSpace == null)
+                if (!(this is IModelSpace thisModelSpace))
                 {
                     throw new InvalidOperationException(Strings.NamedElementBase_MissingModelSpaceInConstructionContext_Exception);
                 }
@@ -195,6 +194,14 @@ namespace Kephas.Model.Elements
         /// The construction monitor.
         /// </value>
         protected InitializationMonitor<TModelContract> ConstructionMonitor { get; }
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        protected IEnumerable<object> Parts => this.parts;
 
         /// <summary>
         /// Returns a string that represents the current object.

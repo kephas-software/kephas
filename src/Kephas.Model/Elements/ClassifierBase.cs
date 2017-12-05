@@ -276,7 +276,7 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
-            var parts = ((IAggregatedElementInfo)this).Parts.OfType<ITypeInfo>().ToList();
+            var parts = this.Parts.OfType<ITypeInfo>().ToList();
 
             // compute base: types, classifier and mixins
             this.baseTypes = this.ComputeBaseTypes(constructionContext, parts);
@@ -462,8 +462,7 @@ namespace Kephas.Model.Elements
                 }
                 else
                 {
-                    var collection = baseMemberMap.Value as IList<INamedElement>;
-                    if (collection != null)
+                    if (baseMemberMap.Value is IList<INamedElement> collection)
                     {
                         var resolvedMember = this.TryResolveConflictingMembers(collection);
 
