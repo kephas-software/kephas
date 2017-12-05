@@ -9,12 +9,14 @@
 
 namespace Kephas.Data.Tests.Conversion
 {
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.Conversion;
     using Kephas.Data.Conversion.Composition;
+    using Kephas.Data.Conversion.TargetResolvers;
     using Kephas.Services;
 
     using NSubstitute;
@@ -36,7 +38,8 @@ namespace Kephas.Data.Tests.Conversion
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(int), typeof(int)))
-                });
+                },
+                this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(5, result.Target);
@@ -60,7 +63,8 @@ namespace Kephas.Data.Tests.Conversion
                         new DataConverterMetadata(typeof(int), typeof(int))),
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
                         new DataConverterMetadata(typeof(int), typeof(int)))
-                });
+                },
+                    this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(6, result.Target);
@@ -84,7 +88,8 @@ namespace Kephas.Data.Tests.Conversion
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority:  (int)Priority.Low)),
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter2,
                         new DataConverterMetadata(typeof(int), typeof(int), processingPriority: (int)Priority.High))
-                });
+                },
+                    this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<int, int>(1, 2, new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual(5, result.Target);
@@ -102,7 +107,8 @@ namespace Kephas.Data.Tests.Conversion
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
-                });
+                },
+                    this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service, rootTargetType: typeof(string)), CancellationToken.None);
             Assert.AreEqual("hello", result.Target);
@@ -120,7 +126,8 @@ namespace Kephas.Data.Tests.Conversion
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
-                });
+                },
+                    this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<object, object>("sisi", "queen", new DataConversionContext(service), CancellationToken.None);
             Assert.AreEqual("hello", result.Target);
@@ -138,7 +145,8 @@ namespace Kephas.Data.Tests.Conversion
                 {
                     new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
                         new DataConverterMetadata(typeof(string), typeof(string)))
-                });
+                },
+                    this.GetDefaultTargetResolverFactories());
 
             var result = await service.ConvertAsync<object, object>("sisi", 12, new DataConversionContext(service, rootTargetType: typeof(string)), CancellationToken.None);
             Assert.AreEqual("hello", result.Target);
@@ -149,10 +157,21 @@ namespace Kephas.Data.Tests.Conversion
         {
             var service = new DefaultDataConversionService(
                 Substitute.For<IAmbientServices>(),
-                new IExportFactory<IDataConverter, DataConverterMetadata>[0]);
+                new IExportFactory<IDataConverter, DataConverterMetadata>[0],
+                this.GetDefaultTargetResolverFactories());
 
 
             Assert.Throws<DataConversionException>(() => service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service), CancellationToken.None));
+        }
+
+        private ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> GetDefaultTargetResolverFactories()
+        {
+            return new List<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>>
+                       {
+                           new ExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>(
+                               () => new IdDataConversionTargetResolver(),
+                               new DataConversionTargetResolverMetadata(typeof(object), typeof(object), (int)Priority.High))
+                       };
         }
     }
 }

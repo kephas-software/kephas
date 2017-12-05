@@ -39,25 +39,40 @@ namespace Kephas.Data.Conversion
         private readonly ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories;
 
         /// <summary>
+        /// Target resolver factories.
+        /// </summary>
+        private readonly ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories;
+
+        /// <summary>
         /// The converters cache.
         /// </summary>
         private readonly ConcurrentDictionary<TypeInfo, ConcurrentDictionary<TypeInfo, IList<IDataConverter>>>
           convertersCache = new ConcurrentDictionary<TypeInfo, ConcurrentDictionary<TypeInfo, IList<IDataConverter>>>();
 
         /// <summary>
+        /// The converters cache.
+        /// </summary>
+        private readonly ConcurrentDictionary<TypeInfo, ConcurrentDictionary<TypeInfo, IList<IDataConversionTargetResolver>>>
+            targetResolversCache = new ConcurrentDictionary<TypeInfo, ConcurrentDictionary<TypeInfo, IList<IDataConversionTargetResolver>>>();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
+        /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(
             IAmbientServices ambientServices,
-            ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories)
+            ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
+            ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
+            Requires.NotNull(targetResolverFactories, nameof(targetResolverFactories));
 
             this.AmbientServices = ambientServices;
             this.converterExportFactories = converterExportFactories;
+            this.targetResolverFactories = targetResolverFactories;
         }
 
         /// <summary>
@@ -221,18 +236,14 @@ namespace Kephas.Data.Conversion
 
             var sourceChangeState = sourceEntityInfo?.ChangeState;
 
-            if (!Id.IsEmpty(sourceId))
+            target = await this.TryResolveTargetEntityAsync(
+                         targetDataContext,
+                         targetType,
+                         sourceEntityInfo,
+                         cancellationToken: cancellationToken).PreserveThreadContext();
+            if (target != null)
             {
-                target = await this.FindTargetEntityAsync(
-                             targetDataContext,
-                             targetType,
-                             sourceId,
-                             throwIfNotFound: false,
-                             cancellationToken: cancellationToken).PreserveThreadContext();
-                if (target != null)
-                {
-                    return target;
-                }
+                return target;
             }
 
             if (sourceChangeState == ChangeState.Added || sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
@@ -241,7 +252,7 @@ namespace Kephas.Data.Conversion
             }
             else
             {
-                var exception  = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, $"Id == {sourceId}"));
+                var exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, $"Id == {sourceId}"));
                 throw exception;
             }
 
@@ -249,22 +260,35 @@ namespace Kephas.Data.Conversion
         }
 
         /// <summary>
-        /// Searches for the target entity asynchronously.
+        /// Tries to resolve the target entity asynchronously.
         /// </summary>
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
-        /// <param name="id">The identifier.</param>
-        /// <param name="throwIfNotFound">True to throw if not found.</param>
+        /// <param name="sourceEntityInfo">The source entity information.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        protected virtual async Task<object> FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object id, bool throwIfNotFound, CancellationToken cancellationToken)
+        protected virtual async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)
         {
-            var target = await targetDataContext.FindAsync(
-                             new FindContext(targetDataContext, targetType.AsType(), id, throwIfNotFound),
-                             cancellationToken).PreserveThreadContext();
-            return target;
+            var sourceType = sourceEntityInfo.Entity.GetType().GetTypeInfo();
+            var matchingResolversDictionary = this.targetResolversCache.GetOrAdd(sourceType, _ => new ConcurrentDictionary<TypeInfo, IList<IDataConversionTargetResolver>>());
+            var matchingResolvers = matchingResolversDictionary.GetOrAdd(targetType, _ => this.ComputeMatchingTargetResolvers(sourceType, targetType));
+
+            foreach (var resolver in matchingResolvers)
+            {
+                var target = await resolver.TryResolveTargetEntityAsync(
+                                 targetDataContext,
+                                 targetType,
+                                 sourceEntityInfo,
+                                 cancellationToken).PreserveThreadContext();
+                if (target != null)
+                {
+                    return target;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -343,6 +367,30 @@ namespace Kephas.Data.Conversion
         private IList<IDataConverter> ComputeMatchingConverters(TypeInfo sourceType, TypeInfo targetType)
         {
             var matchingConverters = this.converterExportFactories
+                .Where(lc => IsConverterTypeMatch(lc.Metadata.SourceType.GetTypeInfo(), sourceType) && IsConverterTypeMatch(lc.Metadata.TargetType.GetTypeInfo(), targetType))
+                .OrderBy(lc => lc.Metadata.ProcessingPriority)
+                .Select(lc => lc.CreateExport().Value)
+                .ToList();
+
+            if (matchingConverters.Count == 0)
+            {
+                this.Logger.Warn(string.Format(Strings.DataConverterNotFound_Exception, sourceType, targetType));
+            }
+
+            return matchingConverters;
+        }
+
+        /// <summary>
+        /// Computes the matching target resolvers.
+        /// </summary>
+        /// <param name="sourceType">Type of the source.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <returns>
+        /// The matching converters.
+        /// </returns>
+        private IList<IDataConversionTargetResolver> ComputeMatchingTargetResolvers(TypeInfo sourceType, TypeInfo targetType)
+        {
+            var matchingConverters = this.targetResolverFactories
                 .Where(lc => IsConverterTypeMatch(lc.Metadata.SourceType.GetTypeInfo(), sourceType) && IsConverterTypeMatch(lc.Metadata.TargetType.GetTypeInfo(), targetType))
                 .OrderBy(lc => lc.Metadata.ProcessingPriority)
                 .Select(lc => lc.CreateExport().Value)

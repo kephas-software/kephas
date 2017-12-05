@@ -268,6 +268,9 @@
     <Compile Include="..\Kephas.Data\Composition\DataContextMetadata.cs">
       <Link>Composition\DataContextMetadata.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\Composition\DataConversionTargetResolverMetadata.cs">
+      <Link>Conversion\Composition\DataConversionTargetResolverMetadata.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Conversion\Composition\DataConverterMetadata.cs">
       <Link>Conversion\Composition\DataConverterMetadata.cs</Link>
     </Compile>
@@ -298,8 +301,17 @@
     <Compile Include="..\Kephas.Data\Conversion\IDataConversionService.cs">
       <Link>Conversion\IDataConversionService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\IDataConversionTargetResolver.cs">
+      <Link>Conversion\IDataConversionTargetResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Conversion\IDataConverter.cs">
       <Link>Conversion\IDataConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\TargetResolvers\DataConversionTargetResolverBase.cs">
+      <Link>Conversion\TargetResolvers\DataConversionTargetResolverBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Conversion\TargetResolvers\IdDataConversionTargetResolver.cs">
+      <Link>Conversion\TargetResolvers\IdDataConversionTargetResolver.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\DataContextBase.cs">
       <Link>DataContextBase.cs</Link>

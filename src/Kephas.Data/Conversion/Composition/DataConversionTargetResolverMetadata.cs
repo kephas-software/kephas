@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataConverterMetadata.cs" company="Quartz Software SRL">
+// <copyright file="DataConversionTargetResolverMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the data converter metadata class.
+//   Implements the data conversion target resolver metadata class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,19 +11,20 @@ namespace Kephas.Data.Conversion.Composition
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Collections;
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// A metadata information for <see cref="IDataConverter"/>.
+    /// A data conversion target resolver metadata.
     /// </summary>
-    public class DataConverterMetadata : AppServiceMetadata
+    public class DataConversionTargetResolverMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataConverterMetadata"/> class.
+        /// Initializes a new instance of the <see cref="DataConversionTargetResolverMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataConverterMetadata(IDictionary<string, object> metadata)
+        public DataConversionTargetResolverMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -36,7 +37,7 @@ namespace Kephas.Data.Conversion.Composition
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataConverterMetadata"/>
+        /// Initializes a new instance of the <see cref="DataConversionTargetResolverMetadata"/>
         ///  class.
         /// </summary>
         /// <param name="sourceType">The type of the source.</param>
@@ -44,7 +45,7 @@ namespace Kephas.Data.Conversion.Composition
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">  The override priority.</param>
         /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
-        public DataConverterMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+        public DataConversionTargetResolverMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(processingPriority, overridePriority, optionalService)
         {
             this.SourceType = sourceType;

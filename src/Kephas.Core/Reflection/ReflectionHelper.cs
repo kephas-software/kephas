@@ -115,6 +115,17 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the method indicated by the given expression.
+        /// The given expression must be a lambda expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <returns>A <see cref="MethodInfo"/>.</returns>
+        public static MethodInfo GetMethodOf(Expression expression)
+        {
+            return ((MethodCallExpression)((LambdaExpression)expression).Body).Method;
+        }
+
+        /// <summary>
         /// Gets the generic method indicated by the given expression.
         /// The given expression must be a lambda expression.
         /// </summary>
@@ -123,6 +134,18 @@ namespace Kephas.Reflection
         public static MethodInfo GetGenericMethodOf(Expression expression)
         {
             return ((MethodCallExpression)((LambdaExpression)expression).Body).Method.GetGenericMethodDefinition();
+        }
+
+        /// <summary>
+        /// Gets the method indicated by the given expression.
+        /// The given expression must be a lambda expression.
+        /// </summary>
+        /// <typeparam name="TReturn">The type of the return.</typeparam>
+        /// <param name="expression">The expression.</param>
+        /// <returns>A <see cref="MethodInfo"/>.</returns>
+        public static MethodInfo GetMethodOf<TReturn>(Expression<Func<object, TReturn>> expression)
+        {
+            return GetMethodOf((Expression)expression);
         }
 
         /// <summary>
