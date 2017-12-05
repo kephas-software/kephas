@@ -225,9 +225,27 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
+        /// Gets a value indicating whether the provided property changed.
+        /// </summary>
+        /// <param name="property">The property name.</param>
+        /// <returns>
+        /// True if the property changed, false if not.
+        /// </returns>
+        public virtual bool IsChanged(string property)
+        {
+            if (this.ChangeState != ChangeState.Changed)
+            {
+                return false;
+            }
+
+            var originalValue = this.OriginalEntity[property];
+            return !object.Equals(this.ExpandoEntity[property], originalValue);
+        }
+
+        /// <summary>
         /// Accepts the changes and resets the change state to <see cref="Capabilities.ChangeState.NotChanged"/>.
         /// </summary>
-        public void AcceptChanges()
+        public virtual void AcceptChanges()
         {
             this.ResetChangeState();
         }
@@ -235,7 +253,7 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Discards the changes and resets the change state to <see cref="Capabilities.ChangeState.NotChanged"/>.
         /// </summary>
-        public void DiscardChanges()
+        public virtual void DiscardChanges()
         {
             try
             {
@@ -298,8 +316,7 @@ namespace Kephas.Data.Capabilities
         protected virtual object TryGetEntityId()
         {
             // first of all get the ID from an Identifiable interface
-            var identifiable = this.Entity as IIdentifiable;
-            if (identifiable != null)
+            if (this.Entity is IIdentifiable identifiable)
             {
                 return identifiable.Id;
             }

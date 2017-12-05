@@ -51,6 +51,15 @@ namespace Kephas.Data.Capabilities
         IDataContext DataContext { get; set; }
 
         /// <summary>
+        /// Gets a value indicating whether the provided property changed.
+        /// </summary>
+        /// <param name="property">The property name.</param>
+        /// <returns>
+        /// True if the property changed, false if not.
+        /// </returns>
+        bool IsChanged(string property);
+
+        /// <summary>
         /// Accepts the changes and resets the change state to <see cref="ChangeState.NotChanged"/>.
         /// </summary>
         void AcceptChanges();

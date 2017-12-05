@@ -28,6 +28,20 @@ namespace Kephas.Data.Tests.Capabilities
     public class EntityInfoTest
     {
         [Test]
+        public void IsChanged_IInstance_entity()
+        {
+            var entity = new DerivedTestEntity();
+            entity.Id = Guid.NewGuid();
+            entity.Name = "test";
+            var entityInfo = new EntityInfo(entity);
+
+            entity.Name = "another test";
+
+            Assert.IsFalse(entityInfo.IsChanged(nameof(entity.Id)));
+            Assert.IsTrue(entityInfo.IsChanged(nameof(entity.Name)));
+        }
+
+        [Test]
         public void OriginalEntity_IInstance_entity()
         {
             var collector = new Expando();
