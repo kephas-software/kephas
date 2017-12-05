@@ -14,6 +14,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Construction;
     using Kephas.Model.Resources;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Definition class for properties.
@@ -24,6 +25,11 @@ namespace Kephas.Model.Elements
         /// Type of the property.
         /// </summary>
         private ITypeInfo propertyType;
+
+        /// <summary>
+        /// The runtime property info.
+        /// </summary>
+        private IRuntimePropertyInfo runtimePropertyInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class.
@@ -70,8 +76,15 @@ namespace Kephas.Model.Elements
         /// <param name="value">The value.</param>
         public void SetValue(object obj, object value)
         {
-            // TODO improve implementation.
-            obj.SetPropertyValue(this.Name, value);
+            var runtimeProperty = this.TryGetRuntimePropertyInfo();
+            if (runtimeProperty == null)
+            {
+                obj.SetPropertyValue(this.Name, value);
+            }
+            else
+            {
+                runtimeProperty.SetValue(obj, value);
+            }
         }
 
         /// <summary>
@@ -83,8 +96,33 @@ namespace Kephas.Model.Elements
         /// </returns>
         public object GetValue(object obj)
         {
+            var runtimeProperty = this.TryGetRuntimePropertyInfo();
+            if (runtimeProperty == null)
+            {
+                return obj.GetPropertyValue(this.Name);
+            }
+            else
+            {
+                return runtimeProperty.GetValue(obj);
+            }
+        }
+
+        /// <summary>
+        /// Tries to get the runtime property information for this property.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="IRuntimePropertyInfo"/> or <c>null</c>.
+        /// </returns>
+        protected virtual IRuntimePropertyInfo TryGetRuntimePropertyInfo()
+        {
             // TODO improve implementation.
-            return obj.GetPropertyValue(this.Name);
+            if (this.runtimePropertyInfo != null)
+            {
+                return this.runtimePropertyInfo;
+            }
+
+            this.runtimePropertyInfo = ((IAggregatedElementInfo)this).Parts.OfType<IRuntimePropertyInfo>().FirstOrDefault();
+            return this.runtimePropertyInfo;
         }
 
         /// <summary>
