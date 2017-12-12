@@ -307,21 +307,21 @@ namespace Kephas.Dynamic
             // first, the values in the dictionary
             var dictionary = new Dictionary<string, object>(this.innerDictionary);
 
-            // second, the values in this expando's properties
-            if (this != this.innerObject)
-            {
-                foreach (var prop in this.GetThisTypeInfo().Properties)
-                {
-                    dictionary.Add(prop.Name, prop.GetValue(this));
-                }
-            }
-
-            // last, the values in the inner object
+            // second, the values in the inner object
             if (this.innerObject != null)
             {
                 foreach (var prop in this.GetInnerObjectTypeInfo().Properties)
                 {
-                    dictionary.Add(prop.Name, prop.GetValue(this.innerObject));
+                    dictionary[prop.Name] = prop.GetValue(this.innerObject);
+                }
+            }
+
+            // last, the values in this expando's properties
+            if (this != this.innerObject)
+            {
+                foreach (var prop in this.GetThisTypeInfo().Properties)
+                {
+                    dictionary[prop.Name] = prop.GetValue(this);
                 }
             }
 
@@ -369,7 +369,18 @@ namespace Kephas.Dynamic
         {
             IPropertyInfo propInfo;
 
-            // First check for public properties via reflection
+            // first, check the properties in this object
+            if (this != this.innerObject)
+            {
+                propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+                if (propInfo != null)
+                {
+                    value = propInfo.GetValue(this);
+                    return true;
+                }
+            }
+
+            // then, check the inner object
             if (this.innerObject != null)
             {
                 propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
@@ -378,14 +389,6 @@ namespace Kephas.Dynamic
                     value = propInfo.GetValue(this.innerObject);
                     return true;
                 }
-            }
-
-            // then, check the properties in this object
-            propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
-            if (propInfo != null)
-            {
-                value = propInfo.GetValue(this);
-                return true;
             }
 
             // last, check the dictionary for member
@@ -414,7 +417,23 @@ namespace Kephas.Dynamic
         {
             IPropertyInfo propInfo;
 
-            // First check for public properties via reflection
+            // first, check the properties in this object
+            if (this != this.innerObject)
+            {
+                propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+                if (propInfo != null)
+                {
+                    if (propInfo.CanWrite)
+                    {
+                        propInfo.SetValue(this, value);
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+
+            // then check the inner object
             if (this.innerObject != null)
             {
                 propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
@@ -428,19 +447,6 @@ namespace Kephas.Dynamic
 
                     return false;
                 }
-            }
-
-            // then, check the properties in this object
-            propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
-            if (propInfo != null)
-            {
-                if (propInfo.CanWrite)
-                {
-                    propInfo.SetValue(this, value);
-                    return true;
-                }
-
-                return false;
             }
 
             // last, check the dictionary for member
