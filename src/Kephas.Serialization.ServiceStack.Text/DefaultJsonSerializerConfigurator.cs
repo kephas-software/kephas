@@ -90,6 +90,7 @@ namespace Kephas.Serialization.ServiceStack.Text
             JsConfig.ExcludeDefaultValues = false;
             JsConfig.ThrowOnDeserializationError = false;
             JsConfig.ConvertObjectTypesIntoStringDictionary = true;
+            JsConfig.DateHandler = DateHandler.ISO8601;
             JsConfig.OnDeserializationError = (instance, type, name, str, exception) =>
             {
                 this.Logger.Error(exception, $"Error on deserializing {instance}, type: {type}, name: {name}, str: {str}.");
