@@ -232,6 +232,26 @@ namespace Kephas.Data.Linq.Expressions
             return base.VisitParameter(node);
         }
 
+        /// <summary>Visits the children of the <see cref="T:System.Linq.Expressions.UnaryExpression" />.</summary>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
+        /// <param name="node">The expression to visit.</param>
+        protected override Expression VisitUnary(UnaryExpression node)
+        {
+            if (node.NodeType == ExpressionType.Convert)
+            {
+                var operandTypeInfo = node.Operand.Type.GetTypeInfo();
+                var nodeTypeInfo = node.Type.GetTypeInfo();
+
+                // simplify expression if the conversion is superfluous
+                if (operandTypeInfo.IsInterface && nodeTypeInfo.IsInterface && nodeTypeInfo.IsAssignableFrom(operandTypeInfo))
+                {
+                    return this.Visit(node.Operand);
+                }
+            }
+
+            return base.VisitUnary(node);
+        }
+
         /// <summary>
         /// Tries to get the concrete type of the interface type.
         /// </summary>

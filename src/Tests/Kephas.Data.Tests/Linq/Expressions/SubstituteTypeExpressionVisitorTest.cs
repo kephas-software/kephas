@@ -10,6 +10,7 @@
 namespace Kephas.Data.Tests.Linq.Expressions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -321,9 +322,40 @@ namespace Kephas.Data.Tests.Linq.Expressions
             Assert.AreSame(expression, newExpression);
         }
 
+
+        [Test]
+        public void VisitUnary_convert_base_interface()
+        {
+            var activator = Substitute.For<IActivator>();
+
+            var query = new List<IBetterTest>(new[]
+                                                  {
+                                                      new BetterTest { Name = "gigi" },
+                                                      new BetterTest { Name = "belogea" }
+                                                  }).AsQueryable();
+            query = this.WhereIsNamed(query, "gigi");
+            var expression = query.Expression;
+            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var newExpression = visitor.Visit(expression);
+
+            var stringExpression = newExpression.ToString();
+            Assert.IsFalse(stringExpression.Contains("Convert("));
+        }
+
+        private IQueryable<T> WhereIsNamed<T>(IQueryable<T> query, string name)
+            where T : ITest
+        {
+            return query.Where(e => e.Name == name);
+        }
+
         public interface ITest
         {
             string Name { get; set; }
+        }
+
+        public interface IBetterTest : ITest
+        {
+            string BetterName { get; set; }
         }
 
         public class Test : ITest
@@ -340,6 +372,11 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public class DerivedTest : Test
         {
             public string Name { get; set; }
+        }
+
+        public class BetterTest : Test, IBetterTest
+        {
+            public string BetterName { get; set; }
         }
     }
 }
