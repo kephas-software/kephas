@@ -323,7 +323,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
-        public void VisitUnary_remove_unnecesarry_converts_interface()
+        public void VisitUnary_remove_unnecessary_converts_interface()
         {
             var activator = Substitute.For<IActivator>();
             var visitor = new SubstituteTypeExpressionVisitor(activator);
@@ -342,7 +342,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
-        public void VisitUnary_remove_unnecesarry_converts_class()
+        public void VisitUnary_remove_unnecessary_converts_class()
         {
             var activator = Substitute.For<IActivator>();
             var visitor = new SubstituteTypeExpressionVisitor(activator);
@@ -358,6 +358,25 @@ namespace Kephas.Data.Tests.Linq.Expressions
 
             var stringExpression = newExpression.ToString();
             Assert.IsFalse(stringExpression.Contains("Convert("));
+        }
+
+        [Test]
+        public void VisitUnary_preserve_converts_value_types()
+        {
+            var activator = Substitute.For<IActivator>();
+            var visitor = new SubstituteTypeExpressionVisitor(activator);
+
+            var query = new List<BetterTest>(new[]
+                                                 {
+                                                     new BetterTest { Name = "gigi", Age = 24 },
+                                                     new BetterTest { Name = "belogea" }
+                                                 }).AsQueryable();
+            query = query.Where(t => t.Age == 24);
+            var expression = query.Expression;
+            var newExpression = visitor.Visit(expression);
+
+            var stringExpression = newExpression.ToString();
+            Assert.IsTrue(stringExpression.Contains("Convert("));
         }
 
         private IQueryable<T> WhereIsNamed<T>(IQueryable<T> query, string name)
@@ -395,6 +414,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public class BetterTest : Test, IBetterTest
         {
             public string BetterName { get; set; }
+
+            public int? Age { get; set; }
         }
     }
 }

@@ -243,7 +243,8 @@ namespace Kephas.Data.Linq.Expressions
                 var nodeTypeInfo = node.Type.GetTypeInfo();
 
                 // simplify expression if the conversion is superfluous
-                if (nodeTypeInfo.IsAssignableFrom(operandTypeInfo))
+                // and the type is not a value type.
+                if (nodeTypeInfo.IsAssignableFrom(operandTypeInfo) && !nodeTypeInfo.IsValueType)
                 {
                     return this.Visit(node.Operand);
                 }
