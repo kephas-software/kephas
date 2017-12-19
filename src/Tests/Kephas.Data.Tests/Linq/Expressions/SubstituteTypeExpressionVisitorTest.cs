@@ -322,11 +322,11 @@ namespace Kephas.Data.Tests.Linq.Expressions
             Assert.AreSame(expression, newExpression);
         }
 
-
         [Test]
-        public void VisitUnary_convert_base_interface()
+        public void VisitUnary_remove_unnecesarry_converts_interface()
         {
             var activator = Substitute.For<IActivator>();
+            var visitor = new SubstituteTypeExpressionVisitor(activator);
 
             var query = new List<IBetterTest>(new[]
                                                   {
@@ -335,7 +335,25 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                   }).AsQueryable();
             query = this.WhereIsNamed(query, "gigi");
             var expression = query.Expression;
+            var newExpression = visitor.Visit(expression);
+
+            var stringExpression = newExpression.ToString();
+            Assert.IsFalse(stringExpression.Contains("Convert("));
+        }
+
+        [Test]
+        public void VisitUnary_remove_unnecesarry_converts_class()
+        {
+            var activator = Substitute.For<IActivator>();
             var visitor = new SubstituteTypeExpressionVisitor(activator);
+
+            var query = new List<BetterTest>(new[]
+                                                  {
+                                                      new BetterTest { Name = "gigi" },
+                                                      new BetterTest { Name = "belogea" }
+                                                  }).AsQueryable();
+            query = this.WhereIsNamed(query, "gigi");
+            var expression = query.Expression;
             var newExpression = visitor.Visit(expression);
 
             var stringExpression = newExpression.ToString();

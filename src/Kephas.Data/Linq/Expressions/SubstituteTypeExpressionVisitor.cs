@@ -243,7 +243,7 @@ namespace Kephas.Data.Linq.Expressions
                 var nodeTypeInfo = node.Type.GetTypeInfo();
 
                 // simplify expression if the conversion is superfluous
-                if (operandTypeInfo.IsInterface && nodeTypeInfo.IsInterface && nodeTypeInfo.IsAssignableFrom(operandTypeInfo))
+                if (nodeTypeInfo.IsAssignableFrom(operandTypeInfo))
                 {
                     return this.Visit(node.Operand);
                 }
