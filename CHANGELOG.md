@@ -1,5 +1,11 @@
-<a name="4.1.0-rc.10"></a>
-# [4.1.0-rc.10](https://github.com/quartz-software/kephas/compare/v4.0.0...master) (2017-12-21)
+<a name="4.1.1"></a>
+# [4.1.1](https://github.com/quartz-software/kephas/compare/v4.1.0...v4.1.1) (2018-02-01)
+
+* Core.Services
+  * Added the IFinalizable and IAsyncFinalizable interfaces to pair the IInitializable and IAsyncFinalizable.
+
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/quartz-software/kephas/compare/v4.0.0...v4.1.0) (2018-01-21)
 
 * Core
   * Made AppServicesBuilder accept IAmbientServices (interface) instead of AmbientServices (class).
