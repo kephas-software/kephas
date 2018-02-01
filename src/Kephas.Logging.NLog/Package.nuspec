@@ -30,7 +30,7 @@
                 <dependency id="NLog" version="4.4.0" />
             </group>
             <group targetFramework="netstandard1.5">
-                <dependency id="NLog" version="4.5.0-rc02" />
+                <dependency id="NLog" version="4.5.0-rc04" />
             </group>
         </dependencies>
         <references>

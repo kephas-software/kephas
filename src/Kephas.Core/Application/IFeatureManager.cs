@@ -22,7 +22,7 @@ namespace Kephas.Application
     /// It supports initialization and finalization.
     /// </remarks>
     [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(FeatureInfoAttribute) })]
-    public interface IFeatureManager
+    public interface IFeatureManager : IAsyncInitializable, IAsyncFinalizable
     {
         /// <summary>
         /// Performs initialization tasks within the application feature boundary.

@@ -43,8 +43,7 @@ namespace Kephas.Web.Owin.Application
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>
-                featureLifecycleBehaviorFactories)
+            ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
             : base(
                 appManifest,
                 ambientServices,

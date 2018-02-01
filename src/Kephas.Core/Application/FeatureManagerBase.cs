@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
     using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
 
@@ -114,6 +115,29 @@ namespace Kephas.Application
         protected virtual Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return this.InitializeAsync((IAppContext)context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Finalizes the service.
+        /// </summary>
+        /// <param name="context">An optional context for finalization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return this.FinalizeAsync((IAppContext)context, cancellationToken);
         }
     }
 }
