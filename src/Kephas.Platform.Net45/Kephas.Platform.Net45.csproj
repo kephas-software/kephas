@@ -147,7 +147,6 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Application\NetAppRuntime.cs" />
-    <Compile Include="Platform\Net45\Net45AmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
