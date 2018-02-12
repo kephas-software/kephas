@@ -4,12 +4,12 @@
     <TargetFramework>netstandard1.3</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>4.1.1</Version>
+    <Version>4.1.2</Version>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
     <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <FileVersion>4.1.1.0</FileVersion>
+    <FileVersion>4.1.2.0</FileVersion>
     <Description>Provides testing artifacts using the composition services implementation.</Description>
     <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

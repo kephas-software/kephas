@@ -23,9 +23,7 @@ namespace Kephas.Mail.Services
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
+        /// <returns>An asynchronous result.</returns>
         public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
         {
             var smtpClient = this.CreateSmtpClient();

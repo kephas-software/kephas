@@ -17,6 +17,11 @@ namespace Kephas.Mail.Configuration
     public class EmailSenderSettings
     {
         /// <summary>
+        /// The default SMTP port.
+        /// </summary>
+        public const int DefaultSmtpPort = 25;
+
+        /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
         /// <value>
@@ -47,6 +52,6 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The port.
         /// </value>
-        public string Port { get; set; }
+        public int? Port { get; set; }
     }
 }

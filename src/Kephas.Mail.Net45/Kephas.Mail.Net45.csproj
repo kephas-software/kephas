@@ -75,6 +75,9 @@
     <Compile Include="..\Kephas.Mail\Message\EmailMessage.cs">
       <Link>Message\EmailMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Mail\Services\EmailSenderServiceExtensions.cs">
+      <Link>Services\EmailSenderServiceExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Mail\Services\IEmailSenderService.cs">
       <Link>Services\IEmailSenderService.cs</Link>
     </Compile>

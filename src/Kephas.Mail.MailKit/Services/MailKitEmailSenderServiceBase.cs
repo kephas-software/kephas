@@ -34,9 +34,7 @@ namespace Kephas.Mail.Services
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
+        /// <returns>An asynchronous result.</returns>
         public async Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
         {
             var smtpClient = new SmtpClient();
@@ -84,7 +82,7 @@ namespace Kephas.Mail.Services
         private (NetworkCredential, string Host, int) ComputeConnectionData()
         {
             var settings = this.GetEmailSenderSettings();
-            return (new NetworkCredential(settings.UserName, settings.Password), settings.Host, int.Parse(settings.Port));
+            return (new NetworkCredential(settings.UserName, settings.Password), settings.Host, settings.Port ?? EmailSenderSettings.DefaultSmtpPort);
         }
     }
 }
