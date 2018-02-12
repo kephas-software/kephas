@@ -32,7 +32,7 @@ namespace Kephas.Mail
 
             var message = new MimeMessage
             {
-                Sender = emailMessage.Sender.ToMailAddress(),
+                Sender = emailMessage.Sender?.ToMailAddress(),
                 Subject = emailMessage.Subject,
             };
 

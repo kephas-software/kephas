@@ -31,7 +31,6 @@ nuget pack ..\Kephas.Platform\Package.nuspec -BasePath ..\Kephas.Platform -Symbo
 nuget pack ..\Kephas.CodeAnalysis\Package.nuspec -BasePath ..\Kephas.CodeAnalysis -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Mail\Package.nuspec -BasePath ..\Kephas.Mail -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Mail.MailKit\Package.nuspec -BasePath ..\Kephas.Mail.MailKit -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
-nuget pack ..\Kephas.Mail.Services.Net45\Package.nuspec -BasePath ..\Kephas.Mail.Services.Net45 -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Web.Owin\Package.nuspec -BasePath ..\Kephas.Web.Owin -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas.Npgsql -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 

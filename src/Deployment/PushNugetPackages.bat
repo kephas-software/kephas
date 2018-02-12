@@ -22,7 +22,6 @@ nuget push Kephas.Messaging.Model.%1.nupkg -Source https://www.nuget.org/api/v2/
 nuget push Kephas.CodeAnalysis.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Mail.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Mail.MailKit.%1.nupkg -Source https://www.nuget.org/api/v2/package
-rem nuget push Kephas.Mail.Services.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Web.Owin.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Npgsql.%1.nupkg -Source https://www.nuget.org/api/v2/package
 

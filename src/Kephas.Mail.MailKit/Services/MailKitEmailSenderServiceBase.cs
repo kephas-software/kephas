@@ -14,10 +14,13 @@ namespace Kephas.Mail.Services
     using System.Threading.Tasks;
 
     using Kephas.Mail.Configuration;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     using MailKit.Net.Smtp;
     using MailKit.Security;
+
+    using MimeKit;
 
     /// <summary>
     /// A MailKit email sender service.
@@ -33,9 +36,13 @@ namespace Kephas.Mail.Services
         /// Sends an email asynchronously.
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
+        /// <param name="context">The sending context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result.</returns>
-        public async Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
+        public async Task SendAsync(
+            IEmailMessage emailMessage,
+            IContext context = null,
+            CancellationToken cancellationToken = default)
         {
             var smtpClient = new SmtpClient();
 
@@ -45,7 +52,13 @@ namespace Kephas.Mail.Services
 
             try
             {
-                await smtpClient.SendAsync(emailMessage.ToMailMessage(), cancellationToken).PreserveThreadContext();
+                var mail = emailMessage.ToMailMessage();
+                if (mail.Sender == null)
+                {
+                    var settings = this.GetEmailSenderSettings();
+                    mail.Sender = new MailboxAddress(settings.UserName);
+                }
+                await smtpClient.SendAsync(mail, cancellationToken).PreserveThreadContext();
             }
             finally
             {

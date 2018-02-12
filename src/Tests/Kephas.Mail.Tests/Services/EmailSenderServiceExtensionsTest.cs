@@ -14,6 +14,7 @@ namespace Kephas.Mail.Tests.Services
     using System.Threading.Tasks;
 
     using Kephas.Mail.Services;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     using NSubstitute;
@@ -28,7 +29,7 @@ namespace Kephas.Mail.Tests.Services
         {
             IEmailMessage message = null;
             var sender = Substitute.For<IEmailSenderService>();
-            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<CancellationToken>()).Returns(
+            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         message = ci.Arg<IEmailMessage>();
@@ -47,7 +48,7 @@ namespace Kephas.Mail.Tests.Services
         {
             IEmailMessage message = null;
             var sender = Substitute.For<IEmailSenderService>();
-            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<CancellationToken>()).Returns(
+            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         message = ci.Arg<IEmailMessage>();

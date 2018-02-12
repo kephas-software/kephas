@@ -25,9 +25,13 @@ namespace Kephas.Mail.Services
         /// Sends an email asynchronously.
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
+        /// <param name="context">The sending context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result.</returns>
-        public Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default)
+        public Task SendAsync(
+            IEmailMessage emailMessage,
+            IContext context = null,
+            CancellationToken cancellationToken = default)
         {
             return TaskHelper.CompletedTask;
         }

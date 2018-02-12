@@ -12,6 +12,8 @@ namespace Kephas.Mail.Services
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Contract services sending emails.
     /// </summary>
@@ -21,8 +23,12 @@ namespace Kephas.Mail.Services
         /// Sends an email asynchronously.
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
+        /// <param name="context">The sending context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result.</returns>
-        Task SendAsync(IEmailMessage emailMessage, CancellationToken cancellationToken = default);
+        Task SendAsync(
+            IEmailMessage emailMessage,
+            IContext context = null,
+            CancellationToken cancellationToken = default);
     }
 }
