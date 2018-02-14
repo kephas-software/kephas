@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Distributed\BrokeredMessageBuilderTest.cs" />
     <Compile Include="Distributed\BrokeredMessageTest.cs" />
+    <Compile Include="Distributed\EndpointTest.cs" />
     <Compile Include="Distributed\InProcessMessageBrokerTest.cs" />
     <Compile Include="MessageHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -23,16 +23,16 @@ namespace Kephas.Messaging.Tests.Distributed
             var message = new BrokeredMessage
                               {
                                   Content = new PingMessage(),
-                                  Sender = new Endpoint { AppInstanceId = "app-instance" },
+                                  Sender = new Endpoint(appInstanceId: "app-instance"),
                                   Recipients =
                                       new[]
                                           {
-                                              new Endpoint { EndpointId = "endpoint1" },
-                                              new Endpoint { AppId = "app1" }
+                                              new Endpoint(endpointId: "endpoint1"),
+                                              new Endpoint(appId: "app1")
                                           }
                               };
 
-            var resultFormat = "BrokeredMessage (#{0}) {{PingMessage/app-instance > endpoint1,app1}}";
+            var resultFormat = "BrokeredMessage (#{0}) {{PingMessage/app://.//app-instance/ > app://.///endpoint1,app://./app1//}}";
             var result = message.ToString();
 
             Assert.AreEqual(string.Format(resultFormat, message.Id), result);

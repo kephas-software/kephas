@@ -39,11 +39,12 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
-                Name = "John Doe"
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site")
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -95,7 +96,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
             Assert.IsInstanceOf<TestEntity>(obj);
@@ -103,6 +104,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var testEntity = (TestEntity)obj;
 
             Assert.AreEqual("John Doe", testEntity.Name);
+            Assert.AreEqual(new Uri("http://site.com/my-site"), testEntity.PersonalSite);
         }
 
         [Test, Ignore("The deserialization of custom dynamics is still pending...")]
@@ -175,6 +177,8 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         public class TestEntity
         {
             public string Name { get; set; }
+
+            public Uri PersonalSite { get; set; }
         }
 
         public class ExpandoEntity : Expando

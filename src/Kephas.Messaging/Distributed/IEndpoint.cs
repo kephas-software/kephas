@@ -9,11 +9,21 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
+
     /// <summary>
     /// Interface for messaging endpoint.
     /// </summary>
     public interface IEndpoint
     {
+        /// <summary>
+        /// Gets the URL of the endpoint.
+        /// </summary>
+        /// <value>
+        /// The URL.
+        /// </value>
+        Uri Url { get; }
+
         /// <summary>
         /// Gets the identifier of the endpoint.
         /// </summary>

@@ -91,6 +91,9 @@
     <Compile Include="..\Kephas.Messaging.Tests\Distributed\BrokeredMessageTest.cs">
       <Link>Distributed\BrokeredMessageTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Distributed\EndpointTest.cs">
+      <Link>Distributed\EndpointTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\Distributed\InProcessMessageBrokerTest.cs">
       <Link>Distributed\InProcessMessageBrokerTest.cs</Link>
     </Compile>

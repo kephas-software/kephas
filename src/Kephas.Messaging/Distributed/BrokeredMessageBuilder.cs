@@ -112,6 +112,22 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Sets the sender of the brokered message.
+        /// </summary>
+        /// <param name="sender">The message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder<TMessage> WithSender(Uri sender)
+        {
+            Requires.NotNull(sender, nameof(sender));
+
+            this.brokeredMessage.Sender = new Endpoint(sender);
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the recipients to the brokered message.
         /// </summary>
         /// <param name="recipients">The recipients.</param>
@@ -218,12 +234,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IEndpoint CreateEndpoint(string senderId)
         {
-            return new Endpoint
-            {
-                EndpointId = senderId,
-                AppId = this.appManifest.AppId,
-                AppInstanceId = this.appManifest.AppInstanceId,
-            };
+            return new Endpoint(this.appManifest.AppId, this.appManifest.AppInstanceId, senderId);
         }
     }
 }
