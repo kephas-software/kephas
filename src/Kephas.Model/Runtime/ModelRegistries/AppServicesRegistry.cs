@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingModelRegistry.cs" company="Quartz Software SRL">
+// <copyright file="AppServiceContractsRegistry.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the messaging model registry class.
+//   Implements the application service contracts registry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Model.Runtime.ModelRegistries
+namespace Kephas.Model.Runtime.ModelRegistries
 {
     using System;
     using System.Collections.Generic;
@@ -19,18 +19,15 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Messaging.Model.AttributedModel;
-    using Kephas.Model.Reflection;
-    using Kephas.Model.Runtime;
     using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
-    using IMessage = Kephas.Messaging.IMessage;
-
     /// <summary>
-    /// A messaging model registry.
+    /// An application service contracts registry.
     /// </summary>
-    public class MessagingModelRegistry : IRuntimeModelRegistry
+    public class AppServicesRegistry : IRuntimeModelRegistry
     {
         /// <summary>
         /// The application runtime.
@@ -43,11 +40,11 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         private readonly ITypeLoader typeLoader;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessagingModelRegistry"/> class.
+        /// Initializes a new instance of the <see cref="AppServicesRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
-        public MessagingModelRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        public AppServicesRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
@@ -67,43 +64,17 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
             var assemblies = await this.appRuntime.GetAppAssembliesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 
             var types = new HashSet<Type>();
-            var markerInterface = typeof(IMessage).GetTypeInfo();
             foreach (var assembly in assemblies)
             {
                 types.AddRange(this.typeLoader.GetLoadableExportedTypes(assembly).Where(
                     t =>
                         {
                             var ti = t.GetTypeInfo();
-                            return (this.IsMessage(ti, markerInterface) || this.IsMessagePart(ti)) && !ti.IsExcludedFromModel();
+                            return ti.GetCustomAttribute<AppServiceContractAttribute>() != null;
                         }));
             }
 
             return types;
-        }
-
-        /// <summary>
-        /// Query if 'type' is message.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="markerInterface">The marker interface.</param>
-        /// <returns>
-        /// True if the type is a message, false if not.
-        /// </returns>
-        private bool IsMessage(TypeInfo type, TypeInfo markerInterface)
-        {
-            return type.IsClass && !type.IsAbstract && markerInterface.IsAssignableFrom(type);
-        }
-
-        /// <summary>
-        /// Query if 'type' is a message part.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// True if the type is a message part, false if not.
-        /// </returns>
-        private bool IsMessagePart(TypeInfo type)
-        {
-            return type.IsClass && !type.IsAbstract && type.GetCustomAttribute<MessagePartAttribute>() != null;
         }
     }
 }

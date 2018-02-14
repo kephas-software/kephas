@@ -365,16 +365,17 @@ namespace Kephas.Model.Elements
         /// <param name="parts">The parts.</param>
         private void ComputeGenericInformation(IModelConstructionContext constructionContext, List<ITypeInfo> parts)
         {
-            if (parts.Count > 1 && parts.Any(p => p.IsGenericType()))
+            var genericParts = parts.Where(p => p.IsGenericType()).ToList();
+            if (genericParts.Count > 1)
             {
                 throw new ModelConstructionException(
                     string.Format(
                         Strings.ClassifierBase_MultipleGenericPartsNotSupported_Exception,
                         this.FullName,
-                        string.Join(", ", parts.Select(p => p.FullName))));
+                        string.Join(", ", genericParts.Select(p => p.FullName))));
             }
 
-            var genericPart = parts.Count == 1 ? parts[0] : null;
+            var genericPart = genericParts.Count == 1 ? genericParts[0] : null;
             if (genericPart != null && genericPart.IsGenericType())
             {
                 this.GenericTypeParameters = genericPart.GenericTypeParameters;

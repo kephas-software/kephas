@@ -89,6 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Construction\AnnotationConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\Annotations\AttributeAnnotationConstructorTest.cs" />
+    <Compile Include="Runtime\Construction\AppServiceConstructorTest.cs" />
     <Compile Include="Runtime\Construction\Builders\ValueTypeBuilderTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\ClassifierConstructorTest.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Runtime\Construction\PropertyConstructorTest.cs" />
     <Compile Include="Runtime\Construction\ValueTypeConstructorTest.cs" />
     <Compile Include="Runtime\DefaultRuntimeModelInfoProviderTest.cs" />
+    <Compile Include="Runtime\ModelRegistries\AppServicesRegistryTest.cs" />
     <Compile Include="Runtime\ModelRegistries\ModelAssemblyRegistryTest.cs" />
     <Compile Include="Runtime\SystemPrimitiveTypesModelInfoProviderTest.cs" />
     <Compile Include="Services\DefaultModelSpaceProviderTest.cs" />

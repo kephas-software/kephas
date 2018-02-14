@@ -55,8 +55,7 @@ namespace Kephas.Model.Runtime.Construction
             Requires.NotNull(constructionContext, nameof(constructionContext));
             Requires.NotNull(runtimeElement, nameof(runtimeElement));
 
-            var runtimeInfo = runtimeElement as TRuntime;
-            if (runtimeInfo == null)
+            if (!(runtimeElement is TRuntime runtimeInfo))
             {
                 return null;
             }

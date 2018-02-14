@@ -53,11 +53,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var platformManager = Substitute.For<IAppRuntime>();
-            platformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
+            var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly }));
 
-            var registry = new ModelAssemblyRegistry(platformManager, new DefaultTypeLoader(), new DefaultModelAssemblyAttributeProvider());
+            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(), new DefaultModelAssemblyAttributeProvider());
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
             Assert.IsTrue(types.All(t => t.Name.EndsWith("Dimension") || t.Name.EndsWith("DimensionElement")));
@@ -66,15 +66,15 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_exclude_from_model()
         {
-            var platformManager = Substitute.For<IAppRuntime>();
-            platformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
+            var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistryTest).GetTypeInfo().Assembly }));
 
             var attrProvider = Substitute.For<IModelAssemblyAttributeProvider>();
             attrProvider.GetModelAssemblyAttributes(Arg.Any<Assembly>()).Returns(
                 new List<ModelAssemblyAttribute> { new ModelAssemblyAttribute(typeof(ExcludedType)) });
 
-            var registry = new ModelAssemblyRegistry(platformManager, new DefaultTypeLoader(), attrProvider);
+            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(), attrProvider);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
             Assert.AreEqual(0, types.Count);

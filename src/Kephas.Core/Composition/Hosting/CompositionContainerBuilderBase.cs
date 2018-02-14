@@ -22,7 +22,6 @@ namespace Kephas.Composition.Hosting
     using Kephas.Collections;
     using Kephas.Composition.Configuration;
     using Kephas.Composition.Conventions;
-    using Kephas.Configuration;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
