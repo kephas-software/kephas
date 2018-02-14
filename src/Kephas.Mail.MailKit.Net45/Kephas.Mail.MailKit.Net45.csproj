@@ -59,8 +59,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Mail.MailKit\EmailMessageExtensions.cs">
-      <Link>EmailMessageExtensions.cs</Link>
+    <Compile Include="..\Kephas.Mail.MailKit\Message\MailKitEmailAddress.cs">
+      <Link>Message\MailKitEmailAddress.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail.MailKit\Message\MailKitEmailAttachment.cs">
+      <Link>Message\MailKitEmailAttachment.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail.MailKit\Message\MailKitEmailMessage.cs">
+      <Link>Message\MailKitEmailMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail.MailKit\Services\MailKitEmailMessageBuilder.cs">
+      <Link>Services\MailKitEmailMessageBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail.MailKit\Services\MailKitEmailSenderServiceBase.cs">
       <Link>Services\MailKitEmailSenderServiceBase.cs</Link>

@@ -14,7 +14,7 @@ namespace Kephas.Mail
     /// <summary>
     /// Interface for email addresses.
     /// </summary>
-    public interface IEmailAddress : IExpando
+    public interface IEmailAddress : IIndexable
     {
         /// <summary>
         /// Gets the address.

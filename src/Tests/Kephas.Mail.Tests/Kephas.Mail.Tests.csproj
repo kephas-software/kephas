@@ -49,6 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Message\MailMessage.cs" />
+    <Compile Include="Message\MailMessageBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmailSenderServiceExtensionsTest.cs" />
   </ItemGroup>

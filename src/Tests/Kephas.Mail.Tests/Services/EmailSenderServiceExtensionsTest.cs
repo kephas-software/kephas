@@ -14,6 +14,7 @@ namespace Kephas.Mail.Tests.Services
     using System.Threading.Tasks;
 
     using Kephas.Mail.Services;
+    using Kephas.Mail.Tests.Message;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -27,40 +28,36 @@ namespace Kephas.Mail.Tests.Services
         [Test]
         public async Task SendAsync_single_address()
         {
-            IEmailMessage message = null;
+            var builder = new MailMessageBuilder();
+
             var sender = Substitute.For<IEmailSenderService>();
-            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(
-                ci =>
-                    {
-                        message = ci.Arg<IEmailMessage>();
-                        return Task.FromResult(0);
-                    });
+            sender.CreateEmailMessageBuilder(Arg.Any<IContext>()).Returns(builder);
+            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(0));
 
             await sender.SendAsync("me@me.com", "subject", "body").PreserveThreadContext();
 
-            Assert.AreEqual("me@me.com", message.ToRecipients.Single().Address);
+            var message = builder.EmailMessage;
+            Assert.AreEqual("me@me.com", message.To.Single().Address);
             Assert.AreEqual("subject", message.Subject);
-            Assert.AreEqual("body", message.Body.Content);
+            Assert.AreEqual("body", message.BodyHtml);
         }
 
         [Test]
         public async Task SendAsync_multiple_addresses()
         {
-            IEmailMessage message = null;
+            var builder = new MailMessageBuilder();
+
             var sender = Substitute.For<IEmailSenderService>();
-            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(
-                ci =>
-                    {
-                        message = ci.Arg<IEmailMessage>();
-                        return Task.FromResult(0);
-                    });
+            sender.CreateEmailMessageBuilder(Arg.Any<IContext>()).Returns(builder);
+            sender.SendAsync(Arg.Any<IEmailMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(0));
 
             await sender.SendAsync(new [] { "me@me.com", "you@you.com" }, "subject", "body").PreserveThreadContext();
 
-            Assert.AreEqual("me@me.com", message.ToRecipients.First().Address);
-            Assert.AreEqual("you@you.com", message.ToRecipients.Skip(1).Single().Address);
+            var message = builder.EmailMessage;
+            Assert.AreEqual("me@me.com", message.To.First().Address);
+            Assert.AreEqual("you@you.com", message.To.Skip(1).Single().Address);
             Assert.AreEqual("subject", message.Subject);
-            Assert.AreEqual("body", message.Body.Content);
+            Assert.AreEqual("body", message.BodyHtml);
         }
     }
 }

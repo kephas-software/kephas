@@ -48,6 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Mail.Tests\Message\MailMessage.cs">
+      <Link>Message\MailMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail.Tests\Message\MailMessageBuilder.cs">
+      <Link>Message\MailMessageBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Mail.Tests\Services\EmailSenderServiceExtensionsTest.cs">
       <Link>Services\EmailSenderServiceExtensionsTest.cs</Link>
     </Compile>

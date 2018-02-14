@@ -25,13 +25,13 @@ namespace Kephas.Mail.Services
         /// <summary>
         /// The system email sender configuration.
         /// </summary>
-        private readonly IConfiguration<SystemEmailSenderSettings> systemEmailSenderConfig;
+        private readonly IConfiguration<SystemSmtpSettings> systemEmailSenderConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MailKitSystemEmailSenderService"/> class.
         /// </summary>
         /// <param name="systemEmailSenderConfig">The system email sender configuration.</param>
-        public MailKitSystemEmailSenderService(IConfiguration<SystemEmailSenderSettings> systemEmailSenderConfig)
+        public MailKitSystemEmailSenderService(IConfiguration<SystemSmtpSettings> systemEmailSenderConfig)
         {
             Requires.NotNull(systemEmailSenderConfig, nameof(systemEmailSenderConfig));
 
@@ -44,6 +44,6 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// The email sender settings.
         /// </returns>
-        protected override EmailSenderSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.Settings;
+        protected override SmtpSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.Settings;
     }
 }

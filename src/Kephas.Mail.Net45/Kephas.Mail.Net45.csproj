@@ -45,11 +45,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Mail\Configuration\EmailSenderSettings.cs">
-      <Link>Configuration\EmailSenderSettings.cs</Link>
+    <Compile Include="..\Kephas.Mail\Configuration\SmtpSettings.cs">
+      <Link>Configuration\SmtpSettings.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Mail\Configuration\SystemEmailSenderSettings.cs">
-      <Link>Configuration\SystemEmailSenderSettings.cs</Link>
+    <Compile Include="..\Kephas.Mail\Configuration\SystemSmtpSettings.cs">
+      <Link>Configuration\SystemSmtpSettings.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail\IEmailAddress.cs">
       <Link>IEmailAddress.cs</Link>
@@ -57,32 +57,26 @@
     <Compile Include="..\Kephas.Mail\IEmailAttachment.cs">
       <Link>IEmailAttachment.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Mail\IEmailBody.cs">
-      <Link>IEmailBody.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Mail\IEmailMessage.cs">
       <Link>IEmailMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Mail\Message\EmailAddress.cs">
-      <Link>Message\EmailAddress.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Mail\Message\EmailAttachment.cs">
-      <Link>Message\EmailAttachment.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Mail\Message\EmailBody.cs">
-      <Link>Message\EmailBody.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Mail\Message\EmailMessage.cs">
-      <Link>Message\EmailMessage.cs</Link>
+    <Compile Include="..\Kephas.Mail\Services\EmailMessageBuilderExtensions.cs">
+      <Link>Services\EmailMessageBuilderExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail\Services\EmailSenderServiceExtensions.cs">
       <Link>Services\EmailSenderServiceExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail\Services\IEmailMessageBuilder.cs">
+      <Link>Services\IEmailMessageBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail\Services\IEmailSenderService.cs">
       <Link>Services\IEmailSenderService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail\Services\ISystemEmailSenderService.cs">
       <Link>Services\ISystemEmailSenderService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Mail\Services\NullEmailMessageBuilder.cs">
+      <Link>Services\NullEmailMessageBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Mail\Services\NullSystemEmailSenderService.cs">
       <Link>Services\NullSystemEmailSenderService.cs</Link>

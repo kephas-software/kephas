@@ -16,12 +16,12 @@ namespace Kephas.Mail
     /// <summary>
     /// Interface for an email message.
     /// </summary>
-    public interface IEmailMessage : IExpando
+    public interface IEmailMessage : IIndexable
     {
         /// <summary>
-        /// Gets or sets the 'on behalf' sender of the email.
+        /// Gets the 'on behalf' sender of the email.
         /// </summary>
-        IEmailAddress From { get; set; }
+        IEnumerable<IEmailAddress> From { get; }
 
         /// <summary>
         /// Gets or sets the sender's address.
@@ -31,17 +31,17 @@ namespace Kephas.Mail
         /// <summary>
         /// Gets the addresses of the 'To' recipients.
         /// </summary>
-        ICollection<IEmailAddress> ToRecipients { get; }
+        IEnumerable<IEmailAddress> To { get; }
 
         /// <summary>
         /// Gets the addresses of the 'CC' recipients.
         /// </summary>
-        ICollection<IEmailAddress> CcRecipients { get; }
+        IEnumerable<IEmailAddress> Cc { get; }
 
         /// <summary>
         /// Gets the addresses of the 'BCC' recipients.
         /// </summary>
-        ICollection<IEmailAddress> BccRecipients { get; }
+        IEnumerable<IEmailAddress> Bcc { get; }
 
         /// <summary>
         /// Gets or sets the subject of the mail.
@@ -49,13 +49,18 @@ namespace Kephas.Mail
         string Subject { get; set; }
 
         /// <summary>
-        /// Gets or sets the body of the email.
+        /// Gets or sets the HTML body of the email.
         /// </summary>
-        IEmailBody Body { get; set; }
+        string BodyHtml { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text body of the email.
+        /// </summary>
+        string BodyText { get; set; }
 
         /// <summary>
         /// Gets the attachments of the email.
         /// </summary>
-        ICollection<IEmailAttachment> Attachments { get; }
+        IEnumerable<IEmailAttachment> Attachments { get; }
     }
 }

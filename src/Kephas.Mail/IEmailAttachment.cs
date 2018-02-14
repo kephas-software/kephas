@@ -16,7 +16,7 @@ namespace Kephas.Mail
     /// <summary>
     /// An email attachment.
     /// </summary>
-    public interface IEmailAttachment : IExpando
+    public interface IEmailAttachment : IIndexable
     {
         /// <summary>
         /// Gets or sets the attachment name.

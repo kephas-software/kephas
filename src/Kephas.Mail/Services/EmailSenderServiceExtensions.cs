@@ -11,15 +11,31 @@ namespace Kephas.Mail.Services
 {
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Mail.Message;
 
     /// <summary>
     /// An email sender service extensions.
     /// </summary>
     public static class EmailSenderServiceExtensions
     {
+        /// <summary>
+        /// An IEmailSenderService extension method that sends an email asynchronously.
+        /// </summary>
+        /// <param name="senderService">The senderService to act on.</param>
+        /// <param name="subject">The subject.</param>
+        /// <param name="body">The body.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task SendAsync(this IEmailSenderService senderService, string subject, string body)
+        {
+            Requires.NotNull(senderService, nameof(senderService));
+
+            var messageBuilder = senderService.CreateEmailMessageBuilder();
+            var message = messageBuilder.Subject(subject).BodyHtml(body).EmailMessage;
+            return senderService.SendAsync(message);
+        }
+
         /// <summary>
         /// An IEmailSenderService extension method that sends an email asynchronously.
         /// </summary>
@@ -35,12 +51,8 @@ namespace Kephas.Mail.Services
             Requires.NotNull(senderService, nameof(senderService));
             Requires.NotNullOrEmpty(toAddress, nameof(toAddress));
 
-            var message = new EmailMessage
-                              {
-                                  ToRecipients = { new EmailAddress { Address = toAddress } },
-                                  Subject = subject,
-                                  Body = new EmailBody { Content = body }
-                              };
+            var messageBuilder = senderService.CreateEmailMessageBuilder();
+            var message = messageBuilder.To(toAddress).Subject(subject).BodyHtml(body).EmailMessage;
             return senderService.SendAsync(message);
         }
 
@@ -59,12 +71,8 @@ namespace Kephas.Mail.Services
             Requires.NotNull(senderService, nameof(senderService));
             Requires.NotNullOrEmpty(toAddresses, nameof(toAddresses));
 
-            var message = new EmailMessage
-                              {
-                                  Subject = subject,
-                                  Body = new EmailBody { Content = body }
-                              };
-            toAddresses.ForEach(a => message.ToRecipients.Add(new EmailAddress { Address = a }));
+            var messageBuilder = senderService.CreateEmailMessageBuilder();
+            var message = messageBuilder.To(toAddresses).Subject(subject).BodyHtml(body).EmailMessage;
             return senderService.SendAsync(message);
         }
     }

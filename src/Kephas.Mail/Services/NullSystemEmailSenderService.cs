@@ -35,5 +35,17 @@ namespace Kephas.Mail.Services
         {
             return TaskHelper.CompletedTask;
         }
+
+        /// <summary>
+        /// Creates email message builder.
+        /// </summary>
+        /// <param name="context">The sending context.</param>
+        /// <returns>
+        /// The new email message builder.
+        /// </returns>
+        public IEmailMessageBuilder CreateEmailMessageBuilder(IContext context = null)
+        {
+            return new NullEmailMessageBuilder();
+        }
     }
 }
