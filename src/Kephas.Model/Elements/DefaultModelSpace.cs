@@ -124,8 +124,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null)
         {
-            var classifier = typeInfo as IClassifier;
-            if (classifier != null)
+            if (typeInfo is IClassifier classifier)
             {
                 return classifier;
             }
@@ -423,7 +422,7 @@ namespace Kephas.Model.Elements
                 .ToList();
             var constructedGenericsDependencies = new HashSet<ITypeInfo>(
                 unsortedClassifiers
-                    .SelectMany(c => c.GetDependencies(constructionContext))
+                    .SelectMany(c => c.GetRawDependencies(constructionContext))
                     .Where(t => t.IsConstructedGenericType() && genericDefinitions.Contains(t.GenericTypeDefinition)));
             while (true)
             {

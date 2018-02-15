@@ -115,9 +115,9 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// An enumeration of dependencies.
         /// </returns>
-        public static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
+        internal static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
         {
-            var parts = classifier.Parts.OfType<ITypeInfo>().ToList();
+            var parts = classifier.Parts.OfType<ITypeInfo>();
             return classifier.GetClassifierDependencies(constructionContext, parts);
         }
 
@@ -130,37 +130,50 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// An enumeration of dependencies.
         /// </returns>
-        public static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
+        internal static IEnumerable<ITypeInfo> GetClassifierDependencies(this IClassifier classifier, IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> parts)
         {
-            var eligibleTypes = parts.SelectMany(classifier.GetDependencies)
-                .Select(t => constructionContext.ModelSpace.TryGetClassifier(t, findContext: constructionContext) ?? t)
+            var eligibleTypes = parts
+                .SelectMany(classifier.GetRawDependencies)
+                .Distinct()
+                .Select(t =>
+                    {
+                        // if the found dependency is the classifier itself, ignore it.
+                        var dependency = constructionContext.ModelSpace.TryGetClassifier(t, findContext: constructionContext);
+                        if (dependency == classifier)
+                        {
+                            return null;
+                        }
+
+                        return dependency ?? t;
+                    })
+                .Where(t => t != null)
                 .ToList();
             return eligibleTypes;
         }
 
         /// <summary>
-        /// Gets the model element dependencies.
+        /// Gets the model element raw dependencies (unsorted, possible duplicated).
         /// </summary>
         /// <param name="classifier">The classifier to act on.</param>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <returns>
         /// An enumeration of dependencies.
         /// </returns>
-        public static IEnumerable<ITypeInfo> GetDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
+        internal static IEnumerable<ITypeInfo> GetRawDependencies(this IClassifier classifier, IModelConstructionContext constructionContext)
         {
-            var parts = classifier.Parts.OfType<ITypeInfo>().ToList();
-            return parts.SelectMany(classifier.GetDependencies);
+            var parts = classifier.Parts.OfType<ITypeInfo>();
+            return parts.SelectMany(classifier.GetRawDependencies);
         }
 
         /// <summary>
-        /// Gets the model element dependencies.
+        /// Gets the raw model element dependencies (unsorted, possible duplicated).
         /// </summary>
         /// <param name="classifier">The classifier to act on.</param>
         /// <param name="typeInfo">Information describing the type.</param>
         /// <returns>
         /// An enumeration of dependencies.
         /// </returns>
-        public static IEnumerable<ITypeInfo> GetDependencies(this IClassifier classifier, ITypeInfo typeInfo)
+        internal static IEnumerable<ITypeInfo> GetRawDependencies(this IClassifier classifier, ITypeInfo typeInfo)
         {
             if (typeInfo is IClassifier aspect)
             {

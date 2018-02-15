@@ -9,12 +9,7 @@
 
 namespace Kephas.Model.Construction.Internal
 {
-    using System.Collections.Generic;
-
     using Kephas.Model.Construction;
-    using Kephas.Model.Elements;
-    using Kephas.Reflection;
-    using Kephas.Services;
     using Kephas.Services.Transitioning;
 
     /// <summary>

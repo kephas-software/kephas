@@ -50,14 +50,7 @@ namespace Kephas.Model.Runtime.Construction
             var appServiceAttr = runtimeElement.Annotations.OfType<AppServiceContractAttribute>().Single();
             var appServiceRuntimeElement = appServiceAttr.ContractType?.AsRuntimeTypeInfo() ?? runtimeElement;
 
-            var element = new AppService(constructionContext, this.TryComputeName(constructionContext, appServiceRuntimeElement));
-            if (runtimeElement != appServiceRuntimeElement)
-            {
-                // add the contract type only if not the same with the provided runtime element.
-                ((IConstructableElement)element).AddPart(appServiceRuntimeElement);
-            }
-
-            return element;
+            return new AppService(constructionContext, appServiceAttr, this.TryComputeName(constructionContext, appServiceRuntimeElement));
         }
     }
 }

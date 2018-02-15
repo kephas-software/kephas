@@ -76,6 +76,8 @@
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Elements\DefaultModelSpaceTest.cs" />
+    <Compile Include="Models\AppServicesModel\AppServices.cs" />
+    <Compile Include="Models\AppServicesModel\AppServicesTest.cs" />
     <Compile Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs" />
     <Compile Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembersTest.cs" />
     <Compile Include="Models\DiamondInheritanceModel\DiamondInheritance.cs" />
@@ -85,7 +87,6 @@
     <Compile Include="Models\GenericModel\GenericTest.cs" />
     <Compile Include="Models\MixinInheritanceModel\MixinInheritanceTest.cs" />
     <Compile Include="Models\MixinInheritanceModel\MixinInheritance.cs" />
-    <Compile Include="ModelTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\Construction\AnnotationConstructorBaseTest.cs" />
     <Compile Include="Runtime\Construction\Annotations\AttributeAnnotationConstructorTest.cs" />
@@ -108,6 +109,7 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="Models\AppServicesModel\AppServices.cd" />
     <None Include="Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd" />
     <None Include="Models\DiamondInheritanceModel\DiamondInheritance.cd" />
     <None Include="Models\GenericModel\Generic.cd" />
@@ -130,6 +132,10 @@
     <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj">
       <Project>{00be907b-3852-480f-9abc-5b4c5d4595b6}</Project>
       <Name>Kephas.Testing.Composition.Mef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Model\Kephas.Testing.Model.csproj">
+      <Project>{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}</Project>
+      <Name>Kephas.Testing.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

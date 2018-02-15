@@ -9,7 +9,16 @@
 
 namespace Kephas.Model.Elements
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Model.Construction;
+    using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Services;
 
     /// <summary>
     /// An application service.
@@ -17,13 +26,124 @@ namespace Kephas.Model.Elements
     public class AppService : ClassifierBase<IAppService>, IAppService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract}" /> class.
+        /// The application service attribute.
+        /// </summary>
+        private readonly AppServiceContractAttribute appServiceAttribute;
+
+        /// <summary>
+        /// Context for the composition.
+        /// </summary>
+        private readonly ICompositionContext compositionContext;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppService" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="appServiceAttribute">The application service attribute.</param>
         /// <param name="name">The name.</param>
-        public AppService(IModelConstructionContext constructionContext, string name)
+        public AppService(
+            IModelConstructionContext constructionContext,
+            AppServiceContractAttribute appServiceAttribute,
+            string name)
             : base(constructionContext, name)
         {
+            Requires.NotNull(appServiceAttribute, nameof(appServiceAttribute));
+
+            this.appServiceAttribute = appServiceAttribute;
+            this.compositionContext = constructionContext.AmbientServices.CompositionContainer;
+            this.ContractType = this.appServiceAttribute.ContractType;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the service allows multiple service types.
+        /// </summary>
+        /// <value>
+        /// True if allow multiple, false if not.
+        /// </value>
+        public bool AllowMultiple => this.appServiceAttribute.AllowMultiple;
+
+        /// <summary>
+        /// Gets a value indicating whether the service is exported as an open generic.
+        /// </summary>
+        /// <value>
+        /// True if the service is exported as an open generic, false if not.
+        /// </value>
+        public bool AsOpenGeneric => this.appServiceAttribute.AsOpenGeneric;
+
+        /// <summary>
+        /// Gets the type of the contract.
+        /// </summary>
+        /// <value>
+        /// The type of the contract.
+        /// </value>
+        public Type ContractType { get; private set; }
+
+        /// <summary>
+        /// Creates an instance with the provided arguments (if any).
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The new instance.</returns>
+        public override object CreateInstance(IEnumerable<object> args = null)
+        {
+            if (this.AllowMultiple)
+            {
+                // TODO localization
+                throw new AmbiguousMatchException($"The service {this.Name} allows multiple service implementation types.");
+            }
+
+            // TODO resolve or exception for generic services
+            return this.compositionContext.GetExport(this.ContractType);
+        }
+
+        /// <summary>Adds a part to the aggregated element.</summary>
+        /// <param name="part">The part to be added.</param>
+        protected override void AddPart(object part)
+        {
+            base.AddPart(part);
+
+            if (this.ContractType == null)
+            {
+                this.ContractType = (part as IRuntimeTypeInfo)?.Type;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the base types.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="parts">The parts.</param>
+        /// <returns>
+        /// The calculated base types.
+        /// </returns>
+        protected override IList<ITypeInfo> ComputeBaseTypes(IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
+        {
+            return base.ComputeBaseTypes(constructionContext, parts);
+        }
+
+        /// <summary>
+        /// Calculates the base mixins.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="baseTypes">List of base types.</param>
+        /// <returns>
+        /// The calculated base mixins.
+        /// </returns>
+        protected override IEnumerable<IClassifier> ComputeBaseMixins(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        {
+            return base.ComputeBaseMixins(constructionContext, baseTypes);
+        }
+
+        /// <summary>
+        /// Calculates the base classifier.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="baseTypes">List of base types.</param>
+        /// <returns>
+        /// The calculated base classifier.
+        /// </returns>
+        protected override IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        {
+            return base.ComputeBaseClassifier(constructionContext, baseTypes);
         }
     }
 }

@@ -80,6 +80,12 @@
     <Compile Include="..\Kephas.Model.Tests\Elements\NamedElementBaseTest.cs">
       <Link>Elements\NamedElementBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\AppServicesModel\AppServices.cs">
+      <Link>Models\AppServicesModel\AppServices.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\AppServicesModel\AppServicesTest.cs">
+      <Link>Models\AppServicesModel\AppServicesTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs">
       <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs</Link>
     </Compile>
@@ -103,9 +109,6 @@
     </Compile>
     <Compile Include="..\Kephas.Model.Tests\Models\MixinInheritanceModel\MixinInheritanceTest.cs">
       <Link>Models\MixinInheritanceModel\MixinInheritanceTest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model.Tests\ModelTestBase.cs">
-      <Link>ModelTestBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model.Tests\Runtime\Construction\AnnotationConstructorBaseTest.cs">
       <Link>Runtime\Construction\AnnotationConstructorBaseTest.cs</Link>
@@ -161,6 +164,9 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="..\Kephas.Model.Tests\Models\AppServicesModel\AppServices.cd">
+      <Link>Models\AppServicesModel\AppServices.cd</Link>
+    </None>
     <None Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd">
       <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd</Link>
     </None>
@@ -191,6 +197,10 @@
     <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef.Net45\Kephas.Testing.Composition.Mef.Net45.csproj">
       <Project>{5e6c23b7-191a-40c1-9aab-326d190cafa3}</Project>
       <Name>Kephas.Testing.Composition.Mef.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Model.Net45\Kephas.Testing.Model.Net45.csproj">
+      <Project>{EC209412-7454-4852-8233-7077F7F589DF}</Project>
+      <Name>Kephas.Testing.Model.Net45</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

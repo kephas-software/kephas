@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
+    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj" />
+    <ProjectReference Include="..\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

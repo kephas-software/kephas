@@ -79,6 +79,8 @@
     <Compile Include="AttributedModel\PrimaryKeyAttributeTest.cs" />
     <Compile Include="DataModelTestBase.cs" />
     <Compile Include="Elements\Annotations\KeyAnnotationTest.cs" />
+    <Compile Include="Models\AppServicesModel\AppServices.cs" />
+    <Compile Include="Models\AppServicesModel\AppServicesTest.cs" />
     <Compile Include="Models\KeyInheritanceModel\KeyInheritance.cs" />
     <Compile Include="Models\KeyInheritanceModel\KeyInheritanceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +89,7 @@
     <None Include="..\..\Kephas.snk">
       <Link>Kephas.snk</Link>
     </None>
+    <None Include="Models\AppServicesModel\AppServices.cd" />
     <None Include="Models\KeyInheritanceModel\KeyInheritance.cd" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -114,6 +117,10 @@
     <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj">
       <Project>{00be907b-3852-480f-9abc-5b4c5d4595b6}</Project>
       <Name>Kephas.Testing.Composition.Mef</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Model\Kephas.Testing.Model.csproj">
+      <Project>{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}</Project>
+      <Name>Kephas.Testing.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

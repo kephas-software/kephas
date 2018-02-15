@@ -141,4 +141,7 @@
   <data name="ClassifierBase_ConflictingMembersInBases_Exception" xml:space="preserve">
     <value>Multiple members with the name {0} found in the bases of {1}: {2}. Possible resolutions: either add a new one at that classifier level to inherit from all the base members, or remove one or more from the bases.</value>
   </data>
+  <data name="ClassifierBase_AmbiguousBase_Exception" xml:space="preserve">
+    <value>Multiple base classifiers found for {0}: {1}. To disambiguate, please mark all, except at most one, as mix-ins.</value>
+  </data>
 </root>

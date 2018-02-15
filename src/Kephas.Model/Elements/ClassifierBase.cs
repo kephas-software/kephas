@@ -13,6 +13,7 @@ namespace Kephas.Model.Elements
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Activation;
     using Kephas.Model.Construction;
@@ -339,8 +340,18 @@ namespace Kephas.Model.Elements
             IModelConstructionContext constructionContext,
             IEnumerable<ITypeInfo> baseTypes)
         {
-            // TODO provide a more explicit exception.
-            return baseTypes.OfType<IClassifier>().SingleOrDefault(c => !c.IsMixin);
+            var bases = baseTypes.OfType<IClassifier>().Where(c => !c.IsMixin).ToList();
+            if (bases.Count == 0)
+            {
+                return null;
+            }
+
+            if (bases.Count > 1)
+            {
+                throw new AmbiguousMatchException(string.Format(Strings.ClassifierBase_AmbiguousBase_Exception, this, string.Join(", ", bases)));
+            }
+
+            return bases[0];
         }
 
         /// <summary>
@@ -423,8 +434,7 @@ namespace Kephas.Model.Elements
                         }
 
                         // add the conflicting members to a collection
-                        var collection = conflictingMember as IList<INamedElement>;
-                        if (collection != null)
+                        if (conflictingMember is IList<INamedElement> collection)
                         {
                             collection.Add(member);
                         }
@@ -448,8 +458,7 @@ namespace Kephas.Model.Elements
                 if (declaredMember != null)
                 {
                     var ownMemberBuilder = declaredMember as IConstructableElement;
-                    var collection = baseMemberMap.Value as IList<INamedElement>;
-                    if (collection != null)
+                    if (baseMemberMap.Value is IList<INamedElement> collection)
                     {
                         foreach (var baseMember in collection)
                         {
