@@ -450,7 +450,15 @@ namespace Kephas.Dynamic
             }
 
             // last, check the dictionary for member
-            this.innerDictionary[key] = value;
+            if (value == null)
+            {
+                this.innerDictionary.Remove(key);
+            }
+            else
+            {
+                this.innerDictionary[key] = value;
+            }
+
             return true;
         }
 
