@@ -1,3 +1,20 @@
+<a name="4.2.0"></a>
+# [4.2.0-beta01](https://github.com/quartz-software/kephas/compare/v4.1.1...v4.2.0-beta01) (2018-02-15)
+
+* Platform
+  * Removed obsolete WithNet45AppEnvironment extension method .
+* Model
+  * Added the AppService classifier with the corresponding registry. Now it is possible to iterate over all declared app services from the ModelSpace.
+* Mail
+  * **BREAKING CHANGE** Refactored the mailing infrastructure to allow a better extensibility 
+  * Added EmailSenderServiceExtensions for simplified email sending.
+  * Modified the EmailSettings.Port to be nullable int, not string.
+  * Added IContext to IEmailSendService.SendAsync for further control.
+  * Removed the obsolete Kephas.Mail.Services.Net45 project.
+  * Added unit tests for mailing.
+* Unit Testing
+  * Upgraded NUnit to 3.9 and NSubstitute to 3.1.0 
+
 <a name="4.1.1"></a>
 # [4.1.1](https://github.com/quartz-software/kephas/compare/v4.1.0...v4.1.1) (2018-02-01)
 
