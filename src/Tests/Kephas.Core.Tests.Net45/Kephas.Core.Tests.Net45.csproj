@@ -139,6 +139,9 @@
     <Compile Include="..\Kephas.Core.Tests\Dynamic\ExpandoTest.cs">
       <Link>Dynamic\ExpandoTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Dynamic\LazyExpandoTest.cs">
+      <Link>Dynamic\LazyExpandoTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Graphs\GraphEdgeOfTNodeValueTest.cs">
       <Link>Graphs\GraphEdgeOfTNodeValueTest.cs</Link>
     </Compile>

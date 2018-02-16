@@ -88,6 +88,7 @@
     <Compile Include="Dynamic\ExpandoBaseTest.cs" />
     <Compile Include="Dynamic\ExpandoExtensionsTest.cs" />
     <Compile Include="Dynamic\ExpandoTest.cs" />
+    <Compile Include="Dynamic\LazyExpandoTest.cs" />
     <Compile Include="Graphs\GraphEdgeOfTNodeValueTest.cs" />
     <Compile Include="Graphs\GraphExtensionsTest.cs" />
     <Compile Include="Graphs\GraphNodeOfTValueTest.cs" />

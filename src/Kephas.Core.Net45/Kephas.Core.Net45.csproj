@@ -337,6 +337,9 @@
     <Compile Include="..\Kephas.Core\Dynamic\IIndexable.cs">
       <Link>Dynamic\IIndexable.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Dynamic\LazyExpando.cs">
+      <Link>Dynamic\LazyExpando.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\ExceptionHandling\ExceptionData.cs">
       <Link>ExceptionHandling\ExceptionData.cs</Link>
     </Compile>
@@ -420,6 +423,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\AggregatedElementInfoExtensions.cs">
       <Link>Reflection\AggregatedElementInfoExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\CircularDependencyException.cs">
+      <Link>Reflection\CircularDependencyException.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\DefaultAssemblyLoader.cs">
       <Link>Reflection\DefaultAssemblyLoader.cs</Link>
