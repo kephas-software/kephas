@@ -65,8 +65,8 @@ namespace Kephas.Messaging.HandlerSelectors
             }
 
             var handlerFactory = orderedFactories[0];
-            Func<IEnumerable<IMessageHandler>> factory = () => new[] { handlerFactory.CreateExportedValue() };
-            return factory;
+            IEnumerable<IMessageHandler> Factory() => new[] { handlerFactory.CreateExportedValue() };
+            return Factory;
         }
     }
 }
