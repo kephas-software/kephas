@@ -22,7 +22,7 @@ namespace Kephas.Dynamic
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
-    public interface IExpando : IDynamicMetaObjectProvider, IIndexable
+    public interface IExpando : IDynamicMetaObjectProvider, IIndexable, IEnumerable<KeyValuePair<string, object>>
     {
         /// <summary>
         /// Indicates whether the <paramref name="memberName"/> is defined in the expando.

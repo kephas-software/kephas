@@ -9,6 +9,7 @@
 
 namespace Kephas.Core.Tests.Dynamic
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Dynamic;
@@ -51,6 +52,35 @@ namespace Kephas.Core.Tests.Dynamic
             var dictionary = expando.ToDictionary();
             Assert.AreEqual("belogea", dictionary["Name"]);
         }
+
+        [Test]
+        public void GetEnumerator()
+        {
+            var dict = new Dictionary<string, object> { { "FamilyName", "belogea" } };
+            var obj = new Named { Name = "gigi" };
+            var expando = new TestExpandoNonConflicting(obj, dict);
+
+            var i = 0;
+            foreach (var kv in expando)
+            {
+                if (i == 0)
+                {
+                    Assert.AreEqual("FamilyName", kv.Key);
+                    Assert.AreEqual("belogea", kv.Value);
+                }
+                else if (i == 1)
+                {
+                    Assert.AreEqual("Name", kv.Key);
+                    Assert.AreEqual("gigi", kv.Value);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Too many items");
+                }
+
+                i++;
+            }
+        }
     }
 
     public class TestExpando : ExpandoBase
@@ -61,6 +91,14 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         public string Name { get; set; }
+    }
+
+    public class TestExpandoNonConflicting : ExpandoBase
+    {
+        public TestExpandoNonConflicting(object inner, IDictionary<string, object> innerDictionary = null)
+            : base(inner, innerDictionary)
+        {
+        }
     }
 
     public class Named
