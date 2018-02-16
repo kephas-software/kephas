@@ -9,23 +9,21 @@
 
 namespace Kephas.Data.Model.Tests.Models.AppServicesModel
 {
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Model;
     using Kephas.Model.Elements;
-    using Kephas.Model.Tests;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppServicesTest : ModelTestBase
+    public class AppServicesTest : DataModelTestBase
     {
         [Test]
         public async Task InitializeAsync_data_app_service()
         {
-            var container = this.CreateContainerForModel();
+            var container = this.CreateContainerForModel(typeof(IDataContext));
             var provider = container.GetExport<IModelSpaceProvider>();
 
             await provider.InitializeAsync();

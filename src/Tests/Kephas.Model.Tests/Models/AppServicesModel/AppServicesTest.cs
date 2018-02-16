@@ -47,7 +47,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "DisposableService");
 
             Assert.IsInstanceOf<AppService>(disposableClassifier);
-            Assert.AreEqual(2, disposableClassifier.Parts.Count());
+            Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "DisposableService");
 
             Assert.IsInstanceOf<AppService>(disposableClassifier);
-            Assert.AreEqual(2, disposableClassifier.Parts.Count());
+            Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
         [Test]

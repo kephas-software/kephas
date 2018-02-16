@@ -77,9 +77,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppService>(modelElement);
-            Assert.AreEqual(2, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ITestNonGenericService).AsRuntimeTypeInfo(), modelElement.Parts.First());
-            Assert.AreSame(typeof(ITestGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.Skip(1).First());
+            Assert.AreEqual(1, modelElement.Parts.Count());
+            Assert.AreSame(typeof(ITestGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
 
         [Test]
