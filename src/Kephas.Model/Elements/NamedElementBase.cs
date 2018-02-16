@@ -15,6 +15,7 @@ namespace Kephas.Model.Elements
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Resources;
@@ -29,6 +30,11 @@ namespace Kephas.Model.Elements
     public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructableElement
         where TModelContract : INamedElement
     {
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected readonly ILogger Logger;
+
         /// <summary>
         /// The underlying element infos.
         /// </summary>
@@ -68,6 +74,8 @@ namespace Kephas.Model.Elements
             this.IsInherited = true;
 
             this.parts = new List<object>();
+
+            this.Logger = constructionContext.AmbientServices.GetLogger(this.GetType());
 
             this.ConstructionMonitor = new InitializationMonitor<TModelContract>(this.GetType());
             this.ConstructionMonitor.Start();
@@ -252,6 +260,8 @@ namespace Kephas.Model.Elements
             }
             catch (Exception exception)
             {
+                // TODO localization
+                this.Logger.Error(exception, $"Errors during construction of {this}.");
                 this.ConstructionMonitor.Fault(exception);
             }
         }
