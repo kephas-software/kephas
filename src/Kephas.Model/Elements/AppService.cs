@@ -11,6 +11,8 @@ namespace Kephas.Model.Elements
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
@@ -107,43 +109,24 @@ namespace Kephas.Model.Elements
             }
         }
 
-        /// <summary>
-        /// Calculates the base types.
-        /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
-        /// <param name="parts">The parts.</param>
-        /// <returns>
-        /// The calculated base types.
-        /// </returns>
-        protected override IList<ITypeInfo> ComputeBaseTypes(IModelConstructionContext constructionContext, IList<ITypeInfo> parts)
-        {
-            return base.ComputeBaseTypes(constructionContext, parts);
-        }
-
-        /// <summary>
-        /// Calculates the base mixins.
-        /// </summary>
+        /// <summary>Calculates the base mixins.</summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="baseTypes">List of base types.</param>
-        /// <returns>
-        /// The calculated base mixins.
-        /// </returns>
+        /// <returns>The calculated base mixins.</returns>
         protected override IEnumerable<IClassifier> ComputeBaseMixins(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
         {
-            return base.ComputeBaseMixins(constructionContext, baseTypes);
+            // consider all base types mix-ins.
+            return new ReadOnlyCollection<IClassifier>(baseTypes.OfType<IClassifier>().ToList());
         }
 
-        /// <summary>
-        /// Calculates the base classifier.
-        /// </summary>
+        /// <summary>Calculates the base classifier.</summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="baseTypes">List of base types.</param>
-        /// <returns>
-        /// The calculated base classifier.
-        /// </returns>
+        /// <returns>The calculated base classifier.</returns>
         protected override IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
         {
-            return base.ComputeBaseClassifier(constructionContext, baseTypes);
+            // no base classifier, only mixins.
+            return null;
         }
     }
 }
