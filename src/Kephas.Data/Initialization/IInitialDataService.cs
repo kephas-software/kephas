@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInitialDataHandler.cs" company="Quartz Software SRL">
+// <copyright file="IInitialDataService.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Declares the IInitialDataHandler interface.
+//   Declares the IInitialDataService interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,14 +12,17 @@ namespace Kephas.Data.Initialization
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Initialization.AttributedModel;
     using Kephas.Services;
 
     /// <summary>
-    /// Application service contract for handling initial data.
+    /// Application service contract for creating initial data.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(InitialDataKindAttribute) })]
-    public interface IInitialDataHandler
+    /// <remarks>
+    /// The typical implementation aggregates multiple <see cref="IInitialDataHandler"/> services
+    /// and calls them in their priority order.
+    /// </remarks>
+    [SharedAppServiceContract]
+    public interface IInitialDataService
     {
         /// <summary>
         /// Creates the initial data asynchronously.
@@ -31,6 +34,6 @@ namespace Kephas.Data.Initialization
         /// </returns>
         Task<object> CreateDataAsync(
             IInitialDataContext initialDataContext,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default);        
     }
 }

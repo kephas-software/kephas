@@ -90,7 +90,9 @@ namespace Kephas.Data.IO.Initialization
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual async Task<object> CreateDataAsync(IContext initialDataContext, CancellationToken cancellationToken = default)
+        public virtual async Task<object> CreateDataAsync(
+            IInitialDataContext initialDataContext,
+            CancellationToken cancellationToken = default)
         {
             var result = new DataIOResult();
             foreach (var dataFile in this.GetDataFiles())
@@ -119,7 +121,7 @@ namespace Kephas.Data.IO.Initialization
         /// <returns>
         /// The asynchronous result returning the data import result.
         /// </returns>
-        protected virtual async Task<IDataIOResult> ImportDataFileAsync(IContext initialDataContext, string dataFileName, CancellationToken cancellationToken)
+        protected virtual async Task<IDataIOResult> ImportDataFileAsync(IInitialDataContext initialDataContext, string dataFileName, CancellationToken cancellationToken)
         {
             using (var dataSource = this.CreateDataSource(dataFileName))
             using (var sourceDataContext = this.SourceDataContextProvider(initialDataContext))
@@ -157,7 +159,7 @@ namespace Kephas.Data.IO.Initialization
         /// The new data import context.
         /// </returns>
         protected virtual IDataImportContext CreateDataImportContext(
-            IContext initialDataContext,
+            IInitialDataContext initialDataContext,
             IDataContext sourceDataContext,
             IDataContext targetDataContext)
         {
