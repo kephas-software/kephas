@@ -349,6 +349,12 @@
     <Compile Include="..\Kephas.Data\IDataOperationContext.cs">
       <Link>IDataOperationContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Initialization\AttributedModel\InitialDataKindAttribute.cs">
+      <Link>Initialization\AttributedModel\InitialDataKindAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Initialization\IInitialDataHandler.cs">
+      <Link>Initialization\IInitialDataHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\IQueryOperationContext.cs">
       <Link>IQueryOperationContext.cs</Link>
     </Compile>

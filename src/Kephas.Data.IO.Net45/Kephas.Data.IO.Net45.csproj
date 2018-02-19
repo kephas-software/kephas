@@ -156,6 +156,9 @@
     <Compile Include="..\Kephas.Data.IO\Import\ImportEntitySuccessfulMessage.cs">
       <Link>Import\ImportEntitySuccessfulMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Initialization\InitialDataIOHandlerBase.cs">
+      <Link>Initialization\InitialDataIOHandlerBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
       <AutoGen>True</AutoGen>
