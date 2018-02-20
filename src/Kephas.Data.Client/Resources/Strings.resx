@@ -123,4 +123,7 @@
   <data name="ExpressionConverter_BadArgumentsCount_Exception" xml:space="preserve">
     <value>Operator '{0}' received {1} arguments, while it expected {2}.</value>
   </data>
+  <data name="DefaultClientQueryConverter_MissingMember_Exception" xml:space="preserve">
+    <value>Member '{0}' not found in '{1}'.</value>
+  </data>
 </root>

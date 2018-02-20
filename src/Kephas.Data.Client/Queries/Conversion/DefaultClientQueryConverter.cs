@@ -24,6 +24,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     using Expression = Kephas.Data.Client.Queries.Expression;
@@ -314,7 +315,10 @@ namespace Kephas.Data.Client.Queries.Conversion
             memberName = memberName.ToPascalCase();
 
             var queryItemTypeInfo = lambdaArg.Type.AsRuntimeTypeInfo();
-            var propertyInfo = queryItemTypeInfo.Properties[memberName];
+            if (!queryItemTypeInfo.Properties.TryGetValue(memberName, out var propertyInfo))
+            {
+                throw new MissingMemberException(string.Format(Strings.DefaultClientQueryConverter_MissingMember_Exception, memberName, queryItemTypeInfo));
+            }
 
             return LinqExpression.MakeMemberAccess(lambdaArg, propertyInfo.PropertyInfo);
         }
