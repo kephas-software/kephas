@@ -10,3 +10,4 @@
 using Kephas.Model.AttributedModel;
 
 [assembly: ModelAssembly("Kephas.Data.Model.Dimensions")]
+[assembly: ModelAssembly("Kephas.Data.Model.Abstractions")]

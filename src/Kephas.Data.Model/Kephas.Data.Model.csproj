@@ -44,6 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resources\ModelStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelStrings.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Strings.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\ModelStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
