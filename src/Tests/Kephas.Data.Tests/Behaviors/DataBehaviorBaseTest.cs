@@ -27,10 +27,10 @@ namespace Kephas.Data.Tests.Behaviors
         {
             var behavior = new StringDataBehavior((e, ei, ctx) => e == "123" ? DataValidationResult.Success : new DataValidationResult("bad param"));
 
-            var result = await behavior.ValidateAsync("123", null, null);
+            var result = await behavior.ValidateAsync("123", null, null, default);
             Assert.IsFalse(result.HasErrors());
 
-            result = await behavior.ValidateAsync("321", null, null);
+            result = await behavior.ValidateAsync("321", null, null, default);
             Assert.IsTrue(result.HasErrors());
             Assert.AreEqual("bad param", result.FirstOrDefault().Message);
         }

@@ -90,7 +90,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task BeforePersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
+        public virtual Task BeforePersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             this.BeforePersist(entity, entityInfo, operationContext);
 
@@ -122,7 +122,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task AfterPersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
+        public virtual Task AfterPersistAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             this.AfterPersist(entity, entityInfo, operationContext);
 
@@ -154,7 +154,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A Task.
         /// </returns>
-        public virtual Task InitializeAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
+        public virtual Task InitializeAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             this.Initialize(entity, entityInfo, operationContext);
 
@@ -186,7 +186,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
-        public virtual Task<IDataValidationResult> ValidateAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default)
+        public virtual Task<IDataValidationResult> ValidateAsync(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(this.Validate(entity, entityInfo, operationContext));
         }
