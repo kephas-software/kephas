@@ -99,6 +99,16 @@ namespace Kephas.Data.Tests
             Assert.IsNull(result);
         }
 
+        [Test]
+        public async Task GetAsync_null_entity_info()
+        {
+            var entity = new TestEntity((IEntityInfo)null) { ReferenceId = 100 };
+            var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
+
+            var exception = Assert.ThrowsAsync<DataException>(() => r.GetAsync(throwIfNotFound: false));
+            Assert.IsTrue(exception.Message.Contains(nameof(TestEntity.ReferenceId)));
+        }
+
         private IDataContext CreateDataContext(Func<object, bool, object> findResolver)
         {
             var findCommand = Substitute.For<IFindCommand>();
@@ -115,6 +125,11 @@ namespace Kephas.Data.Tests
         public class TestEntity : IEntityInfoAware, IIdentifiable
         {
             private IEntityInfo entityInfo;
+
+            public TestEntity(IEntityInfo entityInfo)
+            {
+                this.entityInfo = entityInfo;
+            }
 
             public TestEntity(IDataContext dataContext)
             {

@@ -133,7 +133,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual object GetEntityPropertyValue(string propertyName)
         {
-            var entity = this.GetEntityInfo().Entity;
+            var entity = this.GetEntity();
             return entity is IIndexable expandoEntity
                        ? expandoEntity[propertyName]
                        : entity.GetPropertyValue(propertyName);
@@ -146,7 +146,7 @@ namespace Kephas.Data
         /// <param name="value">The value.</param>
         protected virtual void SetEntityPropertyValue(string propertyName, object value)
         {
-            var entity = this.GetEntityInfo().Entity;
+            var entity = this.GetEntity();
             if (entity is IIndexable expandoEntity)
             {
                 expandoEntity[propertyName] = value;
@@ -155,6 +155,23 @@ namespace Kephas.Data
             {
                 entity.SetPropertyValue(propertyName, value);
             }
+        }
+
+        /// <summary>
+        /// Gets the entity containing the reference.
+        /// </summary>
+        /// <returns>
+        /// The entity containing the reference.
+        /// </returns>
+        protected virtual object GetEntity()
+        {
+            var entity = this.GetEntityInfo()?.Entity;
+            if (entity == null)
+            {
+                throw new DataException(string.Format(Strings.Ref_GetEntity_Null_Exception, this.refIdName));
+            }
+
+            return entity;
         }
 
         /// <summary>
@@ -168,10 +185,10 @@ namespace Kephas.Data
         {
             if (!this.entityRef.TryGetTarget(out var entity))
             {
-                throw new ObjectDisposedException(this.GetType().Name, Strings.Ref_GetEntityInfo_Disposed_Exception);
+                throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.Ref_GetEntityInfo_Disposed_Exception, this.refIdName));
             }
 
-            return entity.GetEntityInfo();
+            return entity?.GetEntityInfo();
         }
 
         /// <summary>
@@ -186,7 +203,7 @@ namespace Kephas.Data
             var dataContext = entityInfo?.DataContext;
             if (dataContext == null)
             {
-                throw new ArgumentNullException($"{nameof(entityInfo)}.{nameof(entityInfo.DataContext)}", Strings.Ref_GetDataContext_NullDataContext_Exception);
+                throw new ArgumentNullException($"{nameof(entityInfo)}.{nameof(entityInfo.DataContext)}", string.Format(Strings.Ref_GetDataContext_NullDataContext_Exception, this.refIdName));
             }
 
             return dataContext;

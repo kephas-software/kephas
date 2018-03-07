@@ -278,7 +278,7 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot retrieve a data context..
+        ///   Looks up a localized string similar to Cannot retrieve a data context for reference {0}..
         /// </summary>
         internal static string Ref_GetDataContext_NullDataContext_Exception {
             get {
@@ -287,7 +287,16 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The entity has been disposed..
+        ///   Looks up a localized string similar to The entity for reference {0} could not be retrieved (null reference)..
+        /// </summary>
+        internal static string Ref_GetEntity_Null_Exception {
+            get {
+                return ResourceManager.GetString("Ref_GetEntity_Null_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entity for reference {0} has been disposed..
         /// </summary>
         internal static string Ref_GetEntityInfo_Disposed_Exception {
             get {
