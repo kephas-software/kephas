@@ -199,4 +199,7 @@
   <data name="Ref_GetEntity_Null_Exception" xml:space="preserve">
     <value>The entity for reference {0} could not be retrieved (null reference).</value>
   </data>
+  <data name="Ref_GetEntityInfo_Null_Exception" xml:space="preserve">
+    <value>The entity information for reference {0} could not be retrieved (null reference).</value>
+  </data>
 </root>

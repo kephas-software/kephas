@@ -188,7 +188,13 @@ namespace Kephas.Data
                 throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.Ref_GetEntityInfo_Disposed_Exception, this.refIdName));
             }
 
-            return entity?.GetEntityInfo();
+            var entityInfo = entity?.GetEntityInfo();
+            if (entityInfo == null)
+            {
+                throw new DataException(string.Format(Strings.Ref_GetEntityInfo_Null_Exception, this.refIdName));
+            }
+
+            return entityInfo;
         }
 
         /// <summary>

@@ -303,5 +303,14 @@ namespace Kephas.Data.Resources {
                 return ResourceManager.GetString("Ref_GetEntityInfo_Disposed_Exception", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The entity information for reference {0} could not be retrieved (null reference)..
+        /// </summary>
+        internal static string Ref_GetEntityInfo_Null_Exception {
+            get {
+                return ResourceManager.GetString("Ref_GetEntityInfo_Null_Exception", resourceCulture);
+            }
+        }
     }
 }
