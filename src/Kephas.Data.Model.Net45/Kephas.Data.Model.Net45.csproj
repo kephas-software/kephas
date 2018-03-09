@@ -44,12 +44,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Data.Model\Abstractions\IHierarchyNode.cs">
-      <Link>Abstractions\IHierarchyNode.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model\Abstractions\IIdentifiable.cs">
-      <Link>Abstractions\IIdentifiable.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityAssemblyAttribute.cs">
       <Link>AttributedModel\EntityAssemblyAttribute.cs</Link>
     </Compile>

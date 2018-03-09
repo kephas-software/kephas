@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Data.Model.Abstractions</id>
+        <version>$version$</version>
+        <title>Kephas.Data.Model</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides modelling abstractions for data, like identifiable entities, hierarchy nodes, and so on.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides modelling abstractions for data, like identifiable entities, hierarchy nodes, and so on.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Data" version="$refversion$" />
+                <dependency id="Kephas.Model" version="$refversion$" />
+                <dependency id="Kephas.Data.Model" version="$refversion$" />
+            </group>
+            <group targetFramework="netstandard1.3">
+                <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.Model.Abstractions.dll" />
+        </references>
+        <tags>kephas framework data model abstractions quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.Abstractions.dll" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.Abstractions.pdb" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.Model.Abstractions.xml" target="lib\netstandard1.3" />
+        <file src="..\Kephas.Data.Model.Abstractions.Net45\bin\$configuration$\Kephas.Data.Model.Abstractions.dll" target="lib\net45" />
+        <file src="..\Kephas.Data.Model.Abstractions.Net45\bin\$configuration$\Kephas.Data.Model.Abstractions.pdb" target="lib\net45" />
+        <file src="..\Kephas.Data.Model.Abstractions.Net45\bin\$configuration$\Kephas.Data.Model.Abstractions.xml" target="lib\net45" />
+    </files>
+</package>

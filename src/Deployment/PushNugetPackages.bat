@@ -12,6 +12,7 @@ nuget push Kephas.Model.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Client.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Model.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Data.Model.Abstractions.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.InMemory.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.IO.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Endpoints.%1.nupkg -Source https://www.nuget.org/api/v2/package
