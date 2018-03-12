@@ -120,8 +120,8 @@ namespace Kephas.Data.Conversion
                 return Task.FromResult((IDataConversionResult)noSourceResult);
             }
 
-            var sourceType = this.GetInstanceTypeInfo(source, typeof(TSource), conversionContext.RootSourceType);
-            var targetType = this.GetInstanceTypeInfo(target, typeof(TTarget), conversionContext.RootTargetType);
+            var sourceType = this.GetInstanceTypeInfo(source, typeof(TSource), conversionContext.RootSourceType, conversionContext);
+            var targetType = this.GetInstanceTypeInfo(target, typeof(TTarget), conversionContext.RootTargetType, conversionContext);
 
             if (target == null && targetType == null)
             {
@@ -144,10 +144,11 @@ namespace Kephas.Data.Conversion
         /// <param name="instance">The instance.</param>
         /// <param name="declaredType">Type of the declared.</param>
         /// <param name="providedType">Type of the provided.</param>
+        /// <param name="conversionContext">The conversion context.</param>
         /// <returns>
         /// The instance type information.
         /// </returns>
-        protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType)
+        protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType, IDataConversionContext conversionContext)
         {
             var instanceType = declaredType == typeof(object) ? providedType : declaredType;
             if (instanceType == null || instanceType == typeof(object))
@@ -231,7 +232,7 @@ namespace Kephas.Data.Conversion
             }
 
             var targetDataContext = conversionContext.TargetDataContext;
-            var sourceEntityInfo = conversionContext.SourceDataContext.GetEntityInfo(source);
+            var sourceEntityInfo = conversionContext.SourceDataContext?.GetEntityInfo(source);
             var sourceId = sourceEntityInfo?.EntityId;
 
             var sourceChangeState = sourceEntityInfo?.ChangeState;
@@ -249,7 +250,7 @@ namespace Kephas.Data.Conversion
 
             if (sourceChangeState == ChangeState.Added || sourceChangeState == ChangeState.AddedOrChanged || sourceChangeState == null)
             {
-                target = await this.CreateTargetEntityAsync(targetDataContext, targetType, cancellationToken).PreserveThreadContext();
+                target = await this.CreateTargetEntityAsync(targetDataContext, targetType, conversionContext, cancellationToken).PreserveThreadContext();
             }
             else
             {
@@ -299,16 +300,17 @@ namespace Kephas.Data.Conversion
         /// </summary>
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
+        /// <param name="conversionContext">The conversion context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the new target entity.
         /// </returns>
-        protected virtual async Task<object> CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, CancellationToken cancellationToken)
+        protected virtual async Task<object> CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken)
         {
             var target = await targetDataContext.CreateEntityAsync(
                              new CreateEntityContext<object>(targetDataContext)
                              {
-                                 EntityType = targetType.AsType()
+                                 EntityType = conversionContext.RootTargetType ?? targetType.AsType()
                              },
                              cancellationToken).PreserveThreadContext();
             return target;
