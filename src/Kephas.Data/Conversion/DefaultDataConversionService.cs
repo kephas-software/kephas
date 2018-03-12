@@ -231,12 +231,12 @@ namespace Kephas.Data.Conversion
                 return target;
             }
 
-            var targetDataContext = conversionContext.TargetDataContext;
             var sourceEntityInfo = conversionContext.SourceDataContext?.GetEntityInfo(source);
             var sourceId = sourceEntityInfo?.EntityId;
-
             var sourceChangeState = sourceEntityInfo?.ChangeState;
 
+            var targetDataContext = conversionContext.TargetDataContext;
+            targetType = conversionContext.RootTargetType?.GetTypeInfo() ?? targetType;
             target = await this.TryResolveTargetEntityAsync(
                          targetDataContext,
                          targetType,
@@ -310,7 +310,7 @@ namespace Kephas.Data.Conversion
             var target = await targetDataContext.CreateEntityAsync(
                              new CreateEntityContext<object>(targetDataContext)
                              {
-                                 EntityType = conversionContext.RootTargetType ?? targetType.AsType()
+                                 EntityType = targetType.AsType()
                              },
                              cancellationToken).PreserveThreadContext();
             return target;
