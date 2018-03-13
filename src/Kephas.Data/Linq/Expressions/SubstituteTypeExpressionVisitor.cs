@@ -104,7 +104,7 @@ namespace Kephas.Data.Linq.Expressions
             if (mappedMethod.IsGenericMethod)
             {
                 var genericMethodDefinition = mappedMethod.GetGenericMethodDefinition();
-                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryGetConcreteType(t) ?? t).ToList();
+                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryGetImplementationType(t) ?? t).ToList();
                 mappedMethod = genericMethodDefinition.MakeGenericMethod(mappedGenericArgs.ToArray());
 
                 if (mappedMethod.Name == nameof(Queryable.Cast) || mappedMethod.Name == nameof(Queryable.OfType))
@@ -135,7 +135,7 @@ namespace Kephas.Data.Linq.Expressions
                 return node;
             }
 
-            var concreteType = this.TryGetConcreteType(node.Expression?.Type);
+            var concreteType = this.TryGetImplementationType(node.Expression?.Type);
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
@@ -175,7 +175,7 @@ namespace Kephas.Data.Linq.Expressions
         protected override Expression VisitConstant(ConstantExpression node)
         {
             var nodeTypeInfo = node.Type.GetTypeInfo();
-            var concreteType = this.TryGetConcreteType(node.Type);
+            var concreteType = this.TryGetImplementationType(node.Type);
             if (concreteType != null)
             {
                 if (concreteType != node.Type)
@@ -189,7 +189,7 @@ namespace Kephas.Data.Linq.Expressions
             if (nodeTypeInfo.IsGenericType)
             {
                 var genericTypeDefinition = nodeTypeInfo.GetGenericTypeDefinition();
-                var mappedGenericArgs = nodeTypeInfo.GenericTypeArguments.Select(t => this.TryGetConcreteType(t) ?? t);
+                var mappedGenericArgs = nodeTypeInfo.GenericTypeArguments.Select(t => this.TryGetImplementationType(t) ?? t);
                 concreteType = genericTypeDefinition.MakeGenericType(mappedGenericArgs.ToArray());
                 if (node.Value == null)
                 {
@@ -221,7 +221,7 @@ namespace Kephas.Data.Linq.Expressions
                 return mappedParam;
             }
 
-            var concreteType = this.TryGetConcreteType(node.Type);
+            var concreteType = this.TryGetImplementationType(node.Type);
             if (concreteType != null)
             {
                 mappedParam = Expression.Parameter(concreteType, node.Name);
@@ -254,11 +254,35 @@ namespace Kephas.Data.Linq.Expressions
         }
 
         /// <summary>
-        /// Tries to get the concrete type of the interface type.
+        /// Tries to get the implementation type of the provided abstract type.
         /// </summary>
-        /// <param name="abstractType">Type of the interface.</param>
-        /// <returns>The concerete type for an interface.</returns>
-        private Type TryGetConcreteType(Type abstractType)
+        /// <remarks>
+        /// The abstract type is an item type, not a collection type, because this 
+        /// case was already handled by the <see cref="TryGetImplementationType"/>,
+        /// which, in fact, calls this method.
+        /// </remarks>
+        /// <param name="abstractType">The abstract type which needs to be replaced.</param>
+        /// <returns>
+        /// The implementation type.
+        /// </returns>
+        protected virtual Type TryGetImplementationTypeCore(Type abstractType)
+        {
+            var implementationType = this.activator.GetImplementationType(
+                abstractType.AsRuntimeTypeInfo(),
+                throwOnNotFound: false);
+            return (implementationType as IRuntimeTypeInfo)?.Type;
+        }
+
+        /// <summary>
+        /// Tries to get the implementation type of the provided abstract type.
+        /// </summary>
+        /// <remarks>
+        /// The provided abstract type may be a collection, in which case
+        /// the item type is replaced with an implementation type.
+        /// </remarks>
+        /// <param name="abstractType">The abstract type.</param>
+        /// <returns>The implementation type.</returns>
+        protected virtual Type TryGetImplementationType(Type abstractType)
         {
             if (abstractType == null)
             {
@@ -268,12 +292,12 @@ namespace Kephas.Data.Linq.Expressions
             var collectionItemType = abstractType.TryGetCollectionItemType();
             if (collectionItemType == null)
             {
-                return this.TryGetImplementationType(abstractType);
+                return this.TryGetImplementationTypeCore(abstractType);
             }
 
             if (collectionItemType.GetTypeInfo().IsInterface)
             {
-                var concreteCollectionItemType = this.TryGetImplementationType(collectionItemType);
+                var concreteCollectionItemType = this.TryGetImplementationTypeCore(collectionItemType);
                 if (concreteCollectionItemType != null)
                 {
                     var collectionGenericDefinitionType = abstractType.GetGenericTypeDefinition();
@@ -283,21 +307,6 @@ namespace Kephas.Data.Linq.Expressions
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the implementation type.
-        /// </summary>
-        /// <param name="abstractType">The abstract type which needs to be replaced.</param>
-        /// <returns>
-        /// The implementation type.
-        /// </returns>
-        private Type TryGetImplementationType(Type abstractType)
-        {
-            var concreteType = this.activator.GetImplementationType(
-                abstractType.AsRuntimeTypeInfo(),
-                throwOnNotFound: false);
-            return (concreteType as IRuntimeTypeInfo)?.Type;
         }
     }
 }
