@@ -22,6 +22,12 @@ namespace Kephas.Data.Linq.Expressions
     public class DataContextQueryableSubstituteTypeConstantHandler : ISubstituteTypeConstantHandler
     {
         /// <summary>
+        /// The data context query method.
+        /// </summary>
+        private static readonly MethodInfo DataContextQueryMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<string>(null));
+
+        /// <summary>
         /// Determines whether the provided type can be handled.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -45,14 +51,15 @@ namespace Kephas.Data.Linq.Expressions
         public object Visit(object value, Type substituteType)
         {
             var itemType = substituteType.GetTypeInfo().GenericTypeArguments[0];
-            var queryProvider = ((IQueryable)value).Provider as IDataContextQueryProvider;
-            if (queryProvider == null)
+            if (!(((IQueryable)value).Provider is IDataContextQueryProvider queryProvider))
             {
                 throw new InvalidOperationException(string.Format(Strings.DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception, typeof(IDataContextQueryProvider), value));
             }
 
-            var genericQueryMethod = typeof(IDataContext).AsRuntimeTypeInfo().Methods[nameof(IDataContext.Query)].FirstOrDefault();
-            var queryMethod = genericQueryMethod.MethodInfo.MakeGenericMethod(itemType);
+            var queryMethod = DataContextQueryMethod.MakeGenericMethod(itemType);
+
+            // TODO The element type provided in the parent query operation context may not be appropriate to pass to the Query
+            // method, as it may contain another entity to query
             var convertedObject = queryMethod.Invoke(queryProvider.DataContext, new object[] { queryProvider.QueryOperationContext });
 
             return convertedObject;
