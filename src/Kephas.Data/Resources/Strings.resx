@@ -202,4 +202,7 @@
   <data name="Ref_GetEntityInfo_Null_Exception" xml:space="preserve">
     <value>The entity information for reference {0} could not be retrieved (null reference).</value>
   </data>
+  <data name="CollectionAdapter_CopyTo_NotEnoughElements_Exception" xml:space="preserve">
+    <value>Not enough elements after {0} in the destination array.</value>
+  </data>
 </root>

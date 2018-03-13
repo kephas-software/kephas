@@ -61,6 +61,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not enough elements after {0} in the destination array..
+        /// </summary>
+        internal static string CollectionAdapter_CopyTo_NotEnoughElements_Exception {
+            get {
+                return ResourceManager.GetString("CollectionAdapter_CopyTo_NotEnoughElements_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The command {0} is not supported..
         /// </summary>
         internal static string DataCommandFactory_CreateCommand_NotSupported_Exception {

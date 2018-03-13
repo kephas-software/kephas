@@ -13,6 +13,7 @@ namespace Kephas.Data.Adapters
     using System.Collections;
     using System.Collections.Generic;
 
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -96,9 +97,26 @@ namespace Kephas.Data.Adapters
         /// <exception cref="T:System.ArgumentOutOfRangeException">
         /// <paramref name="arrayIndex" /> is less than 0.</exception>
         /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
-        void ICollection<TEntity>.CopyTo(TEntity[] array, int arrayIndex)
+        public void CopyTo(TEntity[] array, int arrayIndex)
         {
-            throw new NotSupportedException($"CopyTo is not supported in {nameof(CollectionAdapter<TEntityImplementation, TEntity>)}");
+            Requires.NotNull(array, nameof(array));
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
+
+            if (array.Length - arrayIndex < this.Count)
+            {
+                throw new ArgumentException(string.Format(Strings.CollectionAdapter_CopyTo_NotEnoughElements_Exception, nameof(arrayIndex)));
+            }
+
+            TEntityImplementation[] implArray = new TEntityImplementation[array.Length];
+            this.collectionImplementation.CopyTo(implArray, arrayIndex);
+
+            for (var i = 0; i < this.Count; i++)
+            {
+                array[i + arrayIndex] = implArray[i + arrayIndex];
+            }
         }
 
         /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>

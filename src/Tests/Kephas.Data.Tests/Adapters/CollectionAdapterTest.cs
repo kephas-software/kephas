@@ -35,5 +35,28 @@ namespace Kephas.Data.Tests.Adapters
 
             Assert.AreEqual(2, newCol.Count);
         }
+
+        [Test]
+        public void CopyTo()
+        {
+            var col = new List<string> { "123", "234" };
+            var adapter = new CollectionAdapter<string, IConvertible>(col);
+
+            var convArray = new IConvertible[10];
+            adapter.CopyTo(convArray, 2);
+
+            Assert.AreEqual(convArray[2], "123");
+            Assert.AreEqual(convArray[3], "234");
+        }
+
+        [Test]
+        public void CopyTo_ArgumentOutOfRange()
+        {
+            var col = new List<string> { "123", "234" };
+            var adapter = new CollectionAdapter<string, IConvertible>(col);
+
+            var convArray = new IConvertible[1];
+            Assert.Throws<ArgumentException>(() => adapter.CopyTo(convArray, 2));
+        }
     }
 }
