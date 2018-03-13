@@ -17,8 +17,10 @@ namespace Kephas.Data.Linq.Expressions
 
     using Kephas.Activation;
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Services;
 
     /// <summary>
     /// The <see cref="SubstituteTypeExpressionVisitor"/>
@@ -33,40 +35,37 @@ namespace Kephas.Data.Linq.Expressions
         private readonly IDictionary<ParameterExpression, ParameterExpression> parametersMap = new Dictionary<ParameterExpression, ParameterExpression>();
 
         /// <summary>
-        /// The activator used for.
+        /// The implementation type resolver.
         /// </summary>
-        private readonly IActivator activator;
+        private readonly Func<Type, IContext, Type> implementationTypeResolver;
 
         /// <summary>
         /// The generic handlers.
         /// </summary>
-        private readonly IEnumerable<ISubstituteTypeConstantHandler> genericHandlers;
+        private readonly IEnumerable<ISubstituteTypeConstantHandler> constantHandlers;
+
+        /// <summary>
+        /// The context.
+        /// </summary>
+        private readonly IContext context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubstituteTypeExpressionVisitor"/> class.
         /// </summary>
-        /// <param name="activator">The activator.</param>
-        public SubstituteTypeExpressionVisitor(IActivator activator)
-            : this(
-                  activator,
-                  new ISubstituteTypeConstantHandler[]
-                                  {
-                                      new ListSubstituteTypeConstantHandler(),
-                                      new EnumerableQuerySubstituteTypeConstantHandler(),
-                                      new DataContextQueryableSubstituteTypeConstantHandler(),
-                                  })
+        /// <param name="implementationTypeResolver">The implementation type resolver (optional).</param>
+        /// <param name="activator">The activator (optional).</param>
+        /// <param name="constantHandlers">The constant handlers (optional).</param>
+        /// <param name="context">The context (optional).</param>
+        public SubstituteTypeExpressionVisitor(Func<Type, IContext, Type> implementationTypeResolver = null, IActivator activator = null, IEnumerable<ISubstituteTypeConstantHandler> constantHandlers = null, IContext context = null)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SubstituteTypeExpressionVisitor"/> class.
-        /// </summary>
-        /// <param name="activator">The activator.</param>
-        /// <param name="genericHandlers">The generic handlers.</param>
-        public SubstituteTypeExpressionVisitor(IActivator activator, IEnumerable<ISubstituteTypeConstantHandler> genericHandlers)
-        {
-            this.activator = activator;
-            this.genericHandlers = genericHandlers;
+            this.implementationTypeResolver = (t, ctx) =>
+                {
+                    var implementationType = implementationTypeResolver?.Invoke(t, ctx)
+                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
+                    return implementationType;
+                };
+            this.constantHandlers = constantHandlers ?? GetDefaultSubstituteTypeConstantHandlers();
+            this.context = context;
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Kephas.Data.Linq.Expressions
             if (mappedMethod.IsGenericMethod)
             {
                 var genericMethodDefinition = mappedMethod.GetGenericMethodDefinition();
-                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryGetImplementationType(t) ?? t).ToList();
+                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryResolveImplementationType(t) ?? t).ToList();
                 mappedMethod = genericMethodDefinition.MakeGenericMethod(mappedGenericArgs.ToArray());
 
                 if (mappedMethod.Name == nameof(Queryable.Cast) || mappedMethod.Name == nameof(Queryable.OfType))
@@ -135,7 +134,7 @@ namespace Kephas.Data.Linq.Expressions
                 return node;
             }
 
-            var concreteType = this.TryGetImplementationType(node.Expression?.Type);
+            var concreteType = this.TryResolveImplementationType(node.Expression?.Type);
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
@@ -175,7 +174,7 @@ namespace Kephas.Data.Linq.Expressions
         protected override Expression VisitConstant(ConstantExpression node)
         {
             var nodeTypeInfo = node.Type.GetTypeInfo();
-            var concreteType = this.TryGetImplementationType(node.Type);
+            var concreteType = this.TryResolveImplementationType(node.Type);
             if (concreteType != null)
             {
                 if (concreteType != node.Type)
@@ -189,14 +188,14 @@ namespace Kephas.Data.Linq.Expressions
             if (nodeTypeInfo.IsGenericType)
             {
                 var genericTypeDefinition = nodeTypeInfo.GetGenericTypeDefinition();
-                var mappedGenericArgs = nodeTypeInfo.GenericTypeArguments.Select(t => this.TryGetImplementationType(t) ?? t);
+                var mappedGenericArgs = nodeTypeInfo.GenericTypeArguments.Select(t => this.TryResolveImplementationType(t) ?? t);
                 concreteType = genericTypeDefinition.MakeGenericType(mappedGenericArgs.ToArray());
                 if (node.Value == null)
                 {
                     return Expression.Constant(node.Value, concreteType);
                 }
 
-                var handler = this.genericHandlers.FirstOrDefault(h => h.CanHandle(genericTypeDefinition));
+                var handler = this.constantHandlers.FirstOrDefault(h => h.CanHandle(genericTypeDefinition));
                 if (handler != null)
                 {
                     return Expression.Constant(handler.Visit(node.Value, concreteType), concreteType);
@@ -221,7 +220,7 @@ namespace Kephas.Data.Linq.Expressions
                 return mappedParam;
             }
 
-            var concreteType = this.TryGetImplementationType(node.Type);
+            var concreteType = this.TryResolveImplementationType(node.Type);
             if (concreteType != null)
             {
                 mappedParam = Expression.Parameter(concreteType, node.Name);
@@ -253,25 +252,6 @@ namespace Kephas.Data.Linq.Expressions
             return base.VisitUnary(node);
         }
 
-        /// <summary>
-        /// Tries to get the implementation type of the provided abstract type.
-        /// </summary>
-        /// <remarks>
-        /// The abstract type is an item type, not a collection type, because this 
-        /// case was already handled by the <see cref="TryGetImplementationType"/>,
-        /// which, in fact, calls this method.
-        /// </remarks>
-        /// <param name="abstractType">The abstract type which needs to be replaced.</param>
-        /// <returns>
-        /// The implementation type.
-        /// </returns>
-        protected virtual Type TryGetImplementationTypeCore(Type abstractType)
-        {
-            var implementationType = this.activator.GetImplementationType(
-                abstractType.AsRuntimeTypeInfo(),
-                throwOnNotFound: false);
-            return (implementationType as IRuntimeTypeInfo)?.Type;
-        }
 
         /// <summary>
         /// Tries to get the implementation type of the provided abstract type.
@@ -282,7 +262,7 @@ namespace Kephas.Data.Linq.Expressions
         /// </remarks>
         /// <param name="abstractType">The abstract type.</param>
         /// <returns>The implementation type.</returns>
-        protected virtual Type TryGetImplementationType(Type abstractType)
+        protected virtual Type TryResolveImplementationType(Type abstractType)
         {
             if (abstractType == null)
             {
@@ -292,21 +272,35 @@ namespace Kephas.Data.Linq.Expressions
             var collectionItemType = abstractType.TryGetCollectionItemType();
             if (collectionItemType == null)
             {
-                return this.TryGetImplementationTypeCore(abstractType);
+                return this.implementationTypeResolver(abstractType, this.context);
             }
 
             if (collectionItemType.GetTypeInfo().IsInterface)
             {
-                var concreteCollectionItemType = this.TryGetImplementationTypeCore(collectionItemType);
-                if (concreteCollectionItemType != null)
+                var collectionItemImplementationType = this.implementationTypeResolver(abstractType, this.context);
+                if (collectionItemImplementationType != null)
                 {
                     var collectionGenericDefinitionType = abstractType.GetGenericTypeDefinition();
-                    var collectionConcreteType = collectionGenericDefinitionType.MakeGenericType(concreteCollectionItemType);
+                    var collectionConcreteType = collectionGenericDefinitionType.MakeGenericType(collectionItemImplementationType);
                     return collectionConcreteType;
                 }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the default substitute type constant handlers in this collection.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default substitute type constant
+        /// handlers in this collection.
+        /// </returns>
+        private static IEnumerable<ISubstituteTypeConstantHandler> GetDefaultSubstituteTypeConstantHandlers()
+        {
+            yield return new ListSubstituteTypeConstantHandler();
+            yield return new EnumerableQuerySubstituteTypeConstantHandler();
+            yield return new DataContextQueryableSubstituteTypeConstantHandler();
         }
     }
 }

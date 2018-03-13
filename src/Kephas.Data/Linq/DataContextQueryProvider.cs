@@ -21,6 +21,7 @@ namespace Kephas.Data.Linq
     using Kephas.Data.Linq.Expressions;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// A data context query provider base.
@@ -79,9 +80,15 @@ namespace Kephas.Data.Linq
         /// </value>
         public IQueryProvider NativeQueryProvider { get; }
 
-        /// <summary>Constructs an <see cref="T:System.Linq.IQueryable" /> object that can evaluate the query represented by a specified expression tree.</summary>
-        /// <returns>An <see cref="T:System.Linq.IQueryable" /> that can evaluate the query represented by the specified expression tree.</returns>
+        /// <summary>
+        /// Constructs an <see cref="T:System.Linq.IQueryable" /> object that can evaluate the query
+        /// represented by a specified expression tree.
+        /// </summary>
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
+        /// <returns>
+        /// An <see cref="T:System.Linq.IQueryable" /> that can evaluate the query represented by the
+        /// specified expression tree.
+        /// </returns>
         public virtual IQueryable CreateQuery(Expression expression)
         {
             Requires.NotNull(expression, nameof(expression));
@@ -91,10 +98,17 @@ namespace Kephas.Data.Linq
             return (IQueryable)createQuery.Call(this, expression);
         }
 
-        /// <summary>Constructs an <see cref="T:System.Linq.IQueryable`1" /> object that can evaluate the query represented by a specified expression tree.</summary>
-        /// <returns>An <see cref="T:System.Linq.IQueryable`1" /> that can evaluate the query represented by the specified expression tree.</returns>
+        /// <summary>
+        /// Constructs an <see cref="T:System.Linq.IQueryable`1" /> object that can evaluate the query
+        /// represented by a specified expression tree.
+        /// </summary>
+        /// <typeparam name="TElement">The type of the elements of the
+        ///                            <see cref="T:System.Linq.IQueryable`1" /> that is returned.</typeparam>
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
-        /// <typeparam name="TElement">The type of the elements of the <see cref="T:System.Linq.IQueryable`1" /> that is returned.</typeparam>
+        /// <returns>
+        /// An <see cref="T:System.Linq.IQueryable`1" /> that can evaluate the query represented by the
+        /// specified expression tree.
+        /// </returns>
         public virtual IQueryable<TElement> CreateQuery<TElement>(Expression expression)
         {
             Requires.NotNull(expression, nameof(expression));
@@ -187,13 +201,15 @@ namespace Kephas.Data.Linq
         /// </returns>
         protected internal virtual Expression GetExecutableExpression(Expression expression)
         {
+            var implementationTypeResolver = this.QueryOperationContext?.ImplementationTypeResolver;
             var entityActivator = this.TryGetEntityActivator();
-            if (entityActivator == null)
+
+            if (entityActivator == null && implementationTypeResolver == null)
             {
                 return expression;
             }
 
-            var expressionVisitor = this.CreateQueryExpressionVisitor(entityActivator);
+            var expressionVisitor = this.CreateQueryExpressionVisitor(implementationTypeResolver, entityActivator);
             expression = expressionVisitor.Visit(expression);
             return expression;
         }
@@ -201,13 +217,14 @@ namespace Kephas.Data.Linq
         /// <summary>
         /// Creates an expression visitor used to visit the query expression.
         /// </summary>
+        /// <param name="implementationTypeResolver">The implementation type resolver.</param>
         /// <param name="activator">The activator.</param>
         /// <returns>
         /// The new query expression visitor.
         /// </returns>
-        protected virtual ExpressionVisitor CreateQueryExpressionVisitor(IActivator activator)
+        protected virtual ExpressionVisitor CreateQueryExpressionVisitor(Func<Type, IContext, Type> implementationTypeResolver, IActivator activator)
         {
-            return new SubstituteTypeExpressionVisitor(activator);
+            return new SubstituteTypeExpressionVisitor(implementationTypeResolver, activator, context: this.QueryOperationContext);
         }
 
         /// <summary>

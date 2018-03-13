@@ -9,7 +9,10 @@
 
 namespace Kephas.Data
 {
+    using System;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// The default implementation of a query operationContext.
@@ -25,5 +28,13 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
         }
+
+        /// <summary>
+        /// Gets or sets the implementation type resolver.
+        /// </summary>
+        /// <value>
+        /// The implementation type resolver.
+        /// </value>
+        public Func<Type, IContext, Type> ImplementationTypeResolver { get; set; }
     }
 }

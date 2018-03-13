@@ -40,7 +40,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new Test { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.Where(t => t.Name == "gigi");
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -67,7 +67,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name == gigi);
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -98,7 +98,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name.Length == gigi.Length);
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -130,7 +130,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name == Test.ClassName);
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -161,7 +161,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                   }).AsQueryable();
             var gigi = new Test();
             var query = baseQuery.Where(t => t.Name == gigi.Gigi.Item1);
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -191,7 +191,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new Test { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.Where(t => t.Name == Test.Belogea.Item1);
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -215,7 +215,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new DerivedTest { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.OfType<DerivedTest>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -238,7 +238,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new DerivedTest { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.OfType<Test>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var constantExpression = (ConstantExpression)newExpression;
@@ -261,7 +261,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new DerivedTest { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.Cast<DerivedTest>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var methodCallExpression = (MethodCallExpression)newExpression;
@@ -283,7 +283,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                                                                       new DerivedTest { Name = "belogea" }
                                                                   }).AsQueryable();
             var query = baseQuery.Cast<Test>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = visitor.Visit(query.Expression);
 
             var constantExpression = (ConstantExpression)newExpression;
@@ -302,7 +302,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
 
 
             var expression = Expression.Constant((long?)null, typeof(long?));
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = (ConstantExpression)visitor.Visit(expression);
 
             Assert.AreSame(expression, newExpression);
@@ -316,7 +316,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
                 .Returns(typeof(long?).AsRuntimeTypeInfo());
 
             var expression = Expression.Constant((long?)2, typeof(long?));
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
             var newExpression = (ConstantExpression)visitor.Visit(expression);
 
             Assert.AreSame(expression, newExpression);
@@ -326,7 +326,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void VisitUnary_remove_unnecessary_converts_interface()
         {
             var activator = Substitute.For<IActivator>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
 
             var query = new List<IBetterTest>(new[]
                                                   {
@@ -345,7 +345,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void VisitUnary_remove_unnecessary_converts_class()
         {
             var activator = Substitute.For<IActivator>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
 
             var query = new List<BetterTest>(new[]
                                                   {
@@ -364,7 +364,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void VisitUnary_preserve_converts_value_types()
         {
             var activator = Substitute.For<IActivator>();
-            var visitor = new SubstituteTypeExpressionVisitor(activator);
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
 
             var query = new List<BetterTest>(new[]
                                                  {
@@ -377,6 +377,52 @@ namespace Kephas.Data.Tests.Linq.Expressions
 
             var stringExpression = newExpression.ToString();
             Assert.IsTrue(stringExpression.Contains("Convert("));
+        }
+
+        [Test]
+        public void Visit_Where_type_resolver()
+        {
+            var typeResolver = (Func<Type, IContext, Type>)((t, ctx) => t == typeof(ITest) ? typeof(Test) : null);
+            var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
+                                                                  {
+                                                                      new Test { Name = "gigi" },
+                                                                      new Test { Name = "belogea" }
+                                                                  }).AsQueryable();
+            var query = baseQuery.Where(t => t.Name == "gigi");
+            var visitor = new SubstituteTypeExpressionVisitor(implementationTypeResolver: typeResolver);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(Test), genericArg);
+
+            var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void Visit_Where_type_resolver_before_activator()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
+
+            var typeResolver = (Func<Type, IContext, Type>)((t, ctx) => t == typeof(ITest) ? typeof(DerivedTest) : null);
+            var baseQuery = (IQueryable<ITest>)new List<DerivedTest>(new[]
+                                                                  {
+                                                                      new DerivedTest { Name = "gigi" },
+                                                                      new DerivedTest { Name = "belogea" }
+                                                                  }).AsQueryable();
+            var query = baseQuery.Where(t => t.Name == "gigi");
+            var visitor = new SubstituteTypeExpressionVisitor(typeResolver, activator);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(DerivedTest), genericArg);
+
+            var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
+            Assert.AreEqual(1, result.Count());
         }
 
         private IQueryable<T> WhereIsNamed<T>(IQueryable<T> query, string name)
