@@ -181,6 +181,9 @@
     <Compile Include="..\Kephas.Core.Tests\Serialization\SerializationExtensionsTest.cs">
       <Link>Serialization\SerializationExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Services\AppServiceContractAttributeTest.cs">
+      <Link>Services\AppServiceContractAttributeTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\Behavior\DefaultServiceBehaviorProviderTest.cs">
       <Link>Services\Behavior\DefaultServiceBehaviorProviderTest.cs</Link>
     </Compile>

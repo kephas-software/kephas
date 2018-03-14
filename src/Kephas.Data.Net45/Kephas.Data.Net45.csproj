@@ -376,6 +376,9 @@
     <Compile Include="..\Kephas.Data\IRef.cs">
       <Link>IRef.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\IServiceRef.cs">
+      <Link>IServiceRef.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Linq\DataContextQuery.cs">
       <Link>Linq\DataContextQuery.cs</Link>
     </Compile>
@@ -433,8 +436,14 @@
     <Compile Include="..\Kephas.Data\Ref.cs">
       <Link>Ref.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\RefBase.cs">
+      <Link>RefBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\ServiceRef.cs">
+      <Link>ServiceRef.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Store\ConnectionStringParser.cs">
       <Link>Store\ConnectionStringParser.cs</Link>

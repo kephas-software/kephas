@@ -14,7 +14,7 @@ namespace Kephas.Data
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Contract used to define and retrieve a referenced entity.
+    /// Contract used to define the type of properties referencing entities.
     /// </summary>
     public interface IRef : IIdentifiable
     {
@@ -54,7 +54,7 @@ namespace Kephas.Data
     }
 
     /// <summary>
-    /// Generic contract used to define and retrieve a referenced entity.
+    /// Generic contract used to define the type of properties referencing entities.
     /// </summary>
     /// <typeparam name="T">The referenced entity type.</typeparam>
     public interface IRef<T> : IRef

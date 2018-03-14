@@ -15,40 +15,23 @@ namespace Kephas.Data
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-    using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Implementation of an entity reference.
     /// </summary>
     /// <typeparam name="T">The referenced entity type.</typeparam>
-    public class Ref<T> : IRef<T>
+    public class Ref<T> : RefBase, IRef<T>
         where T : class
     {
-        /// <summary>
-        /// The entity information provider.
-        /// </summary>
-        private readonly WeakReference<IEntityInfoAware> entityRef;
-
-        /// <summary>
-        /// Name of the reference identifier.
-        /// </summary>
-        private readonly string refIdName;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Ref{T}"/> class.
         /// </summary>
         /// <param name="entityInfoAware">The entity information provider.</param>
-        /// <param name="refIdName">Name of the reference identifier.</param>
-        public Ref(IEntityInfoAware entityInfoAware, string refIdName)
+        /// <param name="refFieldName">Name of the reference identifier property.</param>
+        public Ref(IEntityInfoAware entityInfoAware, string refFieldName)
+            : base(entityInfoAware, refFieldName)
         {
-            Requires.NotNull(entityInfoAware, nameof(entityInfoAware));
-            Requires.NotNullOrEmpty(refIdName, nameof(refIdName));
-
-            this.entityRef = new WeakReference<IEntityInfoAware>(entityInfoAware);
-            this.refIdName = refIdName;
             this.EntityType = typeof(T);
         }
 
@@ -84,8 +67,8 @@ namespace Kephas.Data
         /// </value>
         public virtual object Id
         {
-            get => this.GetEntityPropertyValue(this.refIdName);
-            set => this.SetEntityPropertyValue(this.refIdName, value);
+            get => this.GetEntityPropertyValue(this.RefFieldName);
+            set => this.SetEntityPropertyValue(this.RefFieldName, value);
         }
 
         /// <summary>
@@ -122,97 +105,6 @@ namespace Kephas.Data
         async Task<object> IRef.GetAsync(bool throwIfNotFound, CancellationToken cancellationToken)
         {
             return await this.GetAsync(throwIfNotFound, cancellationToken).PreserveThreadContext();
-        }
-
-        /// <summary>
-        /// Gets the value of the indicated entity property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>
-        /// The value of the entity property.
-        /// </returns>
-        protected virtual object GetEntityPropertyValue(string propertyName)
-        {
-            var entity = this.GetEntity();
-            return entity is IIndexable expandoEntity
-                       ? expandoEntity[propertyName]
-                       : entity.GetPropertyValue(propertyName);
-        }
-
-        /// <summary>
-        /// Sets the value of the indicated entity property.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <param name="value">The value.</param>
-        protected virtual void SetEntityPropertyValue(string propertyName, object value)
-        {
-            var entity = this.GetEntity();
-            if (entity is IIndexable expandoEntity)
-            {
-                expandoEntity[propertyName] = value;
-            }
-            else
-            {
-                entity.SetPropertyValue(propertyName, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the entity containing the reference.
-        /// </summary>
-        /// <returns>
-        /// The entity containing the reference.
-        /// </returns>
-        protected virtual object GetEntity()
-        {
-            var entity = this.GetEntityInfo()?.Entity;
-            if (entity == null)
-            {
-                throw new DataException(string.Format(Strings.Ref_GetEntity_Null_Exception, this.refIdName));
-            }
-
-            return entity;
-        }
-
-        /// <summary>
-        /// Gets entity information.
-        /// </summary>
-        /// <exception cref="ObjectDisposedException">Thrown when the entity has been disposed.</exception>
-        /// <returns>
-        /// The entity information.
-        /// </returns>
-        protected virtual IEntityInfo GetEntityInfo()
-        {
-            if (!this.entityRef.TryGetTarget(out var entity))
-            {
-                throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.Ref_GetEntityInfo_Disposed_Exception, this.refIdName));
-            }
-
-            var entityInfo = entity?.GetEntityInfo();
-            if (entityInfo == null)
-            {
-                throw new DataException(string.Format(Strings.Ref_GetEntityInfo_Null_Exception, this.refIdName));
-            }
-
-            return entityInfo;
-        }
-
-        /// <summary>
-        /// Gets the data context for entity retrieval.
-        /// </summary>
-        /// <param name="entityInfo">Information describing the entity.</param>
-        /// <returns>
-        /// The data context.
-        /// </returns>
-        protected virtual IDataContext GetDataContext(IEntityInfo entityInfo)
-        {
-            var dataContext = entityInfo?.DataContext;
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException($"{nameof(entityInfo)}.{nameof(entityInfo.DataContext)}", string.Format(Strings.Ref_GetDataContext_NullDataContext_Exception, this.refIdName));
-            }
-
-            return dataContext;
         }
     }
 }

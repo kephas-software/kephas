@@ -31,7 +31,12 @@ namespace Kephas.Data.Model.Runtime
         /// <summary>
         /// List of data primitive types.
         /// </summary>
-        private static readonly Type[] DataPrimitiveTypes = { typeof(IRef<>), typeof(ICollection<>) };
+        private static readonly Type[] DataPrimitiveTypes =
+            {
+                typeof(IRef<>),
+                typeof(IServiceRef<>),
+                typeof(ICollection<>)
+            };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPrimitiveTypesModelInfoProvider"/> class.
@@ -57,8 +62,7 @@ namespace Kephas.Data.Model.Runtime
         /// </remarks>
         public override IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
         {
-            var runtimeElementInfo = nativeElementInfo as IRuntimeTypeInfo;
-            if (runtimeElementInfo == null)
+            if (!(nativeElementInfo is IRuntimeTypeInfo runtimeElementInfo))
             {
                 return null;
             }
