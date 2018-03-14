@@ -368,6 +368,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple services found for {0}/{1}..
+        /// </summary>
+        internal static string DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception {
+            get {
+                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No service found for {0}/{1}..
+        /// </summary>
+        internal static string DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A serializer for the media type &apos;{0}&apos; was not found..
         /// </summary>
         internal static string DefaultSerializationService_SerializerNotFound_Exception {

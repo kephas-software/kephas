@@ -17,7 +17,7 @@ namespace Kephas.Services
     /// <summary>
     /// Exception thrown by null services.
     /// </summary>
-    public class NullServiceException : Exception
+    public class NullServiceException : ServiceException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NullServiceException"/> class.

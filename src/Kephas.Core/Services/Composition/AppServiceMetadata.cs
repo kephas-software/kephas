@@ -35,6 +35,7 @@ namespace Kephas.Services.Composition
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.OptionalService = this.GetMetadataValue<OptionalServiceAttribute, bool>(metadata);
+            this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
             this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
         }
 
@@ -44,12 +45,14 @@ namespace Kephas.Services.Composition
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
         /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
+        /// <param name="serviceName">The name of the service (optional).</param>
+        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
             this.OptionalService = optionalService;
+            this.ServiceName = serviceName;
         }
 
         /// <summary>
@@ -77,6 +80,14 @@ namespace Kephas.Services.Composition
         public bool OptionalService { get; }
 
         /// <summary>
+        /// Gets or sets the name of the service.
+        /// </summary>
+        /// <value>
+        /// The name of the service.
+        /// </value>
+        public string ServiceName { get; set; }
+
+        /// <summary>
         /// Gets or sets the concrete service type implementing the service contract.
         /// </summary>
         /// <value>
@@ -92,8 +103,9 @@ namespace Kephas.Services.Composition
         /// </returns>
         public override string ToString()
         {
+            var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
             var optional = this.OptionalService ? "Optional, " : string.Empty;
-            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {optional}Impl: {this.AppServiceImplementationType}";
+            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}{optional}Impl: {this.AppServiceImplementationType}";
         }
 
         /// <summary>

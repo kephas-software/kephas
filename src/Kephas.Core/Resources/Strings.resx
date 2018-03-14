@@ -288,4 +288,10 @@
   <data name="App_BootstrapAsync_ErrorDuringForcedShutdown_Exception" xml:space="preserve">
     <value>Errors occurred during the application forced shut down procedure, please check the exception details for more information.</value>
   </data>
+  <data name="DefaultNamedServiceProvider_GetNamedService_NoServiceFound_Exception" xml:space="preserve">
+    <value>No service found for {0}/{1}.</value>
+  </data>
+  <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
+    <value>Multiple services found for {0}/{1}.</value>
+  </data>
 </root>
