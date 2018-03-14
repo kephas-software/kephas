@@ -12,6 +12,8 @@
 namespace Kephas.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Marks an interface to be an application service contract. 
@@ -21,6 +23,31 @@ namespace Kephas.Services
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class AppServiceContractAttribute : Attribute
     {
+        /// <summary>
+        /// The default metadata attribute types.
+        /// </summary>
+        public static readonly IReadOnlyCollection<Type> DefaultMetadataAttributeTypes;
+
+        /// <summary>
+        /// The default metadata attribute types.
+        /// </summary>
+        private static readonly IList<Type> WritableDefaultMetadataAttributeTypes
+            = new List<Type>
+                  {
+                      typeof(ProcessingPriorityAttribute),
+                      typeof(OverridePriorityAttribute),
+                      typeof(OptionalServiceAttribute),
+                      typeof(ServiceNameAttribute)
+                  };
+
+        /// <summary>
+        /// Initializes static members of the <see cref="AppServiceContractAttribute"/> class.
+        /// </summary>
+        static AppServiceContractAttribute()
+        {
+            DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
@@ -102,5 +129,20 @@ namespace Kephas.Services
         /// The contract type of the export.
         /// </value>
         public Type ContractType { get; set; }
+
+        /// <summary>
+        /// Registers the provided metadata attribute types as default attributes.
+        /// </summary>
+        /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
+        public static void RegisterDefaultMetadataAttributeTypes(params Type[] attributeTypes)
+        {
+            foreach (var attributeType in attributeTypes)
+            {
+                if (!WritableDefaultMetadataAttributeTypes.Contains(attributeType))
+                {
+                    WritableDefaultMetadataAttributeTypes.Add(attributeType);
+                }
+            }
+        }
     }
 }

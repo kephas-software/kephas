@@ -47,16 +47,6 @@ namespace Kephas.Services.Composition
         private const string TypeSuffix = "Type";
 
         /// <summary>
-        /// The default metadata attributes.
-        /// </summary>
-        private static readonly Type[] DefaultMetadataAttributes =
-            {
-                typeof(ProcessingPriorityAttribute),
-                typeof(OverridePriorityAttribute),
-                typeof(OptionalServiceAttribute),
-            };
-
-        /// <summary>
         /// Information describing the metadata value type.
         /// </summary>
         private static IRuntimeTypeInfo metadataValueTypeInfo;
@@ -200,7 +190,7 @@ namespace Kephas.Services.Composition
                         t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
                         (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
 
-                    if (metadataAttributes.Length > 0)
+                    if (metadataAttributes.Count > 0)
                     {
                         var hasCustomMetadataAttributes = metadataAttributes.Any(
                             a => a != typeof(SharedAppServiceContractAttribute)
@@ -274,17 +264,17 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="contractAttribute">The contract attribute.</param>
         /// <returns>
-        /// An array of type.
+        /// An collection of attribute types.
         /// </returns>
-        private Type[] GetMetadataAttributes(AppServiceContractAttribute contractAttribute)
+        private IReadOnlyCollection<Type> GetMetadataAttributes(AppServiceContractAttribute contractAttribute)
         {
             if (contractAttribute.MetadataAttributes == null || contractAttribute.MetadataAttributes.Length == 0)
             {
-                return DefaultMetadataAttributes;
+                return AppServiceContractAttribute.DefaultMetadataAttributeTypes;
             }
 
             var attrs = contractAttribute.MetadataAttributes.ToList();
-            foreach (var attr in DefaultMetadataAttributes)
+            foreach (var attr in AppServiceContractAttribute.DefaultMetadataAttributeTypes)
             {
                 if (!attrs.Contains(attr))
                 {
@@ -292,7 +282,7 @@ namespace Kephas.Services.Composition
                 }
             }
 
-            return attrs.ToArray();
+            return attrs;
         }
 
         /// <summary>
@@ -369,7 +359,7 @@ namespace Kephas.Services.Composition
         /// <param name="exportedContractType">Type of the exported contract.</param>
         /// <param name="serviceImplementationType">Type of the service implementation.</param>
         /// <param name="metadataAttributes">The metadata attributes.</param>
-        private void ConfigureExport(TypeInfo serviceContract, IExportConventionsBuilder exportBuilder, Type exportedContractType, Type serviceImplementationType, Type[] metadataAttributes)
+        private void ConfigureExport(TypeInfo serviceContract, IExportConventionsBuilder exportBuilder, Type exportedContractType, Type serviceImplementationType, IEnumerable<Type> metadataAttributes)
         {
             exportBuilder.AsContractType(exportedContractType);
             this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
@@ -542,13 +532,13 @@ namespace Kephas.Services.Composition
         /// <param name="builder">The builder.</param>
         /// <param name="serviceImplementationType">Type of the service implementation.</param>
         /// <param name="attributeTypes">The attribute types.</param>
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type serviceImplementationType, Type[] attributeTypes)
+        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type serviceImplementationType, IEnumerable<Type> attributeTypes)
         {
             // add the service type.
             builder.AddMetadata(nameof(AppServiceMetadata.AppServiceImplementationType), t => serviceImplementationType ?? t);
 
             // add the rest of the metadata indicated by the attributes.
-            if (attributeTypes == null || attributeTypes.Length == 0)
+            if (attributeTypes == null)
             {
                 return;
             }
