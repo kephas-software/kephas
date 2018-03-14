@@ -150,13 +150,28 @@ namespace Kephas.Data.Conversion
         /// </returns>
         protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType, IDataConversionContext conversionContext)
         {
-            var instanceType = declaredType == typeof(object) ? providedType : declaredType;
-            if (instanceType == null || instanceType == typeof(object))
+            // get the widest type:
+            // 1. if the instance is provided, get the type from the instance itself
+            // 2. otherwise get the widest type from the declared one and the provided one.
+            var instanceTypeInfo = instance?.GetType().GetTypeInfo();
+            if (instanceTypeInfo == null)
             {
-                return instance?.GetType().GetTypeInfo();
+                var declaredTypeInfo = declaredType.GetTypeInfo();
+                if (providedType == null)
+                {
+                    instanceTypeInfo = declaredTypeInfo;
+                }
+                else
+                {
+                    instanceTypeInfo = providedType.GetTypeInfo();
+                    if (instanceTypeInfo.IsAssignableFrom(declaredTypeInfo))
+                    {
+                        instanceTypeInfo = declaredTypeInfo;
+                    }
+                }
             }
 
-            return instanceType.GetTypeInfo();
+            return instanceTypeInfo;
         }
 
         /// <summary>
