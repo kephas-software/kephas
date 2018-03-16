@@ -123,7 +123,7 @@ namespace Kephas.Data.Conversion
             var sourceType = this.GetInstanceTypeInfo(source, typeof(TSource), conversionContext.RootSourceType, conversionContext);
             var targetType = this.GetInstanceTypeInfo(target, typeof(TTarget), conversionContext.RootTargetType, conversionContext);
 
-            if (target == null && targetType == null)
+            if (target == null && (targetType == null || targetType.AsType() == typeof(object)))
             {
                 var exception = new DataConversionException(Strings.DefaultDataConversionService_NonTypedTargetIsNull_Exception);
                 if (conversionContext.ThrowOnError)

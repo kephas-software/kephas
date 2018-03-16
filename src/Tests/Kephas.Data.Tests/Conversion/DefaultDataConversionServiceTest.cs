@@ -148,7 +148,7 @@ namespace Kephas.Data.Tests.Conversion
                     new IExportFactory<IDataConverter, DataConverterMetadata>[]
                     {
                         new ExportFactory<IDataConverter, DataConverterMetadata>(() => converter,
-                            new DataConverterMetadata(typeof(string), typeof(string)))
+                            new DataConverterMetadata(typeof(string), typeof(int)))
                     },
                     this.GetDefaultTargetResolverFactories());
 
