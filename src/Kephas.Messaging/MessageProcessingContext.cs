@@ -25,12 +25,10 @@ namespace Kephas.Messaging
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">The Message.</param>
         /// <param name="handler">The handler.</param>
-        public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message, IMessageHandler handler)
+        public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message = null, IMessageHandler handler = null)
             : base(messageProcessor.AmbientServices)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
-            Requires.NotNull(message, nameof(message));
-            Requires.NotNull(handler, nameof(handler));
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;

@@ -11,7 +11,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
 
