@@ -120,4 +120,10 @@
   <data name="KeyAttribute_InvalidKeyProperties_Exception" xml:space="preserve">
     <value>At least one property must be specified for the key '{0}'.</value>
   </data>
+  <data name="Key_ContainerPropertiesEmpty_Exception" xml:space="preserve">
+    <value>The key '{0}' in '{1}' cannot find any properties.</value>
+  </data>
+  <data name="Key_MissingContainerProperties_Exception" xml:space="preserve">
+    <value>The key '{0}' in '{1}' cannot find properties: '{2}'. Check whether the properties are defined in the declaring container.</value>
+  </data>
 </root>

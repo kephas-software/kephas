@@ -10,7 +10,8 @@
 namespace Kephas.Data.Model.Elements
 {
     using System.Linq;
-
+    using Kephas.Collections;
+    using Kephas.Data.Model.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model;
     using Kephas.Model.Construction;
@@ -75,8 +76,13 @@ namespace Kephas.Data.Model.Elements
             var containerProperties = this.DeclaringContainer?.Members.OfType<IProperty>().ToDictionary(m => m.Name, m => m);
             if (containerProperties == null || containerProperties.Count == 0)
             {
-                // TODO localization.
-                throw new ModelConstructionException($"The key '{this}' in '{this.DeclaringContainer}' cannot find any properties.");
+                throw new ModelConstructionException(string.Format(Strings.Key_ContainerPropertiesEmpty_Exception, this, this.DeclaringContainer));
+            }
+
+            var missingProperties = this.keyPropertyNames.Where(n => containerProperties.TryGetValue(n) == null).ToArray();
+            if (missingProperties.Length > 0)
+            {
+                throw new ModelConstructionException(string.Format(Strings.Key_MissingContainerProperties_Exception, this, this.DeclaringContainer, string.Join("', '", missingProperties)));
             }
 
             this.KeyProperties = this.keyPropertyNames.Select(n => containerProperties[n]).ToArray();
