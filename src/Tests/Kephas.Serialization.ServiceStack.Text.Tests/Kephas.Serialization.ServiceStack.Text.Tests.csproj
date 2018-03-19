@@ -130,11 +130,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonExpandoTest.cs" />
     <Compile Include="JsonSerializerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\ComplexJson.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj">
@@ -153,5 +155,6 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

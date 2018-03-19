@@ -70,7 +70,14 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// </returns>
         public Task<object> DeserializeAsync(TextReader textReader, ISerializationContext context = null, CancellationToken cancellationToken = default)
         {
-            var obj = global::ServiceStack.Text.JsonSerializer.DeserializeFromReader(textReader, context?.RootObjectType ?? typeof(object));
+            var rootObjectType = context?.RootObjectType ?? typeof(object);
+
+            var obj = global::ServiceStack.Text.JsonSerializer.DeserializeFromReader(textReader, rootObjectType);
+            if (rootObjectType == typeof(object) && obj != null)
+            {
+                obj = JsonExpando.TryConvertToJsonExpando(obj);
+            }
+
             return Task.FromResult(obj);
         }
     }

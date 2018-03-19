@@ -1,0 +1,28 @@
+﻿{
+    "$address": "127.0.0.1",
+    "$port": 123,
+    "my-flow": [
+        {
+            "scheme": "http",
+            "instance": {
+                "ref": "my-instance"
+            },
+            "identity": {
+                "tags": [ "mytag" ],
+                "group": {
+                    "type": "private" 
+                }
+            }
+        },
+        {
+            "scheme": "http",
+            "host": {
+                "ipAddress": "$address",
+                "port": "$port" 
+            },
+            "identity": {
+                "tags": "$credentialTags" 
+            }
+        }
+    ]
+}

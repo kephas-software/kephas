@@ -18,6 +18,8 @@ namespace Kephas.Serialization.ServiceStack.Text
 
     using global::ServiceStack.Text;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// A default JSON serializer configurator.
     /// </summary>
@@ -90,6 +92,7 @@ namespace Kephas.Serialization.ServiceStack.Text
             JsConfig.ExcludeDefaultValues = false;
             JsConfig.ThrowOnDeserializationError = false;
             JsConfig.ConvertObjectTypesIntoStringDictionary = true;
+            JsConfig.TryToParsePrimitiveTypeValues = false; // otherwise, for untyped jsons, any string value which can't be converted to primitive types will return null.
             JsConfig.DateHandler = DateHandler.ISO8601;
             JsConfig.OnDeserializationError = (instance, type, name, str, exception) =>
             {
@@ -119,6 +122,10 @@ namespace Kephas.Serialization.ServiceStack.Text
                     throw;
                 }
             };
+            JsConfig<IExpando>.RawDeserializeFn = json => new JsonExpando(json);
+            JsConfig<IExpando>.SerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(expando.ToDictionary());
+            JsConfig<Expando>.RawDeserializeFn = json => new JsonExpando(json);
+            JsConfig<Expando>.SerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(expando.ToDictionary());
 
             this.isConfigured = true;
 

@@ -12,6 +12,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Reflection;
     using System.Threading.Tasks;
 
@@ -63,6 +64,21 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
 
         [Test]
         public async Task DeserializeAsync_untyped()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<IExpando>(obj);
+
+            var dict = (IExpando)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
+        }
+
+        [Test, Ignore("TODO Must make the Expando implement IDictionary first.")]
+        public async Task DeserializeAsync_untyped_dictionary()
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
@@ -172,6 +188,26 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonMediaType>(serializationService));
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
+        }
+        
+        [Test]
+        public async Task DeserializeAsync_expando_property()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+
+            using (var sr = new StringReader(@"{ ""dynContent"": { ""hi"": ""there"" } }"))
+            {
+                var serializationService = Substitute.For<ISerializationService>();
+                var obj = (TestContext)await serializer.DeserializeAsync(sr, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(TestContext) });
+
+                Assert.AreEqual("there", obj.DynContent["hi"]);
+            }
+        }
+
+        public class TestContext
+        {
+            public IExpando DynContent { get; set; }
         }
 
         public class TestEntity

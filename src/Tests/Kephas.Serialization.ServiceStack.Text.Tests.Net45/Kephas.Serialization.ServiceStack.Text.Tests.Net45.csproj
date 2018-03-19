@@ -51,6 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Serialization.ServiceStack.Text.Tests\JsonExpandoTest.cs">
+      <Link>JsonExpandoTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text.Tests\JsonSerializerTest.cs">
       <Link>JsonSerializerTest.cs</Link>
     </Compile>
@@ -71,6 +74,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Serialization.ServiceStack.Text.Tests\Resources\ComplexJson.json">
+      <Link>Resources\ComplexJson.json</Link>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

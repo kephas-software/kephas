@@ -54,6 +54,9 @@
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text\IJsonSerializerConfigurator.cs">
       <Link>IJsonSerializerConfigurator.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Serialization.ServiceStack.Text\JsonExpando.cs">
+      <Link>JsonExpando.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text\JsonSerializer.cs">
       <Link>JsonSerializer.cs</Link>
     </Compile>
