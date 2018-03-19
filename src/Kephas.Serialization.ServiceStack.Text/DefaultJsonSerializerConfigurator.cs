@@ -12,13 +12,13 @@ namespace Kephas.Serialization.ServiceStack.Text
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Serialization.ServiceStack.Text.Resources;
     using Kephas.Services;
 
     using global::ServiceStack.Text;
-
-    using Kephas.Dynamic;
 
     /// <summary>
     /// A default JSON serializer configurator.
@@ -40,6 +40,7 @@ namespace Kephas.Serialization.ServiceStack.Text
             Requires.NotNull(typeResolver, nameof(typeResolver));
 
             this.TypeResolver = typeResolver;
+            this.TypeAttr = "$type";
         }
 
         /// <summary>
@@ -59,6 +60,14 @@ namespace Kephas.Serialization.ServiceStack.Text
         public ILogger<IJsonSerializerConfigurator> Logger { get; set; }
 
         /// <summary>
+        /// Gets or sets the type attribute.
+        /// </summary>
+        /// <value>
+        /// The type attribute.
+        /// </value>
+        public string TypeAttr { get; protected set; }
+
+        /// <summary>
         /// Configures the JSON serialization.
         /// </summary>
         /// <param name="overwrite">True to overwrite the configuration, false to preserve it (optional).</param>
@@ -71,13 +80,11 @@ namespace Kephas.Serialization.ServiceStack.Text
             {
                 if (!overwrite)
                 {
-                    // TODO localization
-                    this.Logger.Debug("JSON serialization already configured, the configuration will not be overwritten.");
+                    this.Logger.Warn(Strings.DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_OverwriteSkipped_Warning);
                     return false;
                 }
 
-                // TODO localization
-                this.Logger.Debug("JSON serialization already configured, will be overwritten.");
+                this.Logger.Debug(Strings.DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_Overwrite_Message);
             }
 
             // https://groups.google.com/forum/#!topic/servicestack/Ymoug9a0MA8
@@ -85,7 +92,7 @@ namespace Kephas.Serialization.ServiceStack.Text
             // because it is thread bound.
             // For example, the reason for IncludeTypeInfo = true is to be able to properly deserialize on the client site
             // without knowing the type of the deserialized object.
-            JsConfig.TypeAttr = "$type";
+            JsConfig.TypeAttr = this.TypeAttr;
             JsConfig.IncludeTypeInfo = true;
             JsConfig.EmitCamelCaseNames = true;
             JsConfig.PropertyConvention = PropertyConvention.Lenient;

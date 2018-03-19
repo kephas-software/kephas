@@ -60,6 +60,12 @@
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text\JsonSerializer.cs">
       <Link>JsonSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Serialization.ServiceStack.Text\Resources\Strings.Designer.cs">
+      <Link>Resources\Strings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="..\Kephas.Serialization.ServiceStack.Text\XmlSerializer.cs">
       <Link>XmlSerializer.cs</Link>
     </Compile>
@@ -79,6 +85,13 @@
       <Link>Kephas.snk</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Serialization.ServiceStack.Text\Resources\Strings.resx">
+      <Link>Resources\Strings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
