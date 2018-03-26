@@ -139,6 +139,9 @@
     <Compile Include="..\Kephas.Core\Application\NullAppRuntime.cs">
       <Link>Application\NullAppRuntime.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
+      <Link>Application\RequiredFeatureAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Behavior\AsyncBehaviorRuleBase.cs">
       <Link>Behavior\AsyncBehaviorRuleBase.cs</Link>
     </Compile>
