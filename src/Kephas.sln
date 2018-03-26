@@ -203,8 +203,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.ServiceStack.Text.Net45", "Kephas.Serialization.ServiceStack.Text.Net45\Kephas.Serialization.ServiceStack.Text.Net45.csproj", "{51E4DF1E-B055-4194-B425-427680F17B7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{648ED61F-08DC-459B-877C-D8C34A53AA89}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.ServiceStack.Text.Tests.Net45", "Tests\Kephas.Serialization.ServiceStack.Text.Tests.Net45\Kephas.Serialization.ServiceStack.Text.Tests.Net45.csproj", "{68110D07-D91D-473B-B153-FB7D5AA4E779}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Mail.Tests.Net45", "Tests\Kephas.Mail.Tests.Net45\Kephas.Mail.Tests.Net45.csproj", "{F6D6ECAC-35C5-4066-9531-C0793AD648CA}"
@@ -215,9 +213,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Model", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Testing.Model.Net45", "TestingFramework\Kephas.Testing.Model.Net45\Kephas.Testing.Model.Net45.csproj", "{EC209412-7454-4852-8233-7077F7F589DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Abstractions", "Kephas.Data.Model.Abstractions\Kephas.Data.Model.Abstractions.csproj", "{76596D38-4194-4CCE-980B-29998E2C5B79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Abstractions", "Kephas.Data.Model.Abstractions\Kephas.Data.Model.Abstractions.csproj", "{76596D38-4194-4CCE-980B-29998E2C5B79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Abstractions.Net45", "Kephas.Data.Model.Abstractions.Net45\Kephas.Data.Model.Abstractions.Net45.csproj", "{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack", "Kephas.Web.ServiceStack\Kephas.Web.ServiceStack.csproj", "{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack.Net45", "Kephas.Web.ServiceStack.Net45\Kephas.Web.ServiceStack.Net45.csproj", "{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{273732F5-EC34-48A8-8C26-F81F1B64AB15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -549,10 +553,6 @@ Global
 		{51E4DF1E-B055-4194-B425-427680F17B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51E4DF1E-B055-4194-B425-427680F17B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51E4DF1E-B055-4194-B425-427680F17B7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{648ED61F-08DC-459B-877C-D8C34A53AA89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{648ED61F-08DC-459B-877C-D8C34A53AA89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{648ED61F-08DC-459B-877C-D8C34A53AA89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{648ED61F-08DC-459B-877C-D8C34A53AA89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68110D07-D91D-473B-B153-FB7D5AA4E779}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68110D07-D91D-473B-B153-FB7D5AA4E779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68110D07-D91D-473B-B153-FB7D5AA4E779}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -581,6 +581,18 @@ Global
 		{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -646,13 +658,14 @@ Global
 		{1D19196A-195B-48B6-BE53-70688EB55E77} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{54355F7D-7365-44CA-94A1-8103CCBD6086} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{51E4DF1E-B055-4194-B425-427680F17B7D} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
-		{648ED61F-08DC-459B-877C-D8C34A53AA89} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{68110D07-D91D-473B-B153-FB7D5AA4E779} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{F6D6ECAC-35C5-4066-9531-C0793AD648CA} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{AF7E8DE3-1A99-4831-9182-B58AA41054D0} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{28582FCC-D98C-44D0-AA62-1BBCDE97F25E} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{EC209412-7454-4852-8233-7077F7F589DF} = {53BE156C-948E-4719-B1BD-A9385D95E09A}
 		{467F547E-FEB2-46BD-9E1A-9EEE9D783A29} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{273732F5-EC34-48A8-8C26-F81F1B64AB15} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
