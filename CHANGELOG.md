@@ -1,5 +1,53 @@
 <a name="4.2.0"></a>
-# [4.2.0-beta01](https://github.com/quartz-software/kephas/compare/v4.1.1...v4.2.0-beta01) (2018-02-15)
+# [4.2.0-beta02](https://github.com/quartz-software/kephas/compare/v4.2.0-beta02...master) (2018-03-27)
+
+* Messaging
+  * Refactored the distributed Endpoint to accept a URL. This opens up the possibility of http/s communication. The message broker will have multiple registered dispatchers, handling a specific URI scheme (app - the app farm, http/s - REST API, so on).
+  * Made the MessageProcessingContext less restrictive regarding the Message and handler.
+
+* Core.Application
+  * Added the RequiredFeature attribute to Core 
+  
+* Core.Services
+  * Added the ServiceNameAttribute and made the registration od default metadata attribute types public in the AppServiceContractAttribute.
+  * Added the named service provider service. 
+  
+* Core.Dynamic
+  * Made setting a value to null in a dictionary based expando remove the entry from the dictionary. This ensures that the dynamic values contain only meaningful data, reducing the size of them.
+  * Added the LazyExpando variation to allow lazy value evaluation/providing.
+
+* Model
+  * Added a protected logger inside the NamedElementBase.
+  * Made the AppService "base type"-less. Any possible base types are considered only mixins.
+  * Unified the projected type resolvers: IProjectedTypeResolver, IEntityTypeResolver, IDataIOProjectedTypeResolver, moved to Core.Model.
+  
+* Data
+  * Added support for initial data handling.
+  * Improved Ref - GetEntityInfo must not return null.
+  * Improved the extensibility of the DefaultDataConversionService.
+  * Fixed CollectionAdapter.CopyTo.
+  * Fixed the DefaultDataConversionService to identify the most specific type for source and target, to be able to identify most converters applicable.
+  * Added a ServiceRef primitive type similar to Ref, but referencing runtime services. The name of the service (ServiceName attribute) will be persisted.
+  
+* Data.Client
+  * Added more information when member not found in client query conversion.
+  * Optimized DataContextQueryableSubstituteTypeConstantHandler.
+  * Made SubstituteTypeExpressionVisitor better specializable: TryGetImplementationType/Core made virtual protected.
+  * Added more options/flexibility to the SubstituteTypeExpressionVisitor.
+  
+* Data.Model.Abstractions (new)
+  * Added the IIdentifiable and IHierarchyNode abstractions in DataModel.
+  
+* Serialization.ServiceStack.Text
+  * Added JsonExpando class to Kephas.Serialization.ServiceStack.Text.
+  * Made the TypeAttr in DefaultJsonSerializerConfigurator configurable, added localization.
+  
+* Kephas.Web.ServiceStack (new)
+
+* Logging.NLog
+  * Upgraded to NLog 4.5 for net standard.
+
+# [4.2.0-beta01](https://github.com/quartz-software/kephas/compare/v4.2.0-beta01...v4.2.0-beta02) (2018-02-15)
 
 * Platform
   * Removed obsolete WithNet45AppEnvironment extension method .
