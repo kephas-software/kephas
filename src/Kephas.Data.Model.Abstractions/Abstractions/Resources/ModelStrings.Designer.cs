@@ -22,7 +22,7 @@ namespace Kephas.Data.Model.Abstractions.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ModelStrings {
+    public class ModelStrings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Data.Model.Abstractions.Resources.ModelStrings", typeof(ModelStrings).GetTypeInfo().Assembly);
@@ -51,7 +51,7 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Parent.
         /// </summary>
-        internal static string HierarchyNode_ParentRef_Name {
+        public static string HierarchyNode_ParentRef_Name {
             get {
                 return ResourceManager.GetString("HierarchyNode_ParentRef_Name", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        internal static string Identifiable_Id_Name {
+        public static string Identifiable_Id_Name {
             get {
                 return ResourceManager.GetString("Identifiable_Id_Name", resourceCulture);
             }

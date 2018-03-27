@@ -7,7 +7,7 @@
     <ProjectGuid>{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Data.Model.Abstractions</RootNamespace>
+    <RootNamespace>Kephas.Data.Model</RootNamespace>
     <AssemblyName>Kephas.Data.Model.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,14 +44,14 @@
     <Compile Include="..\Kephas.Data.Model.Abstractions\Abstractions\IIdentifiable.cs">
       <Link>Abstractions\IIdentifiable.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model.Abstractions\Properties\AssemblyInfo.Manifest.cs">
-      <Link>Properties\AssemblyInfo.Manifest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model.Abstractions\Resources\ModelStrings.Designer.cs">
-      <Link>Resources\ModelStrings.Designer.cs</Link>
+    <Compile Include="..\Kephas.Data.Model.Abstractions\Abstractions\Resources\ModelStrings.Designer.cs">
+      <Link>Abstractions\Resources\ModelStrings.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model.Abstractions\Properties\AssemblyInfo.Manifest.cs">
+      <Link>Properties\AssemblyInfo.Manifest.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
@@ -77,9 +77,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Kephas.Data.Model.Abstractions\Resources\ModelStrings.resx">
-      <Link>Resources\ModelStrings.resx</Link>
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Include="..\Kephas.Data.Model.Abstractions\Abstractions\Resources\ModelStrings.resx">
+      <Link>Abstractions\Resources\ModelStrings.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
