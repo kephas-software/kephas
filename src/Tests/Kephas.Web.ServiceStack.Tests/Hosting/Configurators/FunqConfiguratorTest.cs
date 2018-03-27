@@ -36,12 +36,16 @@ namespace Kephas.Web.ServiceStack.Tests.Hosting.Configurators
             var host = Substitute.For<ServiceStackHost>("name", new Assembly[0]);
             configContext.Host.Returns(host);
 
-            var container = Substitute.For<Container>();
-            host.Container.Returns(container);
+            var container = host.Container;
+            if (container == null)
+            {
+                container = new Container();
+                host.Container.Returns(container);
+            }
 
             configurator.Configure(configContext);
 
-            container.Adapter.Received(1);
+            Assert.AreSame(adapter, container.Adapter);
         }
     }
 }
