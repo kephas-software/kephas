@@ -87,9 +87,6 @@
     <Compile Include="..\Kephas.Model\AttributedModel\OverrideAttribute.cs">
       <Link>AttributedModel\OverrideAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\AttributedModel\ProjectionForAttribute.cs">
-      <Link>AttributedModel\ProjectionForAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\ValueTypeAttribute.cs">
       <Link>AttributedModel\ValueTypeAttribute.cs</Link>
     </Compile>
@@ -353,12 +350,6 @@
     </Compile>
     <Compile Include="..\Kephas.Model\Services\DefaultModelSpaceProvider.cs">
       <Link>Services\DefaultModelSpaceProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Services\DefaultProjectedTypeResolver.cs">
-      <Link>Services\DefaultProjectedTypeResolver.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Services\IProjectedTypeResolver.cs">
-      <Link>Services\IProjectedTypeResolver.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

@@ -132,9 +132,6 @@
   <data name="Property_MissingPartsToComputePropertyType_Exception" xml:space="preserve">
     <value>Property '{0}' in '{1}' does not have any parts to be able to compute the property type.</value>
   </data>
-  <data name="DefaultProjectTypeResolver_ResolveProjectedType_MissingProjectionForAttribute_Exception" xml:space="preserve">
-    <value>The type '{0}' must be annotated with the '{1}' to be able to resolve the projected type.</value>
-  </data>
   <data name="ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception" xml:space="preserve">
     <value>Cannot instantiate the implementation type '{0}' because it is not resolved to an {1} instance. The provided type info was '{2}'.</value>
   </data>

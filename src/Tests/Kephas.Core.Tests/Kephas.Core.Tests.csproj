@@ -94,6 +94,7 @@
     <Compile Include="Graphs\GraphExtensionsTest.cs" />
     <Compile Include="Graphs\GraphNodeOfTValueTest.cs" />
     <Compile Include="Graphs\GraphNodeTest.cs" />
+    <Compile Include="Model\Services\DefaultProjectedTypeResolverTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\DefaultTypeResolverTest.cs" />
     <Compile Include="Reflection\ReflectionHelperTest.cs" />

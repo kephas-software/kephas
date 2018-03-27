@@ -23,6 +23,7 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Data.Conversion;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
+    using Kephas.Model.Services;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -38,7 +39,7 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
-            var resolver = this.CreateTypeResolver();
+            var resolver = this.CreateProjectedTypeResolver();
 
             var changedTargetEntities = new List<IEntityInfo>();
 
@@ -72,7 +73,7 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
-            var resolver = this.CreateTypeResolver();
+            var resolver = this.CreateProjectedTypeResolver();
 
             var changedTargetEntities = new List<IEntityInfo>();
 
@@ -109,7 +110,7 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
-            var resolver = this.CreateTypeResolver();
+            var resolver = this.CreateProjectedTypeResolver();
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext();
@@ -196,9 +197,9 @@ namespace Kephas.Data.IO.Tests.Import
             return new ExportFactory<IDataImportBehavior, AppServiceMetadata>(() => b, new AppServiceMetadata(processingPriority: (int)processingPriority));
         }
 
-        private IDataIOProjectedTypeResolver CreateTypeResolver()
+        private IProjectedTypeResolver CreateProjectedTypeResolver()
         {
-            var resolver = Substitute.For<IDataIOProjectedTypeResolver>();
+            var resolver = Substitute.For<IProjectedTypeResolver>();
             resolver.ResolveProjectedType(Arg.Any<Type>(), Arg.Any<IDataImportContext>(), Arg.Any<bool>())
                 .Returns(ci => ci.Arg<Type>());
 

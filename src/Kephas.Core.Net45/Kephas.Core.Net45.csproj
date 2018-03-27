@@ -394,6 +394,15 @@
     <Compile Include="..\Kephas.Core\Logging\TypedLogger.cs">
       <Link>Logging\TypedLogger.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Model\AttributedModel\ProjectionForAttribute.cs">
+      <Link>Model\AttributedModel\ProjectionForAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Model\Services\DefaultProjectedTypeResolver.cs">
+      <Link>Model\Services\DefaultProjectedTypeResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Model\Services\IProjectedTypeResolver.cs">
+      <Link>Model\Services\IProjectedTypeResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Net\Mime\Composition\MediaTypeMetadata.cs">
       <Link>Net\Mime\Composition\MediaTypeMetadata.cs</Link>
     </Compile>

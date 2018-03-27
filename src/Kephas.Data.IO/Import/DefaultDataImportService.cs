@@ -26,6 +26,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Model.Services;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -40,7 +41,7 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// The projected type resolver.
         /// </summary>
-        private readonly IDataIOProjectedTypeResolver projectedTypeResolver;
+        private readonly IProjectedTypeResolver projectedTypeResolver;
 
         /// <summary>
         /// The behavior behaviorFactories.
@@ -62,7 +63,7 @@ namespace Kephas.Data.IO.Import
         public DefaultDataImportService(
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
-            IDataIOProjectedTypeResolver projectedTypeResolver,
+            IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
         {
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
@@ -181,7 +182,7 @@ namespace Kephas.Data.IO.Import
             /// <summary>
             /// The projected type resolver.
             /// </summary>
-            private readonly IDataIOProjectedTypeResolver projectedTypeResolver;
+            private readonly IProjectedTypeResolver projectedTypeResolver;
 
             /// <summary>
             /// The behavior factories.
@@ -207,7 +208,7 @@ namespace Kephas.Data.IO.Import
                 IDataImportContext context,
                 IDataStreamReadService dataSourceReader,
                 IDataConversionService conversionService,
-                IDataIOProjectedTypeResolver projectedTypeResolver,
+                IProjectedTypeResolver projectedTypeResolver,
                 ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories)
             {
                 this.dataSource = dataSource;

@@ -126,14 +126,8 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\IClientQueryConverter.cs">
       <Link>Queries\Conversion\IClientQueryConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\IEntityTypeResolver.cs">
-      <Link>Queries\Conversion\IEntityTypeResolver.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\IExpressionConverter.cs">
       <Link>Queries\Conversion\IExpressionConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\NullEntityTypeResolver.cs">
-      <Link>Queries\Conversion\NullEntityTypeResolver.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\OperatorAttribute.cs">
       <Link>Queries\Conversion\OperatorAttribute.cs</Link>

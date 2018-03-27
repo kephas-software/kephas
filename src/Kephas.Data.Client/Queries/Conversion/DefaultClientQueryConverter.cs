@@ -23,8 +23,8 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Data.Linq.Expressions;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Model.Services;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     using Expression = Kephas.Data.Client.Queries.Expression;
@@ -49,7 +49,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <summary>
         /// The entity type resolver.
         /// </summary>
-        private readonly IEntityTypeResolver entityTypeResolver;
+        private readonly IProjectedTypeResolver projectedTypeResolver;
 
         /// <summary>
         /// The expression converters.
@@ -60,19 +60,19 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// Initializes a new instance of the <see cref="DefaultClientQueryConverter"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="entityTypeResolver">The entity type resolver.</param>
+        /// <param name="projectedTypeResolver">The entity type resolver.</param>
         /// <param name="converterFactories">The expression converters.</param>
         public DefaultClientQueryConverter(
             ITypeResolver typeResolver,
-            IEntityTypeResolver entityTypeResolver,
+            IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IExpressionConverter, ExpressionConverterMetadata>> converterFactories)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
-            Requires.NotNull(entityTypeResolver, nameof(entityTypeResolver));
+            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
             Requires.NotNull(converterFactories, nameof(converterFactories));
 
             this.typeResolver = typeResolver;
-            this.entityTypeResolver = entityTypeResolver;
+            this.projectedTypeResolver = projectedTypeResolver;
 
             foreach (
                 var converterFactory in
@@ -248,7 +248,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         protected virtual Type GetQueryEntityType(ClientQuery clientQuery, Type clientEntityType)
         {
-            return this.entityTypeResolver.ResolveEntityType(clientEntityType);
+            return this.projectedTypeResolver.ResolveProjectedType(clientEntityType);
         }
 
         /// <summary>

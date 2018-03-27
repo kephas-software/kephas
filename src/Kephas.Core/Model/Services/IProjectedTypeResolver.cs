@@ -23,10 +23,11 @@ namespace Kephas.Model.Services
         /// Resolves the projected type.
         /// </summary>
         /// <param name="projectionType">The projection type.</param>
-        /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found.</param>
+        /// <param name="context">An optional context for the resolution.</param>
+        /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found (optional).</param>
         /// <returns>
-        /// A Type.
+        /// The resolved type or <c>null</c>, if <paramref name="throwOnNotFound"/> is set to false and a projected type could not be found.
         /// </returns>
-        Type ResolveProjectedType(Type projectionType, bool throwOnNotFound = true);
+        Type ResolveProjectedType(Type projectionType, IContext context = null, bool throwOnNotFound = true);
     }
 }

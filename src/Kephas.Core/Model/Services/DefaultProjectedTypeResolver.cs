@@ -14,7 +14,6 @@ namespace Kephas.Model.Services
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Resources;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -43,30 +42,42 @@ namespace Kephas.Model.Services
         /// <summary>
         /// Resolves the projected type.
         /// </summary>
-        /// <param name="projectionType">The projectionType.</param>
+        /// <exception cref="ServiceException">Thrown when a Service error condition occurs.</exception>
+        /// <param name="projectionType">The projection type.</param>
+        /// <param name="context">An optional context for the resolution.</param>
         /// <param name="throwOnNotFound">Indicates whether to throw or not when the indicated type is not found.</param>
         /// <returns>
-        /// A Type.
+        /// The resolved type or <c>null</c>, if <paramref name="throwOnNotFound" /> is set to false and
+        /// a projected type could not be found.
         /// </returns>
-        public Type ResolveProjectedType(Type projectionType, bool throwOnNotFound = true)
+        public virtual Type ResolveProjectedType(Type projectionType, IContext context = null, bool throwOnNotFound = true)
         {
             Requires.NotNull(projectionType, nameof(projectionType));
 
-            var projectionAttr = projectionType.GetTypeInfo().GetCustomAttribute<ProjectionForAttribute>();
+            var projectionAttr = this.GetProjectionForAttribute(projectionType, context);
             if (projectionAttr == null)
             {
-                if (throwOnNotFound)
-                {
-                    throw new ModelException(string.Format(Strings.DefaultProjectTypeResolver_ResolveProjectedType_MissingProjectionForAttribute_Exception, projectionType.FullName, typeof(ProjectionForAttribute).Name));
-                }
-
-                return null;
+                return projectionType;
             }
 
             var projectedType = projectionAttr.ProjectedType
                                    ?? this.typeResolver.ResolveType(projectionAttr.ProjectedTypeName, throwOnNotFound);
 
             return projectedType;
+        }
+
+        /// <summary>
+        /// Gets the projection for attribute.
+        /// </summary>
+        /// <param name="projectionType">The projection type.</param>
+        /// <param name="context">An optional context for the resolution.</param>
+        /// <returns>
+        /// The projection for attribute.
+        /// </returns>
+        protected virtual ProjectionForAttribute GetProjectionForAttribute(Type projectionType, IContext context)
+        {
+            var projectionAttr = projectionType.GetTypeInfo().GetCustomAttribute<ProjectionForAttribute>();
+            return projectionAttr;
         }
     }
 }

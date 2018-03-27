@@ -19,7 +19,9 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Client.Queries.Conversion.Composition;
     using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
+    using Kephas.Model.Services;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     using NSubstitute;
 
@@ -37,7 +39,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_int_constants(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.EqConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.EqConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -57,7 +59,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_member_access(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -76,7 +78,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_member_access_missing(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -96,7 +98,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_nary_operator_without_arguments(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.AndConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.AndConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -118,7 +120,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_orderby_asc(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.AscConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.AscConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -147,7 +149,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_orderby_desc(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.DescConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.DescConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -172,7 +174,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_operator_not_supported(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, new NullEntityTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -200,6 +202,14 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             dataContext.Query<TValue>(Arg.Any<IQueryOperationContext>())
                 .Returns(data.AsQueryable());
             return dataContext;
+        }
+
+        private IProjectedTypeResolver GetIdempotentProjectedTypeResolver()
+        {
+            var resolver = Substitute.For<IProjectedTypeResolver>();
+            resolver.ResolveProjectedType(Arg.Any<Type>(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(ci => ci.Arg<Type>());
+            return resolver;
         }
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> DescConverter()
