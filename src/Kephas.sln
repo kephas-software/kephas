@@ -217,11 +217,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Abstracti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.Model.Abstractions.Net45", "Kephas.Data.Model.Abstractions.Net45\Kephas.Data.Model.Abstractions.Net45.csproj", "{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack", "Kephas.Web.ServiceStack\Kephas.Web.ServiceStack.csproj", "{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Web.ServiceStack", "Kephas.Web.ServiceStack\Kephas.Web.ServiceStack.csproj", "{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack.Net45", "Kephas.Web.ServiceStack.Net45\Kephas.Web.ServiceStack.Net45.csproj", "{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{273732F5-EC34-48A8-8C26-F81F1B64AB15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{273732F5-EC34-48A8-8C26-F81F1B64AB15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack.Tests", "Tests\Kephas.Web.ServiceStack.Tests\Kephas.Web.ServiceStack.Tests.csproj", "{399DC14D-832D-4372-A951-494CCE5DF059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Web.ServiceStack.Tests.Net45", "Tests\Kephas.Web.ServiceStack.Tests.Net45\Kephas.Web.ServiceStack.Tests.Net45.csproj", "{0101A4D2-E28A-483D-80BC-88F2C5355FB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -593,6 +597,14 @@ Global
 		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{273732F5-EC34-48A8-8C26-F81F1B64AB15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{399DC14D-832D-4372-A951-494CCE5DF059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{399DC14D-832D-4372-A951-494CCE5DF059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{399DC14D-832D-4372-A951-494CCE5DF059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{399DC14D-832D-4372-A951-494CCE5DF059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0101A4D2-E28A-483D-80BC-88F2C5355FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0101A4D2-E28A-483D-80BC-88F2C5355FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0101A4D2-E28A-483D-80BC-88F2C5355FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0101A4D2-E28A-483D-80BC-88F2C5355FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -666,6 +678,8 @@ Global
 		{467F547E-FEB2-46BD-9E1A-9EEE9D783A29} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{CFAAB265-83C8-47E2-9A3E-CC47E1C5923E} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{273732F5-EC34-48A8-8C26-F81F1B64AB15} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{399DC14D-832D-4372-A951-494CCE5DF059} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{0101A4D2-E28A-483D-80BC-88F2C5355FB2} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

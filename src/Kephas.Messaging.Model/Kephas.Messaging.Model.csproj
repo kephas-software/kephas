@@ -13,7 +13,7 @@
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
     <Description>Provides the model for messaging, including the Message classifier and Messaging scope dimension.</Description>
-    <Copyright>Copyright Quartz Software SRL 2010-2017</Copyright>
+    <Copyright>Copyright Quartz Software SRL 2010-2018</Copyright>
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
     <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>

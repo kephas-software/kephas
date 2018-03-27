@@ -23,7 +23,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2017</copyright>
+        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="Owin" version="1.0" />
