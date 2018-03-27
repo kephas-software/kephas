@@ -7,8 +7,8 @@
     <ProjectGuid>{467F547E-FEB2-46BD-9E1A-9EEE9D783A29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Data.Model.Abstractions.Net45</RootNamespace>
-    <AssemblyName>Kephas.Data.Model.Abstractions.Net45</AssemblyName>
+    <RootNamespace>Kephas.Data.Model.Abstractions</RootNamespace>
+    <AssemblyName>Kephas.Data.Model.Abstractions</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,6 +46,12 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Model.Abstractions\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Model.Abstractions\Resources\ModelStrings.Designer.cs">
+      <Link>Resources\ModelStrings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
@@ -67,6 +75,13 @@
       <Project>{0e4d7eb1-19f1-4344-89bd-402455c398c4}</Project>
       <Name>Kephas.Model.Net45</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Kephas.Data.Model.Abstractions\Resources\ModelStrings.resx">
+      <Link>Resources\ModelStrings.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,7 @@ namespace Kephas.Data.Model.Abstractions
 {
     using System.ComponentModel.DataAnnotations;
 
-    using Kephas.Data.Model.Resources;
+    using Kephas.Data.Model.Abstractions.Resources;
     using Kephas.Model.AttributedModel;
 
     /// <summary>

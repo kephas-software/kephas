@@ -92,12 +92,6 @@
     <Compile Include="..\Kephas.Data.Model\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\Resources\ModelStrings.Designer.cs">
-      <Link>Resources\ModelStrings.Designer.cs</Link>
-      <DependentUpon>ModelStrings.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="..\Kephas.Data.Model\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
       <AutoGen>True</AutoGen>
@@ -141,11 +135,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Kephas.Data.Model\Resources\ModelStrings.resx">
-      <Link>Resources\ModelStrings.resx</Link>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\Kephas.Data.Model\Resources\Strings.resx">
       <Link>Resources\Strings.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
