@@ -229,7 +229,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
+        public virtual IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute
         {
             return this.Annotations.OfType<IAttributeProvider>().SelectMany(a => a.GetAttributes<TAttribute>());

@@ -22,7 +22,7 @@ namespace Kephas.Data.MongoDB.Linq
     /// <summary>
     /// A mongo query provider.
     /// </summary>
-    public class MongoQueryProvider : DataContextQueryProvider, IAsyncQueryProvider
+    public class MongoQueryProvider : DataContextQueryProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoQueryProvider"/> class.
@@ -45,7 +45,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
+        public override Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
             var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
@@ -66,7 +66,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
+        public override Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
             var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();

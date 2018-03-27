@@ -60,11 +60,9 @@ namespace Kephas.Model.Elements.Annotations
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        public IEnumerable<TRuntimeAttribute> GetAttributes<TRuntimeAttribute>()
-            where TRuntimeAttribute : Attribute
+        public override IEnumerable<TRuntimeAttribute> GetAttributes<TRuntimeAttribute>()
         {
-            var runtimeAttribute = this.Attribute as TRuntimeAttribute;
-            if (runtimeAttribute == null)
+            if (!(this.Attribute is TRuntimeAttribute runtimeAttribute))
             {
                 return new TRuntimeAttribute[0];
             }
