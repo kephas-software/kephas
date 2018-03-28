@@ -17,7 +17,6 @@ namespace Kephas.Data.Linq.Expressions
 
     using Kephas.Activation;
     using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -103,10 +102,11 @@ namespace Kephas.Data.Linq.Expressions
             if (mappedMethod.IsGenericMethod)
             {
                 var genericMethodDefinition = mappedMethod.GetGenericMethodDefinition();
-                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryResolveImplementationType(t) ?? t).ToList();
+                var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryResolveDeepImplementationType(t) ?? t).ToList();
                 mappedMethod = genericMethodDefinition.MakeGenericMethod(mappedGenericArgs.ToArray());
 
-                if (mappedMethod.Name == nameof(Queryable.Cast) || mappedMethod.Name == nameof(Queryable.OfType))
+                if (mappedMethod.Name == nameof(Queryable.Cast) 
+                    || mappedMethod.Name == nameof(Queryable.OfType))
                 {
                     var mappedItemType = mappedArgs[0].Type.TryGetEnumerableItemType();
                     var mappedConvertedItemType = mappedGenericArgs[0];
@@ -118,6 +118,43 @@ namespace Kephas.Data.Linq.Expressions
             }
 
             return Expression.Call(mappedObject, mappedMethod, mappedArgs);
+        }
+
+        /// <summary>Visits the children of the <see cref="T:System.Linq.Expressions.NewExpression" />.</summary>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
+        /// <param name="node">The expression to visit.</param>
+        protected override Expression VisitNew(NewExpression node)
+        {
+            var newType = node.Type;
+            if (!newType.IsConstructedGenericType)
+            {
+                return base.VisitNew(node);
+            }
+
+            var newImplementationType = this.TryResolveDeepImplementationType(newType);
+            if (newImplementationType != null)
+            {
+                var constructorArgTypes = node.Constructor.GetParameters()
+                    .Select(p => this.TryResolveDeepImplementationType(p.ParameterType) ?? p.ParameterType).ToArray();
+                var newImplementationTypeInfo = newImplementationType.GetTypeInfo();
+
+#if NETSTANDARD1_3
+                var constructor = newImplementationTypeInfo.DeclaredConstructors.First(
+                    c => c.GetParameters()
+                          .Select((p, i) => p.ParameterType == constructorArgTypes[i])
+                          .All(t => t));
+                var arguments = node.Arguments.Select(this.Visit);
+                var members = node.Members.Select(m => (MemberInfo)newImplementationTypeInfo.GetDeclaredProperty(m.Name));
+#else
+                var constructor = newImplementationTypeInfo.GetConstructor(constructorArgTypes);
+                var arguments = node.Arguments.Select(this.Visit);
+                var members = node.Members.Select(m => newImplementationType.GetMember(m.Name, m.MemberType, BindingFlags.Instance | BindingFlags.Public)[0]);
+#endif
+
+                return Expression.New(constructor, arguments, members);
+            }
+
+            return base.VisitNew(node);
         }
 
         /// <summary>
@@ -134,7 +171,7 @@ namespace Kephas.Data.Linq.Expressions
                 return node;
             }
 
-            var concreteType = this.TryResolveImplementationType(node.Expression?.Type);
+            var concreteType = this.TryResolveDeepImplementationType(node.Expression?.Type);
             if (concreteType != null)
             {
                 var memberName = node.Member.Name;
@@ -220,7 +257,7 @@ namespace Kephas.Data.Linq.Expressions
                 return mappedParam;
             }
 
-            var concreteType = this.TryResolveImplementationType(node.Type);
+            var concreteType = this.TryResolveDeepImplementationType(node.Type);
             if (concreteType != null)
             {
                 mappedParam = Expression.Parameter(concreteType, node.Name);
@@ -247,6 +284,14 @@ namespace Kephas.Data.Linq.Expressions
                 {
                     return this.Visit(node.Operand);
                 }
+
+                var operand = this.Visit(node.Operand);
+                return Expression.Convert(operand, node.Type);
+            }
+
+            if (node.NodeType == ExpressionType.Quote)
+            {
+                return Expression.Quote(this.Visit(node.Operand));
             }
 
             return base.VisitUnary(node);
@@ -287,6 +332,33 @@ namespace Kephas.Data.Linq.Expressions
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Tries to get the generic implementation type where the generic type arguments
+        /// are replaced with implementation types.
+        /// </summary>
+        /// <param name="constructedType">Type of the constructed.</param>
+        /// <returns>
+        /// A Type.
+        /// </returns>
+        protected virtual Type TryResolveDeepImplementationType(Type constructedType)
+        {
+            if (constructedType == null)
+            {
+                return null;
+            }
+
+            if (!constructedType.IsConstructedGenericType)
+            {
+                return this.TryResolveImplementationType(constructedType);
+            }
+
+            var newGenericTypeDefiniton = constructedType.GetGenericTypeDefinition();
+            var constructedTypeInfo = constructedType.GetTypeInfo();
+            var newGenericArgs = constructedTypeInfo.GenericTypeArguments.Select(t => this.TryResolveDeepImplementationType(t) ?? t).ToArray();
+            var newGenericType = newGenericTypeDefiniton.MakeGenericType(newGenericArgs);
+            return newGenericType;
         }
 
         /// <summary>

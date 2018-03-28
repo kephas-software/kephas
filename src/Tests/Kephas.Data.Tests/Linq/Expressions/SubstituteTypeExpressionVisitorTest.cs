@@ -79,6 +79,76 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
+        public void Visit_join()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
+
+            var baseQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
+                                                                  {
+                                                                      new BetterTest { Name = "gigi", BetterName = "belogea" },
+                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" }
+                                                                  }).AsQueryable();
+
+            var joinQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
+                                                                  {
+                                                                      new BetterTest { Name = "gigi", BetterName = "Belogea" },
+                                                                      new BetterTest { Name = "belogea", BetterName = "Gigi" }
+                                                                  }).AsQueryable();
+
+            var query = from t in baseQuery 
+                        join p in joinQuery 
+                            on t.Name equals p.Name 
+                        select new { t.Name, FirstName = p.BetterName, SecondName = p.BetterName };
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(BetterTest), genericArg);
+
+            var stringExpression = newExpression.ToString();
+
+            Assert.IsFalse(stringExpression.Contains("IBetterTest"));
+
+            //var typedResult = query.ToList();
+            //var untypedResult = query.Provider.Execute(newExpression);
+            //Assert.IsAssignableFrom<IEnumerable>(untypedResult);
+        }
+
+        [Test]
+        public void Visit_select()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
+
+            var baseQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
+                                                                  {
+                                                                      new BetterTest { Name = "gigi", BetterName = "belogea" },
+                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" }
+                                                                  }).AsQueryable();
+
+            var query = from t in baseQuery 
+                        select new { FirstName = t.Name, FamilyName = t.BetterName };
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
+            var newExpression = visitor.Visit(query.Expression);
+
+            var methodCallExpression = (MethodCallExpression)newExpression;
+            var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
+            Assert.AreEqual(typeof(BetterTest), genericArg);
+
+            var stringExpression = newExpression.ToString();
+
+            Assert.IsFalse(stringExpression.Contains("IBetterTest"));
+
+            //var typedResult = query.ToList();
+            //var untypedResult = query.Provider.Execute(newExpression);
+            //Assert.IsAssignableFrom<IEnumerable>(untypedResult);
+        }
+
+        [Test]
         public void Visit_Where_captured_local_variable_property_access()
         {
             var activator = Substitute.For<IActivator>();
