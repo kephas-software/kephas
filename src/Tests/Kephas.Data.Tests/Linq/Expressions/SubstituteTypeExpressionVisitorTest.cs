@@ -79,7 +79,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
-        public void Visit_join()
+        public void Visit_Join()
         {
             var activator = Substitute.For<IActivator>();
             activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
@@ -118,7 +118,7 @@ namespace Kephas.Data.Tests.Linq.Expressions
         }
 
         [Test]
-        public void Visit_select()
+        public void Visit_Select()
         {
             var activator = Substitute.For<IActivator>();
             activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
