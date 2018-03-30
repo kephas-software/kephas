@@ -11,6 +11,7 @@ namespace Kephas.Data.InMemory.Tests
 {
     using System.IO;
     using System.Linq;
+    using System.Security.Principal;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,7 +20,6 @@ namespace Kephas.Data.InMemory.Tests
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
-    using Kephas.Security;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -210,13 +210,13 @@ namespace Kephas.Data.InMemory.Tests
         private InMemoryDataContext CreateInMemoryDataContext(
             IAmbientServices ambientServices = null,
             IDataCommandProvider dataCommandProvider = null,
-            IIdentityProvider identityProvider = null,
+            IIdentity identity = null,
             ISerializationService serializationService = null)
         {
             return new InMemoryDataContext(
                 ambientServices ?? Substitute.For<IAmbientServices>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
-                identityProvider ?? Substitute.For<IIdentityProvider>(),
+                identity ?? Substitute.For<IIdentity>(),
                 serializationService ?? Substitute.For<ISerializationService>());
         }
 

@@ -13,6 +13,7 @@ namespace Kephas.Data
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Security.Principal;
 
     using Kephas.Activation;
     using Kephas.Data.Caching;
@@ -22,7 +23,6 @@ namespace Kephas.Data
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
-    using Kephas.Security;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
 
@@ -46,14 +46,18 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
-        /// <param name="identityProvider">The identity provider (optional).</param>
+        /// <param name="identity">The identity of the authenticated user.</param>
         /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
-        protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider = null, IIdentityProvider identityProvider = null, IDataContextCache localCache = null)
+        protected DataContextBase(
+            IAmbientServices ambientServices,
+            IDataCommandProvider dataCommandProvider = null,
+            IIdentity identity = null,
+            IDataContextCache localCache = null)
             : base(ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            this.Identity = identityProvider?.GetCurrentIdentity();
+            this.Identity = identity;
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(ambientServices.CompositionContainer);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();

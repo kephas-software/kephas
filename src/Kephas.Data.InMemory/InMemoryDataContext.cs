@@ -13,6 +13,7 @@ namespace Kephas.Data.InMemory
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
 
     using Kephas.Collections;
     using Kephas.Data.Caching;
@@ -22,7 +23,6 @@ namespace Kephas.Data.InMemory
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
-    using Kephas.Security;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
 
@@ -51,14 +51,14 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        /// <param name="identityProvider">The identity provider.</param>
+        /// <param name="identity">The identity of the authenticated user.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentityProvider identityProvider, ISerializationService serializationService)
-            : base(ambientServices, dataCommandProvider, identityProvider: identityProvider)
+        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentity identity, ISerializationService serializationService)
+            : base(ambientServices, dataCommandProvider, identity: identity)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
-            Requires.NotNull(identityProvider, nameof(identityProvider));
+            Requires.NotNull(identity, nameof(identity));
             Requires.NotNull(serializationService, nameof(serializationService));
 
             this.SerializationService = serializationService;

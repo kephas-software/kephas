@@ -556,12 +556,6 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeKind.cs">
       <Link>Runtime\RuntimeTypeKind.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\IIdentityProvider.cs">
-      <Link>Security\IIdentityProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Security\NullIdentityProvider.cs">
-      <Link>Security\NullIdentityProvider.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
     </Compile>
