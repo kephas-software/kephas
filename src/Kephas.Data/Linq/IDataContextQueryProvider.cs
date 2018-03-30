@@ -9,8 +9,6 @@
 
 namespace Kephas.Data.Linq
 {
-    using System.Linq;
-
     /// <summary>
     /// Interface for query providers bound to a <see cref="IDataContext"/>.
     /// </summary>

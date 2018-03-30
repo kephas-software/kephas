@@ -13,7 +13,6 @@ namespace Kephas.Data
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Security.Principal;
 
     using Kephas.Activation;
     using Kephas.Data.Caching;
@@ -46,18 +45,15 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
-        /// <param name="identity">The identity of the authenticated user.</param>
         /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
             IAmbientServices ambientServices,
             IDataCommandProvider dataCommandProvider = null,
-            IIdentity identity = null,
             IDataContextCache localCache = null)
             : base(ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            this.Identity = identity;
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(ambientServices.CompositionContainer);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();
@@ -94,8 +90,7 @@ namespace Kephas.Data
         /// <param name="context">The initialization context.</param>
         public void Initialize(IContext context)
         {
-            var dataInitializationContext = context as IDataInitializationContext;
-            if (dataInitializationContext == null)
+            if (!(context is IDataInitializationContext dataInitializationContext))
             {
                 throw new ArgumentException(string.Format(Strings.DataContextBase_BadInitializationContext_Exception, typeof(IDataInitializationContext).FullName), nameof(context));
             }
@@ -221,6 +216,8 @@ namespace Kephas.Data
         protected virtual void Initialize(IDataInitializationContext dataInitializationContext)
         {
             this.EntityActivator = dataInitializationContext?.DataStore.EntityActivator ?? RuntimeActivator.Instance;
+            this.Identity = dataInitializationContext?.Identity
+                            ?? dataInitializationContext?.InitializationContext?.Identity;
         }
 
         /// <summary>

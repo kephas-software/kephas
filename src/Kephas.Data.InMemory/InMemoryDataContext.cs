@@ -51,14 +51,12 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        /// <param name="identity">The identity of the authenticated user.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentity identity, ISerializationService serializationService)
-            : base(ambientServices, dataCommandProvider, identity: identity)
+        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
+            : base(ambientServices, dataCommandProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
-            Requires.NotNull(identity, nameof(identity));
             Requires.NotNull(serializationService, nameof(serializationService));
 
             this.SerializationService = serializationService;

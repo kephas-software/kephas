@@ -12,7 +12,6 @@ namespace Kephas.Data.MongoDB
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
-    using System.Security.Principal;
 
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
@@ -41,9 +40,8 @@ namespace Kephas.Data.MongoDB
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        /// <param name="identity">The identity of the authenticated user.</param>
-        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, IIdentity identity)
-            : base(ambientServices, dataCommandProvider, identity: identity)
+        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
+            : base(ambientServices, dataCommandProvider)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));

@@ -9,6 +9,8 @@
 
 namespace Kephas.Data
 {
+    using System.Security.Principal;
+
     using Kephas.Services;
 
     /// <summary>
