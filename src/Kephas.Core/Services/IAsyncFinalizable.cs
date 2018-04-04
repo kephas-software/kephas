@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IAsyncFinalizable.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Declares the IAsyncFinalizable interface.
@@ -20,8 +21,11 @@ namespace Kephas.Services
         /// <summary>
         /// Finalizes the service.
         /// </summary>
-        /// <param name="context">An optional context for finalization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">(Optional) An optional context for finalization.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default);
     }
 }

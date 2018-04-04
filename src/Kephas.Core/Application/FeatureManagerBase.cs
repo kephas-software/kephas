@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FeatureManagerBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Implements the application initializer base class.
@@ -92,6 +93,29 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return this.InitializeAsync((IAppContext)context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Finalizes the service.
+        /// </summary>
+        /// <param name="context">An optional context for finalization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return this.FinalizeAsync((IAppContext)context, cancellationToken);
+        }
+
+        /// <summary>
         /// Initializes the feature asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
@@ -115,29 +139,6 @@ namespace Kephas.Application
         protected virtual Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
-        }
-
-        /// <summary>
-        /// Initializes the service asynchronously.
-        /// </summary>
-        /// <param name="context">An optional context for initialization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// An awaitable task.
-        /// </returns>
-        Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)
-        {
-            return this.InitializeAsync((IAppContext)context, cancellationToken);
-        }
-
-        /// <summary>
-        /// Finalizes the service.
-        /// </summary>
-        /// <param name="context">An optional context for finalization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
-        {
-            return this.FinalizeAsync((IAppContext)context, cancellationToken);
         }
     }
 }

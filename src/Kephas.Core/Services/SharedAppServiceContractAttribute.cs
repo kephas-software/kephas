@@ -1,6 +1,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SharedAppServiceContractAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Marks an interface to be a shared application service.

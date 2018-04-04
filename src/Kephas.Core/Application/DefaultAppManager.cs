@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DefaultAppManager.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Implements the default application manager class.
@@ -447,6 +448,7 @@ namespace Kephas.Application
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
                                           .ToList();
+            
             // the feature manager are in the right order for initializing, now reverse that order
             reversedOrderedFeatureManagers.Reverse();
 

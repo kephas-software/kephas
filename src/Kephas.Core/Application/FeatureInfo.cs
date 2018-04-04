@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="FeatureInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Implements the feature information class.
@@ -90,17 +91,17 @@ namespace Kephas.Application
         public bool IsRequired { get; }
 
         /// <summary>
-        /// Full name of the <see cref="FeatureInfo"/>.
+        /// Gets the full name of the <see cref="FeatureInfo"/>.
         /// </summary>
         string IElementInfo.FullName => this.Name;
 
         /// <summary>
-        /// Annotations of the <see cref="FeatureInfo"/>.
+        /// Gets the annotations of the <see cref="FeatureInfo"/>.
         /// </summary>
         IEnumerable<object> IElementInfo.Annotations => EmptyAnnotations;
 
         /// <summary>
-        /// Declaring container of the <see cref="FeatureInfo"/>.
+        /// Gets the declaring container of the <see cref="FeatureInfo"/>.
         /// </summary>
         IElementInfo IElementInfo.DeclaringContainer => null;
 
