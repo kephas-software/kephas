@@ -139,18 +139,9 @@ namespace Kephas.Data.Linq.Expressions
                     .Select(p => this.TryResolveDeepImplementationType(p.ParameterType) ?? p.ParameterType).ToArray();
                 var newImplementationTypeInfo = newImplementationType.GetTypeInfo();
 
-#if NETSTANDARD1_3
-                var constructor = newImplementationTypeInfo.DeclaredConstructors.First(
-                    c => c.GetParameters()
-                          .Select((p, i) => p.ParameterType == constructorArgTypes[i])
-                          .All(t => t));
-                var arguments = node.Arguments.Select(this.Visit);
-                var members = node.Members.Select(m => (MemberInfo)newImplementationTypeInfo.GetDeclaredProperty(m.Name));
-#else
                 var constructor = newImplementationTypeInfo.GetConstructor(constructorArgTypes);
                 var arguments = node.Arguments.Select(this.Visit);
                 var members = node.Members.Select(m => newImplementationType.GetMember(m.Name, m.MemberType, BindingFlags.Instance | BindingFlags.Public)[0]);
-#endif
 
                 return Expression.New(constructor, arguments, members);
             }
