@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.ServiceStack</id>
+        <version>$version$</version>
+        <title>Kephas.ServiceStack</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>
+            Provides integration with the ServiceStack framework.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            Provides integration with the ServiceStack framework.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Serialization.ServiceStack.Text" version="$refversion$" />
+            </group>
+            <group targetFramework="net45">
+                <dependency id="ServiceStack.Text" version="4.5.0" />
+                <dependency id="ServiceStack" version="4.5.0" />
+            </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="ServiceStack.Text" version="5.0.0" />
+                <dependency id="ServiceStack" version="5.0.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.ServiceStack.dll" />
+        </references>
+        <tags>kephas framework web xml servicestack quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.ServiceStack.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.ServiceStack.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.ServiceStack.xml" target="lib\netstandard2.0" />
+        <file src="..\Kephas.ServiceStack.Net45\bin\$configuration$\Kephas.ServiceStack.dll" target="lib\net45" />
+        <file src="..\Kephas.ServiceStack.Net45\bin\$configuration$\Kephas.ServiceStack.pdb" target="lib\net45" />
+        <file src="..\Kephas.ServiceStack.Net45\bin\$configuration$\Kephas.ServiceStack.xml" target="lib\net45" />
+    </files>
+</package>
