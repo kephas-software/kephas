@@ -70,7 +70,7 @@ namespace Kephas.Data.Tests.Behaviors
         public void Validate_multiple_attributes()
         {
             var typeInfo = new RuntimeTypeInfo(typeof(ITestEntity));
-            var testEntity = new TestEntity(typeInfo) { Name = "gigi", Email = "a@a" };
+            var testEntity = new TestEntity(typeInfo) { Name = "gigi", Email = "a-a" };
             var behavior = new StringDataAnnotationsBehavior();
 
             var result = behavior.Validate(testEntity, new EntityInfo(testEntity), null).ToList();

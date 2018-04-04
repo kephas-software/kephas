@@ -29,8 +29,12 @@
         public void GetQualifiedFullName_version_info_stripped()
         {
             var type = typeof(string);
-
-            Assert.AreEqual("System.String, mscorlib", type.GetQualifiedFullName(stripVersionInfo: true));
+            var qualifiedFullName = type.GetQualifiedFullName(stripVersionInfo: true);
+#if NETCOREAPP2_0
+            Assert.AreEqual("System.String, System.Private.CoreLib", qualifiedFullName);
+#else
+            Assert.AreEqual("System.String, mscorlib", qualifiedFullName);
+#endif
         }
 
         [Test]

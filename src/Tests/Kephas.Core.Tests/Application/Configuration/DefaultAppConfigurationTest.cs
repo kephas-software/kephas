@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETCOREAPP2_0
+#else
+
 namespace Kephas.Core.Tests.Application.Configuration
 {
     using Kephas.Application.Configuration;
@@ -102,3 +105,5 @@ namespace Kephas.Core.Tests.Application.Configuration
         }
     }
 }
+
+#endif

@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#if NETSTANDARD2_0
+#else
+
 namespace Kephas.Application.Configuration
 {
     using System.Collections.Concurrent;
@@ -20,6 +23,11 @@ namespace Kephas.Application.Configuration
     /// <summary>
     /// Configuration based on the AppSettings found in the app.config/web.config file.
     /// </summary>
+    /// <remarks>
+    /// The application configuration based on the legacy ConfigurationManager is not recommended for new applications based on the .NET Core.
+    /// Use instead the new configuration components from the Microsoft.Extensions.Configuration nuget package.
+    /// See https://docs.microsoft.com/ro-ro/aspnet/core/fundamentals/configuration/?tabs=basicconfiguration for more information.
+    /// </remarks>
     public class DefaultAppConfiguration : ExpandoBase, IAppConfiguration
     {
         /// <summary>
@@ -98,3 +106,5 @@ namespace Kephas.Application.Configuration
         }
     }
 }
+
+#endif

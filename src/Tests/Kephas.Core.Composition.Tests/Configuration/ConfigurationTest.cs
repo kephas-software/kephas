@@ -41,6 +41,8 @@ namespace Kephas.Core.Tests.Configuration
             Assert.AreNotSame(TestConfigurationProvider.Settings, config.Settings);
         }
 
+#if NETCOREAPP2_0
+#else
         [Test]
         public void Composition_Configuration_app_config_provider()
         {
@@ -51,6 +53,7 @@ namespace Kephas.Core.Tests.Configuration
             var config = container.GetExport<IConfiguration<TestSettings>>();
             Assert.AreEqual("hello", config.Settings.Say);
         }
+#endif
 
         public class TestSettings
         {
