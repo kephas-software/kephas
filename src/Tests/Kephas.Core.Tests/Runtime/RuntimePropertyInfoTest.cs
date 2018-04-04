@@ -20,7 +20,7 @@ namespace Kephas.Core.Tests.Runtime
     public class RuntimePropertyInfoTest
     {
         [Test]
-        public void ToString()
+        public void ToString_name_and_type()
         {
             var propInfo = new RuntimePropertyInfo<string, int>(typeof(string).GetProperty(nameof(string.Length)));
 

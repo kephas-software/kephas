@@ -23,7 +23,7 @@
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Kephas.Localization" version="$refversion$" />
             </group>
-            <group targetFramework="netstandard1.3">
+            <group targetFramework="netstandard2.0">
                 <dependency id="System.Linq.Expressions" version="4.3.0" />
                 <dependency id="System.Linq.Queryable" version="4.3.0" />
                 <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
@@ -37,9 +37,9 @@
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.dll" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.pdb" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Data.xml" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.xml" target="lib\netstandard2.0" />
         <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.dll" target="lib\net45" />
         <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.pdb" target="lib\net45" />
         <file src="..\Kephas.Data.Net45\bin\$configuration$\Kephas.Data.xml" target="lib\net45" />

@@ -28,9 +28,9 @@
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.dll" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.pdb" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Mail.xml" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.xml" target="lib\netstandard2.0" />
         <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.dll" target="lib\net45" />
         <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.pdb" target="lib\net45" />
         <file src="..\Kephas.Mail.Net45\bin\$configuration$\Kephas.Mail.xml" target="lib\net45" />

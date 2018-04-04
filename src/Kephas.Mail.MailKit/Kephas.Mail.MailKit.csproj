@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFramework>netstandard1.3</TargetFramework>
+      <TargetFramework>netstandard2.0</TargetFramework>
       <AssemblyName>Kephas.Mail.MailKit</AssemblyName>
       <RootNamespace>Kephas.Mail</RootNamespace>
       <SignAssembly>True</SignAssembly>
@@ -29,12 +29,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Mail.MailKit.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Mail.MailKit.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Mail.MailKit.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Mail.MailKit.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
@@ -43,8 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="1.16.1" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    <PackageReference Include="MailKit" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

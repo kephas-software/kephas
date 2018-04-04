@@ -30,12 +30,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

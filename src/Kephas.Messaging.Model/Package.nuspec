@@ -27,9 +27,9 @@
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.Model.dll" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.Model.pdb" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.Messaging.Model.xml" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Messaging.Model.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Messaging.Model.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Messaging.Model.xml" target="lib\netstandard2.0" />
         <file src="..\Kephas.Messaging.Model.Net45\bin\$configuration$\Kephas.Messaging.Model.dll" target="lib\net45" />
         <file src="..\Kephas.Messaging.Model.Net45\bin\$configuration$\Kephas.Messaging.Model.pdb" target="lib\net45" />
         <file src="..\Kephas.Messaging.Model.Net45\bin\$configuration$\Kephas.Messaging.Model.xml" target="lib\net45" />

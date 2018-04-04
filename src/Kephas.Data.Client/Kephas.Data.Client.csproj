@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -23,13 +23,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Data.Client.xml</DocumentationFile>
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4</DefineConstants>
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Data.Client.xml</DocumentationFile>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Data.Client.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Data.Client.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

@@ -80,12 +80,18 @@
     <Compile Include="..\Kephas.Core.Tests\Application\AppManifestBaseTest.cs">
       <Link>Application\AppManifestBaseTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Application\Configuration\DefaultAppConfigurationTest.cs">
+      <Link>Application\Configuration\DefaultAppConfigurationTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Application\Configuration\DynamicAppConfigurationTest.cs">
       <Link>Application\Configuration\DynamicAppConfigurationTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Application\DefaultAppManagerTest.cs">
       <Link>Application\DefaultAppManagerTest.cs</Link>
     </Compile>
+    <None Include="..\Kephas.Core.Tests\Application\DefaultAppRuntimeTest.cs">
+      <Link>Application\DefaultAppRuntimeTest.cs</Link>
+    </None>
     <Compile Include="..\Kephas.Core.Tests\Application\FeatureManagerBaseTest.cs">
       <Link>Application\FeatureManagerBaseTest.cs</Link>
     </Compile>

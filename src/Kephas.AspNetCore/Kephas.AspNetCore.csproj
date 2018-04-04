@@ -28,8 +28,22 @@
         </PackageReleaseNotes>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <DocumentationFile>bin\Debug\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+      <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <DocumentationFile>bin\Release\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+      <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
     <ItemGroup>
         <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,6 +53,21 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Strings.Designer.cs">
+        <DependentUpon>Strings.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Strings.resx">
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

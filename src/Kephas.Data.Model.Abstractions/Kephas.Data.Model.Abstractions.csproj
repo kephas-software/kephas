@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFramework>netstandard1.3</TargetFramework>
+      <TargetFramework>netstandard2.0</TargetFramework>
       <SignAssembly>True</SignAssembly>
       <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
       <Version>4.2.0</Version>
@@ -28,12 +28,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

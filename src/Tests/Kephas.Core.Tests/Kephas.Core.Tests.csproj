@@ -1,144 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\Packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\..\Packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\..\..\Packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\..\..\Packages\NUnit.3.10.1\build\NUnit.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3331D592-B10D-4F4E-994D-DD633528BCAF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.Core.Tests</RootNamespace>
-    <AssemblyName>Kephas.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net46\NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
+    <Compile Remove="Application\DefaultAppRuntimeTest.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
-      <Link>Properties\AssemblyInfo.Kephas.cs</Link>
-    </Compile>
-    <Compile Include="Activation\ActivatorBaseTest.cs" />
-    <Compile Include="AmbientServicesBuilderTest.cs" />
-    <Compile Include="AmbientServicesTest.cs" />
-    <Compile Include="Application\AppBaseTest.cs" />
-    <Compile Include="Application\AppContextTest.cs" />
-    <Compile Include="Application\AppManifestBaseTest.cs" />
-    <Compile Include="Application\Configuration\DynamicAppConfigurationTest.cs" />
-    <Compile Include="Application\DefaultAppManagerTest.cs" />
-    <Compile Include="Application\FeatureManagerBaseTest.cs" />
-    <Compile Include="Application\NullAppManifestTest.cs" />
-    <Compile Include="Behavior\BehaviorRuleFlowControlBaseTest.cs" />
-    <Compile Include="Composition\CompositionContainerBuilderBaseTest.cs" />
-    <Compile Include="Composition\CompositionContextExtensionsTest.cs" />
-    <Compile Include="Composition\Conventions\ConventionsBuilderExtensionsTest.cs" />
-    <Compile Include="Composition\Internal\CompositionContextServiceProviderAdapterTest.cs" />
-    <Compile Include="Composition\TestRegistrationContext.cs" />
-    <Compile Include="Configuration\Providers\AppConfigurationProviderTest.cs" />
-    <Compile Include="Configuration\ConfigurationTest.cs" />
-    <Compile Include="Cryptography\EncryptionServiceExtensionsTest.cs" />
-    <Compile Include="Cryptography\NullEncryptionServiceTest.cs" />
-    <Compile Include="Data\IdTest.cs" />
-    <Compile Include="Diagnostics\Logging\DebugLogManagerTest.cs" />
-    <Compile Include="DynamicObjectExtensionsTest.cs" />
-    <Compile Include="Dynamic\ExpandoBaseTest.cs" />
-    <Compile Include="Dynamic\ExpandoExtensionsTest.cs" />
-    <Compile Include="Dynamic\ExpandoTest.cs" />
-    <Compile Include="Dynamic\LazyExpandoTest.cs" />
-    <Compile Include="Graphs\GraphEdgeOfTNodeValueTest.cs" />
-    <Compile Include="Graphs\GraphExtensionsTest.cs" />
-    <Compile Include="Graphs\GraphNodeOfTValueTest.cs" />
-    <Compile Include="Graphs\GraphNodeTest.cs" />
-    <Compile Include="Model\Services\DefaultProjectedTypeResolverTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\DefaultTypeResolverTest.cs" />
-    <Compile Include="Reflection\ReflectionHelperTest.cs" />
-    <Compile Include="Reflection\TypeExtensionsTest.cs" />
-    <Compile Include="Reflection\TypeInfoExtensionsTest.cs" />
-    <Compile Include="Runtime\RuntimeAssemblyInfoTest.cs" />
-    <Compile Include="Runtime\RuntimePropertyInfoTest.cs" />
-    <Compile Include="Runtime\RuntimeTypeInfoTest.cs" />
-    <Compile Include="Serialization\DefaultSerializationServiceTest.cs" />
-    <Compile Include="Serialization\SerializationExtensionsTest.cs" />
-    <Compile Include="Services\AppServiceContractAttributeTest.cs" />
-    <Compile Include="Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs" />
-    <Compile Include="Services\Behavior\DefaultServiceBehaviorProviderTest.cs" />
-    <Compile Include="Services\Composition\AppServiceConventionsRegistrarBaseTest.cs" />
-    <Compile Include="Services\Composition\AppServiceMetadataTest.cs" />
-    <Compile Include="Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs" />
-    <Compile Include="Services\ContextTest.cs" />
-    <Compile Include="Services\Transitioning\TransitionMonitorTest.cs" />
-    <Compile Include="Sets\PartialOrderedSetTest.cs" />
-    <Compile Include="Text\Encoding\Base64DataTest.cs" />
-    <Compile Include="Threading\Tasks\TaskHelperTest.cs" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\..\Kephas.snk">
-      <Link>Kephas.snk</Link>
-    </None>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj">
-      <Project>{42523208-f30b-46c1-99fb-a1a1e079614c}</Project>
-      <Name>Kephas.Core</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
+
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <None Include="Application\DefaultAppRuntimeTest.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\Packages\NUnit.3.10.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\Packages\NUnit.3.10.1\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\..\..\Packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\Packages\NUnit3TestAdapter.3.10.0\build\net35\NUnit3TestAdapter.props'))" />
-  </Target>
+
 </Project>

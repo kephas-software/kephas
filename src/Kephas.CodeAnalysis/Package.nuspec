@@ -20,7 +20,7 @@
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
-            <group targetFramework="netstandard1.3">
+            <group targetFramework="netstandard2.0">
                 <dependency id="Microsoft.CSharp" version="4.3.0" />
             </group>
         </dependencies>
@@ -31,9 +31,9 @@
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
-        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.dll" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.pdb" target="lib\netstandard1.3" />
-        <file src="bin\$configuration$\netstandard1.3\Kephas.CodeAnalysis.xml" target="lib\netstandard1.3" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.xml" target="lib\netstandard2.0" />
         <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.dll" target="lib\net45" />
         <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.pdb" target="lib\net45" />
         <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.xml" target="lib\net45" />

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Kephas.Messaging</AssemblyName>
     <RootNamespace>Kephas.Messaging</RootNamespace>
     <SignAssembly>True</SignAssembly>
@@ -27,12 +27,12 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\Kephas.Messaging.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Messaging.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\Kephas.Messaging.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Messaging.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

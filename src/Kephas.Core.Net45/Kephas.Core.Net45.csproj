@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -88,6 +89,9 @@
     <Compile Include="..\Kephas.Core\Application\Configuration\AppConfigurationSections.cs">
       <Link>Application\Configuration\AppConfigurationSections.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\Configuration\DefaultAppConfiguration.cs">
+      <Link>Application\Configuration\DefaultAppConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\Configuration\DynamicAppConfiguration.cs">
       <Link>Application\Configuration\DynamicAppConfiguration.cs</Link>
     </Compile>
@@ -96,6 +100,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\DefaultAppManager.cs">
       <Link>Application\DefaultAppManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\DefaultAppRuntime.cs">
+      <Link>Application\DefaultAppRuntime.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureInfo.cs">
       <Link>Application\FeatureInfo.cs</Link>
@@ -138,6 +145,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\NullAppRuntime.cs">
       <Link>Application\NullAppRuntime.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\PreserveCultureThreadContextFeatureManager.cs">
+      <Link>Application\PreserveCultureThreadContextFeatureManager.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
       <Link>Application\RequiredFeatureAttribute.cs</Link>
@@ -495,6 +505,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\QualifiedFullName.cs">
       <Link>Reflection\QualifiedFullName.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\ReflectionAmbientServicesBuilderExtensions.cs">
+      <Link>Reflection\ReflectionAmbientServicesBuilderExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Reflection\ReflectionHelper.cs">
       <Link>Reflection\ReflectionHelper.cs</Link>
