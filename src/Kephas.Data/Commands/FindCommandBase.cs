@@ -108,6 +108,7 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Tries to get a query over the local cache entities of a particular type.
         /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="findContext">The find context.</param>
         /// <returns>
         /// A query of local cache entities.
