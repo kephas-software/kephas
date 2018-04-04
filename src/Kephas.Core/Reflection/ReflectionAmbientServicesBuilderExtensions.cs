@@ -1,26 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NetAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+// <copyright file="ReflectionAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Extension methods for the AmbientServicesBuilder.
+//   Implements the net ambient services builder extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Net
+namespace Kephas.Reflection
 {
     using System;
     using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    public static class NetAmbientServicesBuilderExtensions
+    public static class ReflectionAmbientServicesBuilderExtensions
     {
         /// <summary>
         /// Sets the .NET Standard 1.4 application runtime to the ambient services.
@@ -31,15 +30,12 @@ namespace Kephas.Platform.Net
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithNetAppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public static AmbientServicesBuilder WithDefaultAppRuntime(this AmbientServicesBuilder ambientServicesBuilder, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             var ambientServices = ambientServicesBuilder.AmbientServices;
-            var assemblyLoader = new NetAssemblyLoader();
-            ambientServices.RegisterService<IAssemblyLoader>(assemblyLoader);
-
-            return ambientServicesBuilder.WithAppRuntime(new NetAppRuntime(assemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
+            return ambientServicesBuilder.WithAppRuntime(new DefaultAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
         }
     }
 }

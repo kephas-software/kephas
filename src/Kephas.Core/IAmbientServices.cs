@@ -18,6 +18,7 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract interface for ambient services.
@@ -31,6 +32,14 @@ namespace Kephas
         /// The composition container.
         /// </value>
         ICompositionContext CompositionContainer { get; }
+
+        /// <summary>
+        /// Gets the assembly loader.
+        /// </summary>
+        /// <value>
+        /// The assembly loader.
+        /// </value>
+        IAssemblyLoader AssemblyLoader { get; }
 
         /// <summary>
         /// Gets the application runtime.

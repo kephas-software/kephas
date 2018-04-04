@@ -350,7 +350,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please use a more specific assembly loader, which can load from a file path, like NetAssemblyLoader..
+        ///   Looks up a localized string similar to Please use a more specific assembly loader, which can load from a file path, like DefaultAssemblyLoader..
         /// </summary>
         internal static string DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception {
             get {

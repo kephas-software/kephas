@@ -82,6 +82,14 @@ namespace Kephas
         public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
 
         /// <summary>
+        /// Gets the assembly loader.
+        /// </summary>
+        /// <value>
+        /// The assembly loader.
+        /// </value>
+        public IAssemblyLoader AssemblyLoader => this.GetService<IAssemblyLoader>();
+
+        /// <summary>
         /// Gets the application runtime.
         /// </summary>
         /// <value>

@@ -52,8 +52,13 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void StoreThreadCulture(ThreadContext threadContext)
         {
+#if NETSTANDARD2_0
             threadContext.CurrentCulture = CultureInfo.CurrentCulture;
             threadContext.CurrentUICulture = CultureInfo.CurrentUICulture;
+#else
+            threadContext.CurrentCulture = Thread.CurrentThread.CurrentCulture;
+            threadContext.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
+#endif
         }
 
         /// <summary>
@@ -62,6 +67,7 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void RestoreThreadCulture(ThreadContext threadContext)
         {
+#if NETSTANDARD2_0
             if (threadContext.CurrentCulture != null)
             {
                 CultureInfo.CurrentCulture = threadContext.CurrentCulture;
@@ -71,6 +77,17 @@ namespace Kephas.Application
             {
                 CultureInfo.CurrentUICulture = threadContext.CurrentUICulture;
             }
+#else
+            if (threadContext.CurrentCulture != null)
+            {
+                Thread.CurrentThread.CurrentCulture = threadContext.CurrentCulture;
+            }
+
+            if (threadContext.CurrentUICulture != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = threadContext.CurrentUICulture;
+            }
+#endif
         }
     }
 }

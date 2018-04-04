@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Tests.Application.Configuration
+namespace Kephas.Core.Tests.Application.Configuration
 {
     using Kephas.Application.Configuration;
     using Kephas.Dynamic;

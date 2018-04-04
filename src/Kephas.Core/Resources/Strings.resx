@@ -226,7 +226,7 @@
     <value>The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}.</value>
   </data>
   <data name="DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception" xml:space="preserve">
-    <value>Please use a more specific assembly loader, which can load from a file path, like NetAssemblyLoader.</value>
+    <value>Please use a more specific assembly loader, which can load from a file path, like DefaultAssemblyLoader.</value>
   </data>
   <data name="RuntimeTypeInfo_MemberNotFound_Exception" xml:space="preserve">
     <value>Member {0} not found in {1}.</value>

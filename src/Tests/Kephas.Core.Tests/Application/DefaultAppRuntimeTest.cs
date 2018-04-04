@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NetAppRuntimeTest.cs" company="Quartz Software SRL">
+// <copyright file="DefaultAppRuntimeTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Platform.Tests.Application
+namespace Kephas.Core.Tests.Application
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,12 +19,12 @@ namespace Kephas.Platform.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class NetAppRuntimeTest
+    public class DefaultAppRuntimeTest
     {
         [Test]
         public async Task GetAppAssembliesAsync_filter()
         {
-            var appEnv = new NetAppRuntime(assemblyLoader: new NetAssemblyLoader());
+            var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
             var assemblies = await appEnv.GetAppAssembliesAsync(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
@@ -35,7 +35,7 @@ namespace Kephas.Platform.Tests.Application
         [Test]
         public async Task GetAppAssembliesAsync_no_filter()
         {
-            var appEnv = new NetAppRuntime(assemblyLoader: new NetAssemblyLoader());
+            var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
             var assemblies = await appEnv.GetAppAssembliesAsync();
             var assemblyList = assemblies.ToList();
 
