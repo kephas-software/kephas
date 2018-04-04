@@ -63,7 +63,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(IDataContext dataContext, object entityId)
         {
-            return (dataContext as DataContextBase)?.GetIdEqualityExpression<T>(entityId) 
+            return (dataContext as DataContextBase)?.GetIdEqualityExpression<T>(entityId)
                 ?? (t => entityId.Equals(((IIdentifiable)t).Id));
         }
 

@@ -35,6 +35,6 @@ namespace Kephas.Data.Initialization
         /// </returns>
         Task<object> CreateDataAsync(
             IInitialDataContext initialDataContext,
-            CancellationToken cancellationToken = default);        
+            CancellationToken cancellationToken = default);
     }
 }

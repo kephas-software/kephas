@@ -21,7 +21,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="NotFoundDataException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public NotFoundDataException(string message) 
+        public NotFoundDataException(string message)
             : base(message)
         {
         }
@@ -32,7 +32,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public NotFoundDataException(string message, Exception inner) 
+        public NotFoundDataException(string message, Exception inner)
             : base(message, inner)
         {
         }

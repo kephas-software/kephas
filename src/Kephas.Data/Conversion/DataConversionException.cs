@@ -21,7 +21,7 @@ namespace Kephas.Data.Conversion
         /// Initializes a new instance of the <see cref="DataConversionException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DataConversionException(string message) 
+        public DataConversionException(string message)
             : base(message)
         {
         }
@@ -32,7 +32,7 @@ namespace Kephas.Data.Conversion
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public DataConversionException(string message, Exception inner) 
+        public DataConversionException(string message, Exception inner)
             : base(message, inner)
         {
         }

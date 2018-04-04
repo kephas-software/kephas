@@ -20,7 +20,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DataException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DataException(string message) 
+        public DataException(string message)
             : base(message)
         {
         }
@@ -31,7 +31,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public DataException(string message, Exception inner) 
+        public DataException(string message, Exception inner)
             : base(message, inner)
         {
         }

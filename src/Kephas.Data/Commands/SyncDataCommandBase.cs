@@ -18,7 +18,7 @@ namespace Kephas.Data.Commands
     /// </summary>
     /// <typeparam name="TOperationContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public abstract class SyncDataCommandBase<TOperationContext, TResult> 
+    public abstract class SyncDataCommandBase<TOperationContext, TResult>
         : DataCommandBase<TOperationContext, TResult>, ISyncDataCommand<TOperationContext, TResult>
         where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
@@ -54,7 +54,7 @@ namespace Kephas.Data.Commands
         /// A promise of a <see cref="IDataCommandResult"/>.
         /// </returns>
         public override Task<TResult> ExecuteAsync(
-            TOperationContext operationContext, 
+            TOperationContext operationContext,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult(this.Execute(operationContext));

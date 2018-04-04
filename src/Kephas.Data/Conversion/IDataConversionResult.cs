@@ -30,10 +30,10 @@ namespace Kephas.Data.Conversion
         /// Gets or sets the target object as the result of the conversion.
         /// </summary>
         /// <remarks>
-        /// In the case that no target object was provided, 
-        /// the converter tries to identify one in the target data context 
-        /// based on the type and the ID from the source. The identified target 
-        /// is then set in the <see cref="Target"/> property of the <see cref="IDataConversionResult"/>, 
+        /// In the case that no target object was provided,
+        /// the converter tries to identify one in the target data context
+        /// based on the type and the ID from the source. The identified target
+        /// is then set in the <see cref="Target"/> property of the <see cref="IDataConversionResult"/>,
         /// because the input target parameter in the <see cref="IDataConversionService.ConvertAsync"/>
         /// method is an input parameter.
         /// </remarks>

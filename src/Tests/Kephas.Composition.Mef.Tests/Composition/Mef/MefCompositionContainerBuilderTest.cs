@@ -49,7 +49,6 @@ namespace Kephas.Tests.Composition.Mef
             var factory = this.CreateCompositionContainerBuilder();
             var mockPlatformManager = factory.AppRuntime;
 
-
             mockPlatformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
                 .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly }));
 

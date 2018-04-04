@@ -28,6 +28,8 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Generic contract for synchronous data commands.
     /// </summary>
+    /// <typeparam name="TOperationContext">Type of the operation context.</typeparam>
+    /// <typeparam name="TResult">Type of the result.</typeparam>
     public interface ISyncDataCommand<in TOperationContext, out TResult> : ISyncDataCommand
         where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult

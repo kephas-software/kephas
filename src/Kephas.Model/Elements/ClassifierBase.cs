@@ -452,7 +452,7 @@ namespace Kephas.Model.Elements
                 }
             }
 
-            // add the base members 
+            // add the base members
             foreach (var baseMemberMap in baseMembers)
             {
                 var declaredMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);

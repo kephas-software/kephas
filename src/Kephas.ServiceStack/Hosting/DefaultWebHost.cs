@@ -127,7 +127,7 @@ namespace Kephas.ServiceStack.Hosting
             this.Logger.Info($"Finished Initializing {this.GetType()}");
 
             var configuredBaseUrls = this.GetBaseUrls();
-            this.Logger.Info($"Starting {this.GetType()} for service {this.endpointServiceProvider.ServiceName} at URLs { string.Join(",", configuredBaseUrls)}...");
+            this.Logger.Info($"Starting {this.GetType()} for service {this.endpointServiceProvider.ServiceName} at URLs {string.Join(",", configuredBaseUrls)}...");
             this.Start(configuredBaseUrls);
 
             // show welcome messages

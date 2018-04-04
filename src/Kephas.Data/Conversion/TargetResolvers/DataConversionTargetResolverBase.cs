@@ -36,10 +36,10 @@ namespace Kephas.Data.Conversion.TargetResolvers
         /// A promise of the target entity.
         /// </returns>
         public async Task<object> TryResolveTargetEntityAsync(
-            IDataContext targetDataContext, 
-            TypeInfo targetType, 
-            object sourceEntity, 
-            IEntityInfo sourceEntityInfo, 
+            IDataContext targetDataContext,
+            TypeInfo targetType,
+            object sourceEntity,
+            IEntityInfo sourceEntityInfo,
             CancellationToken cancellationToken = default)
         {
             return await this.TryResolveTargetEntityAsync(
