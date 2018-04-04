@@ -89,6 +89,9 @@
     <Compile Include="..\Kephas.Core.Tests\Application\DefaultAppManagerTest.cs">
       <Link>Application\DefaultAppManagerTest.cs</Link>
     </Compile>
+    <None Include="..\Kephas.Core.Tests\App.config">
+      <Link>App.config</Link>
+    </None>
     <None Include="..\Kephas.Core.Tests\Application\DefaultAppRuntimeTest.cs">
       <Link>Application\DefaultAppRuntimeTest.cs</Link>
     </None>

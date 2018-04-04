@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     <None Include="Application\DefaultAppRuntimeTest.cs" />
   </ItemGroup>
 

@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\..\Kephas.Messaging.Model\Kephas.Messaging.Model.csproj" />
+    <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
+  </ItemGroup>
+
 </Project>

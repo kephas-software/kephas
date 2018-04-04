@@ -31,9 +31,9 @@ namespace Kephas.Core.Tests.Application
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
-            Assert.AreEqual(1, factoryMetadata.Count);
+            Assert.AreEqual(2, factoryMetadata.Count);
 
-            var testFeatureInfo = factoryMetadata[0].FeatureInfo;
+            var testFeatureInfo = factoryMetadata[1].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Test", testFeatureInfo.Name);
             Assert.AreEqual(new Version(0, 0, 0, 0), testFeatureInfo.Version);
@@ -46,9 +46,9 @@ namespace Kephas.Core.Tests.Application
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
-            Assert.AreEqual(1, factoryMetadata.Count);
+            Assert.AreEqual(2, factoryMetadata.Count);
 
-            var testFeatureInfo = factoryMetadata[0].FeatureInfo;
+            var testFeatureInfo = factoryMetadata[1].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Annotated test", testFeatureInfo.Name);
             Assert.AreEqual(new Version(1, 2, 3, 4), testFeatureInfo.Version);
@@ -63,9 +63,9 @@ namespace Kephas.Core.Tests.Application
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
-            Assert.AreEqual(1, factoryMetadata.Count);
+            Assert.AreEqual(2, factoryMetadata.Count);
 
-            var testFeatureInfo = factoryMetadata[0].FeatureInfo;
+            var testFeatureInfo = factoryMetadata[1].FeatureInfo;
             Assert.IsNotNull(testFeatureInfo);
             Assert.AreEqual("Required", testFeatureInfo.Name);
         }
