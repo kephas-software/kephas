@@ -106,7 +106,7 @@ namespace Kephas.Data.Linq.Expressions
                 var mappedGenericArgs = mappedMethod.GetGenericArguments().Select(t => this.TryResolveDeepImplementationType(t) ?? t).ToList();
                 mappedMethod = genericMethodDefinition.MakeGenericMethod(mappedGenericArgs.ToArray());
 
-                if (mappedMethod.Name == nameof(Queryable.Cast) 
+                if (mappedMethod.Name == nameof(Queryable.Cast)
                     || mappedMethod.Name == nameof(Queryable.OfType))
                 {
                     var mappedItemType = mappedArgs[0].Type.TryGetEnumerableItemType();
@@ -297,7 +297,6 @@ namespace Kephas.Data.Linq.Expressions
 
             return base.VisitUnary(node);
         }
-
 
         /// <summary>
         /// Tries to get the implementation type of the provided abstract type.

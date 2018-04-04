@@ -110,6 +110,9 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="context">An optional context for finalization.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
         {
             return this.FinalizeAsync((IAppContext)context, cancellationToken);

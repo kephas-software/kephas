@@ -21,6 +21,6 @@ namespace Kephas.Data
         /// <value>
         /// The identifier.
         /// </value>
-        object Id { get; } 
+        object Id { get; }
     }
 }

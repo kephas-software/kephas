@@ -15,7 +15,7 @@ namespace Kephas.Services
     using System;
 
     /// <summary>
-    /// Marks an interface to be a shared application service contract. 
+    /// Marks an interface to be a shared application service contract.
     /// Application services are automatically identified by the composition
     /// and added to the container.
     /// </summary>

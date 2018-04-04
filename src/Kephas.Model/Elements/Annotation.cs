@@ -36,7 +36,7 @@ namespace Kephas.Model.Elements
         ///   <c>true</c> if multiple annotations of the same kind are allowed; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
-        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix 
+        /// If multiple annotations of the same kind are allowed, the qualified name will have a generated suffix
         /// to allow the annotation to be unique within the members collection.
         /// </remarks>
         public bool AllowMultiple { get; internal set; }

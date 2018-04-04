@@ -17,7 +17,7 @@ namespace Kephas.Services
     using System.Collections.ObjectModel;
 
     /// <summary>
-    /// Marks an interface to be an application service contract. 
+    /// Marks an interface to be an application service contract.
     /// Application services are automatically identified by the composition
     /// and added to the container.
     /// </summary>

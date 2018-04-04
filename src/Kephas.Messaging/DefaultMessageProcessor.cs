@@ -144,7 +144,7 @@ namespace Kephas.Messaging
                     }
                     finally
                     {
-                        // restore the message and handler that could be changed 
+                        // restore the message and handler that could be changed
                         // by a nested message processor ProcessAsync call.
                         context.Handler = messageHandler;
                         context.Message = message;
@@ -245,7 +245,8 @@ namespace Kephas.Messaging
             var messageType = this.GetMessageType(message);
             var messageName = this.GetMessageName(message);
 
-            var orderedFiltersEntry = this.filterFactoriesDictionary.GetOrAdd($"{messageType.FullName}/{messageName}",
+            var orderedFiltersEntry = this.filterFactoriesDictionary.GetOrAdd(
+                $"{messageType.FullName}/{messageName}",
                 _ =>
                     {
                         var orderedFilters = (from f in this.filterFactories

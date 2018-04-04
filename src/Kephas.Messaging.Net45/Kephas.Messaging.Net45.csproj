@@ -178,6 +178,7 @@
       <Link>Kephas.snk</Link>
     </None>
     <None Include="packages.config" />
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Kephas.Messaging\Resources\Strings.resx">
@@ -191,6 +192,10 @@
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\Packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

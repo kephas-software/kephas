@@ -32,7 +32,7 @@ namespace Kephas.Composition
     /// Contract for a handle allowing the graph of parts associated with an exported instance
     /// to be released.
     /// </summary>
-    /// <typeparam name="T">The contract type of the created parts.</typeparam>    
+    /// <typeparam name="T">The contract type of the created parts.</typeparam>
     public interface IExport<out T> : IExport
     {
         /// <summary>

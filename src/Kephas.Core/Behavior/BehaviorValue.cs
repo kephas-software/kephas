@@ -79,8 +79,7 @@ namespace Kephas.Behavior
             }
 
             var value = behavior[ReasonKey];
-            var reason = value as string;
-            if (reason != null)
+            if (value is string reason)
             {
                 return reason;
             }

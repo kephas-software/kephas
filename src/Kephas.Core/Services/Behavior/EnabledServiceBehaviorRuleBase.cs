@@ -66,7 +66,7 @@ namespace Kephas.Services.Behavior
         where TServiceImplementation : TServiceContract
     {
         /// <summary>
-        /// Base class for behavior rules controlling the enabled state of services 
+        /// Base class for behavior rules controlling the enabled state of services
         /// implementing the contract <typeparamref name="TServiceContract"/>.
         /// </summary>
         /// <param name="context">The context.</param>

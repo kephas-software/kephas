@@ -27,7 +27,7 @@ namespace Kephas.Activation
         /// <param name="args">Constructor arguments.</param>
         /// <param name="activationContext">Context for the activation.</param>
         /// <remarks>
-        /// The <paramref name="typeInfo"/> may be either an implementation type or an abstract type. 
+        /// The <paramref name="typeInfo"/> may be either an implementation type or an abstract type.
         /// If an abstract type is provided, then an implementation type is determined first and then instantiated.
         /// </remarks>
         /// <returns>

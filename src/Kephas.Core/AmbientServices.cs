@@ -19,7 +19,6 @@ namespace Kephas
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
-    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -31,9 +30,9 @@ namespace Kephas
     /// </summary>
     /// <remarks>
     /// It is a recommended practice to not use global services, instead get the services
-    /// using the composition (the classical example is the unit testing, where the classes 
+    /// using the composition (the classical example is the unit testing, where the classes
     /// should be sandboxed as much as possible). However, there may be cases when this cannot be avoided,
-    /// such as static classes or classes which get instantiated outside of the developer's control 
+    /// such as static classes or classes which get instantiated outside of the developer's control
     /// (like in the case of the entities instatiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>

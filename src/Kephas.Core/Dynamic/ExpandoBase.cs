@@ -50,7 +50,7 @@ namespace Kephas.Dynamic
     /// <term>Dictionary</term>
     /// <description>Any of the extended properties are accessible via IDictionary interface</description>
     /// </item>
-    /// </list> 
+    /// </list>
     /// </para>
     /// </summary>
     public abstract class ExpandoBase : DynamicObject, IExpando

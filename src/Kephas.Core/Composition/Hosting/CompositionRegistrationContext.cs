@@ -48,26 +48,4 @@ namespace Kephas.Composition.Hosting
         /// </value>
         public IEnumerable<IConventionsRegistrar> Registrars { get; set; }
     }
-
-    /// <summary>
-    /// Contract interface for composition container builder contexts.
-    /// </summary>
-    public interface ICompositionRegistrationContext : IContext
-    {
-        /// <summary>
-        /// Gets or sets the parts.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        IEnumerable<Type> Parts { get; set; }
-
-        /// <summary>
-        /// Gets or sets the registrars.
-        /// </summary>
-        /// <value>
-        /// The registrars.
-        /// </value>
-        IEnumerable<IConventionsRegistrar> Registrars { get; set; }
-    }
 }

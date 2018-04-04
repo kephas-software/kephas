@@ -32,7 +32,7 @@ namespace Kephas.Web.ServiceStack.Hosting
     public class DefaultWebHost
 #if NETSTANDARD2_0
         : AppHostBase, IWebHost
-#else 
+#else
         : AppSelfHostBase, IWebHost
 #endif
     {
@@ -137,12 +137,15 @@ namespace Kephas.Web.ServiceStack.Hosting
         /// <summary>
         /// Finalizes the service.
         /// </summary>
-        /// <param name="context">An optional context for finalization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">(Optional) An optional context for finalization.</param>
+        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         public virtual Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
 #if NETSTANDARD2_0
-#else 
+#else
             this.Stop();
 #endif
             return Task.FromResult(0);

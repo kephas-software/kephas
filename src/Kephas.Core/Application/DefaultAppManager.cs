@@ -448,7 +448,7 @@ namespace Kephas.Application
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
                                           .ToList();
-            
+
             // the feature manager are in the right order for initializing, now reverse that order
             reversedOrderedFeatureManagers.Reverse();
 

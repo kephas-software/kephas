@@ -235,11 +235,14 @@
     <Compile Include="..\Kephas.Core\Composition\Hosting\CompositionContainerBuilderBase.cs">
       <Link>Composition\Hosting\CompositionContainerBuilderBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Composition\Hosting\CompositionContainerBuilderContext.cs">
-      <Link>Composition\Hosting\CompositionContainerBuilderContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\CompositionRegistrationContext.cs">
+      <Link>Composition\Hosting\CompositionRegistrationContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Composition\Hosting\ICompositionContainerBuilder.cs">
       <Link>Composition\Hosting\ICompositionContainerBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Hosting\ICompositionRegistrationContext.cs">
+      <Link>Composition\Hosting\ICompositionRegistrationContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Composition\Hosting\NullCompositionContainer.cs">
       <Link>Composition\Hosting\NullCompositionContainer.cs</Link>

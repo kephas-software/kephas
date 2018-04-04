@@ -78,7 +78,6 @@ namespace Kephas.Cryptography
             var count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken).PreserveThreadContext();
             while (count > 0)
             {
-
                 for (var i = 0; i < count; i++)
                 {
                     outputBuffer[i] = inputBuffer[count - 1 - i];

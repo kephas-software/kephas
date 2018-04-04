@@ -131,16 +131,16 @@ namespace Kephas.Data.MongoDB
         private MongoClient GetOrCreateMongoClient(MongoUrl mongoUrl)
         {
             // see https://www.mongodb.com/blog/post/introducing-20-net-driver
-            // "The typical pattern is for an application to *create a single MongoClient instance*, 
-            //  call GetDatabase to get a IMongoDatabase instance, and finally call GetCollection 
+            // "The typical pattern is for an application to *create a single MongoClient instance*,
+            //  call GetDatabase to get a IMongoDatabase instance, and finally call GetCollection
             //  on the database object to get a IMongoCollection instance."
             //
             // see also http://blog.mongolab.com/2013/11/deep-dive-into-connection-pooling/
-            // "Here the mongoClient object holds your connection pool, and will give your app connections as needed. 
-            //  You should strive to create this object once as your application initializes and re-use this object 
-            //  throughout your application to talk to your database. The most common connection pooling problem we see 
-            //  results from applications that create a MongoClient object way too often, sometimes on each database request. 
-            //  If you do this you will not be using your connection pool as each MongoClient object maintains a separate 
+            // "Here the mongoClient object holds your connection pool, and will give your app connections as needed.
+            //  You should strive to create this object once as your application initializes and re-use this object
+            //  throughout your application to talk to your database. The most common connection pooling problem we see
+            //  results from applications that create a MongoClient object way too often, sometimes on each database request.
+            //  If you do this you will not be using your connection pool as each MongoClient object maintains a separate
             //  pool that is not being reused by your application."
             return MongoClients.GetOrAdd(
               mongoUrl.ToString(),
@@ -149,10 +149,10 @@ namespace Kephas.Data.MongoDB
                   var settings = MongoClientSettings.FromUrl(mongoUrl);
 
                   // see http://docs.mongolab.com/connecting/#known-issues
-                  // "The most effective workaround we’ve found in working with Azure and our customers 
-                  //  has been to set the max connection idle time below four minutes. The idea is to make 
-                  //  the driver recycle idle connections before the firewall forces the issue. 
-                  //  For example, one customer, who is using the C# driver, set MongoDefaults.MaxConnectionIdleTime 
+                  // "The most effective workaround we’ve found in working with Azure and our customers
+                  //  has been to set the max connection idle time below four minutes. The idea is to make
+                  //  the driver recycle idle connections before the firewall forces the issue.
+                  //  For example, one customer, who is using the C# driver, set MongoDefaults.MaxConnectionIdleTime
                   //  to one minute and it cleared up the issue."
                   settings.MaxConnectionIdleTime = TimeSpan.FromMinutes(1);
                   settings.MaxConnectionPoolSize = 1000;

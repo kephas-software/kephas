@@ -25,8 +25,8 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
         /// <remarks>
-        /// This is the method by which the selectors are requested to indicate 
-        /// whether they are in charge of providing the handlers 
+        /// This is the method by which the selectors are requested to indicate
+        /// whether they are in charge of providing the handlers
         /// for a specific message type and name.
         /// </remarks>
         /// <param name="messageType">The type of the message.</param>

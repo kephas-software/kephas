@@ -23,6 +23,6 @@ namespace Kephas.Reflection
         /// <value>
         /// The parts.
         /// </value>
-        IEnumerable<object> Parts { get; }  
+        IEnumerable<object> Parts { get; }
     }
 }

@@ -130,7 +130,7 @@ namespace Kephas.Threading.Tasks
         /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
         /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called), 
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
         /// but it can be configured to preserve some thread properties.
         /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
         /// </remarks>
@@ -150,7 +150,7 @@ namespace Kephas.Threading.Tasks
         /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
         /// <remarks>
-        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called), 
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
         /// but it can be configured to preserve some thread properties.
         /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
         /// </remarks>

@@ -45,7 +45,7 @@ namespace Kephas.Reflection.Dynamic
         private readonly IList<ITypeInfo> baseTypes = new List<ITypeInfo>();
 
         /// <summary>
-        /// Gets or sets the full name of the element.
+        /// Gets the full name of the element.
         /// </summary>
         /// <value>
         /// The full name of the element.

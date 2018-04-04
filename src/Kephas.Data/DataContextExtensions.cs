@@ -288,7 +288,7 @@ namespace Kephas.Data
         /// A promise of the found entity.
         /// </returns>
         public static async Task<T> FindOneAsync<T>(
-            this IDataContext dataContext, 
+            this IDataContext dataContext,
             Expression<Func<T, bool>> criteria,
             bool throwIfNotFound = true,
             CancellationToken cancellationToken = default)

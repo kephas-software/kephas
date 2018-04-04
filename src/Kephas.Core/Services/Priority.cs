@@ -11,7 +11,7 @@
 namespace Kephas.Services
 {
     /// <summary>
-    /// Enumerates the priority values. 
+    /// Enumerates the priority values.
     /// They are practically a convenient way to provide integer values for defining priorities.
     /// A lower value indicates a higher priority.
     /// </summary>

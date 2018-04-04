@@ -55,9 +55,9 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new ExpandoEntity
-                          {
-                              Description = "John Doe"
-                          };
+            {
+                Description = "John Doe"
+            };
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""description"":""John Doe""}", serializedObj);
@@ -99,7 +99,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>)});
+            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
@@ -190,7 +190,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }
-        
+
         [Test]
         public async Task DeserializeAsync_expando_property()
         {

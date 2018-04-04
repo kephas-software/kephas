@@ -33,7 +33,7 @@ namespace Kephas.Composition.ExportFactories
         }
 
         /// <summary>
-        /// The value.
+        /// Gets the value.
         /// </summary>
         public TService Value => this.lazyValue.Value;
 

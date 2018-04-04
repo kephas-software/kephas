@@ -86,6 +86,7 @@ namespace Kephas.Reflection
                     var str = part.ToCamelCase();
                     sb.Append(char.ToUpper(str[0]) + str.SafeSubstring(1, str.Length));
                 }
+
                 return StringBuilderThreadStatic.ReturnAndFree(sb);
             }
 
@@ -123,33 +124,59 @@ namespace Kephas.Reflection
             }
 
             if (value.Length >= (startIndex + length))
+            {
                 return value.Substring(startIndex, length);
+            }
 
             return value.Length > startIndex ? value.Substring(startIndex) : string.Empty;
         }
 
-        //Use separate cache internally to avoid reallocations and cache misses
+        /// <summary>
+        /// Use separate cache internally to avoid reallocations and cache misses.
+        /// </summary>
         internal static class StringBuilderThreadStatic
         {
+            /// <summary>
+            /// The cache.
+            /// </summary>
             [ThreadStatic]
-            static StringBuilder cache;
+            private static StringBuilder cache;
 
+            /// <summary>
+            /// Allocates a new string builder.
+            /// </summary>
+            /// <returns>
+            /// A StringBuilder.
+            /// </returns>
             public static StringBuilder Allocate()
             {
                 var ret = cache;
                 if (ret == null)
+                {
                     return new StringBuilder();
+                }
 
                 ret.Length = 0;
-                cache = null;  //don't re-issue cached instance until it's freed
+                cache = null;  // don't re-issue cached instance until it's freed
                 return ret;
             }
 
+            /// <summary>
+            /// Frees the given string builder.
+            /// </summary>
+            /// <param name="sb">The string builder.</param>
             public static void Free(StringBuilder sb)
             {
                 cache = sb;
             }
 
+            /// <summary>
+            /// Returns and frees the given string builder.
+            /// </summary>
+            /// <param name="sb">The string builder.</param>
+            /// <returns>
+            /// The string.
+            /// </returns>
             public static string ReturnAndFree(StringBuilder sb)
             {
                 var ret = sb.ToString();

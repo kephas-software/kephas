@@ -58,7 +58,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// Information describing the metadata value type.
         /// </value>
-        private static IRuntimeTypeInfo MetadataValueTypeInfo 
+        private static IRuntimeTypeInfo MetadataValueTypeInfo
             => metadataValueTypeInfo ?? (metadataValueTypeInfo = typeof(IMetadataValue).AsRuntimeTypeInfo());
 
         /// <summary>

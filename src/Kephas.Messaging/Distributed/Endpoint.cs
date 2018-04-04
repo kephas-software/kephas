@@ -126,7 +126,7 @@ namespace Kephas.Messaging.Distributed
         {
             var uriBuilder = new UriBuilder
                                  {
-                                     Scheme = AppScheme, 
+                                     Scheme = AppScheme,
                                      Host = ".",
                                      Path = $"/{appId}/{appInstanceId}/{endpointId}"
                                  };

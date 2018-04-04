@@ -27,8 +27,7 @@ namespace Kephas.Net.Mime
         /// <param name="supportedMediaTypes">The supported media types.</param>
         public SupportedMediaTypesAttribute(string[] supportedMediaTypes)
         {
-            Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
-            //Requires.That(supportedMediaTypes.Length > 0);
+            Requires.NotNullOrEmpty(supportedMediaTypes, nameof(supportedMediaTypes));
 
             this.Value = supportedMediaTypes;
         }

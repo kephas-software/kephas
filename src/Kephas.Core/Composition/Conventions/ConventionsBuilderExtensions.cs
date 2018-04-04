@@ -126,8 +126,8 @@ namespace Kephas.Composition.Conventions
         private static bool IsConventionRegistrar(Type type)
         {
             var typeInfo = type.GetTypeInfo();
-            return typeInfo.IsClass 
-                    && !typeInfo.IsAbstract 
+            return typeInfo.IsClass
+                    && !typeInfo.IsAbstract
                     && ConventionRegistrarContractTypeInfo.IsAssignableFrom(typeInfo)
                     && typeInfo.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null;
         }

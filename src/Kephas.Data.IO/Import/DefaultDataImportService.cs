@@ -444,7 +444,7 @@ namespace Kephas.Data.IO.Import
                 var targetEntity = conversionResult.Target;
                 var targetEntityInfo = this.targetDataContext.AttachEntity(targetEntity);
 
-                // force the change of the entity change state only if 
+                // force the change of the entity change state only if
                 // * the target entity is not changed - or -
                 // * the source entity indicated deletion.
                 if (targetEntityInfo.ChangeState == ChangeState.NotChanged

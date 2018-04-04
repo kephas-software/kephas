@@ -44,7 +44,7 @@ namespace Kephas.Services.Behavior.Composition
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
         /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false) 
+        public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
             : base(processingPriority, overridePriority, optionalService)
         {
             Requires.NotNull(serviceContractType, nameof(serviceContractType));

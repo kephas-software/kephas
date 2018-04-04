@@ -21,7 +21,7 @@ namespace Kephas.Composition.AttributedModel
     public class ImportAttribute : Attribute
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ImportAttribute"/> class, importing the 
+        ///     Initializes a new instance of the <see cref="ImportAttribute"/> class, importing the
         ///     export without a contract name.
         /// </summary>
         public ImportAttribute()
@@ -34,7 +34,7 @@ namespace Kephas.Composition.AttributedModel
         ///     export with the specified contract name.
         /// </summary>
         /// <param name="contractName">
-        ///      A <see cref="string"/> containing the contract name of the export to import, or 
+        ///      A <see cref="string"/> containing the contract name of the export to import, or
         ///      <see langword="null"/> or an empty string ("") to use the default contract name.
         /// </param>
         public ImportAttribute(string contractName)
@@ -46,14 +46,14 @@ namespace Kephas.Composition.AttributedModel
         ///     Gets the contract name of the export to import.
         /// </summary>
         /// <value>
-        ///      A <see cref="string"/> containing the contract name of the export to import. The 
+        ///      A <see cref="string"/> containing the contract name of the export to import. The
         ///      default value is null.
         /// </value>
         public string ContractName { get; private set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the property, field or parameter will be left 
-        ///     at its default value when an export with the contract name is not present in 
+        ///     Gets or sets a value indicating whether the property, field or parameter will be left
+        ///     at its default value when an export with the contract name is not present in
         ///     the container.
         /// </summary>
         public bool AllowDefault { get; set; }
