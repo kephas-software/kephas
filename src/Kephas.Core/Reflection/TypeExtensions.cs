@@ -109,6 +109,30 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsDictionary(this Type type)
+        {
+            if (type == null)
+            {
+                return false;
+            }
+
+            var typeInfo = IntrospectionExtensions.GetTypeInfo(type);
+            var dictionaryTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(IDictionary<,>));
+            if (typeInfo.IsConstructedGenericOf(dictionaryTypeInfo))
+            {
+                return true;
+            }
+
+            return typeInfo.ImplementedInterfaces.Any(i => i.IsDictionary());
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the type implements <see cref="IQueryable"/>.
         /// </summary>
         /// <param name="type">The type to check.</param>

@@ -10,9 +10,7 @@
 
 namespace Kephas.Core.Tests.Reflection
 {
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     using Kephas.Graphs;
     using Kephas.Reflection;
@@ -88,6 +86,22 @@ namespace Kephas.Core.Tests.Reflection
             var type = typeof(List<string>);
 
             Assert.IsTrue(type.IsCollection());
+        }
+        
+        [Test]
+        public void IsDictionary_direct()
+        {
+            var type = typeof(IDictionary<string, object>);
+
+            Assert.IsTrue(type.IsDictionary());
+        }
+        
+        [Test]
+        public void IsDictionary_indirect()
+        {
+            var type = typeof(Dictionary<string, int>);
+
+            Assert.IsTrue(type.IsDictionary());
         }
     }
 }
