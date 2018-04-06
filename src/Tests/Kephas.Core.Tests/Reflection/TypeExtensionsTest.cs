@@ -1,7 +1,18 @@
-﻿namespace Kephas.Core.Tests.Reflection
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TypeExtensionsTest.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the type extensions test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Core.Tests.Reflection
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Kephas.Graphs;
     using Kephas.Reflection;
@@ -61,6 +72,22 @@
             var constructedGenericType = type.GetBaseConstructedGenericOf(typeof(Graph<>));
 
             Assert.AreSame(constructedGenericType, typeof(Graph<string>));
+        }
+        
+        [Test]
+        public void IsCollection_direct()
+        {
+            var type = typeof(ICollection<string>);
+
+            Assert.IsTrue(type.IsCollection());
+        }
+        
+        [Test]
+        public void IsCollection_indirect()
+        {
+            var type = typeof(List<string>);
+
+            Assert.IsTrue(type.IsCollection());
         }
     }
 }

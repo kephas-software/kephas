@@ -93,9 +93,19 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsCollection(this Type type)
         {
-            return type != null
-                   && IntrospectionExtensions.GetTypeInfo(typeof(ICollection))
-                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+            if (type == null)
+            {
+                return false;
+            }
+
+            var typeInfo = IntrospectionExtensions.GetTypeInfo(type);
+            var collectionTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(ICollection<>));
+            if (typeInfo.IsConstructedGenericOf(collectionTypeInfo))
+            {
+                return true;
+            }
+
+            return typeInfo.ImplementedInterfaces.Any(i => i.IsCollection());
         }
 
         /// <summary>
