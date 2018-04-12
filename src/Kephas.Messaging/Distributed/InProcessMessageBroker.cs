@@ -18,6 +18,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Resources;
+    using Kephas.Security;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -36,9 +37,10 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
+        /// <param name="securityService">The security service.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageBroker(IAppManifest appManifest, IMessageProcessor messageProcessor)
-            : base(appManifest)
+        public InProcessMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor)
+            : base(appManifest, securityService)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
@@ -49,19 +51,26 @@ namespace Kephas.Messaging.Distributed
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The sending context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
         protected override Task SendAsync(
             IBrokeredMessage brokeredMessage,
-            CancellationToken cancellationToken = default)
+            IContext context,
+            CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(async () =>
+            return Task.Factory.StartNew(
+                async () =>
                 {
                     try
                     {
-                        return await this.messageProcessor.ProcessAsync(brokeredMessage, null, cancellationToken)
+                        var messagingContext = new MessageProcessingContext(this.messageProcessor, brokeredMessage)
+                                          {
+                                              Identity = context?.Identity
+                                          };
+                        return await this.messageProcessor.ProcessAsync(brokeredMessage, messagingContext, cancellationToken)
                                    .PreserveThreadContext();
                     }
                     catch (Exception ex)
@@ -69,7 +78,8 @@ namespace Kephas.Messaging.Distributed
                         this.Logger.Warn(ex, Strings.InProcessMessageBroker_MessageProcessor_Async_Exception);
                         return null;
                     }
-                }, cancellationToken);
+                },
+                cancellationToken);
         }
     }
 }

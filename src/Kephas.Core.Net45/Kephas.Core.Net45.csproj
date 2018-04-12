@@ -572,6 +572,12 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeKind.cs">
       <Link>Runtime\RuntimeTypeKind.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\ISecurityService.cs">
+      <Link>Security\ISecurityService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\NullSecurityService.cs">
+      <Link>Security\NullSecurityService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
     </Compile>

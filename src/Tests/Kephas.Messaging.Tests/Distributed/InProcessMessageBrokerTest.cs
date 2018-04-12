@@ -24,6 +24,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Ping;
+    using Kephas.Security;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
@@ -259,8 +260,8 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             private readonly ISerializationService serializationService;
 
-            public RemoteMessageBroker(IAppManifest appManifest, IMessageProcessor messageProcessor, ISerializationService serializationService)
-                : base(appManifest, messageProcessor)
+            public RemoteMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor, ISerializationService serializationService)
+                : base(appManifest, securityService, messageProcessor)
             {
                 this.serializationService = serializationService;
             }
@@ -269,11 +270,15 @@ namespace Kephas.Messaging.Tests.Distributed
             /// Sends the brokered message asynchronously over the physical medium.
             /// </summary>
             /// <param name="brokeredMessage">The brokered message.</param>
+            /// <param name="context"></param>
             /// <param name="cancellationToken">The cancellation token (optional).</param>
             /// <returns>
             /// The asynchronous result that yields an IMessage.
             /// </returns>
-            protected override async Task SendAsync(IBrokeredMessage brokeredMessage, CancellationToken cancellationToken = default)
+            protected override async Task SendAsync(
+                IBrokeredMessage brokeredMessage,
+                IContext context,
+                CancellationToken cancellationToken)
             {
                 var serializedMessage = await this.serializationService.JsonSerializeAsync(
                                             brokeredMessage,
@@ -281,7 +286,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 var deserializedMessage = await this.serializationService.JsonDeserializeAsync(
                                               serializedMessage,
                                               cancellationToken: cancellationToken);
-                await base.SendAsync((IBrokeredMessage)deserializedMessage, cancellationToken);
+                await base.SendAsync((IBrokeredMessage)deserializedMessage, context, cancellationToken);
             }
         }
     }

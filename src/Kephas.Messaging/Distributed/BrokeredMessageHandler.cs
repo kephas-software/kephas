@@ -176,7 +176,7 @@ namespace Kephas.Messaging.Distributed
                 }
 
                 var broker = this.messageBrokerFactory.CreateExportedValue();
-                var responseMessage = broker.CreateBrokeredMessageBuilder<BrokeredMessage>()
+                var responseMessage = broker.CreateBrokeredMessageBuilder(context)
                     .ReplyTo(message.Id, message.Sender)
                     .WithContent(response)
                     .OneWay()

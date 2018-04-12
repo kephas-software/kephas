@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
+    using Kephas.Security;
     using Kephas.Services;
 
     /// <summary>
@@ -39,11 +40,14 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        protected MessageBrokerBase(IAppManifest appManifest)
+        /// <param name="securityService">The security service.</param>
+        protected MessageBrokerBase(IAppManifest appManifest, ISecurityService securityService)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
+            Requires.NotNull(securityService, nameof(securityService));
 
             this.AppManifest = appManifest;
+            this.SecurityService = securityService;
         }
 
         /// <summary>
@@ -61,6 +65,14 @@ namespace Kephas.Messaging.Distributed
         /// The application manifest.
         /// </value>
         public IAppManifest AppManifest { get; }
+
+        /// <summary>
+        /// Gets the security service.
+        /// </summary>
+        /// <value>
+        /// The security service.
+        /// </value>
+        public ISecurityService SecurityService { get; }
 
         /// <summary>
         /// Dispatches the brokered message asynchronously.
@@ -81,14 +93,14 @@ namespace Kephas.Messaging.Distributed
             if (brokeredMessage.IsOneWay)
             {
                 this.LogBeforeSend(brokeredMessage);
-                this.SendAsync(brokeredMessage, cancellationToken);
+                this.SendAsync(brokeredMessage, context, cancellationToken);
                 return Task.FromResult((IMessage)null);
             }
 
             var taskCompletionSource = this.GetTaskCompletionSource(brokeredMessage);
 
             this.LogBeforeSend(brokeredMessage);
-            this.SendAsync(brokeredMessage, cancellationToken);
+            this.SendAsync(brokeredMessage, context, cancellationToken);
 
             // Returns an awaiter for the answer, must pair with the original message ID.
             return taskCompletionSource.Task;
@@ -142,13 +154,14 @@ namespace Kephas.Messaging.Distributed
         /// Creates a brokered message builder.
         /// </summary>
         /// <typeparam name="TMessage">Type of the message.</typeparam>
+        /// <param name="context">The sending context (optional).</param>
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>()
+        public virtual BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>(IContext context = null)
             where TMessage : BrokeredMessage, new()
         {
-            return new BrokeredMessageBuilder<TMessage>(this.AppManifest);
+            return new BrokeredMessageBuilder<TMessage>(this.AppManifest, this.SecurityService, context);
         }
 
         /// <summary>
@@ -175,12 +188,14 @@ namespace Kephas.Messaging.Distributed
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
         protected abstract Task SendAsync(
             IBrokeredMessage brokeredMessage,
+            IContext context,
             CancellationToken cancellationToken);
 
         /// <summary>

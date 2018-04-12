@@ -120,6 +120,14 @@ namespace Kephas.Messaging.Distributed
         public string ReplyToMessageId { get; set; }
 
         /// <summary>
+        /// Gets or sets the bearer token.
+        /// </summary>
+        /// <value>
+        /// The bearer token.
+        /// </value>
+        public string BearerToken { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>

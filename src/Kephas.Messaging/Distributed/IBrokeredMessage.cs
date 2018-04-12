@@ -88,5 +88,13 @@ namespace Kephas.Messaging.Distributed
         /// The identifier of the reply to message.
         /// </value>
         string ReplyToMessageId { get; }
+
+        /// <summary>
+        /// Gets the bearer token.
+        /// </summary>
+        /// <value>
+        /// The bearer token.
+        /// </value>
+        string BearerToken { get; }
     }
 }

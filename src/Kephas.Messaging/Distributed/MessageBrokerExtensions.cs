@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
 
             if (!(@event is IBrokeredMessage brokeredMessage))
             {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
                 brokeredMessage = brokeredMessageBuilder.WithContent(@event).OneWay().BrokeredMessage;
             }
             else
@@ -78,7 +78,7 @@ namespace Kephas.Messaging.Distributed
 
             if (!(message is IBrokeredMessage brokeredMessage))
             {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
                 brokeredMessage = brokeredMessageBuilder
                                     .WithContent(message)
                                     .BrokeredMessage;
@@ -113,7 +113,7 @@ namespace Kephas.Messaging.Distributed
 
             if (!(message is IBrokeredMessage brokeredMessage))
             {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder();
+                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
                 brokeredMessage = brokeredMessageBuilder
                     .WithContent(message)
                     .OneWay()
@@ -132,14 +132,15 @@ namespace Kephas.Messaging.Distributed
         /// Creates a untyped brokered message builder.
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="context">The sending context (optional).</param>
         /// <returns>
         /// The new untyped brokered message builder.
         /// </returns>
-        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(this IMessageBroker messageBroker)
+        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(this IMessageBroker messageBroker, IContext context = null)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
 
-            return messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>();
+            return messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>(context);
         }
     }
 }

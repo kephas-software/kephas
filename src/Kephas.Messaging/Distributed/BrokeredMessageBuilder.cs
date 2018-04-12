@@ -16,6 +16,9 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Resources;
+    using Kephas.Security;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A brokered message builder.
@@ -25,11 +28,6 @@ namespace Kephas.Messaging.Distributed
         where TMessage : BrokeredMessage, new()
     {
         /// <summary>
-        /// The application manifest.
-        /// </summary>
-        private readonly IAppManifest appManifest;
-
-        /// <summary>
         /// The brokered message.
         /// </summary>
         private readonly TMessage brokeredMessage;
@@ -38,14 +36,22 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder{TMessage}"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        public BrokeredMessageBuilder(IAppManifest appManifest)
+        /// <param name="securityService">The security service.</param>
+        /// <param name="context">The sending context (optional).</param>
+        public BrokeredMessageBuilder(IAppManifest appManifest, ISecurityService securityService, IContext context = null)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
+            Requires.NotNull(securityService, nameof(securityService));
 
-            this.appManifest = appManifest;
+            this.AppManifest = appManifest;
+            this.SecurityService = securityService;
+            this.Context = context;
 
             // ReSharper disable once VirtualMemberCallInConstructor
             this.brokeredMessage = this.CreateBrokeredMessage();
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.brokeredMessage.BearerToken = this.GetBearerToken(context);
         }
 
         /// <summary>
@@ -60,6 +66,27 @@ namespace Kephas.Messaging.Distributed
         /// The brokered message.
         /// </value>
         public IBrokeredMessage BrokeredMessage => this.brokeredMessage;
+
+        /// <summary>
+        /// Gets the application manifest.
+        /// </summary>
+        public IAppManifest AppManifest { get; }
+
+        /// <summary>
+        /// Gets the security service.
+        /// </summary>
+        /// <value>
+        /// The security service.
+        /// </value>
+        public ISecurityService SecurityService { get; }
+
+        /// <summary>
+        /// Gets the sending context.
+        /// </summary>
+        /// <value>
+        /// The sending context.
+        /// </value>
+        public IContext Context { get; }
 
         /// <summary>
         /// Sets the content message.
@@ -235,7 +262,19 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IEndpoint CreateEndpoint(string senderId)
         {
-            return new Endpoint(this.appManifest.AppId, this.appManifest.AppInstanceId, senderId);
+            return new Endpoint(this.AppManifest.AppId, this.AppManifest.AppInstanceId, senderId);
+        }
+
+        /// <summary>
+        /// Gets the bearer token.
+        /// </summary>
+        /// <param name="context">The sending context (optional).</param>
+        /// <returns>
+        /// The bearer token.
+        /// </returns>
+        protected virtual string GetBearerToken(IContext context)
+        {
+            return this.SecurityService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
         }
     }
 }
