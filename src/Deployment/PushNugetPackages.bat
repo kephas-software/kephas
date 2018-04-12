@@ -7,7 +7,6 @@ nuget push Kephas.Localization.%1.nupkg -Source https://www.nuget.org/api/v2/pac
 nuget push Kephas.Logging.NLog.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Logging.Log4Net.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Composition.Mef.%1.nupkg -Source https://www.nuget.org/api/v2/package
-nuget push Kephas.Platform.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Model.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Data.Client.%1.nupkg -Source https://www.nuget.org/api/v2/package
@@ -22,9 +21,9 @@ nuget push Kephas.Messaging.Model.%1.nupkg -Source https://www.nuget.org/api/v2/
 nuget push Kephas.CodeAnalysis.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Mail.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Mail.MailKit.%1.nupkg -Source https://www.nuget.org/api/v2/package
-nuget push Kephas.Web.Owin.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Npgsql.%1.nupkg -Source https://www.nuget.org/api/v2/package
-nuget push Kephas.Web.ServiceStack.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.ServiceStack.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Serialization.ServiceStack.Text.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
 @pause

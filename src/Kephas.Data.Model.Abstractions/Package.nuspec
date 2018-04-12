@@ -3,7 +3,7 @@
     <metadata>
         <id>Kephas.Data.Model.Abstractions</id>
         <version>$version$</version>
-        <title>Kephas.Data.Model</title>
+        <title>Kephas.Data.Model.Abstractions</title>
         <authors>Quartz Software SRL</authors>
         <owners>Quartz Software SRL</owners>
         <description>Provides modelling abstractions for data, like identifiable entities, hierarchy nodes, and so on.</description>
