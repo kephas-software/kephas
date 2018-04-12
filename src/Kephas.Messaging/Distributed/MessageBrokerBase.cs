@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Base implementation of a <see cref="IMessageBroker"/>.
@@ -65,12 +66,14 @@ namespace Kephas.Messaging.Distributed
         /// Dispatches the brokered message asynchronously.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The dispatching context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
         public virtual Task<IMessage> DispatchAsync(
             IBrokeredMessage brokeredMessage,
+            IContext context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
@@ -95,12 +98,14 @@ namespace Kephas.Messaging.Distributed
         /// Notification method for a received reply.
         /// </summary>
         /// <param name="replyMessage">Message describing the reply.</param>
+        /// <param name="context">The reply context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         public virtual Task ReplyReceivedAsync(
             IBrokeredMessage replyMessage,
+            IContext context = null,
             CancellationToken cancellationToken = default)
         {
             var replyToMessageId = replyMessage.ReplyToMessageId;
@@ -136,6 +141,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Creates a brokered message builder.
         /// </summary>
+        /// <typeparam name="TMessage">Type of the message.</typeparam>
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
@@ -286,7 +292,7 @@ namespace Kephas.Messaging.Distributed
 
             // TODO localization
             var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
-            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for {brokeredMessage}.");
+            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for {brokeredMessage} {reply}.");
         }
     }
 }

@@ -144,4 +144,22 @@
   <data name="InProcessMessageBroker_MessageProcessor_Async_Exception" xml:space="preserve">
     <value>An error occurred in the message processor. Please check the exception details for more information.</value>
   </data>
+  <data name="BrokeredMessageHandler_ProcessAndRespond_Exception" xml:space="preserve">
+    <value>The response processing is faulted.</value>
+  </data>
+  <data name="BrokeredMessageHandler_ProcessAndRespond_Canceled" xml:space="preserve">
+    <value>The response processing was canceled.</value>
+  </data>
+  <data name="BrokeredMessageHandler_ProcessAndReply_Exception" xml:space="preserve">
+    <value>The reply processing is faulted.</value>
+  </data>
+  <data name="BrokeredMessageHandler_ProcessAndReply_Canceled" xml:space="preserve">
+    <value>The reply processing was canceled.</value>
+  </data>
+  <data name="BrokeredMessageHandler_ProcessOneWay_Exception" xml:space="preserve">
+    <value>The one-way processing is faulted.</value>
+  </data>
+  <data name="BrokeredMessageHandler_ProcessOneWay_Canceled" xml:space="preserve">
+    <value>The one-way processing was canceled.</value>
+  </data>
 </root>

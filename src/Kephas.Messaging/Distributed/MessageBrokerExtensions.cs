@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// Extension methods for <see cref="IMessageBroker"/>.
@@ -29,6 +30,7 @@ namespace Kephas.Messaging.Distributed
         /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
+        /// <param name="context">The publishing context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result.
@@ -36,6 +38,7 @@ namespace Kephas.Messaging.Distributed
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             IEvent @event,
+            IContext context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
@@ -51,7 +54,7 @@ namespace Kephas.Messaging.Distributed
                 // TODO check the message broker content
             }
 
-            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
 
         /// <summary>
@@ -59,6 +62,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result yielding the response message.
@@ -66,6 +70,7 @@ namespace Kephas.Messaging.Distributed
         public static Task<IMessage> ProcessAsync(
             this IMessageBroker messageBroker,
             IMessage message,
+            IContext context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
@@ -84,7 +89,7 @@ namespace Kephas.Messaging.Distributed
                 // brokeredMessage.IsOneWay = false
             }
 
-            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
 
         /// <summary>
@@ -92,6 +97,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result.
@@ -99,6 +105,7 @@ namespace Kephas.Messaging.Distributed
         public static Task<IMessage> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             IMessage message,
+            IContext context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
@@ -118,7 +125,7 @@ namespace Kephas.Messaging.Distributed
                 // brokeredMessage.IsOneWay = true
             }
 
-            return messageBroker.DispatchAsync(brokeredMessage, cancellationToken);
+            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
 
         /// <summary>

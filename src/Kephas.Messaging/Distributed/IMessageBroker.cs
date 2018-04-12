@@ -26,24 +26,28 @@ namespace Kephas.Messaging.Distributed
         /// Dispatches the brokered message asynchronously.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
         Task<IMessage> DispatchAsync(
             IBrokeredMessage brokeredMessage,
+            IContext context = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Notification method for a received reply.
         /// </summary>
         /// <param name="replyMessage">Message describing the reply.</param>
+        /// <param name="context">The reply context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task ReplyReceivedAsync(
             IBrokeredMessage replyMessage,
+            IContext context = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>

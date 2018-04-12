@@ -10,8 +10,8 @@
 
 namespace Kephas.Messaging.Resources {
     using System;
-    using System.Reflection;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Messaging.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Messaging.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +75,60 @@ namespace Kephas.Messaging.Resources {
         internal static string BrokeredMessageBuilder_NonNegativeTimeout_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageBuilder_NonNegativeTimeout_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The reply processing was canceled..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessAndReply_Canceled {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndReply_Canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The reply processing is faulted..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessAndReply_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndReply_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The response processing was canceled..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessAndRespond_Canceled {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndRespond_Canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The response processing is faulted..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessAndRespond_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndRespond_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The one-way processing was canceled..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessOneWay_Canceled {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessOneWay_Canceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The one-way processing is faulted..
+        /// </summary>
+        internal static string BrokeredMessageHandler_ProcessOneWay_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessageHandler_ProcessOneWay_Exception", resourceCulture);
             }
         }
         
