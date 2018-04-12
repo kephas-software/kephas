@@ -1,5 +1,31 @@
-<a name="4.2.0"></a>
-# [4.2.0-beta02](https://github.com/quartz-software/kephas/compare/v4.2.0-beta02...master) (2018-03-27)
+<a name="4.5.0"></a>
+# [4.5.0-beta03](https://github.com/quartz-software/kephas/compare/v4.5.0-beta03...master) (2018-04-12)
+
+* Core
+  * Removed the IIdentityProvider service. Made the DataContext accept an IIdentity instead of IIdentityProvider in constructor.
+  * Fixed the TypeExtensions.IsCollection.
+  * Added TypeExtensions.IsDictionary extension method.
+
+* Data.Linq
+  * Add support for Join, GroupJoin, Select in the SubstituteTypeExpressionVisitor.
+  * Removed obsolete NetStandard 1.3 code in SubstituteTypeExpressionVisitor.
+
+* Data.MongoDB
+  * Fixed virtual members in MongoDataContext.
+  
+* Data
+  * The data context retrievs its context identity from the provided initialization context.
+  
+* Messaging
+  * Added the context to the message broker methods.
+
+* Other
+  * Remove Kephas.Web.Owin - will be replaced by Kephas.AspNetCore.
+  * Made Kephas .NET Standard project reference v. 2.0.
+  * Converted all .NET standard tests to .NET Core 2.0.
+  * Merged Kephas.Platform into Kephas.Core.
+
+# [4.2.0-beta02](https://github.com/quartz-software/kephas/compare/v4.2.0-beta02...v4.5.0-beta03) (2018-03-27)
 
 * Messaging
   * Refactored the distributed Endpoint to accept a URL. This opens up the possibility of http/s communication. The message broker will have multiple registered dispatchers, handling a specific URI scheme (app - the app farm, http/s - REST API, so on).
