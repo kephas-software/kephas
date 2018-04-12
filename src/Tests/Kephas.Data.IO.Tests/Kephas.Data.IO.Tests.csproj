@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\my-embedded-data-2.json" />
+    <None Remove="Data\my-embedded-data.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\my-embedded-data-2.json" />
+    <EmbeddedResource Include="Data\my-embedded-data.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
@@ -16,6 +26,12 @@
     <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
     <ProjectReference Include="..\..\Kephas.Data.IO\Kephas.Data.IO.csproj" />
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\my-data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

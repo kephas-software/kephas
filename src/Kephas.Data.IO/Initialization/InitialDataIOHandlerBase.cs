@@ -12,6 +12,7 @@ namespace Kephas.Data.IO.Initialization
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,7 +23,6 @@ namespace Kephas.Data.IO.Initialization
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -96,9 +96,9 @@ namespace Kephas.Data.IO.Initialization
             CancellationToken cancellationToken = default)
         {
             var result = new DataIOResult();
-            foreach (var dataFile in this.GetDataFiles())
+            foreach (var dataFilePath in this.GetDataFilePaths())
             {
-                var fileResult = await this.ImportDataFileAsync(initialDataContext, dataFile, cancellationToken).PreserveThreadContext();
+                var fileResult = await this.ImportDataFileAsync(initialDataContext, dataFilePath, cancellationToken).PreserveThreadContext();
                 result.MergeResult(fileResult);
             }
 
@@ -111,37 +111,38 @@ namespace Kephas.Data.IO.Initialization
         /// <returns>
         /// An enumerator that allows foreach to be used to process the data files in this collection.
         /// </returns>
-        protected abstract IEnumerable<string> GetDataFiles();
+        protected abstract IEnumerable<string> GetDataFilePaths();
 
         /// <summary>
         /// Import data file asynchronously.
         /// </summary>
         /// <param name="initialDataContext">Context for the initial data.</param>
-        /// <param name="dataFileName">The data file name.</param>
+        /// <param name="dataFilePath">The data file path.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result returning the data import result.
         /// </returns>
-        protected virtual async Task<IDataIOResult> ImportDataFileAsync(IInitialDataContext initialDataContext, string dataFileName, CancellationToken cancellationToken)
+        protected virtual async Task<IDataIOResult> ImportDataFileAsync(IInitialDataContext initialDataContext, string dataFilePath, CancellationToken cancellationToken)
         {
-            using (var dataSource = this.CreateDataSource(dataFileName))
+            using (var dataSource = this.CreateDataSource(dataFilePath))
             using (var sourceDataContext = this.SourceDataContextProvider(initialDataContext))
             using (var targetDataContext = this.TargetDataContextProvider(initialDataContext))
             {
                 var importContext = this.CreateDataImportContext(initialDataContext, sourceDataContext, targetDataContext);
-                
+
                 try
                 {
                     var result = await this.DataImportService
                                      .ImportDataAsync(dataSource, importContext, cancellationToken)
                                      .PreserveThreadContext();
                     result.Messages?.ForEach(m => this.Logger.Info($"{m.Timestamp}: {m.Message}"));
-                    result.Exceptions?.ForEach(e => this.Logger.Error(e, ""));
+                    var errorMessage = $"Exception while importing {dataFilePath}.";
+                    result.Exceptions?.ForEach(e => this.Logger.Error(e, errorMessage));
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    var errorMessage = $"Exception while importing {dataFileName}.";
+                    var errorMessage = $"Exception while importing {dataFilePath}.";
                     this.Logger.Error(ex, errorMessage);
                     var result = new DataIOResult();
                     result.Exceptions.TryAdd(ex as DataIOException ?? new DataIOException(errorMessage, ex));
@@ -168,18 +169,21 @@ namespace Kephas.Data.IO.Initialization
         }
 
         /// <summary>
-        /// Creates an output data source.
+        /// Creates a data source for the import operation.
         /// </summary>
-        /// <param name="dataFileName">The data file name.</param>
+        /// <param name="dataFilePath">The data file path.</param>
         /// <returns>
         /// The new data source.
         /// </returns>
-        protected virtual DataStream CreateDataSource(string dataFileName)
+        protected virtual DataStream CreateDataSource(string dataFilePath)
         {
-            var assembly = this.GetType().AsRuntimeTypeInfo().TypeInfo.Assembly;
-            var assemblyNamespace = assembly.GetName().Name;
-            var data = assembly.GetManifestResourceStream($"{assemblyNamespace}.Data.{dataFileName}");
-            return new DataStream(data, dataFileName, MediaTypeNames.Application.Json, ownsStream: true);
+            if (!File.Exists(dataFilePath))
+            {
+                // TODO localization
+                throw new IOException($"The file {dataFilePath} does not exist.");
+            }
+
+            return new DataStream(File.Open(dataFilePath, FileMode.Open, FileAccess.Read), dataFilePath, MediaTypeNames.Application.Json, ownsStream: true);
         }
     }
 }

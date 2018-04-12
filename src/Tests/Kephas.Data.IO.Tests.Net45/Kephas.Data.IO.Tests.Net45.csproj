@@ -68,6 +68,12 @@
     <Compile Include="..\Kephas.Data.IO.Tests\Import\DefaultDataImportServiceTest.cs">
       <Link>Import\DefaultDataImportServiceTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBaseTest.cs">
+      <Link>Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBaseTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO.Tests\Initialization\InitialDataIOHandlerBaseTest.cs">
+      <Link>Initialization\InitialDataIOHandlerBaseTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +98,11 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Data\my-embedded-data.json" />
+    <None Include="Data\my-data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Data\my-embedded-data-2.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />

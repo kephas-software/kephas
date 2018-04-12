@@ -141,4 +141,7 @@
   <data name="ImportEntitySuccessfulMessage_Message" xml:space="preserve">
     <value>Successfully imported {0} ({1}). {2}</value>
   </data>
+  <data name="AssemblyEmbeddedResourcesInitialDataHandlerBase_NotFound_Exception" xml:space="preserve">
+    <value>Resource '{0}' not found. Check whether the resource is marked as 'Embedded Resource' and that the name is valid.</value>
+  </data>
 </root>

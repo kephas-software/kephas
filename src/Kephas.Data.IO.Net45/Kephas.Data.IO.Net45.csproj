@@ -150,6 +150,9 @@
     <Compile Include="..\Kephas.Data.IO\Import\ImportEntitySuccessfulMessage.cs">
       <Link>Import\ImportEntitySuccessfulMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBase.cs">
+      <Link>Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Initialization\InitialDataIOHandlerBase.cs">
       <Link>Initialization\InitialDataIOHandlerBase.cs</Link>
     </Compile>
