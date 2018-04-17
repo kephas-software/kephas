@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
+    using Kephas.Security;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -29,6 +30,11 @@ namespace Kephas.Messaging.Distributed
     [OverridePriority(Priority.Low)]
     public class BrokeredMessageHandler : MessageHandlerBase<BrokeredMessage, IMessage>
     {
+        /// <summary>
+        /// The ambient services.
+        /// </summary>
+        private readonly IAmbientServices ambientServices;
+
         /// <summary>
         /// The message processor.
         /// </summary>
@@ -40,19 +46,32 @@ namespace Kephas.Messaging.Distributed
         private readonly IExportFactory<IMessageBroker> messageBrokerFactory;
 
         /// <summary>
+        /// The security service.
+        /// </summary>
+        private readonly ISecurityService securityService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageHandler"/> class.
         /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="messageBrokerFactory">The message broker factory.</param>
+        /// <param name="securityService">The security service.</param>
         public BrokeredMessageHandler(
+            IAmbientServices ambientServices,
             IMessageProcessor messageProcessor,
-            IExportFactory<IMessageBroker> messageBrokerFactory)
+            IExportFactory<IMessageBroker> messageBrokerFactory,
+            ISecurityService securityService)
         {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(messageBrokerFactory, nameof(messageBrokerFactory));
+            Requires.NotNull(securityService, nameof(securityService));
 
+            this.ambientServices = ambientServices;
             this.messageProcessor = messageProcessor;
             this.messageBrokerFactory = messageBrokerFactory;
+            this.securityService = securityService;
         }
 
         /// <summary>
@@ -74,20 +93,26 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override async Task<IMessage> ProcessAsync(BrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
+            var identity = await this.securityService.GetIdentityAsync(message.BearerToken, context, token).PreserveThreadContext();
+            var processContext = new MessageProcessingContext(this.messageProcessor)
+                                     {
+                                         Identity = identity
+                                     };
+
             if (message.ReplyToMessageId != null)
             {
                 // do not wait for the processing.
-                Task.Factory.StartNew(() => this.ProcessReply(message, context, token), token);
+                Task.Factory.StartNew(() => this.ProcessReply(message, processContext, token), token);
             }
             else if (message.IsOneWay)
             {
                 // do not wait for the processing.
-                Task.Factory.StartNew(() => this.ProcessOneWay(message, context, token), token);
+                Task.Factory.StartNew(() => this.ProcessOneWay(message, processContext, token), token);
             }
             else
             {
                 // wait for the processing and return the result through the message broker.
-                Task.Factory.StartNew(() => this.ProcessAndRespond(message, context, token), token);
+                Task.Factory.StartNew(() => this.ProcessAndRespond(message, processContext, token), token);
             }
 
             return null;
