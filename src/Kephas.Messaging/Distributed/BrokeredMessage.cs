@@ -128,6 +128,14 @@ namespace Kephas.Messaging.Distributed
         public string BearerToken { get; set; }
 
         /// <summary>
+        /// Gets or sets the custom properties of the brokered message.
+        /// </summary>
+        /// <value>
+        /// The custom properties.
+        /// </value>
+        public IDictionary<string, object> Properties { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
