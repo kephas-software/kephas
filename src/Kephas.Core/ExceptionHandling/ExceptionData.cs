@@ -15,27 +15,6 @@ namespace Kephas.ExceptionHandling
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Values that represent exception severities.
-    /// </summary>
-    public enum SeverityLevel
-    {
-        /// <summary>
-        /// An enum constant representing the fatal error option.
-        /// </summary>
-        FatalError,
-
-        /// <summary>
-        /// An enum constant representing the error option.
-        /// </summary>
-        Error,
-
-        /// <summary>
-        /// An enum constant representing the warning option.
-        /// </summary>
-        Warning,
-    }
-
-    /// <summary>
     /// An exception data.
     /// </summary>
     public class ExceptionData
@@ -57,6 +36,11 @@ namespace Kephas.ExceptionHandling
             : this()
         {
             Requires.NotNull(exception, nameof(exception));
+
+            if (exception is ISeverityQualifiedException severityQualifiedException)
+            {
+                severity = severityQualifiedException.Severity;
+            }
 
             this.Message = exception.Message;
             this.Severity = severity;

@@ -359,6 +359,12 @@
     <Compile Include="..\Kephas.Core\ExceptionHandling\ExceptionData.cs">
       <Link>ExceptionHandling\ExceptionData.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\ExceptionHandling\ISeverityQualifiedException.cs">
+      <Link>ExceptionHandling\ISeverityQualifiedException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\ExceptionHandling\SeverityLevel.cs">
+      <Link>ExceptionHandling\SeverityLevel.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Graphs\Graph.cs">
       <Link>Graphs\Graph.cs</Link>
     </Compile>

@@ -12,18 +12,13 @@ namespace Kephas.Model
 {
     using System;
 
+    using Kephas.ExceptionHandling;
+
     /// <summary>
     /// Exception for signalling model errors.
     /// </summary>
-    public class ModelException : Exception
+    public class ModelException : Exception, ISeverityQualifiedException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelException"/> class.
-        /// </summary>
-        public ModelException()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelException"/> class.
         /// </summary>
@@ -31,6 +26,7 @@ namespace Kephas.Model
         public ModelException(string message)
             : base(message)
         {
+            this.Severity = SeverityLevel.Error;
         }
 
         /// <summary>
@@ -41,6 +37,15 @@ namespace Kephas.Model
         public ModelException(string message, Exception inner)
             : base(message, inner)
         {
+            this.Severity = SeverityLevel.Error;
         }
+
+        /// <summary>
+        /// Gets or sets the severity.
+        /// </summary>
+        /// <value>
+        /// The severity.
+        /// </value>
+        public SeverityLevel Severity { get; set; }
     }
 }

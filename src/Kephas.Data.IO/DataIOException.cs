@@ -14,11 +14,12 @@ namespace Kephas.Data.IO
 
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// Exception for signalling data I/O errors.
     /// </summary>
-    public class DataIOException : Exception, IDataIOMessage
+    public class DataIOException : Exception, IDataIOMessage, ISeverityQualifiedException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOException"/> class.
@@ -28,6 +29,7 @@ namespace Kephas.Data.IO
             : base(message)
         {
             this.Timestamp = DateTimeOffset.Now;
+            this.Severity = SeverityLevel.Error;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace Kephas.Data.IO
             : base(message, inner)
         {
             this.Timestamp = DateTimeOffset.Now;
+            this.Severity = SeverityLevel.Error;
         }
 
         /// <summary>
@@ -48,6 +51,14 @@ namespace Kephas.Data.IO
         /// The timestamp.
         /// </value>
         public DateTimeOffset Timestamp { get; }
+
+        /// <summary>
+        /// Gets or sets the severity.
+        /// </summary>
+        /// <value>
+        /// The severity.
+        /// </value>
+        public SeverityLevel Severity { get; set; }
 
         /// <summary>
         /// Wraps, if necessary, the exception into a <see cref="DataIOException"/>.
