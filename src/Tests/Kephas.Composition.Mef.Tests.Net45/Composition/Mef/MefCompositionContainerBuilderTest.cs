@@ -49,11 +49,11 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
 
-            mockPlatformManager.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly }));
+            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
 
-            var container = await factory
-                .CreateContainerAsync();
+            var container = factory
+                .CreateContainer();
 
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
@@ -63,13 +63,6 @@ namespace Kephas.Tests.Composition.Mef
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
-        }
-
-        [Test]
-        public void CreateContainer_assemblies_not_set()
-        {
-            var factory = this.CreateCompositionContainerBuilder();
-            Assert.Throws<InvalidOperationException>(() => factory.CreateContainer());
         }
 
         [Test]

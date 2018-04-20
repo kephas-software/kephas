@@ -13,8 +13,6 @@ namespace Kephas.Application
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Dynamic;
 
@@ -35,10 +33,9 @@ namespace Kephas.Application
         /// Gets the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of an enumeration of application assemblies.
+        /// An enumeration of application assemblies.
         /// </returns>
-        Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default);
+        IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null);
     }
 }

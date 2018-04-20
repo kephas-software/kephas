@@ -166,7 +166,7 @@ namespace Kephas.Serialization.Json.Tests
         public async Task JsonSerializer_Composition()
         {
             var asBuilder = new AmbientServicesBuilder();
-            await asBuilder.WithMefCompositionContainerAsync(
+            asBuilder.WithMefCompositionContainer(
                 b =>
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
             var ambientServices = asBuilder.AmbientServices;

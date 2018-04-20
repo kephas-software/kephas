@@ -4,19 +4,17 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   MEF extensions for the ambient services builder.
+//   Implements the MEF ambient services builder extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas
 {
     using System;
-    using System.Threading.Tasks;
 
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// MEF extensions for the ambient services builder.
@@ -32,29 +30,12 @@ namespace Kephas
         public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
-            
-            var containerBuilder = new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServicesBuilder.AmbientServices));
-
-            containerBuilderConfig?.Invoke(containerBuilder);
-
-            return ambientServicesBuilder.WithCompositionContainer(containerBuilder.CreateContainer());
-        }
-
-        /// <summary>
-        /// Sets asynchronously the composition container to the ambient services.
-        /// </summary>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <returns>A promise of the provided ambient services builder.</returns>
-        public static async Task<AmbientServicesBuilder> WithMefCompositionContainerAsync(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
-        {
-            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
             var containerBuilder = new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServicesBuilder.AmbientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
-            var container = await containerBuilder.CreateContainerAsync().PreserveThreadContext();
+            var container = containerBuilder.CreateContainer();
             return ambientServicesBuilder.WithCompositionContainer(container);
         }
     }

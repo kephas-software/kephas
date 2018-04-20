@@ -10,8 +10,8 @@
 
 namespace Kephas.Resources {
     using System;
-    using System.Reflection;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +39,7 @@ namespace Kephas.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -301,15 +301,6 @@ namespace Kephas.Resources {
         internal static string ConfigurationBase_SettingValueNotSupported_Exception {
             get {
                 return ResourceManager.GetString("ConfigurationBase_SettingValueNotSupported_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please set the composition assemblies before calling the container synchronously. To load all the application assemblies for composition, please call the CreateContainerAsync method instead..
-        /// </summary>
-        internal static string CreateContainerRequiresCompositionAssembliesSet {
-            get {
-                return ResourceManager.GetString("CreateContainerRequiresCompositionAssembliesSet", resourceCulture);
             }
         }
         

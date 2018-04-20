@@ -63,9 +63,9 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         /// <returns>
         /// A promise of an enumeration of runtime elements.
         /// </returns>
-        public async Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
-            var assemblies = await this.appRuntime.GetAppAssembliesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var assemblies = this.appRuntime.GetAppAssemblies();
 
             var types = new HashSet<Type>();
             var markerInterface = typeof(IMessage).GetTypeInfo();
@@ -79,7 +79,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
                         }));
             }
 
-            return types;
+            return Task.FromResult<IEnumerable<object>>(types);
         }
 
         /// <summary>

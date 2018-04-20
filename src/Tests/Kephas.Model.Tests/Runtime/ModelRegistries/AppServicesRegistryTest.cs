@@ -52,8 +52,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(AppServicesRegistry).GetTypeInfo().Assembly }));
+            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(AppServicesRegistry).GetTypeInfo().Assembly });
 
             var registry = new AppServicesRegistry(appRuntime, new DefaultTypeLoader());
             var elements = await registry.GetRuntimeElementsAsync();

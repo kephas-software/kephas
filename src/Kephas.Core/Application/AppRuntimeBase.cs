@@ -87,11 +87,10 @@ namespace Kephas.Application
         /// Gets the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A promise of an enumeration of application assemblies.
+        /// An enumeration of application assemblies.
         /// </returns>
-        public virtual async Task<IEnumerable<Assembly>> GetAppAssembliesAsync(Func<AssemblyName, bool> assemblyFilter = null, CancellationToken cancellationToken = default)
+        public IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null)
         {
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
@@ -124,7 +123,7 @@ namespace Kephas.Application
                 assemblies.AddRange(assembliesToCheck);
             }
 
-            await this.AddAdditionalAssembliesAsync(assemblies, assemblyFilter, cancellationToken).PreserveThreadContext();
+            this.AddAdditionalAssemblies(assemblies, assemblyFilter);
             return assemblies;
         }
 
@@ -150,14 +149,10 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="assemblies">The collected assemblies.</param>
         /// <param name="assemblyFilter">A filter for the assemblies.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task.
-        /// </returns>
-        protected virtual async Task AddAdditionalAssembliesAsync(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter, CancellationToken cancellationToken)
+        protected virtual void AddAdditionalAssemblies(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter)
         {
             // load all the assemblies found in the application directories which are not already loaded.
-            var directories = await this.GetAppAssemblyDirectoriesAsync().PreserveThreadContext();
+            var directories = this.GetAppAssemblyDirectories();
             foreach (var directory in directories.Where(d => !string.IsNullOrEmpty(d)))
             {
                 var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
@@ -204,11 +199,11 @@ namespace Kephas.Application
         /// where assemblies can be loaded from, like in the case of plugin architectures.
         /// </remarks>
         /// <returns>
-        /// A promise of a directory enumeration.
+        /// A directory enumeration.
         /// </returns>
-        protected virtual Task<IEnumerable<string>> GetAppAssemblyDirectoriesAsync()
+        protected virtual IEnumerable<string> GetAppAssemblyDirectories()
         {
-            return Task.FromResult((IEnumerable<string>)new[] { this.GetAppLocation() });
+            return new[] { this.GetAppLocation() };
         }
 
         /// <summary>

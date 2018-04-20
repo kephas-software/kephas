@@ -70,10 +70,9 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <returns>
         /// A promise of an enumeration of runtime elements.
         /// </returns>
-        public async Task<IEnumerable<object>> GetRuntimeElementsAsync(
-            CancellationToken cancellationToken = default)
+        public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
-            var assemblies = await this.appRuntime.GetAppAssembliesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var assemblies = this.appRuntime.GetAppAssemblies();
             var eligibleAssemblyPairs = (from kv in from a in assemblies
                                                     select
                                                     new KeyValuePair<Assembly, IList<ModelAssemblyAttribute>>(
@@ -124,7 +123,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 }
             }
 
-            return types;
+            return Task.FromResult<IEnumerable<object>>(types);
         }
 
         /// <summary>

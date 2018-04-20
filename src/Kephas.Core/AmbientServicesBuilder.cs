@@ -140,25 +140,5 @@ namespace Kephas
 
             return this.WithCompositionContainer(containerBuilder.CreateContainer());
         }
-
-        /// <summary>
-        /// Sets asynchronously the composition container to the ambient services.
-        /// </summary>
-        /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
-        /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
-        /// <returns>A promise of the provided ambient services builder.</returns>
-        public async Task<AmbientServicesBuilder> WithCompositionContainerAsync<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
-            where TContainerBuilder : ICompositionContainerBuilder
-        {
-            var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
-            var context = new CompositionRegistrationContext(this.AmbientServices);
-
-            var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
-
-            containerBuilderConfig?.Invoke(containerBuilder);
-
-            return this.WithCompositionContainer(await containerBuilder.CreateContainerAsync().PreserveThreadContext());
-        }
     }
 }

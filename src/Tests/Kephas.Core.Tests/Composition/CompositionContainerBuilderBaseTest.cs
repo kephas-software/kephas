@@ -71,16 +71,6 @@ namespace Kephas.Core.Tests.Composition
             Assert.IsNotNull(container);
         }
 
-        [Test]
-        public async Task CreateContainerAsync()
-        {
-            var builder = new TestCompositionContainerBuilder()
-                .WithAssemblies(new[] { this.GetType().Assembly });
-
-            var container = await builder.CreateContainerAsync();
-            Assert.IsNotNull(container);
-        }
-
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             public TestCompositionContainerBuilder()

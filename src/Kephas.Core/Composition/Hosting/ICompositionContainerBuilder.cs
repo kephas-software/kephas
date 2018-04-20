@@ -10,8 +10,6 @@
 
 namespace Kephas.Composition.Hosting
 {
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Contract for composition container builders.
     /// </summary>
@@ -22,11 +20,5 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <returns>A new container with the provided configuration.</returns>
         ICompositionContext CreateContainer();
-
-        /// <summary>
-        /// Creates the container with the provided configuration asynchronously.
-        /// </summary>
-        /// <returns>A new container with the provided configuration.</returns>
-        Task<ICompositionContext> CreateContainerAsync();
     }
 }

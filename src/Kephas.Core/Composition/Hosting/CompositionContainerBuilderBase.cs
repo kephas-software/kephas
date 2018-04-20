@@ -383,33 +383,10 @@ namespace Kephas.Composition.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    var assemblies = this.compositionAssemblies;
-                    if (assemblies == null)
-                    {
-                        throw new InvalidOperationException(Strings.CreateContainerRequiresCompositionAssembliesSet);
-                    }
+                    var assemblies = this.GetCompositionAssemblies();
 
                     container = this.CreateContainerWithConventions(assemblies);
                 },
-                this.Logger);
-
-            return container;
-        }
-
-        /// <summary>
-        /// Creates the container with the provided configuration asynchronously.
-        /// </summary>
-        /// <returns>A new container with the provided configuration.</returns>
-        public virtual async Task<ICompositionContext> CreateContainerAsync()
-        {
-            ICompositionContext container = null;
-            await Profiler.WithInfoStopwatchAsync(
-                async () =>
-                    {
-                        var assemblies = await this.GetCompositionAssembliesAsync().PreserveThreadContext();
-
-                        container = this.CreateContainerWithConventions(assemblies);
-                    },
                 this.Logger);
 
             return container;
@@ -460,9 +437,9 @@ namespace Kephas.Composition.Hosting
         /// Gets the composition assemblies.
         /// </summary>
         /// <returns>An enumeration of assemblies used for composition.</returns>
-        protected async Task<IEnumerable<Assembly>> GetCompositionAssembliesAsync()
+        protected IEnumerable<Assembly> GetCompositionAssemblies()
         {
-            return (IEnumerable<Assembly>)this.compositionAssemblies ?? await this.GetAssembliesAsync();
+            return (IEnumerable<Assembly>)this.compositionAssemblies ?? this.GetAssemblies();
         }
 
         /// <summary>
@@ -524,18 +501,18 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="searchPattern">The search pattern.</param>
         /// <returns>The assemblies.</returns>
-        private async Task<IList<Assembly>> GetAssembliesAsync(string searchPattern = null)
+        private IList<Assembly> GetAssemblies(string searchPattern = null)
         {
             searchPattern = searchPattern ?? this.AppConfiguration.GetSettings<CompositionSettings>()?.AssemblyFileNamePattern;
 
-            this.Logger.Debug($"{nameof(this.GetAssembliesAsync)}. With assemblies matching pattern '{searchPattern}'.");
+            this.Logger.Debug($"{nameof(this.GetAssemblies)}. With assemblies matching pattern '{searchPattern}'.");
 
             IList<Assembly> assemblies = null;
 
-            await Profiler.WithDebugStopwatchAsync(
-                async () =>
+            Profiler.WithDebugStopwatch(
+                () =>
                 {
-                    var appAssemblies = await this.AppRuntime.GetAppAssembliesAsync();
+                    var appAssemblies = this.AppRuntime.GetAppAssemblies();
                     appAssemblies = this.WhereNotSystemAssemblies(appAssemblies);
 
                     if (string.IsNullOrWhiteSpace(searchPattern))

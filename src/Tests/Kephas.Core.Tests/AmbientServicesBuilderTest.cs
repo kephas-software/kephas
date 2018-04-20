@@ -74,7 +74,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            await builder.WithCompositionContainerAsync<TestCompositionContainerBuilder>(b => b.WithAssembly(this.GetType().Assembly));
+            builder.WithCompositionContainer<TestCompositionContainerBuilder>(b => b.WithAssembly(this.GetType().Assembly));
 
             Assert.IsFalse(ambientServices.CompositionContainer is NullCompositionContainer);
         }
@@ -84,7 +84,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            Assert.That(() => builder.WithCompositionContainerAsync<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => builder.WithCompositionContainer<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
         }
 
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>

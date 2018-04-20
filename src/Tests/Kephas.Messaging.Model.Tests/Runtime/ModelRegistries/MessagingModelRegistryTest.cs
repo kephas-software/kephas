@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         {
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
-                .GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), Arg.Any<CancellationToken>())
+                .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
@@ -54,7 +54,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
         {
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime
-                .GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), Arg.Any<CancellationToken>())
+                .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();

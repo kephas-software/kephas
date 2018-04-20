@@ -55,8 +55,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly }));
+            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly });
 
             var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(), new DefaultModelAssemblyAttributeProvider());
             var elements = await registry.GetRuntimeElementsAsync();
@@ -68,8 +68,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_exclude_from_model()
         {
             var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssembliesAsync(Arg.Any<Func<AssemblyName, bool>>(), CancellationToken.None)
-                .Returns(Task.FromResult((IEnumerable<Assembly>)new[] { typeof(ModelAssemblyRegistryTest).GetTypeInfo().Assembly }));
+            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ModelAssemblyRegistryTest).GetTypeInfo().Assembly });
 
             var attrProvider = Substitute.For<IModelAssemblyAttributeProvider>();
             attrProvider.GetModelAssemblyAttributes(Arg.Any<Assembly>()).Returns(
