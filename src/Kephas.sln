@@ -211,7 +211,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.IO.Tests", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Tests", "Tests\Kephas.Data.Model.Tests\Kephas.Data.Model.Tests.csproj", "{A196C5F7-B26E-4738-B1A4-FEEA754C03CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CodeAnalysis.Tests", "Tests\Kephas.CodeAnalysis.Tests\Kephas.CodeAnalysis.Tests.csproj", "{71A298BE-0595-4306-8340-A62576274245}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.CodeAnalysis.Tests", "Tests\Kephas.CodeAnalysis.Tests\Kephas.CodeAnalysis.Tests.csproj", "{71A298BE-0595-4306-8340-A62576274245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices", "Kephas.CompilerServices\Kephas.CompilerServices.csproj", "{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Net45", "Kephas.CompilerServices.Net45\Kephas.CompilerServices.Net45.csproj", "{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Tests", "Tests\Kephas.CompilerServices.Tests\Kephas.CompilerServices.Tests.csproj", "{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Tests.Net45", "Tests\Kephas.CompilerServices.Tests.Net45\Kephas.CompilerServices.Tests.Net45.csproj", "{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -563,6 +571,22 @@ Global
 		{71A298BE-0595-4306-8340-A62576274245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71A298BE-0595-4306-8340-A62576274245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71A298BE-0595-4306-8340-A62576274245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -633,6 +657,9 @@ Global
 		{DFFF67FB-C70A-409D-AEB3-B40222C322D9} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{A196C5F7-B26E-4738-B1A4-FEEA754C03CA} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{71A298BE-0595-4306-8340-A62576274245} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{0B62FA28-8799-4691-9ED9-DB79A0B50F3A} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
