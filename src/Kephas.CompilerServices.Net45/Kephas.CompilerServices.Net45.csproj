@@ -36,18 +36,43 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.CompilerServices\LanguageAttribute.cs">
+      <Link>LanguageAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\Composition\InterpreterMetadata.cs">
+      <Link>Scripting\Composition\InterpreterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\DefaultScriptingService.cs">
+      <Link>Scripting\DefaultScriptingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\IInterpreter.cs">
+      <Link>Scripting\IInterpreter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\IScript.cs">
+      <Link>Scripting\IScript.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\IScriptingService.cs">
+      <Link>Scripting\IScriptingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\Script.cs">
+      <Link>Scripting\Script.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.CompilerServices\Scripting\ScriptingException.cs">
+      <Link>Scripting\ScriptingException.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
+      <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
+      <Name>Kephas.Core.Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

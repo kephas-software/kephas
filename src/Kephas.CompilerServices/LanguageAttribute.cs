@@ -1,0 +1,43 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LanguageAttribute.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the language attribute class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.CompilerServices
+{
+    using System;
+
+    using Kephas.Composition.Metadata;
+    using Kephas.Diagnostics.Contracts;
+
+    /// <summary>
+    /// Attribute for language.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class LanguageAttribute : Attribute, IMetadataValue<string>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public LanguageAttribute(string value)
+        {
+            Requires.NotNullOrEmpty(value, nameof(value));
+
+            this.Value = value;
+        }
+
+        /// <summary>Gets the metadata value.</summary>
+        /// <value>The metadata value.</value>
+        object IMetadataValue.Value => this.Value;
+
+        /// <summary>Gets the metadata value.</summary>
+        /// <value>The metadata value.</value>
+        public string Value { get; }
+    }
+}
