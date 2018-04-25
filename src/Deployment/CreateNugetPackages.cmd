@@ -33,6 +33,7 @@ nuget pack ..\Kephas.Mail.MailKit\Package.nuspec -BasePath ..\Kephas.Mail.MailKi
 nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas.Npgsql -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Serialization.ServiceStack.Text\Package.nuspec -BasePath ..\Kephas.Serialization.ServiceStack.Text -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.ServiceStack\Package.nuspec -BasePath ..\Kephas.ServiceStack -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Kephas.Scripting\Package.nuspec -BasePath ..\Kephas.Scripting -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 
 @echo Done.
 @pause

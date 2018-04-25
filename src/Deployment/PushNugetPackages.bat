@@ -24,6 +24,7 @@ nuget push Kephas.Mail.MailKit.%1.nupkg -Source https://www.nuget.org/api/v2/pac
 nuget push Kephas.Npgsql.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.ServiceStack.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Serialization.ServiceStack.Text.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Scripting.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
 @pause

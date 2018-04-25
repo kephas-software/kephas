@@ -9,14 +9,14 @@
         <Product>Kephas Framework</Product>
         <AssemblyVersion>4.5.0.0</AssemblyVersion>
         <FileVersion>4.5.0.0</FileVersion>
-        <Description>Provides a common infrastructure for code compilation and interpretation.</Description>
+        <Description>Provides the infrastructure for executing scripts.</Description>
         <Copyright>Copyright Quartz Software SRL 2010-2018</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas framework compiler quartz-software</PackageTags>
+        <PackageTags>kephas framework scripting quartz-software</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <RootNamespace>Kephas.Scripting</RootNamespace>
