@@ -39,20 +39,14 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Scripting\Composition\InterpreterBehaviorMetadata.cs">
-      <Link>Composition\InterpreterBehaviorMetadata.cs</Link>
+    <Compile Include="..\Kephas.Scripting\Composition\ScriptInterpreterBehaviorMetadata.cs">
+      <Link>Composition\ScriptInterpreterBehaviorMetadata.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Scripting\Composition\InterpreterMetadata.cs">
-      <Link>Composition\InterpreterMetadata.cs</Link>
+    <Compile Include="..\Kephas.Scripting\Composition\ScriptInterpreterMetadata.cs">
+      <Link>Composition\ScriptInterpreterMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Scripting\DefaultScriptingService.cs">
       <Link>DefaultScriptingService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Scripting\IInterpreter.cs">
-      <Link>IInterpreter.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Scripting\IInterpreterBehavior.cs">
-      <Link>IInterpreterBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Scripting\IScript.cs">
       <Link>IScript.cs</Link>
@@ -62,6 +56,12 @@
     </Compile>
     <Compile Include="..\Kephas.Scripting\IScriptingService.cs">
       <Link>IScriptingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IScriptInterpreter.cs">
+      <Link>IScriptInterpreter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IScriptInterpreterBehavior.cs">
+      <Link>IScriptInterpreterBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Scripting\LanguageAttribute.cs">
       <Link>LanguageAttribute.cs</Link>

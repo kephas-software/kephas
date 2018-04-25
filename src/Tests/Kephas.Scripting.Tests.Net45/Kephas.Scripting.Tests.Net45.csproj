@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
@@ -52,9 +54,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Scripting.Tests\DefaultScriptingServiceTest.cs">
+      <Link>DefaultScriptingServiceTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef.Net45\Kephas.Composition.Mef.Net45.csproj">
+      <Project>{2f644dab-ebe5-4548-af2a-dd43948503de}</Project>
+      <Name>Kephas.Composition.Mef.Net45</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Scripting.Net45\Kephas.Scripting.Net45.csproj">
       <Project>{0b62fa28-8799-4691-9ed9-db79a0b50f3a}</Project>
       <Name>Kephas.Scripting.Net45</Name>
@@ -63,9 +72,16 @@
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
       <Name>Kephas.Core.Net45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef.Net45\Kephas.Testing.Composition.Mef.Net45.csproj">
+      <Project>{5e6c23b7-191a-40c1-9aab-326d190cafa3}</Project>
+      <Name>Kephas.Testing.Composition.Mef.Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

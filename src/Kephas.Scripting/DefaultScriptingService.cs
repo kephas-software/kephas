@@ -20,6 +20,7 @@ namespace Kephas.Scripting
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Scripting.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -33,14 +34,14 @@ namespace Kephas.Scripting
         /// <summary>
         /// The interpreter factories.
         /// </summary>
-        private readonly IDictionary<string, IExportFactory<IInterpreter, InterpreterMetadata>> interpreterFactories =
-            new Dictionary<string, IExportFactory<IInterpreter, InterpreterMetadata>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>> interpreterFactories =
+            new Dictionary<string, IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// The interpreter factories.
         /// </summary>
-        private readonly IDictionary<string, IList<IExportFactory<IInterpreterBehavior, InterpreterBehaviorMetadata>>> interpreterBehaviorFactories =
-            new Dictionary<string, IList<IExportFactory<IInterpreterBehavior, InterpreterBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IList<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>> interpreterBehaviorFactories =
+            new Dictionary<string, IList<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultScriptingService"/> class.
@@ -50,8 +51,8 @@ namespace Kephas.Scripting
         /// <param name="interpreterBehaviorFactories">The interpreter behavior factories.</param>
         public DefaultScriptingService(
             IAmbientServices ambientServices,
-            ICollection<IExportFactory<IInterpreter, InterpreterMetadata>> interpreterFactories,
-            ICollection<IExportFactory<IInterpreterBehavior, InterpreterBehaviorMetadata>> interpreterBehaviorFactories)
+            ICollection<IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>> interpreterFactories,
+            ICollection<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>> interpreterBehaviorFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(interpreterFactories, nameof(interpreterFactories));
@@ -79,13 +80,21 @@ namespace Kephas.Scripting
                         var list = this.interpreterBehaviorFactories.TryGetValue(f.Metadata.Language);
                         if (list == null)
                         {
-                            list = new List<IExportFactory<IInterpreterBehavior, InterpreterBehaviorMetadata>>();
+                            list = new List<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>();
                             this.interpreterBehaviorFactories.Add(f.Metadata.Language, list);
                         }
 
                         list.Add(f);
                     });
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<DefaultScriptingService> Logger { get; set; }
 
         /// <summary>
         /// Gets the ambient services.
@@ -127,7 +136,7 @@ namespace Kephas.Scripting
                                            Args = args,
                                            ExecutionContext = executionContext
                                        };
-            var behaviors = this.interpreterBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IInterpreterBehavior>();
+            var behaviors = this.interpreterBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IScriptInterpreterBehavior>();
 
             foreach (var behavior in behaviors)
             {

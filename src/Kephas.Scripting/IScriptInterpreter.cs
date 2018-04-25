@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInterpreter.cs" company="Quartz Software SRL">
+// <copyright file="IScriptInterpreter.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,7 +20,7 @@ namespace Kephas.Scripting
     /// A shared application service contract responsible for interpreting scripts for a specified language.
     /// </summary>
     [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(LanguageAttribute) })]
-    public interface IInterpreter
+    public interface IScriptInterpreter
     {
         /// <summary>
         /// Executes the expression asynchronously.
