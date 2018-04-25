@@ -39,9 +39,9 @@ namespace Kephas.Messaging
         private readonly IList<IMessageHandlerSelector> handlerSelectors;
 
         /// <summary>
-        /// The filter factories.
+        /// The behavior factories.
         /// </summary>
-        private readonly IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories;
+        private readonly IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories;
 
         /// <summary>
         /// The handler factories.
@@ -49,33 +49,33 @@ namespace Kephas.Messaging
         private readonly ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>>();
 
         /// <summary>
-        /// The handler factories.
+        /// The behavior factories.
         /// </summary>
         private readonly
-            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter> filters, IEnumerable<IMessageProcessingFilter> reversedFilters)> filterFactoriesDictionary =
-                new ConcurrentDictionary<string, (IEnumerable<IMessageProcessingFilter>, IEnumerable<IMessageProcessingFilter>)>();
+            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors)> behaviorFactoriesDictionary =
+                new ConcurrentDictionary<string, (IEnumerable<IMessageProcessingBehavior>, IEnumerable<IMessageProcessingBehavior>)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="handlerSelectorFactories">The handler selector factories.</param>
-        /// <param name="filterFactories">The filter factories.</param>
+        /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
             IAmbientServices ambientServices,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
-            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories)
+            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
-            Requires.NotNull(filterFactories, nameof(filterFactories));
+            Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
 
             this.AmbientServices = ambientServices;
             this.handlerSelectors = handlerSelectorFactories
                 .OrderBy(f => f.Metadata.ProcessingPriority)
                 .Select(f => f.CreateExportedValue())
                 .ToList();
-            this.filterFactories = filterFactories
+            this.behaviorFactories = behaviorFactories
                 .OrderBy(f => f.Metadata.ProcessingPriority)
                 .ToList();
         }
@@ -109,7 +109,7 @@ namespace Kephas.Messaging
         {
             Requires.NotNull(message, nameof(message));
 
-            (var filters, var reversedFilters) = this.GetOrderedFilters(message);
+            var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
 
             var contextHandler = context?.Handler;
             var contextMessage = context?.Message;
@@ -129,9 +129,9 @@ namespace Kephas.Messaging
 
                     try
                     {
-                        foreach (var filter in filters)
+                        foreach (var behavior in behaviors)
                         {
-                            await filter.BeforeProcessAsync(context, token).PreserveThreadContext();
+                            await behavior.BeforeProcessAsync(context, token).PreserveThreadContext();
                         }
 
                         var response = await messageHandler.ProcessAsync(message, context, token)
@@ -150,9 +150,9 @@ namespace Kephas.Messaging
                         context.Message = message;
                     }
 
-                    foreach (var filter in reversedFilters)
+                    foreach (var behavior in reversedBehaviors)
                     {
-                        await filter.AfterProcessAsync(context, token).PreserveThreadContext();
+                        await behavior.AfterProcessAsync(context, token).PreserveThreadContext();
                     }
                 }
             }
@@ -234,30 +234,30 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Gets the ordered filters (direct and reversed) to be applied.
+        /// Gets the ordered behaviors (direct and reversed) to be applied.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
-        /// An ordered list of filters which can be applied to the provided message, with their reversed counterpart.
+        /// An ordered list of behaviors which can be applied to the provided message, with their reversed counterpart.
         /// </returns>
-        protected virtual (IEnumerable<IMessageProcessingFilter> filters, IEnumerable<IMessageProcessingFilter> reversedFilters) GetOrderedFilters(IMessage message)
+        protected virtual (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
         {
             var messageType = this.GetMessageType(message);
             var messageName = this.GetMessageName(message);
 
-            var orderedFiltersEntry = this.filterFactoriesDictionary.GetOrAdd(
+            var orderedBehaviorsEntry = this.behaviorFactoriesDictionary.GetOrAdd(
                 $"{messageType.FullName}/{messageName}",
                 _ =>
                     {
-                        var orderedFilters = (from f in this.filterFactories
+                        var behaviors = (from f in this.behaviorFactories
                                               where (f.Metadata.MessageType?.GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()) ?? true)
                                                     && (f.Metadata.MessageName == null || messageName == f.Metadata.MessageName)
                                               select f.CreateExport().Value).ToList();
 
-                        return (orderedFilters, ((IEnumerable<IMessageProcessingFilter>)orderedFilters).Reverse().ToList());
+                        return (behaviors, ((IEnumerable<IMessageProcessingBehavior>)behaviors).Reverse().ToList());
                     });
 
-            return orderedFiltersEntry;
+            return orderedBehaviorsEntry;
         }
     }
 }

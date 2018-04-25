@@ -249,7 +249,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_test_filter()
+        public async Task ProcessAsync_test_behavior()
         {
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
@@ -258,18 +258,18 @@ namespace Kephas.Messaging.Tests
             handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
-            var f = this.CreateTestFilterFactory(messageType: typeof(PingMessage));
+            var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
             var processor = this.CreateRequestProcessor(new[] { f }, handler, message);
             var processingContext = new MessageProcessingContext(processor, message, Substitute.For<IMessageHandler>());
             var result = await processor.ProcessAsync(message, processingContext, default);
 
-            Assert.AreEqual(true, processingContext["Before TestFilter"]);
-            Assert.AreEqual(true, processingContext["After TestFilter"]);
+            Assert.AreEqual(true, processingContext["Before TestBehavior"]);
+            Assert.AreEqual(true, processingContext["After TestBehavior"]);
         }
 
         [Test]
-        public async Task ProcessAsync_ordered_filter()
+        public async Task ProcessAsync_ordered_behavior()
         {
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
@@ -280,11 +280,11 @@ namespace Kephas.Messaging.Tests
 
             var beforelist = new List<int>();
             var afterlist = new List<int>();
-            var f1 = this.CreateFilterFactory(
+            var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
                 processingPriority: 2);
-            var f2 = this.CreateFilterFactory(
+            var f2 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
                 processingPriority: 1);
@@ -302,7 +302,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_matching_filter()
+        public async Task ProcessAsync_matching_behavior()
         {
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
@@ -313,11 +313,11 @@ namespace Kephas.Messaging.Tests
 
             var beforelist = new List<int>();
             var afterlist = new List<int>();
-            var f1 = this.CreateFilterFactory(
+            var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
                 messageType: typeof(PingMessage));
-            var f2 = this.CreateFilterFactory(
+            var f2 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
@@ -332,7 +332,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_matching_filter_with_name()
+        public async Task ProcessAsync_matching_behavior_with_name()
         {
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
@@ -343,17 +343,17 @@ namespace Kephas.Messaging.Tests
 
             var beforelist = new List<int>();
             var afterlist = new List<int>();
-            var f1 = this.CreateFilterFactory(
+            var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
                 messageType: typeof(NamedMessage),
                 messageName: "hi");
-            var f2 = this.CreateFilterFactory(
+            var f2 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
                 messageType: typeof(NamedMessage),
                 messageName: "hello");
-            var f3 = this.CreateFilterFactory(
+            var f3 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(3); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(3); return TaskHelper.CompletedTask; },
                 messageType: typeof(NamedMessage),
@@ -373,7 +373,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_exception_with_filter()
+        public async Task ProcessAsync_exception_with_behavior()
         {
             var handler = Substitute.For<IMessageHandler>();
 
@@ -383,7 +383,7 @@ namespace Kephas.Messaging.Tests
 
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
-            var f1 = this.CreateFilterFactory(
+            var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(c.Exception); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(c.Exception); return TaskHelper.CompletedTask; });
 
@@ -460,7 +460,7 @@ namespace Kephas.Messaging.Tests
             plainHandler.Received(1).ProcessAsync(plainMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
         }
 
-        private IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata> CreateFilterFactory(
+        private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateBehaviorFactory(
             Func<IMessageProcessingContext, CancellationToken, Task> beforeFunc = null,
             Func<IMessageProcessingContext, CancellationToken, Task> afterFunc = null,
             Type messageType = null,
@@ -471,50 +471,50 @@ namespace Kephas.Messaging.Tests
             messageType = messageType ?? typeof(IMessage);
             beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
             afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
-            var filter = Substitute.For<IMessageProcessingFilter>();
-            filter.BeforeProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            var behavior = Substitute.For<IMessageProcessingBehavior>();
+            behavior.BeforeProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => beforeFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
-            filter.AfterProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            behavior.AfterProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => afterFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
             var factory =
-                new ExportFactoryAdapter<IMessageProcessingFilter, MessageProcessingFilterMetadata>(
-                    () => Tuple.Create(filter, (Action)(() => { })),
-                    new MessageProcessingFilterMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
+                    () => Tuple.Create(behavior, (Action)(() => { })),
+                    new MessageProcessingBehaviorMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
-        private IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata> CreateTestFilterFactory(
+        private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateTestBehaviorFactory(
             Type messageType = null,
             string messageName = null,
             int processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
             messageType = messageType ?? typeof(IMessage);
-            var filter = new TestFilter();
+            var behavior = new TestBehavior();
             var factory =
-                new ExportFactoryAdapter<IMessageProcessingFilter, MessageProcessingFilterMetadata>(
-                    () => Tuple.Create((IMessageProcessingFilter)filter, (Action)(() => { })),
-                    new MessageProcessingFilterMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
+                    () => Tuple.Create((IMessageProcessingBehavior)behavior, (Action)(() => { })),
+                    new MessageProcessingBehaviorMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories,
+            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories,
             ExportFactory<IMessageHandler, MessageHandlerMetadata> handlerFactory)
         {
             return this.CreateRequestProcessor(
-                filterFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                behaviorFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                            {
                                                handlerFactory
                                            });
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories,
+            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories,
             IMessageHandler messageHandler, IMessage message)
         {
             return this.CreateRequestProcessor(
-                filterFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                behaviorFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                 {
                                     new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => messageHandler, new MessageHandlerMetadata(message.GetType()))
                                 });
@@ -535,12 +535,12 @@ namespace Kephas.Messaging.Tests
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>> filterFactories = null,
+            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories = null,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
-            filterFactories = filterFactories
-                              ?? new List<IExportFactory<IMessageProcessingFilter, MessageProcessingFilterMetadata>>();
+            behaviorFactories = behaviorFactories
+                              ?? new List<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>>();
 
             handlerSelectorFactories = handlerSelectorFactories
                                        ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
@@ -548,7 +548,7 @@ namespace Kephas.Messaging.Tests
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
                                               };
 
-            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), handlerSelectorFactories, filterFactories);
+            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), handlerSelectorFactories, behaviorFactories);
         }
     }
 
@@ -561,17 +561,17 @@ namespace Kephas.Messaging.Tests
         public string MessageName { get; set; }
     }
 
-    public class TestFilter : MessageProcessingFilterBase<PingMessage>
+    public class TestBehavior : MessageProcessingBehaviorBase<PingMessage>
     {
         public override Task BeforeProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            context["Before TestFilter"] = true;
+            context["Before TestBehavior"] = true;
             return base.BeforeProcessAsync(message, context, token);
         }
 
         public override Task AfterProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            context["After TestFilter"] = true;
+            context["After TestBehavior"] = true;
             return base.AfterProcessAsync(message, context, token);
         }
     }

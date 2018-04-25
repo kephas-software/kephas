@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingFilterBase.cs" company="Quartz Software SRL">
+// <copyright file="MessageProcessingBehaviorBase.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,7 +20,7 @@ namespace Kephas.Messaging
     /// Base implementation of a message processing filter.
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
-    public abstract class MessageProcessingFilterBase<TMessage> : IMessageProcessingFilter<TMessage>
+    public abstract class MessageProcessingBehaviorBase<TMessage> : IMessageProcessingBehavior<TMessage>
         where TMessage : IMessage
     {
         /// <summary>
@@ -29,7 +29,7 @@ namespace Kephas.Messaging
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        Task IMessageProcessingFilter.BeforeProcessAsync(IMessageProcessingContext context, CancellationToken token)
+        Task IMessageProcessingBehavior.BeforeProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -47,7 +47,7 @@ namespace Kephas.Messaging
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        Task IMessageProcessingFilter.AfterProcessAsync(IMessageProcessingContext context, CancellationToken token)
+        Task IMessageProcessingBehavior.AfterProcessAsync(IMessageProcessingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 

@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingFilterMetadata.cs" company="Quartz Software SRL">
+// <copyright file="MessageProcessingBehaviorMetadata.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Composition metadata for <see cref="IMessageProcessingFilter" />.
+//   Composition metadata for <see cref="IMessageProcessingBehavior" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,15 +17,15 @@ namespace Kephas.Messaging.Composition
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// Composition metadata for <see cref="IMessageProcessingFilter"/>.
+    /// Composition metadata for <see cref="IMessageProcessingBehavior"/>.
     /// </summary>
-    public class MessageProcessingFilterMetadata : AppServiceMetadata
+    public class MessageProcessingBehaviorMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingFilterMetadata"/> class.
+        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MessageProcessingFilterMetadata(IDictionary<string, object> metadata)
+        public MessageProcessingBehaviorMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -38,13 +38,13 @@ namespace Kephas.Messaging.Composition
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingFilterMetadata" /> class.
+        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata" /> class.
         /// </summary>
         /// <param name="messageType">Type of the message.</param>
         /// <param name="messageName">The name of the message (optional).</param>
         /// <param name="processingPriority">The processing priority.</param>
         /// <param name="overridePriority">The override priority.</param>
-        public MessageProcessingFilterMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0)
+        public MessageProcessingBehaviorMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;

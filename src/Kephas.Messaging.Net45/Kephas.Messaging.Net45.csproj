@@ -51,8 +51,8 @@
     <Compile Include="..\Kephas.Messaging\Composition\MessageHandlerMetadata.cs">
       <Link>Composition\MessageHandlerMetadata.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\Composition\MessageProcessingFilterMetadata.cs">
-      <Link>Composition\MessageProcessingFilterMetadata.cs</Link>
+    <Compile Include="..\Kephas.Messaging\Composition\MessageProcessingBehaviorMetadata.cs">
+      <Link>Composition\MessageProcessingBehaviorMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\DefaultMessageProcessor.cs">
       <Link>DefaultMessageProcessor.cs</Link>
@@ -120,11 +120,11 @@
     <Compile Include="..\Kephas.Messaging\IMessageHandler.cs">
       <Link>IMessageHandler.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageProcessingBehavior.cs">
+      <Link>IMessageProcessingBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\IMessageProcessingContext.cs">
       <Link>IMessageProcessingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\IMessageProcessingFilter.cs">
-      <Link>IMessageProcessingFilter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\IMessageProcessor.cs">
       <Link>IMessageProcessor.cs</Link>
@@ -135,11 +135,11 @@
     <Compile Include="..\Kephas.Messaging\MessageNameAttribute.cs">
       <Link>MessageNameAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageProcessingBehaviorBase.cs">
+      <Link>MessageProcessingBehaviorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\MessageProcessingContext.cs">
       <Link>MessageProcessingContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\MessageProcessingFilterBase.cs">
-      <Link>MessageProcessingFilterBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Messages\EmptyResponseMessage.cs">
       <Link>Messages\EmptyResponseMessage.cs</Link>

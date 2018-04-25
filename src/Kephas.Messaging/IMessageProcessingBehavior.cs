@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMessageProcessingFilter.cs" company="Quartz Software SRL">
+// <copyright file="IMessageProcessingBehavior.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Application service for message processing interception.
     /// </summary>
-    public interface IMessageProcessingFilter
+    public interface IMessageProcessingBehavior
     {
         /// <summary>
         /// Interception called before invoking the handler to process the message.
@@ -47,9 +47,9 @@ namespace Kephas.Messaging
     /// <typeparam name="TMessage">The type of the message.</typeparam>
     [SharedAppServiceContract(
         AllowMultiple = true,
-        ContractType = typeof(IMessageProcessingFilter),
+        ContractType = typeof(IMessageProcessingBehavior),
         MetadataAttributes = new[] { typeof(MessageNameAttribute) })]
-    public interface IMessageProcessingFilter<TMessage> : IMessageProcessingFilter
+    public interface IMessageProcessingBehavior<TMessage> : IMessageProcessingBehavior
         where TMessage : IMessage
     {
     }
