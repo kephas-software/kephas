@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IScriptExecutionContext.cs" company="Quartz Software SRL">
+// <copyright file="IScriptingContext.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,13 +10,15 @@
 
 namespace Kephas.Scripting
 {
+    using System;
+
     using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for script execution context.
+    /// Interface for scripting context.
     /// </summary>
-    public interface IScriptExecutionContext : IContext
+    public interface IScriptingContext : IContext
     {
         /// <summary>
         /// Gets the script to execute.
@@ -41,5 +43,21 @@ namespace Kephas.Scripting
         /// The execution context.
         /// </value>
         IContext ExecutionContext { get; }
+
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        /// <value>
+        /// The result.
+        /// </value>
+        object Result { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exception.
+        /// </summary>
+        /// <value>
+        /// The exception.
+        /// </value>
+        Exception Exception { get; set; }
     }
 }

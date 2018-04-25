@@ -29,7 +29,7 @@ namespace Kephas.Scripting
         /// <returns>
         /// A task.
         /// </returns>
-        Task BeforeExecuteAsync(IScriptExecutionContext executionContext, CancellationToken token);
+        Task BeforeExecuteAsync(IScriptingContext executionContext, CancellationToken token);
 
         /// <summary>
         /// Interception called after invoking the interpreter to execute the script.
@@ -42,6 +42,6 @@ namespace Kephas.Scripting
         /// <returns>
         /// A task.
         /// </returns>
-        Task AfterExecuteAsync(IScriptExecutionContext executionContext, CancellationToken token);
+        Task AfterExecuteAsync(IScriptingContext executionContext, CancellationToken token);
     }
 }

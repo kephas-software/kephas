@@ -20,7 +20,7 @@ namespace Kephas.Scripting
     /// Shared application service for executing scripts.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IScriptingService
+    public interface IScriptingService : IAmbientServicesAware
     {
         /// <summary>
         /// Executes the expression asynchronously.

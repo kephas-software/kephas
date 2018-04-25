@@ -39,6 +39,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Scripting\Composition\InterpreterBehaviorMetadata.cs">
+      <Link>Composition\InterpreterBehaviorMetadata.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Scripting\Composition\InterpreterMetadata.cs">
       <Link>Composition\InterpreterMetadata.cs</Link>
     </Compile>
@@ -54,8 +57,8 @@
     <Compile Include="..\Kephas.Scripting\IScript.cs">
       <Link>IScript.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Scripting\IScriptExecutionContext.cs">
-      <Link>IScriptExecutionContext.cs</Link>
+    <Compile Include="..\Kephas.Scripting\IScriptingContext.cs">
+      <Link>IScriptingContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Scripting\IScriptingService.cs">
       <Link>IScriptingService.cs</Link>
@@ -65,6 +68,9 @@
     </Compile>
     <Compile Include="..\Kephas.Scripting\Script.cs">
       <Link>Script.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\ScriptingContext.cs">
+      <Link>ScriptingContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Scripting\ScriptingException.cs">
       <Link>ScriptingException.cs</Link>
