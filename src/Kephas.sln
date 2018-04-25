@@ -213,13 +213,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.CodeAnalysis.Tests", "Tests\Kephas.CodeAnalysis.Tests\Kephas.CodeAnalysis.Tests.csproj", "{71A298BE-0595-4306-8340-A62576274245}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices", "Kephas.CompilerServices\Kephas.CompilerServices.csproj", "{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting", "Kephas.Scripting\Kephas.Scripting.csproj", "{2E7B9870-3E2A-45E6-A981-0BB1A4AC4959}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Net45", "Kephas.CompilerServices.Net45\Kephas.CompilerServices.Net45.csproj", "{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Net45", "Kephas.Scripting.Net45\Kephas.Scripting.Net45.csproj", "{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Tests", "Tests\Kephas.CompilerServices.Tests\Kephas.CompilerServices.Tests.csproj", "{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Tests", "Tests\Kephas.Scripting.Tests\Kephas.Scripting.Tests.csproj", "{A92E3B43-6ECD-476E-80BF-9FD4CBE65512}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.CompilerServices.Tests.Net45", "Tests\Kephas.CompilerServices.Tests.Net45\Kephas.CompilerServices.Tests.Net45.csproj", "{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Tests.Net45", "Tests\Kephas.Scripting.Tests.Net45\Kephas.Scripting.Tests.Net45.csproj", "{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

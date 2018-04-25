@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.CompilerServices.Scripting
+namespace Kephas.Scripting
 {
     using System;
     using System.Collections.Generic;
@@ -17,10 +17,10 @@ namespace Kephas.CompilerServices.Scripting
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.CompilerServices.Scripting.Composition;
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Scripting.Composition;
     using Kephas.Services;
 
     /// <summary>

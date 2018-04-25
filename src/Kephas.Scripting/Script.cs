@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.CompilerServices.Scripting
+namespace Kephas.Scripting
 {
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;

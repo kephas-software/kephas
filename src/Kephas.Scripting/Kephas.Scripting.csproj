@@ -19,7 +19,7 @@
         <PackageTags>kephas framework compiler quartz-software</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <RootNamespace>Kephas.CompilerServices</RootNamespace>
+        <RootNamespace>Kephas.Scripting</RootNamespace>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageReleaseNotes>
           Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
@@ -28,12 +28,12 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>bin\Debug\netstandard2.0\Kephas.CompilerServices.xml</DocumentationFile>
+      <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scripting.xml</DocumentationFile>
       <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DocumentationFile>bin\Release\netstandard2.0\Kephas.CompilerServices.xml</DocumentationFile>
+      <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scripting.xml</DocumentationFile>
       <LangVersion>latest</LangVersion>
     </PropertyGroup>
 

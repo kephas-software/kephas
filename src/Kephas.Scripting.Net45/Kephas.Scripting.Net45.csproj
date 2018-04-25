@@ -7,8 +7,8 @@
     <ProjectGuid>{0B62FA28-8799-4691-9ED9-DB79A0B50F3A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.CompilerServices</RootNamespace>
-    <AssemblyName>Kephas.CompilerServices</AssemblyName>
+    <RootNamespace>Kephas.Scripting</RootNamespace>
+    <AssemblyName>Kephas.Scripting</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Kephas.CompilerServices.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Kephas.Scripting.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Kephas.CompilerServices.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Kephas.Scripting.xml</DocumentationFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -39,29 +39,35 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.CompilerServices\LanguageAttribute.cs">
+    <Compile Include="..\Kephas.Scripting\Composition\InterpreterMetadata.cs">
+      <Link>Composition\InterpreterMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\DefaultScriptingService.cs">
+      <Link>DefaultScriptingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IInterpreter.cs">
+      <Link>IInterpreter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IInterpreterBehavior.cs">
+      <Link>IInterpreterBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IScript.cs">
+      <Link>IScript.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IScriptExecutionContext.cs">
+      <Link>IScriptExecutionContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\IScriptingService.cs">
+      <Link>IScriptingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Scripting\LanguageAttribute.cs">
       <Link>LanguageAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\Composition\InterpreterMetadata.cs">
-      <Link>Scripting\Composition\InterpreterMetadata.cs</Link>
+    <Compile Include="..\Kephas.Scripting\Script.cs">
+      <Link>Script.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\DefaultScriptingService.cs">
-      <Link>Scripting\DefaultScriptingService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\IInterpreter.cs">
-      <Link>Scripting\IInterpreter.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\IScript.cs">
-      <Link>Scripting\IScript.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\IScriptingService.cs">
-      <Link>Scripting\IScriptingService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\Script.cs">
-      <Link>Scripting\Script.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.CompilerServices\Scripting\ScriptingException.cs">
-      <Link>Scripting\ScriptingException.cs</Link>
+    <Compile Include="..\Kephas.Scripting\ScriptingException.cs">
+      <Link>ScriptingException.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

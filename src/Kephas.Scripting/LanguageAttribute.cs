@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.CompilerServices
+namespace Kephas.Scripting
 {
     using System;
 

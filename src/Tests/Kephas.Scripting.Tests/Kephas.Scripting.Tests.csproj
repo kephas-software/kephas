@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.CompilerServices\Kephas.CompilerServices.csproj" />
+    <ProjectReference Include="..\..\Kephas.Scripting\Kephas.Scripting.csproj" />
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
   </ItemGroup>
 

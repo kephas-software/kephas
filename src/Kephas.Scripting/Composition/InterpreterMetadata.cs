@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.CompilerServices.Scripting.Composition
+namespace Kephas.Scripting.Composition
 {
     using System.Collections.Generic;
 

@@ -9,8 +9,8 @@
     <ProjectGuid>{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kephas.CompilerServices.Tests</RootNamespace>
-    <AssemblyName>Kephas.CompilerServices.Tests</AssemblyName>
+    <RootNamespace>Kephas.Scripting.Tests</RootNamespace>
+    <AssemblyName>Kephas.Scripting.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -55,9 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.CompilerServices.Net45\Kephas.CompilerServices.Net45.csproj">
+    <ProjectReference Include="..\..\Kephas.Scripting.Net45\Kephas.Scripting.Net45.csproj">
       <Project>{0b62fa28-8799-4691-9ed9-db79a0b50f3a}</Project>
-      <Name>Kephas.CompilerServices.Net45</Name>
+      <Name>Kephas.Scripting.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Kephas.Core.Net45\Kephas.Core.Net45.csproj">
       <Project>{82f31b59-1fa4-4451-a2ca-356f546501cf}</Project>
