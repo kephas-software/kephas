@@ -126,8 +126,8 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
-            var declaredServiceTypeInfo = IntrospectionExtensions.GetTypeInfo(serviceType);
-            var serviceTypeInfo = IntrospectionExtensions.GetTypeInfo(service.GetType());
+            var declaredServiceTypeInfo = serviceType.GetTypeInfo();
+            var serviceTypeInfo = service.GetType().GetTypeInfo();
             if (!declaredServiceTypeInfo.IsAssignableFrom(serviceTypeInfo))
             {
                 throw new InvalidOperationException(
