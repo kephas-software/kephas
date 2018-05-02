@@ -13,6 +13,7 @@ namespace Kephas.AspNetCore.Services.Composition
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
@@ -26,16 +27,6 @@ namespace Kephas.AspNetCore.Services.Composition
     public class ServiceCollectionConventionsRegistrar : IConventionsRegistrar
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCollectionConventionsRegistrar"/>
-        /// class.
-        /// </summary>
-        /// <param name="services">The services.</param>
-        public ServiceCollectionConventionsRegistrar(IServiceCollection services)
-        {
-            
-        }
-
-        /// <summary>
         /// Registers the conventions.
         /// </summary>
         /// <param name="builder">The registration builder.</param>
@@ -46,9 +37,37 @@ namespace Kephas.AspNetCore.Services.Composition
             IEnumerable<TypeInfo> candidateTypes,
             ICompositionRegistrationContext registrationContext)
         {
-            // TODO get the services collection from the registation context expando
-            // put there by the WebStartup
-            throw new System.NotImplementedException();
+            var ambientServices = registrationContext.AmbientServices;
+            var serviceCollection = ambientServices.GetService<IServiceCollection>();
+
+            foreach (var descriptor in serviceCollection)
+            {
+                if (descriptor.ImplementationInstance != null)
+                {
+                    builder.ForInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
+                }
+                else if (descriptor.ImplementationFactory != null)
+                {
+                    builder.ForInstanceFactory(descriptor.ServiceType, ctx => descriptor.ImplementationFactory((ctx ?? ambientServices.CompositionContainer).ToServiceProvider()));
+                }
+                else
+                {
+                    var partBuilder = descriptor.ImplementationType != null
+                                          ? builder.ForType(descriptor.ImplementationType)
+                                          : builder.ForType(descriptor.ServiceType);
+
+                    if (descriptor.Lifetime == ServiceLifetime.Singleton)
+                    {
+                        partBuilder.Shared();
+                    }
+                    else if (descriptor.Lifetime == ServiceLifetime.Scoped)
+                    {
+                        partBuilder.ScopeShared();
+                    }
+
+                    partBuilder.Export(b => b.AsContractType(descriptor.ServiceType));
+                }
+            }
         }
     }
 }

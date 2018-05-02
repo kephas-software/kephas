@@ -18,6 +18,8 @@ namespace Kephas.AspNetCore.Application
     using Kephas.Services;
 
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
 
     using AppContext = Kephas.Application.AppContext;
 
@@ -30,12 +32,17 @@ namespace Kephas.AspNetCore.Application
         /// Initializes a new instance of the <see cref="AspNetAppContext"/> class.
         /// </summary>
         /// <param name="appBuilder">The application builder.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="AmbientServices.Instance"/> will be considered.</param>
+        /// <param name="hostingEnvironment">The hosting environment.</param>
+        /// <param name="configuration">The ASP.NET configuration.</param>
+        /// <param name="ambientServices">The ambient services (optional). If not provided,
+        ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
         /// <param name="appManifest">The application manifest (optional).</param>
         /// <param name="appArgs">The application arguments (optional).</param>
-        /// <param name="signalShutdown">Function for signalling the application shutdown.</param>
+        /// <param name="signalShutdown">Function for signalling the application shutdown (optional).</param>
         public AspNetAppContext(
             IApplicationBuilder appBuilder,
+            IHostingEnvironment hostingEnvironment,
+            IConfiguration configuration,
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,
             string[] appArgs = null,
@@ -45,6 +52,8 @@ namespace Kephas.AspNetCore.Application
             Requires.NotNull(appBuilder, nameof(appBuilder));
 
             this.AppBuilder = appBuilder;
+            this.HostingEnvironment = hostingEnvironment;
+            this.Configuration = configuration;
         }
 
         /// <summary>
@@ -54,5 +63,21 @@ namespace Kephas.AspNetCore.Application
         /// The application builder.
         /// </value>
         public IApplicationBuilder AppBuilder { get; }
+
+        /// <summary>
+        /// Gets the hosting environment.
+        /// </summary>
+        /// <value>
+        /// The hosting environment.
+        /// </value>
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        /// <summary>
+        /// Gets the ASP.NET configuration.
+        /// </summary>
+        /// <value>
+        /// The ASP.NET configuration.
+        /// </value>
+        public IConfiguration Configuration { get; }
     }
 }

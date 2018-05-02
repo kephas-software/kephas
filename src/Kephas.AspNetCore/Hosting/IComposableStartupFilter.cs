@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.Composition
+namespace Kephas.AspNetCore.Hosting
 {
     using Kephas.Services;
 
@@ -17,7 +17,7 @@ namespace Kephas.AspNetCore.Composition
     /// <summary>
     /// Interface for composable startup filter.
     /// </summary>
-    [SharedAppServiceContract]
+    [SharedAppServiceContract(AllowMultiple = true, ContractType = typeof(IStartupFilter))]
     public interface IComposableStartupFilter : IStartupFilter
     {
     }

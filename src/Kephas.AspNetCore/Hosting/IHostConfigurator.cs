@@ -8,13 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.Composition
+namespace Kephas.AspNetCore.Hosting
 {
     using Kephas.AspNetCore.Application;
+    using Kephas.Services;
 
     /// <summary>
     /// Interface for host configurator.
     /// </summary>
+    [SharedAppServiceContract(AllowMultiple = true)]
     public interface IHostConfigurator
     {
         /// <summary>

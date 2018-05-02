@@ -18,8 +18,9 @@ namespace Kephas.AspNetCore
     using Kephas.Application;
     using Kephas.AspNetCore.Application;
     using Kephas.AspNetCore.Composition;
+    using Kephas.AspNetCore.Hosting;
+    using Kephas.AspNetCore.Logging;
     using Kephas.Composition;
-    using Kephas.Logging;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
@@ -27,7 +28,10 @@ namespace Kephas.AspNetCore
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
+    using ILogger = Kephas.Logging.ILogger;
+    using LogLevel = Kephas.Logging.LogLevel;
     using Strings = Kephas.Resources.Strings;
 
     /// <summary>
@@ -100,9 +104,13 @@ namespace Kephas.AspNetCore
         {
             try
             {
+                serviceCollection.AddTransient<IServiceScopeFactory, CompositionServiceScopeFactory>();
+                serviceCollection.AddSingleton<ILoggerFactory, LoggerFactory>();
+
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
                 this.ambientServices = this.ambientServices ?? AmbientServices.Instance;
+                this.ambientServices.RegisterService(serviceCollection);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
                 var ambientServicesBuilder = new AmbientServicesBuilder(this.ambientServices);
@@ -123,7 +131,10 @@ namespace Kephas.AspNetCore
         /// Configures the given application.
         /// </summary>
         /// <param name="app">The application builder.</param>
-        public virtual void Configure(IApplicationBuilder app)
+        /// <param name="appLifetime">The application lifetime.</param>
+        public virtual void Configure(
+            IApplicationBuilder app,
+            IApplicationLifetime appLifetime)
         {
             var appContext = this.CreateAppContext(app, this.appArgs, this.ambientServices);
 
@@ -148,6 +159,11 @@ namespace Kephas.AspNetCore
 
             // when the configurators are completed, start the bootstrapping procedure.
             this.bootstrapTask = this.BootstrapAsync(appContext);
+
+            // If you want to dispose of resources that have been resolved in the
+            // application container, register for the "ApplicationStopped" event.
+            // TODO upon termination, shutdown the application.
+            // appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
         }
 
         /// <summary>
@@ -177,7 +193,7 @@ namespace Kephas.AspNetCore
 
                 try
                 {
-                    await this.ShutdownAsync(ambientServices, cancellationToken).PreserveThreadContext();
+                    await this.ShutdownAsync(this.ambientServices, cancellationToken).PreserveThreadContext();
                 }
                 catch (Exception shutdownEx)
                 {
@@ -278,6 +294,8 @@ namespace Kephas.AspNetCore
         {
             var appContext = new AspNetAppContext(
                 app,
+                this.HostingEnvironment,
+                this.Configuration,
                 ambientServices,
                 appArgs: appArgs,
                 signalShutdown: c => this.ShutdownAsync(ambientServices));
