@@ -16,7 +16,6 @@ namespace Kephas.Composition.Hosting
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Application.Configuration;
@@ -28,7 +27,6 @@ namespace Kephas.Composition.Hosting
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for composition container builders.
