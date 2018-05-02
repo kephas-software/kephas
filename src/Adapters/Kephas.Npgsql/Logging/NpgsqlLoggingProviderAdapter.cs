@@ -28,10 +28,10 @@ namespace Kephas.Npgsql.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="NpgsqlLoggingProviderAdapter"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public NpgsqlLoggingProviderAdapter(IAmbientServices ambientServices)
+        /// <param name="logManager">The log manager.</param>
+        public NpgsqlLoggingProviderAdapter(ILogManager logManager)
         {
-            this.logManager = ambientServices.LogManager;
+            this.logManager = logManager;
         }
 
         /// <summary>

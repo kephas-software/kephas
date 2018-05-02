@@ -41,7 +41,7 @@ namespace Kephas.Npgsql.Application
         /// </returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.AmbientServices);
+            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.AmbientServices.LogManager);
 
             return Task.FromResult(0);
         }
