@@ -12,6 +12,7 @@ namespace Kephas.Tests.Composition.Mef
 {
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Testing.Composition.Mef;
 
@@ -40,6 +41,36 @@ namespace Kephas.Tests.Composition.Mef
                     var scopedInstance2 = nestedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
                     Assert.AreNotSame(scopedInstance1, scopedInstance2);
                 }
+            }
+        }
+
+        [Test]
+        public void CreateScopedContext_CompositionContext_registration_root()
+        {
+            var container = this.CreateContainerWithBuilder();
+            var selfContainer = container.GetExport<ICompositionContext>();
+            Assert.AreSame(container, selfContainer);
+        }
+
+        [Test]
+        public void CreateScopedContext_CompositionContext_registration_scope()
+        {
+            var container = this.CreateContainerWithBuilder();
+            using (var scopedContext = container.CreateScopedContext())
+            {
+                var selfScopedContext = scopedContext.GetExport<ICompositionContext>();
+                Assert.AreSame(selfScopedContext, scopedContext);
+            }
+        }
+
+        [Test]
+        public void CreateScopedContext_CompositionContext_registration_scope_consumers()
+        {
+            var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
+            using (var scopedContext = container.CreateScopedContext())
+            {
+                var scopedInstance = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
+                Assert.AreSame(scopedContext, scopedInstance.CompositionContext);
             }
         }
     }

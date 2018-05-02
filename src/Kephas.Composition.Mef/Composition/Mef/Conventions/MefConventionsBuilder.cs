@@ -11,6 +11,7 @@
 namespace Kephas.Composition.Mef.Conventions
 {
     using System;
+    using System.Collections.Generic;
     using System.Composition.Convention;
 
     using Kephas.Composition.Conventions;
@@ -25,6 +26,11 @@ namespace Kephas.Composition.Mef.Conventions
         /// The inner conventions builder.
         /// </summary>
         private readonly ConventionBuilder innerConventionBuilder;
+
+        /// <summary>
+        /// The part builders.
+        /// </summary>
+        private readonly IDictionary<Type, MefPartBuilder> partBuilders = new Dictionary<Type, MefPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MefConventionsBuilder"/> class.
@@ -81,6 +87,51 @@ namespace Kephas.Composition.Mef.Conventions
             Requires.NotNull(type, nameof(type));
 
             return new MefPartConventionsBuilder(this.innerConventionBuilder.ForType(type));
+        }
+
+        /// <summary>
+        /// Defines a registration for the specified type and its singleton instance.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public IPartBuilder ForInstance(Type type, object instance)
+        {
+            Requires.NotNull(type, nameof(type));
+            Requires.NotNull(instance, nameof(instance));
+
+            var partBuilder = new MefPartBuilder(type, instance);
+            this.partBuilders[type] = partBuilder;
+
+            return partBuilder;
+        }
+
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+        {
+            Requires.NotNull(type, nameof(type));
+            Requires.NotNull(factory, nameof(factory));
+
+            var partBuilder = new MefPartBuilder(type, factory);
+            this.partBuilders[type] = partBuilder;
+
+            return partBuilder;
+        }
+
+        /// <summary>
+        /// Gets the part builders in this collection.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the part builders in this collection.
+        /// </returns>
+        protected internal IEnumerable<MefPartBuilder> GetPartBuilders()
+        {
+            return this.partBuilders.Values;
         }
     }
 }

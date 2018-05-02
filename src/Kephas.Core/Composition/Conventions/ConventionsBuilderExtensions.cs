@@ -33,6 +33,36 @@ namespace Kephas.Composition.Conventions
         private static readonly TypeInfo ConventionRegistrarContractTypeInfo = typeof(IConventionsRegistrar).GetTypeInfo();
 
         /// <summary>
+        /// Defines a registration for the specified type and its singleton instance.
+        /// </summary>
+        /// <typeparam name="TService">Type of the registered service.</typeparam>
+        /// <param name="conventionsBuilder">The conventionsBuilder to act on.</param>
+        /// <param name="instance">The singleton instance.</param>
+        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+        public static IPartBuilder ForInstance<TService>(this IConventionsBuilder conventionsBuilder, TService instance)
+        {
+            Requires.NotNull(conventionsBuilder, nameof(conventionsBuilder));
+
+            return conventionsBuilder.ForInstance(typeof(TService), instance);
+        }
+
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <typeparam name="TService">Type of the registered service.</typeparam>
+        /// <param name="conventionsBuilder">The conventionsBuilder to act on.</param>
+        /// <param name="factory">The instance factory.</param>
+        /// <returns>
+        /// A <see cref="IPartBuilder"/> to further configure the rule.
+        /// </returns>
+        public static IPartBuilder ForInstanceFactory<TService>(this IConventionsBuilder conventionsBuilder, Func<ICompositionContext, TService> factory)
+        {
+            Requires.NotNull(conventionsBuilder, nameof(conventionsBuilder));
+
+            return conventionsBuilder.ForInstanceFactory(typeof(TService), c => factory(c));
+        }
+
+        /// <summary>
         /// Adds the conventions from the provided types implementing
         /// <see cref="IConventionsRegistrar" />.
         /// </summary>

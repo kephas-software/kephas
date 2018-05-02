@@ -221,6 +221,9 @@
     <Compile Include="..\Kephas.Core\Composition\Conventions\IImportConventionsBuilder.cs">
       <Link>Composition\Conventions\IImportConventionsBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IPartBuilder.cs">
+      <Link>Composition\Conventions\IPartBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\Conventions\IPartConventionsBuilder.cs">
       <Link>Composition\Conventions\IPartConventionsBuilder.cs</Link>
     </Compile>

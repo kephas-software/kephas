@@ -160,6 +160,9 @@
     <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefImportConventionsBuilder.cs">
       <Link>Composition\Mef\Conventions\MefImportConventionsBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefPartBuilder.cs">
+      <Link>Composition\Mef\Conventions\MefPartBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\Conventions\MefPartConventionsBuilder.cs">
       <Link>Composition\Mef\Conventions\MefPartConventionsBuilder.cs</Link>
     </Compile>
@@ -168,6 +171,9 @@
     </Compile>
     <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportFactoryAdapter.cs">
       <Link>Composition\Mef\ExportFactoryAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\CompositionContextExportDescriptorProvider.cs">
+      <Link>Composition\Mef\ExportProviders\CompositionContextExportDescriptorProvider.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Composition.Mef\Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs">
       <Link>Composition\Mef\ExportProviders\ExportFactoryExportDescriptorProvider.cs</Link>

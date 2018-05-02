@@ -13,7 +13,6 @@ namespace Kephas.Composition.Mef.Hosting
     using System.Composition;
     using System.Composition.Hosting;
 
-    using Kephas.Composition;
     using Kephas.Composition.Mef.ExportProviders;
     using Kephas.Diagnostics.Contracts;
 
@@ -42,8 +41,10 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         protected virtual CompositionContext CreateCompositionContext(ContainerConfiguration configuration)
         {
-            configuration.WithProvider(new FactoryExportDescriptorProvider<ICompositionContext>(() => this, isShared: true));
-            return configuration.CreateContainer();
+            // TODO the composition context should return the scoped composition context, not the global one.
+            configuration.WithProvider(new CompositionContextExportDescriptorProvider(this));
+            var compositionHost = configuration.CreateContainer();
+            return compositionHost;
         }
     }
 }

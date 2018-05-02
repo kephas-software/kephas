@@ -150,6 +150,28 @@ namespace Kephas.Core.Tests.Composition
                 return partBuilder;
             }
 
+            /// <summary>
+            /// Defines a registration for the specified type and its singleton instance.
+            /// </summary>
+            /// <param name="type">The registered service type.</param>
+            /// <param name="instance">The instance.</param>
+            /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+            public IPartBuilder ForInstance(Type type, object instance)
+            {
+                throw new NotImplementedException();
+            }
+
+            /// <summary>
+            /// Defines a registration for the specified type and its instance factory.
+            /// </summary>
+            /// <param name="type">The registered service type.</param>
+            /// <param name="factory">The service factory.</param>
+            /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
+            public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
+            {
+                throw new NotImplementedException();
+            }
+
             private IPartConventionsBuilder CreateBuilder(Type type)
             {
                 return new TestPartConventionsBuilder(type);

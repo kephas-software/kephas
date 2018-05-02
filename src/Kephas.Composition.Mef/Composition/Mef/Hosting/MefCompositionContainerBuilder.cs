@@ -92,7 +92,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// This builder.
         /// </returns>
-        public MefCompositionContainerBuilder WithScopeFactory<TFactory>() 
+        public MefCompositionContainerBuilder WithScopeFactory<TFactory>()
             where TFactory : IMefScopeFactory
         {
             this.scopeFactories.Add(typeof(TFactory));
@@ -210,6 +210,18 @@ namespace Kephas.Composition.Mef.Hosting
                 .WithProvider(new ExportFactoryExportDescriptorProvider())
                 .WithProvider(new ExportFactoryWithMetadataExportDescriptorProvider());
 
+            foreach (var partBuilder in this.GetPartBuilders(conventions))
+            {
+                if (partBuilder.Instance != null)
+                {
+                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, () => partBuilder.Instance));
+                }
+                else
+                {
+                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, ctx => partBuilder.InstanceFactory(ctx), partBuilder.IsShared));
+                }
+            }
+
             return this.CreateCompositionContext(containerConfiguration);
         }
 
@@ -236,6 +248,18 @@ namespace Kephas.Composition.Mef.Hosting
         {
             var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
             return mefConventions;
+        }
+
+        /// <summary>
+        /// Gets the part builders.
+        /// </summary>
+        /// <param name="conventions">The conventions.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the part builders in this collection.
+        /// </returns>
+        protected virtual IEnumerable<MefPartBuilder> GetPartBuilders(IConventionsBuilder conventions)
+        {
+            return (conventions as MefConventionsBuilder)?.GetPartBuilders();
         }
 
         /// <summary>

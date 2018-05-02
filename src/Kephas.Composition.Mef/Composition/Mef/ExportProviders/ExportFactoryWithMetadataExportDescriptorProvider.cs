@@ -30,7 +30,28 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// The GetExportFactoryDescriptors method.
         /// </summary>
         private static readonly MethodInfo GetExportFactoryDescriptorsMethod = typeof(ExportFactoryWithMetadataExportDescriptorProvider).GetTypeInfo()
-                                                                            .GetDeclaredMethod("GetExportFactoryDescriptors");
+                                                                            .GetDeclaredMethod(nameof(GetExportFactoryDescriptors));
+
+        /// <summary>
+        /// The lifetime context factory.
+        /// </summary>
+        private static readonly Func<LifetimeContext, string[], LifetimeContext> LifetimeContextFactory;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="ExportFactoryWithMetadataExportDescriptorProvider"/>
+        /// class.
+        /// </summary>
+        static ExportFactoryWithMetadataExportDescriptorProvider()
+        {
+            var lifetimeContextCtor = typeof(LifetimeContext).GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                new[] { typeof(LifetimeContext), typeof(string[]) },
+                null);
+
+            LifetimeContextFactory = (parent, sharingBoundaries) =>
+                (LifetimeContext)lifetimeContextCtor.Invoke(new object[] { parent, sharingBoundaries });
+        }
 
         /// <summary>
         /// Gets the export factory descriptors.
@@ -47,9 +68,7 @@ namespace Kephas.Composition.Mef.ExportProviders
             // ReSharper disable once NotAccessedVariable
             var boundaries = new string[0];
 
-            IEnumerable<string> specifiedBoundaries;
-            CompositionContract unwrapped;
-            if (exportFactoryContract.TryUnwrapMetadataConstraint(Constants.SharingBoundaryImportMetadataConstraintName, out specifiedBoundaries, out unwrapped))
+            if (exportFactoryContract.TryUnwrapMetadataConstraint(Constants.SharingBoundaryImportMetadataConstraintName, out IEnumerable<string> specifiedBoundaries, out var unwrapped))
             {
                 productContract = unwrapped.ChangeType(typeof(TProduct));
                 // ReSharper disable once RedundantAssignment
@@ -73,8 +92,9 @@ namespace Kephas.Composition.Mef.ExportProviders
                                 return new ExportFactoryAdapter<TProduct, TMetadata>(
                                     () =>
                                     {
-                                        // TODO support lifetime contexts
-                                        ////var lifetimeContext = new LifetimeContext(c, boundaries);
+                                        // TODO check how to support lifetime contexts
+                                        ////var lifetimeContext = LifetimeContextFactory(c, boundaries);
+                                        ////return Tuple.Create<TProduct, Action>((TProduct)CompositionOperation.Run(lifetimeContext, dsc.Activator), lifetimeContext.Dispose);
                                         var lifetimeContext = c;
                                         return Tuple.Create<TProduct, Action>((TProduct)CompositionOperation.Run(lifetimeContext, dsc.Activator), /* lifetimeContext.Dispose */ () => { });
                                     },

@@ -259,6 +259,13 @@ namespace Kephas.Tests.Composition.Mef
         [Shared(ScopeNames.Default)]
         public class ScopeExportedClass
         {
+            public ICompositionContext CompositionContext { get; }
+
+            [ImportingConstructor]
+            public ScopeExportedClass(ICompositionContext compositionContext)
+            {
+                this.CompositionContext = compositionContext;
+            }
         }
 
         [Export]

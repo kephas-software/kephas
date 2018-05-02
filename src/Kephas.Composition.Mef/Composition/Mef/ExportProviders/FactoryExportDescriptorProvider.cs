@@ -14,18 +14,23 @@ namespace Kephas.Composition.Mef.ExportProviders
     using System.Collections.Generic;
     using System.Composition.Hosting.Core;
 
+    using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Factory export descriptor provider.
     /// </summary>
-    /// <typeparam name="TContract">The type of the contract.</typeparam>
-    public class FactoryExportDescriptorProvider<TContract> : ExportDescriptorProvider, IExportProvider
+    public class FactoryExportDescriptorProvider : ExportDescriptorProvider, IExportProvider
     {
         /// <summary>
         /// The factory.
         /// </summary>
-        private readonly Func<TContract> factory;
+        private readonly Func<object> factory;
+
+        /// <summary>
+        /// The context factory.
+        /// </summary>
+        private readonly Func<ICompositionContext, object> contextFactory;
 
         /// <summary>
         /// The is shared.
@@ -33,26 +38,54 @@ namespace Kephas.Composition.Mef.ExportProviders
         private readonly bool isShared;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
+        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider" /> class.
         /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory)
-            : this(factory, false)
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory)
+            : this(contractType, factory, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
+        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider" /> class.
         /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
         /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isShared)
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isShared)
         {
+            Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(factory, nameof(factory));
 
+            this.ContractType = contractType;
             this.factory = factory;
             this.isShared = isShared;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider" /> class.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="contextFactory">The value factory.</param>
+        /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<ICompositionContext, object> contextFactory, bool isShared)
+        {
+            Requires.NotNull(contractType, nameof(contractType));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
+
+            this.ContractType = contractType;
+            this.contextFactory = contextFactory;
+            this.isShared = isShared;
+        }
+
+        /// <summary>
+        /// Gets the type of the contract.
+        /// </summary>
+        /// <value>
+        /// The type of the contract.
+        /// </value>
+        public Type ContractType { get; }
 
         /// <summary>
         /// Promise export descriptors for the specified export key.
@@ -70,7 +103,7 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// </remarks>
         public override IEnumerable<ExportDescriptorPromise> GetExportDescriptors(CompositionContract contract, DependencyAccessor descriptorAccessor)
         {
-            if (contract.ContractType != typeof(TContract))
+            if (contract.ContractType != this.ContractType)
             {
                 return ExportDescriptorProvider.NoExportDescriptors;
             }
@@ -85,7 +118,9 @@ namespace Kephas.Composition.Mef.ExportProviders
                         dependencies => ExportDescriptor.Create(
                             (c, o) =>
                                 {
-                                    var instance = this.factory();
+                                    var instance = this.factory == null
+                                                       ? this.contextFactory(MefCompositionContextBase.TryGetCompositionContext(c))
+                                                       : this.factory();
                                     if (instance is IDisposable disposable)
                                     {
                                         c.AddBoundInstance(disposable);
@@ -95,6 +130,32 @@ namespace Kephas.Composition.Mef.ExportProviders
                                 },
                         ExportDescriptorProvider.NoMetadata))
                };
+        }
+    }
+
+    /// <summary>
+    /// Factory export descriptor provider.
+    /// </summary>
+    /// <typeparam name="TContract">The type of the contract.</typeparam>
+    public class FactoryExportDescriptorProvider<TContract> : FactoryExportDescriptorProvider
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
+        /// </summary>
+        /// <param name="factory">The value factory.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory)
+            : base(typeof(TContract), () => factory(), false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
+        /// </summary>
+        /// <param name="factory">The value factory.</param>
+        /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isShared)
+            : base(typeof(TContract), () => factory(), isShared)
+        {
         }
     }
 }

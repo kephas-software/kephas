@@ -11,6 +11,7 @@
 namespace Kephas.Composition.Mef.Hosting
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Composition;
 
@@ -23,6 +24,11 @@ namespace Kephas.Composition.Mef.Hosting
     /// </summary>
     public abstract class MefCompositionContextBase : ICompositionContext
     {
+        /// <summary>
+        /// The composition context map.
+        /// </summary>
+        private static ConcurrentDictionary<CompositionContext, ICompositionContext> map = new ConcurrentDictionary<CompositionContext, ICompositionContext>();
+
         /// <summary>
         /// The inner container.
         /// </summary>
@@ -152,7 +158,8 @@ namespace Kephas.Composition.Mef.Hosting
         {
             var scopeProvider = this.GetExport<IMefScopeFactory>(scopeName);
 
-            return new MefScopedCompositionContext(scopeProvider.CreateScopedContextExport());
+            var scopedContextExport = scopeProvider.CreateScopedContextExport();
+            return GetOrAddCompositionContext(scopedContextExport);
         }
 
         /// <summary>
@@ -164,11 +171,34 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
+        /// Tries to get the composition context wrapper for the provided composition context.
+        /// </summary>
+        /// <param name="context">The inner container.</param>
+        /// <returns>
+        /// The composition context wrapper.
+        /// </returns>
+        internal static ICompositionContext TryGetCompositionContext(CompositionContext context)
+        {
+            if (map.TryGetValue(context, out var compositionContext))
+            {
+                return compositionContext;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
+            if (this.innerCompositionContext == null)
+            {
+                return;
+            }
+
+            map.TryRemove(this.innerCompositionContext, out var _);
             var disposableInnerContainer = this.innerCompositionContext as IDisposable;
             disposableInnerContainer?.Dispose();
 
@@ -184,6 +214,7 @@ namespace Kephas.Composition.Mef.Hosting
             Requires.NotNull(context, nameof(context));
 
             this.innerCompositionContext = context;
+            map.TryAdd(context, this);
         }
 
         /// <summary>
@@ -195,6 +226,18 @@ namespace Kephas.Composition.Mef.Hosting
             {
                 throw new ObjectDisposedException(Strings.MefCompositionContainer_Disposed_Exception);
             }
+        }
+
+        /// <summary>
+        /// Gets the composition context wrapper for the provided composition context.
+        /// </summary>
+        /// <param name="scopedContextExport">The scoped context export.</param>
+        /// <returns>
+        /// The composition context.
+        /// </returns>
+        private static ICompositionContext GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
+        {
+            return map.GetOrAdd(scopedContextExport.Value, _ => new MefScopedCompositionContext(scopedContextExport));
         }
     }
 }
