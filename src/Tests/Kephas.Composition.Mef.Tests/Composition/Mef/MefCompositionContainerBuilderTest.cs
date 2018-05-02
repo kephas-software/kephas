@@ -20,12 +20,14 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Conventions;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
@@ -42,7 +44,7 @@ namespace Kephas.Tests.Composition.Mef
     public class MefCompositionContainerBuilderTest : CompositionTestBase
     {
         [Test]
-        public async Task CreateContainerAsync_simple_ambient_services_exported()
+        public async Task CreateContainer_simple_ambient_services_exported()
         {
             var factory = this.CreateCompositionContainerBuilder();
             var mockPlatformManager = factory.AppRuntime;
@@ -63,7 +65,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void CreateContainer_simple_ambient_services_exported()
+        public void CreateContainer_simple_ambient_services_exported_no_assemblies()
         {
             var factory = this.CreateCompositionContainerBuilder();
             var container = factory
@@ -345,7 +347,87 @@ namespace Kephas.Tests.Composition.Mef
             Assert.IsInstanceOf<SingleConstructorAppService>(export);
         }
 
-        private MefCompositionContainerBuilder CreateCompositionContainerBuilder()
+        [Test]
+        public async Task CreateContainer_instance_registration()
+        {
+            var registrar = Substitute.For<IConventionsRegistrar>();
+            registrar
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance(typeof(string), "123"); });
+
+            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var mockPlatformManager = factory.AppRuntime;
+
+            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+
+            var container = factory.CreateContainer();
+
+            var instance = container.GetExport<string>();
+            Assert.AreEqual("123", instance);
+        }
+
+        [Test]
+        public async Task CreateContainer_instance_extension_registration()
+        {
+            var registrar = Substitute.For<IConventionsRegistrar>();
+            registrar
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance<string>("123"); });
+
+            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var mockPlatformManager = factory.AppRuntime;
+
+            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+
+            var container = factory.CreateContainer();
+
+            var instance = container.GetExport<string>();
+            Assert.AreEqual("123", instance);
+        }
+
+        [Test]
+        public async Task CreateContainer_instance_factory_registration()
+        {
+            var registrar = Substitute.For<IConventionsRegistrar>();
+            registrar
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory(typeof(string), ctx => "123"); });
+
+            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var mockPlatformManager = factory.AppRuntime;
+
+            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+
+            var container = factory.CreateContainer();
+
+            var instance = container.GetExport<string>();
+            Assert.AreEqual("123", instance);
+        }
+
+        [Test]
+        public async Task CreateContainer_instance_factory_extension_registration()
+        {
+            var registrar = Substitute.For<IConventionsRegistrar>();
+            registrar
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory<string>(ctx => "123"); });
+
+            var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
+            var mockPlatformManager = factory.AppRuntime;
+
+            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+
+            var container = factory.CreateContainer();
+
+            var instance = container.GetExport<string>();
+            Assert.AreEqual("123", instance);
+        }
+
+        private MefCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockConfiguration = Substitute.For<IAppConfiguration>();
@@ -355,6 +437,7 @@ namespace Kephas.Tests.Composition.Mef
                                         .RegisterService(mockLoggerManager)
                                         .RegisterService(mockConfiguration)
                                         .RegisterService(mockPlatformManager));
+            config?.Invoke(context);
             var factory = new MefCompositionContainerBuilder(context);
             return factory;
         }
