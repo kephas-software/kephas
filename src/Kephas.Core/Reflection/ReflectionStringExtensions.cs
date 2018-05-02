@@ -11,6 +11,7 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -77,9 +78,9 @@ namespace Kephas.Reflection
                 return value;
             }
 
-            if (value.IndexOf('_') >= 0)
+            if (value.IndexOf('_') >= 0 || value.IndexOf('-') >= 0)
             {
-                var parts = value.Split('_');
+                var parts = value.Split('_', '-');
                 var sb = StringBuilderThreadStatic.Allocate();
                 foreach (var part in parts)
                 {
