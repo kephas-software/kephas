@@ -56,6 +56,9 @@
     <Compile Include="..\Kephas.Core\Activation\IActivator.cs">
       <Link>Activation\IActivator.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Activation\ImplementationForAttribute.cs">
+      <Link>Activation\ImplementationForAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\AmbientServices.cs">
       <Link>AmbientServices.cs</Link>
     </Compile>

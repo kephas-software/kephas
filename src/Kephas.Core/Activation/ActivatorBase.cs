@@ -12,9 +12,12 @@ namespace Kephas.Activation
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -22,6 +25,11 @@ namespace Kephas.Activation
     /// </summary>
     public abstract class ActivatorBase : IActivator
     {
+        /// <summary>
+        /// An empty list of types.
+        /// </summary>
+        private static readonly IEnumerable<ITypeInfo> EmptyTypes = new ITypeInfo[0];
+
         /// <summary>
         /// The implementation type map.
         /// </summary>
@@ -81,6 +89,32 @@ namespace Kephas.Activation
         }
 
         /// <summary>
+        /// Gets the supported implementation types.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="ActivatorBase"/> class provides always an empty list
+        /// of implementation types. The inheritors should provide a proper list of 
+        /// supported implementation types annotated with <see cref="ImplementationForAttribute"/>,
+        /// otherwise only non-abstract types will be resolved.
+        /// </remarks>
+        /// <returns>
+        /// An enumeration of implementation types.
+        /// </returns>
+        protected virtual IEnumerable<ITypeInfo> GetImplementationTypes() => EmptyTypes;
+
+        /// <summary>
+        /// Tries to get the native type information.
+        /// </summary>
+        /// <param name="abstractType">Indicates the abstract type.</param>
+        /// <returns>
+        /// A TypeInfo.
+        /// </returns>
+        protected virtual TypeInfo TryGetTypeInfo(ITypeInfo abstractType)
+        {
+            return (abstractType as IRuntimeTypeInfo)?.TypeInfo;
+        }
+
+        /// <summary>
         /// Gets the type implementing the abstract type provided as the parameter.
         /// </summary>
         /// <param name="abstractType">Indicates the abstract type.</param>
@@ -94,6 +128,13 @@ namespace Kephas.Activation
             IContext activationContext = null,
             bool throwOnNotFound = true)
         {
+            var runtimeTypeInfo = this.TryGetTypeInfo(abstractType);
+            if (runtimeTypeInfo.IsAbstract || runtimeTypeInfo.IsInterface)
+            {
+                var entityType = this.GetImplementationTypes().FirstOrDefault(ti => ti.Annotations.OfType<ImplementationForAttribute>().Any(a => a.AbstractType == runtimeTypeInfo.AsType()));
+                return entityType;
+            }
+
             return abstractType;
         }
     }
