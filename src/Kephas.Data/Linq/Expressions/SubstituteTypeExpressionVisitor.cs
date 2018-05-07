@@ -186,7 +186,7 @@ namespace Kephas.Data.Linq.Expressions
                     return node;
                 }
 
-                var memberExpression = Expression.MakeMemberAccess(expr, otherMember.GetUnderlyingMemberInfo());
+                var memberExpression = Expression.MakeMemberAccess(expr, (MemberInfo)otherMember.GetUnderlyingElementInfo());
                 return memberExpression;
             }
 

@@ -34,5 +34,13 @@ namespace Kephas.Runtime
         /// The field information.
         /// </value>
         FieldInfo FieldInfo { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this field is static.
+        /// </summary>
+        /// <value>
+        /// True if this field is static, false if not.
+        /// </value>
+        bool IsStatic { get; }
     }
 }

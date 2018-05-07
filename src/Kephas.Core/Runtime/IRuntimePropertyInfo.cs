@@ -34,5 +34,13 @@ namespace Kephas.Runtime
         /// The property information.
         /// </value>
         PropertyInfo PropertyInfo { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this property is static.
+        /// </summary>
+        /// <value>
+        /// True if this property is static, false if not.
+        /// </value>
+        bool IsStatic { get; }
     }
 }

@@ -182,6 +182,12 @@
     <Compile Include="..\Kephas.Core.Tests\Runtime\RuntimeAssemblyInfoTest.cs">
       <Link>Runtime\RuntimeAssemblyInfoTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Runtime\RuntimeFieldInfoTest.cs">
+      <Link>Runtime\RuntimeFieldInfoTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Runtime\RuntimeMethodInfoTest.cs">
+      <Link>Runtime\RuntimeMethodInfoTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Runtime\RuntimePropertyInfoTest.cs">
       <Link>Runtime\RuntimePropertyInfoTest.cs</Link>
     </Compile>

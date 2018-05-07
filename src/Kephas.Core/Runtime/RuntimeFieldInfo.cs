@@ -36,7 +36,7 @@ namespace Kephas.Runtime
         {
             this.FieldInfo = fieldInfo;
             this.Name = fieldInfo.Name;
-            this.FullName = fieldInfo.DeclaringType.FullName + "." + fieldInfo.Name;
+            this.FullName = fieldInfo.DeclaringType?.FullName + "." + fieldInfo.Name;
         }
 
         /// <summary>
@@ -80,6 +80,14 @@ namespace Kephas.Runtime
         public FieldInfo FieldInfo { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this field is static.
+        /// </summary>
+        /// <value>
+        /// True if this field is static, false if not.
+        /// </value>
+        public bool IsStatic => this.FieldInfo.IsStatic;
+
+        /// <summary>
         /// Gets the type of the field.
         /// </summary>
         /// <value>
@@ -101,7 +109,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo() => this.FieldInfo;
+        public ICustomAttributeProvider GetUnderlyingElementInfo() => this.FieldInfo;
 
         /// <summary>
         /// Sets the specified value.
@@ -109,7 +117,7 @@ namespace Kephas.Runtime
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public void SetValue(object obj, object value)
+        public virtual void SetValue(object obj, object value)
         {
             throw new NotSupportedException();
         }
@@ -122,7 +130,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public object GetValue(object obj)
+        public virtual object GetValue(object obj)
         {
             throw new NotSupportedException();
         }
@@ -138,6 +146,13 @@ namespace Kephas.Runtime
             where TAttribute : Attribute
         {
             return this.FieldInfo.GetCustomAttributes<TAttribute>(inherit: true);
+        }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{this.Name}: {this.FieldInfo.FieldType.FullName}";
         }
 
         /// <summary>
@@ -172,6 +187,30 @@ namespace Kephas.Runtime
         internal RuntimeFieldInfo(FieldInfo fieldInfo)
             : base(fieldInfo)
         {
+        }
+
+        /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
+        public override void SetValue(object obj, object value)
+        {
+            this.FieldInfo.SetValue(obj, value);
+        }
+
+        /// <summary>
+        /// Gets the value from the specified object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
+        public override object GetValue(object obj)
+        {
+            return this.FieldInfo.GetValue(obj);
         }
 
         /// <summary>

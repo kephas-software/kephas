@@ -12,6 +12,7 @@ namespace Kephas.Runtime
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
 
@@ -30,6 +31,16 @@ namespace Kephas.Runtime
         private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeMethodInfo = new RuntimeTypeInfo(typeof(RuntimeMethodInfo));
 
         /// <summary>
+        /// The members.
+        /// </summary>
+        private IDictionary<string, IRuntimeElementInfo> members;
+
+        /// <summary>
+        /// The parameters.
+        /// </summary>
+        private IDictionary<string, IRuntimeParameterInfo> parameters;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeMethodInfo"/> class.
         /// </summary>
         /// <param name="methodInfo">
@@ -42,7 +53,7 @@ namespace Kephas.Runtime
 
             this.MethodInfo = methodInfo;
             this.Name = methodInfo.Name;
-            this.FullName = methodInfo.DeclaringType.FullName + "." + methodInfo.Name;
+            this.FullName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
         }
 
         /// <summary>
@@ -70,6 +81,22 @@ namespace Kephas.Runtime
         public IEnumerable<object> Annotations => this.MethodInfo.GetCustomAttributes();
 
         /// <summary>
+        /// Gets the runtime parameters.
+        /// </summary>
+        /// <value>
+        /// The runtime parameters.
+        /// </value>
+        public IDictionary<string, IRuntimeParameterInfo> Parameters => this.GetParameters();
+
+        /// <summary>
+        /// Gets the method parameters.
+        /// </summary>
+        /// <value>
+        /// The method parameters.
+        /// </value>
+        IEnumerable<IParameterInfo> IMethodInfo.Parameters => this.Parameters.Values;
+
+        /// <summary>
         /// Gets the parent element declaring this element.
         /// </summary>
         /// <value>
@@ -81,6 +108,14 @@ namespace Kephas.Runtime
         /// Gets the method info.
         /// </summary>
         public MethodInfo MethodInfo { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this method is static.
+        /// </summary>
+        /// <value>
+        /// True if this method is static, false if not.
+        /// </value>
+        public bool IsStatic => this.MethodInfo.IsStatic;
 
         /// <summary>
         /// Gets the return type of the method.
@@ -104,7 +139,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo() => this.MethodInfo;
+        public ICustomAttributeProvider GetUnderlyingElementInfo() => this.MethodInfo;
 
         /// <summary>
         /// The invoke.
@@ -153,6 +188,13 @@ namespace Kephas.Runtime
             return this.MethodInfo.GetCustomAttributes<TAttribute>(inherit: true);
         }
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{this.Name}({string.Join(", ", this.Parameters.Values.Select(p => p.ToString()))}): {this.ReturnType.FullName}";
+        }
+
         /// <summary>
         /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </summary>
@@ -162,6 +204,68 @@ namespace Kephas.Runtime
         protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeMethodInfo;
+        }
+
+        /// <summary>
+        /// Creates the member infos.
+        /// </summary>
+        /// <param name="fieldInfos">The field infos.</param>
+        /// <returns>
+        /// The new member infos.
+        /// </returns>
+        private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
+            IDictionary<string, IRuntimeParameterInfo> fieldInfos)
+        {
+            var memberInfos = new Dictionary<string, IRuntimeElementInfo>();
+            foreach (var kv in fieldInfos)
+            {
+                memberInfos.Add(kv.Key, kv.Value);
+            }
+
+            return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
+        }
+
+        /// <summary>
+        /// Creates parameter infos.
+        /// </summary>
+        /// <param name="methodInfo">The method information.</param>
+        /// <returns>
+        /// The new parameter infos.
+        /// </returns>
+        private IDictionary<string, IRuntimeParameterInfo> CreateParameterInfos(MethodInfo methodInfo)
+        {
+            var runtimeParameterInfos = new Dictionary<string, IRuntimeParameterInfo>();
+            var parameterInfos = methodInfo.GetParameters();
+            foreach (var parameterInfo in parameterInfos)
+            {
+                var runtimeParameterInfo = new RuntimeParameterInfo(parameterInfo, this);
+                var parameterName = parameterInfo.Name;
+                runtimeParameterInfos.Add(parameterName, runtimeParameterInfo);
+            }
+
+            return new ReadOnlyDictionary<string, IRuntimeParameterInfo>(runtimeParameterInfos);
+        }
+
+        /// <summary>
+        /// Gets the parameter infos, initializing them if necessary.
+        /// </summary>
+        /// <returns>
+        /// The parameters.
+        /// </returns>
+        private IDictionary<string, IRuntimeParameterInfo> GetParameters()
+        {
+            return this.parameters ?? (this.parameters = this.CreateParameterInfos(this.MethodInfo));
+        }
+
+        /// <summary>
+        /// Gets the members, initializing them if necessary.
+        /// </summary>
+        /// <returns>
+        /// The members.
+        /// </returns>
+        private IDictionary<string, IRuntimeElementInfo> GetMembers()
+        {
+            return this.members ?? (this.members = CreateMemberInfos(this.Parameters));
         }
     }
 }

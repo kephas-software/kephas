@@ -373,7 +373,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo() => this.TypeInfo;
+        public ICustomAttributeProvider GetUnderlyingElementInfo() => this.TypeInfo;
 
         /// <summary>
         /// Gets a member by the provided name.

@@ -500,6 +500,9 @@
     <Compile Include="..\Kephas.Core\Reflection\IMethodInfo.cs">
       <Link>Reflection\IMethodInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IParameterInfo.cs">
+      <Link>Reflection\IParameterInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\IPropertyInfo.cs">
       <Link>Reflection\IPropertyInfo.cs</Link>
     </Compile>
@@ -551,6 +554,9 @@
     <Compile Include="..\Kephas.Core\Runtime\IRuntimeMethodInfo.cs">
       <Link>Runtime\IRuntimeMethodInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\IRuntimeParameterInfo.cs">
+      <Link>Runtime\IRuntimeParameterInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Runtime\IRuntimePropertyInfo.cs">
       <Link>Runtime\IRuntimePropertyInfo.cs</Link>
     </Compile>
@@ -568,6 +574,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimeMethodInfo.cs">
       <Link>Runtime\RuntimeMethodInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Runtime\RuntimeParameterInfo.cs">
+      <Link>Runtime\RuntimeParameterInfo.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Runtime\RuntimePropertyInfo.cs">
       <Link>Runtime\RuntimePropertyInfo.cs</Link>

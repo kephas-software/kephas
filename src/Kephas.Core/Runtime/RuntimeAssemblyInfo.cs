@@ -123,7 +123,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        MemberInfo IRuntimeElementInfo.GetUnderlyingMemberInfo()
+        ICustomAttributeProvider IRuntimeElementInfo.GetUnderlyingElementInfo()
         {
             return null;
         }

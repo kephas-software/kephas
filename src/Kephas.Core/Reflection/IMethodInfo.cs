@@ -26,6 +26,14 @@ namespace Kephas.Reflection
         ITypeInfo ReturnType { get; }
 
         /// <summary>
+        /// Gets the method parameters.
+        /// </summary>
+        /// <value>
+        /// The method parameters.
+        /// </value>
+        IEnumerable<IParameterInfo> Parameters { get; }
+
+        /// <summary>
         /// Invokes the specified method on the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>

@@ -99,7 +99,7 @@ namespace Kephas.Core.Tests.Reflection
 
             var declaredMembers = typeInfo.GetDeclaredMembers().ToList();
             Assert.AreEqual(1, declaredMembers.Count);
-            Assert.AreEqual(nameof(IRuntimeElementInfo.GetUnderlyingMemberInfo), declaredMembers[0].Name);
+            Assert.AreEqual(nameof(IRuntimeElementInfo.GetUnderlyingElementInfo), declaredMembers[0].Name);
         }
 
         [Test]

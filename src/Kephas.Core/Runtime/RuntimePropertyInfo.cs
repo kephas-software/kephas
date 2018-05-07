@@ -37,7 +37,7 @@ namespace Kephas.Runtime
         {
             this.PropertyInfo = propertyInfo;
             this.Name = propertyInfo.Name;
-            this.FullName = propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
+            this.FullName = propertyInfo.DeclaringType?.FullName + "." + propertyInfo.Name;
         }
 
         /// <summary>
@@ -81,6 +81,14 @@ namespace Kephas.Runtime
         public PropertyInfo PropertyInfo { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this property is static.
+        /// </summary>
+        /// <value>
+        /// True if this property is static, false if not.
+        /// </value>
+        public bool IsStatic => (this.PropertyInfo.GetMethod?.IsStatic ?? false) || (this.PropertyInfo.SetMethod?.IsStatic ?? false);
+
+        /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <value>
@@ -118,7 +126,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The underlying member information.
         /// </returns>
-        public MemberInfo GetUnderlyingMemberInfo() => this.PropertyInfo;
+        public ICustomAttributeProvider GetUnderlyingElementInfo() => this.PropertyInfo;
 
         /// <summary>
         /// Sets the specified value.

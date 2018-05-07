@@ -29,12 +29,28 @@ namespace Kephas.Runtime
         new IRuntimeTypeInfo ReturnType { get; }
 
         /// <summary>
+        /// Gets the runtime parameters.
+        /// </summary>
+        /// <value>
+        /// The runtime parameters.
+        /// </value>
+        new IDictionary<string, IRuntimeParameterInfo> Parameters { get; }
+
+        /// <summary>
         /// Gets the method information.
         /// </summary>
         /// <value>
         /// The method information.
         /// </value>
         MethodInfo MethodInfo { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this method is static.
+        /// </summary>
+        /// <value>
+        /// True if this method is static, false if not.
+        /// </value>
+        bool IsStatic { get; }
 
         /// <summary>
         /// Tries to invokes the specified method on the provided instance.

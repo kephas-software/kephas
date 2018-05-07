@@ -29,6 +29,14 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
+        public void IsStatic()
+        {
+            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlyGet)));
+
+            Assert.IsFalse(propInfo.IsStatic);
+        }
+
+        [Test]
         public void CanWrite()
         {
             var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlyGet)));

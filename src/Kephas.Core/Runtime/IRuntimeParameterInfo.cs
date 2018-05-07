@@ -1,30 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRuntimeElementInfo.cs" company="Quartz Software SRL">
+// <copyright file="IRuntimeParameterInfo.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IRuntimeElementInfo interface.
+//   Declares the IRuntimeParameterInfo interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Runtime
 {
-    using System.Reflection;
-
     using Kephas.Reflection;
 
     /// <summary>
-    /// Interface for dynamic element information.
+    /// Interface for runtime parameter information.
     /// </summary>
-    public interface IRuntimeElementInfo : IElementInfo
+    public interface IRuntimeParameterInfo : IParameterInfo, IRuntimeElementInfo
     {
-        /// <summary>
-        /// Gets the underlying element information.
-        /// </summary>
-        /// <returns>
-        /// The underlying element information.
-        /// </returns>
-        ICustomAttributeProvider GetUnderlyingElementInfo();
     }
 }
