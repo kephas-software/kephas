@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Model
     using Kephas.Model;
 
     /// <summary>
-    /// A message denotes classifiers holding metadata about the DTOs used in messaging.
+    /// A message type holds metadata about the DTOs used in messaging.
     /// </summary>
     public interface IMessageType : IClassifier
     {
