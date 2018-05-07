@@ -29,7 +29,7 @@
         public ICompositionContext CreateContainerForModel(params Type[] elements)
         {
             var container = this.CreateContainer(
-                new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntity).Assembly },
+                new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
                 config: b => b.WithFactoryExportProvider(() => this.GetModelRegistry(elements), isShared: true));
 
             return container;

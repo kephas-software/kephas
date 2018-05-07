@@ -22,7 +22,7 @@
             var modelSpace = provider.GetModelSpace();
             var nameClassifier = modelSpace.Classifiers.Single(c => c.Name == "UniqueName");
             var guidClassifier = modelSpace.Classifiers.Single(c => c.Name == "UniqueGuid");
-            var pluginClassifier = modelSpace.Classifiers.OfType<IEntity>().Single(c => c.Name == "Plugin");
+            var pluginClassifier = modelSpace.Classifiers.OfType<IEntityType>().Single(c => c.Name == "Plugin");
 
             var nameKey = nameClassifier.Members.OfType<IKey>().Single();
             var guidKey = guidClassifier.Members.OfType<IKey>().Single(k => k.Name == "$Guid");

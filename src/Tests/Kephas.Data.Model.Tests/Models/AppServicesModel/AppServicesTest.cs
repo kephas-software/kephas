@@ -32,7 +32,7 @@ namespace Kephas.Data.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var dataContextClassifier = modelSpace.Classifiers.Single(c => c.Name == "DataContext");
 
-            Assert.IsInstanceOf<AppService>(dataContextClassifier);
+            Assert.IsInstanceOf<AppServiceType>(dataContextClassifier);
             Assert.AreEqual(1, dataContextClassifier.Parts.Count());
         }
     }

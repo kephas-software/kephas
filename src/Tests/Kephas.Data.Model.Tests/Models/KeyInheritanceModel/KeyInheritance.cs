@@ -16,7 +16,7 @@
         Guid Guid { get; set; }
     }
 
-    [Entity]
+    [EntityType]
     public interface IPlugin : IUniqueGuid
     {
     }
