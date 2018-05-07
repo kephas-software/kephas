@@ -39,6 +39,12 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Workflow\Behaviors\Composition\WorkflowExecutionBehaviorMetadata.cs">
+      <Link>Behaviors\Composition\WorkflowExecutionBehaviorMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Workflow\Behaviors\IWorkflowExecutionBehavior.cs">
+      <Link>Behaviors\IWorkflowExecutionBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Workflow\IActivity.cs">
       <Link>IActivity.cs</Link>
     </Compile>
