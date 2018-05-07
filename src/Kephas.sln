@@ -221,9 +221,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Tests", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Tests.Net45", "Tests\Kephas.Scripting.Tests.Net45\Kephas.Scripting.Tests.Net45.csproj", "{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Autofac", "Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Autofac", "Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj", "{D8B1AFB3-AC1A-4E06-BA86-138CDCFB9010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Autofac.Net45", "Kephas.Composition.Autofac.Net45\Kephas.Composition.Autofac.Net45.csproj", "{997D8440-758D-4E7F-B7A1-405FC503E166}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow", "Kephas.Workflow\Kephas.Workflow.csproj", "{478DCC86-FBBA-4061-AD44-E917A77512B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Net45", "Kephas.Workflow.Net45\Kephas.Workflow.Net45.csproj", "{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Model", "Kephas.Workflow.Model\Kephas.Workflow.Model.csproj", "{245220CB-AC60-477F-AC7F-A27CF03EE42B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Model.Net45", "Kephas.Workflow.Model.Net45\Kephas.Workflow.Model.Net45.csproj", "{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -599,6 +607,22 @@ Global
 		{997D8440-758D-4E7F-B7A1-405FC503E166}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{997D8440-758D-4E7F-B7A1-405FC503E166}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{997D8440-758D-4E7F-B7A1-405FC503E166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{478DCC86-FBBA-4061-AD44-E917A77512B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{478DCC86-FBBA-4061-AD44-E917A77512B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{478DCC86-FBBA-4061-AD44-E917A77512B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{478DCC86-FBBA-4061-AD44-E917A77512B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{245220CB-AC60-477F-AC7F-A27CF03EE42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{245220CB-AC60-477F-AC7F-A27CF03EE42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{245220CB-AC60-477F-AC7F-A27CF03EE42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{245220CB-AC60-477F-AC7F-A27CF03EE42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -673,6 +697,8 @@ Global
 		{A92E3B43-6ECD-476E-80BF-9FD4CBE65512} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{604ABDA1-D26C-4BB2-8BB1-51964E5F40B5} = {CD5F4B68-87A8-4323-904E-8A0DD89BF95C}
 		{997D8440-758D-4E7F-B7A1-405FC503E166} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
