@@ -45,6 +45,9 @@
     <Compile Include="..\Kephas.Workflow\IWorkflowEngine.cs">
       <Link>IWorkflowEngine.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Workflow\IWorkflowExecutionContext.cs">
+      <Link>IWorkflowExecutionContext.cs</Link>
+    </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
