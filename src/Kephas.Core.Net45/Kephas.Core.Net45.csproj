@@ -518,6 +518,9 @@
     <Compile Include="..\Kephas.Core\Reflection\ITypeResolver.cs">
       <Link>Reflection\ITypeResolver.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\IValueElementInfo.cs">
+      <Link>Reflection\IValueElementInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\QualifiedFullName.cs">
       <Link>Reflection\QualifiedFullName.cs</Link>
     </Compile>
