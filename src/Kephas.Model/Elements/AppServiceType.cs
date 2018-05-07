@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppService.cs" company="Quartz Software SRL">
+// <copyright file="AppServiceType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -26,7 +26,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// An application service.
     /// </summary>
-    public class AppService : ClassifierBase<IAppService>, IAppService
+    public class AppServiceType : ClassifierBase<IAppServiceType>, IAppServiceType
     {
         /// <summary>
         /// The application service attribute.
@@ -39,12 +39,12 @@ namespace Kephas.Model.Elements
         private readonly ICompositionContext compositionContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppService" /> class.
+        /// Initializes a new instance of the <see cref="AppServiceType" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="appServiceAttribute">The application service attribute.</param>
         /// <param name="name">The name.</param>
-        public AppService(
+        public AppServiceType(
             IModelConstructionContext constructionContext,
             AppServiceContractAttribute appServiceAttribute,
             string name)

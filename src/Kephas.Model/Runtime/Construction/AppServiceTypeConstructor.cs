@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceConstructor.cs" company="Quartz Software SRL">
+// <copyright file="AppServiceTypeConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,16 +13,15 @@ namespace Kephas.Model.Runtime.Construction
     using System.Linq;
 
     using Kephas.Model.Construction;
-    using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
-    /// An application service constructor.
+    /// An application service type constructor.
     /// </summary>
-    public class AppServiceConstructor : ClassifierConstructorBase<AppService, IAppService>
+    public class AppServiceTypeConstructor : ClassifierConstructorBase<AppServiceType, IAppServiceType>
     {
         /// <summary>
         /// Determines whether a model element can be created for the provided runtime element.
@@ -46,12 +45,12 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override AppService TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override AppServiceType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
             var appServiceAttr = runtimeElement.Annotations.OfType<AppServiceContractAttribute>().Single();
             var appServiceRuntimeElement = appServiceAttr.ContractType?.AsRuntimeTypeInfo() ?? runtimeElement;
 
-            return new AppService(constructionContext, appServiceAttr, this.TryComputeName(constructionContext, appServiceRuntimeElement));
+            return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(constructionContext, appServiceRuntimeElement));
         }
     }
 }

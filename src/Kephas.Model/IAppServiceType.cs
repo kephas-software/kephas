@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAppService.cs" company="Quartz Software SRL">
+// <copyright file="IAppServiceType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAppService interface.
+//   Declares the IAppServiceType interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Kephas.Model
     /// <summary>
     /// Interface for application service.
     /// </summary>
-    public interface IAppService : IClassifier
+    public interface IAppServiceType : IClassifier
     {
         /// <summary>
         /// Gets a value indicating whether the service allows multiple service types.

@@ -18,4 +18,9 @@ namespace Kephas.Model
     public interface IProperty : IModelElement, IPropertyInfo
     {
     }
+
+    public interface IParameter : IModelElement
+    {
+
+    }
 }

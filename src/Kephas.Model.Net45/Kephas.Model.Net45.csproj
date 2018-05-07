@@ -153,8 +153,8 @@
     <Compile Include="..\Kephas.Model\Elements\Annotations\MixinAnnotation.cs">
       <Link>Elements\Annotations\MixinAnnotation.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Elements\AppService.cs">
-      <Link>Elements\AppService.cs</Link>
+    <Compile Include="..\Kephas.Model\Elements\AppServiceType.cs">
+      <Link>Elements\AppServiceType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Elements\Classifier.cs">
       <Link>Elements\Classifier.cs</Link>
@@ -195,8 +195,8 @@
     <Compile Include="..\Kephas.Model\IAnnotation.cs">
       <Link>IAnnotation.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\IAppService.cs">
-      <Link>IAppService.cs</Link>
+    <Compile Include="..\Kephas.Model\IAppServiceType.cs">
+      <Link>IAppServiceType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\IAttributeAnnotation.cs">
       <Link>IAttributeAnnotation.cs</Link>
@@ -267,8 +267,8 @@
     <Compile Include="..\Kephas.Model\Runtime\Construction\Annotations\MixinAnnotationConstructor.cs">
       <Link>Runtime\Construction\Annotations\MixinAnnotationConstructor.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Runtime\Construction\AppServiceConstructor.cs">
-      <Link>Runtime\Construction\AppServiceConstructor.cs</Link>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\AppServiceTypeConstructor.cs">
+      <Link>Runtime\Construction\AppServiceTypeConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\Builders\ClassifierBuilderBase.cs">
       <Link>Runtime\Construction\Builders\ClassifierBuilderBase.cs</Link>

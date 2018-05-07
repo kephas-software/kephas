@@ -30,7 +30,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
         private INamedElement TryCreateTestModelElement(Type serviceType)
         {
-            var constructor = new AppServiceConstructor();
+            var constructor = new AppServiceTypeConstructor();
             var context = this.GetConstructionContext();
             var runtimeElement = serviceType.AsRuntimeTypeInfo();
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
@@ -44,7 +44,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var modelElement = this.TryCreateTestModelElement<ISharedTestAppService>();
 
             Assert.IsNotNull(modelElement);
-            Assert.IsInstanceOf<AppService>(modelElement);
+            Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
             Assert.AreSame(typeof(ISharedTestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
@@ -55,7 +55,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var modelElement = this.TryCreateTestModelElement<ITestAppService>();
 
             Assert.IsNotNull(modelElement);
-            Assert.IsInstanceOf<AppService>(modelElement);
+            Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
             Assert.AreSame(typeof(ITestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
@@ -66,7 +66,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var modelElement = this.TryCreateTestModelElement(typeof(ITestGenericExportedService<>));
 
             Assert.IsNotNull(modelElement);
-            Assert.IsInstanceOf<AppService>(modelElement);
+            Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
             Assert.AreSame(typeof(ITestGenericExportedService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
@@ -77,7 +77,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var modelElement = this.TryCreateTestModelElement(typeof(ITestGenericService<>));
 
             Assert.IsNotNull(modelElement);
-            Assert.IsInstanceOf<AppService>(modelElement);
+            Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
             Assert.AreSame(typeof(ITestGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
@@ -88,7 +88,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var modelElement = this.TryCreateTestModelElement(typeof(ITestOpenGenericService<>));
 
             Assert.IsNotNull(modelElement);
-            Assert.IsInstanceOf<AppService>(modelElement);
+            Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
             Assert.AreSame(typeof(ITestOpenGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }

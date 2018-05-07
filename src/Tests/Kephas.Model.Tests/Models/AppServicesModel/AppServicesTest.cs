@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "SimpleService");
 
-            Assert.IsInstanceOf<AppService>(disposableClassifier);
+            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
             Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
@@ -47,7 +47,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "DisposableService");
 
-            Assert.IsInstanceOf<AppService>(disposableClassifier);
+            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
             Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
@@ -62,7 +62,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "DisposableService");
 
-            Assert.IsInstanceOf<AppService>(disposableClassifier);
+            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
             Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
@@ -77,7 +77,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "OpenGenericService`1");
 
-            Assert.IsInstanceOf<AppService>(disposableClassifier);
+            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
             Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
 
@@ -92,7 +92,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             var modelSpace = provider.GetModelSpace();
             var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "ClosedGenericService`1");
 
-            Assert.IsInstanceOf<AppService>(disposableClassifier);
+            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
             Assert.AreEqual(1, disposableClassifier.Parts.Count());
         }
     }

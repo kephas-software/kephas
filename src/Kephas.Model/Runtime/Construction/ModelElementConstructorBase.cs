@@ -87,7 +87,7 @@ namespace Kephas.Model.Runtime.Construction
         protected virtual IEnumerable<INamedElement> ComputeMemberAnnotations(IModelConstructionContext constructionContext, TRuntime runtimeElement)
         {
             var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
-            var attributes = runtimeElement.GetUnderlyingMemberInfo().GetCustomAttributes(inherit: false);
+            var attributes = runtimeElement.GetUnderlyingElementInfo().GetCustomAttributes(inherit: false);
             return attributes.Select(attr => runtimeModelElementFactory.TryCreateModelElement(constructionContext, attr))
                              .Where(annotation => annotation != null);
         }
