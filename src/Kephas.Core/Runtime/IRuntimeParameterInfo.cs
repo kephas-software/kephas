@@ -17,5 +17,12 @@ namespace Kephas.Runtime
     /// </summary>
     public interface IRuntimeParameterInfo : IParameterInfo, IRuntimeElementInfo
     {
+        /// <summary>
+        /// Gets the type of the field.
+        /// </summary>
+        /// <value>
+        /// The type of the field.
+        /// </value>
+        new IRuntimeTypeInfo ValueType { get; }
     }
 }

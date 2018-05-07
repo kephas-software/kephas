@@ -13,16 +13,8 @@ namespace Kephas.Reflection
     /// <summary>
     /// Contract providing property information.
     /// </summary>
-    public interface IPropertyInfo : IElementInfo
+    public interface IPropertyInfo : IValueElementInfo
     {
-        /// <summary>
-        /// Gets the type of the property.
-        /// </summary>
-        /// <value>
-        /// The type of the property.
-        /// </value>
-        ITypeInfo PropertyType { get; }
-
         /// <summary>
         /// Gets a value indicating whether the property can be written to.
         /// </summary>
@@ -38,21 +30,5 @@ namespace Kephas.Reflection
         /// <c>true</c> if the property value can be read; otherwise <c>false</c>.
         /// </value>
         bool CanRead { get; }
-
-        /// <summary>
-        /// Sets the specified value.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <param name="value">The value.</param>
-        void SetValue(object obj, object value);
-
-        /// <summary>
-        /// Gets the value from the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns>
-        /// The value.
-        /// </returns>
-        object GetValue(object obj);
     }
 }

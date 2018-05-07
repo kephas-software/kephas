@@ -13,14 +13,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Interface for parameter information.
     /// </summary>
-    public interface IParameterInfo : IElementInfo
+    public interface IParameterInfo : IValueElementInfo
     {
-        /// <summary>
-        /// Gets the type of the parameter.
-        /// </summary>
-        /// <value>
-        /// The type of the parameter.
-        /// </value>
-        ITypeInfo ParameterType { get; }
     }
 }

@@ -300,7 +300,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var propInfo = Substitute.For<IPropertyInfo>();
             propInfo.Name.Returns(name);
-            propInfo.PropertyType.Returns(typeof(TValue).AsRuntimeTypeInfo());
+            propInfo.ValueType.Returns(typeof(TValue).AsRuntimeTypeInfo());
             propInfo.CanRead.Returns(true);
             propInfo.CanWrite.Returns(true);
             propInfo.GetValue(Arg.Any<object>()).Returns(ci => getter == null ? default(TValue) : getter());

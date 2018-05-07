@@ -25,7 +25,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        new IRuntimeTypeInfo PropertyType { get; }
+        new IRuntimeTypeInfo ValueType { get; }
 
         /// <summary>
         /// Gets the property information.

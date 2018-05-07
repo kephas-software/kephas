@@ -25,7 +25,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        new IRuntimeTypeInfo FieldType { get; }
+        new IRuntimeTypeInfo ValueType { get; }
 
         /// <summary>
         /// Gets the field information.

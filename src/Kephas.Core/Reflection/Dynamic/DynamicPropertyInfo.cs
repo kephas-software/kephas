@@ -24,7 +24,7 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The type of the property.
         /// </value>
-        public ITypeInfo PropertyType { get; protected internal set; }
+        public ITypeInfo ValueType { get; protected internal set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property can be written to.
@@ -51,8 +51,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var expando = obj as IExpando;
-            if (expando != null)
+            if (obj is IExpando expando)
             {
                 expando[this.Name] = value;
             }
@@ -71,8 +70,7 @@ namespace Kephas.Reflection.Dynamic
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var expando = obj as IExpando;
-            if (expando != null)
+            if (obj is IExpando expando)
             {
                 return expando[this.Name];
             }

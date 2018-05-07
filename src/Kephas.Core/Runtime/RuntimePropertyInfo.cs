@@ -94,7 +94,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        public IRuntimeTypeInfo PropertyType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets the type of the property.
@@ -102,7 +102,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        ITypeInfo IPropertyInfo.PropertyType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.

@@ -93,7 +93,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo FieldType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
+        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -101,7 +101,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IFieldInfo.FieldType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
+        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
 
         /// <summary>
         /// Gets the underlying member information.

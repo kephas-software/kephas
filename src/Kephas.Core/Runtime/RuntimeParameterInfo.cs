@@ -103,7 +103,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ParameterType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
+        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -111,7 +111,41 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IParameterInfo.ParameterType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
+        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
+
+        /// <summary>
+        /// Sets the specified value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="value">The value.</param>
+        public virtual void SetValue(object obj, object value)
+        {
+            if (obj is IIndexable indexableObj)
+            {
+                indexableObj[this.Name] = value;
+            }
+            else
+            {
+                obj.SetPropertyValue(this.Name, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value from the specified object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>
+        /// The value.
+        /// </returns>
+        public virtual object GetValue(object obj)
+        {
+            if (obj is IIndexable indexableObj)
+            {
+                return indexableObj[this.Name];
+            }
+
+            return obj.GetPropertyValue(this.Name);
+        }
 
         /// <summary>
         /// Gets the underlying member information.
@@ -138,7 +172,7 @@ namespace Kephas.Runtime
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"{this.Name}: {this.ParameterType.FullName}";
+            return $"{this.Name}: {this.ParameterInfo.ParameterType.FullName}";
         }
 
         /// <summary>
