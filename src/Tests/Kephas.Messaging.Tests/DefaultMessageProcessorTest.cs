@@ -23,6 +23,8 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Messaging.Behaviors;
+    using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Ping;

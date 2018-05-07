@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Composition
+namespace Kephas.Messaging.Behaviors.Composition
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Messaging.Behaviors;
     using Kephas.Services.Composition;
 
     /// <summary>
