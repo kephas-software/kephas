@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Message.cs" company="Quartz Software SRL">
+// <copyright file="MessageType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,14 +16,14 @@ namespace Kephas.Messaging.Model.Elements
     /// <summary>
     /// Classifier for DTOs used in messaging.
     /// </summary>
-    public class Message : ClassifierBase<IMessage>, IMessage
+    public class MessageType : ClassifierBase<IMessageType>, IMessageType
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Message" /> class.
+        /// Initializes a new instance of the <see cref="MessageType" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>
-        public Message(IModelConstructionContext constructionContext, string name)
+        public MessageType(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
         }

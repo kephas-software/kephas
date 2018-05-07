@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageConstructor.cs" company="Quartz Software SRL">
+// <copyright file="MessageTypeConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,9 +18,9 @@ namespace Kephas.Messaging.Model.Runtime.Construction
     using Kephas.Runtime;
 
     /// <summary>
-    /// Classifier constructor for <see cref="Message"/>.
+    /// Classifier constructor for <see cref="MessageType"/>.
     /// </summary>
-    public class MessageConstructor : ClassifierConstructorBase<Message, IMessage>
+    public class MessageTypeConstructor : ClassifierConstructorBase<MessageType, IMessageType>
     {
         /// <summary>
         /// The marker interface.
@@ -49,9 +49,9 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Message TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override MessageType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new Message(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new MessageType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
 }

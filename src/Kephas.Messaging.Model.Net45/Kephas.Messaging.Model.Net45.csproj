@@ -51,17 +51,17 @@
     <Compile Include="..\Kephas.Messaging.Model\Dimensions\Scope\IMessagingScopeDimensionElement.cs">
       <Link>Dimensions\Scope\IMessagingScopeDimensionElement.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Model\Elements\Message.cs">
-      <Link>Elements\Message.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Model\Elements\MessageType.cs">
+      <Link>Elements\MessageType.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Model\IMessage.cs">
-      <Link>IMessage.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Model\IMessageType.cs">
+      <Link>IMessageType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging.Model\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Model\Runtime\Construction\MessageConstructor.cs">
-      <Link>Runtime\Construction\MessageConstructor.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Model\Runtime\Construction\MessageTypeConstructor.cs">
+      <Link>Runtime\Construction\MessageTypeConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging.Model\Runtime\ModelRegistries\MessagingModelRegistry.cs">
       <Link>Runtime\ModelRegistries\MessagingModelRegistry.cs</Link>

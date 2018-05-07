@@ -41,7 +41,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
-            typeLoader.GetLoadableExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(Model.IMessage), typeof(Message), typeof(string), typeof(PingMessage) });
+            typeLoader.GetLoadableExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
 
             var registry = new MessagingModelRegistry(appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
-            typeLoader.GetLoadableExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(Model.IMessage), typeof(Message), typeof(string), typeof(ExcludedMessage) });
+            typeLoader.GetLoadableExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
 
             var registry = new MessagingModelRegistry(appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
