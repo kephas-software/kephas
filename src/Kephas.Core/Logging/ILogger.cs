@@ -65,7 +65,7 @@ namespace Kephas.Logging
         /// <param name="level">The logging level.</param>
         /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
+        /// <param name="args">The arguments for the message format.</param>
         void Log(LogLevel level, Exception exception, string messageFormat, params object[] args);
 
         /// <summary>
