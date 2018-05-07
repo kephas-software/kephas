@@ -74,14 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Data.Model.Tests\AttributedModel\EntityPartAttributeTest.cs">
-      <Link>AttributedModel\EntityPartAttributeTest.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.Model.Tests\AttributedModel\KeyAttributeTest.cs">
       <Link>AttributedModel\KeyAttributeTest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model.Tests\AttributedModel\LooseEntityPartAttributeTest.cs">
-      <Link>AttributedModel\LooseEntityPartAttributeTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model.Tests\AttributedModel\NaturalKeyAttributeTest.cs">
       <Link>AttributedModel\NaturalKeyAttributeTest.cs</Link>

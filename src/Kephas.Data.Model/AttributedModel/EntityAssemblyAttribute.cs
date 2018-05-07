@@ -15,7 +15,7 @@ namespace Kephas.Data.Model.AttributedModel
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// Marks an assembly as exporting <see cref="IEntity"/> model elements.
+    /// Marks an assembly as exporting <see cref="IEntityType"/> model elements.
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     public class EntityAssemblyAttribute : ModelAssemblyAttribute
@@ -65,7 +65,7 @@ namespace Kephas.Data.Model.AttributedModel
         /// </summary>
         private void Initialize()
         {
-            this.DefaultClassifierKindAttribute = new EntityAttribute();
+            this.DefaultClassifierKindAttribute = new EntityTypeAttribute();
         }
     }
 }

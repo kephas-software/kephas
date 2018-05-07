@@ -19,7 +19,7 @@ namespace Kephas.Data.Model.Elements
     /// <summary>
     /// Classifier for entities, either persisted or used by the client tier.
     /// </summary>
-    public class Entity : ClassifierBase<IEntity>, IEntity
+    public class EntityType : ClassifierBase<IEntityType>, IEntityType
     {
         /// <summary>
         /// The empty keys array.
@@ -27,11 +27,11 @@ namespace Kephas.Data.Model.Elements
         public static readonly IKey[] EmptyKeys = new IKey[0];
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Entity" /> class.
+        /// Initializes a new instance of the <see cref="EntityType" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>
-        public Entity(IModelConstructionContext constructionContext, string name)
+        public EntityType(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
         }

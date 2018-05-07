@@ -47,17 +47,11 @@
     <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityAssemblyAttribute.cs">
       <Link>AttributedModel\EntityAssemblyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityAttribute.cs">
-      <Link>AttributedModel\EntityAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityPartAttribute.cs">
-      <Link>AttributedModel\EntityPartAttribute.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\AttributedModel\EntityTypeAttribute.cs">
+      <Link>AttributedModel\EntityTypeAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\AttributedModel\KeyAttribute.cs">
       <Link>AttributedModel\KeyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Model\AttributedModel\LooseEntityPartAttribute.cs">
-      <Link>AttributedModel\LooseEntityPartAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\AttributedModel\NaturalKeyAttribute.cs">
       <Link>AttributedModel\NaturalKeyAttribute.cs</Link>
@@ -77,14 +71,14 @@
     <Compile Include="..\Kephas.Data.Model\Elements\Annotations\ValidationAnnotation.cs">
       <Link>Elements\Annotations\ValidationAnnotation.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\Elements\Entity.cs">
-      <Link>Elements\Entity.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\Elements\EntityType.cs">
+      <Link>Elements\EntityType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Elements\Key.cs">
       <Link>Elements\Key.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\IEntity.cs">
-      <Link>IEntity.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\IEntityType.cs">
+      <Link>IEntityType.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\IKey.cs">
       <Link>IKey.cs</Link>
@@ -104,8 +98,8 @@
     <Compile Include="..\Kephas.Data.Model\Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs">
       <Link>Runtime\Construction\Annotations\ValidationAnnotationConstructor.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\Runtime\Construction\EntityConstructor.cs">
-      <Link>Runtime\Construction\EntityConstructor.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\Runtime\Construction\EntityTypeConstructor.cs">
+      <Link>Runtime\Construction\EntityTypeConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Runtime\DataPrimitiveTypesModelInfoProvider.cs">
       <Link>Runtime\DataPrimitiveTypesModelInfoProvider.cs</Link>

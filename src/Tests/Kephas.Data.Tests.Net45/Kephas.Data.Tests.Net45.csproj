@@ -65,6 +65,12 @@
     <Compile Include="..\Kephas.Data.Tests\Adapters\CollectionAdapterTest.cs">
       <Link>Adapters\CollectionAdapterTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\AttributedModel\EntityPartAttributeTest.cs">
+      <Link>AttributedModel\EntityPartAttributeTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\AttributedModel\LooseEntityPartAttributeTest.cs">
+      <Link>AttributedModel\LooseEntityPartAttributeTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\AttributedModel\RequiredRefAttributeTest.cs">
       <Link>AttributedModel\RequiredRefAttributeTest.cs</Link>
     </Compile>

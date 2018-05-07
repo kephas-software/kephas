@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntity.cs" company="Quartz Software SRL">
+// <copyright file="IEntityType.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,7 @@ namespace Kephas.Data.Model
     /// An entity denotes classifiers holding metadata about data objects,
     /// typically persisted in the database or transferred to the client tier.
     /// </summary>
-    public interface IEntity : IClassifier
+    public interface IEntityType : IClassifier
     {
         /// <summary>
         /// Gets the entity keys.

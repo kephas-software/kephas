@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityAttribute.cs" company="Quartz Software SRL">
+// <copyright file="EntityTypeAttribute.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,16 +15,16 @@ namespace Kephas.Data.Model.AttributedModel
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// Attribute used to mark entities.
+    /// Attribute used to mark entity types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-    public class EntityAttribute : ClassifierKindAttribute
+    public class EntityTypeAttribute : ClassifierKindAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityAttribute"/> class.
+        /// Initializes a new instance of the <see cref="EntityTypeAttribute"/> class.
         /// </summary>
-        public EntityAttribute()
-            : base(typeof(IEntity))
+        public EntityTypeAttribute()
+            : base(typeof(IEntityType))
         {
         }
     }

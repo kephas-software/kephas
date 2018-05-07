@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityConstructor.cs" company="Quartz Software SRL">
+// <copyright file="EntityTypeConstructor.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,9 +16,9 @@ namespace Kephas.Data.Model.Runtime.Construction
     using Kephas.Runtime;
 
     /// <summary>
-    /// Classifier constructor for <see cref="Entity"/>.
+    /// Classifier constructor for <see cref="EntityType"/>.
     /// </summary>
-    public class EntityConstructor : ClassifierConstructorBase<Entity, IEntity>
+    public class EntityTypeConstructor : ClassifierConstructorBase<EntityType, IEntityType>
     {
         /// <summary>
         /// The entity discriminator.
@@ -45,9 +45,9 @@ namespace Kephas.Data.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        protected override Entity TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        protected override EntityType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new Entity(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new EntityType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
         }
     }
 }
