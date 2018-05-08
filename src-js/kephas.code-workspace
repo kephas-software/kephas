@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "kephas.core"
+		}
+	],
+	"settings": {
+		"mocha.options": {
+			"compilers": {
+				"ts": "ts-node/register"
+			}
+		},
+		"mocha.requires": [
+			"ts-node/register"
+		]
+	}
+}

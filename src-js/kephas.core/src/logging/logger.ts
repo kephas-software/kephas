@@ -54,7 +54,7 @@ export abstract class Logger {
      * @param {...any[]} args The arguments for the message format.
      * @memberof Logger
      */
-    abstract log(level: LogLevel, exception: Error, messageFormat: string, ...args: any[]): void;
+    abstract log(level: LogLevel, exception: Error | null, messageFormat: string, ...args: any[]): void;
 
     /**
      * Logs the event at the fatal level.

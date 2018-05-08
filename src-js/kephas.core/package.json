@@ -1,0 +1,32 @@
+{
+  "name": "@kephas/core",
+  "version": "0.1.0-beta01",
+  "description": "Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application management, and others.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "mocha -r ts-node/register src/**/*.spec.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quartz-software/kephas/tree/master/src-js/kephas.core"
+  },
+  "keywords": [
+    "kephas",
+    "framework",
+    "core",
+    "quartz-software"
+  ],
+  "author": "Quartz Software SRL",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^2.8.3",
+    "mocha": "^5.1.1",
+    "chai": "^4.1.2",
+    "ts-node": "^6.0.3",
+    "@types/mocha": "^5.2.0",
+    "@types/chai": "^4.1.3"
+  }
+}
