@@ -1,6 +1,6 @@
 {
   "name": "@kephas/core",
-  "version": "0.1.0-beta03",
+  "version": "0.1.0-beta04",
   "description": "Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application management, and others.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -4,8 +4,7 @@ import DtsBundlePlugin from 'webpack-dts-bundle';
 
 const config: webpack.Configuration = {
     entry: {
-        'index': './src/index.ts',
-        'index.min': './src/index.ts',
+        'index': './src/index.ts'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
