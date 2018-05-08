@@ -1,6 +1,6 @@
 {
   "name": "@kephas/core",
-  "version": "0.1.0-beta01",
+  "version": "0.1.0-beta03",
   "description": "Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application management, and others.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,8 +18,14 @@
     "core",
     "quartz-software"
   ],
-  "author": "Quartz Software SRL",
+  "author": {
+    "name": "Quartz Software SRL"
+  },
   "license": "MIT",
+  "files": [
+    "README.md",
+    "dist/"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.1.3",
