@@ -13,7 +13,8 @@ const config: webpack.Configuration = {
         library: '@kephas/core',
         umdNamedDefine: true
     },
-    devtool: 'inline-source-map',
+    mode: "production",
+    devtool: 'source-map',
     resolve: {
         extensions: ['.ts', '.js']
     },
@@ -25,7 +26,10 @@ const config: webpack.Configuration = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader', // 'awesome-typescript-loader',
-                exclude: /node_modules/                
+                exclude: [
+                    /node_modules/,
+                    /webpack/
+                ]
             }
         ]
     }
