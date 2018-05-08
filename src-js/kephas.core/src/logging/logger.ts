@@ -1,7 +1,6 @@
 /**
  * Enumerates the logging levels.
  * 
- * @export
  * @enum {number}
  */
 export enum LogLevel {
@@ -39,7 +38,6 @@ export enum LogLevel {
 /**
  * Base service for logging.
  * 
- * @export
  * @abstract
  * @class Logger
  */

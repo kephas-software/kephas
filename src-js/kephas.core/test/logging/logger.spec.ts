@@ -1,4 +1,4 @@
-import { LogLevel, Logger } from './logger';
+import { LogLevel, Logger } from '../../src/logging/logger';
 import { expect } from 'chai';
 import 'mocha';
 

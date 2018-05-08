@@ -1,27 +1,11 @@
 {
+    "extends": "../tsconfig.json",
     "compilerOptions": {
-        "target": "es5",
-        "module": "amd",
-        "moduleResolution": "node",
-        "baseUrl": ".",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "removeComments": false,
-        "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "alwaysStrict": true,
-        "allowSyntheticDefaultImports": true,
-        "outFile": "dist/index.js",
-        "lib": [
-            "dom",
-            "es2015"
-        ],
-        "declaration": true,
-        "strict": true
+        "baseUrl": "."
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "*.ts"
     ],
     "exclude": [
         "node_modules",
