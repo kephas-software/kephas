@@ -37,6 +37,7 @@
     "typescript": "^2.8.3",
     "webpack": "^4.8.1",
     "webpack-cli": "^2.1.3",
+    "webpack-dts-bundle": "^0.0.2",
     "path": "^0.12.7",
     "ts-loader": "^4.3.0"
   }

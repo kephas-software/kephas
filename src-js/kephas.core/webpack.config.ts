@@ -1,5 +1,6 @@
 import * as webpack from 'webpack'
 import * as path from 'path';
+import DtsBundlePlugin from 'webpack-dts-bundle';
 
 const config: webpack.Configuration = {
     entry: {
@@ -32,7 +33,15 @@ const config: webpack.Configuration = {
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new DtsBundlePlugin({
+            name: '@kephas/core',
+            main: path.resolve(__dirname, './src/index.d.ts'),
+            out: path.resolve(__dirname, './dist/index.d.ts'),
+            verbose: true
+        })
+    ]
 };
 
 export default config;
