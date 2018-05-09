@@ -97,6 +97,11 @@ namespace Kephas.Reflection
 
             var fileName = new AssemblyName(args.Name).Name + ".dll";
             var filePath = Path.Combine(parentLocation, fileName);
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
+
             return this.LoadAssemblyFromPath(filePath);
         }
 #endif
