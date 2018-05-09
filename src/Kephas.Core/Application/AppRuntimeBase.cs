@@ -11,6 +11,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -41,6 +42,12 @@ namespace Kephas.Application
         /// The logger.
         /// </summary>
         private readonly ILogger logger;
+
+        /// <summary>
+        /// The assembly resolution cache.
+        /// </summary>
+        private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
+            new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
@@ -87,13 +94,46 @@ namespace Kephas.Application
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        public IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null)
+        public virtual IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null)
         {
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
-            var loadedAssemblies = this.GetLoadedAssemblies();
             assemblyFilter = assemblyFilter ?? this.AssemblyFilter;
+            var assemblies = this.assemblyResolutionCache.GetOrAdd(
+                (object)assemblyFilter ?? this,
+                _ => this.ComputeAppAssemblies(assemblyFilter));
+
+            return assemblies;
+        }
+
+        /// <summary>
+        /// Gets the loaded assemblies.
+        /// </summary>
+        /// <returns>
+        /// The loaded assemblies.
+        /// </returns>
+        protected abstract IList<Assembly> GetLoadedAssemblies();
+
+        /// <summary>
+        /// Gets the referenced assemblies.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// An array of assembly name.
+        /// </returns>
+        protected abstract AssemblyName[] GetReferencedAssemblies(Assembly assembly);
+
+        /// <summary>
+        /// Gets the application assemblies.
+        /// </summary>
+        /// <param name="assemblyFilter">A filter for the assemblies.</param>
+        /// <returns>
+        /// An enumeration of application assemblies.
+        /// </returns>
+        protected virtual IEnumerable<Assembly> ComputeAppAssemblies(Func<AssemblyName, bool> assemblyFilter)
+        {
+            var loadedAssemblies = this.GetLoadedAssemblies();
 
             // when computing the assemblies, use the Name and not the FullName
             // because for some obscure reasons it is possible to have the same
@@ -123,23 +163,6 @@ namespace Kephas.Application
             this.AddAdditionalAssemblies(assemblies, assemblyFilter);
             return assemblies;
         }
-
-        /// <summary>
-        /// Gets the loaded assemblies.
-        /// </summary>
-        /// <returns>
-        /// The loaded assemblies.
-        /// </returns>
-        protected abstract IList<Assembly> GetLoadedAssemblies();
-
-        /// <summary>
-        /// Gets the referenced assemblies.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// An array of assembly name.
-        /// </returns>
-        protected abstract AssemblyName[] GetReferencedAssemblies(Assembly assembly);
 
         /// <summary>
         /// Adds additional assemblies to the ones already collected.
