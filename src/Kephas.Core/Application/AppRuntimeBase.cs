@@ -15,15 +15,12 @@ namespace Kephas.Application
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for the application runtime service.

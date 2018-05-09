@@ -10,6 +10,7 @@
 
 namespace Kephas.Reflection
 {
+    using System;
     using System.Reflection;
 
     using Kephas.Services;
@@ -23,20 +24,17 @@ namespace Kephas.Reflection
     [OverridePriority(Priority.Low)]
     public class DefaultAssemblyLoader : IAssemblyLoader
     {
-#if NETSTANDARD2_0
-        /// <summary>
-        /// The load context.
-        /// </summary>
-        private readonly AssemblyLoadContext loadContext;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAssemblyLoader"/> class.
         /// </summary>
         public DefaultAssemblyLoader()
         {
-            this.loadContext = AssemblyLoadContext.GetLoadContext(Assembly.GetEntryAssembly());
-        }
+#if NETSTANDARD2_0
+            AssemblyLoadContext.Default.Resolving += this.TryResolveAssembly;
+#else
+            AppDomain.CurrentDomain.AssemblyResolve += this.TryResolveAssembly;
 #endif
+        }
 
         /// <summary>
         /// Attempts to load an assembly.
@@ -60,10 +58,38 @@ namespace Kephas.Reflection
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
 #if NETSTANDARD2_0
-            return this.loadContext.LoadFromAssemblyPath(assemblyFilePath);
+            return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
 #else
             return Assembly.LoadFile(assemblyFilePath);
 #endif
         }
+
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Tries to resolve the assembly.
+        /// </summary>
+        /// <param name="assemblyLoadContext">Context for the assembly load.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns>
+        /// The resolved assembly or <c>null</c>.
+        /// </returns>
+        protected virtual Assembly TryResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        {
+            return null;
+        }
+#else
+        /// <summary>
+        /// Tries to resolve the assembly.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="args">Arguments for resolving the assembly.</param>
+        /// <returns>
+        /// The resolved assembly or <c>null</c>.
+        /// </returns>
+        protected virtual Assembly TryResolveAssembly(object sender, ResolveEventArgs args)
+        {
+            return null;
+        }
+#endif
     }
 }
