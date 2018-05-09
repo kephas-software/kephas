@@ -13,6 +13,7 @@ namespace Kephas.Reflection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.IO;
     using System.Linq.Expressions;
     using System.Reflection;
 
@@ -246,6 +247,25 @@ namespace Kephas.Reflection
             return assemblyFullName.StartsWith("System") || assemblyFullName.StartsWith("mscorlib") ||
                    assemblyFullName.StartsWith("Microsoft") || assemblyFullName.StartsWith("vshost32") ||
                    assemblyFullName.StartsWith("Mono");
+        }
+
+        /// <summary>
+        /// Gets the location for the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to be checked.</param>
+        /// <returns>
+        /// The assembly location.
+        /// </returns>
+        public static string GetLocation(this Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                return null;
+            }
+
+            var codebaseUri = new Uri(assembly.CodeBase);
+            var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
+            return location;
         }
 
         /// <summary>

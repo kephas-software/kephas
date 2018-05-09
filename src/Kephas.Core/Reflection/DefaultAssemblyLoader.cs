@@ -11,6 +11,7 @@
 namespace Kephas.Reflection
 {
     using System;
+    using System.IO;
     using System.Reflection;
 
     using Kephas.Services;
@@ -88,7 +89,15 @@ namespace Kephas.Reflection
         /// </returns>
         protected virtual Assembly TryResolveAssembly(object sender, ResolveEventArgs args)
         {
-            return null;
+            var parentLocation = args.RequestingAssembly?.GetLocation();
+            if (parentLocation == null)
+            {
+                return null;
+            }
+
+            var fileName = new AssemblyName(args.Name).Name + ".dll";
+            var filePath = Path.Combine(parentLocation, fileName);
+            return this.LoadAssemblyFromPath(filePath);
         }
 #endif
     }

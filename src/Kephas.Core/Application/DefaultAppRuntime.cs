@@ -61,10 +61,7 @@ namespace Kephas.Application
             return System.AppContext.BaseDirectory;
 #else
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-
-            var codebaseUri = new Uri(assembly.CodeBase);
-            var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
-            return location;
+            return assembly.GetLocation();
 #endif
         }
 
