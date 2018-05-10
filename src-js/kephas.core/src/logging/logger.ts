@@ -38,22 +38,71 @@ export enum LogLevel {
 /**
  * Base service for logging.
  * 
- * @abstract
  * @class Logger
  */
-export abstract class Logger {
+export class Logger {
+    private _logLevel: LogLevel = LogLevel.Info;
+    
     /**
      * Logs the information at the provided level.
      * 
-     * @abstract
      * @param {LogLevel} level The logging level.
      * @param {Error} exception The error that occured (may not be specified).
      * @param {string} messageFormat The message format.
      * @param {...any[]} args The arguments for the message format.
      * @memberof Logger
      */
-    abstract log(level: LogLevel, exception: Error | null, messageFormat: string, ...args: any[]): void;
+    log(level: LogLevel, exception: Error | null | undefined, messageFormat: string, ...args: any[]): void {
+        if (this.isEnabled(level)) {
+            let message = exception ? exception.message : messageFormat;
+            switch (level) {
+                case LogLevel.Fatal:
+                    console.error('FATAL ' + message, ...args);
+                    break;
+                case LogLevel.Error:
+                    console.error(message, ...args);
+                    break;
+                case LogLevel.Warning:
+                    console.warn(message, ...args);
+                    break;
+                case LogLevel.Info:
+                    console.info(message, ...args);
+                    break;
+                case LogLevel.Debug:
+                    console.debug(message, ...args);
+                    break;
+                case LogLevel.Trace:
+                    console.trace(message, ...args);
+                    break;
+                default:
+                    break;
+            }
+        }        
+    }
 
+    /**
+     * Indicates whether logging at the indicated level is enabled.
+     * @param level The logging level.
+     * @return true if enabled, false if not.
+     */
+    isEnabled(level: LogLevel): boolean {
+        return level <= this._logLevel;
+    }
+    
+    /**
+     * Sets the logging level to the indicated one.
+     * 
+     * @param {(LogLevel | string)} level The new log level.
+     * @memberof Logger
+     */
+    public setLevel(level: LogLevel | string) {
+        if (typeof level === 'string') {
+            level = <LogLevel>LogLevel[level];
+        }
+
+        this._logLevel = level;
+    }
+    
     /**
      * Logs the event at the fatal level.
      * 
