@@ -37,14 +37,14 @@ namespace Kephas.ServiceStack.Hosting
 #endif
     {
         /// <summary>
-        /// The ambient services.
-        /// </summary>
-        private readonly IAmbientServices ambientServices;
-
-        /// <summary>
         /// The application manifest.
         /// </summary>
         private readonly IAppManifest appManifest;
+
+        /// <summary>
+        /// Context for the composition.
+        /// </summary>
+        private readonly ICompositionContext compositionContext;
 
         /// <summary>
         /// The endpoint service provider.
@@ -64,19 +64,19 @@ namespace Kephas.ServiceStack.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWebHost"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appManifest">The application manifest.</param>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="endpointServiceProvider">The endpoint service provider.</param>
         /// <param name="hostConfiguratorFactories">The host configurator factories.</param>
         public DefaultWebHost(
-            IAmbientServices ambientServices,
             IAppManifest appManifest,
+            ICompositionContext compositionContext,
             IEndpointServiceProvider endpointServiceProvider,
             ICollection<IExportFactory<IHostConfigurator, EndpointMetadata>> hostConfiguratorFactories)
             : base(endpointServiceProvider.ServiceName, endpointServiceProvider.ServiceAssemblies)
         {
-            this.ambientServices = ambientServices;
             this.appManifest = appManifest;
+            this.compositionContext = compositionContext;
             this.endpointServiceProvider = endpointServiceProvider;
             this.hostConfiguratorFactories = hostConfiguratorFactories;
         }
@@ -101,7 +101,7 @@ namespace Kephas.ServiceStack.Hosting
                                      select s.CreateExportedValue()).ToList();
             this.Logger.Info("Endpoint configurators: " + string.Join(", ", hostConfigurators.Select(c => c.GetType().Name)));
 
-            var configContext = new HostConfigurationContext(this.ambientServices, this, new HostConfig());
+            var configContext = new HostConfigurationContext(this.compositionContext, this, new HostConfig());
 
             foreach (var configurator in hostConfigurators)
             {

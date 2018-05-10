@@ -13,6 +13,7 @@ namespace Kephas.Data.Tests.Commands
     using System;
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -29,7 +30,7 @@ namespace Kephas.Data.Tests.Commands
         public void Execute_delete_not_attached_entity()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
 
             var cmd = new DeleteEntityCommand();
             Assert.Throws<InvalidOperationException>(() => cmd.Execute(new DeleteEntityContext(dataContext, "123")));
@@ -39,7 +40,7 @@ namespace Kephas.Data.Tests.Commands
         public void Execute_delete_added_entity()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
 
             var entityInfo = new EntityInfo("123") { ChangeState = ChangeState.Added };
             localCache.Add(entityInfo);
@@ -56,7 +57,7 @@ namespace Kephas.Data.Tests.Commands
         public void Execute_delete_not_changed_entity()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
 
             var entityInfo = new EntityInfo("123") { ChangeState = ChangeState.NotChanged };
             localCache.Add(entityInfo);

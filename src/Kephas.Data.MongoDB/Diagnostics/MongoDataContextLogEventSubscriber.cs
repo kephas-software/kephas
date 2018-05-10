@@ -19,6 +19,8 @@ namespace Kephas.Data.MongoDB.Diagnostics
     using global::MongoDB.Bson;
     using global::MongoDB.Driver.Core.Events;
 
+    using Kephas.Composition;
+
     /// <summary>
     /// An <see cref="IEventSubscriber"/> for <see cref="MongoDataContext"/>.
     /// </summary>
@@ -47,10 +49,10 @@ namespace Kephas.Data.MongoDB.Diagnostics
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContextLogEventSubscriber" /> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public MongoDataContextLogEventSubscriber(IAmbientServices ambientServices)
+        /// <param name="compositionContext">The composition context.</param>
+        public MongoDataContextLogEventSubscriber(ICompositionContext compositionContext)
         {
-            this.logger = ambientServices.LogManager.GetLogger<MongoDataContextLogEventSubscriber>();
+            this.logger = compositionContext.GetExport<ILogManager>().GetLogger<MongoDataContextLogEventSubscriber>();
             this.subscriber = new ReflectionEventSubscriber(this, nameof(this.Handle), BindingFlags.Instance | BindingFlags.NonPublic);
         }
 

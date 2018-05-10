@@ -15,6 +15,7 @@ namespace Kephas.Data.InMemory.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
@@ -208,12 +209,12 @@ namespace Kephas.Data.InMemory.Tests
         }
 
         private InMemoryDataContext CreateInMemoryDataContext(
-            IAmbientServices ambientServices = null,
+            ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             ISerializationService serializationService = null)
         {
             return new InMemoryDataContext(
-                ambientServices ?? Substitute.For<IAmbientServices>(),
+                compositionContext ?? Substitute.For<ICompositionContext>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 serializationService ?? Substitute.For<ISerializationService>());
         }

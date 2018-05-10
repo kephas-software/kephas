@@ -14,9 +14,9 @@ namespace Kephas.Data.InMemory
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
 
     using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands.Factory;
@@ -50,13 +50,13 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
-            : base(ambientServices, dataCommandProvider)
+        public InMemoryDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
+            : base(compositionContext, dataCommandProvider)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(serializationService, nameof(serializationService));
 

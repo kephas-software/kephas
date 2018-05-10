@@ -12,6 +12,7 @@ namespace Kephas.ServiceStack.Hosting
 {
     using global::ServiceStack;
 
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -22,11 +23,11 @@ namespace Kephas.ServiceStack.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="HostConfigurationContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="host">The host.</param>
         /// <param name="hostConfig">The host configuration.</param>
-        public HostConfigurationContext(IAmbientServices ambientServices, ServiceStackHost host, HostConfig hostConfig)
-            : base(ambientServices)
+        public HostConfigurationContext(ICompositionContext compositionContext, ServiceStackHost host, HostConfig hostConfig)
+            : base(compositionContext)
         {
             this.Host = host;
             this.HostConfig = hostConfig;

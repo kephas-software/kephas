@@ -39,25 +39,25 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The ambient services.</param>
         /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
             IAppManifest appManifest,
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(serviceBehaviorProvider, nameof(serviceBehaviorProvider));
 
             this.AppManifest = appManifest;
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
             this.ServiceBehaviorProvider = serviceBehaviorProvider;
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
                                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
@@ -88,12 +88,12 @@ namespace Kephas.Application
         public IAppManifest AppManifest { get; }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets the composition context.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The composition context.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets the service behavior provider.
@@ -143,7 +143,7 @@ namespace Kephas.Application
                 this.SetAppManifestFeatures(features);
 
                 // registers the application context as a global service, so that other services can benefit from it.
-                this.AmbientServices.RegisterService(appContext);
+                this.CompositionContext.GetExport<IAmbientServices>().RegisterService(appContext);
 
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>

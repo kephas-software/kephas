@@ -16,6 +16,7 @@ namespace Kephas.Data.Tests.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
@@ -37,7 +38,7 @@ namespace Kephas.Data.Tests.Commands
                 .Returns(new List<IOnInitializeBehavior>());
 
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new CreateEntityCommand(behaviorProvider);
 
             var result = await cmd.ExecuteAsync(new CreateEntityContext<TestEntity>(dataContext));
@@ -73,7 +74,7 @@ namespace Kephas.Data.Tests.Commands
             behaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(Arg.Any<Type>())
                 .Returns(new List<IOnInitializeBehavior> { onInitBehavior });
 
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>());
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>());
             var cmd = new CreateEntityCommand(behaviorProvider);
 
             var result = await cmd.ExecuteAsync(new CreateEntityContext<TestEntity>(dataContext));

@@ -14,6 +14,7 @@ namespace Kephas.Npgsql.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Logging;
     using Kephas.Npgsql.Logging;
     using Kephas.Services;
 
@@ -41,7 +42,7 @@ namespace Kephas.Npgsql.Application
         /// </returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.AmbientServices.LogManager);
+            NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.CompositionContext.GetExport<ILogManager>());
 
             return Task.FromResult(0);
         }

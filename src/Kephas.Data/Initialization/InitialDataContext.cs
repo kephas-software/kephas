@@ -12,6 +12,7 @@ namespace Kephas.Data.Initialization
 {
     using System.Collections.Generic;
 
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -22,10 +23,10 @@ namespace Kephas.Data.Initialization
         /// <summary>
         /// Initializes a new instance of the <see cref="InitialDataContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional).</param>
+        /// <param name="compositionContext">The composition context (optional).</param>
         /// <param name="isThreadSafe">True if is thread safe, false if not (optional).</param>
-        public InitialDataContext(IAmbientServices ambientServices = null, bool isThreadSafe = false)
-            : base(ambientServices, isThreadSafe)
+        public InitialDataContext(ICompositionContext compositionContext = null, bool isThreadSafe = false)
+            : base(compositionContext, isThreadSafe)
         {
         }
 

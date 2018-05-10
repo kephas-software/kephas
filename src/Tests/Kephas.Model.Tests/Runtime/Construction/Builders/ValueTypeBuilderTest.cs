@@ -31,7 +31,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     {
         public ValueTypeBuilder CreateBuilder<T>()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>())
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>())
             {
                                   ModelSpace = Substitute.For<IModelSpace>(),
                                   RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(

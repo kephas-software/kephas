@@ -46,19 +46,19 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultScriptingService"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The ambient services.</param>
         /// <param name="interpreterFactories">The interpreter factories.</param>
         /// <param name="interpreterBehaviorFactories">The interpreter behavior factories.</param>
         public DefaultScriptingService(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             ICollection<IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>> interpreterFactories,
             ICollection<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>> interpreterBehaviorFactories)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(interpreterFactories, nameof(interpreterFactories));
             Requires.NotNull(interpreterBehaviorFactories, nameof(interpreterBehaviorFactories));
 
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
 
             interpreterFactories
                 .OrderBy(f => f.Metadata.OverridePriority)
@@ -97,12 +97,12 @@ namespace Kephas.Scripting
         public ILogger<DefaultScriptingService> Logger { get; set; }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The composition context.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Executes the expression asynchronously.
@@ -129,7 +129,7 @@ namespace Kephas.Scripting
                 throw new ScriptingException($"The script language '{script.Language}' does not have an associated interpreter.");
             }
 
-            var scriptingContext = new ScriptingContext(this.AmbientServices)
+            var scriptingContext = new ScriptingContext(this.CompositionContext)
                                        {
                                            Identity = executionContext?.Identity,
                                            Script = script,

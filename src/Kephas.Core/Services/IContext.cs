@@ -14,6 +14,7 @@ namespace Kephas.Services
 
     using Kephas.Composition;
     using Kephas.Dynamic;
+    using Kephas.Logging;
 
     /// <summary>
     /// Defines a base contract for context-dependent operations.
@@ -27,5 +28,13 @@ namespace Kephas.Services
         /// The authenticated identity.
         /// </value>
         IIdentity Identity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context logger.
+        /// </summary>
+        /// <value>
+        /// The context logger.
+        /// </value>
+        ILogger ContextLogger { get; set; }
     }
 }

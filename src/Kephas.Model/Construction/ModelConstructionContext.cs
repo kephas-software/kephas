@@ -13,7 +13,9 @@ namespace Kephas.Model.Construction
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -26,11 +28,13 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public ModelConstructionContext(IAmbientServices ambientServices)
-            : base(ambientServices)
+        /// <param name="compositionContext">The ambient services.</param>
+        public ModelConstructionContext(ICompositionContext compositionContext)
+            : base(compositionContext)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+
+            this.ContextLogger = compositionContext.GetLogger(this.GetType());
         }
 
         /// <summary>

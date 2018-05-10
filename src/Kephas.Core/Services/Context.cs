@@ -15,6 +15,7 @@ namespace Kephas.Services
     using Kephas;
     using Kephas.Composition;
     using Kephas.Dynamic;
+    using Kephas.Logging;
 
     /// <summary>
     /// A base implementtion for contexts.
@@ -86,5 +87,13 @@ namespace Kephas.Services
         /// The authenticated user.
         /// </value>
         public IIdentity Identity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context logger.
+        /// </summary>
+        /// <value>
+        /// The context logger.
+        /// </value>
+        public ILogger ContextLogger { get; set; }
     }
 }

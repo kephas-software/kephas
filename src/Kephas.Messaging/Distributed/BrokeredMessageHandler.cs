@@ -31,11 +31,6 @@ namespace Kephas.Messaging.Distributed
     public class BrokeredMessageHandler : MessageHandlerBase<BrokeredMessage, IMessage>
     {
         /// <summary>
-        /// The ambient services.
-        /// </summary>
-        private readonly IAmbientServices ambientServices;
-
-        /// <summary>
         /// The message processor.
         /// </summary>
         private readonly IMessageProcessor messageProcessor;
@@ -53,22 +48,18 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageHandler"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="messageBrokerFactory">The message broker factory.</param>
         /// <param name="securityService">The security service.</param>
         public BrokeredMessageHandler(
-            IAmbientServices ambientServices,
             IMessageProcessor messageProcessor,
             IExportFactory<IMessageBroker> messageBrokerFactory,
             ISecurityService securityService)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(messageBrokerFactory, nameof(messageBrokerFactory));
             Requires.NotNull(securityService, nameof(securityService));
 
-            this.ambientServices = ambientServices;
             this.messageProcessor = messageProcessor;
             this.messageBrokerFactory = messageBrokerFactory;
             this.securityService = securityService;

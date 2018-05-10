@@ -40,7 +40,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace modelSpace = null,
             IRuntimeModelElementFactory factory = null)
         {
-            return new ModelConstructionContext(Substitute.For<IAmbientServices>())
+            return new ModelConstructionContext(Substitute.For<ICompositionContext>())
             {
                            ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),
                            RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),

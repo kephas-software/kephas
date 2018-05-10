@@ -33,21 +33,21 @@ namespace Kephas.AspNetCore.Application
         /// Initializes a new instance of the <see cref="AspNetAppManager"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public AspNetAppManager(
             IAppManifest appManifest,
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
             : base(
                 appManifest,
-                ambientServices,
+                compositionContext,
                 serviceBehaviorProvider,
                 appLifecycleBehaviorFactories,
                 featureManagerFactories,
@@ -58,7 +58,7 @@ namespace Kephas.AspNetCore.Application
         /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
-        /// <param name="appContext">       Context for the application.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.

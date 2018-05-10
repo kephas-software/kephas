@@ -14,6 +14,7 @@ namespace Kephas.Model.Tests.Elements
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Composition;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -33,7 +34,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = modelSpace };
             var element = new TestNamedElement(context, "name");
 
             Assert.AreEqual(modelSpace, element.ModelSpace);
@@ -45,7 +46,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Success_WithDiscriminator()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = modelSpace };
 
             var element = new TestNamedElementWithDiscriminator(context, "name");
 
@@ -57,7 +58,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void Constructor_Failure_ModelSpace_not_set()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = null };
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = null };
             Assert.That(() => new TestNamedElement(context, "name"), Throws.InstanceOf<Exception>());
         }
 
@@ -65,7 +66,7 @@ namespace Kephas.Model.Tests.Elements
         public void Constructor_Failure_Name_not_set()
         {
             var modelSpace = Substitute.For<IModelSpace>();
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = modelSpace };
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = modelSpace };
             Assert.That(() => new TestNamedElement(context, null), Throws.InstanceOf<Exception>());
         }
 

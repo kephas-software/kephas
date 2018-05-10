@@ -76,7 +76,7 @@ namespace Kephas.Model.Elements
 
             this.parts = new List<object>();
 
-            this.Logger = constructionContext.AmbientServices.GetLogger(this.GetType());
+            this.Logger = constructionContext.ContextLogger;
 
             this.ConstructionMonitor = new InitializationMonitor<TModelContract>(this.GetType());
             this.ConstructionMonitor.Start();

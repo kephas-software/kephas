@@ -14,6 +14,7 @@ namespace Kephas.Model.Tests.Elements
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
@@ -30,7 +31,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeDimensions_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -60,7 +61,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeProjections_2_dims()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -93,7 +94,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_classifier_with_two_properties()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -112,7 +113,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_aspect_classifier()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -140,7 +141,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_classifier_with_aspect()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 

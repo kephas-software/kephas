@@ -67,7 +67,7 @@ namespace Kephas.ServiceStack.Application
         /// </returns>
         protected override async Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            LogManager.LogFactory = new LogFactory(appContext.AmbientServices.LogManager);
+            LogManager.LogFactory = new LogFactory(appContext.CompositionContext.GetExport<ILogManager>());
 
             // initialize the web host
             this.webHost = this.webHostFactory.CreateExportedValue();

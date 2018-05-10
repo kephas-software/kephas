@@ -14,6 +14,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Data.Model.AttributedModel;
     using Kephas.Data.Model.Elements.Annotations;
     using Kephas.Model;
@@ -33,7 +34,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
         [Test]
         public void Configure()
         {
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>());
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 

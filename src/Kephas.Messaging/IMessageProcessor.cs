@@ -13,6 +13,7 @@ namespace Kephas.Messaging
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace Kephas.Messaging
     /// The message processor is defined as a shared service.
     /// </remarks>
     [SharedAppServiceContract]
-    public interface IMessageProcessor : IAmbientServicesAware
+    public interface IMessageProcessor : ICompositionContextAware
     {
         /// <summary>
         /// Processes the specified message asynchronously.

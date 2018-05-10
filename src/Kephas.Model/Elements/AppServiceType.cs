@@ -53,7 +53,7 @@ namespace Kephas.Model.Elements
             Requires.NotNull(appServiceAttribute, nameof(appServiceAttribute));
 
             this.appServiceAttribute = appServiceAttribute;
-            this.compositionContext = constructionContext.AmbientServices.CompositionContainer;
+            this.compositionContext = constructionContext.CompositionContext;
             this.ContractType = this.appServiceAttribute.ContractType;
         }
 

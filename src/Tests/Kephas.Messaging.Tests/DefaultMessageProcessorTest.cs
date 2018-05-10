@@ -550,7 +550,7 @@ namespace Kephas.Messaging.Tests
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
                                               };
 
-            return new DefaultMessageProcessor(Substitute.For<IAmbientServices>(), handlerSelectorFactories, behaviorFactories);
+            return new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), handlerSelectorFactories, behaviorFactories);
         }
     }
 

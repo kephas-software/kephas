@@ -12,6 +12,7 @@ namespace Kephas.Data.Tests
 {
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Data.Caching;
     using Kephas.Data.Commands.Factory;
 
@@ -20,10 +21,10 @@ namespace Kephas.Data.Tests
     public class TestDataContext : DataContextBase
     {
         public TestDataContext(
-            IAmbientServices ambientServices = null,
+            ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataContextCache localCache = null)
-            : base(GetTestAmbientServices(ambientServices), GetTestDataCommandProvider(dataCommandProvider), localCache: localCache)
+            : base(GetTestCompositionContext(compositionContext), GetTestDataCommandProvider(dataCommandProvider), localCache: localCache)
         {
         }
 
@@ -32,8 +33,8 @@ namespace Kephas.Data.Tests
             return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
 
-        private static IAmbientServices GetTestAmbientServices(IAmbientServices ambientServices)
-            => ambientServices ?? Substitute.For<IAmbientServices>();
+        private static ICompositionContext GetTestCompositionContext(ICompositionContext compositionContext)
+            => compositionContext ?? Substitute.For<ICompositionContext>();
 
         private static IDataCommandProvider GetTestDataCommandProvider(IDataCommandProvider dataCommandProvider)
             => dataCommandProvider ?? Substitute.For<IDataCommandProvider>();

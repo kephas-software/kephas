@@ -13,11 +13,13 @@ namespace Kephas.Composition
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Reflection;
 
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Internal;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
 
     /// <summary>
@@ -136,6 +138,56 @@ namespace Kephas.Composition
         /// The <see cref="GetExportFactories{T, TMetadata}"/> method.
         /// </value>
         private static MethodInfo GetExportFactories2Method { get; }
+
+        /// <summary>
+        /// Gets the logger with the provided name.
+        /// </summary>
+        /// <param name="compositionContext">The composition context to act on.</param>
+        /// <param name="loggerName">Name of the logger.</param>
+        /// <returns>
+        /// A logger for the provided name.
+        /// </returns>
+        [Pure]
+        public static ILogger GetLogger(this ICompositionContext compositionContext, string loggerName)
+        {
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNullOrEmpty(loggerName, nameof(loggerName));
+
+            return compositionContext.GetExport<ILogManager>().GetLogger(loggerName);
+        }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <param name="compositionContext">The composition context to act on.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// A logger for the provided type.
+        /// </returns>
+        [Pure]
+        public static ILogger GetLogger(this ICompositionContext compositionContext, Type type)
+        {
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(type, nameof(type));
+
+            return compositionContext.GetExport<ILogManager>().GetLogger(type);
+        }
+
+        /// <summary>
+        /// Gets the logger for the provided type.
+        /// </summary>
+        /// <typeparam name="T">The type for which a logger should be created.</typeparam>
+        /// <param name="compositionContext">The composition context to act on.</param>
+        /// <returns>
+        /// A logger for the provided type.
+        /// </returns>
+        [Pure]
+        public static ILogger<T> GetLogger<T>(this ICompositionContext compositionContext)
+        {
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+
+            return new TypedLogger<T>(compositionContext.GetExport<ILogManager>());
+        }
 
         /// <summary>
         /// Converts a <see cref="ICompositionContext"/> to a <see cref="IServiceProvider"/>.

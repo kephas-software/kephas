@@ -14,6 +14,7 @@ namespace Kephas.Data.Tests.Commands
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -30,7 +31,7 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_success()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
             var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
@@ -51,7 +52,7 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_not_found_tollerant()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
             var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
@@ -68,7 +69,7 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_not_found_exception()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
             var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
@@ -82,7 +83,7 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_ambiguous_exception()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
             var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
@@ -100,7 +101,7 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_empty_id_exception()
         {
             var localCache = new DataContextCache();
-            var dataContext = new TestDataContext(Substitute.For<IAmbientServices>(), Substitute.For<IDataCommandProvider>(), localCache);
+            var dataContext = new TestDataContext(Substitute.For<ICompositionContext>(), Substitute.For<IDataCommandProvider>(), localCache);
             var cmd = new FindCommand();
 
             var findContext = new FindContext<TestEntity>(dataContext, 0);

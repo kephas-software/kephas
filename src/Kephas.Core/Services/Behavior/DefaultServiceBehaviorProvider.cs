@@ -26,9 +26,9 @@ namespace Kephas.Services.Behavior
     public class DefaultServiceBehaviorProvider : IServiceBehaviorProvider
     {
         /// <summary>
-        /// The ambient services.
+        /// The composition context.
         /// </summary>
-        private readonly IAmbientServices ambientServices;
+        private readonly ICompositionContext compositionContext;
 
         /// <summary>
         /// The behavior factories.
@@ -43,14 +43,14 @@ namespace Kephas.Services.Behavior
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultServiceBehaviorProvider"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultServiceBehaviorProvider(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> behaviorFactories)
         {
-            this.ambientServices = ambientServices;
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            this.compositionContext = compositionContext;
+            Requires.NotNull(compositionContext, nameof(compositionContext));
 
             this.behaviorFactories = behaviorFactories
                                             ?.OrderBy(f => f.Metadata.OverridePriority)
@@ -74,7 +74,7 @@ namespace Kephas.Services.Behavior
             Requires.NotNull(services, nameof(services));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.ambientServices, service, context), rules));
+            return services.Where(service => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, service, context), rules));
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Kephas.Services.Behavior
             Requires.NotNull(serviceFactories, nameof(serviceFactories));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.ambientServices, export, context), rules));
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, export, context), rules));
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Kephas.Services.Behavior
             Requires.NotNull(serviceFactories, nameof(serviceFactories));
 
             var rules = this.GetEnabledServiceBehaviorRules<TService>();
-            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.ambientServices, export, context), rules));
+            return serviceFactories.Where(export => this.IsServiceEnabled(new ServiceBehaviorContext<TService>(this.compositionContext, export, context), rules));
         }
 
         /// <summary>

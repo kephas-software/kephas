@@ -23,7 +23,6 @@ namespace Kephas.Messaging
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -60,19 +59,19 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="handlerSelectorFactories">The handler selector factories.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
             Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
 
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
             this.handlerSelectors = handlerSelectorFactories
                 .OrderBy(f => f.Metadata.ProcessingPriority)
                 .Select(f => f.CreateExportedValue())
@@ -83,12 +82,12 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The composition context.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the logger.

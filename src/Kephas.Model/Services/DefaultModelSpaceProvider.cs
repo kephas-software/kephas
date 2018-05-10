@@ -16,6 +16,7 @@ namespace Kephas.Model.Services
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Construction;
@@ -30,7 +31,7 @@ namespace Kephas.Model.Services
     /// The default implementation of a model space provider.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultModelSpaceProvider : IModelSpaceProvider, IAmbientServicesAware
+    public class DefaultModelSpaceProvider : IModelSpaceProvider, ICompositionContextAware
     {
         /// <summary>
         /// The runtime model element factory.
@@ -50,16 +51,19 @@ namespace Kephas.Model.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="modelInfoProviders">The model information providers.</param>
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
-        public DefaultModelSpaceProvider(IAmbientServices ambientServices, ICollection<IModelInfoProvider> modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)
+        public DefaultModelSpaceProvider(
+            ICompositionContext compositionContext,
+            ICollection<IModelInfoProvider> modelInfoProviders,
+            IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Requires.NotNull(modelInfoProviders, nameof(modelInfoProviders));
 
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
             this.ModelInfoProviders = modelInfoProviders;
             this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
@@ -70,7 +74,7 @@ namespace Kephas.Model.Services
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -149,7 +153,7 @@ namespace Kephas.Model.Services
         /// </returns>
         protected virtual ModelConstructionContext CreateModelConstructionContext()
         {
-            var constructionContext = new ModelConstructionContext(this.AmbientServices)
+            var constructionContext = new ModelConstructionContext(this.CompositionContext)
                 {
                     RuntimeModelElementFactory = this.runtimeModelElementFactory,
                 };

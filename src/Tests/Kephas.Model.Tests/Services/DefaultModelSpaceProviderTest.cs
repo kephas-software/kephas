@@ -25,7 +25,7 @@
         public async Task InitializeAsync_Dimensions()
         {
             var provider = new DefaultModelSpaceProvider(
-                Substitute.For<IAmbientServices>(),
+                Substitute.For<ICompositionContext>(),
                 new IModelInfoProvider[0],
                 this.GetRuntimeModelElementFactory());
 

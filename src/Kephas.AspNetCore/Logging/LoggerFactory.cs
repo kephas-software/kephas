@@ -10,7 +10,11 @@
 
 namespace Kephas.AspNetCore.Logging
 {
+    using Kephas.Logging;
+
     using Microsoft.Extensions.Logging;
+
+    using ILogger = Microsoft.Extensions.Logging.ILogger;
 
     /// <summary>
     /// A logger factory.
@@ -18,23 +22,22 @@ namespace Kephas.AspNetCore.Logging
     public class LoggerFactory : ILoggerFactory
     {
         /// <summary>
-        /// The ambient services.
+        /// The log manager.
         /// </summary>
-        private readonly IAmbientServices ambientServices;
+        private readonly ILogManager logManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggerFactory"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public LoggerFactory(IAmbientServices ambientServices)
+        /// <param name="logManager">The log manager.</param>
+        public LoggerFactory(ILogManager logManager)
         {
-            this.ambientServices = ambientServices;
+            this.logManager = logManager;
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-            throw new System.NotImplementedException();
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace Kephas.AspNetCore.Logging
         /// <returns>The <see cref="T:Microsoft.Extensions.Logging.ILogger" />.</returns>
         public ILogger CreateLogger(string categoryName)
         {
-            var logger = this.ambientServices.GetLogger(categoryName);
+            var logger = this.logManager.GetLogger(categoryName);
             return new AspNetLogger(logger);
         }
 

@@ -14,6 +14,7 @@ namespace Kephas.Data.MongoDB
     using System.Collections.Concurrent;
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Linq;
@@ -39,12 +40,12 @@ namespace Kephas.Data.MongoDB
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        public MongoDataContext(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider)
-            : base(ambientServices, dataCommandProvider)
+        public MongoDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider)
+            : base(compositionContext, dataCommandProvider)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
         }
 
@@ -159,7 +160,7 @@ namespace Kephas.Data.MongoDB
                   settings.ClusterConfigurator = b =>
                   {
                       b.ConfigureConnectionPool(s => s.With());
-                      b.Subscribe(new MongoDataContextLogEventSubscriber(this.AmbientServices));
+                      b.Subscribe(new MongoDataContextLogEventSubscriber(this.CompositionContext));
                   };
 
                   return new MongoClient(settings);

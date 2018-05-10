@@ -13,6 +13,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using Kephas.Composition;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction.Annotations;
@@ -32,7 +33,7 @@ namespace Kephas.Model.Tests.Runtime.Construction.Annotations
         public void TryCreateModelElement_success()
         {
             var constructor = new AttributeAnnotationConstructor();
-            var context = new ModelConstructionContext(Substitute.For<IAmbientServices>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new AnnotationConstructorBaseTest.NotMultipleAttribute());
 
             Assert.IsInstanceOf<Annotation>(annotation);

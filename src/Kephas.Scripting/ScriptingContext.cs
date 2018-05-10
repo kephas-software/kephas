@@ -12,6 +12,7 @@ namespace Kephas.Scripting
 {
     using System;
 
+    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -23,9 +24,9 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional).</param>
-        public ScriptingContext(IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        /// <param name="compositionContext">The composition context (optional).</param>
+        public ScriptingContext(ICompositionContext compositionContext = null)
+            : base(compositionContext)
         {
         }
 
