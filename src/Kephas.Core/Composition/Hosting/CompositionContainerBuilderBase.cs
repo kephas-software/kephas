@@ -58,26 +58,27 @@ namespace Kephas.Composition.Hosting
         protected CompositionContainerBuilderBase(ICompositionRegistrationContext context)
         {
             Requires.NotNull(context, nameof(context));
-            Requires.NotNull(context.AmbientServices, nameof(context.AmbientServices));
+            var ambientServices = context.AmbientServices;
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.context = context;
             this.ExportProviders = new List<IExportProvider>();
 
-            this.LogManager = context.AmbientServices.GetService<ILogManager>();
+            this.LogManager = ambientServices.GetService<ILogManager>();
             this.AssertRequiredService(this.LogManager);
 
-            this.AppConfiguration = context.AmbientServices.GetService<IAppConfiguration>();
+            this.AppConfiguration = ambientServices.GetService<IAppConfiguration>();
             this.AssertRequiredService(this.AppConfiguration);
 
-            this.AppRuntime = context.AmbientServices.GetService<IAppRuntime>();
+            this.AppRuntime = ambientServices.GetService<IAppRuntime>();
             this.AssertRequiredService(this.AppRuntime);
 
-            this.TypeLoader = context.AmbientServices.GetService<ITypeLoader>();
+            this.TypeLoader = ambientServices.GetService<ITypeLoader>();
             this.AssertRequiredService(this.TypeLoader);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
-            this.WithServiceProviderExportProvider(context.AmbientServices, (a, t) => ((IAmbientServices)a).IsRegistered(t));
+            this.WithServiceProviderExportProvider(ambientServices, (a, t) => ((IAmbientServices)a).IsRegistered(t));
         }
 
         /// <summary>

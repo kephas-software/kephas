@@ -34,7 +34,7 @@ namespace Kephas.Data.Conversion
                 IDataContext targetDataContext = null,
                 Type rootSourceType = null,
                 Type rootTargetType = null)
-            : base(conversionService.AmbientServices)
+            : base(conversionService.CompositionContext)
         {
             Requires.NotNull(conversionService, nameof(conversionService));
 

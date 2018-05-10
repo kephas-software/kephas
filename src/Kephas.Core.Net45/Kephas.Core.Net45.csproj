@@ -266,6 +266,9 @@
     <Compile Include="..\Kephas.Core\Composition\ICompositionContext.cs">
       <Link>Composition\ICompositionContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\ICompositionContextAware.cs">
+      <Link>Composition\ICompositionContextAware.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\IExport.cs">
       <Link>Composition\IExport.cs</Link>
     </Compile>

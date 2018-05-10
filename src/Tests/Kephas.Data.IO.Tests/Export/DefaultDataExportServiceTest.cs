@@ -15,6 +15,7 @@ namespace Kephas.Data.IO.Tests.Export
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Export;
@@ -39,7 +40,7 @@ namespace Kephas.Data.IO.Tests.Export
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(Substitute.For<IAmbientServices>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream);
@@ -61,7 +62,7 @@ namespace Kephas.Data.IO.Tests.Export
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(Substitute.For<IAmbientServices>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 var context = new DataExportContext(entities, dataStream);

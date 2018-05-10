@@ -11,11 +11,11 @@
 namespace Kephas.Data.IO.Export
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Diagnostics.Contracts;
@@ -34,9 +34,9 @@ namespace Kephas.Data.IO.Export
         private readonly IClientQueryExecutor clientQueryExecutor;
 
         /// <summary>
-        /// The ambient services.
+        /// The composition context.
         /// </summary>
-        private readonly IAmbientServices ambientServices;
+        private readonly ICompositionContext compositionContext;
 
         /// <summary>
         /// The data source write service.
@@ -46,19 +46,19 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataExportService"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataStreamWriteService">The data source write service.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public DefaultDataExportService(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             IDataStreamWriteService dataStreamWriteService,
             IClientQueryExecutor clientQueryExecutor)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataStreamWriteService, nameof(dataStreamWriteService));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
-            this.ambientServices = ambientServices;
+            this.compositionContext = compositionContext;
             this.dataStreamWriteService = dataStreamWriteService;
             this.clientQueryExecutor = clientQueryExecutor;
         }
@@ -83,7 +83,7 @@ namespace Kephas.Data.IO.Export
 
             if (context.Query != null)
             {
-                var queryExecutionContext = new ClientQueryExecutionContext(this.ambientServices);
+                var queryExecutionContext = new ClientQueryExecutionContext(this.compositionContext);
                 context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
                 data = await this.clientQueryExecutor
                            .ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)

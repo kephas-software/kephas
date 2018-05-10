@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -20,10 +21,10 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional).</param>
+        /// <param name="compositionContext">The composition context (optional).</param>
         /// <param name="isThreadSafe">True if this object is thread safe (optional).</param>
-        public EncryptionContext(IAmbientServices ambientServices = null, bool isThreadSafe = false)
-            : base(ambientServices, isThreadSafe)
+        public EncryptionContext(ICompositionContext compositionContext = null, bool isThreadSafe = false)
+            : base(compositionContext: compositionContext, isThreadSafe: isThreadSafe)
         {
         }
 

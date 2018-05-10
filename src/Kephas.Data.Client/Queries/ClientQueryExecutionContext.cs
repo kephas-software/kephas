@@ -12,6 +12,7 @@ namespace Kephas.Data.Client.Queries
 {
     using System;
 
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
     using Kephas.Services;
@@ -24,9 +25,9 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryExecutionContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
-        public ClientQueryExecutionContext(IAmbientServices ambientServices = null)
-            : base(ambientServices)
+        /// <param name="compositionContext">The composition context.</param>
+        public ClientQueryExecutionContext(ICompositionContext compositionContext = null)
+            : base(compositionContext)
         {
         }
 

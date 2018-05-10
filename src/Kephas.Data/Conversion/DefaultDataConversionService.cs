@@ -59,19 +59,19 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataConversionService"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="converterExportFactories">The converter export factories.</param>
         /// <param name="targetResolverFactories">The target resolver factories.</param>
         public DefaultDataConversionService(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(converterExportFactories, nameof(converterExportFactories));
             Requires.NotNull(targetResolverFactories, nameof(targetResolverFactories));
 
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
             this.converterExportFactories = converterExportFactories;
             this.targetResolverFactories = targetResolverFactories;
         }
@@ -85,12 +85,12 @@ namespace Kephas.Data.Conversion
         public ILogger<DefaultDataConversionService> Logger { get; set; }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The composition context.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Converts the source object to the target object asynchronously.

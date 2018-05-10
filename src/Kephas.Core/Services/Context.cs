@@ -13,6 +13,7 @@ namespace Kephas.Services
     using System.Security.Principal;
 
     using Kephas;
+    using Kephas.Composition;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -23,12 +24,43 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional). If not provided, <see cref="M:AmbientServices.Instance"/> will be considered.</param>
-        /// <param name="isThreadSafe"><c>true</c> if this object is thread safe when working with the internal dictionary, <c>false</c> otherwise.</param>
-        public Context(IAmbientServices ambientServices = null, bool isThreadSafe = false)
+        public Context()
+            : this((ICompositionContext)null, isThreadSafe: false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services (optional). If not provided,
+        /// <see cref="M:AmbientServices.Instance"/> will be considered.
+        /// </param>
+        /// <param name="isThreadSafe">
+        /// <c>true</c> if this object is thread safe when working
+        /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
+        /// </param>
+        public Context(IAmbientServices ambientServices, bool isThreadSafe = false)
             : base(isThreadSafe)
         {
             this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
+            this.CompositionContext = this.AmbientServices.CompositionContainer;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// </summary>
+        /// <param name="compositionContext">The context for the composition (optional). If not provided,
+        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
+        /// </param>
+        /// <param name="isThreadSafe">
+        /// <c>true</c> if this object is thread safe when working
+        /// with the internal dictionary, <c>false</c> otherwise. Default is <c>false</c>.
+        /// </param>
+        public Context(ICompositionContext compositionContext, bool isThreadSafe = false)
+            : base(isThreadSafe)
+        {
+            this.AmbientServices = compositionContext?.GetExport<IAmbientServices>() ?? Kephas.AmbientServices.Instance;
+            this.CompositionContext = compositionContext ?? this.AmbientServices.CompositionContainer;
         }
 
         /// <summary>
@@ -38,6 +70,14 @@ namespace Kephas.Services
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
+        /// Gets a context for the dependency injection/composition.
+        /// </summary>
+        /// <value>
+        /// The composition context.
+        /// </value>
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets or sets the authenticated user.

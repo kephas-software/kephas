@@ -34,16 +34,16 @@ namespace Kephas.Serialization
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
         public DefaultSerializationService(
-            IAmbientServices ambientServices,
+            ICompositionContext compositionContext,
             ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
-            this.AmbientServices = ambientServices;
+            this.CompositionContext = compositionContext;
             foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
             {
                 if (!this.serializerFactories.ContainsKey(factory.Metadata.MediaType))
@@ -54,12 +54,12 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The composition context.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets a serializer for the provided context.

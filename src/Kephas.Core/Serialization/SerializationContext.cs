@@ -27,7 +27,7 @@ namespace Kephas.Serialization
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">The media type (type implementing <see cref="IMediaType"/>).</param>
         public SerializationContext(ISerializationService serializationService, Type mediaType)
-            : base(serializationService.AmbientServices)
+            : base(compositionContext: serializationService.CompositionContext)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
             Requires.NotNull(mediaType, nameof(mediaType));

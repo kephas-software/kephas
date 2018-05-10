@@ -4,6 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
 
@@ -106,8 +107,8 @@
         private ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
             var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
-            var ambientServicesMock = Substitute.For<IAmbientServices>();
-            serializationService.AmbientServices.Returns(ambientServicesMock);
+            var compositionContextMock = Substitute.For<ICompositionContext>();
+            serializationService.CompositionContext.Returns(compositionContextMock);
             serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
                 .Returns(serializer);
             return serializationService;

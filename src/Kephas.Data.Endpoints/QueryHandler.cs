@@ -14,6 +14,7 @@ namespace Kephas.Data.Endpoints
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -26,9 +27,9 @@ namespace Kephas.Data.Endpoints
     public class QueryHandler : MessageHandlerBase<QueryMessage, QueryResponseMessage>
     {
         /// <summary>
-        /// The ambient services.
+        /// The composition context.
         /// </summary>
-        private readonly IAmbientServices ambientServices;
+        private readonly ICompositionContext compositionContext;
 
         /// <summary>
         /// The client query executor.
@@ -38,14 +39,14 @@ namespace Kephas.Data.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="compositionContext">The dependecy injection/composition context.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
-        public QueryHandler(IAmbientServices ambientServices, IClientQueryExecutor clientQueryExecutor)
+        public QueryHandler(ICompositionContext compositionContext, IClientQueryExecutor clientQueryExecutor)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
-            this.ambientServices = ambientServices;
+            this.compositionContext = compositionContext;
             this.clientQueryExecutor = clientQueryExecutor;
         }
 
@@ -63,7 +64,7 @@ namespace Kephas.Data.Endpoints
             IMessageProcessingContext context,
             CancellationToken token)
         {
-            var executionContext = new ClientQueryExecutionContext(this.ambientServices);
+            var executionContext = new ClientQueryExecutionContext(this.compositionContext);
             executionContext.Merge(message.Options);
 
             var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, executionContext, token)

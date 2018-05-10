@@ -95,7 +95,7 @@ namespace Kephas.Data.Client.Queries
         {
             var clientEntityType = this.TypeResolver.ResolveType(query.EntityType, throwOnNotFound: false);
             var entityType = this.ResolveEntityType(clientEntityType);
-            executionContext = executionContext ?? new ClientQueryExecutionContext(this.ConversionService.AmbientServices);
+            executionContext = executionContext ?? new ClientQueryExecutionContext(this.ConversionService.CompositionContext);
 
             var executeQueryMethod = ExecuteQueryAsyncMethod.MakeGenericMethod(clientEntityType, entityType);
             var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, executionContext, cancellationToken);

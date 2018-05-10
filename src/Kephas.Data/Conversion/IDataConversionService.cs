@@ -12,13 +12,15 @@ namespace Kephas.Data.Conversion
 {
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
     /// Application service contract for data conversions.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IDataConversionService : IAmbientServicesAware
+    public interface IDataConversionService : ICompositionContextAware
     {
         /// <summary>
         /// Converts the source object to the target object asynchronously.
@@ -32,6 +34,10 @@ namespace Kephas.Data.Conversion
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default);
+        Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(
+            TSource source,
+            TTarget target,
+            IDataConversionContext conversionContext,
+            CancellationToken cancellationToken = default);
     }
 }

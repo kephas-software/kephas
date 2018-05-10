@@ -1,31 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IContext.cs" company="Quartz Software SRL">
+// <copyright file="ICompositionContextAware.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Defines a base contract for context-dependent operations.
+//   Declares the ICompositionContextAware interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Composition
 {
-    using System.Security.Principal;
-
-    using Kephas.Composition;
-    using Kephas.Dynamic;
-
     /// <summary>
-    /// Defines a base contract for context-dependent operations.
+    /// Interface for components being aware of the composition context within they live.
     /// </summary>
-    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware
+    public interface ICompositionContextAware
     {
         /// <summary>
-        /// Gets or sets the authenticated identity.
+        /// Gets a context for the dependency injection/composition.
         /// </summary>
         /// <value>
-        /// The authenticated identity.
+        /// The composition context.
         /// </value>
-        IIdentity Identity { get; set; }
+        ICompositionContext CompositionContext { get; }
     }
 }

@@ -146,7 +146,7 @@ namespace Kephas.AspNetCore
                 });
 
             // use host configurators to setup the application.
-            var container = appContext.AmbientServices.CompositionContainer;
+            var container = appContext.CompositionContext;
             var hostConfigurators = container.GetExportFactories<IHostConfigurator, AppServiceMetadata>()
                 .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
@@ -256,7 +256,7 @@ namespace Kephas.AspNetCore
         /// </returns>
         protected virtual async Task<IAspNetAppContext> InitializeAppManagerAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
         {
-            var container = appContext.AmbientServices.CompositionContainer;
+            var container = appContext.CompositionContext;
             var appManager = container.GetExport<IAppManager>();
 
             await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();

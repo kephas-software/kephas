@@ -36,7 +36,7 @@ namespace Kephas.Core.Tests.Serialization
         [TestCase(typeof(JsonMediaType))]
         public void GetSerializer_WithContext_Exception(Type mediaType)
         {
-            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var serializationService = new DefaultSerializationService(Substitute.For<ICompositionContext>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
             var context = new SerializationContext(serializationService, mediaType);
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
         }
@@ -44,7 +44,7 @@ namespace Kephas.Core.Tests.Serialization
         [Test]
         public void GetSerializer_NoContext_Exception()
         {
-            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
+            var serializationService = new DefaultSerializationService(Substitute.For<ICompositionContext>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
             Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer());
         }
 
@@ -53,7 +53,7 @@ namespace Kephas.Core.Tests.Serialization
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType)));
-            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
+            var serializationService = new DefaultSerializationService(Substitute.For<ICompositionContext>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.IsNotNull(serializer);
         }
@@ -66,7 +66,7 @@ namespace Kephas.Core.Tests.Serialization
             var newSerializer = Substitute.For<ISerializer>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), oldSerializer, Priority.Normal));
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), newSerializer, Priority.AboveNormal));
-            var serializationService = new DefaultSerializationService(Substitute.For<IAmbientServices>(), factories);
+            var serializationService = new DefaultSerializationService(Substitute.For<ICompositionContext>(), factories);
             var serializer = serializationService.GetSerializer();
             Assert.AreSame(serializer, newSerializer);
         }

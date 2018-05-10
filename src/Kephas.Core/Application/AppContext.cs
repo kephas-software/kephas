@@ -35,7 +35,7 @@ namespace Kephas.Application
             Func<IContext, Task<IAppContext>> signalShutdown = null)
             : base(ambientServices)
         {
-            this.AppManifest = appManifest ?? this.AmbientServices?.CompositionContainer.GetExport<IAppManifest>();
+            this.AppManifest = appManifest ?? this.CompositionContext?.GetExport<IAppManifest>();
             this.AppArgs = appArgs;
             this.SignalShutdown = signalShutdown;
         }
