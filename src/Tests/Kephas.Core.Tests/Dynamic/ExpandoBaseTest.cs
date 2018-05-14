@@ -53,6 +53,42 @@ namespace Kephas.Core.Tests.Dynamic
             var dictionary = expando.ToDictionary();
             Assert.AreEqual("belogea", dictionary["Name"]);
         }
+
+        [Test]
+        public void ToDictionary_transformed_key()
+        {
+            var dict = new Dictionary<string, object>();
+            var expando = new TestExpando(dict);
+            dict["Name"] = "gigi";
+            expando.Name = "belogea";
+
+            var dictionary = expando.ToDictionary(k => k.ToLower());
+            Assert.AreEqual("belogea", dictionary["name"]);
+        }
+
+        [Test]
+        public void ToDictionary_transformed_value()
+        {
+            var dict = new Dictionary<string, object>();
+            var expando = new TestExpando(dict);
+            dict["Name"] = "gigi";
+            expando.Name = "belogea";
+
+            var dictionary = expando.ToDictionary(valueFunc: v => v is string stringValue ? stringValue.ToUpper() : v);
+            Assert.AreEqual("BELOGEA", dictionary["Name"]);
+        }
+
+        [Test]
+        public void ToDictionary_transformed_key_and_value()
+        {
+            var dict = new Dictionary<string, object>();
+            var expando = new TestExpando(dict);
+            dict["Name"] = "gigi";
+            expando.Name = "belogea";
+
+            var dictionary = expando.ToDictionary(k => k.ToLower(), v => v is string stringValue ? stringValue.ToUpper() : v);
+            Assert.AreEqual("BELOGEA", dictionary["name"]);
+        }
     }
 
     public class TestExpando : ExpandoBase

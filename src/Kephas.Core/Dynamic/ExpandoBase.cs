@@ -297,23 +297,34 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the respective properties' values.
+        /// Converts the expando to a dictionary having as keys the property names and as values the
+        /// respective properties' values.
         /// </summary>
+        /// <param name="keyFunc">The key transformation function (optional).</param>
+        /// <param name="valueFunc">The value transformation function (optional).</param>
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public virtual IDictionary<string, object> ToDictionary()
+        public virtual IDictionary<string, object> ToDictionary(
+            Func<string, string> keyFunc = null,
+            Func<object, object> valueFunc = null)
         {
             // add the properties in their overwrite order:
             // first, the values in the dictionary
-            var dictionary = new Dictionary<string, object>(this.innerDictionary);
+            var dictionary = keyFunc == null && valueFunc == null 
+                                 ? new Dictionary<string, object>(this.innerDictionary)
+                                 : this.innerDictionary.ToDictionary(
+                                        kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
+                                        kv => valueFunc == null ? kv.Value : valueFunc(kv.Value));
 
             // second, the values in the inner object
             if (this.innerObject != null)
             {
                 foreach (var prop in this.GetInnerObjectTypeInfo().Properties)
                 {
-                    dictionary[prop.Name] = prop.GetValue(this.innerObject);
+                    var propName = prop.Name;
+                    var value = prop.GetValue(this.innerObject);
+                    dictionary[keyFunc == null ? propName : keyFunc(propName)] = valueFunc == null ? value : valueFunc(value);
                 }
             }
 
@@ -322,7 +333,9 @@ namespace Kephas.Dynamic
             {
                 foreach (var prop in this.GetThisTypeInfo().Properties)
                 {
-                    dictionary[prop.Name] = prop.GetValue(this);
+                    var propName = prop.Name;
+                    var value = prop.GetValue(this);
+                    dictionary[keyFunc == null ? propName : keyFunc(propName)] = valueFunc == null ? value : valueFunc(value);
                 }
             }
 

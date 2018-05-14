@@ -11,6 +11,7 @@
 
 namespace Kephas.Dynamic
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Dynamic;
@@ -35,12 +36,17 @@ namespace Kephas.Dynamic
         bool HasMember(string memberName);
 
         /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the respective properties' values.
+        /// Converts the expando to a dictionary having as keys the property names and as values the
+        /// respective properties' values.
         /// </summary>
+        /// <param name="keyFunc">The key transformation function (optional).</param>
+        /// <param name="valueFunc">The value transformation function (optional).</param>
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        IDictionary<string, object> ToDictionary();
+        IDictionary<string, object> ToDictionary(
+            Func<string, string> keyFunc = null,
+            Func<object, object> valueFunc = null);
     }
 
     /// <summary>
