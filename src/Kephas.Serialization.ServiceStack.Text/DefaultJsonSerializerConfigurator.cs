@@ -11,6 +11,7 @@
 namespace Kephas.Serialization.ServiceStack.Text
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -131,13 +132,27 @@ namespace Kephas.Serialization.ServiceStack.Text
                 }
             };
             JsConfig<IExpando>.RawDeserializeFn = json => new JsonExpando(json);
-            JsConfig<IExpando>.SerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(expando.ToDictionary());
+            JsConfig<IExpando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
             JsConfig<Expando>.RawDeserializeFn = json => new JsonExpando(json);
-            JsConfig<Expando>.SerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(expando.ToDictionary());
+            JsConfig<Expando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
+            JsConfig<JsonExpando>.RawDeserializeFn = json => new JsonExpando(json);
+            JsConfig<JsonExpando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
 
             this.isConfigured = true;
 
             return true;
+        }
+
+        /// <summary>
+        /// Converts an expando to a dictionary on all its depth.
+        /// </summary>
+        /// <param name="expando">The expando.</param>
+        /// <returns>
+        /// Expando as an IDictionary&lt;string,object&gt;.
+        /// </returns>
+        private static IDictionary<string, object> ToDictionaryDeep(IExpando expando)
+        {
+            return expando.ToDictionary(valueFunc: v => v is IExpando expandoValue ? ToDictionaryDeep(expandoValue) : v);
         }
     }
 }

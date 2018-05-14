@@ -15,6 +15,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
@@ -61,6 +62,51 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_expando_list()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+
+            var objList = new List<object>
+                              {
+                                  new JsonExpando(new Dictionary<string, object>())
+                                      {
+                                          ["dynContent"] = new JsonExpando(new Dictionary<string, object>())
+                                                               {
+                                                                   ["hi"] = "there"
+                                                               }
+                                      }
+                              };
+
+            var sb = new StringBuilder();
+            using (var sw = new StringWriter(sb))
+            {
+                var serializationService = Substitute.For<ISerializationService>();
+                await serializer.SerializeAsync(objList, sw, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
+                var serializedObjList = sb.ToString();
+                Assert.AreEqual("[{\"dynContent\":{\"hi\":\"there\"}}]", serializedObjList);
+            }
+        }
+
+        [Test]
+        public async Task DeserializeAsync_expando_list()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+
+            using (var sr = new StringReader(@"[{ ""dynContent"": { ""hi"": ""there"" } }]"))
+            {
+                var serializationService = Substitute.For<ISerializationService>();
+                var obj = await serializer.DeserializeAsync(sr, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
+
+                Assert.IsInstanceOf<List<object>>(obj);
+                var objList = obj as List<object>;
+                Assert.IsInstanceOf<JsonExpando>(objList[0]);
+                Assert.AreEqual("there", objList[0].ToDynamic().dynContent.hi);
+            }
         }
 
         [Test]
