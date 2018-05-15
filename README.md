@@ -33,3 +33,4 @@ Kephas Framework is built using the following great open source projects:
 Thanks also to:
 
 * JetBrains for [Open Source license](https://www.jetbrains.com/buy/opensource/)
+* NDepend for [Open Source license](https://www.ndepend.com/)
