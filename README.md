@@ -30,7 +30,7 @@ Kephas Framework is built using the following great open source projects:
 * [NUnit](https://www.nunit.org/)
 * [NSubstitute](http://nsubstitute.github.io/)
 
-Thanks also to:
+Many thanks also to:
 
 * JetBrains for [Open Source license](https://www.jetbrains.com/buy/opensource/)
 * NDepend for [Open Source license](https://www.ndepend.com/)
