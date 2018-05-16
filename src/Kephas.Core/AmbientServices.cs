@@ -56,13 +56,17 @@ namespace Kephas
         /// </summary>
         public AmbientServices()
         {
+            var logManager = new NullLogManager();
+            var typeLoader = new DefaultTypeLoader(this);
+            var assemblyLoader = new DefaultAssemblyLoader();
+
             this.RegisterService<IAmbientServices>(this)
-                .RegisterService<ILogManager>(new NullLogManager())
+                .RegisterService<ILogManager>(logManager)
                 .RegisterService<IAppConfiguration>(new DynamicAppConfiguration())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
-                .RegisterService<IAssemblyLoader>(new DefaultAssemblyLoader())
-                .RegisterService<ITypeLoader>(new DefaultTypeLoader(this))
-                .RegisterService<IAppRuntime>(new DefaultAppRuntime());
+                .RegisterService<IAssemblyLoader>(assemblyLoader)
+                .RegisterService<ITypeLoader>(typeLoader)
+                .RegisterService<IAppRuntime>(new DefaultAppRuntime(assemblyLoader, logManager));
         }
 
         /// <summary>
