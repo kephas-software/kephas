@@ -34,6 +34,7 @@ nuget pack ..\Adapters\Kephas.Npgsql\Package.nuspec -BasePath ..\Adapters\Kephas
 nuget pack ..\Kephas.Serialization.ServiceStack.Text\Package.nuspec -BasePath ..\Kephas.Serialization.ServiceStack.Text -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.ServiceStack\Package.nuspec -BasePath ..\Kephas.ServiceStack -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Scripting\Package.nuspec -BasePath ..\Kephas.Scripting -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Kephas.AspNetCore\Package.nuspec -BasePath ..\Kephas.AspNetCore -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 
 @echo Done.
 @pause

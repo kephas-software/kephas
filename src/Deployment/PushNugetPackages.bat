@@ -25,6 +25,7 @@ nuget push Kephas.Npgsql.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.ServiceStack.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Serialization.ServiceStack.Text.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Scripting.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.AspNetCore.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
 @pause

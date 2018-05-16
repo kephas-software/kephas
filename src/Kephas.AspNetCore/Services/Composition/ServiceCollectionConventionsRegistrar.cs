@@ -14,7 +14,6 @@ namespace Kephas.AspNetCore.Services.Composition
     using System.Reflection;
 
     using Kephas.Composition;
-    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
 
@@ -23,7 +22,6 @@ namespace Kephas.AspNetCore.Services.Composition
     /// <summary>
     /// A conventions registrar for a collection of service definitions.
     /// </summary>
-    [ExcludeFromComposition]
     public class ServiceCollectionConventionsRegistrar : IConventionsRegistrar
     {
         /// <summary>

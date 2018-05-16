@@ -65,7 +65,7 @@ namespace Kephas.AspNetCore.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected override sealed Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             if (!(appContext is IAspNetAppContext aspNetAppContext))
             {

@@ -94,7 +94,7 @@ namespace Kephas.AspNetCore
         protected ILogger Logger { get; set; }
 
         /// <summary>
-        /// Configure services.
+        /// Configures the DI services.
         /// </summary>
         /// <param name="serviceCollection">Collection of services.</param>
         /// <returns>
@@ -162,8 +162,7 @@ namespace Kephas.AspNetCore
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopped" event.
-            // TODO upon termination, shutdown the application.
-            // appLifetime.ApplicationStopped.Register(() => this.ApplicationContainer.Dispose());
+            appLifetime.ApplicationStopped.Register(() => this.ShutdownAsync().WaitNonLocking());
         }
 
         /// <summary>
@@ -238,7 +237,7 @@ namespace Kephas.AspNetCore
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <remarks>
-        /// This method should be overwritten to provide a meaningful content.
+        /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>

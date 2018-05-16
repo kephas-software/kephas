@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.AspNetCore</id>
+        <version>$version$</version>
+        <title>Kephas.AspNetCore</title>
+        <authors>Quartz Software SRL</authors>
+        <owners>Quartz Software SRL</owners>
+        <description>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+            </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="Microsoft.CSharp" version="4.3.0" />
+                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.0.0" />
+                <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.0.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.AspNetCore.dll" />
+        </references>
+        <tags>kephas framework asp.net quartz-software</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.AspNetCore.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.AspNetCore.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.AspNetCore.xml" target="lib\netstandard2.0" />
+    </files>
+</package>
