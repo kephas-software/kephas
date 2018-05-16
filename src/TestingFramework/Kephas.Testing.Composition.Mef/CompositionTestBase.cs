@@ -47,7 +47,7 @@ namespace Kephas.Testing.Composition.Mef
         {
             logManager = logManager ?? new NullLogManager();
             appConfiguration = appConfiguration ?? new DynamicAppConfiguration();
-            appRuntime = appRuntime ?? new NullAppRuntime();
+            appRuntime = appRuntime ?? new DefaultAppRuntime();
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices

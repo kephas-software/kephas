@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReflectionAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
+// <copyright file="ApplicationAmbientServicesBuilderExtensions.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,15 +15,21 @@ namespace Kephas.Reflection
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
 
     /// <summary>
     /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
     /// </summary>
-    public static class ReflectionAmbientServicesBuilderExtensions
+    public static class ApplicationAmbientServicesBuilderExtensions
     {
         /// <summary>
-        /// Sets the .NET Standard 1.4 application runtime to the ambient services.
+        /// Sets the default application runtime to the ambient services.
         /// </summary>
+        /// <remarks>
+        /// It uses the <see cref="IAssemblyLoader"/> and <see cref="ILogManager"/> services from the
+        /// ambient services to configure the application runtume. Make sure that these services are
+        /// properly configured before using this method.
+        /// </remarks>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="assemblyFilter">A filter specifying the assembly (optional).</param>
         /// <param name="appLocation">The application location (optional).</param>

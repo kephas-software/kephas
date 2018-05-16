@@ -146,9 +146,6 @@
     <Compile Include="..\Kephas.Core\Application\NullAppManifest.cs">
       <Link>Application\NullAppManifest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\NullAppRuntime.cs">
-      <Link>Application\NullAppRuntime.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Application\PreserveCultureThreadContextFeatureManager.cs">
       <Link>Application\PreserveCultureThreadContextFeatureManager.cs</Link>
     </Compile>
@@ -527,9 +524,6 @@
     <Compile Include="..\Kephas.Core\Reflection\QualifiedFullName.cs">
       <Link>Reflection\QualifiedFullName.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Reflection\ReflectionAmbientServicesBuilderExtensions.cs">
-      <Link>Reflection\ReflectionAmbientServicesBuilderExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\ReflectionHelper.cs">
       <Link>Reflection\ReflectionHelper.cs</Link>
     </Compile>
@@ -752,6 +746,7 @@
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="Application\ApplicationAmbientServicesBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
