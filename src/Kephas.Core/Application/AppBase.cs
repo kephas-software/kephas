@@ -126,7 +126,7 @@ namespace Kephas.Application
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <remarks>
-        /// This method should be overwritten to provide a meaningful content.
+        /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
