@@ -92,6 +92,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The result returned by the task.
         /// </returns>
+        [DebuggerStepThrough]
         public TResult GetResult()
         {
             this.threadContext.Restore();
@@ -173,6 +174,7 @@ namespace Kephas.Threading.Tasks
         /// <summary>
         /// Notifies the awaiter to get the result.
         /// </summary>
+        [DebuggerStepThrough]
         public void GetResult()
         {
             this.threadContext.Restore();
