@@ -1,4 +1,13 @@
-﻿namespace StartupConsole.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="consoleshell.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+// </copyright>
+// <summary>
+//   Implements the consoleshell class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace StartupConsole.Application
 {
     using System;
     using System.Threading;
@@ -7,7 +16,7 @@
     using Kephas;
     using Kephas.Application;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -42,15 +51,15 @@
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        protected override Task ConfigureAmbientServicesAsync(
+        protected override async Task ConfigureAmbientServicesAsync(
             string[] appArgs,
             AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
         {
-            return ambientServicesBuilder
+            ambientServicesBuilder
                 .WithNLogManager()
-                .WithNetAppRuntime()
-                .WithMefCompositionContainerAsync();
+                .WithDefaultAppRuntime()
+                .WithMefCompositionContainer();
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace CalculatorConsole.Application
     using Kephas;
     using Kephas.Application;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     public class CalculatorShell : AppBase
@@ -54,10 +54,10 @@ namespace CalculatorConsole.Application
             AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
         {
-            await ambientServicesBuilder
+            ambientServicesBuilder
                 .WithNLogManager()
-                .WithNetAppRuntime()
-                .WithMefCompositionContainerAsync();
+                .WithDefaultAppRuntime()
+                .WithMefCompositionContainer();
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace CalculatorConsole.Application
 
                 try
                 {
-                    var result = calculator.Compute(input);
-                    Console.WriteLine($"Result is: {result.Value} (using {result.OperationName}).");
+                    var (value, operationName) = calculator.Compute(input);
+                    Console.WriteLine($"Result is: {value} (using {operationName}).");
                     Console.WriteLine();
                 }
                 catch (Exception ex)

@@ -7,7 +7,7 @@
     using Kephas;
     using Kephas.Application;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -47,11 +47,10 @@
             AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
         {
-            await ambientServicesBuilder
+            ambientServicesBuilder
                 .WithNLogManager()
-                .WithNetAppRuntime()
-                .WithMefCompositionContainerAsync()
-                .PreserveThreadContext();
+                .WithDefaultAppRuntime()
+                .WithMefCompositionContainer();
         }
 
         /// <summary>

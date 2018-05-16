@@ -17,9 +17,7 @@ namespace RoleGame.Application
     using Kephas;
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Diagnostics;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -27,7 +25,6 @@ namespace RoleGame.Application
     using RoleGame.Composition.ScopeFactory;
     using RoleGame.Services;
 
-    using AppContext = Kephas.Application.AppContext;
     using ScopeNames = RoleGame.Composition.ScopeNames;
 
     public class RoleGameShell : AppBase
@@ -61,16 +58,17 @@ namespace RoleGame.Application
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        protected override Task ConfigureAmbientServicesAsync(
+        protected override async Task ConfigureAmbientServicesAsync(
             string[] appArgs,
             AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
         {
-            return ambientServicesBuilder
+            ambientServicesBuilder
                 .WithNLogManager()
-                .WithNetAppRuntime()
-                .WithMefCompositionContainerAsync(b => b.WithScopeFactory<UserMefScopeFactory>()
-                    .WithConventions(CompositionHelper.GetConventions(ambientServicesBuilder.AmbientServices.GetService<ITypeLoader>())));
+                .WithDefaultAppRuntime()
+                .WithMefCompositionContainer(
+                    b => b.WithScopeFactory<UserMefScopeFactory>()
+                          .WithConventions(CompositionHelper.GetConventions(ambientServicesBuilder.AmbientServices.GetService<ITypeLoader>())));
         }
 
         /// <summary>
