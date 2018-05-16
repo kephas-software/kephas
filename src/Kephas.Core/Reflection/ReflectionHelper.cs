@@ -263,9 +263,26 @@ namespace Kephas.Reflection
                 return null;
             }
 
-            var codebaseUri = new Uri(assembly.CodeBase);
-            var location = Path.GetDirectoryName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
+            var location = Path.GetDirectoryName(GetFilePath(assembly));
             return location;
+        }
+
+        /// <summary>
+        /// Gets the file path to the loaded assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// The file path of the loaded assembly.
+        /// </returns>
+        public static string GetFilePath(this Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                return null;
+            }
+
+            var codebaseUri = new Uri(assembly.CodeBase);
+            return Uri.UnescapeDataString(codebaseUri.AbsolutePath);
         }
 
         /// <summary>

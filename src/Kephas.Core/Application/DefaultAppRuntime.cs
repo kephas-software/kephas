@@ -101,8 +101,7 @@ namespace Kephas.Application
         /// </returns>
         protected override string GetFileName(Assembly assembly)
         {
-            var codebaseUri = new Uri(assembly.CodeBase);
-            return Path.GetFileName(Uri.UnescapeDataString(codebaseUri.AbsolutePath));
+            return Path.GetFileName(assembly.GetFilePath());
         }
 
 #if NETSTANDARD2_0
