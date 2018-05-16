@@ -225,11 +225,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Autofac"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Autofac.Net45", "Kephas.Composition.Autofac.Net45\Kephas.Composition.Autofac.Net45.csproj", "{997D8440-758D-4E7F-B7A1-405FC503E166}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow", "Kephas.Workflow\Kephas.Workflow.csproj", "{478DCC86-FBBA-4061-AD44-E917A77512B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow", "Kephas.Workflow\Kephas.Workflow.csproj", "{478DCC86-FBBA-4061-AD44-E917A77512B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Net45", "Kephas.Workflow.Net45\Kephas.Workflow.Net45.csproj", "{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Model", "Kephas.Workflow.Model\Kephas.Workflow.Model.csproj", "{245220CB-AC60-477F-AC7F-A27CF03EE42B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow.Model", "Kephas.Workflow.Model\Kephas.Workflow.Model.csproj", "{245220CB-AC60-477F-AC7F-A27CF03EE42B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Model.Net45", "Kephas.Workflow.Model.Net45\Kephas.Workflow.Model.Net45.csproj", "{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD}"
 EndProject
