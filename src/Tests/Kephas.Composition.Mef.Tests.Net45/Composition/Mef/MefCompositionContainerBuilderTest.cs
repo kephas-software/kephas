@@ -43,13 +43,13 @@ namespace Kephas.Tests.Composition.Mef
     public class MefCompositionContainerBuilderTest : CompositionTestBase
     {
         [Test]
-        public async Task CreateContainerAsync_simple_ambient_services_exported()
+        public async Task CreateContainer_with_MefCompositionContainer_simple_ambient_services_exported()
         {
             var factory = this.CreateCompositionContainerBuilder();
-            var mockPlatformManager = factory.AppRuntime;
+            var mockAppRuntime = factory.AppRuntime;
 
 
-            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+            mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
 
             var container = factory
@@ -62,7 +62,7 @@ namespace Kephas.Tests.Composition.Mef
             Assert.AreEqual(factory.AppConfiguration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
-            Assert.AreEqual(mockPlatformManager, platformManager);
+            Assert.AreEqual(mockAppRuntime, platformManager);
         }
 
         [Test]
