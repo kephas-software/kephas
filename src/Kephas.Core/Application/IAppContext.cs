@@ -16,7 +16,7 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for application context.
+    /// Contract for application contextual information.
     /// </summary>
     public interface IAppContext : IContext
     {

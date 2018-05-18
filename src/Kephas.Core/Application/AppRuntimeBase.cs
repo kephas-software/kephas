@@ -15,6 +15,8 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
+    using System.Net.Sockets;
     using System.Reflection;
 
     using Kephas.Collections;
@@ -105,6 +107,29 @@ namespace Kephas.Application
                 _ => this.ComputeAppAssemblies(assemblyFilter));
 
             return assemblies;
+        }
+
+        /// <summary>
+        /// Gets host address.
+        /// </summary>
+        /// <returns>
+        /// The host address.
+        /// </returns>
+        public virtual IPAddress GetHostAddress()
+        {
+            var hostEntry = Dns.GetHostEntry(Dns.GetHostName());
+            return hostEntry.AddressList.Last(add => add.AddressFamily == AddressFamily.InterNetwork);
+        }
+
+        /// <summary>
+        /// Gets the name of the host where the application process runs.
+        /// </summary>
+        /// <returns>
+        /// The host name.
+        /// </returns>
+        public virtual string GetHostName()
+        {
+            return Dns.GetHostName();
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Reflection;
 
     using Kephas.Dynamic;
@@ -37,5 +38,21 @@ namespace Kephas.Application
         /// An enumeration of application assemblies.
         /// </returns>
         IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null);
+
+        /// <summary>
+        /// Gets host address.
+        /// </summary>
+        /// <returns>
+        /// The host address.
+        /// </returns>
+        IPAddress GetHostAddress();
+
+        /// <summary>
+        /// Gets host name.
+        /// </summary>
+        /// <returns>
+        /// The host name.
+        /// </returns>
+        string GetHostName();
     }
 }
