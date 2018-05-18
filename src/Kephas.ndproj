@@ -31,6 +31,7 @@
     <Name>Kephas.Composition.Autofac</Name>
     <Name>Kephas.Workflow</Name>
     <Name>Kephas.Workflow.Model</Name>
+    <Name>Kephas.Orchestration</Name>
   </Assemblies>
   <FrameworkAssemblies>
     <Name>netstandard</Name>
@@ -164,6 +165,8 @@
     <Dir>D:\github\kephas\src\Kephas.Workflow.Net45\bin\Debug</Dir>
     <Dir>D:\github\kephas\src\Kephas.Workflow.Model\bin\debug\netstandard2.0</Dir>
     <Dir>D:\github\kephas\src\Kephas.Workflow.Model.Net45\bin\Debug</Dir>
+    <Dir>D:\github\kephas\src\Kephas.Orchestration\bin\debug\netstandard2.0</Dir>
+    <Dir>D:\github\kephas\src\Kephas.Orchestration.Net45\bin\Debug</Dir>
   </Dirs>
   <MergeCodeGeneratedByCompiler>True</MergeCodeGeneratedByCompiler>
   <Report Kind="0" SectionsEnabled="110591" XslPath="" Flags="261120" />
