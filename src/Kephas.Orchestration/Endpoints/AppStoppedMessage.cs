@@ -10,8 +10,6 @@
 
 namespace Kephas.Orchestration.Endpoints
 {
-    using Kephas.Messaging;
-
     /// <summary>
     /// An application stopped message.
     /// </summary>
