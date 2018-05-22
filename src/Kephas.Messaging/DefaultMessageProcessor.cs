@@ -165,12 +165,12 @@ namespace Kephas.Messaging
                 context.Message = contextMessage;
             }
 
-            if (context.Exception != null)
+            if (context?.Exception != null)
             {
                 throw context.Exception;
             }
 
-            return context.Response;
+            return context?.Response;
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Kephas.Messaging
         protected virtual string GetMessageName(IMessage message)
         {
             var expandoMessage = message.ToExpando();
-            var messageName = expandoMessage["MessageName"] as string;
+            var messageName = expandoMessage[nameof(INamedMessage.MessageName)] as string;
             return messageName;
         }
 
