@@ -18,6 +18,8 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Diagnostics.Contracts;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;
+    using Kephas.Messaging.AttributedModel;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
@@ -28,7 +30,8 @@ namespace Kephas.Messaging.Distributed
     /// A brokered message handler.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class BrokeredMessageHandler : MessageHandlerBase<BrokeredMessage, IMessage>
+    [MessageHandler(MessageTypeMatching.TypeOrHierarchy, MessageIdMatching = MessageIdMatching.All)]
+    public class BrokeredMessageHandler : MessageHandlerBase<IBrokeredMessage, IMessage>
     {
         /// <summary>
         /// The message processor.
@@ -82,7 +85,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<IMessage> ProcessAsync(BrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task<IMessage> ProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
             var identity = await this.securityService.GetIdentityAsync(message.BearerToken, context, token).PreserveThreadContext();
             var processContext = new MessageProcessingContext(this.messageProcessor)
