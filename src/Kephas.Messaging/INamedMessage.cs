@@ -1,26 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppStoppedMessage.cs" company="Quartz Software SRL">
+// <copyright file="INamedMessage.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application stopped message class.
+//   Declares the INamedMessage interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Endpoints
+namespace Kephas.Messaging
 {
     /// <summary>
-    /// An application stopped message.
+    /// Marker interface for named messages.
     /// </summary>
-    public class AppStoppedMessage : IAppMessage
+    /// <remarks>
+    /// Named messages do not have to implement <see cref="INamedMessage"/>,
+    /// it is sufficient to provide a string property by the name <see cref="MessageName"/>.
+    /// </remarks>
+    public interface INamedMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets information describing the application.
+        /// Gets the name of the message.
         /// </summary>
         /// <value>
-        /// Information describing the application.
+        /// The name of the message.
         /// </value>
-        public IAppInfo AppInfo { get; set; }
+        string MessageName { get; }
     }
 }
