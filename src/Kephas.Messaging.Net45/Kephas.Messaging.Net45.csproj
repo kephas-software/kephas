@@ -48,6 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Messaging\AttributedModel\MessageHandlerAttribute.cs">
+      <Link>AttributedModel\MessageHandlerAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Behaviors\AttributedModel\MessageProcessingBehaviorAttribute.cs">
+      <Link>Behaviors\AttributedModel\MessageProcessingBehaviorAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Behaviors\Composition\MessageProcessingBehaviorMetadata.cs">
       <Link>Behaviors\Composition\MessageProcessingBehaviorMetadata.cs</Link>
     </Compile>
@@ -59,6 +65,12 @@
     </Compile>
     <Compile Include="..\Kephas.Messaging\Composition\MessageHandlerMetadata.cs">
       <Link>Composition\MessageHandlerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Composition\MessageIdMatching.cs">
+      <Link>Composition\MessageIdMatching.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Composition\MessageTypeMatching.cs">
+      <Link>Composition\MessageTypeMatching.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\DefaultMessageProcessor.cs">
       <Link>DefaultMessageProcessor.cs</Link>
@@ -134,9 +146,6 @@
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessageHandlerBase.cs">
       <Link>MessageHandlerBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\MessageNameAttribute.cs">
-      <Link>MessageNameAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\MessageProcessingContext.cs">
       <Link>MessageProcessingContext.cs</Link>
