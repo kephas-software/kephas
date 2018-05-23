@@ -144,12 +144,6 @@
     <Compile Include="..\Kephas.Messaging\IMessageProcessor.cs">
       <Link>IMessageProcessor.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\INamedEvent.cs">
-      <Link>INamedEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\INamedMessage.cs">
-      <Link>INamedMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Messaging\MessageHandlerBase.cs">
       <Link>MessageHandlerBase.cs</Link>
     </Compile>
