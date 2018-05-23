@@ -19,10 +19,12 @@ namespace Kephas.Messaging
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -181,16 +183,16 @@ namespace Kephas.Messaging
         protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
         {
             var messageType = this.GetMessageType(message);
-            var messageName = this.GetMessageName(message);
-            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{messageType.FullName}/{messageName}", _ =>
+            var messageId = this.GetMessageId(message);
+            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{messageType.FullName}/{messageId}", _ =>
                 {
-                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType, messageName));
+                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType, messageId));
                     if (handlerSelector == null)
                     {
                         return () => null;
                     }
 
-                    return handlerSelector.GetHandlersFactory(messageType, messageName);
+                    return handlerSelector.GetHandlersFactory(messageType, messageId);
                 });
 
             var handlers = messageHandlersFactory();
@@ -210,17 +212,18 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Gets the message name.
+        /// Gets the message ID.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
-        /// The message name.
+        /// The message ID.
         /// </returns>
-        protected virtual string GetMessageName(IMessage message)
+        protected virtual object GetMessageId(IMessage message)
         {
             var expandoMessage = message.ToExpando();
-            var messageName = expandoMessage["MessageName"] as string;
-            return messageName;
+            var messageId = expandoMessage[nameof(IIdentifiable.Id)]
+                            ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
+            return messageId;
         }
 
         /// <summary>
@@ -244,16 +247,23 @@ namespace Kephas.Messaging
         protected virtual (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
         {
             var messageType = this.GetMessageType(message);
-            var messageName = this.GetMessageName(message);
+            var messageId = this.GetMessageId(message);
 
             var orderedBehaviorsEntry = this.behaviorFactoriesDictionary.GetOrAdd(
-                $"{messageType.FullName}/{messageName}",
+                $"{messageType.FullName}/{messageId}",
                 _ =>
                     {
-                        var behaviors = (from f in this.behaviorFactories
-                                              where (f.Metadata.MessageType?.GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()) ?? true)
-                                                    && (f.Metadata.MessageName == null || messageName == f.Metadata.MessageName)
-                                              select f.CreateExport().Value).ToList();
+                        var behaviors = this.behaviorFactories.Where(
+                                f =>
+                                    {
+                                        var m = f.Metadata;
+                                        return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
+                                                || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && (m.MessageType?.IsAssignableFrom(messageType) ?? true)))
+                                               && ((m.MessageIdMatching == MessageIdMatching.Id && Equals(m.MessageId, messageId))
+                                                   || m.MessageIdMatching == MessageIdMatching.All);
+                                    })
+                            .Select(f => f.CreateExportedValue())
+                            .ToList();
 
                         return (behaviors, ((IEnumerable<IMessageProcessingBehavior>)behaviors).Reverse().ToList());
                     });

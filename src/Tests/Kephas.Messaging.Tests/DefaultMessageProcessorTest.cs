@@ -143,23 +143,23 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_override_handler_with_message_name()
+        public async Task ProcessAsync_override_handler_with_message_ID()
         {
             var handler1 = Substitute.For<IMessageHandler>();
             var handler2 = Substitute.For<IMessageHandler>();
             var expectedResponse1 = Substitute.For<IMessage>();
             var expectedResponse2 = Substitute.For<IMessage>();
 
-            var message = new NamedMessage();
-            message.MessageName = "hi";
+            var message = new IdentifiedMessage();
+            message.Id = "hi";
             handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), message.MessageName, overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), message.MessageName, overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -167,7 +167,7 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_pseudo_override_handler_with_different_message_name()
+        public async Task ProcessAsync_pseudo_override_handler_with_different_message_ID()
         {
             var handler1 = Substitute.For<IMessageHandler>();
             var handler2 = Substitute.For<IMessageHandler>();
@@ -175,15 +175,15 @@ namespace Kephas.Messaging.Tests
             var expectedResponse2 = Substitute.For<IMessage>();
 
             var message = new ExpandoMessage();
-            (message as dynamic).MessageName = "hi";
+            (message as dynamic).MessageId = "hi";
             handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), "hi", overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), "not-hi", overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", overridePriority: (int)Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", overridePriority: (int)Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -334,12 +334,12 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_matching_behavior_with_name()
+        public async Task ProcessAsync_matching_behavior_with_ID()
         {
             var handler = Substitute.For<IMessageHandler>();
             var expectedResponse = Substitute.For<IMessage>();
 
-            var message = new NamedMessage { MessageName = "hello" };
+            var message = new IdentifiedMessage2 { MessageId = "hello" };
             handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
@@ -348,30 +348,38 @@ namespace Kephas.Messaging.Tests
             var f1 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
-                messageType: typeof(NamedMessage),
-                messageName: "hi");
+                messageType: typeof(IdentifiedMessage2),
+                messageId: "hi");
             var f2 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
-                messageType: typeof(NamedMessage),
-                messageName: "hello");
+                messageType: typeof(IdentifiedMessage2),
+                messageId: "hello");
             var f3 = this.CreateBehaviorFactory(
                 (c, t) => { beforelist.Add(3); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(3); return TaskHelper.CompletedTask; },
-                messageType: typeof(NamedMessage),
-                messageName: null);
+                messageType: typeof(IdentifiedMessage2),
+                messageIdMatching: MessageIdMatching.All);
+            var f4 = this.CreateBehaviorFactory(
+                (c, t) => { beforelist.Add(4); return TaskHelper.CompletedTask; },
+                (c, t) => { afterlist.Add(4); return TaskHelper.CompletedTask; },
+                messageType: typeof(IMessage),
+                messageTypeMatching: MessageTypeMatching.TypeOrHierarchy,
+                messageIdMatching: MessageIdMatching.All);
 
-            var processor = this.CreateRequestProcessor(new[] { f1, f2, f3 }, 
-                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, new MessageHandlerMetadata(message.GetType(), "hello")));
+            var processor = this.CreateRequestProcessor(new[] { f1, f2, f3, f4 }, 
+                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, new MessageHandlerMetadata(message.GetType(), messageId: "hello")));
             var result = await processor.ProcessAsync(message, null, default);
 
-            Assert.AreEqual(2, beforelist.Count);
+            Assert.AreEqual(3, beforelist.Count);
             Assert.AreEqual(2, beforelist[0]);
             Assert.AreEqual(3, beforelist[1]);
+            Assert.AreEqual(4, beforelist[2]);
 
-            Assert.AreEqual(2, afterlist.Count);
-            Assert.AreEqual(3, afterlist[0]);
-            Assert.AreEqual(2, afterlist[1]);
+            Assert.AreEqual(3, afterlist.Count);
+            Assert.AreEqual(4, afterlist[0]);
+            Assert.AreEqual(3, afterlist[1]);
+            Assert.AreEqual(2, afterlist[2]);
         }
 
         [Test]
@@ -466,7 +474,9 @@ namespace Kephas.Messaging.Tests
             Func<IMessageProcessingContext, CancellationToken, Task> beforeFunc = null,
             Func<IMessageProcessingContext, CancellationToken, Task> afterFunc = null,
             Type messageType = null,
-            string messageName = null,
+            MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy,
+            object messageId = null,
+            MessageIdMatching messageIdMatching = MessageIdMatching.Id,
             int processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
@@ -481,13 +491,13 @@ namespace Kephas.Messaging.Tests
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
                     () => Tuple.Create(behavior, (Action)(() => { })),
-                    new MessageProcessingBehaviorMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessageProcessingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
         private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateTestBehaviorFactory(
             Type messageType = null,
-            string messageName = null,
+            object messageId = null,
             int processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
@@ -496,7 +506,7 @@ namespace Kephas.Messaging.Tests
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
                     () => Tuple.Create((IMessageProcessingBehavior)behavior, (Action)(() => { })),
-                    new MessageProcessingBehaviorMetadata(messageType, messageName, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessageProcessingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
@@ -558,9 +568,14 @@ namespace Kephas.Messaging.Tests
     {
     }
 
-    public class NamedMessage : IMessage
+    public class IdentifiedMessage : IMessage
     {
-        public string MessageName { get; set; }
+        public string Id { get; set; }
+    }
+
+    public class IdentifiedMessage2 : IMessage
+    {
+        public string MessageId { get; set; }
     }
 
     public class TestBehavior : MessageProcessingBehaviorBase<PingMessage>

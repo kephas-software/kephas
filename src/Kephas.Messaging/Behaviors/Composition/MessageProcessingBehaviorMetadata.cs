@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Behaviors.Composition
 
     using Kephas.Collections;
     using Kephas.Messaging.Behaviors;
+    using Kephas.Messaging.Composition;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -35,21 +36,27 @@ namespace Kephas.Messaging.Behaviors.Composition
             }
 
             this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType));
-            this.MessageName = (string)metadata.TryGetValue(nameof(this.MessageName));
+            this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? MessageTypeMatching.TypeOrHierarchy;
+            this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
+            this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? MessageIdMatching.Id;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata" /> class.
+        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="messageType">Type of the message.</param>
-        /// <param name="messageName">The name of the message (optional).</param>
-        /// <param name="processingPriority">The processing priority.</param>
-        /// <param name="overridePriority">The override priority.</param>
-        public MessageProcessingBehaviorMetadata(Type messageType, string messageName = null, int processingPriority = 0, int overridePriority = 0)
+        /// <param name="messageTypeMatching">The message type matching (optional).</param>
+        /// <param name="messageId">The ID of the message (optional).</param>
+        /// <param name="messageIdMatching">The message ID matching (optional).</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        public MessageProcessingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.Id, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;
-            this.MessageName = messageName;
+            this.MessageTypeMatching = messageTypeMatching;
+            this.MessageId = messageId;
+            this.MessageIdMatching = messageIdMatching;
         }
 
         /// <summary>
@@ -61,11 +68,27 @@ namespace Kephas.Messaging.Behaviors.Composition
         public Type MessageType { get; }
 
         /// <summary>
-        /// Gets the name of the message.
+        /// Gets the message type matching.
         /// </summary>
         /// <value>
-        /// The name of the message.
+        /// The message type matching.
         /// </value>
-        public string MessageName { get; }
+        public MessageTypeMatching MessageTypeMatching { get; }
+
+        /// <summary>
+        /// Gets the ID of the message.
+        /// </summary>
+        /// <value>
+        /// The ID of the message.
+        /// </value>
+        public object MessageId { get; }
+
+        /// <summary>
+        /// Gets the message ID matching.
+        /// </summary>
+        /// <value>
+        /// The message ID matching.
+        /// </value>
+        public MessageIdMatching MessageIdMatching { get; }
     }
 }

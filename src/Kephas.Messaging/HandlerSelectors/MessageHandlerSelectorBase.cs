@@ -46,23 +46,23 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Indicates whether the selector can handle the indicated message type.
         /// </summary>
         /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageName">The message name.</param>
+        /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        public abstract bool CanHandle(Type messageType, string messageName);
+        public abstract bool CanHandle(Type messageType, object messageId);
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
         /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageName">The message name.</param>
+        /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, string messageName)
+        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, object messageId)
         {
-            var orderedHandlers = this.GetOrderedMessageHandlerFactories(messageType, messageName);
+            var orderedHandlers = this.GetOrderedMessageHandlerFactories(messageType, messageId);
             return () => orderedHandlers.Select(f => f.CreateExportedValue()).ToList();
         }
 
@@ -70,14 +70,22 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Gets the ordered message handler factories.
         /// </summary>
         /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageName">The message name.</param>
+        /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// The ordered message handler factories.
         /// </returns>
-        protected virtual IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> GetOrderedMessageHandlerFactories(Type messageType, string messageName)
+        protected virtual IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            GetOrderedMessageHandlerFactories(Type messageType, object messageId)
         {
-            var orderedFactories = this.HandlerFactories
-                .Where(f => f.Metadata.MessageType == messageType && f.Metadata.MessageName == messageName)
+            var orderedFactories = this.HandlerFactories.Where(
+                    f =>
+                        {
+                            var m = f.Metadata;
+                            return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
+                                        || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && m.MessageType.IsAssignableFrom(messageType)))
+                                   && ((m.MessageIdMatching == MessageIdMatching.Id && Equals(m.MessageId, messageId))
+                                        || m.MessageIdMatching == MessageIdMatching.All);
+                        })
                 .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ToList();

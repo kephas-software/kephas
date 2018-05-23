@@ -27,23 +27,23 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <remarks>
         /// This is the method by which the selectors are requested to indicate
         /// whether they are in charge of providing the handlers
-        /// for a specific message type and name.
+        /// for a specific message type and ID.
         /// </remarks>
         /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageName">The message name.</param>
+        /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// True if the selector can handle the message type, false if not.
         /// </returns>
-        bool CanHandle(Type messageType, string messageName);
+        bool CanHandle(Type messageType, object messageId);
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
         /// <param name="messageType">The type of the message.</param>
-        /// <param name="messageName">The message name.</param>
+        /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, string messageName);
+        Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, object messageId);
     }
 }

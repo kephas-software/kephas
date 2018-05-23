@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Behaviors
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Services;
 
     /// <summary>
@@ -48,7 +49,7 @@ namespace Kephas.Messaging.Behaviors
     [SharedAppServiceContract(
         AllowMultiple = true,
         ContractType = typeof(IMessageProcessingBehavior),
-        MetadataAttributes = new[] { typeof(MessageNameAttribute) })]
+        MetadataAttributes = new[] { typeof(MessageProcessingBehaviorAttribute) })]
     public interface IMessageProcessingBehavior<TMessage> : IMessageProcessingBehavior
         where TMessage : IMessage
     {
