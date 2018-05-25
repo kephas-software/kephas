@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging
+namespace Kephas.Messaging.Events
 {
     /// <summary>
     /// Marker interface for events, in a publisher/subscriber scenario.

@@ -72,6 +72,9 @@
     <Compile Include="..\Kephas.Messaging\Composition\MessageTypeMatching.cs">
       <Link>Composition\MessageTypeMatching.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\DefaultMessageMatchService.cs">
+      <Link>DefaultMessageMatchService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\DefaultMessageProcessor.cs">
       <Link>DefaultMessageProcessor.cs</Link>
     </Compile>
@@ -114,6 +117,24 @@
     <Compile Include="..\Kephas.Messaging\Distributed\MessageProcessingContextExtensions.cs">
       <Link>Distributed\MessageProcessingContextExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Endpoints\EventHubMessageHandler.cs">
+      <Link>Endpoints\EventHubMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Endpoints\PingMessageHandler.cs">
+      <Link>Endpoints\PingMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Events\DefaultEventHub.cs">
+      <Link>Events\DefaultEventHub.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Events\IEvent.cs">
+      <Link>Events\IEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Events\IEventHub.cs">
+      <Link>Events\IEventHub.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Events\IEventSubscription.cs">
+      <Link>Events\IEventSubscription.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\HandlerSelectors\DefaultMessageHandlerSelector.cs">
       <Link>HandlerSelectors\DefaultMessageHandlerSelector.cs</Link>
     </Compile>
@@ -129,14 +150,17 @@
     <Compile Include="..\Kephas.Messaging\HandlerSelectors\SingleMessageHandlerSelectorBase.cs">
       <Link>HandlerSelectors\SingleMessageHandlerSelectorBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging\IEvent.cs">
-      <Link>IEvent.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Messaging\IMessage.cs">
       <Link>IMessage.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\IMessageHandler.cs">
       <Link>IMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageMatch.cs">
+      <Link>IMessageMatch.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\IMessageMatchService.cs">
+      <Link>IMessageMatchService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\IMessageProcessingContext.cs">
       <Link>IMessageProcessingContext.cs</Link>
@@ -147,6 +171,9 @@
     <Compile Include="..\Kephas.Messaging\MessageHandlerBase.cs">
       <Link>MessageHandlerBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\MessageMatch.cs">
+      <Link>MessageMatch.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\MessageProcessingContext.cs">
       <Link>MessageProcessingContext.cs</Link>
     </Compile>
@@ -156,20 +183,17 @@
     <Compile Include="..\Kephas.Messaging\Messages\ExceptionResponseMessage.cs">
       <Link>Messages\ExceptionResponseMessage.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Messages\PingBackMessage.cs">
+      <Link>Messages\PingBackMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Messages\PingMessage.cs">
+      <Link>Messages\PingMessage.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\MessagingException.cs">
       <Link>MessagingException.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\MissingHandlerException.cs">
       <Link>MissingHandlerException.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Ping\PingBackMessage.cs">
-      <Link>Ping\PingBackMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Ping\PingMessage.cs">
-      <Link>Ping\PingMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Ping\PingMessageHandler.cs">
-      <Link>Ping\PingMessageHandler.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>

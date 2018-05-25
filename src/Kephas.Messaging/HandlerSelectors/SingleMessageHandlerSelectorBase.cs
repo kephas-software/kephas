@@ -27,9 +27,12 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleMessageHandlerSelectorBase"/> class.
         /// </summary>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerFactories">The message handler factories.</param>
-        protected SingleMessageHandlerSelectorBase(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
-            : base(handlerFactories)
+        protected SingleMessageHandlerSelectorBase(
+            IMessageMatchService messageMatchService,
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
+            : base(messageMatchService, handlerFactories)
         {
         }
 

@@ -37,6 +37,14 @@ namespace Kephas.Messaging.Composition
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? default;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
             this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? default;
+
+            this.MessageMatch = new MessageMatch
+                                    {
+                                        MessageType = this.MessageType,
+                                        MessageTypeMatching = this.MessageTypeMatching,
+                                        MessageId = this.MessageId,
+                                        MessageIdMatching = this.MessageIdMatching,
+                                    };
         }
 
         /// <summary>
@@ -55,6 +63,14 @@ namespace Kephas.Messaging.Composition
             this.MessageTypeMatching = messageTypeMatching;
             this.MessageId = messageId;
             this.MessageIdMatching = messageIdMatching;
+
+            this.MessageMatch = new MessageMatch
+                                    {
+                                        MessageType = this.MessageType,
+                                        MessageTypeMatching = this.MessageTypeMatching,
+                                        MessageId = this.MessageId,
+                                        MessageIdMatching = this.MessageIdMatching,
+                                    };
         }
 
         /// <summary>
@@ -88,5 +104,13 @@ namespace Kephas.Messaging.Composition
         /// The message ID matching.
         /// </value>
         public MessageIdMatching MessageIdMatching { get; }
+
+        /// <summary>
+        /// Gets the message match.
+        /// </summary>
+        /// <value>
+        /// The message match.
+        /// </value>
+        public IMessageMatch MessageMatch { get; }
     }
 }

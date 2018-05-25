@@ -8,11 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Ping
+namespace Kephas.Messaging.Endpoints
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Message handler for the <see cref="PingMessage"/>.

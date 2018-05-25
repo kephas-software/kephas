@@ -11,7 +11,7 @@
 namespace Kephas.Messaging.Tests.Distributed
 {
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Ping;
+    using Kephas.Messaging.Messages;
 
     using NUnit.Framework;
 

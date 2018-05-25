@@ -14,12 +14,10 @@ namespace Kephas.Messaging
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
-    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
@@ -36,6 +34,11 @@ namespace Kephas.Messaging
     [OverridePriority(Priority.Low)]
     public class DefaultMessageProcessor : IMessageProcessor
     {
+        /// <summary>
+        /// The message match service.
+        /// </summary>
+        private readonly IMessageMatchService messageMatchService;
+
         /// <summary>
         /// The handler selector factories.
         /// </summary>
@@ -62,18 +65,22 @@ namespace Kephas.Messaging
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
         /// <param name="compositionContext">The composition context.</param>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerSelectorFactories">The handler selector factories.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
             ICompositionContext compositionContext,
+            IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
             Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
 
             this.CompositionContext = compositionContext;
+            this.messageMatchService = messageMatchService;
             this.handlerSelectors = handlerSelectorFactories
                 .OrderBy(f => f.Metadata.ProcessingPriority)
                 .Select(f => f.CreateExportedValue())
@@ -182,8 +189,8 @@ namespace Kephas.Messaging
         /// <returns>The message handlers.</returns>
         protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
         {
-            var messageType = this.GetMessageType(message);
-            var messageId = this.GetMessageId(message);
+            var messageType = this.messageMatchService.GetMessageType(message);
+            var messageId = this.messageMatchService.GetMessageId(message);
             var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{messageType.FullName}/{messageId}", _ =>
                 {
                     var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType, messageId));
@@ -197,33 +204,6 @@ namespace Kephas.Messaging
 
             var handlers = messageHandlersFactory();
             return handlers ?? new IMessageHandler[0];
-        }
-
-        /// <summary>
-        /// Gets the message type.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// The message type.
-        /// </returns>
-        protected virtual Type GetMessageType(IMessage message)
-        {
-            return message.GetType();
-        }
-
-        /// <summary>
-        /// Gets the message ID.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>
-        /// The message ID.
-        /// </returns>
-        protected virtual object GetMessageId(IMessage message)
-        {
-            var expandoMessage = message.ToExpando();
-            var messageId = expandoMessage[nameof(IIdentifiable.Id)]
-                            ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
-            return messageId;
         }
 
         /// <summary>
@@ -246,22 +226,15 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
         {
-            var messageType = this.GetMessageType(message);
-            var messageId = this.GetMessageId(message);
+            var messageType = this.messageMatchService.GetMessageType(message);
+            var messageId = this.messageMatchService.GetMessageId(message);
 
             var orderedBehaviorsEntry = this.behaviorFactoriesDictionary.GetOrAdd(
                 $"{messageType.FullName}/{messageId}",
                 _ =>
                     {
                         var behaviors = this.behaviorFactories.Where(
-                                f =>
-                                    {
-                                        var m = f.Metadata;
-                                        return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
-                                                || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && (m.MessageType?.IsAssignableFrom(messageType) ?? true)))
-                                               && ((m.MessageIdMatching == MessageIdMatching.Id && Equals(m.MessageId, messageId))
-                                                   || m.MessageIdMatching == MessageIdMatching.All);
-                                    })
+                                f => this.messageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
                             .Select(f => f.CreateExportedValue())
                             .ToList();
 

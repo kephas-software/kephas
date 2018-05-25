@@ -26,8 +26,9 @@ namespace Kephas.Messaging.Tests
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerSelectors;
-    using Kephas.Messaging.Ping;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
@@ -420,6 +421,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public async Task ProcessAsync_multi_cast_event()
         {
+            var mms = new DefaultMessageMatchService();
             var handler1 = Substitute.For<IMessageHandler>();
             var handler2 = Substitute.For<IMessageHandler>();
 
@@ -432,7 +434,7 @@ namespace Kephas.Messaging.Tests
             var processor = this.CreateRequestProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(handlerFactories), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata())
                                               });
             await processor.ProcessAsync(message, null, default);
 
@@ -443,6 +445,7 @@ namespace Kephas.Messaging.Tests
         [Test]
         public async Task ProcessAsync_selector_works_properly()
         {
+            var mms = new DefaultMessageMatchService();
             var eventMessage = Substitute.For<IEvent>();
             var eventHandler = Substitute.For<IMessageHandler>();
             var plainMessage = Substitute.For<IMessage>();
@@ -457,8 +460,8 @@ namespace Kephas.Messaging.Tests
             var processor = this.CreateRequestProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.High))
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.High))
                                               });
 
             await processor.ProcessAsync(eventMessage, null, default);
@@ -551,16 +554,17 @@ namespace Kephas.Messaging.Tests
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
+            var mms = new DefaultMessageMatchService();
             behaviorFactories = behaviorFactories
                               ?? new List<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>>();
 
             handlerSelectorFactories = handlerSelectorFactories
                                        ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
                                               };
 
-            return new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), handlerSelectorFactories, behaviorFactories);
+            return new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
         }
     }
 

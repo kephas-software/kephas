@@ -17,9 +17,9 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Model.Elements;
     using Kephas.Messaging.Model.Runtime.ModelRegistries;
-    using Kephas.Messaging.Ping;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
 

@@ -23,7 +23,8 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Ping;
+    using Kephas.Messaging.Events;
+    using Kephas.Messaging.Messages;
     using Kephas.Security;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;

@@ -26,13 +26,26 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerSelectorBase"/> class.
         /// </summary>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerFactories">The message handler factories.</param>
-        protected MessageHandlerSelectorBase(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
+        protected MessageHandlerSelectorBase(
+            IMessageMatchService messageMatchService,
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
+            Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
+            this.MessageMatchService = messageMatchService;
             this.HandlerFactories = handlerFactories;
         }
+
+        /// <summary>
+        /// Gets the message match service.
+        /// </summary>
+        /// <value>
+        /// The message match service.
+        /// </value>
+        protected IMessageMatchService MessageMatchService { get; }
 
         /// <summary>
         /// Gets the handler factories.
@@ -78,14 +91,7 @@ namespace Kephas.Messaging.HandlerSelectors
             GetOrderedMessageHandlerFactories(Type messageType, object messageId)
         {
             var orderedFactories = this.HandlerFactories.Where(
-                    f =>
-                        {
-                            var m = f.Metadata;
-                            return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
-                                        || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && m.MessageType.IsAssignableFrom(messageType)))
-                                   && ((m.MessageIdMatching == MessageIdMatching.Id && Equals(m.MessageId, messageId))
-                                        || m.MessageIdMatching == MessageIdMatching.All);
-                        })
+                    f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
                 .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ToList();

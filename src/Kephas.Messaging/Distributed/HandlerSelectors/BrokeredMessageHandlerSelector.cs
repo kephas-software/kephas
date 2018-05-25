@@ -12,7 +12,6 @@ namespace Kephas.Messaging.Distributed.HandlerSelectors
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Messaging.Composition;
@@ -28,9 +27,12 @@ namespace Kephas.Messaging.Distributed.HandlerSelectors
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageHandlerSelector"/> class.
         /// </summary>
+        /// <param name="messageMatchService">The message match service.</param>
         /// <param name="handlerFactories">The message handler factories.</param>
-        public BrokeredMessageHandlerSelector(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
-            : base(handlerFactories)
+        public BrokeredMessageHandlerSelector(
+            IMessageMatchService messageMatchService,
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
+            : base(messageMatchService, handlerFactories)
         {
         }
 

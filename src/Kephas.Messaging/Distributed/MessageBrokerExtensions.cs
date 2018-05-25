@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Events;
     using Kephas.Services;
 
     /// <summary>

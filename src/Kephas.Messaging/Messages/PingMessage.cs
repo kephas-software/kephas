@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Ping
+namespace Kephas.Messaging.Messages
 {
     /// <summary>
     /// The "ping" message.
