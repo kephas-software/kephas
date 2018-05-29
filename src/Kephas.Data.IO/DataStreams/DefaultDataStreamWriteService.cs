@@ -40,7 +40,10 @@ namespace Kephas.Data.IO.DataStreams
         {
             Requires.NotNull(writerFactories, nameof(writerFactories));
 
-            this.writerFactories = writerFactories.OrderBy(f => f.Metadata.ProcessingPriority).ToList();
+            this.writerFactories = writerFactories
+                .OrderBy(f => f.Metadata.OverridePriority)
+                .ThenBy(f => f.Metadata.ProcessingPriority)
+                .ToList();
         }
 
         /// <summary>
