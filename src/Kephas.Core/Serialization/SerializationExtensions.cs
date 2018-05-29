@@ -276,7 +276,8 @@ namespace Kephas.Serialization
             try
             {
                 await serializer.SerializeAsync(obj, writer, context, cancellationToken).PreserveThreadContext();
-                return writer.GetStringBuilder().ToString();
+                var stringBuilder = writer.GetStringBuilder();
+                return stringBuilder.ToString();
             }
             finally
             {

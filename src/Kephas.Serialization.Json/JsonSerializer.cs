@@ -60,6 +60,11 @@ namespace Kephas.Serialization.Json
             Requires.NotNull(textWriter, nameof(textWriter));
 
             var settings = this.settingsProvider.GetJsonSerializerSettings();
+            if (context?.Indent ?? false)
+            {
+                settings.Formatting = Formatting.Indented;
+            }
+
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 
             return Task.Factory.StartNew(

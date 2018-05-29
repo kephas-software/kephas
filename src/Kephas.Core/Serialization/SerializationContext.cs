@@ -69,6 +69,14 @@ namespace Kephas.Serialization
         public Func<object> RootObjectFactory { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the serialized output should be indented.
+        /// </summary>
+        /// <value>
+        /// True if the output should be indented, false if not.
+        /// </value>
+        public bool Indent { get; set; }
+
+        /// <summary>
         /// Creates a new configured <see cref="SerializationContext"/>.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>

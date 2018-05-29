@@ -50,5 +50,13 @@ namespace Kephas.Serialization
         /// The root object factory.
         /// </value>
         Func<object> RootObjectFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the serialized output should be indented.
+        /// </summary>
+        /// <value>
+        /// True if the output should be indented, false if not.
+        /// </value>
+        bool Indent { get; set; }
     }
 }

@@ -40,13 +40,32 @@ namespace Kephas.Serialization.Json.Tests
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
-                          {
-                              Name = "John Doe",
-                              PersonalSite = new Uri("http://site.com/my-site")
-                          };
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site")
+            };
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_indented()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site")
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
         }
 
         [Test]
@@ -55,9 +74,9 @@ namespace Kephas.Serialization.Json.Tests
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new ExpandoEntity
-                          {
-                              Description = "John Doe"
-                          };
+            {
+                Description = "John Doe"
+            };
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);

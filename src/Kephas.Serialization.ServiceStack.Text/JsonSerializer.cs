@@ -14,6 +14,8 @@ namespace Kephas.Serialization.ServiceStack.Text
     using System.Threading;
     using System.Threading.Tasks;
 
+    using global::ServiceStack.Text;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
@@ -54,10 +56,18 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// <returns>
         /// A Task promising the serialized object as a string.
         /// </returns>
-        public Task SerializeAsync(object obj, TextWriter textWriter, ISerializationContext context = null, CancellationToken cancellationToken = default)
+        public async Task SerializeAsync(object obj, TextWriter textWriter, ISerializationContext context = null, CancellationToken cancellationToken = default)
         {
-            global::ServiceStack.Text.JsonSerializer.SerializeToWriter(obj, textWriter);
-            return Task.FromResult(0);
+            var indent = context?.Indent ?? false;
+            if (!indent)
+            {
+                global::ServiceStack.Text.JsonSerializer.SerializeToWriter(obj, textWriter);
+            }
+            else
+            {
+                var serializedObject = global::ServiceStack.Text.JsonSerializer.SerializeToString(obj);
+                await textWriter.WriteAsync(serializedObject.IndentJson());
+            }
         }
 
         /// <summary>

@@ -25,7 +25,7 @@
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
             <group targetFramework="net45">
-                <dependency id="ServiceStack.Text" version="4.5.0" />
+                <dependency id="ServiceStack.Text" version="4.5.6" />
             </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="ServiceStack.Text" version="5.0.0" />

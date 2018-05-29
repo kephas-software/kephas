@@ -51,6 +51,25 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         }
 
         [Test]
+        public async Task SerializeAsync_indented()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+                          {
+                              Name = "John Doe",
+                              PersonalSite = new Uri("http://site.com/my-site")
+                          };
+            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n    \"$type\": \"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests\",\r\n    \"name\": \"John Doe\",\r\n    \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
+        }
+
+        [Test]
         public async Task SerializeAsync_Expando()
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
@@ -120,21 +139,6 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             Assert.IsInstanceOf<IExpando>(obj);
 
             var dict = (IExpando)obj;
-            Assert.AreEqual("there", dict["hi"]);
-            Assert.AreEqual("friend", dict["my"]);
-        }
-
-        [Test, Ignore("TODO Must make the Expando implement IDictionary first.")]
-        public async Task DeserializeAsync_untyped_dictionary()
-        {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
-            var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = await serializer.DeserializeAsync(serializedObj);
-
-            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
-
-            var dict = (IDictionary<string, object>)obj;
             Assert.AreEqual("there", dict["hi"]);
             Assert.AreEqual("friend", dict["my"]);
         }
