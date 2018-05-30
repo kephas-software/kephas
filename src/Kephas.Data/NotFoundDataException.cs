@@ -15,7 +15,7 @@ namespace Kephas.Data
     /// <summary>
     /// Exception for signalling not found data errors.
     /// </summary>
-    public class NotFoundDataException : Exception
+    public class NotFoundDataException : DataException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotFoundDataException"/> class.

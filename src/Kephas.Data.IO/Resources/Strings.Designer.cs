@@ -79,15 +79,6 @@ namespace Kephas.Data.IO.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unexpected exception. See the inner exception for more details..
-        /// </summary>
-        internal static string DataIOException_FromException_UnexpectedMessage {
-            get {
-                return ResourceManager.GetString("DataIOException_FromException_UnexpectedMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot merge the task result, the task is not completed..
         /// </summary>
         internal static string DataIOResult_Merge_TaskNotCompleteException {

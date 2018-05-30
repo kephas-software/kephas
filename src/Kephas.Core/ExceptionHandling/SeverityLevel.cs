@@ -18,7 +18,7 @@ namespace Kephas.ExceptionHandling
         /// <summary>
         /// An enum constant representing the fatal error option.
         /// </summary>
-        FatalError,
+        Fatal,
 
         /// <summary>
         /// An enum constant representing the error option.
