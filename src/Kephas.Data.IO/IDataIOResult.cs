@@ -63,7 +63,7 @@ namespace Kephas.Data.IO
     /// <value>
     /// The exceptions.
     /// </value>
-    IProducerConsumerCollection<DataIOException> Exceptions { get; }
+    IProducerConsumerCollection<Exception> Exceptions { get; }
   }
 
   /// <summary>
@@ -82,7 +82,7 @@ namespace Kephas.Data.IO
       Requires.NotNull(result, nameof(result));
       Requires.NotNull(ex, nameof(ex));
 
-      result.Exceptions.TryAdd(DataIOException.FromException(ex));
+      result.Exceptions.TryAdd(ex);
 
       return result;
     }

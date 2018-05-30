@@ -43,7 +43,7 @@ namespace Kephas.Data.IO
         /// </summary>
         public DataIOResult()
         {
-            this.Exceptions = new ConcurrentBag<DataIOException>();
+            this.Exceptions = new ConcurrentBag<Exception>();
             this.Messages = new ConcurrentBag<IDataIOMessage>();
         }
 
@@ -102,7 +102,7 @@ namespace Kephas.Data.IO
         /// <value>
         /// The exceptions.
         /// </value>
-        public IProducerConsumerCollection<DataIOException> Exceptions { get; }
+        public IProducerConsumerCollection<Exception> Exceptions { get; }
 
         /// <summary>
         /// Called when [property changed].

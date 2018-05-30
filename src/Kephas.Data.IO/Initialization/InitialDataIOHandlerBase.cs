@@ -145,7 +145,7 @@ namespace Kephas.Data.IO.Initialization
                     var errorMessage = $"Exception while importing {dataFilePath}.";
                     this.Logger.Error(ex, errorMessage);
                     var result = new DataIOResult();
-                    result.Exceptions.TryAdd(ex as DataIOException ?? new DataIOException(errorMessage, ex));
+                    result.MergeException(ex);
                     return result;
                 }
             }
