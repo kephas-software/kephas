@@ -81,25 +81,7 @@ namespace Kephas.Data.IO.Export
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            IEnumerable<object> data;
-
-            if (context.Query != null)
-            {
-                var queryExecutionContext = new ClientQueryExecutionContext(this.compositionContext);
-                context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
-                data = await this.clientQueryExecutor
-                           .ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
-                           .PreserveThreadContext();
-            }
-            else
-            {
-                data = context.Data;
-            }
-
-            if (context.ThrowOnNotFound && (data == null || !data.Any()))
-            {
-                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException);
-            }
+            var data = await this.GetDataAsync(context, cancellationToken).PreserveThreadContext();
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -114,6 +96,38 @@ namespace Kephas.Data.IO.Export
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the data to export asynchronously.
+        /// </summary>
+        /// <param name="context">The export context.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// An asynchronous result that yields the data.
+        /// </returns>
+        protected virtual async Task<IEnumerable<object>> GetDataAsync(IDataExportContext context, CancellationToken cancellationToken)
+        {
+            IEnumerable<object> data;
+
+            if (context.Query != null)
+            {
+                var queryExecutionContext = new ClientQueryExecutionContext(this.compositionContext);
+                context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
+                data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
+                           .PreserveThreadContext();
+            }
+            else
+            {
+                data = context.Data;
+            }
+
+            if (context.ThrowOnNotFound && (data == null || !data.Any()))
+            {
+                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException);
+            }
+
+            return data;
         }
     }
 }
