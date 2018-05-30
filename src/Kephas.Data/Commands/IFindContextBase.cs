@@ -31,6 +31,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// <c>true</c>true to throw an exception if an entity is not found, otherwise <c>false</c>.
         /// </value>
-        bool ThrowIfNotFound { get; }
+        bool ThrowOnNotFound { get; }
     }
 }

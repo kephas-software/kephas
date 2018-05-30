@@ -114,9 +114,9 @@ namespace Kephas.Data.Tests
         {
             var findCommand = Substitute.For<IFindCommand>();
             findCommand.ExecuteAsync(Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult<IDataCommandResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowIfNotFound))));
+                .Returns(ci => Task.FromResult<IDataCommandResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowOnNotFound))));
             findCommand.ExecuteAsync(Arg.Any<IFindContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult<IFindResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowIfNotFound))));
+                .Returns(ci => Task.FromResult<IFindResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowOnNotFound))));
             var dataContext = Substitute.For<IDataContext>();
             dataContext.CreateCommand(typeof(IFindCommand)).Returns(ci => findCommand);
 

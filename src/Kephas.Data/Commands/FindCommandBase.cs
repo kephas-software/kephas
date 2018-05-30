@@ -143,7 +143,7 @@ namespace Kephas.Data.Commands
             if (result.Count == 0)
             {
                 exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, this.GetCriteriaString(findContext, criteria)));
-                if (findContext.ThrowIfNotFound)
+                if (findContext.ThrowOnNotFound)
                 {
                     throw exception;
                 }

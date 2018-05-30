@@ -34,7 +34,7 @@ namespace Kephas.Data.Commands
 
             this.EntityType = entityType;
             this.Id = id;
-            this.ThrowIfNotFound = throwIfNotFound;
+            this.ThrowOnNotFound = throwIfNotFound;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// <c>true</c>true to throw an exception if an entity is not found, otherwise <c>false</c>.
         /// </value>
-        public bool ThrowIfNotFound { get; set; }
+        public bool ThrowOnNotFound { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the entity.
