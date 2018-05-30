@@ -21,6 +21,7 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.ExceptionHandling;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -124,7 +125,7 @@ namespace Kephas.Data.IO.Export
 
             if (context.ThrowOnNotFound && (data == null || !data.Any()))
             {
-                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException);
+                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = SeverityLevel.Warning };
             }
 
             return data;

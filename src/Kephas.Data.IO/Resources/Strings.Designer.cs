@@ -88,7 +88,7 @@ namespace Kephas.Data.IO.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No data found to export..
+        ///   Looks up a localized string similar to No data found to export. Check whether you are trying to export not persisted or deleted data..
         /// </summary>
         internal static string DefaultDataExportService_ExportDataAsync_NoDataException {
             get {

@@ -17,7 +17,7 @@ namespace Kephas.ExceptionHandling
     /// <summary>
     /// An exception data.
     /// </summary>
-    public class ExceptionData
+    public class ExceptionData : ISeverityQualifiedException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionData"/> class.
