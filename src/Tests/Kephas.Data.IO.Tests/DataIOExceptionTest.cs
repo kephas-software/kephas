@@ -19,7 +19,7 @@ namespace Kephas.Data.IO.Tests
         public void ToString_contains_message()
         {
             var exception = new DataIOException("hello");
-            var expected = $"{exception.Timestamp:s} {exception.GetType()}: hello";
+            var expected = $"{exception.Timestamp:s}/{exception.Severity} {exception.GetType()}: hello";
             Assert.AreEqual(expected, exception.ToString());
         }
     }
