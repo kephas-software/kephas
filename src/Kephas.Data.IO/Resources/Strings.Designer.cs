@@ -106,6 +106,15 @@ namespace Kephas.Data.IO.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Successfully exported the data to &apos;{0}&apos;..
+        /// </summary>
+        internal static string DefaultDataExportService_ExportDataAsync_SuccessMessage {
+            get {
+                return ResourceManager.GetString("DefaultDataExportService_ExportDataAsync_SuccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data stream reader not found for {0}..
         /// </summary>
         internal static string DefaultDataStreamReadService_ReaderNotFound_Exception {

@@ -91,6 +91,28 @@ namespace Kephas.Data.IO.Tests.Export
         }
 
         [Test]
+        public async Task ExportDataAsync_no_data_no_throw()
+        {
+            var writer = Substitute.For<IDataStreamWriteService>();
+            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+
+            var entities = new List<object>();
+
+            writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0));
+
+            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
+            {
+                var context = new DataExportContext(entities, dataStream);
+                await service.ExportDataAsync(context);
+            }
+
+            writer.Received(1)
+                .WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
         public async Task ExportDataAsync_data_no_data()
         {
             var writer = Substitute.For<IDataStreamWriteService>();

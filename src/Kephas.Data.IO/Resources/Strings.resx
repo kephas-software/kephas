@@ -147,4 +147,7 @@
   <data name="DefaultDataExportService_ExportDataAsync_NoDataException" xml:space="preserve">
     <value>No data found to export.</value>
   </data>
+  <data name="DefaultDataExportService_ExportDataAsync_SuccessMessage" xml:space="preserve">
+    <value>Successfully exported the data to '{0}'.</value>
+  </data>
 </root>

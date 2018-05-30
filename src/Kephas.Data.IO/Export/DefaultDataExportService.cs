@@ -88,7 +88,7 @@ namespace Kephas.Data.IO.Export
             try
             {
                 await this.dataStreamWriteService.WriteAsync(data, context.Output, context, cancellationToken).PreserveThreadContext();
-                result.MergeMessage($"Successfully exported date to {context.Output.Name}.");
+                result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, context.Output.Name));
             }
             catch (Exception ex)
             {
