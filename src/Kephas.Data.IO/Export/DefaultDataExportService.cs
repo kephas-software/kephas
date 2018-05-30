@@ -12,12 +12,14 @@ namespace Kephas.Data.IO.Export
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
+    using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -92,6 +94,11 @@ namespace Kephas.Data.IO.Export
             else
             {
                 data = context.Data;
+            }
+
+            if (context.ThrowOnNotFound && (data == null || !data.Any()))
+            {
+                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException);
             }
 
             cancellationToken.ThrowIfCancellationRequested();

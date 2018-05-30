@@ -144,4 +144,7 @@
   <data name="AssemblyEmbeddedResourcesInitialDataHandlerBase_NotFound_Exception" xml:space="preserve">
     <value>Resource '{0}' not found. Check whether the resource is marked as 'Embedded Resource' and that the name is valid.</value>
   </data>
+  <data name="DefaultDataExportService_ExportDataAsync_NoDataException" xml:space="preserve">
+    <value>No data found to export.</value>
+  </data>
 </root>

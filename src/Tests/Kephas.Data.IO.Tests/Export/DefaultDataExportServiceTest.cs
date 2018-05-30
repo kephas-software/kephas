@@ -52,6 +52,23 @@ namespace Kephas.Data.IO.Tests.Export
         }
 
         [Test]
+        public async Task ExportDataAsync_query_no_data()
+        {
+            var writer = Substitute.For<IDataStreamWriteService>();
+            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+
+            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<IList<object>>(new object[0]));
+
+            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
+            {
+                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream) { ThrowOnNotFound = true };
+                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
+            }
+        }
+
+        [Test]
         public async Task ExportDataAsync_data()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
@@ -71,6 +88,20 @@ namespace Kephas.Data.IO.Tests.Export
 
             writer.Received(1)
                 .WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public async Task ExportDataAsync_data_no_data()
+        {
+            var writer = Substitute.For<IDataStreamWriteService>();
+            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+
+            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
+            {
+                var context = new DataExportContext(new object[0], dataStream) { ThrowOnNotFound = true };
+                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
+            }
         }
     }
 }

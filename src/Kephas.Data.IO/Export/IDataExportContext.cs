@@ -62,6 +62,14 @@ namespace Kephas.Data.IO.Export
         /// The client query execution context configuration.
         /// </value>
         Action<IClientQueryExecutionContext> ClientQueryExecutionContextConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to throw an exception if no data is found to export.
+        /// </summary>
+        /// <value>
+        /// <c>true</c>true to throw an exception if no data is found to export, otherwise <c>false</c>.
+        /// </value>
+        bool ThrowOnNotFound { get; set; }
     }
 
     /// <summary>
