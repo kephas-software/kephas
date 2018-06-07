@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Version>4.5.0</Version>
+        <Authors>Quartz Software SRL</Authors>
+        <Company>Quartz Software SRL</Company>
+        <Product>Kephas Framework</Product>
+        <AssemblyVersion>4.5.0.0</AssemblyVersion>
+        <FileVersion>4.5.0.0</FileVersion>
+        <Description>Provides the infrastructure for executing C# scripts.</Description>
+        <Copyright>Copyright Quartz Software SRL 2010-2018</Copyright>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+        <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <PackageTags>kephas framework scripting csharp quartz-software</PackageTags>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>Kephas.Scripting.CSharp</RootNamespace>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PackageReleaseNotes>
+            Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
+        </PackageReleaseNotes>
+    </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scripting.CSharp.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scripting.CSharp.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    <ProjectReference Include="..\Kephas.Scripting\Kephas.Scripting.csproj" />
+  </ItemGroup>
+
+</Project>

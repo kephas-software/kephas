@@ -23,7 +23,7 @@ namespace Kephas.Scripting
         /// </summary>
         /// <param name="language">The script language.</param>
         /// <param name="sourceCode">The source code.</param>
-        public Script(string language, string sourceCode)
+        public Script(string language, object sourceCode)
         {
             Requires.NotNullOrEmpty(language, nameof(language));
             Requires.NotNull(sourceCode, nameof(sourceCode));
@@ -46,6 +46,6 @@ namespace Kephas.Scripting
         /// <value>
         /// The source code.
         /// </value>
-        public string SourceCode { get; }
+        public object SourceCode { get; }
     }
 }

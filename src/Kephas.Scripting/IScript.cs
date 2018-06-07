@@ -26,11 +26,14 @@ namespace Kephas.Scripting
         string Language { get; }
 
         /// <summary>
-        /// Gets the source code as a stream.
+        /// Gets the source code.
         /// </summary>
+        /// <remarks>
+        /// This can be typically a string or a stream.
+        /// </remarks>
         /// <value>
         /// The source code.
         /// </value>
-        string SourceCode { get; }
+        object SourceCode { get; }
     }
 }

@@ -237,7 +237,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Orchestration", "Kep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Orchestration.Net45", "Kephas.Orchestration.Net45\Kephas.Orchestration.Net45.csproj", "{6982EEB0-1B0B-45FB-96A8-86B7301695E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Azure.ServiceBus", "Kephas.Messaging.Azure.ServiceBus\Kephas.Messaging.Azure.ServiceBus.csproj", "{96AFDE33-7C64-4246-87D7-D7244160A718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Azure.ServiceBus", "Kephas.Messaging.Azure.ServiceBus\Kephas.Messaging.Azure.ServiceBus.csproj", "{96AFDE33-7C64-4246-87D7-D7244160A718}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.CSharp", "Kephas.Scripting.CSharp\Kephas.Scripting.CSharp.csproj", "{5F82A645-DAD0-4F71-9D52-2D25A66B1D19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.CSharp.Tests", "Tests\Kephas.Scripting.CSharp.Tests\Kephas.Scripting.CSharp.Tests.csproj", "{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -641,6 +645,14 @@ Global
 		{96AFDE33-7C64-4246-87D7-D7244160A718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96AFDE33-7C64-4246-87D7-D7244160A718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96AFDE33-7C64-4246-87D7-D7244160A718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F82A645-DAD0-4F71-9D52-2D25A66B1D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F82A645-DAD0-4F71-9D52-2D25A66B1D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F82A645-DAD0-4F71-9D52-2D25A66B1D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F82A645-DAD0-4F71-9D52-2D25A66B1D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -718,6 +730,7 @@ Global
 		{7BC37D7D-6D96-4F3F-91EE-3D113D2A0711} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{0B0BE615-AA81-430F-B2BE-F06C2B4E83CD} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
 		{6982EEB0-1B0B-45FB-96A8-86B7301695E9} = {4375A35B-0C26-4994-B947-1BA73DE968EB}
+		{C499C5B0-CA3C-49FC-9392-9977A4B8EB42} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
