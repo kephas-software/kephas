@@ -10,6 +10,7 @@
 
 namespace Kephas.Scripting.CSharp.Tests
 {
+    using System;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
@@ -50,6 +51,27 @@ namespace Kephas.Scripting.CSharp.Tests
                 CSharpScriptInterpreter.Language,
                 "int Power(int a) => a * a;" + 
                 "return Power((int)args[\"a\"]);");
+            var args = new Expando
+                           {
+                               ["a"] = 2,
+                           };
+            var result = await interpreter.ExecuteAsync(script, args);
+
+            Assert.AreEqual(4, result);
+        }
+
+        [Test]
+        [Ignore("Check how to add support for dynamic")]
+        public async Task ExecuteAsync_args_dynamic()
+        {
+            var interpreter = new CSharpScriptInterpreter();
+            var script = new Script(
+                CSharpScriptInterpreter.Language,
+                "#r \"System.Dynamic\"" + Environment.NewLine +
+                "#r \"Microsoft.CSharp\"" + Environment.NewLine +
+                "int Power(int a) => a * a;" + 
+                "dynamic dargs = args;" + 
+                "return Power(dargs.a);");
             var args = new Expando
                            {
                                ["a"] = 2,
