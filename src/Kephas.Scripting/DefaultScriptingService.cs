@@ -65,10 +65,14 @@ namespace Kephas.Scripting
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ForEach(f =>
                     {
-                        if (!this.interpreterFactories.ContainsKey(f.Metadata.Language))
-                        {
-                            this.interpreterFactories.Add(f.Metadata.Language, f);
-                        }
+                        f.Metadata.Language.ForEach(
+                            l =>
+                                {
+                                    if (!this.interpreterFactories.ContainsKey(l))
+                                    {
+                                        this.interpreterFactories.Add(l, f);
+                                    }
+                                });
                     });
 
             interpreterBehaviorFactories

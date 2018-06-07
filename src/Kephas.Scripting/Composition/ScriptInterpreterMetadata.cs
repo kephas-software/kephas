@@ -33,7 +33,7 @@ namespace Kephas.Scripting.Composition
                 return;
             }
 
-            this.Language = (string)metadata.TryGetValue(nameof(this.Language));
+            this.Language = (string[])metadata.TryGetValue(nameof(this.Language));
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Kephas.Scripting.Composition
         /// <param name="overridePriority">(Optional) The override priority.</param>
         /// <param name="optionalService">(Optional) True to optional service.</param>
         /// <param name="serviceName">(Optional) Name of the service.</param>
-        public ScriptInterpreterMetadata(string language, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
+        public ScriptInterpreterMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
             : base(processingPriority, overridePriority, optionalService, serviceName)
         {
             Requires.NotNullOrEmpty(language, nameof(language));
@@ -58,6 +58,6 @@ namespace Kephas.Scripting.Composition
         /// <value>
         /// The language.
         /// </value>
-        public string Language { get; }
+        public string[] Language { get; }
     }
 }

@@ -19,13 +19,24 @@ namespace Kephas.Scripting
     /// Attribute for language.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class LanguageAttribute : Attribute, IMetadataValue<string>
+    public class LanguageAttribute : Attribute, IMetadataValue<string[]>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.
         /// </summary>
         /// <param name="value">The value.</param>
         public LanguageAttribute(string value)
+        {
+            Requires.NotNullOrEmpty(value, nameof(value));
+
+            this.Value = new []{ value };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageAttribute"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public LanguageAttribute(params string[] value)
         {
             Requires.NotNullOrEmpty(value, nameof(value));
 
@@ -38,6 +49,6 @@ namespace Kephas.Scripting
 
         /// <summary>Gets the metadata value.</summary>
         /// <value>The metadata value.</value>
-        public string Value { get; }
+        public string[] Value { get; }
     }
 }

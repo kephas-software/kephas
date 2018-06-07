@@ -24,13 +24,18 @@ namespace Kephas.Scripting.CSharp
     /// <summary>
     /// A C# script interpreter.
     /// </summary>
-    [Language(Language)]
+    [Language(Language, LanguageAlt)]
     public class CSharpScriptInterpreter : IScriptInterpreter
     {
         /// <summary>
-        /// The language.
+        /// The language identifier.
         /// </summary>
-        public const string Language = "csharp";
+        public const string Language = "C#";
+
+        /// <summary>
+        /// The alternate language identifier.
+        /// </summary>
+        public const string LanguageAlt = "csharp";
 
         /// <summary>
         /// Executes the expression asynchronously.
