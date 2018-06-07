@@ -133,13 +133,7 @@ namespace Kephas.Scripting
                 throw new ScriptingException($"The script language '{script.Language}' does not have an associated interpreter.");
             }
 
-            var scriptingContext = new ScriptingContext(this.CompositionContext)
-                                       {
-                                           Identity = executionContext?.Identity,
-                                           Script = script,
-                                           Args = args,
-                                           ExecutionContext = executionContext
-                                       };
+            var scriptingContext = this.CreateScriptingContext(script, args, executionContext);
             var behaviors = this.interpreterBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IScriptInterpreterBehavior>();
 
             foreach (var behavior in behaviors)
@@ -150,7 +144,7 @@ namespace Kephas.Scripting
             try
             {
                 var result = await interpreterFactory.CreateExportedValue()
-                                 .ExecuteAsync(script, args, executionContext, cancellationToken)
+                                 .ExecuteAsync(script, scriptingContext.ScriptGlobals, args, executionContext, cancellationToken)
                                  .PreserveThreadContext();
                 scriptingContext.Result = result;
             }
@@ -173,6 +167,28 @@ namespace Kephas.Scripting
             }
 
             return scriptingContext.Result;
+        }
+
+        /// <summary>
+        /// Creates the scripting context.
+        /// </summary>
+        /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="args">The arguments (optional).</param>
+        /// <param name="executionContext">The execution context (optional).</param>
+        /// <returns>
+        /// The new scripting context.
+        /// </returns>
+        protected virtual IScriptingContext CreateScriptingContext(IScript script, IExpando args, IContext executionContext)
+        {
+            var scriptingContext = new ScriptingContext(this.CompositionContext)
+                                       {
+                                           Identity = executionContext?.Identity,
+                                           Script = script,
+                                           Args = args,
+                                           ExecutionContext = executionContext,
+                                           ScriptGlobals = new ScriptGlobals { Args = args }
+                                       };
+            return scriptingContext;
         }
     }
 }

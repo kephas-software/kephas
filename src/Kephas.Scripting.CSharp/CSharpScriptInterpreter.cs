@@ -16,6 +16,7 @@ namespace Kephas.Scripting.CSharp
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -41,6 +42,7 @@ namespace Kephas.Scripting.CSharp
         /// Executes the expression asynchronously.
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">The script globals (optional).</param>
         /// <param name="args">The arguments (optional).</param>
         /// <param name="executionContext">The execution context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -49,6 +51,7 @@ namespace Kephas.Scripting.CSharp
         /// </returns>
         public async Task<object> ExecuteAsync(
             IScript script,
+            IScriptGlobals scriptGlobals = null,
             IExpando args = null,
             IContext executionContext = null,
             CancellationToken cancellationToken = default)
@@ -56,12 +59,9 @@ namespace Kephas.Scripting.CSharp
             Requires.NotNull(script, nameof(script));
             Requires.NotNull(script.SourceCode, nameof(script.SourceCode));
 
-            // TODO improve implementation
-
             if (script.SourceCode is string codeText)
             {
-                var globals = new Globals { args = args ?? new Expando() };
-                var result = await CSharpScript.RunAsync(codeText, globals: globals, cancellationToken: cancellationToken)
+                var result = await CSharpScript.RunAsync(codeText, globals: scriptGlobals, cancellationToken: cancellationToken)
                     .PreserveThreadContext();
                 return result.ReturnValue;
             }
@@ -69,27 +69,12 @@ namespace Kephas.Scripting.CSharp
             if (script.SourceCode is Stream codeStream)
             {
                 var csscript = CSharpScript.Create(codeStream);
-                var globals = new Globals { args = args ?? new Expando() };
-                var state = await csscript.RunAsync(globals: globals, cancellationToken: cancellationToken).PreserveThreadContext();
+                var state = await csscript.RunAsync(globals: scriptGlobals, cancellationToken: cancellationToken).PreserveThreadContext();
                 return state.ReturnValue;
             }
 
             // TODO localization
             throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
-        }
-
-        /// <summary>
-        /// The globals.
-        /// </summary>
-        public class Globals
-        {
-            /// <summary>
-            /// Gets or sets the arguments.
-            /// </summary>
-            /// <value>
-            /// The arguments.
-            /// </value>
-            public IExpando args { get; set; }
         }
     }
 }

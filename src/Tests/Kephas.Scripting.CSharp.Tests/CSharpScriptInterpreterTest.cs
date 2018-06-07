@@ -50,12 +50,12 @@ namespace Kephas.Scripting.CSharp.Tests
             var script = new Script(
                 CSharpScriptInterpreter.Language,
                 "int Power(int a) => a * a;" + 
-                "return Power((int)args[\"a\"]);");
+                "return Power((int)Args[\"a\"]);");
             var args = new Expando
                            {
                                ["a"] = 2,
                            };
-            var result = await interpreter.ExecuteAsync(script, args);
+            var result = await interpreter.ExecuteAsync(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }
@@ -70,13 +70,13 @@ namespace Kephas.Scripting.CSharp.Tests
                 "#r \"System.Dynamic\"" + Environment.NewLine +
                 "#r \"Microsoft.CSharp\"" + Environment.NewLine +
                 "int Power(int a) => a * a;" + 
-                "dynamic dargs = args;" + 
+                "dynamic dargs = Args;" + 
                 "return Power(dargs.a);");
             var args = new Expando
                            {
                                ["a"] = 2,
                            };
-            var result = await interpreter.ExecuteAsync(script, args);
+            var result = await interpreter.ExecuteAsync(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }

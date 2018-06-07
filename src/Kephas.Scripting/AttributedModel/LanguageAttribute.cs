@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scripting
+namespace Kephas.Scripting.AttributedModel
 {
     using System;
 

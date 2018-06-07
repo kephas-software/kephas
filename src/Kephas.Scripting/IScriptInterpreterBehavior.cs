@@ -13,6 +13,7 @@ namespace Kephas.Scripting
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
 
     /// <summary>

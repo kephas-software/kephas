@@ -19,6 +19,7 @@ namespace Kephas.Scripting.Tests
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
+    using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
 
@@ -64,6 +65,7 @@ namespace Kephas.Scripting.Tests
             /// Executes the expression asynchronously.
             /// </summary>
             /// <param name="script">The script to be interpreted/executed.</param>
+            /// <param name="scriptGlobals"></param>
             /// <param name="args">The arguments (optional).</param>
             /// <param name="executionContext">The execution context (optional).</param>
             /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -72,6 +74,7 @@ namespace Kephas.Scripting.Tests
             /// </returns>
             public Task<object> ExecuteAsync(
                 IScript script,
+                IScriptGlobals scriptGlobals = null,
                 IExpando args = null,
                 IContext executionContext = null,
                 CancellationToken cancellationToken = default)

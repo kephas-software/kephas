@@ -34,8 +34,5 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.xml" target="lib\netstandard2.0" />
-        <file src="..\Kephas.Scripting.Net45\bin\$configuration$\Kephas.Scripting.dll" target="lib\net45" />
-        <file src="..\Kephas.Scripting.Net45\bin\$configuration$\Kephas.Scripting.pdb" target="lib\net45" />
-        <file src="..\Kephas.Scripting.Net45\bin\$configuration$\Kephas.Scripting.xml" target="lib\net45" />
     </files>
 </package>

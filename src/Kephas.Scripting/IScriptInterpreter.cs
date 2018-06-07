@@ -14,6 +14,7 @@ namespace Kephas.Scripting
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
 
     /// <summary>
@@ -26,6 +27,7 @@ namespace Kephas.Scripting
         /// Executes the expression asynchronously.
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">The script globals (optional).</param>
         /// <param name="args">The arguments (optional).</param>
         /// <param name="executionContext">The execution context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -34,6 +36,7 @@ namespace Kephas.Scripting
         /// </returns>
         Task<object> ExecuteAsync(
             IScript script,
+            IScriptGlobals scriptGlobals = null,
             IExpando args = null,
             IContext executionContext = null,
             CancellationToken cancellationToken = default);

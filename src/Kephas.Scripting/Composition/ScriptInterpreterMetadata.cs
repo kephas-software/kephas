@@ -39,11 +39,11 @@ namespace Kephas.Scripting.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptInterpreterMetadata"/> class.
         /// </summary>
-        /// <param name="language">The language.</param>
-        /// <param name="processingPriority">(Optional) The processing priority.</param>
-        /// <param name="overridePriority">(Optional) The override priority.</param>
-        /// <param name="optionalService">(Optional) True to optional service.</param>
-        /// <param name="serviceName">(Optional) Name of the service.</param>
+        /// <param name="language">The supported language set.</param>
+        /// <param name="processingPriority">The processing priority (optional).</param>
+        /// <param name="overridePriority">The override priority (optional).</param>
+        /// <param name="optionalService">True if optional service (optional).</param>
+        /// <param name="serviceName">Name of the service (optional).</param>
         public ScriptInterpreterMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
             : base(processingPriority, overridePriority, optionalService, serviceName)
         {

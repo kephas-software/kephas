@@ -47,6 +47,14 @@ namespace Kephas.Scripting
         public IExpando Args { get; set; }
 
         /// <summary>
+        /// Gets or sets the script globals.
+        /// </summary>
+        /// <value>
+        /// The script globals.
+        /// </value>
+        public IScriptGlobals ScriptGlobals { get; set; }
+
+        /// <summary>
         /// Gets or sets a context for the execution.
         /// </summary>
         /// <value>
