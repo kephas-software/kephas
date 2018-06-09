@@ -48,10 +48,10 @@ namespace Kephas.Serialization
 
             if (serializedObj == null)
             {
-                return default(TRootObject);
+                return default;
             }
 
-            context = CheckOrCreateSerializationContext<TMediaType>(serializationService, context);
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
             context.RootObjectType = typeof(TRootObject);
 
             var serializer = serializationService.GetSerializer(context);
@@ -84,7 +84,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((object)null);
             }
 
-            context = CheckOrCreateSerializationContext<TMediaType>(serializationService, context);
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.DeserializeAsync(serializedObj, context, cancellationToken);
@@ -204,7 +204,7 @@ namespace Kephas.Serialization
                 return Task.FromResult((string)null);
             }
 
-            context = CheckOrCreateSerializationContext<TMediaType>(serializationService, context);
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.SerializeAsync(obj, context, cancellationToken);
@@ -316,15 +316,16 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
-        /// Creates serialization context.
+        /// Creates the serialization context or updates it with the serialization service and media type.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <param name="serializationService">The serializationService to act on.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The serialization context (optional).</param>
+        /// <param name="contextConfig">The context configuration (optional).</param>
         /// <returns>
         /// The new serialization context.
         /// </returns>
-        private static ISerializationContext CheckOrCreateSerializationContext<TMediaType>(ISerializationService serializationService, ISerializationContext context)
+        public static ISerializationContext CreateOrUpdateSerializationContext<TMediaType>(this ISerializationService serializationService, ISerializationContext context = null, Action<ISerializationContext> contextConfig = null)
             where TMediaType : IMediaType
         {
             if (context == null)
@@ -333,7 +334,16 @@ namespace Kephas.Serialization
             }
             else
             {
-                if (context.MediaType != typeof(TMediaType))
+                if (context.SerializationService == null)
+                {
+                    context.SerializationService = serializationService;
+                }
+
+                if (context.MediaType == null)
+                {
+                    context.MediaType = typeof(TMediaType);
+                }
+                else if (context.MediaType != typeof(TMediaType))
                 {
                     throw new InvalidOperationException(
                         string.Format(
@@ -343,6 +353,7 @@ namespace Kephas.Serialization
                 }
             }
 
+            contextConfig?.Invoke(context);
             return context;
         }
     }

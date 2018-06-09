@@ -20,20 +20,20 @@ namespace Kephas.Serialization
     public interface ISerializationContext : IContext
     {
         /// <summary>
-        /// Gets the serialization service.
+        /// Gets or sets the serialization service.
         /// </summary>
         /// <value>
         /// The serialization service.
         /// </value>
-        ISerializationService SerializationService { get; }
+        ISerializationService SerializationService { get; set; }
 
         /// <summary>
-        /// Gets the media type.
+        /// Gets or sets the media type.
         /// </summary>
         /// <value>
         /// The media type.
         /// </value>
-        Type MediaType { get; }
+        Type MediaType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the root object.

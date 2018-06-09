@@ -27,7 +27,7 @@ namespace Kephas.Messaging
         /// <param name="message">The Message.</param>
         /// <param name="handler">The handler.</param>
         public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message = null, IMessageHandler handler = null)
-            : base(messageProcessor.CompositionContext)
+            : base(messageProcessor?.CompositionContext)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 

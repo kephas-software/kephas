@@ -43,8 +43,8 @@ namespace Kephas.Services
         public Context(IAmbientServices ambientServices, bool isThreadSafe = false)
             : base(isThreadSafe)
         {
-            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
-            this.CompositionContext = this.AmbientServices.CompositionContainer;
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.SetAmbientServices(ambientServices);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace Kephas.Services
         public Context(ICompositionContext compositionContext, bool isThreadSafe = false)
             : base(isThreadSafe)
         {
-            this.AmbientServices = compositionContext?.GetExport<IAmbientServices>() ?? Kephas.AmbientServices.Instance;
-            this.CompositionContext = compositionContext ?? this.AmbientServices.CompositionContainer;
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.SetCompositionContext(compositionContext);
         }
 
         /// <summary>
@@ -70,15 +70,15 @@ namespace Kephas.Services
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public IAmbientServices AmbientServices { get; private set; }
 
         /// <summary>
-        /// Gets a context for the dependency injection/composition.
+        /// Gets the dependency injection/composition context.
         /// </summary>
         /// <value>
         /// The composition context.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        public ICompositionContext CompositionContext { get; private set; }
 
         /// <summary>
         /// Gets or sets the authenticated user.
@@ -95,5 +95,34 @@ namespace Kephas.Services
         /// The context logger.
         /// </value>
         public ILogger ContextLogger { get; set; }
+
+        /// <summary>
+        /// Sets composition context.
+        /// </summary>
+        /// <param name="compositionContext">
+        /// The context for the composition (optional). If not provided,
+        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
+        /// </param>
+        protected virtual void SetCompositionContext(ICompositionContext compositionContext)
+        {
+            this.AmbientServices = compositionContext?.GetExport<IAmbientServices>() ?? Kephas.AmbientServices.Instance;
+            this.CompositionContext = compositionContext ?? this.AmbientServices.CompositionContainer;
+        }
+
+        /// <summary>
+        /// Sets ambient services.
+        /// </summary>
+        /// <remarks>
+        /// The composition context is also set as the one exposed by the ambient services.
+        /// </remarks>
+        /// <param name="ambientServices">
+        /// The ambient services (optional). If not provided,
+        /// <see cref="M:AmbientServices.Instance"/> will be considered.
+        /// </param>
+        protected virtual void SetAmbientServices(IAmbientServices ambientServices)
+        {
+            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
+            this.CompositionContext = this.AmbientServices.CompositionContainer;
+        }
     }
 }

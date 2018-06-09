@@ -45,17 +45,15 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
-        /// <param name="compositionContext">The ambient services.</param>
+        /// <param name="compositionContext">The composition context (optional).</param>
         /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
         /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
-            ICompositionContext compositionContext,
+            ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataContextCache localCache = null)
             : base(compositionContext)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
-
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(compositionContext);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();

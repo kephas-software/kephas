@@ -22,35 +22,47 @@ namespace Kephas.Serialization
     public class SerializationContext : Context, ISerializationContext
     {
         /// <summary>
+        /// The serialization service.
+        /// </summary>
+        private ISerializationService serializationService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">The media type (type implementing <see cref="IMediaType"/>).</param>
-        public SerializationContext(ISerializationService serializationService, Type mediaType)
-            : base(compositionContext: serializationService.CompositionContext)
+        public SerializationContext(ISerializationService serializationService = null, Type mediaType = null)
+            : base(compositionContext: serializationService?.CompositionContext)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-            Requires.NotNull(mediaType, nameof(mediaType));
-
             this.SerializationService = serializationService;
             this.MediaType = mediaType;
         }
 
         /// <summary>
-        /// Gets the serialization service.
+        /// Gets or sets the serialization service.
         /// </summary>
         /// <value>
         /// The serialization service.
         /// </value>
-        public ISerializationService SerializationService { get; }
+        public ISerializationService SerializationService
+        {
+            get => this.serializationService;
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+
+                this.serializationService = value;
+                this.SetCompositionContext(value.CompositionContext);
+            }
+        }
 
         /// <summary>
-        /// Gets the media type.
+        /// Gets or sets the media type.
         /// </summary>
         /// <value>
         /// The media type.
         /// </value>
-        public Type MediaType { get; }
+        public Type MediaType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the root object.
