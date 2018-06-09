@@ -14,6 +14,8 @@ namespace Kephas.Messaging.Events
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -42,5 +44,37 @@ namespace Kephas.Messaging.Events
         /// An IEventSubscription.
         /// </returns>
         IEventSubscription Subscribe(IMessageMatch match, Func<IEvent, IContext, CancellationToken, Task> callback);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IEventHub"/>.
+    /// </summary>
+    public static class EventHubExtensions
+    {
+        /// <summary>
+        /// Subscribes to the event with the provided type.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <param name="eventHub">The eventHub to act on.</param>
+        /// <param name="callback">The callback.</param>
+        /// <returns>
+        /// An IEventSubscription.
+        /// </returns>
+        public static IEventSubscription Subscribe<TEvent>(
+            this IEventHub eventHub,
+            Func<TEvent, IContext, CancellationToken, Task> callback)
+            where TEvent : IEvent
+        {
+            Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(callback, nameof(callback));
+
+            return eventHub.Subscribe(
+                new MessageMatch
+                    {
+                        MessageType = typeof(TEvent),
+                        MessageTypeMatching = MessageTypeMatching.Type
+                    },
+                (e, ctx, token) => callback((TEvent)e, ctx, token));
+        }
     }
 }
