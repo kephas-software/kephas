@@ -12,6 +12,7 @@ namespace Kephas.Logging
 {
     using System;
 
+    using Kephas.ExceptionHandling;
     using Kephas.Services;
 
     /// <summary>
@@ -93,6 +94,25 @@ namespace Kephas.Logging
     public static class LoggerExtensions
     {
         /// <summary>
+        /// Gets the log level for an exception.
+        /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedException"/>,
+        /// otherwise the level indicated by the severity level.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
+        /// <returns>
+        /// The log level.
+        /// </returns>
+        public static LogLevel GetLogLevel(this Exception exception)
+        {
+            if (exception is ISeverityQualifiedException severityQualifiedException)
+            {
+                return (LogLevel)severityQualifiedException.Severity;
+            }
+
+            return LogLevel.Error;
+        }
+
+        /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
         /// <param name="logger">The logger.</param>
@@ -102,6 +122,21 @@ namespace Kephas.Logging
         public static void Log(this ILogger logger, LogLevel level, string messageFormat, params object[] args)
         {
             logger?.Log(level, null, messageFormat, args);
+        }
+
+        /// <summary>
+        /// Logs the exception with a formatted message at the log level indicated be the exception's severity level.
+        /// This is calculated to be <see cref="SeverityLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedException"/>,
+        /// otherwise the level indicated by the severity level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
+        /// <param name="messageFormat">The message format.</param>
+        /// <param name="args">The arguments.</param>
+        public static void Log(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        {
+            var logLevel = GetLogLevel(exception);
+            logger?.Log(logLevel, exception, messageFormat, args);
         }
 
         /// <summary>
