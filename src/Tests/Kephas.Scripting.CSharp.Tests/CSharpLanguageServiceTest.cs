@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CSharpScriptInterpreterTest.cs" company="Quartz Software SRL">
+// <copyright file="CSharpLanguageServiceTest.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the C# script interpreter test class.
+//   Implements the C# language service test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,14 +18,14 @@ namespace Kephas.Scripting.CSharp.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class CSharpScriptInterpreterTest
+    public class CSharpLanguageServiceTest
     {
         [Test]
         public async Task ExecuteAsync_simple()
         {
-            var interpreter = new CSharpScriptInterpreter();
-            var script = new Script(CSharpScriptInterpreter.Language, "(1 + 2) * 3");
-            var result = await interpreter.ExecuteAsync(script);
+            var langService = new CSharpLanguageService();
+            var script = new Script(CSharpLanguageService.Language, "(1 + 2) * 3");
+            var result = await langService.ExecuteAsync(script);
 
             Assert.AreEqual(9, result);
         }
@@ -33,12 +33,12 @@ namespace Kephas.Scripting.CSharp.Tests
         [Test]
         public async Task ExecuteAsync_function()
         {
-            var interpreter = new CSharpScriptInterpreter();
+            var langService = new CSharpLanguageService();
             var script = new Script(
-                CSharpScriptInterpreter.Language,
+                CSharpLanguageService.Language,
                 "int Power(int a) => a * a;" + 
                 "return Power(2);");
-            var result = await interpreter.ExecuteAsync(script);
+            var result = await langService.ExecuteAsync(script);
 
             Assert.AreEqual(4, result);
         }
@@ -46,16 +46,16 @@ namespace Kephas.Scripting.CSharp.Tests
         [Test]
         public async Task ExecuteAsync_args()
         {
-            var interpreter = new CSharpScriptInterpreter();
+            var langService = new CSharpLanguageService();
             var script = new Script(
-                CSharpScriptInterpreter.Language,
+                CSharpLanguageService.Language,
                 "int Power(int a) => a * a;" + 
                 "return Power((int)Args[\"a\"]);");
             var args = new Expando
                            {
                                ["a"] = 2,
                            };
-            var result = await interpreter.ExecuteAsync(script, new ScriptGlobals { Args = args });
+            var result = await langService.ExecuteAsync(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }
@@ -64,9 +64,9 @@ namespace Kephas.Scripting.CSharp.Tests
         [Ignore("Check how to add support for dynamic")]
         public async Task ExecuteAsync_args_dynamic()
         {
-            var interpreter = new CSharpScriptInterpreter();
+            var langService = new CSharpLanguageService();
             var script = new Script(
-                CSharpScriptInterpreter.Language,
+                CSharpLanguageService.Language,
                 "#r \"System.Dynamic\"" + Environment.NewLine +
                 "#r \"Microsoft.CSharp\"" + Environment.NewLine +
                 "int Power(int a) => a * a;" + 
@@ -76,7 +76,7 @@ namespace Kephas.Scripting.CSharp.Tests
                            {
                                ["a"] = 2,
                            };
-            var result = await interpreter.ExecuteAsync(script, new ScriptGlobals { Args = args });
+            var result = await langService.ExecuteAsync(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }

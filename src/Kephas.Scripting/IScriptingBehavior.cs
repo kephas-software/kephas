@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IScriptInterpreterBehavior.cs" company="Quartz Software SRL">
+// <copyright file="IScriptingBehavior.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IScriptInterpreterBehavior interface.
+//   Declares the IScriptingBehavior interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,13 +17,13 @@ namespace Kephas.Scripting
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract responsible for adding behaviors to interpreters for a specified language.
+    /// Shared application service contract responsible for adding behavior to script execution for a specified language.
     /// </summary>
     [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(LanguageAttribute) })]
-    public interface IScriptInterpreterBehavior
+    public interface IScriptingBehavior
     {
         /// <summary>
-        /// Interception called before invoking the interpreter to execute the script.
+        /// Interception called before invoking the language service to execute the script.
         /// </summary>
         /// <param name="executionContext">Information describing the execution.</param>
         /// <param name="token">The cancellation token.</param>
@@ -33,10 +33,11 @@ namespace Kephas.Scripting
         Task BeforeExecuteAsync(IScriptingContext executionContext, CancellationToken token);
 
         /// <summary>
-        /// Interception called after invoking the interpreter to execute the script.
+        /// Interception called after invoking the language service to execute the script.
         /// </summary>
         /// <remarks>
-        /// The execution data contains the execution result. The interceptor may change the result or even replace it with another one.
+        /// The execution data contains the execution result. 
+        /// The interceptor may change the result or even replace it with another one.
         /// </remarks>
         /// <param name="executionContext">Information describing the execution.</param>
         /// <param name="token">The cancellation token.</param>
