@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CSharpScriptInterpreter.cs" company="Quartz Software SRL">
+// <copyright file="CSharpLanguageService.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the C# script interpreter class.
+//   Implements the C# language service class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -23,10 +23,10 @@ namespace Kephas.Scripting.CSharp
     using Microsoft.CodeAnalysis.CSharp.Scripting;
 
     /// <summary>
-    /// A C# script interpreter.
+    /// A C# language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
-    public class CSharpScriptInterpreter : IScriptInterpreter
+    public class CSharpLanguageService : ILanguageService
     {
         /// <summary>
         /// The language identifier.

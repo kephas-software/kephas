@@ -1,6 +1,5 @@
 ﻿namespace SignalRChat.WebApp.Application
 {
-    using System.Runtime.InteropServices.ComTypes;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -8,7 +7,7 @@
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging.NLog;
-    using Kephas.Platform.Net;
+    using Kephas.Reflection;
     using Kephas.Threading.Tasks;
     using Kephas.Web.Owin.Application;
 
@@ -41,15 +40,15 @@
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        protected override Task ConfigureAmbientServicesAsync(
+        protected override async Task ConfigureAmbientServicesAsync(
             string[] appArgs,
             AmbientServicesBuilder ambientServicesBuilder,
             CancellationToken cancellationToken)
         {
-            return ambientServicesBuilder
+            ambientServicesBuilder
                 .WithNLogManager()
-                .WithNetAppRuntime()
-                .WithMefCompositionContainerAsync();
+                .WithDefaultAppRuntime()
+                .WithMefCompositionContainer();
         }
 
         /// <summary>Creates the application context.</summary>

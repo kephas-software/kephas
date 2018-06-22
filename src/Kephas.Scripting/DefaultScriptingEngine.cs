@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultScriptingService.cs" company="Quartz Software SRL">
+// <copyright file="DefaultScriptingEngine.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default scripting service class.
+//   Implements the default scripting engine class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -26,41 +26,41 @@ namespace Kephas.Scripting
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A default scripting service.
+    /// The default scripting engine.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultScriptingService : IScriptingService
+    public class DefaultScriptingEngine : IScriptingEngine
     {
         /// <summary>
-        /// The interpreter factories.
+        /// The language service factories.
         /// </summary>
-        private readonly IDictionary<string, IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>> interpreterFactories =
-            new Dictionary<string, IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IExportFactory<ILanguageService, LanguageServiceMetadata>> languageServiceFactories =
+            new Dictionary<string, IExportFactory<ILanguageService, LanguageServiceMetadata>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// The interpreter factories.
+        /// The scripting behavior factories.
         /// </summary>
-        private readonly IDictionary<string, IList<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>> interpreterBehaviorFactories =
-            new Dictionary<string, IList<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IList<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>> scriptingBehaviorFactories =
+            new Dictionary<string, IList<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultScriptingService"/> class.
+        /// Initializes a new instance of the <see cref="DefaultScriptingEngine"/> class.
         /// </summary>
         /// <param name="compositionContext">The ambient services.</param>
-        /// <param name="interpreterFactories">The interpreter factories.</param>
-        /// <param name="interpreterBehaviorFactories">The interpreter behavior factories.</param>
-        public DefaultScriptingService(
+        /// <param name="languageServiceFactories">The language service factories.</param>
+        /// <param name="scriptingBehaviorFactories">The scripting behavior factories.</param>
+        public DefaultScriptingEngine(
             ICompositionContext compositionContext,
-            ICollection<IExportFactory<IScriptInterpreter, ScriptInterpreterMetadata>> interpreterFactories,
-            ICollection<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>> interpreterBehaviorFactories)
+            ICollection<IExportFactory<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
+            ICollection<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
-            Requires.NotNull(interpreterFactories, nameof(interpreterFactories));
-            Requires.NotNull(interpreterBehaviorFactories, nameof(interpreterBehaviorFactories));
+            Requires.NotNull(languageServiceFactories, nameof(languageServiceFactories));
+            Requires.NotNull(scriptingBehaviorFactories, nameof(scriptingBehaviorFactories));
 
             this.CompositionContext = compositionContext;
 
-            interpreterFactories
+            languageServiceFactories
                 .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ForEach(f =>
@@ -68,24 +68,24 @@ namespace Kephas.Scripting
                         f.Metadata.Language.ForEach(
                             l =>
                                 {
-                                    if (!this.interpreterFactories.ContainsKey(l))
+                                    if (!this.languageServiceFactories.ContainsKey(l))
                                     {
-                                        this.interpreterFactories.Add(l, f);
+                                        this.languageServiceFactories.Add(l, f);
                                     }
                                 });
                     });
 
-            interpreterBehaviorFactories
+            scriptingBehaviorFactories
                 .OrderBy(f => f.Metadata.Language)
                 .ThenBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .ForEach(f =>
                     {
-                        var list = this.interpreterBehaviorFactories.TryGetValue(f.Metadata.Language);
+                        var list = this.scriptingBehaviorFactories.TryGetValue(f.Metadata.Language);
                         if (list == null)
                         {
-                            list = new List<IExportFactory<IScriptInterpreterBehavior, ScriptInterpreterBehaviorMetadata>>();
-                            this.interpreterBehaviorFactories.Add(f.Metadata.Language, list);
+                            list = new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>();
+                            this.scriptingBehaviorFactories.Add(f.Metadata.Language, list);
                         }
 
                         list.Add(f);
@@ -98,7 +98,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<DefaultScriptingService> Logger { get; set; }
+        public ILogger<DefaultScriptingEngine> Logger { get; set; }
 
         /// <summary>
         /// Gets a context for the dependency injection/composition.
@@ -126,15 +126,15 @@ namespace Kephas.Scripting
         {
             Requires.NotNull(script, nameof(script));
 
-            var interpreterFactory = this.interpreterFactories.TryGetValue(script.Language);
-            if (interpreterFactory == null)
+            var languageServiceFactory = this.languageServiceFactories.TryGetValue(script.Language);
+            if (languageServiceFactory == null)
             {
                 // TODO localize
-                throw new ScriptingException($"The script language '{script.Language}' does not have an associated interpreter.");
+                throw new ScriptingException($"The script language '{script.Language}' does not have an associated language service.");
             }
 
             var scriptingContext = this.CreateScriptingContext(script, args, executionContext);
-            var behaviors = this.interpreterBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IScriptInterpreterBehavior>();
+            var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IScriptingBehavior>();
 
             foreach (var behavior in behaviors)
             {
@@ -143,7 +143,7 @@ namespace Kephas.Scripting
 
             try
             {
-                var result = await interpreterFactory.CreateExportedValue()
+                var result = await languageServiceFactory.CreateExportedValue()
                                  .ExecuteAsync(script, scriptingContext.ScriptGlobals, args, executionContext, cancellationToken)
                                  .PreserveThreadContext();
                 scriptingContext.Result = result;
