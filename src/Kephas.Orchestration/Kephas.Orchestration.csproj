@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Provides means for orchestrating microservices based on the Kephas Framework.</Description>
-    <Version>4.5.0</Version>
+    <Version>4.5.1</Version>
     <AssemblyVersion>4.5.0.0</AssemblyVersion>
-    <FileVersion>4.5.0.0</FileVersion>
+    <FileVersion>4.5.1.0</FileVersion>
     <Authors>Quartz Software SRL</Authors>
     <Company>Quartz Software SRL</Company>
     <Product>Kephas Framework</Product>
@@ -32,10 +32,6 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     <LangVersion>latest</LangVersion>
     <DocumentationFile>bin\Release\netstandard2.0\Kephas.Orchestration.xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />

@@ -18,9 +18,14 @@ namespace Kephas.Orchestration.Application
     /// <summary>
     /// Manager for orchestration features.
     /// </summary>
-    [FeatureInfo("Orchestration", isRequired: true)]
+    [FeatureInfo(FeatureName, isRequired: true)]
     public class OrchestrationFeatureManager : FeatureManagerBase
     {
+        /// <summary>
+        /// Name of the orchestration feature.
+        /// </summary>
+        public const string FeatureName = "Orchestration";
+
         /// <summary>
         /// Manager for orchestration.
         /// </summary>
@@ -41,7 +46,6 @@ namespace Kephas.Orchestration.Application
         /// <returns>A Task.</returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            // TODO log errors
             return this.orchestrationManager.InitializeAsync(appContext, cancellationToken);
         }
 
@@ -55,7 +59,6 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            // TODO log errors
             return this.orchestrationManager.FinalizeAsync(appContext, cancellationToken);
         }
     }

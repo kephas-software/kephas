@@ -1,19 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppStoppedMessage.cs" company="Quartz Software SRL">
+// <copyright file="IAppEvent.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application stopped message class.
+//   Declares the IAppEvent interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Orchestration.Endpoints
 {
+    using System;
+
+    using Kephas.Messaging.Events;
+
     /// <summary>
-    /// An application stopped message.
+    /// Interface for application event.
     /// </summary>
-    public class AppStoppedMessage : IAppMessage
+    public interface IAppEvent : IEvent
     {
         /// <summary>
         /// Gets or sets information describing the application.
@@ -21,6 +25,14 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// Information describing the application.
         /// </value>
-        public IAppInfo AppInfo { get; set; }
+        IAppInfo AppInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timestamp.
+        /// </summary>
+        /// <value>
+        /// The timestamp.
+        /// </value>
+        DateTimeOffset Timestamp { get; set; }
     }
 }

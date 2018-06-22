@@ -10,6 +10,10 @@
 
 namespace Kephas.Orchestration
 {
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Services;
 
     /// <summary>
@@ -18,5 +22,13 @@ namespace Kephas.Orchestration
     [SharedAppServiceContract]
     public interface IOrchestrationManager : IAsyncInitializable, IAsyncFinalizable
     {
+        /// <summary>
+        /// Gets the live apps asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <returns>
+        /// An asynchronous result that yields the live apps.
+        /// </returns>
+        Task<IEnumerable<IAppInfo>> GetLiveAppsAsync(CancellationToken cancellationToken = default);
     }
 }

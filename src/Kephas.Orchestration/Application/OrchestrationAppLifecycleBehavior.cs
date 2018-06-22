@@ -10,13 +10,17 @@
 
 namespace Kephas.Orchestration.Application
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed;
+    using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An orchestration application lifecycle behavior.
@@ -24,21 +28,30 @@ namespace Kephas.Orchestration.Application
     [ProcessingPriority(Priority.Low)]
     public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
-        /// <summary>
-        /// Manager for orchestration.
-        /// </summary>
-        private readonly IOrchestrationManager orchestrationManager;
+        private readonly IAppManifest appManifest;
+
+        private readonly IAppRuntime appRuntime;
+
+        private readonly IMessageBroker messageBroker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="orchestrationManager">Manager for orchestration.</param>
+        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="messageBroker">The message broker.</param>
         public OrchestrationAppLifecycleBehavior(
-            IOrchestrationManager orchestrationManager)
+            IAppManifest appManifest,
+            IAppRuntime appRuntime,
+            IMessageBroker messageBroker)
         {
-            Requires.NotNull(orchestrationManager, nameof(orchestrationManager));
+            Requires.NotNull(appManifest, nameof(appManifest));
+            Requires.NotNull(appRuntime, nameof(appRuntime));
+            Requires.NotNull(messageBroker, nameof(messageBroker));
 
-            this.orchestrationManager = orchestrationManager;
+            this.appManifest = appManifest;
+            this.appRuntime = appRuntime;
+            this.messageBroker = messageBroker;
         }
 
         /// <summary>
@@ -57,7 +70,19 @@ namespace Kephas.Orchestration.Application
         /// <returns>A Task.</returns>
         public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            // TODO notify the orchestration manager about the completion of the app start
+            try
+            {
+                var appStartedEvent = this.CreateAppStartedEvent();
+                await this.messageBroker.PublishAsync(
+                    appStartedEvent,
+                    appContext,
+                    cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                // TODO localization
+                this.Logger.Error(ex, "Exception when publishing the application started event.");
+            }
         }
 
         /// <summary>
@@ -74,7 +99,33 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         public override async Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            // TODO notify the orchestration manager about the completion of the app stop
+            var appStoppedEvent = this.CreateAppStoppedEvent();
+            try
+            {
+                await this.messageBroker.PublishAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Exception when publishing the application stopped event.");
+            }
+        }
+
+        private AppStartedEvent CreateAppStartedEvent()
+        {
+            return new AppStartedEvent
+                       {
+                           AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
+                           Timestamp = DateTimeOffset.Now
+                       };
+        }
+
+        private AppStoppedEvent CreateAppStoppedEvent()
+        {
+            return new AppStoppedEvent
+                       {
+                           AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
+                           Timestamp = DateTimeOffset.Now
+                       };
         }
     }
 }
