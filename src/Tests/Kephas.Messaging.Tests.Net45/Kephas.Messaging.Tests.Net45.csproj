@@ -85,6 +85,9 @@
     <Compile Include="..\Kephas.Messaging.Tests\Composition\MessageHandlerMetadataTest.cs">
       <Link>Composition\MessageHandlerMetadataTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\DefaultMessageMatchServiceTest.cs">
+      <Link>DefaultMessageMatchServiceTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\DefaultMessageProcessorTest.cs">
       <Link>DefaultMessageProcessorTest.cs</Link>
     </Compile>
@@ -99,6 +102,12 @@
     </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\Distributed\InProcessMessageBrokerTest.cs">
       <Link>Distributed\InProcessMessageBrokerTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Events\DefaultEventHubTest.cs">
+      <Link>Events\DefaultEventHubTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Events\EventHubExtensionsTest.cs">
+      <Link>Events\EventHubExtensionsTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\MessageHandlerTest.cs">
       <Link>MessageHandlerTest.cs</Link>
