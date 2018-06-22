@@ -57,12 +57,14 @@ namespace Kephas.Messaging.Events
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="eventHub">The eventHub to act on.</param>
         /// <param name="callback">The callback.</param>
+        /// <param name="messageTypeMatching">The message type matching (optional).</param>
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
         public static IEventSubscription Subscribe<TEvent>(
             this IEventHub eventHub,
-            Func<TEvent, IContext, CancellationToken, Task> callback)
+            Func<TEvent, IContext, CancellationToken, Task> callback,
+            MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type)
             where TEvent : IEvent
         {
             Requires.NotNull(eventHub, nameof(eventHub));
@@ -72,7 +74,7 @@ namespace Kephas.Messaging.Events
                 new MessageMatch
                     {
                         MessageType = typeof(TEvent),
-                        MessageTypeMatching = MessageTypeMatching.Type
+                        MessageTypeMatching = messageTypeMatching
                     },
                 (e, ctx, token) => callback((TEvent)e, ctx, token));
         }

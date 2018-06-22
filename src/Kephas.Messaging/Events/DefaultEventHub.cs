@@ -16,10 +16,8 @@ namespace Kephas.Messaging.Events
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Messaging.Composition;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
