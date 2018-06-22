@@ -27,6 +27,7 @@ nuget push Kephas.Serialization.ServiceStack.Text.%1.nupkg -Source https://www.n
 nuget push Kephas.Scripting.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.Scripting.CSharp.%1.nupkg -Source https://www.nuget.org/api/v2/package
 nuget push Kephas.AspNetCore.%1.nupkg -Source https://www.nuget.org/api/v2/package
+nuget push Kephas.Orchestration.%1.nupkg -Source https://www.nuget.org/api/v2/package
 
 @echo Done.
 @pause

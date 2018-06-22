@@ -36,6 +36,7 @@ nuget pack ..\Kephas.ServiceStack\Package.nuspec -BasePath ..\Kephas.ServiceStac
 nuget pack ..\Kephas.Scripting\Package.nuspec -BasePath ..\Kephas.Scripting -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.Scripting.CSharp\Package.nuspec -BasePath ..\Kephas.Scripting.CSharp -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 nuget pack ..\Kephas.AspNetCore\Package.nuspec -BasePath ..\Kephas.AspNetCore -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
+nuget pack ..\Kephas.Orchestration\Package.nuspec -BasePath ..\Kephas.Orchestration -Symbols -properties Configuration=%BuildConfiguration%;Version=%PackageVersion%;RefVersion=%PackageRefVersion%
 
 @echo Done.
 @pause
