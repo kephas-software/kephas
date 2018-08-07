@@ -291,4 +291,7 @@
   <data name="DefaultNamedServiceProvider_GetNamedService_AmbiguousMatch_Exception" xml:space="preserve">
     <value>Multiple services found for {0}/{1}.</value>
   </data>
+  <data name="AmbientServices_Instance_MayBeSetOnlyOnce_Exception" xml:space="preserve">
+    <value>The globally available instance of the ambient services may be set only once, before reading its value for the first time. Please consider setting its value before any other operation in your application.</value>
+  </data>
 </root>

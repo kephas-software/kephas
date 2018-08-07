@@ -39,17 +39,14 @@ namespace Kephas
     public class AmbientServices : Expando, IAmbientServices
     {
         /// <summary>
+        /// The internal instance.
+        /// </summary>
+        private static IAmbientServices instance;
+
+        /// <summary>
         /// The services.
         /// </summary>
         private readonly ConcurrentDictionary<Type, ServiceRegistration> services = new ConcurrentDictionary<Type, ServiceRegistration>();
-
-        /// <summary>
-        /// Initializes static members of the <see cref="AmbientServices"/> class.
-        /// </summary>
-        static AmbientServices()
-        {
-            Instance = new AmbientServices();
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
@@ -70,12 +67,31 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the static instance of the ambient services.
+        /// Gets or sets the static instance of the ambient services.
         /// </summary>
+        /// <remarks>
+        /// Setting the globally available instance must be executed
+        /// before getting its value for the first time, otherwise
+        /// it will be initialized with the default instance.
+        /// </remarks>
         /// <value>
         /// The instance.
         /// </value>
-        public static IAmbientServices Instance { get; }
+        public static IAmbientServices Instance
+        {
+            get => instance ?? (instance = new AmbientServices());
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+
+                if (instance != null)
+                {
+                    throw new InvalidOperationException(Strings.AmbientServices_Instance_MayBeSetOnlyOnce_Exception);
+                }
+
+                instance = value;
+            }
+        }
 
         /// <summary>
         /// Gets the composition container.
@@ -125,7 +141,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public IAmbientServices RegisterService(Type serviceType, object service)
+        public virtual IAmbientServices RegisterService(Type serviceType, object service)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
@@ -158,7 +174,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory)
+        public virtual IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));

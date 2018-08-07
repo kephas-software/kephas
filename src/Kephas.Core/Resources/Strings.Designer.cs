@@ -79,6 +79,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The globally available instance of the ambient services may be set only once, before reading its value for the first time. Please consider setting its value before any other operation in your application..
+        /// </summary>
+        internal static string AmbientServices_Instance_MayBeSetOnlyOnce_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_Instance_MayBeSetOnlyOnce_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided service instance &apos;{0}&apos; is not convertible to the service type &apos;{1}&apos;..
         /// </summary>
         internal static string AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception {
