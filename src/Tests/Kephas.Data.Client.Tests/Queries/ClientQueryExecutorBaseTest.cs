@@ -64,6 +64,43 @@ namespace Kephas.Data.Client.Tests.Queries
         }
 
         [Test]
+        public async Task ExecuteQueryAsync_skip_conversion_for_same_type()
+        {
+            var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
+            var query = entities.AsQueryable();
+
+            var clientQuery = new ClientQuery();
+            var queryConverter = Substitute.For<IClientQueryConverter>();
+            queryConverter.ConvertQuery(clientQuery, Arg.Any<IClientQueryConversionContext>()).Returns(query);
+
+            var typeResolver = Substitute.For<ITypeResolver>();
+            typeResolver.ResolveType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(TestEntity));
+
+            var conversionService = Substitute.For<IDataConversionService>();
+            conversionService.ConvertAsync(
+                Arg.Any<TestEntity>(),
+                Arg.Any<TestEntity>(),
+                Arg.Any<IDataConversionContext>(),
+                Arg.Any<CancellationToken>()).Returns<Task<IDataConversionResult>>(
+                ci =>
+                    {
+                        throw new InvalidOperationException("Conversion should be skipped");
+                    });
+
+            var executor = new TestClientQueryExecutor(
+                queryConverter,
+                conversionService,
+                typeResolver,
+                clientDataContextCreator: ctx => throw new InvalidOperationException("Client data context creation should be skipped"));
+            var results = (await executor.ExecuteQueryAsync(clientQuery)).Cast<TestEntity>().ToList();
+
+            Assert.AreEqual(3, results.Count);
+            Assert.AreEqual("1", results[0].Name);
+            Assert.AreEqual("2", results[1].Name);
+            Assert.AreEqual("3", results[2].Name);
+        }
+
+        [Test]
         public async Task ExecuteQueryAsync_context_config()
         {
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
@@ -91,10 +128,10 @@ namespace Kephas.Data.Client.Tests.Queries
                     });
 
             var executionContext = new ClientQueryExecutionContext
-                                       {
-                                           ClientQueryConversionContextConfig = ctx => ctx["gigi"] = "belogea",
-                                           DataConversionContextConfig = (entity, ctx) => ctx["entity"] = entity,
-                                       };
+            {
+                ClientQueryConversionContextConfig = ctx => ctx["gigi"] = "belogea",
+                DataConversionContextConfig = (entity, ctx) => ctx["entity"] = entity,
+            };
             var executor = new TestClientQueryExecutor(queryConverter, conversionService, typeResolver);
 
             var results = (await executor.ExecuteQueryAsync(clientQuery, executionContext)).Cast<TestClientEntity>().ToList();
@@ -117,52 +154,35 @@ namespace Kephas.Data.Client.Tests.Queries
 
         public class TestClientQueryExecutor : ClientQueryExecutorBase
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="TestClientQueryExecutor"/> class.
-            /// </summary>
-            /// <param name="clientQueryConverter">The client query converter.</param>
-            /// <param name="conversionService">The conversion service.</param>
-            /// <param name="typeResolver">The type resolver.</param>
+            private readonly Func<IClientQueryExecutionContext, IDataContext> dataContextCreator;
+
+            private readonly Func<IClientQueryExecutionContext, IDataContext> clientDataContextCreator;
+
             public TestClientQueryExecutor(
                 IClientQueryConverter clientQueryConverter,
                 IDataConversionService conversionService,
-                ITypeResolver typeResolver)
+                ITypeResolver typeResolver,
+                Func<IClientQueryExecutionContext, IDataContext> dataContextCreator = null,
+                Func<IClientQueryExecutionContext, IDataContext> clientDataContextCreator = null)
                 : base(clientQueryConverter, conversionService, typeResolver)
             {
+                this.dataContextCreator = dataContextCreator;
+                this.clientDataContextCreator = clientDataContextCreator;
             }
 
-            /// <summary>
-            /// Resolves the entity type based on its client counterpart.
-            /// </summary>
-            /// <param name="clientEntityType">Type of the client entity.</param>
-            /// <returns>
-            /// A type representing the entity type.
-            /// </returns>
             protected override Type ResolveEntityType(Type clientEntityType)
             {
                 return clientEntityType == typeof(TestClientEntity) ? typeof(TestEntity) : clientEntityType;
             }
 
-            /// <summary>
-            /// Creates the client data context.
-            /// </summary>
-            /// <returns>
-            /// The new client data context.
-            /// </returns>
-            protected override IDataContext CreateClientDataContext()
+            protected override IDataContext CreateClientDataContext(IClientQueryExecutionContext context)
             {
-                return Substitute.For<IDataContext>();
+                return this.clientDataContextCreator?.Invoke(context) ?? Substitute.For<IDataContext>();
             }
 
-            /// <summary>
-            /// Creates the entity data context.
-            /// </summary>
-            /// <returns>
-            /// The new data context.
-            /// </returns>
-            protected override IDataContext CreateDataContext()
+            protected override IDataContext CreateDataContext(IClientQueryExecutionContext context)
             {
-                return Substitute.For<IDataContext>();
+                return this.dataContextCreator?.Invoke(context) ?? Substitute.For<IDataContext>();
             }
         }
     }

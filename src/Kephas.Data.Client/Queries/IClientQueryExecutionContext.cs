@@ -23,6 +23,22 @@ namespace Kephas.Data.Client.Queries
     public interface IClientQueryExecutionContext : IContext
     {
         /// <summary>
+        /// Gets or sets the type of the entity.
+        /// </summary>
+        /// <value>
+        /// The type of the entity.
+        /// </value>
+        Type EntityType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the client entity.
+        /// </summary>
+        /// <value>
+        /// The type of the client entity.
+        /// </value>
+        Type ClientEntityType { get; set; }
+
+        /// <summary>
         /// Gets or sets the client query conversion context configuration.
         /// </summary>
         /// <value>

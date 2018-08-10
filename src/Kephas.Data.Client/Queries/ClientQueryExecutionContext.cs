@@ -32,6 +32,22 @@ namespace Kephas.Data.Client.Queries
         }
 
         /// <summary>
+        /// Gets or sets the type of the entity.
+        /// </summary>
+        /// <value>
+        /// The type of the entity.
+        /// </value>
+        public Type EntityType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the client entity.
+        /// </summary>
+        /// <value>
+        /// The type of the client entity.
+        /// </value>
+        public Type ClientEntityType { get; set; }
+
+        /// <summary>
         /// Gets or sets the client query conversion context configuration.
         /// </summary>
         /// <value>
