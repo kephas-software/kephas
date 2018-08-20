@@ -1,3 +1,4 @@
 <UserVariables>
   <Variable name="company" ifSet="false" value="Quartz Software SRL" />
+  <Variable name="param-optional" ifSet="false" value="Optional." />
 </UserVariables>
