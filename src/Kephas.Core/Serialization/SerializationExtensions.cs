@@ -26,7 +26,7 @@ namespace Kephas.Serialization
     public static class SerializationExtensions
     {
         /// <summary>
-        /// Deserializes the object from JSON asynchronously.
+        /// Deserializes the object from the provided format asynchronously.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
@@ -60,7 +60,39 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
-        /// Deserializes the object from JSON asynchronously.
+        /// Deserializes the object from the provided format.
+        /// </summary>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static TRootObject Deserialize<TMediaType, TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+            where TMediaType : IMediaType
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (serializedObj == null)
+            {
+                return default;
+            }
+
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            context.RootObjectType = typeof(TRootObject);
+
+            var serializer = serializationService.GetSerializer(context);
+            var result = serializer.Deserialize(serializedObj, context);
+            return (TRootObject)result;
+        }
+
+        /// <summary>
+        /// Deserializes the object from the provided format asynchronously.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <param name="serializationService">The serializationService to act on.</param>
@@ -91,6 +123,35 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Deserializes the object from the provided format.
+        /// </summary>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object Deserialize<TMediaType>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+            where TMediaType : IMediaType
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (serializedObj == null)
+            {
+                return Task.FromResult((object)null);
+            }
+
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+
+            var serializer = serializationService.GetSerializer(context);
+            return serializer.Deserialize(serializedObj, context);
+        }
+
+        /// <summary>
         /// Deserializes the object from JSON asynchronously.
         /// </summary>
         /// <param name="serializationService">The serializationService to act on.</param>
@@ -109,6 +170,25 @@ namespace Kephas.Serialization
             Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<JsonMediaType>(serializationService, serializedObj, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes the object from JSON.
+        /// </summary>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object JsonDeserialize(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Deserialize<JsonMediaType>(serializationService, serializedObj, context);
         }
 
         /// <summary>
@@ -134,6 +214,26 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Deserializes the object from JSON.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static TRootObject JsonDeserialize<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Deserialize<JsonMediaType, TRootObject>(serializationService, serializedObj, context);
+        }
+
+        /// <summary>
         /// Deserializes the object from XML asynchronously.
         /// </summary>
         /// <param name="serializationService">The serializationService to act on.</param>
@@ -152,6 +252,25 @@ namespace Kephas.Serialization
             Requires.NotNull(serializationService, nameof(serializationService));
 
             return DeserializeAsync<XmlMediaType>(serializationService, serializedObj, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes the object from XML.
+        /// </summary>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object XmlDeserialize(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Deserialize<XmlMediaType>(serializationService, serializedObj, context);
         }
 
         /// <summary>
@@ -177,7 +296,27 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
-        /// Serializes the provided object as JSON asynchronously.
+        /// Deserializes the object from XML.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static TRootObject XmlDeserialize<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Deserialize<XmlMediaType, TRootObject>(serializationService, serializedObj, context);
+        }
+
+        /// <summary>
+        /// Serializes the provided object in the specified format.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the
         ///                                             <see cref="ISerializationContext.MediaType"/> is
@@ -211,6 +350,38 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Serializes the provided object in the specified format.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the
+        ///                                             <see cref="ISerializationContext.MediaType"/> is
+        ///                                             mismatched in the provided context.</exception>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The serialized object as a string in the specified format.
+        /// </returns>
+        public static string Serialize<TMediaType>(
+            this ISerializationService serializationService,
+            object obj,
+            ISerializationContext context = null)
+            where TMediaType : IMediaType
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (obj == null)
+            {
+                return null;
+            }
+
+            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+
+            var serializer = serializationService.GetSerializer(context);
+            return serializer.Serialize(obj, context);
+        }
+
+        /// <summary>
         /// Serializes the provided object as JSON asynchronously.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="JsonMediaType"/> in the provided context.</exception>
@@ -219,7 +390,7 @@ namespace Kephas.Serialization
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A Task promising the serialized object as a string.
+        /// A Task promising the serialized object as a JSON string.
         /// </returns>
         public static Task<string> JsonSerializeAsync(
             this ISerializationService serializationService,
@@ -233,7 +404,27 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
-        /// Serializes the provided object as JSON asynchronously.
+        /// Serializes the provided object as JSON.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="JsonMediaType"/> in the provided context.</exception>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The serialized object as a JSON string.
+        /// </returns>
+        public static string JsonSerialize(
+            this ISerializationService serializationService,
+            object obj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Serialize<JsonMediaType>(serializationService, obj, context);
+        }
+
+        /// <summary>
+        /// Serializes the provided object as XML asynchronously.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="XmlMediaType"/> in the provided context.</exception>
         /// <param name="serializationService">The serializationService to act on.</param>
@@ -241,7 +432,7 @@ namespace Kephas.Serialization
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A Task promising the serialized object as a string.
+        /// A Task promising the serialized object as a XML string.
         /// </returns>
         public static Task<string> XmlSerializeAsync(
             this ISerializationService serializationService,
@@ -252,6 +443,26 @@ namespace Kephas.Serialization
             Requires.NotNull(serializationService, nameof(serializationService));
 
             return SerializeAsync<XmlMediaType>(serializationService, obj, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Serializes the provided object as XML.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="XmlMediaType"/> in the provided context.</exception>
+        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The serialized object as a XML string.
+        /// </returns>
+        public static string XmlSerialize(
+            this ISerializationService serializationService,
+            object obj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            return Serialize<XmlMediaType>(serializationService, obj, context);
         }
 
         /// <summary>
@@ -286,6 +497,35 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The serialized object as a string.
+        /// </returns>
+        public static string Serialize(
+            this ISerializer serializer,
+            object obj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializer, nameof(serializer));
+
+            var writer = new StringWriter();
+            try
+            {
+                serializer.Serialize(obj, writer, context);
+                var stringBuilder = writer.GetStringBuilder();
+                return stringBuilder.ToString();
+            }
+            finally
+            {
+                writer.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Deserialize an object asynchronously.
         /// </summary>
         /// <param name="serializer">The serializer to act on.</param>
@@ -307,6 +547,34 @@ namespace Kephas.Serialization
             try
             {
                 var result = await serializer.DeserializeAsync(reader, context, cancellationToken).PreserveThreadContext();
+                return result;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object Deserialize(
+            this ISerializer serializer,
+            string serializedObj,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializer, nameof(serializer));
+
+            var reader = new StringReader(serializedObj);
+            try
+            {
+                var result = serializer.Deserialize(reader, context);
                 return result;
             }
             finally
@@ -355,6 +623,55 @@ namespace Kephas.Serialization
 
             contextConfig?.Invoke(context);
             return context;
+        }
+
+        /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">Optional. The context.</param>
+        public static void Serialize(
+            this ISerializer serializer,
+            object obj,
+            TextWriter textWriter,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializer, nameof(serializer));
+
+            if (serializer is ISyncSerializer syncSerializer)
+            {
+                syncSerializer.Serialize(obj, textWriter, context);
+            }
+            else
+            {
+                serializer.SerializeAsync(obj, textWriter, context).WaitNonLocking();
+            }
+        }
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object Deserialize(
+            this ISerializer serializer,
+            TextReader textReader,
+            ISerializationContext context = null)
+        {
+            Requires.NotNull(serializer, nameof(serializer));
+
+            if (serializer is ISyncSerializer syncSerializer)
+            {
+                return syncSerializer.Deserialize(textReader, context);
+            }
+
+            return serializer.DeserializeAsync(textReader, context).GetResultNonLocking();
         }
     }
 }

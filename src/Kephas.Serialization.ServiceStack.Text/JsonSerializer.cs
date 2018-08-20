@@ -25,7 +25,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     /// A JSON serializer based on the ServiceStack infrastructure.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class JsonSerializer : ISerializer<JsonMediaType>
+    public class JsonSerializer : ISerializer<JsonMediaType>, ISyncSerializer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
@@ -58,6 +58,8 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// </returns>
         public async Task SerializeAsync(object obj, TextWriter textWriter, ISerializationContext context = null, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(textWriter, nameof(textWriter));
+
             var indent = context?.Indent ?? false;
             if (!indent)
             {
@@ -81,6 +83,47 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// </returns>
         public Task<object> DeserializeAsync(TextReader textReader, ISerializationContext context = null, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(textReader, nameof(textReader));
+
+            // do not call in a new Thread as it may lead to unexpected results. ServiceStack is not thread safe.
+            var obj = this.Deserialize(textReader, context);
+            return Task.FromResult(obj);
+        }
+
+        /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">The context.</param>
+        public void Serialize(object obj, TextWriter textWriter, ISerializationContext context = null)
+        {
+            Requires.NotNull(textWriter, nameof(textWriter));
+
+            var indent = context?.Indent ?? false;
+            if (!indent)
+            {
+                global::ServiceStack.Text.JsonSerializer.SerializeToWriter(obj, textWriter);
+            }
+            else
+            {
+                var serializedObject = global::ServiceStack.Text.JsonSerializer.SerializeToString(obj);
+                textWriter.Write(serializedObject.IndentJson());
+            }
+        }
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public object Deserialize(TextReader textReader, ISerializationContext context = null)
+        {
+            Requires.NotNull(textReader, nameof(textReader));
+
             var rootObjectType = context?.RootObjectType ?? typeof(object);
 
             var obj = global::ServiceStack.Text.JsonSerializer.DeserializeFromReader(textReader, rootObjectType);
@@ -89,7 +132,7 @@ namespace Kephas.Serialization.ServiceStack.Text
                 obj = JsonExpando.TryConvertToJsonExpando(obj);
             }
 
-            return Task.FromResult(obj);
+            return obj;
         }
     }
 }

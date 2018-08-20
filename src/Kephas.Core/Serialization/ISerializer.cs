@@ -39,7 +39,7 @@ namespace Kephas.Serialization
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Deserialize an object asynchronously.
+        /// Deserializes an object asynchronously.
         /// </summary>
         /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
         /// <param name="context">The context.</param>

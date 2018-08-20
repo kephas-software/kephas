@@ -28,12 +28,32 @@
         }
 
         [Test]
+        public void Serialize_SerializationService()
+        {
+            var serializer = this.CreateSerializerMock("ok");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
+
+            var result = SerializationExtensions.Serialize<JsonMediaType>(serializationService, new TestEntity());
+            Assert.AreEqual("ok", result);
+        }
+
+        [Test]
         public async Task JsonSerializeAsync_SerializationService()
         {
             var serializer = this.CreateSerializerMock("ok");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             var result = await SerializationExtensions.JsonSerializeAsync(serializationService, new TestEntity());
+            Assert.AreEqual("ok", result);
+        }
+
+        [Test]
+        public void JsonSerialize_SerializationService()
+        {
+            var serializer = this.CreateSerializerMock("ok");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
+
+            var result = SerializationExtensions.JsonSerialize(serializationService, new TestEntity());
             Assert.AreEqual("ok", result);
         }
 
@@ -48,12 +68,33 @@
         }
 
         [Test]
+        public void XmlSerialize_SerializationService()
+        {
+            var serializer = this.CreateSerializerMock("ok");
+            var serializationService = this.CreateSerializationServiceMock<XmlMediaType>(serializer);
+
+            var result = SerializationExtensions.XmlSerialize(serializationService, new TestEntity());
+            Assert.AreEqual("ok", result);
+        }
+
+        [Test]
         public async Task DeserializeAsync_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
 
             var result = await SerializationExtensions.DeserializeAsync<JsonMediaType>(serializationService, "my object");
+            Assert.IsInstanceOf<TestEntity>(result);
+            Assert.AreEqual("my object", (result as TestEntity)?.Name);
+        }
+
+        [Test]
+        public void Deserialize_SerializationService()
+        {
+            var deserializer = this.CreateDeserializerMock("my object");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
+
+            var result = SerializationExtensions.Deserialize<JsonMediaType>(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }
@@ -70,12 +111,34 @@
         }
 
         [Test]
+        public void JsonDeserialize_SerializationService()
+        {
+            var deserializer = this.CreateDeserializerMock("my object");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
+
+            var result = SerializationExtensions.JsonDeserialize(serializationService, "my object");
+            Assert.IsInstanceOf<TestEntity>(result);
+            Assert.AreEqual("my object", (result as TestEntity)?.Name);
+        }
+
+        [Test]
         public async Task XmlDeserializeAsync_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
             var serializationService = this.CreateSerializationServiceMock<XmlMediaType>(deserializer);
 
             var result = await SerializationExtensions.XmlDeserializeAsync(serializationService, "my object");
+            Assert.IsInstanceOf<TestEntity>(result);
+            Assert.AreEqual("my object", (result as TestEntity)?.Name);
+        }
+
+        [Test]
+        public void XmlDeserialize_SerializationService()
+        {
+            var deserializer = this.CreateDeserializerMock("my object");
+            var serializationService = this.CreateSerializationServiceMock<XmlMediaType>(deserializer);
+
+            var result = SerializationExtensions.XmlDeserialize(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
         }

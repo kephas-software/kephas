@@ -24,7 +24,7 @@ namespace Kephas.Serialization.Json
     /// JSON serializer.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class JsonSerializer : ISerializer<JsonMediaType>
+    public class JsonSerializer : ISerializer<JsonMediaType>, ISyncSerializer
     {
         /// <summary>
         /// The settings provider.
@@ -59,19 +59,8 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textWriter, nameof(textWriter));
 
-            var settings = this.settingsProvider.GetJsonSerializerSettings();
-            if (context?.Indent ?? false)
-            {
-                settings.Formatting = Formatting.Indented;
-            }
-
-            var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
-
             return Task.Factory.StartNew(
-                () =>
-                {
-                    serializer.Serialize(textWriter, obj);
-                },
+                () => this.Serialize(obj, textWriter, context),
                 cancellationToken);
         }
 
@@ -91,31 +80,63 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textReader, nameof(textReader));
 
+            return Task.Factory.StartNew(
+                () => this.Deserialize(textReader, context),
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
+        /// <param name="context">The context.</param>
+        public void Serialize(object obj, TextWriter textWriter, ISerializationContext context = null)
+        {
+            Requires.NotNull(textWriter, nameof(textWriter));
+
+            var settings = this.settingsProvider.GetJsonSerializerSettings();
+            if (context?.Indent ?? false)
+            {
+                settings.Formatting = Formatting.Indented;
+            }
+
+            var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
+            serializer.Serialize(textWriter, obj);
+        }
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public object Deserialize(TextReader textReader, ISerializationContext context = null)
+        {
+            Requires.NotNull(textReader, nameof(textReader));
+
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 
-            return Task.Factory.StartNew(
-                () =>
+            object result;
+            using (var jsonReader = new JsonTextReader(textReader))
+            {
+                result = context?.RootObjectFactory?.Invoke();
+                if (result != null)
                 {
-                    object result;
-                    using (var jsonReader = new JsonTextReader(textReader))
-                    {
-                        result = context?.RootObjectFactory?.Invoke();
-                        if (result != null)
-                        {
-                            serializer.Populate(jsonReader, result);
-                        }
-                        else
-                        {
-                            result = context?.RootObjectType != null
-                                         ? serializer.Deserialize(jsonReader, context.RootObjectType)
-                                         : serializer.Deserialize(jsonReader);
-                        }
-                    }
+                    serializer.Populate(jsonReader, result);
+                }
+                else
+                {
+                    result = context?.RootObjectType != null
+                                 ? serializer.Deserialize(jsonReader, context.RootObjectType)
+                                 : serializer.Deserialize(jsonReader);
+                }
+            }
 
-                    return result;
-                },
-                cancellationToken);
+            return result;
         }
     }
 }

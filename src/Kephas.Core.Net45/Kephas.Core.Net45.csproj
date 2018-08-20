@@ -614,6 +614,9 @@
     <Compile Include="..\Kephas.Core\Serialization\ISerializer.cs">
       <Link>Serialization\ISerializer.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Serialization\ISyncSerializer.cs">
+      <Link>Serialization\ISyncSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Serialization\SerializationContext.cs">
       <Link>Serialization\SerializationContext.cs</Link>
     </Compile>
