@@ -222,7 +222,7 @@ namespace Kephas.Data.InMemory
                 return;
             }
 
-            var data = this.SerializationService.JsonDeserializeAsync(serializedInitialData).GetResultNonLocking(TimeSpan.FromMinutes(1));
+            var data = this.SerializationService.JsonDeserialize(serializedInitialData);
 
             if (data.GetType().IsCollection())
             {
