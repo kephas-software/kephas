@@ -70,4 +70,53 @@ namespace Kephas.Data.Capabilities
         /// </summary>
         void DiscardChanges();
     }
+
+    /// <summary>
+    /// An entity information extensions.
+    /// </summary>
+    public static class EntityInfoExtensions
+    {
+        /// <summary>
+        /// Tries to attach the entity information to the given entity.
+        /// </summary>
+        /// <param name="entityInfo">The entityInfo to act on.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// <c>true</c> if the attach succeeded, otherwise <c>false</c>.
+        /// </returns>
+        public static bool TryAttachToEntity(this IEntityInfo entityInfo, object entity)
+        {
+            // TODO see issue https://github.com/quartz-software/kephas/issues/36
+            if (entityInfo == null || entity == null)
+            {
+                return false;
+            }
+
+            if (entity is IEntityInfoAware entityInfoAware)
+            {
+                entityInfoAware.SetEntityInfo(entityInfo);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to get the attached entity information from the entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The attached <see cref="IEntityInfo"/>, or <c>null</c>.
+        /// </returns>
+        public static IEntityInfo TryGetAttachedEntityInfo(this object entity)
+        {
+            // TODO see issue https://github.com/quartz-software/kephas/issues/36
+            if (entity is IEntityInfoAware entityInfoAware)
+            {
+                return entityInfoAware.GetEntityInfo();
+            }
+
+            return null;
+        }
+    }
 }

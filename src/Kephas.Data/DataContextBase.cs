@@ -236,8 +236,7 @@ namespace Kephas.Data
                 entityInfo.ChangeState = changeState.Value;
             }
 
-            var entityInfoAware = entity as IEntityInfoAware;
-            entityInfoAware?.SetEntityInfo(entityInfo);
+            entityInfo.TryAttachToEntity(entity);
 
             return entityInfo;
         }

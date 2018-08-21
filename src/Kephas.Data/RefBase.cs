@@ -25,19 +25,19 @@ namespace Kephas.Data
         /// <summary>
         /// The entity information provider.
         /// </summary>
-        private readonly WeakReference<IEntityInfoAware> entityRef;
+        private readonly WeakReference<object> entityRef;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RefBase"/> class.
         /// </summary>
-        /// <param name="entityInfoAware">The entity information aware.</param>
+        /// <param name="entity">The entity containing the reference.</param>
         /// <param name="refFieldName">The name of the reference field.</param>
-        public RefBase(IEntityInfoAware entityInfoAware, string refFieldName)
+        protected RefBase(object entity, string refFieldName)
         {
-            Requires.NotNull(entityInfoAware, nameof(entityInfoAware));
+            Requires.NotNull(entity, nameof(entity));
             Requires.NotNull(refFieldName, nameof(refFieldName));
 
-            this.entityRef = new WeakReference<IEntityInfoAware>(entityInfoAware);
+            this.entityRef = new WeakReference<object>(entity);
             this.RefFieldName = refFieldName;
         }
 
@@ -113,7 +113,7 @@ namespace Kephas.Data
                 throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.RefBase_GetEntityInfo_Disposed_Exception, this.RefFieldName));
             }
 
-            var entityInfo = entity?.GetEntityInfo();
+            var entityInfo = entity.TryGetAttachedEntityInfo();
             if (entityInfo == null)
             {
                 throw new DataException(string.Format(Strings.RefBase_GetEntityInfo_Null_Exception, this.RefFieldName));

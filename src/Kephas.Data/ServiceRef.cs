@@ -12,7 +12,6 @@ namespace Kephas.Data
 {
     using System;
 
-    using Kephas.Data.Capabilities;
     using Kephas.Services;
 
     /// <summary>
@@ -24,10 +23,10 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRef{TService}"/> class.
         /// </summary>
-        /// <param name="entityInfoAware">The entity information aware.</param>
+        /// <param name="entity">The entity containing the reference.</param>
         /// <param name="refFieldName">Name of the reference service property.</param>
-        public ServiceRef(IEntityInfoAware entityInfoAware, string refFieldName)
-            : base(entityInfoAware, refFieldName)
+        public ServiceRef(object entity, string refFieldName)
+            : base(entity, refFieldName)
         {
             this.ServiceType = typeof(TService);
         }

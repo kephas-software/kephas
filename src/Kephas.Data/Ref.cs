@@ -14,7 +14,6 @@ namespace Kephas.Data
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Threading.Tasks;
 
@@ -28,10 +27,10 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="Ref{T}"/> class.
         /// </summary>
-        /// <param name="entityInfoAware">The entity information provider.</param>
+        /// <param name="entity">The entity containing the reference.</param>
         /// <param name="refFieldName">Name of the reference identifier property.</param>
-        public Ref(IEntityInfoAware entityInfoAware, string refFieldName)
-            : base(entityInfoAware, refFieldName)
+        public Ref(object entity, string refFieldName)
+            : base(entity, refFieldName)
         {
             this.EntityType = typeof(T);
         }

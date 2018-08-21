@@ -104,6 +104,7 @@ namespace Kephas.Data.Capabilities
                 this.dataContextRef?.TryGetTarget(out dataContext);
                 return dataContext;
             }
+
             set
             {
                 if (this.dataContextRef != null)
