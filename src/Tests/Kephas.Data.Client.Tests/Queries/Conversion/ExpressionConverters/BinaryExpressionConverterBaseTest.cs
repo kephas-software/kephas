@@ -105,11 +105,6 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             Assert.IsTrue((bool)result);
         }
 
-        public class NullableAge
-        {
-            public int? Age { get; set; }
-        }
-
         public class TestBinaryExpressionConverter : BinaryExpressionConverterBase
         {
             public TestBinaryExpressionConverter(Func<Expression, Expression, BinaryExpression> binaryExpressionFactory)
@@ -131,6 +126,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             {
                 return age.age;
             }
+        }
+
+        public class NullableAge
+        {
+            public int? Age { get; set; }
         }
     }
 }

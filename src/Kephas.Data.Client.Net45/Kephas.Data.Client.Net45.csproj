@@ -84,14 +84,14 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\EqExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\EqExpressionConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\ExpressionHelper.cs">
+      <Link>Queries\Conversion\ExpressionConverters\ExpressionHelper.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\GteExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\GteExpressionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\GtExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\GtExpressionConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\Internal\ExpressionHelper.cs">
-      <Link>Queries\Conversion\ExpressionConverters\Internal\ExpressionHelper.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\LteExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\LteExpressionConverter.cs</Link>

@@ -16,7 +16,6 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
 
     using Kephas.Data.Client.Resources;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Base class for binary expression converters.
@@ -66,52 +65,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// </returns>
         protected virtual IList<Expression> PreProcessArguments(IList<Expression> args)
         {
-            if (args[0].Type == args[1].Type)
-            {
-                return args;
-            }
-
-            if (args[0].NodeType == ExpressionType.MemberAccess)
-            {
-                if (args[1].NodeType == ExpressionType.Constant)
-                {
-                    var value = ((ConstantExpression)args[1]).Value;
-                    if (!ReferenceEquals(value, null))
-                    {
-                        var valueExpression = this.GetConvertedValueExpression(value, args[0].Type);
-                        return new List<Expression> { args[0], valueExpression };
-                    }
-                }
-            }
-
-            return args;
-        }
-
-        /// <summary>
-        /// Gets an expression for the value so that it has a compatible type with the member type.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="memberType">Type of the member.</param>
-        /// <returns>
-        /// The converted value expression.
-        /// </returns>
-        protected virtual Expression GetConvertedValueExpression(object value, Type memberType)
-        {
-            object convertedValue;
-            var nonNullableMemberType = memberType.GetNonNullableType();
-            try
-            {
-                convertedValue = Convert.ChangeType(value, nonNullableMemberType);
-            }
-            catch
-            {
-                return Expression.Convert(Expression.Constant(value), memberType);
-            }
-
-            var valueExpression = memberType == nonNullableMemberType
-                                      ? (Expression)Expression.Constant(convertedValue)
-                                      : Expression.Convert(Expression.Constant(convertedValue), memberType);
-            return valueExpression;
+            return ExpressionHelper.NormalizeBinaryExpressionArgs(args);
         }
     }
 }
