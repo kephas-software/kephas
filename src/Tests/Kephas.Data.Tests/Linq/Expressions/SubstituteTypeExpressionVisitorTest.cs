@@ -11,7 +11,6 @@
 namespace Kephas.Data.Tests.Linq.Expressions
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -47,6 +46,26 @@ namespace Kephas.Data.Tests.Linq.Expressions
             var methodCallExpression = (MethodCallExpression)newExpression;
             var genericArg = methodCallExpression.Method.GetGenericArguments()[0];
             Assert.AreEqual(typeof(Test), genericArg);
+
+            var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
+            Assert.AreEqual(1, result.Count());
+        }
+
+        [Test]
+        public void Visit_Where_equals_with_value_types()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator.GetImplementationType(typeof(BetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
+
+            var baseQuery = new List<BetterTest>(new[]
+                                                  {
+                                                      new BetterTest { Age = 2 },
+                                                      new BetterTest { Age = null }
+                                                  }).AsQueryable();
+            var query = baseQuery.Where(t => object.Equals((object)t.Age, null));
+            var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
+            var newExpression = visitor.Visit(query.Expression);
 
             var result = baseQuery.Provider.Execute<IEnumerable<Test>>(newExpression);
             Assert.AreEqual(1, result.Count());
