@@ -294,4 +294,7 @@
   <data name="AmbientServices_Instance_MayBeSetOnlyOnce_Exception" xml:space="preserve">
     <value>The globally available instance of the ambient services may be set only once, before reading its value for the first time. Please consider setting its value before any other operation in your application.</value>
   </data>
+  <data name="Context_CannotChangeIdentity_Exception" xml:space="preserve">
+    <value>Cannot change the identity in the context once it has been set.</value>
+  </data>
 </root>

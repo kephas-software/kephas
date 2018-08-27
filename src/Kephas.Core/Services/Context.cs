@@ -4,24 +4,31 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   A base implementtion for contexts.
+//   A base implementation for contexts.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Services
 {
+    using System.Security;
     using System.Security.Principal;
 
     using Kephas;
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Resources;
 
     /// <summary>
-    /// A base implementtion for contexts.
+    /// A base implementation for contexts.
     /// </summary>
     public class Context : Expando, IContext
     {
+        /// <summary>
+        /// The identity.
+        /// </summary>
+        private IIdentity identity;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
@@ -86,7 +93,19 @@ namespace Kephas.Services
         /// <value>
         /// The authenticated user.
         /// </value>
-        public IIdentity Identity { get; set; }
+        public IIdentity Identity
+        {
+            get => this.identity;
+            set
+            {
+                if (this.identity != null)
+                {
+                    throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
+                }
+
+                this.identity = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the context logger.

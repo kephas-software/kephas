@@ -314,6 +314,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot change the identity in the context once it has been set..
+        /// </summary>
+        internal static string Context_CannotChangeIdentity_Exception {
+            get {
+                return ResourceManager.GetString("Context_CannotChangeIdentity_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application&apos;s finalize procedure was canceled, at {0:s}..
         /// </summary>
         internal static string DefaultAppManager_FinalizeCanceled_Exception {
