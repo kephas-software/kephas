@@ -106,10 +106,7 @@ namespace Kephas.Data
             IDataStore dataStore,
             IContext initializationContext)
         {
-            return new DataInitializationContext(dataContext, dataStore, initializationContext)
-                       {
-                           Identity = initializationContext?.Identity
-                       };
+            return new DataInitializationContext(dataContext, dataStore, initializationContext);
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
 
             this.DataContext = dataContext;
+            this.Identity = dataContext?.Identity;
         }
 
         /// <summary>
