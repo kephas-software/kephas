@@ -10,8 +10,10 @@
 
 namespace Kephas.Core.Tests.Services
 {
+    using System.Security;
     using System.Security.Principal;
 
+    using Kephas.Composition;
     using Kephas.Services;
 
     using NSubstitute;
@@ -40,6 +42,35 @@ namespace Kephas.Core.Tests.Services
 
             Assert.AreSame(mockUser, contextBase["Identity"]);
             Assert.AreEqual(12, contextBase["Value"]);
+        }
+
+        [Test]
+        public void Constructor_sync_composition_context_and_ambient_services()
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+            var ambientServices = Substitute.For<IAmbientServices>();
+            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new Context(compositionContext);
+            Assert.AreSame(ambientServices, context.AmbientServices);
+        }
+
+        [Test]
+        public void Constructor_sync_ambient_services_and_composition_context()
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+            var ambientServices = Substitute.For<IAmbientServices>();
+            ambientServices.CompositionContainer.Returns(compositionContext);
+            var context = new Context(ambientServices);
+            Assert.AreSame(compositionContext, context.CompositionContext);
+        }
+
+        [Test]
+        public void Identity_can_be_set_once()
+        {
+            var context = new Context();
+            context.Identity = Substitute.For<IIdentity>();
+
+            Assert.Throws<SecurityException>(() => context.Identity = Substitute.For<IIdentity>());
         }
     }
 }
