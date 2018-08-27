@@ -49,6 +49,7 @@
       <HintPath>..\..\..\Packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
@@ -88,6 +89,12 @@
     </Compile>
     <Compile Include="..\Kephas.Model.Tests\Models\AppServicesModel\AppServicesTest.cs">
       <Link>Models\AppServicesModel\AppServicesTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\ConfiguratorModel\Configurator.cs">
+      <Link>Models\ConfiguratorModel\Configurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model.Tests\Models\ConfiguratorModel\ConfiguratorTest.cs">
+      <Link>Models\ConfiguratorModel\ConfiguratorTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs">
       <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cs</Link>
@@ -169,6 +176,9 @@
     </None>
     <None Include="..\Kephas.Model.Tests\Models\AppServicesModel\AppServices.cd">
       <Link>Models\AppServicesModel\AppServices.cd</Link>
+    </None>
+    <None Include="..\Kephas.Model.Tests\Models\ConfiguratorModel\Configurator.cd">
+      <Link>Models\ConfiguratorModel\Configurator.cd</Link>
     </None>
     <None Include="..\Kephas.Model.Tests\Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd">
       <Link>Models\ConflictingBaseMembersModel\ConflictingBaseMembers.cd</Link>

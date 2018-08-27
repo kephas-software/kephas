@@ -28,7 +28,7 @@ namespace Kephas.Model.Elements
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the interface).</typeparam>
-    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructableElement
+    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructibleElement
         where TModelContract : INamedElement
     {
         /// <summary>
@@ -194,7 +194,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The construction state.
         /// </value>
-        ITransitionState IConstructableElement.ConstructionState => this.ConstructionMonitor;
+        ITransitionState IConstructibleElement.ConstructionState => this.ConstructionMonitor;
 
         /// <summary>
         /// Gets the construction monitor.
@@ -240,7 +240,7 @@ namespace Kephas.Model.Elements
         /// Sets the element container.
         /// </summary>
         /// <param name="container">The element container.</param>
-        void IConstructableElement.SetDeclaringContainer(IModelElement container)
+        void IConstructibleElement.SetDeclaringContainer(IModelElement container)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.DeclaringContainer = container;
@@ -250,7 +250,7 @@ namespace Kephas.Model.Elements
         /// Completes the construction of the element.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
-        void IConstructableElement.CompleteConstruction(IModelConstructionContext constructionContext)
+        void IConstructibleElement.CompleteConstruction(IModelConstructionContext constructionContext)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             try
@@ -271,7 +271,7 @@ namespace Kephas.Model.Elements
         /// Adds the member to the members list.
         /// </summary>
         /// <param name="member">The member.</param>
-        void IConstructableElement.AddMember(INamedElement member)
+        void IConstructibleElement.AddMember(INamedElement member)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddMember(member);
@@ -281,7 +281,7 @@ namespace Kephas.Model.Elements
         /// Adds a part to the aggregated element.
         /// </summary>
         /// <param name="part">The part to be added.</param>
-        void IConstructableElement.AddPart(object part)
+        void IConstructibleElement.AddPart(object part)
         {
             this.ConstructionMonitor.AssertIsInProgress();
             this.AddPart(part);

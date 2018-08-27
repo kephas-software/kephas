@@ -69,20 +69,20 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
             {
                 var property = new Property(context, propName);
                 property.ValueType = typeof(string).AsRuntimeTypeInfo();
-                ((IConstructableElement)classifier).AddMember(property);
+                ((IConstructibleElement)classifier).AddMember(property);
             }
 
             if (aspectFor != null)
             {
                 var annotation = new AspectAnnotation(context, "aspectFor", aspectFor);
-                ((IConstructableElement)classifier).AddMember(annotation);
+                ((IConstructibleElement)classifier).AddMember(annotation);
             }
 
             if (annotations != null)
             {
                 foreach (var annotation in annotations)
                 {
-                    ((IConstructableElement)classifier).AddMember(annotation);
+                    ((IConstructibleElement)classifier).AddMember(annotation);
                 }
             }
 

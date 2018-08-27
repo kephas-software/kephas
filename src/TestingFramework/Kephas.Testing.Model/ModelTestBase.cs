@@ -43,5 +43,15 @@ namespace Kephas.Model.Tests
 
             return container;
         }
+
+        public ICompositionContext CreateContainerForModel(Type[] parts, Type[] elements)
+        {
+            var container = this.CreateContainer(
+                new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
+                parts,
+                config: b => b.WithFactoryExportProvider(() => this.GetModelRegistry(elements), isShared: true));
+
+            return container;
+        }
     }
 }

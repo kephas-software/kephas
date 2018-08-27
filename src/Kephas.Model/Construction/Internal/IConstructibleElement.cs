@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConstructableElement.cs" company="Quartz Software SRL">
+// <copyright file="IConstructibleElement.cs" company="Quartz Software SRL">
 //   Copyright (c) Quartz Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IConstructableElement interface.
+//   Declares the IConstructibleElement interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace Kephas.Model.Construction.Internal
     /// <summary>
     /// Interface for writable named elements used during construction.
     /// </summary>
-    internal interface IConstructableElement
+    internal interface IConstructibleElement
     {
         /// <summary>
         /// Gets the state of the construction.

@@ -17,7 +17,7 @@ namespace Kephas.Model.Elements
     /// <summary>
     /// Exception indicating that a requested element was not found.
     /// </summary>
-    public class ElementNotFoundException : InvalidOperationException
+    public class ElementNotFoundException : ModelException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
@@ -25,7 +25,7 @@ namespace Kephas.Model.Elements
         /// <param name="memberName">Name of the member.</param>
         /// <param name="containerName">Name of the container.</param>
         public ElementNotFoundException(string memberName, string containerName)
-            : base(string.Format(Strings.ElementNotFoundInMembers, memberName, containerName))
+            : base(GetMemberNotFoundMessage(memberName, containerName))
         {
         }
 
@@ -36,8 +36,13 @@ namespace Kephas.Model.Elements
         /// <param name="containerName">Name of the container.</param>
         /// <param name="inner">The inner exception.</param>
         public ElementNotFoundException(string memberName, string containerName, Exception inner)
-            : base(string.Format(Strings.ElementNotFoundInMembers, memberName, containerName), inner)
+            : base(GetMemberNotFoundMessage(memberName, containerName), inner)
         {
+        }
+
+        private static string GetMemberNotFoundMessage(string memberName, string containerName)
+        {
+            return string.Format(Strings.ElementNotFoundInMembers, memberName, containerName);
         }
     }
 }

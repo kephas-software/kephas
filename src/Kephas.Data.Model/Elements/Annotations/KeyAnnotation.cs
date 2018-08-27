@@ -49,16 +49,14 @@ namespace Kephas.Data.Model.Elements.Annotations
         /// <param name="element">The model element to be configured.</param>
         public void Configure(IModelConstructionContext constructionContext, INamedElement element)
         {
-            var writableEntity = element as IConstructableElement;
-            if (writableEntity == null)
+            if (!(element is IConstructibleElement constructibleElement))
             {
-                // TODO localization
-                throw new ArgumentException($"Expected a writable model element for {element}.", nameof(element));
+                throw new NonConstructibleElementException(element);
             }
 
             var keyName = typeof(IKey).GetMemberNameDiscriminator() + this.baseKeyName;
             var key = new Key(constructionContext, keyName, this.Attribute.Kind, this.Attribute.KeyProperties);
-            writableEntity.AddMember(key);
+            constructibleElement.AddMember(key);
         }
     }
 }

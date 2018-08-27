@@ -99,14 +99,17 @@
     <Compile Include="..\Kephas.Model\Construction\IModelInfoProvider.cs">
       <Link>Construction\IModelInfoProvider.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Construction\Internal\IConstructableElement.cs">
-      <Link>Construction\Internal\IConstructableElement.cs</Link>
+    <Compile Include="..\Kephas.Model\Construction\Internal\IConstructibleElement.cs">
+      <Link>Construction\Internal\IConstructibleElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Construction\ModelConstructionContext.cs">
       <Link>Construction\ModelConstructionContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Construction\ModelConstructionException.cs">
       <Link>Construction\ModelConstructionException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Construction\NonConstructibleElementException.cs">
+      <Link>Construction\NonConstructibleElementException.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs">
       <Link>Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs</Link>
@@ -243,14 +246,26 @@
     <Compile Include="..\Kephas.Model\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\ClassifierConfigurator.cs">
+      <Link>Runtime\Configuration\ClassifierConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\ClassifierConfiguratorBase.cs">
+      <Link>Runtime\Configuration\ClassifierConfiguratorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs">
       <Link>Runtime\Configuration\Composition\RuntimeModelElementConfiguratorMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Configuration\IRuntimeModelElementConfigurator.cs">
       <Link>Runtime\Configuration\IRuntimeModelElementConfigurator.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\ModelConfigurationException.cs">
+      <Link>Runtime\Configuration\ModelConfigurationException.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs">
       <Link>Runtime\Configuration\ModelDimensionElementConfiguratorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Configuration\PropertyConfigurator.cs">
+      <Link>Runtime\Configuration\PropertyConfigurator.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs">
       <Link>Runtime\Configuration\RuntimeModelElementConfiguratorBase.cs</Link>

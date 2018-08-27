@@ -46,8 +46,8 @@ namespace Kephas.Model.Tests.Elements
             Assert.AreEqual(2, dimensions[0].Elements.Count());
             Assert.AreEqual(2, dimensions[1].Elements.Count());
 
-            Assert.IsTrue(dimensions.Cast<IConstructableElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
-            Assert.IsTrue(dimensions.SelectMany(d => d.Elements).Cast<IConstructableElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
+            Assert.IsTrue(dimensions.Cast<IConstructibleElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
+            Assert.IsTrue(dimensions.SelectMany(d => d.Elements).Cast<IConstructibleElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
 
             var dimDictionary = dimensions.ToDictionary(d => d.Name, d => d);
             var elemDictionary = dimensions.SelectMany(d => d.Elements).ToDictionary(e => e.Name, e => e);
@@ -75,7 +75,7 @@ namespace Kephas.Model.Tests.Elements
             var projections = modelSpace.ComputeProjections(context, dimensions);
 
             Assert.AreEqual(6, projections.Count);
-            Assert.IsTrue(projections.Cast<IConstructableElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
+            Assert.IsTrue(projections.Cast<IConstructibleElement>().All(d => d.ConstructionState.IsCompletedSuccessfully));
 
             var projDictionary = projections.ToDictionary(p => p.Name, p => p);
             Assert.IsFalse(projDictionary[":E1:F1"].IsAggregated);
@@ -192,20 +192,20 @@ namespace Kephas.Model.Tests.Elements
             {
                 var property = new Property(context, propName);
                 property.ValueType = typeof(string).AsRuntimeTypeInfo();
-                ((IConstructableElement)classifier).AddMember(property);
+                ((IConstructibleElement)classifier).AddMember(property);
             }
 
             if (aspectFor != null)
             {
                 var annotation = new AspectAnnotation(context, "aspectFor", aspectFor);
-                ((IConstructableElement)classifier).AddMember(annotation);
+                ((IConstructibleElement)classifier).AddMember(annotation);
             }
 
             if (annotations != null)
             {
                 foreach (var annotation in annotations)
                 {
-                    ((IConstructableElement)classifier).AddMember(annotation);
+                    ((IConstructibleElement)classifier).AddMember(annotation);
                 }
             }
 

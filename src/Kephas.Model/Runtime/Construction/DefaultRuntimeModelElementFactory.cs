@@ -86,10 +86,9 @@ namespace Kephas.Model.Runtime.Construction
                     .FirstOrDefault(elementInfo => elementInfo != null);
 
             // apply the configurators in the indicated order.
-            var runtimeDynamicType = runtimeElement as IRuntimeTypeInfo;
-            if (runtimeDynamicType != null)
+            if (runtimeElement is IRuntimeTypeInfo runtimeTypeInfo)
             {
-                var configurators = this.modelElementConfigurators.TryGetValue(runtimeDynamicType);
+                var configurators = this.modelElementConfigurators.TryGetValue(runtimeTypeInfo);
                 configurators?.ForEach(cfg => cfg.Configure(constructionContext, element));
             }
 

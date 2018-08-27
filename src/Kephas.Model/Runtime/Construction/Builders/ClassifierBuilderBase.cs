@@ -96,7 +96,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
                 var annotation = MixinAnnotationConstructor.Instance.TryCreateModelElement(this.ConstructionContext, new MixinAttribute());
                 if (annotation != null)
                 {
-                    (this.Element as IConstructableElement)?.AddMember(annotation);
+                    (this.Element as IConstructibleElement)?.AddMember(annotation);
                 }
             }
 

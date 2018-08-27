@@ -458,7 +458,7 @@ namespace Kephas.Model.Elements
                 var declaredMember = this.Members.FirstOrDefault(m => m.Name == baseMemberMap.Key);
                 if (declaredMember != null)
                 {
-                    var ownMemberBuilder = declaredMember as IConstructableElement;
+                    var ownMemberBuilder = declaredMember as IConstructibleElement;
                     if (baseMemberMap.Value is IList<INamedElement> collection)
                     {
                         foreach (var baseMember in collection)

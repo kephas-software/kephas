@@ -74,7 +74,7 @@ namespace Kephas.Model.Elements
             foreach (var element in elements)
             {
                 this.AddMember(element);
-                (element as IConstructableElement)?.CompleteConstruction(constructionContext);
+                (element as IConstructibleElement)?.CompleteConstruction(constructionContext);
             }
         }
     }

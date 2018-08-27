@@ -10,8 +10,8 @@
 
 namespace Kephas.Model.Resources {
     using System;
-    using System.Reflection;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +39,7 @@ namespace Kephas.Model.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Model.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Model.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -106,6 +106,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The element &apos;{0}&apos; must be a direct member of &apos;{1}&apos;, not inherited, to be used in its configurator..
+        /// </summary>
+        internal static string ClassifierConfiguratorBase_WithProperty_ForeignProperty_Exception {
+            get {
+                return ResourceManager.GetString("ClassifierConfiguratorBase_WithProperty_ForeignProperty_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The element &apos;{0}&apos; is not a member of &apos;{1}&apos;..
         /// </summary>
         internal static string ElementNotFoundInMembers {
@@ -124,11 +133,31 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected a constructible model element instead of {0}.
+        ///.
+        /// </summary>
+        internal static string NonConstructibleElementException_Message {
+            get {
+                return ResourceManager.GetString("NonConstructibleElementException_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &apos;{0}&apos; in &apos;{1}&apos; does not have any parts to be able to compute the property type..
         /// </summary>
         internal static string Property_MissingPartsToComputePropertyType_Exception {
             get {
                 return ResourceManager.GetString("Property_MissingPartsToComputePropertyType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot create a model element out of the provided attribute {0}..
+        /// </summary>
+        internal static string RuntimeModelElementConfiguratorBase_AddAttribute_CannotCreateModelElement_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeModelElementConfiguratorBase_AddAttribute_CannotCreateModelElement_Excepti" +
+                        "on", resourceCulture);
             }
         }
     }

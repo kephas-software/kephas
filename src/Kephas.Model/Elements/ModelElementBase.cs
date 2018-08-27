@@ -87,7 +87,7 @@ namespace Kephas.Model.Elements
         {
             if (member.DeclaringContainer == null)
             {
-                var memberBuilder = member as IConstructableElement;
+                var memberBuilder = member as IConstructibleElement;
                 memberBuilder?.SetDeclaringContainer(this);
             }
 
@@ -110,7 +110,7 @@ namespace Kephas.Model.Elements
             // Complete construction for declared members
             foreach (var declaredMember in this.GetDeclaredMembers())
             {
-                (declaredMember as IConstructableElement)?.CompleteConstruction(constructionContext);
+                (declaredMember as IConstructibleElement)?.CompleteConstruction(constructionContext);
             }
 
             base.OnCompleteConstruction(constructionContext);

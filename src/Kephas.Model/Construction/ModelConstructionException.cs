@@ -20,13 +20,6 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionException"/> class.
         /// </summary>
-        public ModelConstructionException()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelConstructionException"/> class.
-        /// </summary>
         /// <param name="message">The message.</param>
         public ModelConstructionException(string message)
             : base(message)

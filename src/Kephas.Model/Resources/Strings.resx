@@ -141,4 +141,14 @@
   <data name="ClassifierBase_AmbiguousBase_Exception" xml:space="preserve">
     <value>Multiple base classifiers found for {0}: {1}. To disambiguate, please mark all, except at most one, as mix-ins.</value>
   </data>
+  <data name="NonConstructibleElementException_Message" xml:space="preserve">
+    <value>Expected a constructible model element instead of {0}.
+</value>
+  </data>
+  <data name="RuntimeModelElementConfiguratorBase_AddAttribute_CannotCreateModelElement_Exception" xml:space="preserve">
+    <value>Cannot create a model element out of the provided attribute {0}.</value>
+  </data>
+  <data name="ClassifierConfiguratorBase_WithProperty_ForeignProperty_Exception" xml:space="preserve">
+    <value>The element '{0}' must be a direct member of '{1}', not inherited, to be used in its configurator.</value>
+  </data>
 </root>

@@ -18,6 +18,23 @@ namespace Kephas.Model.Runtime.Configuration
     /// </summary>
     public interface IRuntimeModelElementConfigurator : IElementConfigurator
     {
+        /// <summary>
+        /// Adds a member to the configured element.
+        /// </summary>
+        /// <param name="member">The member to be added.</param>
+        /// <returns>
+        /// This configurator.
+        /// </returns>
+        IRuntimeModelElementConfigurator AddMember(INamedElement member);
+
+        /// <summary>
+        /// Adds a member out of the runtime element to the configured model element.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>
+        /// This configurator.
+        /// </returns>
+        IRuntimeModelElementConfigurator AddMember(object runtimeElement);
     }
 
     /// <summary>

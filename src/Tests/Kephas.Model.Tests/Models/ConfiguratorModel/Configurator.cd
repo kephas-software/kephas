@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kephas.Model.Tests.Models.ConfiguratorModel.NamedConfigurator">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ConfiguratorModel\Configurator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Kephas.Model.Tests.Models.ConfiguratorModel.INamed">
+    <Position X="7.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ConfiguratorModel\Configurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.Tests.Models.ConfiguratorModel.IOtherNamed">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ConfiguratorModel\Configurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.Tests.Models.ConfiguratorModel.IDerivedNamed">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ConfiguratorModel\Configurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Kephas.Model.Tests.Models.ConfiguratorModel.IOverrideName">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ConfiguratorModel\Configurator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

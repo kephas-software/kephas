@@ -172,7 +172,7 @@ namespace Kephas.Model.Elements
             IModelConstructionContext constructionContext)
         {
             var dimensions = constructionContext.ElementInfos.OfType<IModelDimension>().OrderBy(d => d.Index).ToArray();
-            dimensions.ForEach(dimension => (dimension as IConstructableElement)?.CompleteConstruction(constructionContext));
+            dimensions.ForEach(dimension => (dimension as IConstructibleElement)?.CompleteConstruction(constructionContext));
 
             return dimensions;
         }
@@ -198,12 +198,12 @@ namespace Kephas.Model.Elements
                 var nonAggregatableProjections = new List<IModelProjection>();
                 this.BuildProjections(constructionContext, nonAggregatableDimensions, 0, new List<IModelDimensionElement>(), nonAggregatableProjections);
                 var nonAggregatableDictionary = nonAggregatableProjections.ToDictionary(p => p.Name, p => p);
-                projections.ForEach(p => ((IConstructableElement)nonAggregatableDictionary[p.AggregatedProjectionName]).AddPart(p));
+                projections.ForEach(p => ((IConstructibleElement)nonAggregatableDictionary[p.AggregatedProjectionName]).AddPart(p));
 
                 projections.AddRange(nonAggregatableProjections);
             }
 
-            projections.ForEach(c => (c as IConstructableElement)?.CompleteConstruction(constructionContext));
+            projections.ForEach(c => (c as IConstructibleElement)?.CompleteConstruction(constructionContext));
 
             return projections;
         }
@@ -252,9 +252,9 @@ namespace Kephas.Model.Elements
             // having ordered classifiers, go complete their construction
             // the constructed classifiers are now in the proper order
             constructionContext.ConstructedClassifiers = classifiers;
-            classifiers.ForEach(c => (c as IConstructableElement)?.CompleteConstruction(constructionContext));
+            classifiers.ForEach(c => (c as IConstructibleElement)?.CompleteConstruction(constructionContext));
 
-            var constructionExceptions = classifiers.OfType<IConstructableElement>()
+            var constructionExceptions = classifiers.OfType<IConstructibleElement>()
                 .Where(c => c.ConstructionState.IsFaulted)
                 .Select(c => c.ConstructionState.Exception)
                 .Where(e => e != null)
@@ -361,7 +361,7 @@ namespace Kephas.Model.Elements
                         this.ResolveAspects(new[] { constructedType }, this.GetAspects(classifiers));
 
                         // TODO: maybe do not complete construction yet, if the model space is still constructing
-                        ((IConstructableElement)constructedType).CompleteConstruction(constructionContext);
+                        ((IConstructibleElement)constructedType).CompleteConstruction(constructionContext);
 
                         return (constructedType, true);
                     }
@@ -386,7 +386,7 @@ namespace Kephas.Model.Elements
                     // and constructed generic aspects to constructed generic classifiers
                     if (aspect != classifier && aspect.IsAspectOf(classifier))
                     {
-                        ((IConstructableElement)classifier).AddPart(aspect);
+                        ((IConstructibleElement)classifier).AddPart(aspect);
                     }
                 }
             }
