@@ -23,6 +23,15 @@ namespace Kephas.Cryptography
     public interface IEncryptionService
     {
         /// <summary>
+        /// Generates a key.
+        /// </summary>
+        /// <param name="encryptionContext">Optional. Context for the encryption.</param>
+        /// <returns>
+        /// An array of byte.
+        /// </returns>
+        byte[] GenerateKey(IEncryptionContext encryptionContext = null);
+
+        /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>
         /// <param name="input">The input stream.</param>

@@ -24,8 +24,24 @@ namespace Kephas.Cryptography
     /// <summary>
     /// A symmetric encryption service base.
     /// </summary>
-    public abstract class SymmetricEncryptionServiceBase : IEncryptionService, ISyncEncryptionService
+    /// <typeparam name="TAlgorithm">Type of the algorithm.</typeparam>
+    public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService, ISyncEncryptionService
+        where TAlgorithm : SymmetricAlgorithm, new()
     {
+        /// <summary>
+        /// Generates a key.
+        /// </summary>
+        /// <param name="encryptionContext">Optional. Context for the encryption.</param>
+        /// <returns>
+        /// An array of byte.
+        /// </returns>
+        public virtual byte[] GenerateKey(IEncryptionContext encryptionContext = null)
+        {
+            var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            algorithm.GenerateKey();
+            return algorithm.Key;
+        }
+
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>
@@ -195,13 +211,58 @@ namespace Kephas.Cryptography
         }
 
         /// <summary>
+        /// Gets the key size.
+        /// </summary>
+        /// <param name="encryptionContext">Context for the encryption.</param>
+        /// <returns>
+        /// The key size.
+        /// </returns>
+        protected virtual int GetKeySize(IEncryptionContext encryptionContext)
+        {
+            return encryptionContext?.KeySize ?? 256;
+        }
+
+        /// <summary>
+        /// Gets the encryption/decryption key.
+        /// </summary>
+        /// <param name="encryptionContext">Context for the encryption.</param>
+        /// <returns>
+        /// An array of byte.
+        /// </returns>
+        protected virtual byte[] GetKey(IEncryptionContext encryptionContext)
+        {
+            return encryptionContext.Key;
+        }
+
+        /// <summary>
         /// Creates the symmetric algorithm.
         /// </summary>
         /// <param name="encryptionContext">Context for the encryption.</param>
         /// <returns>
         /// The new symmetric algorithm.
         /// </returns>
-        protected abstract SymmetricAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext);
+        protected virtual SymmetricAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)
+        {
+            var algorithm = new TAlgorithm();
+
+            var keySize = this.GetKeySize(encryptionContext);
+            if (!algorithm.ValidKeySize(keySize))
+            {
+                throw this.GetMismatchedKeySizeEncryptionException(algorithm, keySize);
+            }
+
+            algorithm.KeySize = keySize;
+            algorithm.Padding = PaddingMode.PKCS7;
+
+            // set the key after setting the key size, otherwise the Key will be overwritten with a new generated value.
+            var key = this.GetKey(encryptionContext);
+            if (key != null)
+            {
+                algorithm.Key = key;
+            }
+
+            return algorithm;
+        }
 
         /// <summary>
         /// Gets mismatched key size encryption exception.

@@ -35,5 +35,13 @@ namespace Kephas.Cryptography
         /// The key.
         /// </value>
         public byte[] Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of the key.
+        /// </summary>
+        /// <value>
+        /// The size of the key.
+        /// </value>
+        public int? KeySize { get; set; }
     }
 }
