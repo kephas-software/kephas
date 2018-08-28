@@ -23,7 +23,7 @@ namespace Kephas.Cryptography
     /// A null encryption service.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullEncryptionService : IEncryptionService
+    public class NullEncryptionService : IEncryptionService, ISyncEncryptionService
     {
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
@@ -62,6 +62,34 @@ namespace Kephas.Cryptography
         }
 
         /// <summary>
+        /// Encrypts the input stream and writes the encrypted content into the output stream.
+        /// </summary>
+        /// <param name="input">The input stream.</param>
+        /// <param name="output">The output stream.</param>
+        /// <param name="context">The encryption context (optional).</param>
+        public void Encrypt(Stream input, Stream output, IEncryptionContext context = null)
+        {
+            Requires.NotNull(input, nameof(input));
+            Requires.NotNull(output, nameof(output));
+
+            ReverseStream(input, output);
+        }
+
+        /// <summary>
+        /// Decrypts the input stream and writes the decrypted content into the output stream.
+        /// </summary>
+        /// <param name="input">The input stream.</param>
+        /// <param name="output">The output stream.</param>
+        /// <param name="context">The encryption context (optional).</param>
+        public void Decrypt(Stream input, Stream output, IEncryptionContext context = null)
+        {
+            Requires.NotNull(input, nameof(input));
+            Requires.NotNull(output, nameof(output));
+
+            ReverseStream(input, output);
+        }
+
+        /// <summary>
         /// Reverse stream asynchronously.
         /// </summary>
         /// <param name="input">The input stream.</param>
@@ -85,6 +113,29 @@ namespace Kephas.Cryptography
 
                 await output.WriteAsync(outputBuffer, 0, count, cancellationToken).PreserveThreadContext();
                 count = await input.ReadAsync(inputBuffer, 0, 1000, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Reverse stream asynchronously.
+        /// </summary>
+        /// <param name="input">The input stream.</param>
+        /// <param name="output">The output stream.</param>
+        private static void ReverseStream(Stream input, Stream output)
+        {
+            var inputBuffer = new byte[1000];
+            var outputBuffer = new byte[1000];
+
+            var count = input.Read(inputBuffer, 0, 1000);
+            while (count > 0)
+            {
+                for (var i = 0; i < count; i++)
+                {
+                    outputBuffer[i] = inputBuffer[count - 1 - i];
+                }
+
+                output.Write(outputBuffer, 0, count);
+                count = input.Read(inputBuffer, 0, 1000);
             }
         }
     }

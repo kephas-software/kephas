@@ -40,6 +40,34 @@ namespace Kephas.Core.Tests.Cryptography
         }
 
         [Test]
+        [TestCase("password", "ZHJvd3NzYXA=")]
+        [TestCase("123", "MzIx")]
+        public void Encrypt_no_sync_support(string input, string output)
+        {
+            var encryptionService = Substitute.For<IEncryptionService>();
+            encryptionService.EncryptAsync(null, null, null, default(CancellationToken))
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
+            Assert.AreEqual(output, encrypted);
+        }
+
+        [Test]
+        [TestCase("password", "ZHJvd3NzYXA=")]
+        [TestCase("123", "MzIx")]
+        public void Encrypt_with_sync_support(string input, string output)
+        {
+            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
+            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
+            syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
+                .Do(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
+            Assert.AreEqual(output, encrypted);
+        }
+
+        [Test]
         [TestCase("ZHJvd3NzYXA=", "password")]
         [TestCase("MzIx", "123")]
         public async Task DecryptAsync(string input, string output)
@@ -50,6 +78,34 @@ namespace Kephas.Core.Tests.Cryptography
                 .AndDoes(this.ReverseBytes);
 
             var encrypted = await EncryptionServiceExtensions.DecryptAsync(encryptionService, input);
+            Assert.AreEqual(output, encrypted);
+        }
+
+        [Test]
+        [TestCase("ZHJvd3NzYXA=", "password")]
+        [TestCase("MzIx", "123")]
+        public void Decrypt_no_sync_support(string input, string output)
+        {
+            var encryptionService = Substitute.For<IEncryptionService>();
+            encryptionService.DecryptAsync(null, null, null, default(CancellationToken))
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Decrypt(encryptionService, input);
+            Assert.AreEqual(output, encrypted);
+        }
+
+        [Test]
+        [TestCase("ZHJvd3NzYXA=", "password")]
+        [TestCase("MzIx", "123")]
+        public void Decrypt_with_sync_support(string input, string output)
+        {
+            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
+            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
+            syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
+                .Do(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Decrypt(encryptionService, input);
             Assert.AreEqual(output, encrypted);
         }
 
@@ -68,6 +124,41 @@ namespace Kephas.Core.Tests.Cryptography
 
             var encrypted = await EncryptionServiceExtensions.EncryptAsync(encryptionService, input);
             var decrypted = await EncryptionServiceExtensions.DecryptAsync(encryptionService, encrypted);
+            Assert.AreEqual(input, decrypted);
+        }
+
+        [Test]
+        [TestCase("password")]
+        [TestCase("123")]
+        public void Encrypt_Decrypt_are_inverse_no_sync_support(string input)
+        {
+            var encryptionService = Substitute.For<IEncryptionService>();
+            encryptionService.EncryptAsync(null, null, null, default(CancellationToken))
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+            encryptionService.DecryptAsync(null, null, null, default(CancellationToken))
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
+            var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
+            Assert.AreEqual(input, decrypted);
+        }
+
+        [Test]
+        [TestCase("password")]
+        [TestCase("123")]
+        public void Encrypt_Decrypt_are_inverse_with_sync_support(string input)
+        {
+            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
+            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
+            syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
+                .Do(this.ReverseBytes);
+            syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
+                .Do(this.ReverseBytes);
+
+            var encrypted = EncryptionServiceExtensions.Encrypt(encryptionService, input);
+            var decrypted = EncryptionServiceExtensions.Decrypt(encryptionService, encrypted);
             Assert.AreEqual(input, decrypted);
         }
 

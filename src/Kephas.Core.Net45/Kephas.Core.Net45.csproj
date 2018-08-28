@@ -323,6 +323,9 @@
     <Compile Include="..\Kephas.Core\Cryptography\IEncryptionService.cs">
       <Link>Cryptography\IEncryptionService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\ISyncEncryptionService.cs">
+      <Link>Cryptography\ISyncEncryptionService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\NullEncryptionService.cs">
       <Link>Cryptography\NullEncryptionService.cs</Link>
     </Compile>

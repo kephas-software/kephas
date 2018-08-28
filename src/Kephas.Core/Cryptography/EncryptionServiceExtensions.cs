@@ -27,7 +27,7 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Encrypts the input string and returns a promise of the encrypted string.
         /// </summary>
-        /// <param name="encryptionService">The encryptionService to act on.</param>
+        /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input string.</param>
         /// <param name="context">The encryption context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -52,9 +52,39 @@ namespace Kephas.Cryptography
         }
 
         /// <summary>
+        /// Encrypts the input string and returns the encrypted string.
+        /// </summary>
+        /// <param name="encryptionService">The encryption service to act on.</param>
+        /// <param name="input">The input string.</param>
+        /// <param name="context">The encryption context (optional).</param>
+        /// <returns>
+        /// The encrypted string.
+        /// </returns>
+        public static string Encrypt(
+            this IEncryptionService encryptionService,
+            string input,
+            IEncryptionContext context = null)
+        {
+            Requires.NotNull(encryptionService, nameof(encryptionService));
+
+            if (encryptionService is ISyncEncryptionService syncEncryptionService)
+            {
+                using (var inputStream = new MemoryStream(Encoding.UTF8.GetBytes(input)))
+                using (var outputStream = new MemoryStream())
+                {
+                    syncEncryptionService.Encrypt(inputStream, outputStream, context);
+                    var outputBytes = outputStream.ToArray();
+                    return Convert.ToBase64String(outputBytes);
+                }
+            }
+
+            return EncryptAsync(encryptionService, input, context).GetResultNonLocking();
+        }
+
+        /// <summary>
         /// Decrypts the input string and returns a promise of the decrypted string.
         /// </summary>
-        /// <param name="encryptionService">The encryptionService to act on.</param>
+        /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input string.</param>
         /// <param name="context">The encryption context (optional).</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
@@ -76,6 +106,36 @@ namespace Kephas.Cryptography
                 var outputBytes = outputStream.ToArray();
                 return Encoding.UTF8.GetString(outputBytes);
             }
+        }
+
+        /// <summary>
+        /// Decrypts the input string and returns the decrypted string.
+        /// </summary>
+        /// <param name="encryptionService">The encryption service to act on.</param>
+        /// <param name="input">The input string.</param>
+        /// <param name="context">The encryption context (optional).</param>
+        /// <returns>
+        /// A promise of a decrypted string.
+        /// </returns>
+        public static string Decrypt(
+            this IEncryptionService encryptionService,
+            string input,
+            IEncryptionContext context = null)
+        {
+            Requires.NotNull(encryptionService, nameof(encryptionService));
+
+            if (encryptionService is ISyncEncryptionService syncEncryptionService)
+            {
+                using (var inputStream = new MemoryStream(Convert.FromBase64String(input)))
+                using (var outputStream = new MemoryStream())
+                {
+                    syncEncryptionService.Decrypt(inputStream, outputStream, context);
+                    var outputBytes = outputStream.ToArray();
+                    return Encoding.UTF8.GetString(outputBytes);
+                }
+            }
+
+            return DecryptAsync(encryptionService, input, context).GetResultNonLocking();
         }
     }
 }
