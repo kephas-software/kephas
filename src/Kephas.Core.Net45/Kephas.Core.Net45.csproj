@@ -308,6 +308,9 @@
     <Compile Include="..\Kephas.Core\Configuration\Providers\SettingsTypeAttribute.cs">
       <Link>Configuration\Providers\SettingsTypeAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\AesEncryptionService.cs">
+      <Link>Cryptography\AesEncryptionService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\EncryptedAttribute.cs">
       <Link>Cryptography\EncryptedAttribute.cs</Link>
     </Compile>
@@ -317,17 +320,35 @@
     <Compile Include="..\Kephas.Core\Cryptography\EncryptionServiceExtensions.cs">
       <Link>Cryptography\EncryptionServiceExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\HashingContext.cs">
+      <Link>Cryptography\HashingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\HashingServiceBase.cs">
+      <Link>Cryptography\HashingServiceBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\IEncryptionContext.cs">
       <Link>Cryptography\IEncryptionContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\IEncryptionService.cs">
       <Link>Cryptography\IEncryptionService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\IHashingContext.cs">
+      <Link>Cryptography\IHashingContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\IHashingService.cs">
+      <Link>Cryptography\IHashingService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\ISyncEncryptionService.cs">
       <Link>Cryptography\ISyncEncryptionService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Cryptography\NullEncryptionService.cs">
       <Link>Cryptography\NullEncryptionService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\SHA256HashingService.cs">
+      <Link>Cryptography\SHA256HashingService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Cryptography\SymmetricEncryptionServiceBase.cs">
+      <Link>Cryptography\SymmetricEncryptionServiceBase.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Data\Id.cs">
       <Link>Data\Id.cs</Link>
@@ -406,6 +427,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\IInstance.cs">
       <Link>IInstance.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\IO\StreamExtensions.cs">
+      <Link>IO\StreamExtensions.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Logging\ILogger.cs">
       <Link>Logging\ILogger.cs</Link>

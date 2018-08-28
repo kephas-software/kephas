@@ -125,11 +125,20 @@
     <Compile Include="..\Kephas.Core.Tests\Configuration\Providers\AppConfigurationProviderTest.cs">
       <Link>Configuration\Providers\AppConfigurationProviderTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Cryptography\AesEncryptionServiceTest.cs">
+      <Link>Cryptography\AesEncryptionServiceTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Cryptography\EncryptionServiceExtensionsTest.cs">
       <Link>Cryptography\EncryptionServiceExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Cryptography\HashingServiceExtensionsTest.cs">
+      <Link>Cryptography\HashingServiceExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Cryptography\NullEncryptionServiceTest.cs">
       <Link>Cryptography\NullEncryptionServiceTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Cryptography\SHA256HashingServiceTest.cs">
+      <Link>Cryptography\SHA256HashingServiceTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Data\IdTest.cs">
       <Link>Data\IdTest.cs</Link>

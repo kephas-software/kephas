@@ -10,7 +10,6 @@
 
 namespace Kephas.Cryptography
 {
-    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;

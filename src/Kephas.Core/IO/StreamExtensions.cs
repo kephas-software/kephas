@@ -1,0 +1,77 @@
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="StreamExtensions.cs" company="Quartz Software SRL">
+//   Copyright (c) Quartz Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the stream extensions class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.IO
+{
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Threading.Tasks;
+
+    /// <summary>
+    /// A stream extensions.
+    /// </summary>
+    public static class StreamExtensions
+    {
+        /// <summary>
+        /// A Stream extension method that reads all bytes.
+        /// </summary>
+        /// <param name="input">The input to act on.</param>
+        /// <returns>
+        /// An array of byte.
+        /// </returns>
+        public static byte[] ReadAllBytes(this Stream input)
+        {
+            Requires.NotNull(input, nameof(input));
+
+            using (var mem = new MemoryStream())
+            {
+                // read all bytes
+                const int ChunkSize = 1000;
+                var buffer = new byte[ChunkSize];
+                var readLength = 0;
+                while ((readLength = input.Read(buffer, 0, ChunkSize)) > 0)
+                {
+                    mem.Write(buffer, 0, readLength);
+                }
+
+                return mem.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// A Stream extension method that reads all bytes asynchronously.
+        /// </summary>
+        /// <param name="input">The input to act on.</param>
+        /// <returns>
+        /// An array of byte.
+        /// </returns>
+        public static async Task<byte[]> ReadAllBytesAsync(this Stream input, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(input, nameof(input));
+
+            using (var mem = new MemoryStream())
+            {
+                // read all bytes
+                const int ChunkSize = 1000;
+                var buffer = new byte[ChunkSize];
+                var readLength = 0;
+                while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken).PreserveThreadContext()) > 0)
+                {
+                    await mem.WriteAsync(buffer, 0, readLength, cancellationToken).PreserveThreadContext();
+                }
+
+                return mem.ToArray();
+            }
+        }
+    }
+}
