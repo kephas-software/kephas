@@ -38,6 +38,12 @@ namespace Kephas.Cryptography
         public virtual byte[] GenerateKey(IEncryptionContext encryptionContext = null)
         {
             var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            var keySize = encryptionContext?.KeySize;
+            if (keySize != null)
+            {
+                algorithm.KeySize = keySize.Value;
+            }
+
             algorithm.GenerateKey();
             return algorithm.Key;
         }

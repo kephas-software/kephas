@@ -70,6 +70,18 @@ namespace Kephas.Core.Tests.Cryptography
             Assert.AreNotEqual(encrypted1, encrypted2);
         }
 
+        [Test]
+        [TestCase(256, 32)]
+        [TestCase(192, 24)]
+        public void GenerateKey(int keySize, int expectedLength)
+        {
+            var service = new AesEncryptionService();
+            var context = new EncryptionContext { KeySize = keySize };
+            var key = service.GenerateKey(context);
+
+            Assert.AreEqual(expectedLength, key.Length);
+        }
+
         private string GenerateKey()
         {
             var a = new AesManaged();
