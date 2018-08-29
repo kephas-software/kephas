@@ -52,6 +52,7 @@ namespace Kephas.IO
         /// A Stream extension method that reads all bytes asynchronously.
         /// </summary>
         /// <param name="input">The input to act on.</param>
+        /// <param name="cancellationToken">Optional. the cancellation token.</param>
         /// <returns>
         /// An array of byte.
         /// </returns>
