@@ -12,11 +12,13 @@ namespace Kephas.Data.Tests
 {
     using System;
     using System.Linq;
+    using System.Security.Principal;
 
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
+    using Kephas.Services;
 
     using NSubstitute;
 
@@ -106,6 +108,41 @@ namespace Kephas.Data.Tests
 
             var detachedEntityInfo = dataContext.DetachEntity(entityInfo);
             Assert.IsNull(detachedEntityInfo);
+        }
+
+        [Test]
+        public void Initialize_bad_initialization_context()
+        {
+            var dataContext = new TestDataContext();
+            var context = Substitute.For<IContext>();
+            Assert.Throws<ArgumentException>(() => dataContext.Initialize(context));
+        }
+
+        [Test]
+        public void Initialize_identity_properly_set()
+        {
+            var dataContext = new TestDataContext();
+            var identity = Substitute.For<IIdentity>();
+            var context = Substitute.For<IDataInitializationContext>();
+            context.Identity.Returns(identity);
+            dataContext.Initialize(context);
+
+            Assert.AreSame(identity, dataContext.Identity);
+        }
+
+        [Test]
+        public void Initialize_identity_properly_set_from_inner_context()
+        {
+            var dataContext = new TestDataContext();
+            var identity = Substitute.For<IIdentity>();
+            var context = Substitute.For<IContext>();
+            context.Identity.Returns(identity);
+            var initContext = Substitute.For<IDataInitializationContext>();
+            initContext.Identity.Returns((IIdentity)null);
+            initContext.InitializationContext.Returns(context);
+            dataContext.Initialize(initContext);
+
+            Assert.AreSame(identity, dataContext.Identity);
         }
     }
 }

@@ -11,6 +11,7 @@
 namespace Kephas.Data.Tests
 {
     using System.Collections.Generic;
+    using System.Security.Principal;
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
@@ -26,7 +27,7 @@ namespace Kephas.Data.Tests
     public class DefaultDataContextFactoryTest
     {
         [Test]
-        public void GetDataContext_success()
+        public void CreateDataContext_success()
         {
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStore("test-store").Returns(new DataStore("test-store", "kind1"));
@@ -44,7 +45,7 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public void GetDataContext_proper_initialized()
+        public void CreateDataContext_proper_initialized()
         {
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             var dcConfig = Substitute.For<IDataContextConfiguration>();
@@ -68,7 +69,7 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public void GetDataContext_ambiguous_match_for_two_same_kinds()
+        public void CreateDataContext_ambiguous_match_for_two_same_kinds()
         {
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
             dataStoreProvider.GetDataStore("test-store").Returns(new DataStore("test-store", "kind1"));
