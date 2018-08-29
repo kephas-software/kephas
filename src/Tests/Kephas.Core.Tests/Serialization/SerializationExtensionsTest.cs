@@ -89,6 +89,16 @@
         }
 
         [Test]
+        public async Task DeserializeAsync_SerializationService_null()
+        {
+            var deserializer = this.CreateDeserializerMock("my object");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
+
+            var result = await SerializationExtensions.DeserializeAsync<JsonMediaType>(serializationService, null);
+            Assert.IsNull(result);
+        }
+
+        [Test]
         public void Deserialize_SerializationService()
         {
             var deserializer = this.CreateDeserializerMock("my object");
@@ -97,6 +107,16 @@
             var result = SerializationExtensions.Deserialize<JsonMediaType>(serializationService, "my object");
             Assert.IsInstanceOf<TestEntity>(result);
             Assert.AreEqual("my object", (result as TestEntity)?.Name);
+        }
+
+        [Test]
+        public void Deserialize_SerializationService_null()
+        {
+            var deserializer = this.CreateDeserializerMock("my object");
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(deserializer);
+
+            var result = SerializationExtensions.Deserialize<JsonMediaType>(serializationService, null);
+            Assert.IsNull(result);
         }
 
         [Test]

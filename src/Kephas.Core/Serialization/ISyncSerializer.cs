@@ -11,8 +11,6 @@
 namespace Kephas.Serialization
 {
     using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface for a synchronous serializer.

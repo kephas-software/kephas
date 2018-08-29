@@ -142,7 +142,7 @@ namespace Kephas.Serialization
 
             if (serializedObj == null)
             {
-                return Task.FromResult((object)null);
+                return null;
             }
 
             context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
