@@ -39,7 +39,7 @@ namespace Kephas.Data.Endpoints
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
-        /// <param name="compositionContext">The dependecy injection/composition context.</param>
+        /// <param name="compositionContext">The dependency injection/composition context.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public QueryHandler(ICompositionContext compositionContext, IClientQueryExecutor clientQueryExecutor)
         {
@@ -64,13 +64,32 @@ namespace Kephas.Data.Endpoints
             IMessageProcessingContext context,
             CancellationToken token)
         {
-            var executionContext = new ClientQueryExecutionContext(this.compositionContext);
-            executionContext.Merge(message.Options);
+            var executionContext = this.CreateClientQueryExecutionContext(message, context);
 
             var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, executionContext, token)
                                      .PreserveThreadContext();
 
             return new QueryResponseMessage { Entities = clientEntities.ToArray() };
+        }
+
+        /// <summary>
+        /// Creates client query execution context.
+        /// </summary>
+        /// <param name="message">The message to be handled.</param>
+        /// <param name="context">The processing context.</param>
+        /// <returns>
+        /// The new client query execution context.
+        /// </returns>
+        protected virtual IClientQueryExecutionContext CreateClientQueryExecutionContext(
+            QueryMessage message,
+            IMessageProcessingContext context)
+        {
+            var executionContext = new ClientQueryExecutionContext(this.compositionContext)
+                                       {
+                                           Identity = context.Identity
+                                       };
+            executionContext.Merge(message.Options);
+            return executionContext;
         }
     }
 }

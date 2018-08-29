@@ -165,7 +165,10 @@ namespace Kephas.Data.IO.Initialization
             IDataContext sourceDataContext,
             IDataContext targetDataContext)
         {
-            return new DataImportContext(sourceDataContext, targetDataContext);
+            return new DataImportContext(sourceDataContext, targetDataContext)
+                       {
+                           Identity = initialDataContext?.Identity
+                       };
         }
 
         /// <summary>
