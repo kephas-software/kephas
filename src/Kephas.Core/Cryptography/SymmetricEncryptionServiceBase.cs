@@ -237,7 +237,7 @@ namespace Kephas.Cryptography
         /// </returns>
         protected virtual byte[] GetKey(IEncryptionContext encryptionContext)
         {
-            return encryptionContext.Key;
+            return encryptionContext?.Key;
         }
 
         /// <summary>
