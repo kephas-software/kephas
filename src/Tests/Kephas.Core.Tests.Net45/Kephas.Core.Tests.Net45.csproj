@@ -239,6 +239,9 @@
     <Compile Include="..\Kephas.Core.Tests\Text\Encoding\Base64DataTest.cs">
       <Link>Text\Encoding\Base64DataTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Text\StringExtensionsTest.cs">
+      <Link>Text\StringExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Threading\Tasks\TaskHelperTest.cs">
       <Link>Threading\Tasks\TaskHelperTest.cs</Link>
     </Compile>
