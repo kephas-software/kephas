@@ -55,7 +55,10 @@ namespace Kephas.Text
                 }
             }
 
-            yield return str.Substring(nextPiece);
+            if (nextPiece < str.Length || !removeEmptyEntries)
+            {
+                yield return str.Substring(nextPiece);
+            }
         }
 
         /// <summary>
