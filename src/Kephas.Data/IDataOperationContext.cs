@@ -10,19 +10,19 @@
 
 namespace Kephas.Data
 {
-  using Kephas.Services;
+    using Kephas.Services;
 
-  /// <summary>
-  /// Contract for data operations contexts.
-  /// </summary>
-  public interface IDataOperationContext : IContext
-  {
     /// <summary>
-    /// Gets the dataContext.
+    /// Contract for data operations contexts.
     /// </summary>
-    /// <value>
-    /// The dataContext.
-    /// </value>
-    IDataContext DataContext { get; }
-  }
+    public interface IDataOperationContext : IContext
+    {
+        /// <summary>
+        /// Gets the dataContext.
+        /// </summary>
+        /// <value>
+        /// The dataContext.
+        /// </value>
+        IDataContext DataContext { get; }
+    }
 }
