@@ -1,0 +1,993 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DefaultWebHost
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DefaultWebHost
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost">
+  
+  
+  <h1 id="Kephas_ServiceStack_Hosting_DefaultWebHost" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost" class="text-break">Class DefaultWebHost
+  </h1>
+  <div class="markdown level0 summary"><p>The default web host.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ServiceStack.ServiceStackHost</span></div>
+    <div class="level2"><span class="xref">ServiceStack.AppHostBase</span></div>
+    <div class="level3"><span class="xref">DefaultWebHost</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.ServiceStack.Hosting.IWebHost.html">IWebHost</a></div>
+    <div><span class="xref">ServiceStack.IAppHost</span></div>
+    <div><span class="xref">ServiceStack.Configuration.IResolver</span></div>
+    <div><span class="xref">Funq.IFunqlet</span></div>
+    <div><span class="xref">Funq.IHasContainer</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a></div>
+    <div><a class="xref" href="Kephas.Services.IAsyncFinalizable.html">IAsyncFinalizable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.Bind(Microsoft.AspNetCore.Builder.IApplicationBuilder)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.BindHost(ServiceStack.ServiceStackHost, Microsoft.AspNetCore.Builder.IApplicationBuilder)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.GetWebRootPath()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.OnConfigLoad()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.RegisterLicenseFromAppSettings(ServiceStack.Configuration.IAppSettings)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.ProcessRequest(Microsoft.AspNetCore.Http.HttpContext, System.Func&lt;System.Threading.Tasks.Task&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.MapProjectPath(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.TryGetCurrentRequest()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.GetOrCreateRequest(Microsoft.AspNetCore.Http.IHttpContextAccessor)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.GetOrCreateRequest(Microsoft.AspNetCore.Http.HttpContext)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.Dispose(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.AppHostBase.NetCoreHandler</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RestPaths</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.IsReady()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.CreateServiceController(System.Reflection.Assembly[])</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.SetConfig(ServiceStack.HostConfig)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Init()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.PopulateArrayFilters()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetVirtualFileSources()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Start(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnPreExecuteServiceFilter(ServiceStack.IService, System.Object, ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnPostExecuteServiceFilter(ServiceStack.IService, System.Object, ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnServiceException(ServiceStack.Web.IRequest, System.Object, System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnUncaughtException(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.String, System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HandleUncaughtException(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.String, System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnStartupException(System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnAfterConfigChanged()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnBeforeInit()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnAfterInit()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Release(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnEndRequest(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Register&lt;T&gt;(T)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterAs&lt;T, TAs&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.TryResolve&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Resolve&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetPlugin&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HasPlugin&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.CreateServiceRunner&lt;TRequest&gt;(ServiceStack.Host.ActionContext)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResolveLocalizedString(System.String, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResolveAbsoluteUrl(System.String, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.UseHttps(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetBaseUrl(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResolvePhysicalPath(System.String, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.LoadPlugin(ServiceStack.IPlugin[])</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteService(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteService(System.Object, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteServiceAsync(System.Object, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteService(System.Object, ServiceStack.RequestAttributes)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteMessage(ServiceStack.Messaging.IMessage)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecuteMessage(ServiceStack.Messaging.IMessage, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterService(System.Type, System.String[])</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterServicesInAssembly(System.Reflection.Assembly)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetRouteAttributes(System.Type)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GenerateWsdl(ServiceStack.Metadata.WsdlTemplateBase)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedRequestFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedRequestFilter&lt;T&gt;(System.Func&lt;Funq.Container, ServiceStack.Host.ITypedFilter&lt;T&gt;&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedResponseFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedResponseFilter&lt;T&gt;(System.Func&lt;Funq.Container, ServiceStack.Host.ITypedFilter&lt;T&gt;&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedMessageRequestFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RegisterTypedMessageResponseFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResolvePathInfo(ServiceStack.Web.IRequest, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.NormalizePathInfo(System.String, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ReturnRedirectHandler(ServiceStack.Web.IHttpRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ReturnRequestInfoHandler(ServiceStack.Web.IHttpRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyRequestConvertersAsync(ServiceStack.Web.IRequest, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyResponseConvertersAsync(ServiceStack.Web.IRequest, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyCustomHandlerRequestFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyPreAuthenticateFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyPreRequestFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyRequestFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyRequestFiltersAsync(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyRequestFiltersSingleAsync(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyResponseFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyResponseFiltersAsync(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyResponseFiltersSingleAsync(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyMessageRequestFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ApplyMessageResponseFilters(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExecTypedFilters(System.Collections.Generic.Dictionary&lt;System.Type, ServiceStack.Host.ITypedFilter&gt;, ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetDefaultSessionExpiry(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HasFeature(ServiceStack.Feature)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AssertFeatures(ServiceStack.Feature)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AssertContentType(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HasAccessToMetadata(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HandleErrorResponse(ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, System.Net.HttpStatusCode, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetCustomErrorHandler(System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetCustomErrorHandler(System.Net.HttpStatusCode)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetNotFoundHandler()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetCustomErrorHttpHandler(System.Net.HttpStatusCode)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HasValidAuthSecret(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResolveResponseException(System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnExceptionTypeFilter(System.Exception, ServiceStack.ResponseStatus)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnLogError(System.Type, System.String, System.Exception)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnSaveSession(ServiceStack.Web.IRequest, ServiceStack.Auth.IAuthSession, System.Nullable&lt;System.TimeSpan&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnSessionFilter(ServiceStack.Auth.IAuthSession, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AllowSetCookie(ServiceStack.Web.IRequest, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnAfterExecute(ServiceStack.Web.IRequest, System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetTypesConfigForMetadata(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetDbConnection(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetRedisClient(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetCacheClient(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetMemoryCacheClient(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetMessageProducer(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetServiceGateway(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetAuthRepository(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetCookies(ServiceStack.Web.IHttpResponse)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ShouldCompressFile(ServiceStack.IO.IVirtualFile)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GetRuntimeConfig&lt;T&gt;(ServiceStack.Web.IRequest, System.String, T)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Instance</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.StartedAt</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AfterInitAt</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ReadyAt</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.TestMode</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ServiceAssemblies</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.HasStarted</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ServiceName</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AppSettings</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Metadata</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ServiceController</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ExcludeAutoRegisteringServiceTypes</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Container</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Routes</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RequestBinders</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ContentTypes</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.PreRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RequestConverters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ResponseConverters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalRequestFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalTypedRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalResponseFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalTypedResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalMessageRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalMessageRequestFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalTypedMessageRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalMessageResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalMessageResponseFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalTypedMessageResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ViewEngines</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.ServiceExceptionHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.UncaughtExceptionHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.BeforeConfigure</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AfterConfigure</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AfterInitCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnDisposeCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.OnEndRequestCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.RawHttpHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.CatchAllHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GlobalHtmlErrorHttpHandler</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.CustomErrorHttpHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.StartUpErrors</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AsyncErrors</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.PluginsLoaded</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Plugins</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.VirtualFiles</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.VirtualFileSources</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.AddVirtualFileSources</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GatewayRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GatewayRequestFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GatewayResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.GatewayResponseFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.Config</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.ServiceStackHost.MetadataPagesConfig</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.ServiceStack.Hosting.html">Kephas.ServiceStack.Hosting</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.ServiceStack.dll</h6>
+  <h5 id="Kephas_ServiceStack_Hosting_DefaultWebHost_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
+public class DefaultWebHost : AppHostBase, IWebHost, IAppHost, IResolver, IFunqlet, IHasContainer, IDisposable, IAsyncInitializable, IAsyncFinalizable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost__ctor_Kephas_Application_IAppManifest_Kephas_Composition_ICompositionContext_Kephas_ServiceStack_Hosting_IEndpointServiceProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_ServiceStack_Hosting_IHostConfigurator_Kephas_ServiceStack_Hosting_Composition_EndpointMetadata___.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.%23ctor(Kephas.Application.IAppManifest%2CKephas.Composition.ICompositionContext%2CKephas.ServiceStack.Hosting.IEndpointServiceProvider%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.ServiceStack.Hosting.IHostConfigurator%2CKephas.ServiceStack.Hosting.Composition.EndpointMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L71">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost__ctor_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost__ctor_Kephas_Application_IAppManifest_Kephas_Composition_ICompositionContext_Kephas_ServiceStack_Hosting_IEndpointServiceProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_ServiceStack_Hosting_IHostConfigurator_Kephas_ServiceStack_Hosting_Composition_EndpointMetadata___" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor(Kephas.Application.IAppManifest,Kephas.Composition.ICompositionContext,Kephas.ServiceStack.Hosting.IEndpointServiceProvider,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IHostConfigurator,Kephas.ServiceStack.Hosting.Composition.EndpointMetadata}})">DefaultWebHost(IAppManifest, ICompositionContext, IEndpointServiceProvider, ICollection&lt;IExportFactory&lt;IHostConfigurator, EndpointMetadata&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.ServiceStack.Hosting.DefaultWebHost.html">DefaultWebHost</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DefaultWebHost(IAppManifest appManifest, ICompositionContext compositionContext, IEndpointServiceProvider endpointServiceProvider, ICollection&lt;IExportFactory&lt;IHostConfigurator, EndpointMetadata&gt;&gt; hostConfiguratorFactories)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
+        <td><span class="parametername">appManifest</span></td>
+        <td><p>The application manifest.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>Context for the composition.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html">IEndpointServiceProvider</a></td>
+        <td><span class="parametername">endpointServiceProvider</span></td>
+        <td><p>The endpoint service provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.ServiceStack.Hosting.IHostConfigurator.html">IHostConfigurator</a>, <a class="xref" href="Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html">EndpointMetadata</a>&gt;&gt;</td>
+        <td><span class="parametername">hostConfiguratorFactories</span></td>
+        <td><p>The host configurator factories.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost_Logger.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L90">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost_Logger_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.Logger*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost_Logger" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultWebHost&gt; Logger { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.ServiceStack.Hosting.DefaultWebHost.html">DefaultWebHost</a>&gt;</td>
+        <td><p>The logger.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost_Configure_Funq_Container_.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.Configure(Funq.Container)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L96">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost_Configure_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.Configure*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost_Configure_Funq_Container_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.Configure(Funq.Container)">Configure(Container)</h4>
+  <div class="markdown level1 summary"><p>Configures the specified container.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Configure(Container container)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Funq.Container</span></td>
+        <td><span class="parametername">container</span></td>
+        <td><p>The container.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">ServiceStack.ServiceStackHost.Configure(Funq.Container)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L145">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost_FinalizeAsync_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">FinalizeAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Finalizes the service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>(Optional) An optional context for finalization.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>(Optional) The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost_GetBaseUrls.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L160">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost_GetBaseUrls_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost_GetBaseUrls" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls">GetBaseUrls()</h4>
+  <div class="markdown level1 summary"><p>Gets the base urls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string[] GetBaseUrls()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>An array of string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L123">View Source</a>
+  </span>
+  <a id="Kephas_ServiceStack_Hosting_DefaultWebHost_InitializeAsync_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync*"></a>
+  <h4 id="Kephas_ServiceStack_Hosting_DefaultWebHost_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">InitializeAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Initializes the service asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>An optional context for initialization.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An awaitable task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.ServiceStack.Hosting.IWebHost.html">IWebHost</a>
+  </div>
+  <div>
+      <span class="xref">ServiceStack.IAppHost</span>
+  </div>
+  <div>
+      <span class="xref">ServiceStack.Configuration.IResolver</span>
+  </div>
+  <div>
+      <span class="xref">Funq.IFunqlet</span>
+  </div>
+  <div>
+      <span class="xref">Funq.IHasContainer</span>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IAsyncFinalizable.html">IAsyncFinalizable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_DefaultWebHost.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.DefaultWebHost%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/DefaultWebHost.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

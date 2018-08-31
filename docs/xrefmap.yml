@@ -44172,6 +44172,830 @@ references:
   fullName.vb: Kephas.Services.Transitioning.TransitionMonitor(Of TContract, TServiceImplementation).TransitionMonitor
   nameWithType: TransitionMonitor<TContract, TServiceImplementation>.TransitionMonitor
   nameWithType.vb: TransitionMonitor(Of TContract, TServiceImplementation).TransitionMonitor
+- uid: Kephas.ServiceStack.Application
+  name: Kephas.ServiceStack.Application
+  href: api/Kephas.ServiceStack.Application.html
+  commentId: N:Kephas.ServiceStack.Application
+  fullName: Kephas.ServiceStack.Application
+  nameWithType: Kephas.ServiceStack.Application
+- uid: Kephas.ServiceStack.Application.ServiceStackFeature
+  name: ServiceStackFeature
+  href: api/Kephas.ServiceStack.Application.ServiceStackFeature.html
+  commentId: T:Kephas.ServiceStack.Application.ServiceStackFeature
+  fullName: Kephas.ServiceStack.Application.ServiceStackFeature
+  nameWithType: ServiceStackFeature
+- uid: Kephas.ServiceStack.Application.ServiceStackFeature.WebHost
+  name: WebHost
+  href: api/Kephas.ServiceStack.Application.ServiceStackFeature.html#Kephas_ServiceStack_Application_ServiceStackFeature_WebHost
+  commentId: F:Kephas.ServiceStack.Application.ServiceStackFeature.WebHost
+  fullName: Kephas.ServiceStack.Application.ServiceStackFeature.WebHost
+  nameWithType: ServiceStackFeature.WebHost
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager
+  name: WebHostFeatureManager
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html
+  commentId: T:Kephas.ServiceStack.Application.WebHostFeatureManager
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager
+  nameWithType: WebHostFeatureManager
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.#ctor(Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IWebHost})
+  name: WebHostFeatureManager(IExportFactory<IWebHost>)
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager__ctor_Kephas_Composition_IExportFactory_Kephas_ServiceStack_Hosting_IWebHost__
+  commentId: M:Kephas.ServiceStack.Application.WebHostFeatureManager.#ctor(Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IWebHost})
+  name.vb: WebHostFeatureManager(IExportFactory(Of IWebHost))
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.WebHostFeatureManager(Kephas.Composition.IExportFactory<Kephas.ServiceStack.Hosting.IWebHost>)
+  fullName.vb: Kephas.ServiceStack.Application.WebHostFeatureManager.WebHostFeatureManager(Kephas.Composition.IExportFactory(Of Kephas.ServiceStack.Hosting.IWebHost))
+  nameWithType: WebHostFeatureManager.WebHostFeatureManager(IExportFactory<IWebHost>)
+  nameWithType.vb: WebHostFeatureManager.WebHostFeatureManager(IExportFactory(Of IWebHost))
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.#ctor*
+  name: WebHostFeatureManager
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager__ctor_
+  commentId: Overload:Kephas.ServiceStack.Application.WebHostFeatureManager.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.WebHostFeatureManager
+  nameWithType: WebHostFeatureManager.WebHostFeatureManager
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)
+  name: FinalizeCoreAsync(IAppContext, CancellationToken)
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_FinalizeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_
+  commentId: M:Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync(Kephas.Application.IAppContext, System.Threading.CancellationToken)
+  nameWithType: WebHostFeatureManager.FinalizeCoreAsync(IAppContext, CancellationToken)
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync*
+  name: FinalizeCoreAsync
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_FinalizeCoreAsync_
+  commentId: Overload:Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.FinalizeCoreAsync
+  nameWithType: WebHostFeatureManager.FinalizeCoreAsync
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)
+  name: InitializeCoreAsync(IAppContext, CancellationToken)
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_InitializeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_
+  commentId: M:Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync(Kephas.Application.IAppContext, System.Threading.CancellationToken)
+  nameWithType: WebHostFeatureManager.InitializeCoreAsync(IAppContext, CancellationToken)
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync*
+  name: InitializeCoreAsync
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_InitializeCoreAsync_
+  commentId: Overload:Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.InitializeCoreAsync
+  nameWithType: WebHostFeatureManager.InitializeCoreAsync
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.Logger
+  name: Logger
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_Logger
+  commentId: P:Kephas.ServiceStack.Application.WebHostFeatureManager.Logger
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.Logger
+  nameWithType: WebHostFeatureManager.Logger
+- uid: Kephas.ServiceStack.Application.WebHostFeatureManager.Logger*
+  name: Logger
+  href: api/Kephas.ServiceStack.Application.WebHostFeatureManager.html#Kephas_ServiceStack_Application_WebHostFeatureManager_Logger_
+  commentId: Overload:Kephas.ServiceStack.Application.WebHostFeatureManager.Logger
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Application.WebHostFeatureManager.Logger
+  nameWithType: WebHostFeatureManager.Logger
+- uid: Kephas.ServiceStack.Composition
+  name: Kephas.ServiceStack.Composition
+  href: api/Kephas.ServiceStack.Composition.html
+  commentId: N:Kephas.ServiceStack.Composition
+  fullName: Kephas.ServiceStack.Composition
+  nameWithType: Kephas.ServiceStack.Composition
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter
+  name: ComposableContainerAdapter
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html
+  commentId: T:Kephas.ServiceStack.Composition.ComposableContainerAdapter
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter
+  nameWithType: ComposableContainerAdapter
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.#ctor(Kephas.Composition.ICompositionContext)
+  name: ComposableContainerAdapter(ICompositionContext)
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter__ctor_Kephas_Composition_ICompositionContext_
+  commentId: M:Kephas.ServiceStack.Composition.ComposableContainerAdapter.#ctor(Kephas.Composition.ICompositionContext)
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.ComposableContainerAdapter(Kephas.Composition.ICompositionContext)
+  nameWithType: ComposableContainerAdapter.ComposableContainerAdapter(ICompositionContext)
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.#ctor*
+  name: ComposableContainerAdapter
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter__ctor_
+  commentId: Overload:Kephas.ServiceStack.Composition.ComposableContainerAdapter.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.ComposableContainerAdapter
+  nameWithType: ComposableContainerAdapter.ComposableContainerAdapter
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve*
+  name: Resolve
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter_Resolve_
+  commentId: Overload:Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve
+  nameWithType: ComposableContainerAdapter.Resolve
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve``1
+  name: Resolve<T>()
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter_Resolve__1
+  commentId: M:Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve``1
+  name.vb: Resolve(Of T)()
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve<T>()
+  fullName.vb: Kephas.ServiceStack.Composition.ComposableContainerAdapter.Resolve(Of T)()
+  nameWithType: ComposableContainerAdapter.Resolve<T>()
+  nameWithType.vb: ComposableContainerAdapter.Resolve(Of T)()
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve*
+  name: TryResolve
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter_TryResolve_
+  commentId: Overload:Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve
+  nameWithType: ComposableContainerAdapter.TryResolve
+- uid: Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve``1
+  name: TryResolve<T>()
+  href: api/Kephas.ServiceStack.Composition.ComposableContainerAdapter.html#Kephas_ServiceStack_Composition_ComposableContainerAdapter_TryResolve__1
+  commentId: M:Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve``1
+  name.vb: TryResolve(Of T)()
+  fullName: Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve<T>()
+  fullName.vb: Kephas.ServiceStack.Composition.ComposableContainerAdapter.TryResolve(Of T)()
+  nameWithType: ComposableContainerAdapter.TryResolve<T>()
+  nameWithType.vb: ComposableContainerAdapter.TryResolve(Of T)()
+- uid: Kephas.ServiceStack.Composition.IComposableContainerAdapter
+  name: IComposableContainerAdapter
+  href: api/Kephas.ServiceStack.Composition.IComposableContainerAdapter.html
+  commentId: T:Kephas.ServiceStack.Composition.IComposableContainerAdapter
+  fullName: Kephas.ServiceStack.Composition.IComposableContainerAdapter
+  nameWithType: IComposableContainerAdapter
+- uid: Kephas.ServiceStack.Hosting
+  name: Kephas.ServiceStack.Hosting
+  href: api/Kephas.ServiceStack.Hosting.html
+  commentId: N:Kephas.ServiceStack.Hosting
+  fullName: Kephas.ServiceStack.Hosting
+  nameWithType: Kephas.ServiceStack.Hosting
+- uid: Kephas.ServiceStack.Hosting.Composition
+  name: Kephas.ServiceStack.Hosting.Composition
+  href: api/Kephas.ServiceStack.Hosting.Composition.html
+  commentId: N:Kephas.ServiceStack.Hosting.Composition
+  fullName: Kephas.ServiceStack.Hosting.Composition
+  nameWithType: Kephas.ServiceStack.Hosting.Composition
+- uid: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata
+  name: EndpointMetadata
+  href: api/Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html
+  commentId: T:Kephas.ServiceStack.Hosting.Composition.EndpointMetadata
+  fullName: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata
+  nameWithType: EndpointMetadata
+- uid: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})
+  name: EndpointMetadata(IDictionary<String, Object>)
+  href: api/Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html#Kephas_ServiceStack_Hosting_Composition_EndpointMetadata__ctor_System_Collections_Generic_IDictionary_System_String_System_Object__
+  commentId: M:Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})
+  name.vb: EndpointMetadata(IDictionary(Of String, Object))
+  fullName: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.EndpointMetadata(System.Collections.Generic.IDictionary<System.String, System.Object>)
+  fullName.vb: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.EndpointMetadata(System.Collections.Generic.IDictionary(Of System.String, System.Object))
+  nameWithType: EndpointMetadata.EndpointMetadata(IDictionary<String, Object>)
+  nameWithType.vb: EndpointMetadata.EndpointMetadata(IDictionary(Of String, Object))
+- uid: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.#ctor*
+  name: EndpointMetadata
+  href: api/Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html#Kephas_ServiceStack_Hosting_Composition_EndpointMetadata__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.EndpointMetadata
+  nameWithType: EndpointMetadata.EndpointMetadata
+- uid: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature
+  name: RequiredFeature
+  href: api/Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html#Kephas_ServiceStack_Hosting_Composition_EndpointMetadata_RequiredFeature
+  commentId: P:Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature
+  fullName: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature
+  nameWithType: EndpointMetadata.RequiredFeature
+- uid: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature*
+  name: RequiredFeature
+  href: api/Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html#Kephas_ServiceStack_Hosting_Composition_EndpointMetadata_RequiredFeature_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.RequiredFeature
+  nameWithType: EndpointMetadata.RequiredFeature
+- uid: Kephas.ServiceStack.Hosting.Configurators
+  name: Kephas.ServiceStack.Hosting.Configurators
+  href: api/Kephas.ServiceStack.Hosting.Configurators.html
+  commentId: N:Kephas.ServiceStack.Hosting.Configurators
+  fullName: Kephas.ServiceStack.Hosting.Configurators
+  nameWithType: Kephas.ServiceStack.Hosting.Configurators
+- uid: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator
+  name: FunqConfigurator
+  href: api/Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.html
+  commentId: T:Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator
+  fullName: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator
+  nameWithType: FunqConfigurator
+- uid: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.#ctor(Kephas.ServiceStack.Composition.IComposableContainerAdapter)
+  name: FunqConfigurator(IComposableContainerAdapter)
+  href: api/Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_FunqConfigurator__ctor_Kephas_ServiceStack_Composition_IComposableContainerAdapter_
+  commentId: M:Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.#ctor(Kephas.ServiceStack.Composition.IComposableContainerAdapter)
+  fullName: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.FunqConfigurator(Kephas.ServiceStack.Composition.IComposableContainerAdapter)
+  nameWithType: FunqConfigurator.FunqConfigurator(IComposableContainerAdapter)
+- uid: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.#ctor*
+  name: FunqConfigurator
+  href: api/Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_FunqConfigurator__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.FunqConfigurator
+  nameWithType: FunqConfigurator.FunqConfigurator
+- uid: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  name: Configure(IHostConfigurationContext)
+  href: api/Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_FunqConfigurator_Configure_Kephas_ServiceStack_Hosting_IHostConfigurationContext_
+  commentId: M:Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  fullName: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  nameWithType: FunqConfigurator.Configure(IHostConfigurationContext)
+- uid: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure*
+  name: Configure
+  href: api/Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_FunqConfigurator_Configure_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Configurators.FunqConfigurator.Configure
+  nameWithType: FunqConfigurator.Configure
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator
+  name: JsonConfigurator
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html
+  commentId: T:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator
+  nameWithType: JsonConfigurator
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.#ctor(Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator)
+  name: JsonConfigurator(IJsonSerializerConfigurator)
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator__ctor_Kephas_Serialization_ServiceStack_Text_IJsonSerializerConfigurator_
+  commentId: M:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.#ctor(Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator)
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.JsonConfigurator(Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator)
+  nameWithType: JsonConfigurator.JsonConfigurator(IJsonSerializerConfigurator)
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.#ctor*
+  name: JsonConfigurator
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.JsonConfigurator
+  nameWithType: JsonConfigurator.JsonConfigurator
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  name: Configure(IHostConfigurationContext)
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator_Configure_Kephas_ServiceStack_Hosting_IHostConfigurationContext_
+  commentId: M:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  nameWithType: JsonConfigurator.Configure(IHostConfigurationContext)
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure*
+  name: Configure
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator_Configure_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Configure
+  nameWithType: JsonConfigurator.Configure
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger
+  name: Logger
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator_Logger
+  commentId: P:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger
+  nameWithType: JsonConfigurator.Logger
+- uid: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger*
+  name: Logger
+  href: api/Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.html#Kephas_ServiceStack_Hosting_Configurators_JsonConfigurator_Logger_
+  commentId: Overload:Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.Configurators.JsonConfigurator.Logger
+  nameWithType: JsonConfigurator.Logger
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider
+  name: DefaultEndpointServiceProvider
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html
+  commentId: T:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider
+  nameWithType: DefaultEndpointServiceProvider
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.#ctor(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IEndpointService,Kephas.ServiceStack.Hosting.Composition.EndpointMetadata}})
+  name: DefaultEndpointServiceProvider(ICollection<IExportFactory<IEndpointService, EndpointMetadata>>)
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_ServiceStack_Hosting_IEndpointService_Kephas_ServiceStack_Hosting_Composition_EndpointMetadata___
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.#ctor(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IEndpointService,Kephas.ServiceStack.Hosting.Composition.EndpointMetadata}})
+  name.vb: DefaultEndpointServiceProvider(ICollection(Of IExportFactory(Of IEndpointService, EndpointMetadata)))
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.DefaultEndpointServiceProvider(System.Collections.Generic.ICollection<Kephas.Composition.IExportFactory<Kephas.ServiceStack.Hosting.IEndpointService, Kephas.ServiceStack.Hosting.Composition.EndpointMetadata>>)
+  fullName.vb: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.DefaultEndpointServiceProvider(System.Collections.Generic.ICollection(Of Kephas.Composition.IExportFactory(Of Kephas.ServiceStack.Hosting.IEndpointService, Kephas.ServiceStack.Hosting.Composition.EndpointMetadata)))
+  nameWithType: DefaultEndpointServiceProvider.DefaultEndpointServiceProvider(ICollection<IExportFactory<IEndpointService, EndpointMetadata>>)
+  nameWithType.vb: DefaultEndpointServiceProvider.DefaultEndpointServiceProvider(ICollection(Of IExportFactory(Of IEndpointService, EndpointMetadata)))
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.#ctor*
+  name: DefaultEndpointServiceProvider
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.DefaultEndpointServiceProvider
+  nameWithType: DefaultEndpointServiceProvider.DefaultEndpointServiceProvider
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies
+  name: ServiceAssemblies
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider_ServiceAssemblies
+  commentId: P:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies
+  nameWithType: DefaultEndpointServiceProvider.ServiceAssemblies
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies*
+  name: ServiceAssemblies
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider_ServiceAssemblies_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceAssemblies
+  nameWithType: DefaultEndpointServiceProvider.ServiceAssemblies
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName
+  name: ServiceName
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider_ServiceName
+  commentId: P:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName
+  nameWithType: DefaultEndpointServiceProvider.ServiceName
+- uid: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName*
+  name: ServiceName
+  href: api/Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_DefaultEndpointServiceProvider_ServiceName_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultEndpointServiceProvider.ServiceName
+  nameWithType: DefaultEndpointServiceProvider.ServiceName
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost
+  name: DefaultWebHost
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html
+  commentId: T:Kephas.ServiceStack.Hosting.DefaultWebHost
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost
+  nameWithType: DefaultWebHost
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor(Kephas.Application.IAppManifest,Kephas.Composition.ICompositionContext,Kephas.ServiceStack.Hosting.IEndpointServiceProvider,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IHostConfigurator,Kephas.ServiceStack.Hosting.Composition.EndpointMetadata}})
+  name: DefaultWebHost(IAppManifest, ICompositionContext, IEndpointServiceProvider, ICollection<IExportFactory<IHostConfigurator, EndpointMetadata>>)
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost__ctor_Kephas_Application_IAppManifest_Kephas_Composition_ICompositionContext_Kephas_ServiceStack_Hosting_IEndpointServiceProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_ServiceStack_Hosting_IHostConfigurator_Kephas_ServiceStack_Hosting_Composition_EndpointMetadata___
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor(Kephas.Application.IAppManifest,Kephas.Composition.ICompositionContext,Kephas.ServiceStack.Hosting.IEndpointServiceProvider,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.ServiceStack.Hosting.IHostConfigurator,Kephas.ServiceStack.Hosting.Composition.EndpointMetadata}})
+  name.vb: DefaultWebHost(IAppManifest, ICompositionContext, IEndpointServiceProvider, ICollection(Of IExportFactory(Of IHostConfigurator, EndpointMetadata)))
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.DefaultWebHost(Kephas.Application.IAppManifest, Kephas.Composition.ICompositionContext, Kephas.ServiceStack.Hosting.IEndpointServiceProvider, System.Collections.Generic.ICollection<Kephas.Composition.IExportFactory<Kephas.ServiceStack.Hosting.IHostConfigurator, Kephas.ServiceStack.Hosting.Composition.EndpointMetadata>>)
+  fullName.vb: Kephas.ServiceStack.Hosting.DefaultWebHost.DefaultWebHost(Kephas.Application.IAppManifest, Kephas.Composition.ICompositionContext, Kephas.ServiceStack.Hosting.IEndpointServiceProvider, System.Collections.Generic.ICollection(Of Kephas.Composition.IExportFactory(Of Kephas.ServiceStack.Hosting.IHostConfigurator, Kephas.ServiceStack.Hosting.Composition.EndpointMetadata)))
+  nameWithType: DefaultWebHost.DefaultWebHost(IAppManifest, ICompositionContext, IEndpointServiceProvider, ICollection<IExportFactory<IHostConfigurator, EndpointMetadata>>)
+  nameWithType.vb: DefaultWebHost.DefaultWebHost(IAppManifest, ICompositionContext, IEndpointServiceProvider, ICollection(Of IExportFactory(Of IHostConfigurator, EndpointMetadata)))
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor*
+  name: DefaultWebHost
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.DefaultWebHost
+  nameWithType: DefaultWebHost.DefaultWebHost
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.Configure(Funq.Container)
+  name: Configure(Container)
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_Configure_Funq_Container_
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultWebHost.Configure(Funq.Container)
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.Configure(Funq.Container)
+  nameWithType: DefaultWebHost.Configure(Container)
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.Configure*
+  name: Configure
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_Configure_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.Configure
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.Configure
+  nameWithType: DefaultWebHost.Configure
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)
+  name: FinalizeAsync(IContext, CancellationToken)
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync(Kephas.Services.IContext, System.Threading.CancellationToken)
+  nameWithType: DefaultWebHost.FinalizeAsync(IContext, CancellationToken)
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync*
+  name: FinalizeAsync
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_FinalizeAsync_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.FinalizeAsync
+  nameWithType: DefaultWebHost.FinalizeAsync
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls
+  name: GetBaseUrls()
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_GetBaseUrls
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls()
+  nameWithType: DefaultWebHost.GetBaseUrls()
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls*
+  name: GetBaseUrls
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_GetBaseUrls_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.GetBaseUrls
+  nameWithType: DefaultWebHost.GetBaseUrls
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)
+  name: InitializeAsync(IContext, CancellationToken)
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_
+  commentId: M:Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync(Kephas.Services.IContext, System.Threading.CancellationToken)
+  nameWithType: DefaultWebHost.InitializeAsync(IContext, CancellationToken)
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync*
+  name: InitializeAsync
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_InitializeAsync_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.InitializeAsync
+  nameWithType: DefaultWebHost.InitializeAsync
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.Logger
+  name: Logger
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_Logger
+  commentId: P:Kephas.ServiceStack.Hosting.DefaultWebHost.Logger
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.Logger
+  nameWithType: DefaultWebHost.Logger
+- uid: Kephas.ServiceStack.Hosting.DefaultWebHost.Logger*
+  name: Logger
+  href: api/Kephas.ServiceStack.Hosting.DefaultWebHost.html#Kephas_ServiceStack_Hosting_DefaultWebHost_Logger_
+  commentId: Overload:Kephas.ServiceStack.Hosting.DefaultWebHost.Logger
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.DefaultWebHost.Logger
+  nameWithType: DefaultWebHost.Logger
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext
+  name: HostConfigurationContext
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html
+  commentId: T:Kephas.ServiceStack.Hosting.HostConfigurationContext
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext
+  nameWithType: HostConfigurationContext
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.#ctor(Kephas.Composition.ICompositionContext,ServiceStack.ServiceStackHost,ServiceStack.HostConfig)
+  name: HostConfigurationContext(ICompositionContext, ServiceStackHost, HostConfig)
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext__ctor_Kephas_Composition_ICompositionContext_ServiceStack_ServiceStackHost_ServiceStack_HostConfig_
+  commentId: M:Kephas.ServiceStack.Hosting.HostConfigurationContext.#ctor(Kephas.Composition.ICompositionContext,ServiceStack.ServiceStackHost,ServiceStack.HostConfig)
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfigurationContext(Kephas.Composition.ICompositionContext, ServiceStack.ServiceStackHost, ServiceStack.HostConfig)
+  nameWithType: HostConfigurationContext.HostConfigurationContext(ICompositionContext, ServiceStackHost, HostConfig)
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.#ctor*
+  name: HostConfigurationContext
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext__ctor_
+  commentId: Overload:Kephas.ServiceStack.Hosting.HostConfigurationContext.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfigurationContext
+  nameWithType: HostConfigurationContext.HostConfigurationContext
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls
+  name: BaseUrls
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_BaseUrls
+  commentId: P:Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls
+  nameWithType: HostConfigurationContext.BaseUrls
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls*
+  name: BaseUrls
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_BaseUrls_
+  commentId: Overload:Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.BaseUrls
+  nameWithType: HostConfigurationContext.BaseUrls
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.Host
+  name: Host
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_Host
+  commentId: P:Kephas.ServiceStack.Hosting.HostConfigurationContext.Host
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.Host
+  nameWithType: HostConfigurationContext.Host
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.Host*
+  name: Host
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_Host_
+  commentId: Overload:Kephas.ServiceStack.Hosting.HostConfigurationContext.Host
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.Host
+  nameWithType: HostConfigurationContext.Host
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig
+  name: HostConfig
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_HostConfig
+  commentId: P:Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig
+  nameWithType: HostConfigurationContext.HostConfig
+- uid: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig*
+  name: HostConfig
+  href: api/Kephas.ServiceStack.Hosting.HostConfigurationContext.html#Kephas_ServiceStack_Hosting_HostConfigurationContext_HostConfig_
+  commentId: Overload:Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.HostConfigurationContext.HostConfig
+  nameWithType: HostConfigurationContext.HostConfig
+- uid: Kephas.ServiceStack.Hosting.IEndpointService
+  name: IEndpointService
+  href: api/Kephas.ServiceStack.Hosting.IEndpointService.html
+  commentId: T:Kephas.ServiceStack.Hosting.IEndpointService
+  fullName: Kephas.ServiceStack.Hosting.IEndpointService
+  nameWithType: IEndpointService
+- uid: Kephas.ServiceStack.Hosting.IEndpointServiceProvider
+  name: IEndpointServiceProvider
+  href: api/Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html
+  commentId: T:Kephas.ServiceStack.Hosting.IEndpointServiceProvider
+  fullName: Kephas.ServiceStack.Hosting.IEndpointServiceProvider
+  nameWithType: IEndpointServiceProvider
+- uid: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies
+  name: ServiceAssemblies
+  href: api/Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_IEndpointServiceProvider_ServiceAssemblies
+  commentId: P:Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies
+  fullName: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies
+  nameWithType: IEndpointServiceProvider.ServiceAssemblies
+- uid: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies*
+  name: ServiceAssemblies
+  href: api/Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_IEndpointServiceProvider_ServiceAssemblies_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceAssemblies
+  nameWithType: IEndpointServiceProvider.ServiceAssemblies
+- uid: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName
+  name: ServiceName
+  href: api/Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_IEndpointServiceProvider_ServiceName
+  commentId: P:Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName
+  fullName: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName
+  nameWithType: IEndpointServiceProvider.ServiceName
+- uid: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName*
+  name: ServiceName
+  href: api/Kephas.ServiceStack.Hosting.IEndpointServiceProvider.html#Kephas_ServiceStack_Hosting_IEndpointServiceProvider_ServiceName_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IEndpointServiceProvider.ServiceName
+  nameWithType: IEndpointServiceProvider.ServiceName
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext
+  name: IHostConfigurationContext
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html
+  commentId: T:Kephas.ServiceStack.Hosting.IHostConfigurationContext
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext
+  nameWithType: IHostConfigurationContext
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls
+  name: BaseUrls
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_BaseUrls
+  commentId: P:Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls
+  nameWithType: IHostConfigurationContext.BaseUrls
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls*
+  name: BaseUrls
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_BaseUrls_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.BaseUrls
+  nameWithType: IHostConfigurationContext.BaseUrls
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host
+  name: Host
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_Host
+  commentId: P:Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host
+  nameWithType: IHostConfigurationContext.Host
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host*
+  name: Host
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_Host_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.Host
+  nameWithType: IHostConfigurationContext.Host
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig
+  name: HostConfig
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_HostConfig
+  commentId: P:Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig
+  nameWithType: IHostConfigurationContext.HostConfig
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig*
+  name: HostConfig
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurationContext.html#Kephas_ServiceStack_Hosting_IHostConfigurationContext_HostConfig_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurationContext.HostConfig
+  nameWithType: IHostConfigurationContext.HostConfig
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurator
+  name: IHostConfigurator
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurator.html
+  commentId: T:Kephas.ServiceStack.Hosting.IHostConfigurator
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurator
+  nameWithType: IHostConfigurator
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  name: Configure(IHostConfigurationContext)
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurator.html#Kephas_ServiceStack_Hosting_IHostConfigurator_Configure_Kephas_ServiceStack_Hosting_IHostConfigurationContext_
+  commentId: M:Kephas.ServiceStack.Hosting.IHostConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurator.Configure(Kephas.ServiceStack.Hosting.IHostConfigurationContext)
+  nameWithType: IHostConfigurator.Configure(IHostConfigurationContext)
+- uid: Kephas.ServiceStack.Hosting.IHostConfigurator.Configure*
+  name: Configure
+  href: api/Kephas.ServiceStack.Hosting.IHostConfigurator.html#Kephas_ServiceStack_Hosting_IHostConfigurator_Configure_
+  commentId: Overload:Kephas.ServiceStack.Hosting.IHostConfigurator.Configure
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Hosting.IHostConfigurator.Configure
+  nameWithType: IHostConfigurator.Configure
+- uid: Kephas.ServiceStack.Hosting.IWebHost
+  name: IWebHost
+  href: api/Kephas.ServiceStack.Hosting.IWebHost.html
+  commentId: T:Kephas.ServiceStack.Hosting.IWebHost
+  fullName: Kephas.ServiceStack.Hosting.IWebHost
+  nameWithType: IWebHost
+- uid: Kephas.ServiceStack.Logging
+  name: Kephas.ServiceStack.Logging
+  href: api/Kephas.ServiceStack.Logging.html
+  commentId: N:Kephas.ServiceStack.Logging
+  fullName: Kephas.ServiceStack.Logging
+  nameWithType: Kephas.ServiceStack.Logging
+- uid: Kephas.ServiceStack.Logging.Log
+  name: Log
+  href: api/Kephas.ServiceStack.Logging.Log.html
+  commentId: T:Kephas.ServiceStack.Logging.Log
+  fullName: Kephas.ServiceStack.Logging.Log
+  nameWithType: Log
+- uid: Kephas.ServiceStack.Logging.Log.#ctor(Kephas.Logging.ILogger)
+  name: Log(ILogger)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log__ctor_Kephas_Logging_ILogger_
+  commentId: M:Kephas.ServiceStack.Logging.Log.#ctor(Kephas.Logging.ILogger)
+  fullName: Kephas.ServiceStack.Logging.Log.Log(Kephas.Logging.ILogger)
+  nameWithType: Log.Log(ILogger)
+- uid: Kephas.ServiceStack.Logging.Log.#ctor*
+  name: Log
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log__ctor_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Log
+  nameWithType: Log.Log
+- uid: Kephas.ServiceStack.Logging.Log.Debug(System.Object)
+  name: Debug(Object)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Debug_System_Object_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Debug(System.Object)
+  fullName: Kephas.ServiceStack.Logging.Log.Debug(System.Object)
+  nameWithType: Log.Debug(Object)
+- uid: Kephas.ServiceStack.Logging.Log.Debug(System.Object,System.Exception)
+  name: Debug(Object, Exception)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Debug_System_Object_System_Exception_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Debug(System.Object,System.Exception)
+  fullName: Kephas.ServiceStack.Logging.Log.Debug(System.Object, System.Exception)
+  nameWithType: Log.Debug(Object, Exception)
+- uid: Kephas.ServiceStack.Logging.Log.Debug*
+  name: Debug
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Debug_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.Debug
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Debug
+  nameWithType: Log.Debug
+- uid: Kephas.ServiceStack.Logging.Log.DebugFormat(System.String,System.Object[])
+  name: DebugFormat(String, Object[])
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_DebugFormat_System_String_System_Object___
+  commentId: M:Kephas.ServiceStack.Logging.Log.DebugFormat(System.String,System.Object[])
+  name.vb: DebugFormat(String, Object())
+  fullName: Kephas.ServiceStack.Logging.Log.DebugFormat(System.String, System.Object[])
+  fullName.vb: Kephas.ServiceStack.Logging.Log.DebugFormat(System.String, System.Object())
+  nameWithType: Log.DebugFormat(String, Object[])
+  nameWithType.vb: Log.DebugFormat(String, Object())
+- uid: Kephas.ServiceStack.Logging.Log.DebugFormat*
+  name: DebugFormat
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_DebugFormat_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.DebugFormat
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.DebugFormat
+  nameWithType: Log.DebugFormat
+- uid: Kephas.ServiceStack.Logging.Log.Error(System.Object)
+  name: Error(Object)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Error_System_Object_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Error(System.Object)
+  fullName: Kephas.ServiceStack.Logging.Log.Error(System.Object)
+  nameWithType: Log.Error(Object)
+- uid: Kephas.ServiceStack.Logging.Log.Error(System.Object,System.Exception)
+  name: Error(Object, Exception)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Error_System_Object_System_Exception_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Error(System.Object,System.Exception)
+  fullName: Kephas.ServiceStack.Logging.Log.Error(System.Object, System.Exception)
+  nameWithType: Log.Error(Object, Exception)
+- uid: Kephas.ServiceStack.Logging.Log.Error*
+  name: Error
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Error_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.Error
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Error
+  nameWithType: Log.Error
+- uid: Kephas.ServiceStack.Logging.Log.ErrorFormat(System.String,System.Object[])
+  name: ErrorFormat(String, Object[])
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_ErrorFormat_System_String_System_Object___
+  commentId: M:Kephas.ServiceStack.Logging.Log.ErrorFormat(System.String,System.Object[])
+  name.vb: ErrorFormat(String, Object())
+  fullName: Kephas.ServiceStack.Logging.Log.ErrorFormat(System.String, System.Object[])
+  fullName.vb: Kephas.ServiceStack.Logging.Log.ErrorFormat(System.String, System.Object())
+  nameWithType: Log.ErrorFormat(String, Object[])
+  nameWithType.vb: Log.ErrorFormat(String, Object())
+- uid: Kephas.ServiceStack.Logging.Log.ErrorFormat*
+  name: ErrorFormat
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_ErrorFormat_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.ErrorFormat
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.ErrorFormat
+  nameWithType: Log.ErrorFormat
+- uid: Kephas.ServiceStack.Logging.Log.Fatal(System.Object)
+  name: Fatal(Object)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Fatal_System_Object_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Fatal(System.Object)
+  fullName: Kephas.ServiceStack.Logging.Log.Fatal(System.Object)
+  nameWithType: Log.Fatal(Object)
+- uid: Kephas.ServiceStack.Logging.Log.Fatal(System.Object,System.Exception)
+  name: Fatal(Object, Exception)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Fatal_System_Object_System_Exception_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Fatal(System.Object,System.Exception)
+  fullName: Kephas.ServiceStack.Logging.Log.Fatal(System.Object, System.Exception)
+  nameWithType: Log.Fatal(Object, Exception)
+- uid: Kephas.ServiceStack.Logging.Log.Fatal*
+  name: Fatal
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Fatal_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.Fatal
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Fatal
+  nameWithType: Log.Fatal
+- uid: Kephas.ServiceStack.Logging.Log.FatalFormat(System.String,System.Object[])
+  name: FatalFormat(String, Object[])
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_FatalFormat_System_String_System_Object___
+  commentId: M:Kephas.ServiceStack.Logging.Log.FatalFormat(System.String,System.Object[])
+  name.vb: FatalFormat(String, Object())
+  fullName: Kephas.ServiceStack.Logging.Log.FatalFormat(System.String, System.Object[])
+  fullName.vb: Kephas.ServiceStack.Logging.Log.FatalFormat(System.String, System.Object())
+  nameWithType: Log.FatalFormat(String, Object[])
+  nameWithType.vb: Log.FatalFormat(String, Object())
+- uid: Kephas.ServiceStack.Logging.Log.FatalFormat*
+  name: FatalFormat
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_FatalFormat_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.FatalFormat
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.FatalFormat
+  nameWithType: Log.FatalFormat
+- uid: Kephas.ServiceStack.Logging.Log.Info(System.Object)
+  name: Info(Object)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Info_System_Object_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Info(System.Object)
+  fullName: Kephas.ServiceStack.Logging.Log.Info(System.Object)
+  nameWithType: Log.Info(Object)
+- uid: Kephas.ServiceStack.Logging.Log.Info(System.Object,System.Exception)
+  name: Info(Object, Exception)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Info_System_Object_System_Exception_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Info(System.Object,System.Exception)
+  fullName: Kephas.ServiceStack.Logging.Log.Info(System.Object, System.Exception)
+  nameWithType: Log.Info(Object, Exception)
+- uid: Kephas.ServiceStack.Logging.Log.Info*
+  name: Info
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Info_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.Info
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Info
+  nameWithType: Log.Info
+- uid: Kephas.ServiceStack.Logging.Log.InfoFormat(System.String,System.Object[])
+  name: InfoFormat(String, Object[])
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_InfoFormat_System_String_System_Object___
+  commentId: M:Kephas.ServiceStack.Logging.Log.InfoFormat(System.String,System.Object[])
+  name.vb: InfoFormat(String, Object())
+  fullName: Kephas.ServiceStack.Logging.Log.InfoFormat(System.String, System.Object[])
+  fullName.vb: Kephas.ServiceStack.Logging.Log.InfoFormat(System.String, System.Object())
+  nameWithType: Log.InfoFormat(String, Object[])
+  nameWithType.vb: Log.InfoFormat(String, Object())
+- uid: Kephas.ServiceStack.Logging.Log.InfoFormat*
+  name: InfoFormat
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_InfoFormat_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.InfoFormat
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.InfoFormat
+  nameWithType: Log.InfoFormat
+- uid: Kephas.ServiceStack.Logging.Log.IsDebugEnabled
+  name: IsDebugEnabled
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_IsDebugEnabled
+  commentId: P:Kephas.ServiceStack.Logging.Log.IsDebugEnabled
+  fullName: Kephas.ServiceStack.Logging.Log.IsDebugEnabled
+  nameWithType: Log.IsDebugEnabled
+- uid: Kephas.ServiceStack.Logging.Log.IsDebugEnabled*
+  name: IsDebugEnabled
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_IsDebugEnabled_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.IsDebugEnabled
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.IsDebugEnabled
+  nameWithType: Log.IsDebugEnabled
+- uid: Kephas.ServiceStack.Logging.Log.Warn(System.Object)
+  name: Warn(Object)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Warn_System_Object_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Warn(System.Object)
+  fullName: Kephas.ServiceStack.Logging.Log.Warn(System.Object)
+  nameWithType: Log.Warn(Object)
+- uid: Kephas.ServiceStack.Logging.Log.Warn(System.Object,System.Exception)
+  name: Warn(Object, Exception)
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Warn_System_Object_System_Exception_
+  commentId: M:Kephas.ServiceStack.Logging.Log.Warn(System.Object,System.Exception)
+  fullName: Kephas.ServiceStack.Logging.Log.Warn(System.Object, System.Exception)
+  nameWithType: Log.Warn(Object, Exception)
+- uid: Kephas.ServiceStack.Logging.Log.Warn*
+  name: Warn
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_Warn_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.Warn
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.Warn
+  nameWithType: Log.Warn
+- uid: Kephas.ServiceStack.Logging.Log.WarnFormat(System.String,System.Object[])
+  name: WarnFormat(String, Object[])
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_WarnFormat_System_String_System_Object___
+  commentId: M:Kephas.ServiceStack.Logging.Log.WarnFormat(System.String,System.Object[])
+  name.vb: WarnFormat(String, Object())
+  fullName: Kephas.ServiceStack.Logging.Log.WarnFormat(System.String, System.Object[])
+  fullName.vb: Kephas.ServiceStack.Logging.Log.WarnFormat(System.String, System.Object())
+  nameWithType: Log.WarnFormat(String, Object[])
+  nameWithType.vb: Log.WarnFormat(String, Object())
+- uid: Kephas.ServiceStack.Logging.Log.WarnFormat*
+  name: WarnFormat
+  href: api/Kephas.ServiceStack.Logging.Log.html#Kephas_ServiceStack_Logging_Log_WarnFormat_
+  commentId: Overload:Kephas.ServiceStack.Logging.Log.WarnFormat
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.Log.WarnFormat
+  nameWithType: Log.WarnFormat
+- uid: Kephas.ServiceStack.Logging.LogFactory
+  name: LogFactory
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html
+  commentId: T:Kephas.ServiceStack.Logging.LogFactory
+  fullName: Kephas.ServiceStack.Logging.LogFactory
+  nameWithType: LogFactory
+- uid: Kephas.ServiceStack.Logging.LogFactory.#ctor(Kephas.Logging.ILogManager)
+  name: LogFactory(ILogManager)
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html#Kephas_ServiceStack_Logging_LogFactory__ctor_Kephas_Logging_ILogManager_
+  commentId: M:Kephas.ServiceStack.Logging.LogFactory.#ctor(Kephas.Logging.ILogManager)
+  fullName: Kephas.ServiceStack.Logging.LogFactory.LogFactory(Kephas.Logging.ILogManager)
+  nameWithType: LogFactory.LogFactory(ILogManager)
+- uid: Kephas.ServiceStack.Logging.LogFactory.#ctor*
+  name: LogFactory
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html#Kephas_ServiceStack_Logging_LogFactory__ctor_
+  commentId: Overload:Kephas.ServiceStack.Logging.LogFactory.#ctor
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.LogFactory.LogFactory
+  nameWithType: LogFactory.LogFactory
+- uid: Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.String)
+  name: GetLogger(String)
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html#Kephas_ServiceStack_Logging_LogFactory_GetLogger_System_String_
+  commentId: M:Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.String)
+  fullName: Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.String)
+  nameWithType: LogFactory.GetLogger(String)
+- uid: Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.Type)
+  name: GetLogger(Type)
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html#Kephas_ServiceStack_Logging_LogFactory_GetLogger_System_Type_
+  commentId: M:Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.Type)
+  fullName: Kephas.ServiceStack.Logging.LogFactory.GetLogger(System.Type)
+  nameWithType: LogFactory.GetLogger(Type)
+- uid: Kephas.ServiceStack.Logging.LogFactory.GetLogger*
+  name: GetLogger
+  href: api/Kephas.ServiceStack.Logging.LogFactory.html#Kephas_ServiceStack_Logging_LogFactory_GetLogger_
+  commentId: Overload:Kephas.ServiceStack.Logging.LogFactory.GetLogger
+  isSpec: "True"
+  fullName: Kephas.ServiceStack.Logging.LogFactory.GetLogger
+  nameWithType: LogFactory.GetLogger
 - uid: Kephas.Sets
   name: Kephas.Sets
   href: api/Kephas.Sets.html

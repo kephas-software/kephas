@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IWebHost
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IWebHost
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.ServiceStack.Hosting.IWebHost">
+  
+  
+  <h1 id="Kephas_ServiceStack_Hosting_IWebHost" data-uid="Kephas.ServiceStack.Hosting.IWebHost" class="text-break">Interface IWebHost
+  </h1>
+  <div class="markdown level0 summary"><p>Shared application service contract for the web host.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Register&lt;T&gt;(T)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterAs&lt;T, TAs&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Release(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.OnEndRequest(ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedRequestFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedRequestFilter&lt;T&gt;(System.Func&lt;Funq.Container, ServiceStack.Host.ITypedFilter&lt;T&gt;&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedResponseFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedResponseFilter&lt;T&gt;(System.Func&lt;Funq.Container, ServiceStack.Host.ITypedFilter&lt;T&gt;&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedMessageRequestFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterTypedMessageResponseFilter&lt;T&gt;(System.Action&lt;ServiceStack.Web.IRequest, ServiceStack.Web.IResponse, T&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GetRuntimeConfig&lt;T&gt;(ServiceStack.Web.IRequest, System.String, T)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterService(System.Type, System.String[])</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RegisterServicesInAssembly(System.Reflection.Assembly)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.LoadPlugin(ServiceStack.IPlugin[])</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.MapProjectPath(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.CreateServiceRunner&lt;TRequest&gt;(ServiceStack.Host.ActionContext)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ResolveAbsoluteUrl(System.String, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ResolveLocalizedString(System.String, ServiceStack.Web.IRequest)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ExecuteMessage(ServiceStack.Messaging.IMessage)</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ServiceAssemblies</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.OnEndRequestCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Routes</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Metadata</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ContentTypes</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.PreRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RequestConverters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ResponseConverters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalRequestFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalResponseFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalMessageRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalMessageRequestFiltersAsync</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalMessageResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GatewayRequestFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GatewayResponseFilters</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ViewEngines</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ServiceExceptionHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.UncaughtExceptionHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.AfterInitCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.OnDisposeCallbacks</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RawHttpHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.CatchAllHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.GlobalHtmlErrorHttpHandler</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.CustomErrorHttpHandlers</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.RequestBinders</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Config</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.AppSettings</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.Plugins</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.VirtualFileSources</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.VirtualFiles</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.AddVirtualFileSources</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.IAppHost.ServiceController</span>
+    </div>
+    <div>
+      <span class="xref">ServiceStack.Configuration.IResolver.TryResolve&lt;T&gt;()</span>
+    </div>
+    <div>
+      <span class="xref">Funq.IFunqlet.Configure(Funq.Container)</span>
+    </div>
+    <div>
+      <span class="xref">Funq.IHasContainer.Container</span>
+    </div>
+    <div>
+      <span class="xref">System.IDisposable.Dispose()</span>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.IAsyncInitializable.html#Kephas_Services_IAsyncInitializable_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncInitializable.InitializeAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.IAsyncFinalizable.html#Kephas_Services_IAsyncFinalizable_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncFinalizable.FinalizeAsync(IContext, CancellationToken)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.ServiceStack.Hosting.html">Kephas.ServiceStack.Hosting</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.ServiceStack.dll</h6>
+  <h5 id="Kephas_ServiceStack_Hosting_IWebHost_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+public interface IWebHost : IAppHost, IResolver, IFunqlet, IHasContainer, IDisposable, IAsyncInitializable, IAsyncFinalizable</code></pre>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ServiceStack_Hosting_IWebHost.md&amp;value=---%0Auid%3A%20Kephas.ServiceStack.Hosting.IWebHost%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.ServiceStack/Hosting/IWebHost.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

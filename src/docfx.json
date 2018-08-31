@@ -259,7 +259,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Serialization.ServiceStack",
+          "cwd": "./Kephas.ServiceStack",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
