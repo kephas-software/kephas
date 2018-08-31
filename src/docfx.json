@@ -6,7 +6,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.CodeAnalysis.Net45",
+          "cwd": "./Kephas.CodeAnalysis",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -17,7 +17,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Composition.Mef.Net45",
+          "cwd": "./Kephas.Composition.Mef",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -28,7 +28,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Core.Net45",
+          "cwd": "./Kephas.Core",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -39,7 +39,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.Net45",
+          "cwd": "./Kephas.Data",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -50,7 +50,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.Client.Net45",
+          "cwd": "./Kephas.Data.Client",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -61,7 +61,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.Endpoints.Net45",
+          "cwd": "./Kephas.Data.Endpoints",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -72,7 +72,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.InMemory.Net45",
+          "cwd": "./Kephas.Data.InMemory",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -83,7 +83,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.IO.Net45",
+          "cwd": "./Kephas.Data.IO",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -94,7 +94,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.Model.Net45",
+          "cwd": "./Kephas.Data.Model",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -105,7 +105,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Data.MongoDB.Net45",
+          "cwd": "./Kephas.Data.MongoDB",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -116,7 +116,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Localization.Net45",
+          "cwd": "./Kephas.Localization",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -127,7 +127,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Logging.Log4Net.Net45",
+          "cwd": "./Kephas.Logging.Log4Net",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -138,7 +138,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Logging.NLog.Net45",
+          "cwd": "./Kephas.Logging.NLog",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -149,7 +149,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Mail.Net45",
+          "cwd": "./Kephas.Mail",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -160,7 +160,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Mail.MailKit.Net45",
+          "cwd": "./Kephas.Mail.MailKit",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -171,7 +171,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Messaging.Net45",
+          "cwd": "./Kephas.Messaging",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -182,7 +182,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Messaging.Model.Net45",
+          "cwd": "./Kephas.Messaging.Model",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -193,7 +193,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Model.Net45",
+          "cwd": "./Kephas.Model",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -204,7 +204,7 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Platform.Net45",
+          "cwd": "./Kephas.Orchestration",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
@@ -215,7 +215,51 @@
           "files": [
             "*.csproj"
           ],
-          "cwd": "./Kephas.Serialization.Json.Net45",
+          "cwd": "./Kephas.Scripting",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Scripting.CSharp",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Serialization.Json",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Serialization.ServiceStack.Text",
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "_site/**"
+          ]
+        },
+        {
+          "files": [
+            "*.csproj"
+          ],
+          "cwd": "./Kephas.Serialization.ServiceStack",
           "exclude": [
             "**/obj/**",
             "**/bin/**",
