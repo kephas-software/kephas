@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultDataExportService
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -88,16 +88,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -107,6 +101,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.IO.Export.html">Kephas.Data.IO.Export</a></h6>
@@ -120,19 +120,19 @@ public class DefaultDataExportService : IDataExportService</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_DefaultDataExportService__ctor_Kephas_Data_IO_DataStreams_IDataStreamWriteService_Kephas_Data_Client_Queries_IClientQueryExecutor_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.DefaultDataExportService.%23ctor(Kephas.Data.IO.DataStreams.IDataStreamWriteService%2CKephas.Data.Client.Queries.IClientQueryExecutor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_DefaultDataExportService__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_IO_DataStreams_IDataStreamWriteService_Kephas_Data_Client_Queries_IClientQueryExecutor_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.DefaultDataExportService.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Data.IO.DataStreams.IDataStreamWriteService%2CKephas.Data.Client.Queries.IClientQueryExecutor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L43">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L55">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Export_DefaultDataExportService__ctor_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.#ctor*"></a>
-  <h4 id="Kephas_Data_IO_Export_DefaultDataExportService__ctor_Kephas_Data_IO_DataStreams_IDataStreamWriteService_Kephas_Data_Client_Queries_IClientQueryExecutor_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.#ctor(Kephas.Data.IO.DataStreams.IDataStreamWriteService,Kephas.Data.Client.Queries.IClientQueryExecutor)">DefaultDataExportService(IDataStreamWriteService, IClientQueryExecutor)</h4>
+  <h4 id="Kephas_Data_IO_Export_DefaultDataExportService__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_IO_DataStreams_IDataStreamWriteService_Kephas_Data_Client_Queries_IClientQueryExecutor_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.#ctor(Kephas.Composition.ICompositionContext,Kephas.Data.IO.DataStreams.IDataStreamWriteService,Kephas.Data.Client.Queries.IClientQueryExecutor)">DefaultDataExportService(ICompositionContext, IDataStreamWriteService, IClientQueryExecutor)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.IO.Export.DefaultDataExportService.html">DefaultDataExportService</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultDataExportService(IDataStreamWriteService dataStreamWriteService, IClientQueryExecutor clientQueryExecutor)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultDataExportService(ICompositionContext compositionContext, IDataStreamWriteService dataStreamWriteService, IClientQueryExecutor clientQueryExecutor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,6 +144,12 @@ public class DefaultDataExportService : IDataExportService</code></pre>
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>The composition context.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Kephas.Data.IO.DataStreams.IDataStreamWriteService.html">IDataStreamWriteService</a></td>
         <td><span class="parametername">dataStreamWriteService</span></td>
@@ -165,7 +171,7 @@ public class DefaultDataExportService : IDataExportService</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_DefaultDataExportService_ExportDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.DefaultDataExportService.ExportDataAsync(Kephas.Data.IO.Export.IDataExportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L62">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L77">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Export_DefaultDataExportService_ExportDataAsync_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.ExportDataAsync*"></a>
   <h4 id="Kephas_Data_IO_Export_DefaultDataExportService_ExportDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.ExportDataAsync(Kephas.Data.IO.Export.IDataExportContext,System.Threading.CancellationToken)">ExportDataAsync(IDataExportContext, CancellationToken)</h4>
@@ -174,7 +180,7 @@ public class DefaultDataExportService : IDataExportService</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IDataIOResult&gt; ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IDataIOResult&gt; ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -216,11 +222,70 @@ public class DefaultDataExportService : IDataExportService</code></pre>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_DefaultDataExportService_GetDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.DefaultDataExportService.GetDataAsync(Kephas.Data.IO.Export.IDataExportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L110">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Export_DefaultDataExportService_GetDataAsync_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.GetDataAsync*"></a>
+  <h4 id="Kephas_Data_IO_Export_DefaultDataExportService_GetDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Export.DefaultDataExportService.GetDataAsync(Kephas.Data.IO.Export.IDataExportContext,System.Threading.CancellationToken)">GetDataAsync(IDataExportContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Gets the data to export asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IEnumerable&lt;object&gt;&gt; GetDataAsync(IDataExportContext context, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IO.Export.IDataExportContext.html">IDataExportContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The export context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Object</span>&gt;&gt;</td>
+        <td><p>An asynchronous result that yields the data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Data.IO.Export.IDataExportService.html">IDataExportService</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -265,7 +330,7 @@ public class DefaultDataExportService : IDataExportService</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_DefaultDataExportService.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.DefaultDataExportService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L25" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/DefaultDataExportService.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -285,7 +350,7 @@ public class DefaultDataExportService : IDataExportService</code></pre>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

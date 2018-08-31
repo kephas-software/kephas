@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AppBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -84,16 +84,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -103,6 +97,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
@@ -121,7 +121,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_Logger.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L34">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L35">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_Logger_" data-uid="Kephas.Application.AppBase.Logger*"></a>
   <h4 id="Kephas_Application_AppBase_Logger" data-uid="Kephas.Application.AppBase.Logger">Logger</h4>
@@ -155,7 +155,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_BootstrapAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.BootstrapAsync(System.String%5B%5D%2CKephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L45">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L46">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_BootstrapAsync_" data-uid="Kephas.Application.AppBase.BootstrapAsync*"></a>
   <h4 id="Kephas_Application_AppBase_BootstrapAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.BootstrapAsync(System.String[],Kephas.IAmbientServices,System.Threading.CancellationToken)">BootstrapAsync(String[], IAmbientServices, CancellationToken)</h4>
@@ -164,7 +164,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; BootstrapAsync(string[] appArgs = null, IAmbientServices ambientServices = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; BootstrapAsync(string[] appArgs = null, IAmbientServices ambientServices = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -217,7 +217,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ConfigureAmbientServicesAsync(System.String%5B%5D%2CKephas.AmbientServicesBuilder%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L118">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L137">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServicesAsync*"></a>
   <h4 id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServicesAsync(System.String[],Kephas.AmbientServicesBuilder,System.Threading.CancellationToken)">ConfigureAmbientServicesAsync(String[], AmbientServicesBuilder, CancellationToken)</h4>
@@ -275,14 +275,14 @@
     </tbody>
   </table>
   <h5 id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method should be overwritten to provide a meaningful content.</p>
+  <div class="markdown level1 remarks"><p>Override this method to initialize the startup services, like log manager and configuration manager.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_CreateAppContext_System_String___Kephas_IAmbientServices_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.CreateAppContext(System.String%5B%5D%2CKephas.IAmbientServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L170">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L189">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_CreateAppContext_" data-uid="Kephas.Application.AppBase.CreateAppContext*"></a>
   <h4 id="Kephas_Application_AppBase_CreateAppContext_System_String___Kephas_IAmbientServices_" data-uid="Kephas.Application.AppBase.CreateAppContext(System.String[],Kephas.IAmbientServices)">CreateAppContext(String[], IAmbientServices)</h4>
@@ -338,7 +338,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_FinalizeAppManagerAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.FinalizeAppManagerAsync(Kephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L153">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L172">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_FinalizeAppManagerAsync_" data-uid="Kephas.Application.AppBase.FinalizeAppManagerAsync*"></a>
   <h4 id="Kephas_Application_AppBase_FinalizeAppManagerAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.FinalizeAppManagerAsync(Kephas.IAmbientServices,System.Threading.CancellationToken)">FinalizeAppManagerAsync(IAmbientServices, CancellationToken)</h4>
@@ -394,7 +394,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_InitializeAppManagerAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.InitializeAppManagerAsync(System.String%5B%5D%2CKephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L135">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L154">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_InitializeAppManagerAsync_" data-uid="Kephas.Application.AppBase.InitializeAppManagerAsync*"></a>
   <h4 id="Kephas_Application_AppBase_InitializeAppManagerAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.InitializeAppManagerAsync(System.String[],Kephas.IAmbientServices,System.Threading.CancellationToken)">InitializeAppManagerAsync(String[], IAmbientServices, CancellationToken)</h4>
@@ -456,7 +456,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_Log_Kephas_Logging_LogLevel_System_Exception_System_String_System_Object___.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.Log(Kephas.Logging.LogLevel%2CSystem.Exception%2CSystem.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L186">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L205">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_Log_" data-uid="Kephas.Application.AppBase.Log*"></a>
   <h4 id="Kephas_Application_AppBase_Log_Kephas_Logging_LogLevel_System_Exception_System_String_System_Object___" data-uid="Kephas.Application.AppBase.Log(Kephas.Logging.LogLevel,System.Exception,System.String,System.Object[])">Log(LogLevel, Exception, String, Object[])</h4>
@@ -508,7 +508,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ShutdownAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ShutdownAsync(Kephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L84">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L103">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_ShutdownAsync_" data-uid="Kephas.Application.AppBase.ShutdownAsync*"></a>
   <h4 id="Kephas_Application_AppBase_ShutdownAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.ShutdownAsync(Kephas.IAmbientServices,System.Threading.CancellationToken)">ShutdownAsync(IAmbientServices, CancellationToken)</h4>
@@ -517,7 +517,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; ShutdownAsync(IAmbientServices ambientServices = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; ShutdownAsync(IAmbientServices ambientServices = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -560,6 +560,9 @@
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -604,7 +607,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -624,7 +627,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

@@ -1,0 +1,770 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RuntimeParameterInfo
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RuntimeParameterInfo
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Runtime.RuntimeParameterInfo">
+  
+  
+  <h1 id="Kephas_Runtime_RuntimeParameterInfo" data-uid="Kephas.Runtime.RuntimeParameterInfo" class="text-break">Class RuntimeParameterInfo
+  </h1>
+  <div class="markdown level0 summary"><p>Information about the runtime parameter.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
+    <div class="level2"><a class="xref" href="Kephas.Dynamic.ExpandoBase.html">ExpandoBase</a></div>
+    <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
+    <div class="level4"><span class="xref">RuntimeParameterInfo</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Runtime.IRuntimeParameterInfo.html">IRuntimeParameterInfo</a></div>
+    <div><a class="xref" href="Kephas.Reflection.IParameterInfo.html">IParameterInfo</a></div>
+    <div><a class="xref" href="Kephas.Reflection.IValueElementInfo.html">IValueElementInfo</a></div>
+    <div><a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a></div>
+    <div><a class="xref" href="Kephas.Reflection.IElementInfo.html">IElementInfo</a></div>
+    <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
+    <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
+    <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
+    <div><a class="xref" href="Kephas.Runtime.IAttributeProvider.html">IAttributeProvider</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames">ExpandoBase.GetDynamicMemberNames()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasMember_System_String_">ExpandoBase.HasMember(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__">ExpandoBase.TryGetMember(GetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetMember_System_Dynamic_SetMemberBinder_System_Object_">ExpandoBase.TrySetMember(SetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetValue_System_String_System_Object__">ExpandoBase.TryGetValue(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Runtime.html">Kephas.Runtime</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Runtime_RuntimeParameterInfo_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RuntimeParameterInfo : Expando, IRuntimeParameterInfo, IParameterInfo, IValueElementInfo, IRuntimeElementInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_Annotations.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.Annotations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L71">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_Annotations_" data-uid="Kephas.Runtime.RuntimeParameterInfo.Annotations*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_Annotations" data-uid="Kephas.Runtime.RuntimeParameterInfo.Annotations">Annotations</h4>
+  <div class="markdown level1 summary"><p>Gets the element annotations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;object&gt; Annotations { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>The element annotations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_DeclaringContainer.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.DeclaringContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L79">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_DeclaringContainer_" data-uid="Kephas.Runtime.RuntimeParameterInfo.DeclaringContainer*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_DeclaringContainer" data-uid="Kephas.Runtime.RuntimeParameterInfo.DeclaringContainer">DeclaringContainer</h4>
+  <div class="markdown level1 summary"><p>Gets the parent element declaring this element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IElementInfo DeclaringContainer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.IElementInfo.html">IElementInfo</a></td>
+        <td><p>The declaring element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_FullName.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.FullName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L63">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_FullName_" data-uid="Kephas.Runtime.RuntimeParameterInfo.FullName*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_FullName" data-uid="Kephas.Runtime.RuntimeParameterInfo.FullName">FullName</h4>
+  <div class="markdown level1 summary"><p>Gets the full name of the element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string FullName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The full name of the element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_Name.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L55">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_Name_" data-uid="Kephas.Runtime.RuntimeParameterInfo.Name*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_Name" data-uid="Kephas.Runtime.RuntimeParameterInfo.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The name of the element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_ParameterInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.ParameterInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L98">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_ParameterInfo_" data-uid="Kephas.Runtime.RuntimeParameterInfo.ParameterInfo*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_ParameterInfo" data-uid="Kephas.Runtime.RuntimeParameterInfo.ParameterInfo">ParameterInfo</h4>
+  <div class="markdown level1 summary"><p>Gets information describing the parameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParameterInfo ParameterInfo { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ParameterInfo</span></td>
+        <td><p>Information describing the parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_ValueType.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.ValueType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L106">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_ValueType_" data-uid="Kephas.Runtime.RuntimeParameterInfo.ValueType*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_ValueType" data-uid="Kephas.Runtime.RuntimeParameterInfo.ValueType">ValueType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRuntimeTypeInfo ValueType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Runtime.IRuntimeTypeInfo.html">IRuntimeTypeInfo</a></td>
+        <td><p>The type of the field.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_GetAttributes__1.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.GetAttributes%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L165">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_GetAttributes_" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetAttributes*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_GetAttributes__1" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetAttributes``1">GetAttributes&lt;TAttribute&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets the attribute of the provided type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;TAttribute&gt; GetAttributes&lt;TAttribute&gt;()
+    where TAttribute : Attribute</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TAttribute&gt;</td>
+        <td><p>The attribute of the provided type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAttribute</span></td>
+        <td><p>Type of the attribute.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_GetThisTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.GetThisTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L184">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_GetThisTypeInfo_" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetThisTypeInfo*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_GetThisTypeInfo" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetThisTypeInfo">GetThisTypeInfo()</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> of this expando object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ITypeInfo GetThisTypeInfo()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><p>The <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> of this expando object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetThisTypeInfo">ExpandoBase.GetThisTypeInfo()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_GetUnderlyingElementInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.GetUnderlyingElementInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L156">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_GetUnderlyingElementInfo_" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetUnderlyingElementInfo*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_GetUnderlyingElementInfo" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetUnderlyingElementInfo">GetUnderlyingElementInfo()</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying member information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICustomAttributeProvider GetUnderlyingElementInfo()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ICustomAttributeProvider</span></td>
+        <td><p>The underlying member information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_GetValue_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.GetValue(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L140">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_GetValue_" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetValue*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_GetValue_System_Object_" data-uid="Kephas.Runtime.RuntimeParameterInfo.GetValue(System.Object)">GetValue(Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the value from the specified object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual object GetValue(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_SetValue_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.SetValue(System.Object%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L121">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_SetValue_" data-uid="Kephas.Runtime.RuntimeParameterInfo.SetValue*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_SetValue_System_Object_System_Object_" data-uid="Kephas.Runtime.RuntimeParameterInfo.SetValue(System.Object,System.Object)">SetValue(Object, Object)</h4>
+  <div class="markdown level1 summary"><p>Sets the specified value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetValue(object obj, object value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_ToString.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L173">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_ToString_" data-uid="Kephas.Runtime.RuntimeParameterInfo.ToString*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_ToString" data-uid="Kephas.Runtime.RuntimeParameterInfo.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A string that represents the current object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo_Kephas_Reflection_IValueElementInfo_ValueType.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo.Kephas%23Reflection%23IValueElementInfo%23ValueType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L114">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeParameterInfo_Kephas_Reflection_IValueElementInfo_ValueType_" data-uid="Kephas.Runtime.RuntimeParameterInfo.Kephas#Reflection#IValueElementInfo#ValueType*"></a>
+  <h4 id="Kephas_Runtime_RuntimeParameterInfo_Kephas_Reflection_IValueElementInfo_ValueType" data-uid="Kephas.Runtime.RuntimeParameterInfo.Kephas#Reflection#IValueElementInfo#ValueType">IValueElementInfo.ValueType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITypeInfo IValueElementInfo.ValueType { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><p>The type of the field.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Runtime.IRuntimeParameterInfo.html">IRuntimeParameterInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.IParameterInfo.html">IParameterInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.IValueElementInfo.html">IValueElementInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.IElementInfo.html">IElementInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>
+  </div>
+  <div>
+      <span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Runtime.IAttributeProvider.html">IAttributeProvider</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Runtime.AttributeProviderExtensions.html#Kephas_Runtime_AttributeProviderExtensions_GetAttribute__1_Kephas_Runtime_IAttributeProvider_">AttributeProviderExtensions.GetAttribute&lt;TAttribute&gt;(IAttributeProvider)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeParameterInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeParameterInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeParameterInfo.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

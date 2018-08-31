@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Configuration&lt;TSettings&gt;
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -112,7 +112,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -127,7 +127,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -136,37 +139,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -176,6 +170,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Configuration.html">Kephas.Configuration</a></h6>
@@ -210,7 +210,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Configuration_Providers_IConfigurationProvider_Kephas_Configuration_Composition_ConfigurationProviderMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.%23ctor(System.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Configuration.Providers.IConfigurationProvider%2CKephas.Configuration.Composition.ConfigurationProviderMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L47">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L48">View Source</a>
   </span>
   <a id="Kephas_Configuration_Configuration_1__ctor_" data-uid="Kephas.Configuration.Configuration`1.#ctor*"></a>
   <h4 id="Kephas_Configuration_Configuration_1__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Configuration_Providers_IConfigurationProvider_Kephas_Configuration_Composition_ConfigurationProviderMetadata___" data-uid="Kephas.Configuration.Configuration`1.#ctor(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Configuration.Providers.IConfigurationProvider,Kephas.Configuration.Composition.ConfigurationProviderMetadata}})">Configuration(ICollection&lt;IExportFactory&lt;IConfigurationProvider, ConfigurationProviderMetadata&gt;&gt;)</h4>
@@ -246,7 +246,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1_Settings.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.Settings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L60">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L61">View Source</a>
   </span>
   <a id="Kephas_Configuration_Configuration_1_Settings_" data-uid="Kephas.Configuration.Configuration`1.Settings*"></a>
   <h4 id="Kephas_Configuration_Configuration_1_Settings" data-uid="Kephas.Configuration.Configuration`1.Settings">Settings</h4>
@@ -288,6 +288,9 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -315,6 +318,9 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -331,7 +337,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -351,7 +357,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DataContextBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -95,6 +95,7 @@
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
     <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
+    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
     <div><a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a></div>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a></div>
@@ -105,7 +106,19 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_AmbientServices">Context.AmbientServices</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_CompositionContext">Context.CompositionContext</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetCompositionContext_Kephas_Composition_ICompositionContext_">Context.SetCompositionContext(ICompositionContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -126,7 +139,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -141,7 +154,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -150,37 +166,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -191,30 +198,36 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.html">Kephas.Data</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_DataContextBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DataContextBase : Context, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, IIdentifiable, IDisposable, IInitializable</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DataContextBase : Context, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware, IIdentifiable, IDisposable, IInitializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase__ctor_Kephas_IAmbientServices_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Security_IIdentityProvider_Kephas_Data_Caching_IDataContextCache_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.%23ctor(Kephas.IAmbientServices%2CKephas.Data.Commands.Factory.IDataCommandProvider%2CKephas.Security.IIdentityProvider%2CKephas.Data.Caching.IDataContextCache)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_Caching_IDataContextCache_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Data.Commands.Factory.IDataCommandProvider%2CKephas.Data.Caching.IDataContextCache)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L51">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase__ctor_" data-uid="Kephas.Data.DataContextBase.#ctor*"></a>
-  <h4 id="Kephas_Data_DataContextBase__ctor_Kephas_IAmbientServices_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Security_IIdentityProvider_Kephas_Data_Caching_IDataContextCache_" data-uid="Kephas.Data.DataContextBase.#ctor(Kephas.IAmbientServices,Kephas.Data.Commands.Factory.IDataCommandProvider,Kephas.Security.IIdentityProvider,Kephas.Data.Caching.IDataContextCache)">DataContextBase(IAmbientServices, IDataCommandProvider, IIdentityProvider, IDataContextCache)</h4>
+  <h4 id="Kephas_Data_DataContextBase__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_Caching_IDataContextCache_" data-uid="Kephas.Data.DataContextBase.#ctor(Kephas.Composition.ICompositionContext,Kephas.Data.Commands.Factory.IDataCommandProvider,Kephas.Data.Caching.IDataContextCache)">DataContextBase(ICompositionContext, IDataCommandProvider, IDataContextCache)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.DataContextBase.html">DataContextBase</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected DataContextBase(IAmbientServices ambientServices, IDataCommandProvider dataCommandProvider = null, IIdentityProvider identityProvider = null, IDataContextCache localCache = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected DataContextBase(ICompositionContext compositionContext = null, IDataCommandProvider dataCommandProvider = null, IDataContextCache localCache = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -227,21 +240,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services.</p>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>The composition context (optional).</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Kephas.Data.Commands.Factory.IDataCommandProvider.html">IDataCommandProvider</a></td>
         <td><span class="parametername">dataCommandProvider</span></td>
         <td><p>The data command provider (optional). If not provided, the <a class="xref" href="Kephas.Data.Commands.Factory.DefaultDataCommandProvider.html">DefaultDataCommandProvider</a> will be used.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Security.IIdentityProvider.html">IIdentityProvider</a></td>
-        <td><span class="parametername">identityProvider</span></td>
-        <td><p>The identity provider (optional).</p>
 </td>
       </tr>
       <tr>
@@ -259,7 +266,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_InitializationMonitor.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.InitializationMonitor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L37">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L38">View Source</a>
   </span>
   <h4 id="Kephas_Data_DataContextBase_InitializationMonitor" data-uid="Kephas.Data.DataContextBase.InitializationMonitor">InitializationMonitor</h4>
   <div class="markdown level1 summary"><p>The initialization monitor.</p>
@@ -389,7 +396,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_AttachEntity_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.AttachEntity(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L170">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L169">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_AttachEntity_" data-uid="Kephas.Data.DataContextBase.AttachEntity*"></a>
   <h4 id="Kephas_Data_DataContextBase_AttachEntity_System_Object_" data-uid="Kephas.Data.DataContextBase.AttachEntity(System.Object)">AttachEntity(Object)</h4>
@@ -495,7 +502,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_CreateCommand_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.CreateCommand(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L130">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L129">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_CreateCommand_" data-uid="Kephas.Data.DataContextBase.CreateCommand*"></a>
   <h4 id="Kephas_Data_DataContextBase_CreateCommand_System_Type_" data-uid="Kephas.Data.DataContextBase.CreateCommand(System.Type)">CreateCommand(Type)</h4>
@@ -545,7 +552,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_CreateEntityInfo_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.CreateEntityInfo(System.Object%2CSystem.Nullable%7BKephas.Data.Capabilities.ChangeState%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L230">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L231">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_CreateEntityInfo_" data-uid="Kephas.Data.DataContextBase.CreateEntityInfo*"></a>
   <h4 id="Kephas_Data_DataContextBase_CreateEntityInfo_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__" data-uid="Kephas.Data.DataContextBase.CreateEntityInfo(System.Object,System.Nullable{Kephas.Data.Capabilities.ChangeState})">CreateEntityInfo(Object, Nullable&lt;ChangeState&gt;)</h4>
@@ -554,7 +561,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = default (ChangeState? ))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = default(ChangeState? ))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -601,7 +608,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_DetachEntity_Kephas_Data_Capabilities_IEntityInfo_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.DetachEntity(Kephas.Data.Capabilities.IEntityInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L184">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L183">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_DetachEntity_" data-uid="Kephas.Data.DataContextBase.DetachEntity*"></a>
   <h4 id="Kephas_Data_DataContextBase_DetachEntity_Kephas_Data_Capabilities_IEntityInfo_" data-uid="Kephas.Data.DataContextBase.DetachEntity(Kephas.Data.Capabilities.IEntityInfo)">DetachEntity(IEntityInfo)</h4>
@@ -707,7 +714,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_Dispose.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L195">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L194">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_Dispose_" data-uid="Kephas.Data.DataContextBase.Dispose*"></a>
   <h4 id="Kephas_Data_DataContextBase_Dispose" data-uid="Kephas.Data.DataContextBase.Dispose">Dispose()</h4>
@@ -759,7 +766,7 @@ resources.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_GetEntityInfo_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.GetEntityInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L154">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L153">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_GetEntityInfo_" data-uid="Kephas.Data.DataContextBase.GetEntityInfo*"></a>
   <h4 id="Kephas_Data_DataContextBase_GetEntityInfo_System_Object_" data-uid="Kephas.Data.DataContextBase.GetEntityInfo(System.Object)">GetEntityInfo(Object)</h4>
@@ -814,7 +821,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.GetIdEqualityExpression%60%601(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L208">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L207">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_GetIdEqualityExpression_" data-uid="Kephas.Data.DataContextBase.GetIdEqualityExpression*"></a>
   <h4 id="Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_" data-uid="Kephas.Data.DataContextBase.GetIdEqualityExpression``1(System.Object)">GetIdEqualityExpression&lt;T&gt;(Object)</h4>
@@ -880,7 +887,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_Initialize_Kephas_Data_IDataInitializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.Initialize(Kephas.Data.IDataInitializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L217">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L216">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_Initialize_" data-uid="Kephas.Data.DataContextBase.Initialize*"></a>
   <h4 id="Kephas_Data_DataContextBase_Initialize_Kephas_Data_IDataInitializationContext_" data-uid="Kephas.Data.DataContextBase.Initialize(Kephas.Data.IDataInitializationContext)">Initialize(IDataInitializationContext)</h4>
@@ -948,7 +955,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase_Query__1_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase.Query%60%601(Kephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L120">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L119">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextBase_Query_" data-uid="Kephas.Data.DataContextBase.Query*"></a>
   <h4 id="Kephas_Data_DataContextBase_Query__1_Kephas_Data_IQueryOperationContext_" data-uid="Kephas.Data.DataContextBase.Query``1(Kephas.Data.IQueryOperationContext)">Query&lt;T&gt;(IQueryOperationContext)</h4>
@@ -957,7 +964,8 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IQueryable&lt;T&gt; Query&lt;T&gt;(IQueryOperationContext queryOperationContext = null)where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IQueryable&lt;T&gt; Query&lt;T&gt;(IQueryOperationContext queryOperationContext = null)
+    where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1029,6 +1037,9 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
       <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>
   </div>
   <div>
@@ -1038,6 +1049,18 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
       <a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_GetInitialData_Kephas_Services_IContext_">ContextExtensions.GetInitialData(IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Tuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Tuple&lt;Object, ChangeState&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Object&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IEntityInfo__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;IEntityInfo&gt;)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_DetachEntity_Kephas_Data_IDataContext_System_Object_">DataContextExtensions.DetachEntity(IDataContext, Object)</a>
   </div>
@@ -1078,7 +1101,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
       <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_">DataContextExtensions.FindOneAsync&lt;T&gt;(IDataContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;, Boolean, CancellationToken)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_PersistChangesAsync_Kephas_Data_IDataContext_System_Threading_CancellationToken_">DataContextExtensions.PersistChangesAsync(IDataContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_PersistChangesAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">DataContextExtensions.PersistChangesAsync(IDataContext, IPersistChangesContext, CancellationToken)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_DiscardChanges_Kephas_Data_IDataContext_">DataContextExtensions.DiscardChanges(IDataContext)</a>
@@ -1091,6 +1114,9 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
   </div>
   <div>
       <a class="xref" href="Kephas.Data.DataContextExtensions.html#Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IExecuteContext_System_Threading_CancellationToken_">DataContextExtensions.ExecuteAsync(IDataContext, IExecuteContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -1125,18 +1151,6 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_GetInitialData_Kephas_Services_IContext_">ContextExtensions.GetInitialData(IContext)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Tuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Tuple&lt;Object, ChangeState&gt;&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Object&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IEntityInfo__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;IEntityInfo&gt;)</a>
-  </div>
 </article>
           </div>
           
@@ -1148,7 +1162,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextBase.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L32" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextBase.cs/#L33" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -1168,7 +1182,7 @@ the framework implementation returns each time a new <a class="xref" href="Kepha
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

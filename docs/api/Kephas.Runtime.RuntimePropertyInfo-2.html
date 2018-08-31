@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RuntimePropertyInfo&lt;T, TMember&gt;
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -89,6 +89,7 @@
     <h5>Implements</h5>
     <div><a class="xref" href="Kephas.Runtime.IRuntimePropertyInfo.html">IRuntimePropertyInfo</a></div>
     <div><a class="xref" href="Kephas.Reflection.IPropertyInfo.html">IPropertyInfo</a></div>
+    <div><a class="xref" href="Kephas.Reflection.IValueElementInfo.html">IValueElementInfo</a></div>
     <div><a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a></div>
     <div><a class="xref" href="Kephas.Reflection.IElementInfo.html">IElementInfo</a></div>
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
@@ -114,22 +115,22 @@
       <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_PropertyInfo">RuntimePropertyInfo.PropertyInfo</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_PropertyType">RuntimePropertyInfo.PropertyType</a>
+      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_IsStatic">RuntimePropertyInfo.IsStatic</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_Kephas_Reflection_IPropertyInfo_PropertyType">RuntimePropertyInfo.IPropertyInfo.PropertyType</a>
+      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_ValueType">RuntimePropertyInfo.ValueType</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_CanWrite">RuntimePropertyInfo.CanWrite</a>
+      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_Kephas_Reflection_IValueElementInfo_ValueType">RuntimePropertyInfo.IValueElementInfo.ValueType</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_CanRead">RuntimePropertyInfo.CanRead</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_GetUnderlyingMemberInfo">RuntimePropertyInfo.GetUnderlyingMemberInfo()</a>
+      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_GetUnderlyingElementInfo">RuntimePropertyInfo.GetUnderlyingElementInfo()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_GetAttributes__1">RuntimePropertyInfo.GetAttributes&lt;TAttribute&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_ToString">RuntimePropertyInfo.ToString()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -150,7 +151,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -162,7 +163,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -171,37 +175,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -212,12 +207,15 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Runtime.html">Kephas.Runtime</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Runtime_RuntimePropertyInfo_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class RuntimePropertyInfo&lt;T, TMember&gt; : RuntimePropertyInfo, IRuntimePropertyInfo, IPropertyInfo, IRuntimeElementInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class RuntimePropertyInfo&lt;T, TMember&gt; : RuntimePropertyInfo, IRuntimePropertyInfo, IPropertyInfo, IValueElementInfo, IRuntimeElementInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,6 +238,76 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2_CanRead.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L239">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimePropertyInfo_2_CanRead_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.CanRead*"></a>
+  <h4 id="Kephas_Runtime_RuntimePropertyInfo_2_CanRead" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.CanRead">CanRead</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the property value can be read.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CanRead { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the property value can be read; otherwise <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_CanRead">RuntimePropertyInfo.CanRead</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2_CanWrite.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L247">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimePropertyInfo_2_CanWrite_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.CanWrite*"></a>
+  <h4 id="Kephas_Runtime_RuntimePropertyInfo_2_CanWrite" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.CanWrite">CanWrite</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the property can be written to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool CanWrite { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><code>true</code> if the property can be written to; otherwise <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Runtime.RuntimePropertyInfo.html#Kephas_Runtime_RuntimePropertyInfo_CanWrite">RuntimePropertyInfo.CanWrite</a></div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -247,7 +315,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2_GetThisTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602.GetThisTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L244">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L327">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimePropertyInfo_2_GetThisTypeInfo_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.GetThisTypeInfo*"></a>
   <h4 id="Kephas_Runtime_RuntimePropertyInfo_2_GetThisTypeInfo" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.GetThisTypeInfo">GetThisTypeInfo()</h4>
@@ -281,7 +349,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2_GetValue_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602.GetValue(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L227">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L310">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimePropertyInfo_2_GetValue_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.GetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimePropertyInfo_2_GetValue_System_Object_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.GetValue(System.Object)">GetValue(Object)</h4>
@@ -349,7 +417,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2_SetValue_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602.SetValue(System.Object%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L208">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L291">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimePropertyInfo_2_SetValue_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.SetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimePropertyInfo_2_SetValue_System_Object_System_Object_" data-uid="Kephas.Runtime.RuntimePropertyInfo`2.SetValue(System.Object,System.Object)">SetValue(Object, Object)</h4>
@@ -410,6 +478,9 @@
       <a class="xref" href="Kephas.Reflection.IPropertyInfo.html">IPropertyInfo</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Reflection.IValueElementInfo.html">IValueElementInfo</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a>
   </div>
   <div>
@@ -429,10 +500,13 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.LocalizationHelper.html#Kephas_Reflection_LocalizationHelper_GetLocalization_Kephas_Reflection_IPropertyInfo_">LocalizationHelper.GetLocalization(IPropertyInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -462,6 +536,9 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -481,7 +558,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimePropertyInfo_2.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimePropertyInfo%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L176" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimePropertyInfo.cs/#L192" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -501,7 +578,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

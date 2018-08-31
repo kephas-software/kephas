@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FindCommand
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -80,7 +80,8 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IFindContext.html">IFindContext</a>, <a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a>&gt;</div>
-    <div class="level2"><span class="xref">FindCommand</span></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.FindCommandBase-1.html">FindCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IFindContext.html">IFindContext</a>&gt;</div>
+    <div class="level3"><span class="xref">FindCommand</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -90,6 +91,15 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.FindCommandBase-1.html#Kephas_Data_Commands_FindCommandBase_1_FindAsync__1__0_System_Threading_CancellationToken_">FindCommandBase&lt;IFindContext&gt;.FindAsync&lt;T&gt;(IFindContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.FindCommandBase-1.html#Kephas_Data_Commands_FindCommandBase_1_TryGetLocalCacheQuery__1__0_">FindCommandBase&lt;IFindContext&gt;.TryGetLocalCacheQuery&lt;T&gt;(IFindContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.FindCommandBase-1.html#Kephas_Data_Commands_FindCommandBase_1_GetFindResult__1__0_System_Collections_Generic_IList___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___">FindCommandBase&lt;IFindContext&gt;.GetFindResult&lt;T&gt;(IFindContext, IList&lt;T&gt;, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</a>
+    </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_ExecuteAsync__0_System_Threading_CancellationToken_">DataCommandBase&lt;IFindContext, IFindResult&gt;.ExecuteAsync(IFindContext, CancellationToken)</a>
     </div>
@@ -106,16 +116,10 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IFindContext, IFindResult&gt;.TryGetEntityActivator(IDataContext)</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -126,13 +130,19 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_FindCommand_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[DataContextType(typeof (DataContextBase))]
-public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFindCommand, IDataCommand&lt;IFindContext, IFindResult&gt;, IDataCommand</code></pre>
+    <pre><code class="lang-csharp hljs">[DataContextType(typeof(DataContextBase))]
+public class FindCommand : FindCommandBase&lt;IFindContext&gt;, IFindCommand, IDataCommand&lt;IFindContext, IFindResult&gt;, IDataCommand</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -141,7 +151,7 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand_ExecuteAsync_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand.ExecuteAsync(Kephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L43">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L35">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_FindCommand_ExecuteAsync_" data-uid="Kephas.Data.Commands.FindCommand.ExecuteAsync*"></a>
   <h4 id="Kephas_Data_Commands_FindCommand_ExecuteAsync_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.FindCommand.ExecuteAsync(Kephas.Data.Commands.IFindContext,System.Threading.CancellationToken)">ExecuteAsync(IFindContext, CancellationToken)</h4>
@@ -150,7 +160,7 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Task&lt;IFindResult&gt; ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public override Task&lt;IFindResult&gt; ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,22 +203,22 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Kephas.Data.Commands.DataCommandBase&lt;Kephas.Data.Commands.IFindContext, Kephas.Data.Commands.IFindResult&gt;.ExecuteAsync(Kephas.Data.Commands.IFindContext, System.Threading.CancellationToken)</span></div>
+  <div><span class="xref">Kephas.Data.Commands.FindCommandBase&lt;Kephas.Data.Commands.IFindContext&gt;.ExecuteAsync(Kephas.Data.Commands.IFindContext, System.Threading.CancellationToken)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand_GetEntityQuery__1_Kephas_Data_Commands_IFindContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand.GetEntityQuery%60%601(Kephas.Data.Commands.IFindContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand_GetCriteriaString__1_Kephas_Data_Commands_IFindContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand.GetCriteriaString%60%601(Kephas.Data.Commands.IFindContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L93">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L67">View Source</a>
   </span>
-  <a id="Kephas_Data_Commands_FindCommand_GetEntityQuery_" data-uid="Kephas.Data.Commands.FindCommand.GetEntityQuery*"></a>
-  <h4 id="Kephas_Data_Commands_FindCommand_GetEntityQuery__1_Kephas_Data_Commands_IFindContext_" data-uid="Kephas.Data.Commands.FindCommand.GetEntityQuery``1(Kephas.Data.Commands.IFindContext)">GetEntityQuery&lt;T&gt;(IFindContext)</h4>
-  <div class="markdown level1 summary"><p>Gets the entity query for filtering out the required entity.</p>
+  <a id="Kephas_Data_Commands_FindCommand_GetCriteriaString_" data-uid="Kephas.Data.Commands.FindCommand.GetCriteriaString*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommand_GetCriteriaString__1_Kephas_Data_Commands_IFindContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="Kephas.Data.Commands.FindCommand.GetCriteriaString``1(Kephas.Data.Commands.IFindContext,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">GetCriteriaString&lt;T&gt;(IFindContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the criteria string for exception display.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IQueryable&lt;T&gt; GetEntityQuery&lt;T&gt;(IFindContext operationContext)where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">protected override string GetCriteriaString&lt;T&gt;(IFindContext findContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,8 +232,14 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     <tbody>
       <tr>
         <td><a class="xref" href="Kephas.Data.Commands.IFindContext.html">IFindContext</a></td>
-        <td><span class="parametername">operationContext</span></td>
-        <td><p>The operation context.</p>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria.</p>
 </td>
       </tr>
     </tbody>
@@ -238,8 +254,8 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Linq.IQueryable</span>&lt;T&gt;</td>
-        <td><p>The entity query.</p>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The criteria string.</p>
 </td>
       </tr>
     </tbody>
@@ -260,21 +276,24 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Data.Commands.FindCommandBase&lt;Kephas.Data.Commands.IFindContext&gt;.GetCriteriaString&lt;T&gt;(Kephas.Data.Commands.IFindContext, System.Linq.Expressions.Expression&lt;System.Func&lt;T, System.Boolean&gt;&gt;)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand_GetMatchingEntities__1_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand.GetMatchingEntities%60%601(Kephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand_GetFindCriteria__1_Kephas_Data_Commands_IFindContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand.GetFindCriteria%60%601(Kephas.Data.Commands.IFindContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L76">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L53">View Source</a>
   </span>
-  <a id="Kephas_Data_Commands_FindCommand_GetMatchingEntities_" data-uid="Kephas.Data.Commands.FindCommand.GetMatchingEntities*"></a>
-  <h4 id="Kephas_Data_Commands_FindCommand_GetMatchingEntities__1_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.FindCommand.GetMatchingEntities``1(Kephas.Data.Commands.IFindContext,System.Threading.CancellationToken)">GetMatchingEntities&lt;T&gt;(IFindContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Gets the matching entities.</p>
+  <a id="Kephas_Data_Commands_FindCommand_GetFindCriteria_" data-uid="Kephas.Data.Commands.FindCommand.GetFindCriteria*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommand_GetFindCriteria__1_Kephas_Data_Commands_IFindContext_" data-uid="Kephas.Data.Commands.FindCommand.GetFindCriteria``1(Kephas.Data.Commands.IFindContext)">GetFindCriteria&lt;T&gt;(IFindContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the find criteria.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IEnumerable&lt;object&gt;&gt; GetMatchingEntities&lt;T&gt;(IFindContext operationContext, CancellationToken cancellationToken)where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">protected override Expression&lt;Func&lt;T, bool&gt;&gt; GetFindCriteria&lt;T&gt;(IFindContext findContext)
+    where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -288,14 +307,8 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     <tbody>
       <tr>
         <td><a class="xref" href="Kephas.Data.Commands.IFindContext.html">IFindContext</a></td>
-        <td><span class="parametername">operationContext</span></td>
-        <td><p>The operation context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
 </td>
       </tr>
     </tbody>
@@ -310,8 +323,8 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Object</span>&gt;&gt;</td>
-        <td><p>The matching entities.</p>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><p>The find criteria.</p>
 </td>
       </tr>
     </tbody>
@@ -332,6 +345,8 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Data.Commands.FindCommandBase&lt;Kephas.Data.Commands.IFindContext&gt;.GetFindCriteria&lt;T&gt;(Kephas.Data.Commands.IFindContext)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IFindCommand.html">IFindCommand</a>
@@ -343,6 +358,9 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -387,7 +405,7 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommand.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommand%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommand.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -407,7 +425,7 @@ public class FindCommand : DataCommandBase&lt;IFindContext, IFindResult&gt;, IFi
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

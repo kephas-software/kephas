@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RuntimeTypeInfo
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -116,7 +116,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -128,7 +128,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -137,34 +140,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -174,6 +171,9 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Runtime.html">Kephas.Runtime</a></h6>
@@ -189,7 +189,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Annotations.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Annotations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L311">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L312">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Annotations_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Annotations*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Annotations" data-uid="Kephas.Runtime.RuntimeTypeInfo.Annotations">Annotations</h4>
@@ -221,7 +221,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_BaseTypes.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.BaseTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L266">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L267">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_BaseTypes_" data-uid="Kephas.Runtime.RuntimeTypeInfo.BaseTypes*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_BaseTypes" data-uid="Kephas.Runtime.RuntimeTypeInfo.BaseTypes">BaseTypes</h4>
@@ -253,7 +253,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateRuntimeTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateRuntimeTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L184">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L185">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_CreateRuntimeTypeInfo_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateRuntimeTypeInfo*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreateRuntimeTypeInfo" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateRuntimeTypeInfo">CreateRuntimeTypeInfo</h4>
@@ -285,7 +285,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_DeclaringContainer.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.DeclaringContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L319">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L320">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_DeclaringContainer_" data-uid="Kephas.Runtime.RuntimeTypeInfo.DeclaringContainer*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_DeclaringContainer" data-uid="Kephas.Runtime.RuntimeTypeInfo.DeclaringContainer">DeclaringContainer</h4>
@@ -317,7 +317,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_DefaultValue.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.DefaultValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L232">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L233">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_DefaultValue_" data-uid="Kephas.Runtime.RuntimeTypeInfo.DefaultValue*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_DefaultValue" data-uid="Kephas.Runtime.RuntimeTypeInfo.DefaultValue">DefaultValue</h4>
@@ -349,7 +349,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Fields.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Fields%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L351">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L352">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Fields_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Fields*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Fields" data-uid="Kephas.Runtime.RuntimeTypeInfo.Fields">Fields</h4>
@@ -381,7 +381,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_FullName.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.FullName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L208">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L209">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_FullName_" data-uid="Kephas.Runtime.RuntimeTypeInfo.FullName*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_FullName" data-uid="Kephas.Runtime.RuntimeTypeInfo.FullName">FullName</h4>
@@ -413,7 +413,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GenericTypeArguments.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GenericTypeArguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L282">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L283">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeArguments_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeArguments*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeArguments" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeArguments">GenericTypeArguments</h4>
@@ -445,7 +445,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GenericTypeDefinition.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GenericTypeDefinition%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L290">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L291">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeDefinition_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeDefinition*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeDefinition" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeDefinition">GenericTypeDefinition</h4>
@@ -477,7 +477,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GenericTypeParameters.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GenericTypeParameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L274">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L275">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeParameters_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeParameters*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GenericTypeParameters" data-uid="Kephas.Runtime.RuntimeTypeInfo.GenericTypeParameters">GenericTypeParameters</h4>
@@ -509,7 +509,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Kind.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Kind%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L252">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L253">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Kind_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kind*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Kind" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kind">Kind</h4>
@@ -541,7 +541,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Members.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Members%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L343">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L344">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Members_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Members*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Members" data-uid="Kephas.Runtime.RuntimeTypeInfo.Members">Members</h4>
@@ -573,7 +573,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Methods.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Methods%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L367">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L368">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Methods_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Methods*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Methods" data-uid="Kephas.Runtime.RuntimeTypeInfo.Methods">Methods</h4>
@@ -605,7 +605,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Name.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L200">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L201">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Name_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Name*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Name" data-uid="Kephas.Runtime.RuntimeTypeInfo.Name">Name</h4>
@@ -637,7 +637,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Namespace.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Namespace%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L224">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L225">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Namespace_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Namespace*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Namespace" data-uid="Kephas.Runtime.RuntimeTypeInfo.Namespace">Namespace</h4>
@@ -669,7 +669,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Properties.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Properties%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L359">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L360">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Properties_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Properties*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Properties" data-uid="Kephas.Runtime.RuntimeTypeInfo.Properties">Properties</h4>
@@ -701,7 +701,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_QualifiedFullName.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.QualifiedFullName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L216">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L217">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_QualifiedFullName_" data-uid="Kephas.Runtime.RuntimeTypeInfo.QualifiedFullName*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_QualifiedFullName" data-uid="Kephas.Runtime.RuntimeTypeInfo.QualifiedFullName">QualifiedFullName</h4>
@@ -733,7 +733,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Type.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L327">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L328">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Type_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Type*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Type" data-uid="Kephas.Runtime.RuntimeTypeInfo.Type">Type</h4>
@@ -765,7 +765,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_TypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.TypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L335">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L336">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_TypeInfo_" data-uid="Kephas.Runtime.RuntimeTypeInfo.TypeInfo*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_TypeInfo" data-uid="Kephas.Runtime.RuntimeTypeInfo.TypeInfo">TypeInfo</h4>
@@ -799,7 +799,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateInstance_System_Collections_Generic_IEnumerable_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateInstance(System.Collections.Generic.IEnumerable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L539">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L540">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_CreateInstance_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateInstance*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreateInstance_System_Collections_Generic_IEnumerable_System_Object__" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateInstance(System.Collections.Generic.IEnumerable{System.Object})">CreateInstance(IEnumerable&lt;Object&gt;)</h4>
@@ -849,7 +849,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetAttributes__1.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetAttributes%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L581">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L582">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GetAttributes_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetAttributes*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetAttributes__1" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetAttributes``1">GetAttributes&lt;TAttribute&gt;()</h4>
@@ -858,7 +858,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;TAttribute&gt; GetAttributes&lt;TAttribute&gt;()where TAttribute : Attribute</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;TAttribute&gt; GetAttributes&lt;TAttribute&gt;()
+    where TAttribute : Attribute</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -897,7 +898,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetMember_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetMember(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L385">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L386">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GetMember_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetMember*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetMember_System_String_System_Boolean_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetMember(System.String,System.Boolean)">GetMember(String, Boolean)</h4>
@@ -953,7 +954,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetThisTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetThisTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L617">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L618">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GetThisTypeInfo_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetThisTypeInfo*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetThisTypeInfo" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetThisTypeInfo">GetThisTypeInfo()</h4>
@@ -984,19 +985,19 @@
   <div><a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetThisTypeInfo">ExpandoBase.GetThisTypeInfo()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingMemberInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingMemberInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingElementInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingElementInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L375">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L376">View Source</a>
   </span>
-  <a id="Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingMemberInfo_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingMemberInfo*"></a>
-  <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingMemberInfo" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingMemberInfo">GetUnderlyingMemberInfo()</h4>
+  <a id="Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingElementInfo_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingElementInfo*"></a>
+  <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetUnderlyingElementInfo" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetUnderlyingElementInfo">GetUnderlyingElementInfo()</h4>
   <div class="markdown level1 summary"><p>Gets the underlying member information.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MemberInfo GetUnderlyingMemberInfo()</code></pre>
+    <pre><code class="lang-csharp hljs">public ICustomAttributeProvider GetUnderlyingElementInfo()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1008,7 +1009,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="xref">System.Reflection.ICustomAttributeProvider</span></td>
         <td><p>The underlying member information.</p>
 </td>
       </tr>
@@ -1019,7 +1020,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetValue_System_Object_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetValue(System.Object%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L426">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L427">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_GetValue_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_GetValue_System_Object_System_String_" data-uid="Kephas.Runtime.RuntimeTypeInfo.GetValue(System.Object,System.String)">GetValue(Object, String)</h4>
@@ -1078,7 +1079,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Invoke_System_Object_System_String_System_Collections_Generic_IEnumerable_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Invoke(System.Object%2CSystem.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L503">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L504">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Invoke_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Invoke*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Invoke_System_Object_System_String_System_Collections_Generic_IEnumerable_System_Object__" data-uid="Kephas.Runtime.RuntimeTypeInfo.Invoke(System.Object,System.String,System.Collections.Generic.IEnumerable{System.Object})">Invoke(Object, String, IEnumerable&lt;Object&gt;)</h4>
@@ -1140,7 +1141,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_MakeGenericType_System_Collections_Generic_IEnumerable_Kephas_Reflection_ITypeInfo__Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.MakeGenericType(System.Collections.Generic.IEnumerable%7BKephas.Reflection.ITypeInfo%7D%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L557">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L558">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_MakeGenericType_" data-uid="Kephas.Runtime.RuntimeTypeInfo.MakeGenericType*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_MakeGenericType_System_Collections_Generic_IEnumerable_Kephas_Reflection_ITypeInfo__Kephas_Services_IContext_" data-uid="Kephas.Runtime.RuntimeTypeInfo.MakeGenericType(System.Collections.Generic.IEnumerable{Kephas.Reflection.ITypeInfo},Kephas.Services.IContext)">MakeGenericType(IEnumerable&lt;ITypeInfo&gt;, IContext)</h4>
@@ -1196,7 +1197,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_SetValue_System_Object_System_String_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.SetValue(System.Object%2CSystem.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L459">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L460">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_SetValue_" data-uid="Kephas.Runtime.RuntimeTypeInfo.SetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_SetValue_System_Object_System_String_System_Object_" data-uid="Kephas.Runtime.RuntimeTypeInfo.SetValue(System.Object,System.String,System.Object)">SetValue(Object, String, Object)</h4>
@@ -1245,7 +1246,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_ToString.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L569">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L570">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_ToString_" data-uid="Kephas.Runtime.RuntimeTypeInfo.ToString*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_ToString" data-uid="Kephas.Runtime.RuntimeTypeInfo.ToString">ToString()</h4>
@@ -1279,7 +1280,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_TryGetValue_System_Object_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.TryGetValue(System.Object%2CSystem.String%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L441">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L442">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_TryGetValue_" data-uid="Kephas.Runtime.RuntimeTypeInfo.TryGetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_TryGetValue_System_Object_System_String_System_Object__" data-uid="Kephas.Runtime.RuntimeTypeInfo.TryGetValue(System.Object,System.String,System.Object@)">TryGetValue(Object, String, out Object)</h4>
@@ -1341,7 +1342,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_TryInvoke_System_Object_System_String_System_Collections_Generic_IEnumerable_System_Object__System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.TryInvoke(System.Object%2CSystem.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L517">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L518">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_TryInvoke_" data-uid="Kephas.Runtime.RuntimeTypeInfo.TryInvoke*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_TryInvoke_System_Object_System_String_System_Collections_Generic_IEnumerable_System_Object__System_Object__" data-uid="Kephas.Runtime.RuntimeTypeInfo.TryInvoke(System.Object,System.String,System.Collections.Generic.IEnumerable{System.Object},System.Object@)">TryInvoke(Object, String, IEnumerable&lt;Object&gt;, out Object)</h4>
@@ -1409,7 +1410,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_TrySetValue_System_Object_System_String_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.TrySetValue(System.Object%2CSystem.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L477">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L478">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_TrySetValue_" data-uid="Kephas.Runtime.RuntimeTypeInfo.TrySetValue*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_TrySetValue_System_Object_System_String_System_Object_" data-uid="Kephas.Runtime.RuntimeTypeInfo.TrySetValue(System.Object,System.String,System.Object)">TrySetValue(Object, String, Object)</h4>
@@ -1476,7 +1477,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Members.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Kephas%23Reflection%23ITypeInfo%23Members%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L303">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L304">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Members_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kephas#Reflection#ITypeInfo#Members*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Members" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kephas#Reflection#ITypeInfo#Members">ITypeInfo.Members</h4>
@@ -1508,7 +1509,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Properties.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.Kephas%23Reflection%23ITypeInfo%23Properties%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L295">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L296">View Source</a>
   </span>
   <a id="Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Properties_" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kephas#Reflection#ITypeInfo#Properties*"></a>
   <h4 id="Kephas_Runtime_RuntimeTypeInfo_Kephas_Reflection_ITypeInfo_Properties" data-uid="Kephas.Runtime.RuntimeTypeInfo.Kephas#Reflection#ITypeInfo#Properties">ITypeInfo.Properties</h4>
@@ -1561,6 +1562,12 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.LocalizationHelper.html#Kephas_Reflection_LocalizationHelper_GetLocalization_Kephas_Reflection_ITypeInfo_">LocalizationHelper.GetLocalization(ITypeInfo)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_GetClassifierKind_Kephas_Runtime_IRuntimeTypeInfo_">RuntimeTypeInfoExtensions.GetClassifierKind(IRuntimeTypeInfo)</a>
   </div>
   <div>
@@ -1568,9 +1575,6 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsModelType_Kephas_Runtime_IRuntimeTypeInfo_">RuntimeTypeInfoExtensions.IsModelType(IRuntimeTypeInfo)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Reflection.LocalizationHelper.html#Kephas_Reflection_LocalizationHelper_GetLocalization_Kephas_Reflection_ITypeInfo_">LocalizationHelper.GetLocalization(ITypeInfo)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -1598,6 +1602,9 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
@@ -1634,7 +1641,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L39" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L40" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -1654,7 +1661,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

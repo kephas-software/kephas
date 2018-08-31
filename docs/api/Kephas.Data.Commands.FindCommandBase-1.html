@@ -1,0 +1,656 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class FindCommandBase&lt;TFindContext&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class FindCommandBase&lt;TFindContext&gt;
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Commands.FindCommandBase`1">
+  
+  
+  <h1 id="Kephas_Data_Commands_FindCommandBase_1" data-uid="Kephas.Data.Commands.FindCommandBase`1" class="text-break">Class FindCommandBase&lt;TFindContext&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Base class for find commands.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;TFindContext, <a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a>&gt;</div>
+    <div class="level2"><span class="xref">FindCommandBase&lt;TFindContext&gt;</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.Commands.FindCommand.html">FindCommand</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.Commands.FindOneCommand.html">FindOneCommand</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;TFindContext, <a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a>&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_ExecuteAsync__0_System_Threading_CancellationToken_">DataCommandBase&lt;TFindContext, IFindResult&gt;.ExecuteAsync(TFindContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;TFindContext, IFindResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;TFindContext, IFindResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetLocalCache_Kephas_Data_IDataContext_">DataCommandBase&lt;TFindContext, IFindResult&gt;.TryGetLocalCache(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;TFindContext, IFindResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
+  <h5 id="Kephas_Data_Commands_FindCommandBase_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class FindCommandBase&lt;TFindContext&gt; : DataCommandBase&lt;TFindContext, IFindResult&gt;, IDataCommand&lt;TFindContext, IFindResult&gt;, IDataCommand where TFindContext : class, IFindContextBase</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TFindContext</span></td>
+        <td><p>Type of the find context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_ExecuteAsync__0_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.ExecuteAsync(%600%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L48">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_ExecuteAsync_" data-uid="Kephas.Data.Commands.FindCommandBase`1.ExecuteAsync*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_ExecuteAsync__0_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.FindCommandBase`1.ExecuteAsync(`0,System.Threading.CancellationToken)">ExecuteAsync(TFindContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the data command asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Task&lt;IFindResult&gt; ExecuteAsync(TFindContext operationContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">operationContext</span></td>
+        <td><p>The operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a>&gt;</td>
+        <td><p>A promise of a <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Data.Commands.DataCommandBase&lt;TFindContext, Kephas.Data.Commands.IFindResult&gt;.ExecuteAsync(TFindContext, System.Threading.CancellationToken)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_FindAsync__1__0_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.FindAsync%60%601(%600%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L80">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_FindAsync_" data-uid="Kephas.Data.Commands.FindCommandBase`1.FindAsync*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_FindAsync__1__0_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.FindCommandBase`1.FindAsync``1(`0,System.Threading.CancellationToken)">FindAsync&lt;T&gt;(TFindContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Searches for the first entity matching the provided criteria and returns it asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IFindResult&gt; FindAsync&lt;T&gt;(TFindContext findContext, CancellationToken cancellationToken)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a>&gt;</td>
+        <td><p>A promise of the found entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_GetCriteriaString__1__0_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.GetCriteriaString%60%601(%600%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L164">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_GetCriteriaString_" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetCriteriaString*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_GetCriteriaString__1__0_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetCriteriaString``1(`0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">GetCriteriaString&lt;T&gt;(TFindContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the criteria string for exception display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetCriteriaString&lt;T&gt;(TFindContext findContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The criteria string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_GetFindCriteria__1__0_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.GetFindCriteria%60%601(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L68">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_GetFindCriteria_" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetFindCriteria*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_GetFindCriteria__1__0_" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetFindCriteria``1(`0)">GetFindCriteria&lt;T&gt;(TFindContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the find criteria.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Expression&lt;Func&lt;T, bool&gt;&gt; GetFindCriteria&lt;T&gt;(TFindContext findContext)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><p>The find criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>Generic type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_GetFindResult__1__0_System_Collections_Generic_IList___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.GetFindResult%60%601(%600%2CSystem.Collections.Generic.IList%7B%60%600%7D%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L134">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_GetFindResult_" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetFindResult*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_GetFindResult__1__0_System_Collections_Generic_IList___0__System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="Kephas.Data.Commands.FindCommandBase`1.GetFindResult``1(`0,System.Collections.Generic.IList{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">GetFindResult&lt;T&gt;(TFindContext, IList&lt;T&gt;, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the find result out of the results.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IFindResult GetFindResult&lt;T&gt;(TFindContext findContext, IList&lt;T&gt; result, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;T&gt;</td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IFindResult.html">IFindResult</a></td>
+        <td><p>The find result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1_TryGetLocalCacheQuery__1__0_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601.TryGetLocalCacheQuery%60%601(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L116">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_FindCommandBase_1_TryGetLocalCacheQuery_" data-uid="Kephas.Data.Commands.FindCommandBase`1.TryGetLocalCacheQuery*"></a>
+  <h4 id="Kephas_Data_Commands_FindCommandBase_1_TryGetLocalCacheQuery__1__0_" data-uid="Kephas.Data.Commands.FindCommandBase`1.TryGetLocalCacheQuery``1(`0)">TryGetLocalCacheQuery&lt;T&gt;(TFindContext)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a query over the local cache entities of a particular type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;T&gt; TryGetLocalCacheQuery&lt;T&gt;(TFindContext findContext)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TFindContext</span></td>
+        <td><span class="parametername">findContext</span></td>
+        <td><p>The find context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+        <td><p>A query of local cache entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand&lt;TOperationContext, TResult&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_FindCommandBase_1.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.FindCommandBase%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Commands/FindCommandBase.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

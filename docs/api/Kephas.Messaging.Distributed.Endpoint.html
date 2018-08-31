@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Endpoint
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -94,9 +94,6 @@
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
       <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
@@ -105,6 +102,9 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Messaging.Distributed.html">Kephas.Messaging.Distributed</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Messaging.dll</h6>
@@ -112,6 +112,136 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class Endpoint : IEndpoint</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint__ctor.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L35">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_Endpoint__ctor_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor*"></a>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint__ctor" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor">Endpoint()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.Endpoint.html">Endpoint</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.%23ctor(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L57">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_Endpoint__ctor_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor*"></a>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor(System.String,System.String,System.String)">Endpoint(String, String, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.Endpoint.html">Endpoint</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">appId</span></td>
+        <td><p>The identifier of the application (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">appInstanceId</span></td>
+        <td><p>The identifier of the application instance (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">endpointId</span></td>
+        <td><p>The identifier of the endpoint (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint__ctor_System_Uri_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.%23ctor(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L43">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_Endpoint__ctor_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor*"></a>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint__ctor_System_Uri_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor(System.Uri)">Endpoint(Uri)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.Endpoint.html">Endpoint</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Endpoint(Uri url)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Uri</span></td>
+        <td><span class="parametername">url</span></td>
+        <td><p>The endpoint URL.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_AppScheme.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.AppScheme%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L25">View Source</a>
+  </span>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint_AppScheme" data-uid="Kephas.Messaging.Distributed.Endpoint.AppScheme">AppScheme</h4>
+  <div class="markdown level1 summary"><p>The application scheme.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string AppScheme = &quot;app&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -119,16 +249,16 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_AppId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.AppId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L39">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L107">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_AppId_" data-uid="Kephas.Messaging.Distributed.Endpoint.AppId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_AppId" data-uid="Kephas.Messaging.Distributed.Endpoint.AppId">AppId</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the identifier of the application.</p>
+  <div class="markdown level1 summary"><p>Gets the identifier of the application.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AppId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string AppId { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -151,16 +281,16 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_AppInstanceId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.AppInstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L31">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L99">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_AppInstanceId_" data-uid="Kephas.Messaging.Distributed.Endpoint.AppInstanceId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_AppInstanceId" data-uid="Kephas.Messaging.Distributed.Endpoint.AppInstanceId">AppInstanceId</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the identifier of the application instance.</p>
+  <div class="markdown level1 summary"><p>Gets the identifier of the application instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AppInstanceId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string AppInstanceId { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -183,16 +313,16 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_EndpointId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.EndpointId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L23">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L91">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_EndpointId_" data-uid="Kephas.Messaging.Distributed.Endpoint.EndpointId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_EndpointId" data-uid="Kephas.Messaging.Distributed.Endpoint.EndpointId">EndpointId</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the identifier of the endpoint.</p>
+  <div class="markdown level1 summary"><p>Gets the identifier of the endpoint.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string EndpointId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string EndpointId { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,6 +340,38 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_Url.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.Url%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L71">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_Endpoint_Url_" data-uid="Kephas.Messaging.Distributed.Endpoint.Url*"></a>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint_Url" data-uid="Kephas.Messaging.Distributed.Endpoint.Url">Url</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the URL of the endpoint.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Uri Url { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Uri</span></td>
+        <td><p>The URL.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -217,7 +379,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_ToString.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L43">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L111">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_ToString_" data-uid="Kephas.Messaging.Distributed.Endpoint.ToString*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_ToString" data-uid="Kephas.Messaging.Distributed.Endpoint.ToString">ToString()</h4>
@@ -251,6 +413,9 @@
       <a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -295,7 +460,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -315,7 +480,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

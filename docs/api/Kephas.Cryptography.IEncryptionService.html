@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IEncryptionService
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Cryptography_IEncryptionService" data-uid="Kephas.Cryptography.IEncryptionService" class="text-break">Interface IEncryptionService
   </h1>
-  <div class="markdown level0 summary"><p>Interface for encryption service.</p>
+  <div class="markdown level0 summary"><p>Application service contract for encryption.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Cryptography.html">Kephas.Cryptography</a></h6>
@@ -90,7 +90,7 @@ public interface IEncryptionService</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_IEncryptionService_DecryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.IEncryptionService.DecryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L50">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Cryptography_IEncryptionService_DecryptAsync_" data-uid="Kephas.Cryptography.IEncryptionService.DecryptAsync*"></a>
   <h4 id="Kephas_Cryptography_IEncryptionService_DecryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.IEncryptionService.DecryptAsync(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">DecryptAsync(Stream, Stream, IEncryptionContext, CancellationToken)</h4>
@@ -99,7 +99,7 @@ public interface IEncryptionService</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task DecryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task DecryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,7 +158,7 @@ public interface IEncryptionService</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_IEncryptionService_EncryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.IEncryptionService.EncryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L34">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L44">View Source</a>
   </span>
   <a id="Kephas_Cryptography_IEncryptionService_EncryptAsync_" data-uid="Kephas.Cryptography.IEncryptionService.EncryptAsync*"></a>
   <h4 id="Kephas_Cryptography_IEncryptionService_EncryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.IEncryptionService.EncryptAsync(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">EncryptAsync(Stream, Stream, IEncryptionContext, CancellationToken)</h4>
@@ -167,7 +167,7 @@ public interface IEncryptionService</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task EncryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task EncryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,7 +221,60 @@ public interface IEncryptionService</code></pre>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_IEncryptionService_GenerateKey_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.IEncryptionService.GenerateKey(Kephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L32">View Source</a>
+  </span>
+  <a id="Kephas_Cryptography_IEncryptionService_GenerateKey_" data-uid="Kephas.Cryptography.IEncryptionService.GenerateKey*"></a>
+  <h4 id="Kephas_Cryptography_IEncryptionService_GenerateKey_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.IEncryptionService.GenerateKey(Kephas.Cryptography.IEncryptionContext)">GenerateKey(IEncryptionContext)</h4>
+  <div class="markdown level1 summary"><p>Generates a key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">byte[] GenerateKey(IEncryptionContext encryptionContext = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Cryptography.IEncryptionContext.html">IEncryptionContext</a></td>
+        <td><span class="parametername">encryptionContext</span></td>
+        <td><p>Optional. Context for the encryption.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>An array of byte.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -253,7 +306,25 @@ public interface IEncryptionService</code></pre>
       <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_EncryptAsync_Kephas_Cryptography_IEncryptionService_System_String_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_">EncryptionServiceExtensions.EncryptAsync(IEncryptionService, String, IEncryptionContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_EncryptAsync_Kephas_Cryptography_IEncryptionService_System_Byte___Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_">EncryptionServiceExtensions.EncryptAsync(IEncryptionService, Byte[], IEncryptionContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_Encrypt_Kephas_Cryptography_IEncryptionService_System_String_Kephas_Cryptography_IEncryptionContext_">EncryptionServiceExtensions.Encrypt(IEncryptionService, String, IEncryptionContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_Encrypt_Kephas_Cryptography_IEncryptionService_System_Byte___Kephas_Cryptography_IEncryptionContext_">EncryptionServiceExtensions.Encrypt(IEncryptionService, Byte[], IEncryptionContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_DecryptAsync_Kephas_Cryptography_IEncryptionService_System_String_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_">EncryptionServiceExtensions.DecryptAsync(IEncryptionService, String, IEncryptionContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_DecryptAsync_Kephas_Cryptography_IEncryptionService_System_Byte___Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_">EncryptionServiceExtensions.DecryptAsync(IEncryptionService, Byte[], IEncryptionContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_Decrypt_Kephas_Cryptography_IEncryptionService_System_String_Kephas_Cryptography_IEncryptionContext_">EncryptionServiceExtensions.Decrypt(IEncryptionService, String, IEncryptionContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Cryptography.EncryptionServiceExtensions.html#Kephas_Cryptography_EncryptionServiceExtensions_Decrypt_Kephas_Cryptography_IEncryptionService_System_Byte___Kephas_Cryptography_IEncryptionContext_">EncryptionServiceExtensions.Decrypt(IEncryptionService, Byte[], IEncryptionContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
@@ -272,7 +343,7 @@ public interface IEncryptionService</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_IEncryptionService.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.IEncryptionService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/IEncryptionService.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -292,7 +363,7 @@ public interface IEncryptionService</code></pre>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MessageBrokerExtensions
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -84,16 +84,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -103,6 +97,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Messaging.Distributed.html">Kephas.Messaging.Distributed</a></h6>
@@ -115,19 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L130">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L140">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker)">CreateBrokeredMessageBuilder(IMessageBroker)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Services.IContext)">CreateBrokeredMessageBuilder(IMessageBroker, IContext)</h4>
   <div class="markdown level1 summary"><p>Creates a untyped brokered message builder.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BrokeredMessageBuilder&lt;BrokeredMessage&gt; CreateBrokeredMessageBuilder(this IMessageBroker messageBroker)</code></pre>
+    <pre><code class="lang-csharp hljs">public static BrokeredMessageBuilder&lt;BrokeredMessage&gt; CreateBrokeredMessageBuilder(this IMessageBroker messageBroker, IContext context = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -143,6 +143,12 @@
         <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
         <td><span class="parametername">messageBroker</span></td>
         <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The sending context (optional).</p>
 </td>
       </tr>
     </tbody>
@@ -165,19 +171,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L65">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L71">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, IMessage, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, IMessage, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes a message asynchronously, waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, IMessage message, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, IMessage message, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -199,6 +205,12 @@
         <td><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
 </td>
       </tr>
       <tr>
@@ -227,19 +239,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L98">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L106">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, IMessage, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, IMessage, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes a message asynchronously without waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, IMessage message, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, IMessage message, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -261,6 +273,12 @@
         <td><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
 </td>
       </tr>
       <tr>
@@ -289,19 +307,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IEvent_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IEvent%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.Events.IEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L35">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IEvent_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IEvent,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, IEvent, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.Events.IEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, IEvent, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Publishes an event asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, IEvent event, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, IEvent event, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -320,9 +338,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IEvent.html">IEvent</a></td>
+        <td><a class="xref" href="Kephas.Messaging.Events.IEvent.html">IEvent</a></td>
         <td><span class="parametername">event</span></td>
         <td><p>The event message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The publishing context.</p>
 </td>
       </tr>
       <tr>
@@ -349,7 +373,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IEvent_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It does not wait for an answer from the subscribers,
 just for the aknowledgement of the message being sent.</p>
 </div>
@@ -364,7 +388,7 @@ just for the aknowledgement of the message being sent.</p>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -384,7 +408,7 @@ just for the aknowledgement of the message being sent.</p>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

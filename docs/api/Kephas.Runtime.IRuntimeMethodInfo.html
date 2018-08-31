@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IRuntimeMethodInfo
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -82,7 +82,7 @@
       <a class="xref" href="Kephas.Reflection.IMethodInfo.html#Kephas_Reflection_IMethodInfo_Invoke_System_Object_System_Collections_Generic_IEnumerable_System_Object__">IMethodInfo.Invoke(Object, IEnumerable&lt;Object&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html#Kephas_Runtime_IRuntimeElementInfo_GetUnderlyingMemberInfo">IRuntimeElementInfo.GetUnderlyingMemberInfo()</a>
+      <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html#Kephas_Runtime_IRuntimeElementInfo_GetUnderlyingElementInfo">IRuntimeElementInfo.GetUnderlyingElementInfo()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Reflection.IElementInfo.html#Kephas_Reflection_IElementInfo_Name">IElementInfo.Name</a>
@@ -100,7 +100,7 @@
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary">IExpando.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <span class="xref">System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression)</span>
@@ -122,10 +122,42 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo_IsStatic.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo.IsStatic%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L53">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_IRuntimeMethodInfo_IsStatic_" data-uid="Kephas.Runtime.IRuntimeMethodInfo.IsStatic*"></a>
+  <h4 id="Kephas_Runtime_IRuntimeMethodInfo_IsStatic" data-uid="Kephas.Runtime.IRuntimeMethodInfo.IsStatic">IsStatic</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this method is static.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsStatic { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if this method is static, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo_MethodInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo.MethodInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L36">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L45">View Source</a>
   </span>
   <a id="Kephas_Runtime_IRuntimeMethodInfo_MethodInfo_" data-uid="Kephas.Runtime.IRuntimeMethodInfo.MethodInfo*"></a>
   <h4 id="Kephas_Runtime_IRuntimeMethodInfo_MethodInfo" data-uid="Kephas.Runtime.IRuntimeMethodInfo.MethodInfo">MethodInfo</h4>
@@ -154,10 +186,42 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo_Parameters.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo.Parameters%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L37">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_IRuntimeMethodInfo_Parameters_" data-uid="Kephas.Runtime.IRuntimeMethodInfo.Parameters*"></a>
+  <h4 id="Kephas_Runtime_IRuntimeMethodInfo_Parameters" data-uid="Kephas.Runtime.IRuntimeMethodInfo.Parameters">Parameters</h4>
+  <div class="markdown level1 summary"><p>Gets the runtime parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDictionary&lt;string, IRuntimeParameterInfo&gt; Parameters { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Runtime.IRuntimeParameterInfo.html">IRuntimeParameterInfo</a>&gt;</td>
+        <td><p>The runtime parameters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo_ReturnType.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo.ReturnType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L28">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L29">View Source</a>
   </span>
   <a id="Kephas_Runtime_IRuntimeMethodInfo_ReturnType_" data-uid="Kephas.Runtime.IRuntimeMethodInfo.ReturnType*"></a>
   <h4 id="Kephas_Runtime_IRuntimeMethodInfo_ReturnType" data-uid="Kephas.Runtime.IRuntimeMethodInfo.ReturnType">ReturnType</h4>
@@ -191,7 +255,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo_TryInvoke_System_Object_System_Collections_Generic_IEnumerable_System_Object__System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo.TryInvoke(System.Object%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L45">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L62">View Source</a>
   </span>
   <a id="Kephas_Runtime_IRuntimeMethodInfo_TryInvoke_" data-uid="Kephas.Runtime.IRuntimeMethodInfo.TryInvoke*"></a>
   <h4 id="Kephas_Runtime_IRuntimeMethodInfo_TryInvoke_System_Object_System_Collections_Generic_IEnumerable_System_Object__System_Object__" data-uid="Kephas.Runtime.IRuntimeMethodInfo.TryInvoke(System.Object,System.Collections.Generic.IEnumerable{System.Object},System.Object@)">TryInvoke(Object, IEnumerable&lt;Object&gt;, out Object)</h4>
@@ -250,6 +314,9 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
   </div>
   <div>
@@ -280,6 +347,9 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -299,7 +369,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_IRuntimeMethodInfo.md&amp;value=---%0Auid%3A%20Kephas.Runtime.IRuntimeMethodInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Runtime/IRuntimeMethodInfo.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -319,7 +389,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

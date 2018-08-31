@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DefaultScriptingEngine
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DefaultScriptingEngine
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Scripting.DefaultScriptingEngine">
+  
+  
+  <h1 id="Kephas_Scripting_DefaultScriptingEngine" data-uid="Kephas.Scripting.DefaultScriptingEngine" class="text-break">Class DefaultScriptingEngine
+  </h1>
+  <div class="markdown level0 summary"><p>The default scripting engine.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">DefaultScriptingEngine</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Scripting.IScriptingEngine.html">IScriptingEngine</a></div>
+    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Scripting.html">Kephas.Scripting</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Scripting.dll</h6>
+  <h5 id="Kephas_Scripting_DefaultScriptingEngine_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
+public class DefaultScriptingEngine : IScriptingEngine, ICompositionContextAware</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Scripting_ILanguageService_Kephas_Scripting_Composition_LanguageServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Scripting_IScriptingBehavior_Kephas_Scripting_Composition_ScriptingBehaviorMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine.%23ctor(Kephas.Composition.ICompositionContext%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Scripting.ILanguageService%2CKephas.Scripting.Composition.LanguageServiceMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Scripting.IScriptingBehavior%2CKephas.Scripting.Composition.ScriptingBehaviorMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L52">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_DefaultScriptingEngine__ctor_" data-uid="Kephas.Scripting.DefaultScriptingEngine.#ctor*"></a>
+  <h4 id="Kephas_Scripting_DefaultScriptingEngine__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Scripting_ILanguageService_Kephas_Scripting_Composition_LanguageServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Scripting_IScriptingBehavior_Kephas_Scripting_Composition_ScriptingBehaviorMetadata___" data-uid="Kephas.Scripting.DefaultScriptingEngine.#ctor(Kephas.Composition.ICompositionContext,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Scripting.ILanguageService,Kephas.Scripting.Composition.LanguageServiceMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Scripting.IScriptingBehavior,Kephas.Scripting.Composition.ScriptingBehaviorMetadata}})">DefaultScriptingEngine(ICompositionContext, ICollection&lt;IExportFactory&lt;ILanguageService, LanguageServiceMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IScriptingBehavior, ScriptingBehaviorMetadata&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Scripting.DefaultScriptingEngine.html">DefaultScriptingEngine</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DefaultScriptingEngine(ICompositionContext compositionContext, ICollection&lt;IExportFactory&lt;ILanguageService, LanguageServiceMetadata&gt;&gt; languageServiceFactories, ICollection&lt;IExportFactory&lt;IScriptingBehavior, ScriptingBehaviorMetadata&gt;&gt; scriptingBehaviorFactories)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>The ambient services.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Scripting.ILanguageService.html">ILanguageService</a>, <a class="xref" href="Kephas.Scripting.Composition.LanguageServiceMetadata.html">LanguageServiceMetadata</a>&gt;&gt;</td>
+        <td><span class="parametername">languageServiceFactories</span></td>
+        <td><p>The language service factories.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Scripting.IScriptingBehavior.html">IScriptingBehavior</a>, <a class="xref" href="Kephas.Scripting.Composition.ScriptingBehaviorMetadata.html">ScriptingBehaviorMetadata</a>&gt;&gt;</td>
+        <td><span class="parametername">scriptingBehaviorFactories</span></td>
+        <td><p>The scripting behavior factories.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L109">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_DefaultScriptingEngine_CompositionContext_" data-uid="Kephas.Scripting.DefaultScriptingEngine.CompositionContext*"></a>
+  <h4 id="Kephas_Scripting_DefaultScriptingEngine_CompositionContext" data-uid="Kephas.Scripting.DefaultScriptingEngine.CompositionContext">CompositionContext</h4>
+  <div class="markdown level1 summary"><p>Gets a context for the dependency injection/composition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICompositionContext CompositionContext { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><p>The composition context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine_Logger.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L101">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_DefaultScriptingEngine_Logger_" data-uid="Kephas.Scripting.DefaultScriptingEngine.Logger*"></a>
+  <h4 id="Kephas_Scripting_DefaultScriptingEngine_Logger" data-uid="Kephas.Scripting.DefaultScriptingEngine.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultScriptingEngine&gt; Logger { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Scripting.DefaultScriptingEngine.html">DefaultScriptingEngine</a>&gt;</td>
+        <td><p>The logger.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine_CreateScriptingContext_Kephas_Scripting_IScript_Kephas_Dynamic_IExpando_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine.CreateScriptingContext(Kephas.Scripting.IScript%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L181">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_DefaultScriptingEngine_CreateScriptingContext_" data-uid="Kephas.Scripting.DefaultScriptingEngine.CreateScriptingContext*"></a>
+  <h4 id="Kephas_Scripting_DefaultScriptingEngine_CreateScriptingContext_Kephas_Scripting_IScript_Kephas_Dynamic_IExpando_Kephas_Services_IContext_" data-uid="Kephas.Scripting.DefaultScriptingEngine.CreateScriptingContext(Kephas.Scripting.IScript,Kephas.Dynamic.IExpando,Kephas.Services.IContext)">CreateScriptingContext(IScript, IExpando, IContext)</h4>
+  <div class="markdown level1 summary"><p>Creates the scripting context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IScriptingContext CreateScriptingContext(IScript script, IExpando args, IContext executionContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Scripting.IScript.html">IScript</a></td>
+        <td><span class="parametername">script</span></td>
+        <td><p>The script to be interpreted/executed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">args</span></td>
+        <td><p>The arguments (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">executionContext</span></td>
+        <td><p>The execution context (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Scripting.IScriptingContext.html">IScriptingContext</a></td>
+        <td><p>The new scripting context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine_ExecuteAsync_Kephas_Scripting_IScript_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine.ExecuteAsync(Kephas.Scripting.IScript%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L121">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_DefaultScriptingEngine_ExecuteAsync_" data-uid="Kephas.Scripting.DefaultScriptingEngine.ExecuteAsync*"></a>
+  <h4 id="Kephas_Scripting_DefaultScriptingEngine_ExecuteAsync_Kephas_Scripting_IScript_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Scripting.DefaultScriptingEngine.ExecuteAsync(Kephas.Scripting.IScript,Kephas.Dynamic.IExpando,Kephas.Services.IContext,System.Threading.CancellationToken)">ExecuteAsync(IScript, IExpando, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Executes the expression asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;object&gt; ExecuteAsync(IScript script, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Scripting.IScript.html">IScript</a></td>
+        <td><span class="parametername">script</span></td>
+        <td><p>The script to be interpreted/executed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">args</span></td>
+        <td><p>The arguments (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">executionContext</span></td>
+        <td><p>The execution context (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>A promise of the execution result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Scripting.IScriptingEngine.html">IScriptingEngine</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_DefaultScriptingEngine.md&amp;value=---%0Auid%3A%20Kephas.Scripting.DefaultScriptingEngine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Scripting/DefaultScriptingEngine.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

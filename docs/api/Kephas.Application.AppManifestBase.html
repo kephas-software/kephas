@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AppManifestBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -113,7 +113,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -128,7 +128,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -137,37 +140,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -177,6 +171,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
@@ -192,7 +192,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase__ctor_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.%23ctor(System.Collections.Generic.IEnumerable%7BKephas.Application.IFeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L39">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L40">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase__ctor_" data-uid="Kephas.Application.AppManifestBase.#ctor*"></a>
   <h4 id="Kephas_Application_AppManifestBase__ctor_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__" data-uid="Kephas.Application.AppManifestBase.#ctor(System.Collections.Generic.IEnumerable{Kephas.Application.IFeatureInfo})">AppManifestBase(IEnumerable&lt;IFeatureInfo&gt;)</h4>
@@ -226,7 +226,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase__ctor_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.%23ctor(System.Reflection.Assembly%2CSystem.Collections.Generic.IEnumerable%7BKephas.Application.IFeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L49">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase__ctor_" data-uid="Kephas.Application.AppManifestBase.#ctor*"></a>
   <h4 id="Kephas_Application_AppManifestBase__ctor_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__" data-uid="Kephas.Application.AppManifestBase.#ctor(System.Reflection.Assembly,System.Collections.Generic.IEnumerable{Kephas.Application.IFeatureInfo})">AppManifestBase(Assembly, IEnumerable&lt;IFeatureInfo&gt;)</h4>
@@ -266,7 +266,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase__ctor_System_String_System_Version_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.%23ctor(System.String%2CSystem.Version%2CSystem.Collections.Generic.IEnumerable%7BKephas.Application.IFeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L63">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L64">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase__ctor_" data-uid="Kephas.Application.AppManifestBase.#ctor*"></a>
   <h4 id="Kephas_Application_AppManifestBase__ctor_System_String_System_Version_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__" data-uid="Kephas.Application.AppManifestBase.#ctor(System.String,System.Version,System.Collections.Generic.IEnumerable{Kephas.Application.IFeatureInfo})">AppManifestBase(String, Version, IEnumerable&lt;IFeatureInfo&gt;)</h4>
@@ -314,7 +314,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_VersionZero.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.VersionZero%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L28">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L29">View Source</a>
   </span>
   <h4 id="Kephas_Application_AppManifestBase_VersionZero" data-uid="Kephas.Application.AppManifestBase.VersionZero">VersionZero</h4>
   <div class="markdown level1 summary"><p>The version zero.</p>
@@ -346,7 +346,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_AppAssembly.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.AppAssembly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L111">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L112">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_AppAssembly_" data-uid="Kephas.Application.AppManifestBase.AppAssembly*"></a>
   <h4 id="Kephas_Application_AppManifestBase_AppAssembly" data-uid="Kephas.Application.AppManifestBase.AppAssembly">AppAssembly</h4>
@@ -377,7 +377,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_AppId.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.AppId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L77">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L78">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_AppId_" data-uid="Kephas.Application.AppManifestBase.AppId*"></a>
   <h4 id="Kephas_Application_AppManifestBase_AppId" data-uid="Kephas.Application.AppManifestBase.AppId">AppId</h4>
@@ -409,7 +409,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_AppInstanceId.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.AppInstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L98">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L99">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_AppInstanceId_" data-uid="Kephas.Application.AppManifestBase.AppInstanceId*"></a>
   <h4 id="Kephas_Application_AppManifestBase_AppInstanceId" data-uid="Kephas.Application.AppManifestBase.AppInstanceId">AppInstanceId</h4>
@@ -446,7 +446,7 @@ This can be potentially used in message exchanging.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_AppVersion.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.AppVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L85">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L86">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_AppVersion_" data-uid="Kephas.Application.AppManifestBase.AppVersion*"></a>
   <h4 id="Kephas_Application_AppManifestBase_AppVersion" data-uid="Kephas.Application.AppManifestBase.AppVersion">AppVersion</h4>
@@ -478,7 +478,7 @@ This can be potentially used in message exchanging.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_Features.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.Features%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L106">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L107">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_Features_" data-uid="Kephas.Application.AppManifestBase.Features*"></a>
   <h4 id="Kephas_Application_AppManifestBase_Features" data-uid="Kephas.Application.AppManifestBase.Features">Features</h4>
@@ -512,7 +512,7 @@ This can be potentially used in message exchanging.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_GetAppId_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.GetAppId(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L153">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L154">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_GetAppId_" data-uid="Kephas.Application.AppManifestBase.GetAppId*"></a>
   <h4 id="Kephas_Application_AppManifestBase_GetAppId_System_Reflection_Assembly_" data-uid="Kephas.Application.AppManifestBase.GetAppId(System.Reflection.Assembly)">GetAppId(Assembly)</h4>
@@ -563,7 +563,7 @@ This can be potentially used in message exchanging.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_GetAppVersion_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.GetAppVersion(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L173">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L174">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_GetAppVersion_" data-uid="Kephas.Application.AppManifestBase.GetAppVersion*"></a>
   <h4 id="Kephas_Application_AppManifestBase_GetAppVersion_System_Reflection_Assembly_" data-uid="Kephas.Application.AppManifestBase.GetAppVersion(System.Reflection.Assembly)">GetAppVersion(Assembly)</h4>
@@ -614,7 +614,7 @@ This can be potentially used in message exchanging.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_Initialize_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.Initialize(System.Reflection.Assembly%2CSystem.Collections.Generic.IEnumerable%7BKephas.Application.IFeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L119">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L120">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_Initialize_" data-uid="Kephas.Application.AppManifestBase.Initialize*"></a>
   <h4 id="Kephas_Application_AppManifestBase_Initialize_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__" data-uid="Kephas.Application.AppManifestBase.Initialize(System.Reflection.Assembly,System.Collections.Generic.IEnumerable{Kephas.Application.IFeatureInfo})">Initialize(Assembly, IEnumerable&lt;IFeatureInfo&gt;)</h4>
@@ -655,7 +655,7 @@ provided application assembly.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase_Initialize_System_String_System_Version_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase.Initialize(System.String%2CSystem.Version%2CSystem.Reflection.Assembly%2CSystem.Collections.Generic.IEnumerable%7BKephas.Application.IFeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L135">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L136">View Source</a>
   </span>
   <a id="Kephas_Application_AppManifestBase_Initialize_" data-uid="Kephas.Application.AppManifestBase.Initialize*"></a>
   <h4 id="Kephas_Application_AppManifestBase_Initialize_System_String_System_Version_System_Reflection_Assembly_System_Collections_Generic_IEnumerable_Kephas_Application_IFeatureInfo__" data-uid="Kephas.Application.AppManifestBase.Initialize(System.String,System.Version,System.Reflection.Assembly,System.Collections.Generic.IEnumerable{Kephas.Application.IFeatureInfo})">Initialize(String, Version, Assembly, IEnumerable&lt;IFeatureInfo&gt;)</h4>
@@ -717,6 +717,12 @@ provided application assembly.</p>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Orchestration.Application.AppManifestExtensions.html#Kephas_Orchestration_Application_AppManifestExtensions_GetAppInfo_Kephas_Application_IAppManifest_Kephas_Application_IAppRuntime_">AppManifestExtensions.GetAppInfo(IAppManifest, IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -747,6 +753,9 @@ provided application assembly.</p>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -763,7 +772,7 @@ provided application assembly.</p>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppManifestBase.md&amp;value=---%0Auid%3A%20Kephas.Application.AppManifestBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppManifestBase.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -783,7 +792,7 @@ provided application assembly.</p>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

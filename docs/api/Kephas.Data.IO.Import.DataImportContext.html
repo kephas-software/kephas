@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DataImportContext
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -95,6 +95,7 @@
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
     <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
+    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -102,10 +103,25 @@
       <a class="xref" href="Kephas.Data.IO.DataIOContext.html#Kephas_Data_IO_DataIOContext_RootObjectType">DataIOContext.RootObjectType</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.IO.DataIOContext.html#Kephas_Data_IO_DataIOContext_SerializationContextConfig">DataIOContext.SerializationContextConfig</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_AmbientServices">Context.AmbientServices</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_CompositionContext">Context.CompositionContext</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetCompositionContext_Kephas_Composition_ICompositionContext_">Context.SetCompositionContext(ICompositionContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -126,7 +142,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -141,7 +157,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -150,37 +169,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -191,12 +201,18 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.IO.Import.html">Kephas.Data.IO.Import</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
   <h5 id="Kephas_Data_IO_Import_DataImportContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DataImportContext : DataIOContext, IDataImportContext, IDataIOContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class DataImportContext : DataIOContext, IDataImportContext, IDataIOContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -205,7 +221,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext__ctor_Kephas_Data_IDataContext_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext.%23ctor(Kephas.Data.IDataContext%2CKephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L28">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L31">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportContext__ctor_" data-uid="Kephas.Data.IO.Import.DataImportContext.#ctor*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportContext__ctor_Kephas_Data_IDataContext_Kephas_Data_IDataContext_" data-uid="Kephas.Data.IO.Import.DataImportContext.#ctor(Kephas.Data.IDataContext,Kephas.Data.IDataContext)">DataImportContext(IDataContext, IDataContext)</h4>
@@ -244,10 +260,74 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext_DataConversionContextConfig.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext.DataConversionContextConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L62">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Import_DataImportContext_DataConversionContextConfig_" data-uid="Kephas.Data.IO.Import.DataImportContext.DataConversionContextConfig*"></a>
+  <h4 id="Kephas_Data_IO_Import_DataImportContext_DataConversionContextConfig" data-uid="Kephas.Data.IO.Import.DataImportContext.DataConversionContextConfig">DataConversionContextConfig</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the data conversion context configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Action&lt;object, IDataConversionContext&gt; DataConversionContextConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Object</span>, <a class="xref" href="Kephas.Data.Conversion.IDataConversionContext.html">IDataConversionContext</a>&gt;</td>
+        <td><p>The data conversion context configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext_PersistChangesContextConfig.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext.PersistChangesContextConfig%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L70">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Import_DataImportContext_PersistChangesContextConfig_" data-uid="Kephas.Data.IO.Import.DataImportContext.PersistChangesContextConfig*"></a>
+  <h4 id="Kephas_Data_IO_Import_DataImportContext_PersistChangesContextConfig" data-uid="Kephas.Data.IO.Import.DataImportContext.PersistChangesContextConfig">PersistChangesContextConfig</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the persist changes context configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Action&lt;IPersistChangesContext&gt; PersistChangesContextConfig { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>&gt;</td>
+        <td><p>The persist changes context configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext_SourceDataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext.SourceDataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L43">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L46">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportContext_SourceDataContext_" data-uid="Kephas.Data.IO.Import.DataImportContext.SourceDataContext*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportContext_SourceDataContext" data-uid="Kephas.Data.IO.Import.DataImportContext.SourceDataContext">SourceDataContext</h4>
@@ -279,7 +359,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext_TargetDataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext.TargetDataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L51">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportContext_TargetDataContext_" data-uid="Kephas.Data.IO.Import.DataImportContext.TargetDataContext*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportContext_TargetDataContext" data-uid="Kephas.Data.IO.Import.DataImportContext.TargetDataContext">TargetDataContext</h4>
@@ -328,12 +408,42 @@
   <div>
       <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
   </div>
+  <div>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_GetInitialData_Kephas_Services_IContext_">ContextExtensions.GetInitialData(IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Tuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Tuple&lt;Object, ChangeState&gt;&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Object&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IEntityInfo__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;IEntityInfo&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IO.DataIOContextExtensions.html#Kephas_Data_IO_DataIOContextExtensions_WithSerializationContextConfig_Kephas_Data_IO_IDataIOContext_System_Action_Kephas_Serialization_ISerializationContext__">DataIOContextExtensions.WithSerializationContextConfig(IDataIOContext, Action&lt;ISerializationContext&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IO.DataIOContextExtensions.html#Kephas_Data_IO_DataIOContextExtensions_WithRootObjectType_Kephas_Data_IO_IDataIOContext_System_Type_">DataIOContextExtensions.WithRootObjectType(IDataIOContext, Type)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.IO.Import.DataImportContextExtensions.html#Kephas_Data_IO_Import_DataImportContextExtensions_EnsureResult_Kephas_Data_IO_Import_IDataImportContext_System_Func_Kephas_Data_IO_IDataIOResult__">DataImportContextExtensions.EnsureResult(IDataImportContext, Func&lt;IDataIOResult&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.IO.Import.DataImportContextExtensions.html#Kephas_Data_IO_Import_DataImportContextExtensions_GetResult_Kephas_Data_IO_Import_IDataImportContext_">DataImportContextExtensions.GetResult(IDataImportContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IO.Import.DataImportContextExtensions.html#Kephas_Data_IO_Import_DataImportContextExtensions_WithDataConversionContextConfig_Kephas_Data_IO_Import_IDataImportContext_System_Action_System_Object_Kephas_Data_Conversion_IDataConversionContext__">DataImportContextExtensions.WithDataConversionContextConfig(IDataImportContext, Action&lt;Object, IDataConversionContext&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IO.Import.DataImportContextExtensions.html#Kephas_Data_IO_Import_DataImportContextExtensions_WithPersistChangesContextConfig_Kephas_Data_IO_Import_IDataImportContext_System_Action_Kephas_Data_Commands_IPersistChangesContext__">DataImportContextExtensions.WithPersistChangesContextConfig(IDataImportContext, Action&lt;IPersistChangesContext&gt;)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -368,18 +478,6 @@
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_GetInitialData_Kephas_Services_IContext_">ContextExtensions.GetInitialData(IContext)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Tuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Tuple&lt;Object, ChangeState&gt;&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;Object&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.InMemory.ContextExtensions.html#Kephas_Data_InMemory_ContextExtensions_SetInitialData_Kephas_Services_IContext_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IEntityInfo__">ContextExtensions.SetInitialData(IContext, IEnumerable&lt;IEntityInfo&gt;)</a>
-  </div>
 </article>
           </div>
           
@@ -391,7 +489,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportContext.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportContext.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -411,7 +509,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

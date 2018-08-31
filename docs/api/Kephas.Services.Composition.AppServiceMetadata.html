@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AppServiceMetadata
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -90,14 +90,18 @@
       <div class="level6"><a class="xref" href="Kephas.Data.Client.Queries.Conversion.Composition.ExpressionConverterMetadata.html">ExpressionConverterMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Commands.Composition.DataCommandMetadata.html">DataCommandMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Composition.DataContextMetadata.html">DataContextMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Data.Conversion.Composition.DataConversionTargetResolverMetadata.html">DataConversionTargetResolverMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Conversion.Composition.DataConverterMetadata.html">DataConverterMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Data.Initialization.Composition.InitialDataHandlerMetadata.html">InitialDataHandlerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.IO.DataStreams.Composition.DataStreamReaderMetadata.html">DataStreamReaderMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.IO.DataStreams.Composition.DataStreamWriterMetadata.html">DataStreamWriterMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Messaging.Behaviors.Composition.MessageProcessingBehaviorMetadata.html">MessageProcessingBehaviorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Messaging.Composition.MessageHandlerMetadata.html">MessageHandlerMetadata</a></div>
-      <div class="level6"><a class="xref" href="Kephas.Messaging.Composition.MessageProcessingFilterMetadata.html">MessageProcessingFilterMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Model.Runtime.Configuration.Composition.RuntimeModelElementConfiguratorMetadata.html">RuntimeModelElementConfiguratorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Model.Runtime.Construction.Composition.RuntimeModelElementConstructorMetadata.html">RuntimeModelElementConstructorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Net.Mime.Composition.MediaTypeMetadata.html">MediaTypeMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Scripting.Composition.LanguageServiceMetadata.html">LanguageServiceMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Scripting.Composition.ScriptingBehaviorMetadata.html">ScriptingBehaviorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Serialization.Composition.SerializerMetadata.html">SerializerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Services.Behavior.Composition.ServiceBehaviorRuleMetadata.html">ServiceBehaviorRuleMetadata</a></div>
   </div>
@@ -128,7 +132,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -143,7 +147,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -152,34 +159,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -189,6 +190,9 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Services.Composition.html">Kephas.Services.Composition</a></h6>
@@ -204,7 +208,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata__ctor_System_Collections_Generic_IDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.%23ctor(System.Collections.Generic.IDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L27">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L28">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata__ctor_" data-uid="Kephas.Services.Composition.AppServiceMetadata.#ctor*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata__ctor_System_Collections_Generic_IDictionary_System_String_System_Object__" data-uid="Kephas.Services.Composition.AppServiceMetadata.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">AppServiceMetadata(IDictionary&lt;String, Object&gt;)</h4>
@@ -235,19 +239,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata__ctor_System_Int32_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.%23ctor(System.Int32%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata__ctor_System_Int32_System_Int32_System_Boolean_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.%23ctor(System.Int32%2CSystem.Int32%2CSystem.Boolean%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L47">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata__ctor_" data-uid="Kephas.Services.Composition.AppServiceMetadata.#ctor*"></a>
-  <h4 id="Kephas_Services_Composition_AppServiceMetadata__ctor_System_Int32_System_Int32_System_Boolean_" data-uid="Kephas.Services.Composition.AppServiceMetadata.#ctor(System.Int32,System.Int32,System.Boolean)">AppServiceMetadata(Int32, Int32, Boolean)</h4>
+  <h4 id="Kephas_Services_Composition_AppServiceMetadata__ctor_System_Int32_System_Int32_System_Boolean_System_String_" data-uid="Kephas.Services.Composition.AppServiceMetadata.#ctor(System.Int32,System.Int32,System.Boolean,System.String)">AppServiceMetadata(Int32, Int32, Boolean, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html">AppServiceMetadata</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -277,6 +281,12 @@
         <td><p><code>true</code> if the service is optional, <code>false</code> if not (optional).</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">serviceName</span></td>
+        <td><p>The name of the service (optional).</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
@@ -286,7 +296,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.AppServiceImplementationType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L85">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L97">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType_" data-uid="Kephas.Services.Composition.AppServiceMetadata.AppServiceImplementationType*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType" data-uid="Kephas.Services.Composition.AppServiceMetadata.AppServiceImplementationType">AppServiceImplementationType</h4>
@@ -318,7 +328,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_OptionalService.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.OptionalService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L77">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L81">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_OptionalService_" data-uid="Kephas.Services.Composition.AppServiceMetadata.OptionalService*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_OptionalService" data-uid="Kephas.Services.Composition.AppServiceMetadata.OptionalService">OptionalService</h4>
@@ -350,7 +360,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_OverridePriority.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.OverridePriority%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L69">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L73">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_OverridePriority_" data-uid="Kephas.Services.Composition.AppServiceMetadata.OverridePriority*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_OverridePriority" data-uid="Kephas.Services.Composition.AppServiceMetadata.OverridePriority">OverridePriority</h4>
@@ -382,7 +392,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_ProcessingPriority.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.ProcessingPriority%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L61">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_ProcessingPriority_" data-uid="Kephas.Services.Composition.AppServiceMetadata.ProcessingPriority*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_ProcessingPriority" data-uid="Kephas.Services.Composition.AppServiceMetadata.ProcessingPriority">ProcessingPriority</h4>
@@ -409,6 +419,38 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_ServiceName.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.ServiceName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L89">View Source</a>
+  </span>
+  <a id="Kephas_Services_Composition_AppServiceMetadata_ServiceName_" data-uid="Kephas.Services.Composition.AppServiceMetadata.ServiceName*"></a>
+  <h4 id="Kephas_Services_Composition_AppServiceMetadata_ServiceName" data-uid="Kephas.Services.Composition.AppServiceMetadata.ServiceName">ServiceName</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ServiceName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The name of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -416,7 +458,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_GetMetadataValue__2_System_Collections_Generic_IDictionary_System_String_System_Object____1_.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.GetMetadataValue%60%602(System.Collections.Generic.IDictionary%7BSystem.String%2CSystem.Object%7D%2C%60%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L107">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L120">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_GetMetadataValue_" data-uid="Kephas.Services.Composition.AppServiceMetadata.GetMetadataValue*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_GetMetadataValue__2_System_Collections_Generic_IDictionary_System_String_System_Object____1_" data-uid="Kephas.Services.Composition.AppServiceMetadata.GetMetadataValue``2(System.Collections.Generic.IDictionary{System.String,System.Object},``1)">GetMetadataValue&lt;TAttribute, TValue&gt;(IDictionary&lt;String, Object&gt;, TValue)</h4>
@@ -425,7 +467,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected TValue GetMetadataValue&lt;TAttribute, TValue&gt;(IDictionary&lt;string, object&gt; metadata, TValue defaultValue = null)where TAttribute : IMetadataValue&lt;TValue&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">protected TValue GetMetadataValue&lt;TAttribute, TValue&gt;(IDictionary&lt;string, object&gt; metadata, TValue defaultValue = null)
+    where TAttribute : IMetadataValue&lt;TValue&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -493,7 +536,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata_ToString.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L93">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L105">View Source</a>
   </span>
   <a id="Kephas_Services_Composition_AppServiceMetadata_ToString_" data-uid="Kephas.Services.Composition.AppServiceMetadata.ToString*"></a>
   <h4 id="Kephas_Services_Composition_AppServiceMetadata_ToString" data-uid="Kephas.Services.Composition.AppServiceMetadata.ToString">ToString()</h4>
@@ -534,6 +577,9 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -561,6 +607,9 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -577,7 +626,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Composition_AppServiceMetadata.md&amp;value=---%0Auid%3A%20Kephas.Services.Composition.AppServiceMetadata%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Services/Composition/AppServiceMetadata.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -597,7 +646,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface ISerializationService
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -79,7 +79,7 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html#Kephas_IAmbientServicesAware_AmbientServices">IAmbientServicesAware.AmbientServices</a>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Serialization.html">Kephas.Serialization</a></h6>
@@ -87,7 +87,7 @@
   <h5 id="Kephas_Serialization_ISerializationService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
-public interface ISerializationService : IAmbientServicesAware</code></pre>
+public interface ISerializationService : ICompositionContextAware</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -96,7 +96,7 @@ public interface ISerializationService : IAmbientServicesAware</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L27">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L29">View Source</a>
   </span>
   <a id="Kephas_Serialization_ISerializationService_GetSerializer_" data-uid="Kephas.Serialization.ISerializationService.GetSerializer*"></a>
   <h4 id="Kephas_Serialization_ISerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.ISerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)">GetSerializer(ISerializationContext)</h4>
@@ -143,6 +143,9 @@ public interface ISerializationService : IAmbientServicesAware</code></pre>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -179,28 +182,58 @@ public interface ISerializationService : IAmbientServicesAware</code></pre>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_DeserializeAsync__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.DeserializeAsync&lt;TMediaType, TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_Deserialize__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.Deserialize&lt;TMediaType, TRootObject&gt;(ISerializationService, String, ISerializationContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_DeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.DeserializeAsync&lt;TMediaType&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_Deserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.Deserialize&lt;TMediaType&gt;(ISerializationService, String, ISerializationContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.JsonDeserializeAsync(ISerializationService, String, ISerializationContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.JsonDeserialize(ISerializationService, String, ISerializationContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.JsonDeserializeAsync&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.JsonDeserialize&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.XmlDeserializeAsync(ISerializationService, String, ISerializationContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.XmlDeserialize(ISerializationService, String, ISerializationContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.XmlDeserializeAsync&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_">SerializationExtensions.XmlDeserialize&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_SerializeAsync__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.SerializeAsync&lt;TMediaType&gt;(ISerializationService, Object, ISerializationContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_Serialize__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_">SerializationExtensions.Serialize&lt;TMediaType&gt;(ISerializationService, Object, ISerializationContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.JsonSerializeAsync(ISerializationService, Object, ISerializationContext, CancellationToken)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_JsonSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_">SerializationExtensions.JsonSerialize(ISerializationService, Object, ISerializationContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_">SerializationExtensions.XmlSerializeAsync(ISerializationService, Object, ISerializationContext, CancellationToken)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_">SerializationExtensions.XmlSerialize(ISerializationService, Object, ISerializationContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Serialization_ISerializationService_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__">SerializationExtensions.CreateOrUpdateSerializationContext&lt;TMediaType&gt;(ISerializationService, ISerializationContext, Action&lt;ISerializationContext&gt;)</a>
   </div>
 </article>
           </div>
@@ -213,7 +246,7 @@ public interface ISerializationService : IAmbientServicesAware</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -233,7 +266,7 @@ public interface ISerializationService : IAmbientServicesAware</code></pre>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

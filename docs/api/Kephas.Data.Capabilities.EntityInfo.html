@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class EntityInfo
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -116,7 +116,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -131,7 +131,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -140,34 +143,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -177,6 +174,9 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Capabilities.html">Kephas.Data.Capabilities</a></h6>
@@ -192,7 +192,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo__ctor_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.%23ctor(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L57">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L58">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo__ctor_" data-uid="Kephas.Data.Capabilities.EntityInfo.#ctor*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo__ctor_System_Object_" data-uid="Kephas.Data.Capabilities.EntityInfo.#ctor(System.Object)">EntityInfo(Object)</h4>
@@ -228,7 +228,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_ChangeState.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.ChangeState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L123">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L125">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_ChangeState_" data-uid="Kephas.Data.Capabilities.EntityInfo.ChangeState*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_ChangeState" data-uid="Kephas.Data.Capabilities.EntityInfo.ChangeState">ChangeState</h4>
@@ -260,7 +260,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_DataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.DataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L98">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L99">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_DataContext_" data-uid="Kephas.Data.Capabilities.EntityInfo.DataContext*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_DataContext" data-uid="Kephas.Data.Capabilities.EntityInfo.DataContext">DataContext</h4>
@@ -292,7 +292,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_Entity.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.Entity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L74">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L75">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_Entity_" data-uid="Kephas.Data.Capabilities.EntityInfo.Entity*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_Entity" data-uid="Kephas.Data.Capabilities.EntityInfo.Entity">Entity</h4>
@@ -324,7 +324,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_EntityId.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.EntityId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L90">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L91">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_EntityId_" data-uid="Kephas.Data.Capabilities.EntityInfo.EntityId*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_EntityId" data-uid="Kephas.Data.Capabilities.EntityInfo.EntityId">EntityId</h4>
@@ -356,7 +356,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_ExpandoEntity.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.ExpandoEntity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L173">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L175">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_ExpandoEntity_" data-uid="Kephas.Data.Capabilities.EntityInfo.ExpandoEntity*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_ExpandoEntity" data-uid="Kephas.Data.Capabilities.EntityInfo.ExpandoEntity">ExpandoEntity</h4>
@@ -387,7 +387,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_Id.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L168">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L170">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_Id_" data-uid="Kephas.Data.Capabilities.EntityInfo.Id*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_Id" data-uid="Kephas.Data.Capabilities.EntityInfo.Id">Id</h4>
@@ -419,7 +419,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_OriginalEntity.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.OriginalEntity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L82">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L83">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_OriginalEntity_" data-uid="Kephas.Data.Capabilities.EntityInfo.OriginalEntity*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_OriginalEntity" data-uid="Kephas.Data.Capabilities.EntityInfo.OriginalEntity">OriginalEntity</h4>
@@ -453,7 +453,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_AcceptChanges.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.AcceptChanges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L230">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L250">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_AcceptChanges_" data-uid="Kephas.Data.Capabilities.EntityInfo.AcceptChanges*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_AcceptChanges" data-uid="Kephas.Data.Capabilities.EntityInfo.AcceptChanges">AcceptChanges()</h4>
@@ -462,14 +462,14 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void AcceptChanges()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void AcceptChanges()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_AttachPropertyChangeHandlers.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.AttachPropertyChangeHandlers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L377">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L396">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_AttachPropertyChangeHandlers_" data-uid="Kephas.Data.Capabilities.EntityInfo.AttachPropertyChangeHandlers*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_AttachPropertyChangeHandlers" data-uid="Kephas.Data.Capabilities.EntityInfo.AttachPropertyChangeHandlers">AttachPropertyChangeHandlers()</h4>
@@ -485,7 +485,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_CreateOriginalEntity.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.CreateOriginalEntity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L361">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L380">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_CreateOriginalEntity_" data-uid="Kephas.Data.Capabilities.EntityInfo.CreateOriginalEntity*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_CreateOriginalEntity" data-uid="Kephas.Data.Capabilities.EntityInfo.CreateOriginalEntity">CreateOriginalEntity()</h4>
@@ -517,7 +517,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_DetachPropertyChangeHandlers.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.DetachPropertyChangeHandlers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L395">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L414">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_DetachPropertyChangeHandlers_" data-uid="Kephas.Data.Capabilities.EntityInfo.DetachPropertyChangeHandlers*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_DetachPropertyChangeHandlers" data-uid="Kephas.Data.Capabilities.EntityInfo.DetachPropertyChangeHandlers">DetachPropertyChangeHandlers()</h4>
@@ -533,7 +533,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_DiscardChanges.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.DiscardChanges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L238">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L258">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_DiscardChanges_" data-uid="Kephas.Data.Capabilities.EntityInfo.DiscardChanges*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_DiscardChanges" data-uid="Kephas.Data.Capabilities.EntityInfo.DiscardChanges">DiscardChanges()</h4>
@@ -542,14 +542,14 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void DiscardChanges()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void DiscardChanges()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_Dispose.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L265">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L285">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_Dispose_" data-uid="Kephas.Data.Capabilities.EntityInfo.Dispose*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_Dispose" data-uid="Kephas.Data.Capabilities.EntityInfo.Dispose">Dispose()</h4>
@@ -566,7 +566,7 @@ resources.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L287">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L307">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_Dispose_" data-uid="Kephas.Data.Capabilities.EntityInfo.Dispose*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_Dispose_System_Boolean_" data-uid="Kephas.Data.Capabilities.EntityInfo.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -601,7 +601,7 @@ optionally releases the managed resources.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_GetFlattenedEntityGraphAsync_Kephas_Data_Capabilities_IGraphOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.GetFlattenedEntityGraphAsync(Kephas.Data.Capabilities.IGraphOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L214">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L216">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_GetFlattenedEntityGraphAsync_" data-uid="Kephas.Data.Capabilities.EntityInfo.GetFlattenedEntityGraphAsync*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_GetFlattenedEntityGraphAsync_Kephas_Data_Capabilities_IGraphOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Capabilities.EntityInfo.GetFlattenedEntityGraphAsync(Kephas.Data.Capabilities.IGraphOperationContext,System.Threading.CancellationToken)">GetFlattenedEntityGraphAsync(IGraphOperationContext, CancellationToken)</h4>
@@ -612,7 +612,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;object&gt;&gt; GetFlattenedEntityGraphAsync(IGraphOperationContext operationContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;object&gt;&gt; GetFlattenedEntityGraphAsync(IGraphOperationContext operationContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -659,7 +659,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_GetGraphRoot.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.GetGraphRoot%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L181">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L183">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_GetGraphRoot_" data-uid="Kephas.Data.Capabilities.EntityInfo.GetGraphRoot*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_GetGraphRoot" data-uid="Kephas.Data.Capabilities.EntityInfo.GetGraphRoot">GetGraphRoot()</h4>
@@ -691,7 +691,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_GetStructuralEntityGraph.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.GetStructuralEntityGraph%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L193">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L195">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_GetStructuralEntityGraph_" data-uid="Kephas.Data.Capabilities.EntityInfo.GetStructuralEntityGraph*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_GetStructuralEntityGraph" data-uid="Kephas.Data.Capabilities.EntityInfo.GetStructuralEntityGraph">GetStructuralEntityGraph()</h4>
@@ -720,10 +720,60 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_IsChanged_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.IsChanged(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L236">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_EntityInfo_IsChanged_" data-uid="Kephas.Data.Capabilities.EntityInfo.IsChanged*"></a>
+  <h4 id="Kephas_Data_Capabilities_EntityInfo_IsChanged_System_String_" data-uid="Kephas.Data.Capabilities.EntityInfo.IsChanged(System.String)">IsChanged(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the provided property changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool IsChanged(string property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the property changed, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_ToString.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L277">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L297">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_ToString_" data-uid="Kephas.Data.Capabilities.EntityInfo.ToString*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_ToString" data-uid="Kephas.Data.Capabilities.EntityInfo.ToString">ToString()</h4>
@@ -757,7 +807,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_TryGetChangeStateTracker.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.TryGetChangeStateTracker%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L317">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L336">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_TryGetChangeStateTracker_" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetChangeStateTracker*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_TryGetChangeStateTracker" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetChangeStateTracker">TryGetChangeStateTracker()</h4>
@@ -789,7 +839,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_TryGetEntityGraph.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.TryGetEntityGraph%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L328">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L347">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_TryGetEntityGraph_" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetEntityGraph*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_TryGetEntityGraph" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetEntityGraph">TryGetEntityGraph()</h4>
@@ -821,7 +871,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_TryGetEntityId.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.TryGetEntityId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L298">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L318">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_TryGetEntityId_" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetEntityId*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_TryGetEntityId" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetEntityId">TryGetEntityId()</h4>
@@ -853,7 +903,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanged.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanged%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L350">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L369">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanged_" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanged*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanged" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanged">TryGetNotifyPropertyChanged()</h4>
@@ -885,7 +935,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanging.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanging%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L339">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L358">View Source</a>
   </span>
   <a id="Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanging_" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanging*"></a>
   <h4 id="Kephas_Data_Capabilities_EntityInfo_TryGetNotifyPropertyChanging" data-uid="Kephas.Data.Capabilities.EntityInfo.TryGetNotifyPropertyChanging">TryGetNotifyPropertyChanging()</h4>
@@ -939,6 +989,12 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryAttachToEntity_Kephas_Data_Capabilities_IEntityInfo_System_Object_">EntityInfoExtensions.TryAttachToEntity(IEntityInfo, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -982,7 +1038,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_EntityInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.EntityInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Capabilities/EntityInfo.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -1002,7 +1058,7 @@ If no loose parts must be loaded, then the result is the same with <a class="xre
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

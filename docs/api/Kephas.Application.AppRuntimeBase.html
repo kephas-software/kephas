@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AppRuntimeBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -83,8 +83,7 @@
     <div class="level2"><a class="xref" href="Kephas.Dynamic.ExpandoBase.html">ExpandoBase</a></div>
     <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
     <div class="level4"><span class="xref">AppRuntimeBase</span></div>
-      <div class="level5"><a class="xref" href="Kephas.Application.NetAppRuntime.html">NetAppRuntime</a></div>
-      <div class="level5"><a class="xref" href="Kephas.Application.NullAppRuntime.html">NullAppRuntime</a></div>
+      <div class="level5"><a class="xref" href="Kephas.Application.DefaultAppRuntime.html">DefaultAppRuntime</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -114,7 +113,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -129,7 +128,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -138,37 +140,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -178,6 +171,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
@@ -193,7 +192,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase__ctor_Kephas_Reflection_IAssemblyLoader_Kephas_Logging_ILogManager_System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.%23ctor(Kephas.Reflection.IAssemblyLoader%2CKephas.Logging.ILogManager%2CSystem.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L53">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase__ctor_" data-uid="Kephas.Application.AppRuntimeBase.#ctor*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase__ctor_Kephas_Reflection_IAssemblyLoader_Kephas_Logging_ILogManager_System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.AppRuntimeBase.#ctor(Kephas.Reflection.IAssemblyLoader,Kephas.Logging.ILogManager,System.Func{System.Reflection.AssemblyName,System.Boolean})">AppRuntimeBase(IAssemblyLoader, ILogManager, Func&lt;AssemblyName, Boolean&gt;)</h4>
@@ -241,7 +240,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AssemblyFileExtension.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AssemblyFileExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L40">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L41">View Source</a>
   </span>
   <h4 id="Kephas_Application_AppRuntimeBase_AssemblyFileExtension" data-uid="Kephas.Application.AppRuntimeBase.AssemblyFileExtension">AssemblyFileExtension</h4>
   <div class="markdown level1 summary"><p>The assembly file extension.</p>
@@ -271,7 +270,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AssemblyFileSearchPattern.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AssemblyFileSearchPattern%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L35">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L36">View Source</a>
   </span>
   <h4 id="Kephas_Application_AppRuntimeBase_AssemblyFileSearchPattern" data-uid="Kephas.Application.AppRuntimeBase.AssemblyFileSearchPattern">AssemblyFileSearchPattern</h4>
   <div class="markdown level1 summary"><p>A pattern specifying the assembly file search.</p>
@@ -303,7 +302,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AssemblyFilter.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AssemblyFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L75">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_AssemblyFilter_" data-uid="Kephas.Application.AppRuntimeBase.AssemblyFilter*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_AssemblyFilter" data-uid="Kephas.Application.AppRuntimeBase.AssemblyFilter">AssemblyFilter</h4>
@@ -335,7 +334,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AssemblyLoader.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AssemblyLoader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L67">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_AssemblyLoader_" data-uid="Kephas.Application.AppRuntimeBase.AssemblyLoader*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_AssemblyLoader" data-uid="Kephas.Application.AppRuntimeBase.AssemblyLoader">AssemblyLoader</h4>
@@ -366,19 +365,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AddAdditionalAssembliesAsync_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AddAdditionalAssembliesAsync(System.Collections.Generic.IList%7BSystem.Reflection.Assembly%7D%2CSystem.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_AddAdditionalAssemblies_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.AddAdditionalAssemblies(System.Collections.Generic.IList%7BSystem.Reflection.Assembly%7D%2CSystem.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L156">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L197">View Source</a>
   </span>
-  <a id="Kephas_Application_AppRuntimeBase_AddAdditionalAssembliesAsync_" data-uid="Kephas.Application.AppRuntimeBase.AddAdditionalAssembliesAsync*"></a>
-  <h4 id="Kephas_Application_AppRuntimeBase_AddAdditionalAssembliesAsync_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_" data-uid="Kephas.Application.AppRuntimeBase.AddAdditionalAssembliesAsync(System.Collections.Generic.IList{System.Reflection.Assembly},System.Func{System.Reflection.AssemblyName,System.Boolean},System.Threading.CancellationToken)">AddAdditionalAssembliesAsync(IList&lt;Assembly&gt;, Func&lt;AssemblyName, Boolean&gt;, CancellationToken)</h4>
+  <a id="Kephas_Application_AppRuntimeBase_AddAdditionalAssemblies_" data-uid="Kephas.Application.AppRuntimeBase.AddAdditionalAssemblies*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_AddAdditionalAssemblies_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.AppRuntimeBase.AddAdditionalAssemblies(System.Collections.Generic.IList{System.Reflection.Assembly},System.Func{System.Reflection.AssemblyName,System.Boolean})">AddAdditionalAssemblies(IList&lt;Assembly&gt;, Func&lt;AssemblyName, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Adds additional assemblies to the ones already collected.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task AddAdditionalAssembliesAsync(IList&lt;Assembly&gt; assemblies, Func&lt;AssemblyName, bool&gt; assemblyFilter, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void AddAdditionalAssemblies(IList&lt;Assembly&gt; assemblies, Func&lt;AssemblyName, bool&gt; assemblyFilter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -402,10 +401,38 @@
         <td><p>A filter for the assemblies.</p>
 </td>
       </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_ComputeAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.ComputeAppAssemblies(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L159">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppRuntimeBase_ComputeAppAssemblies_" data-uid="Kephas.Application.AppRuntimeBase.ComputeAppAssemblies*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_ComputeAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.AppRuntimeBase.ComputeAppAssemblies(System.Func{System.Reflection.AssemblyName,System.Boolean})">ComputeAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the application assemblies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;Assembly&gt; ComputeAppAssemblies(Func&lt;AssemblyName, bool&gt; assemblyFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.AssemblyName</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">assemblyFilter</span></td>
+        <td><p>A filter for the assemblies.</p>
 </td>
       </tr>
     </tbody>
@@ -420,8 +447,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>A Task.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;</td>
+        <td><p>An enumeration of application assemblies.</p>
 </td>
       </tr>
     </tbody>
@@ -431,7 +458,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_EnumerateFiles_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.EnumerateFiles(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L193">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L234">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_EnumerateFiles_" data-uid="Kephas.Application.AppRuntimeBase.EnumerateFiles*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_EnumerateFiles_System_String_System_String_" data-uid="Kephas.Application.AppRuntimeBase.EnumerateFiles(System.String,System.String)">EnumerateFiles(String, String)</h4>
@@ -484,19 +511,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAppAssembliesAsync_System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAppAssembliesAsync(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAppAssemblies(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L93">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L99">View Source</a>
   </span>
-  <a id="Kephas_Application_AppRuntimeBase_GetAppAssembliesAsync_" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssembliesAsync*"></a>
-  <h4 id="Kephas_Application_AppRuntimeBase_GetAppAssembliesAsync_System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssembliesAsync(System.Func{System.Reflection.AssemblyName,System.Boolean},System.Threading.CancellationToken)">GetAppAssembliesAsync(Func&lt;AssemblyName, Boolean&gt;, CancellationToken)</h4>
+  <a id="Kephas_Application_AppRuntimeBase_GetAppAssemblies_" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblies*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_GetAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblies(System.Func{System.Reflection.AssemblyName,System.Boolean})">GetAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the application assemblies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IEnumerable&lt;Assembly&gt;&gt; GetAppAssembliesAsync(Func&lt;AssemblyName, bool&gt; assemblyFilter = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;Assembly&gt; GetAppAssemblies(Func&lt;AssemblyName, bool&gt; assemblyFilter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -514,12 +541,6 @@
         <td><p>A filter for the assemblies (optional).</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -532,27 +553,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;&gt;</td>
-        <td><p>A promise of an enumeration of application assemblies.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;</td>
+        <td><p>An enumeration of application assemblies.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectoriesAsync.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectoriesAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectories.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectories%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L208">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L249">View Source</a>
   </span>
-  <a id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectoriesAsync_" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectoriesAsync*"></a>
-  <h4 id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectoriesAsync" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectoriesAsync">GetAppAssemblyDirectoriesAsync()</h4>
+  <a id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectories_" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectories*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectories" data-uid="Kephas.Application.AppRuntimeBase.GetAppAssemblyDirectories">GetAppAssemblyDirectories()</h4>
   <div class="markdown level1 summary"><p>Gets the directories where the application assemblies can be found.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IEnumerable&lt;string&gt;&gt; GetAppAssemblyDirectoriesAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetAppAssemblyDirectories()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -564,13 +585,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
-        <td><p>A promise of a directory enumeration.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>A directory enumeration.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectoriesAsync_remarks">Remarks</h5>
+  <h5 id="Kephas_Application_AppRuntimeBase_GetAppAssemblyDirectories_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Note for inheritors: This method can be overridden to provide additional directories
 where assemblies can be loaded from, like in the case of plugin architectures.</p>
 </div>
@@ -579,7 +600,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAppLocation.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAppLocation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L83">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_GetAppLocation_" data-uid="Kephas.Application.AppRuntimeBase.GetAppLocation*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_GetAppLocation" data-uid="Kephas.Application.AppRuntimeBase.GetAppLocation">GetAppLocation()</h4>
@@ -611,7 +632,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetAssemblyNameFromAssemblyFileName_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetAssemblyNameFromAssemblyFileName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L180">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L221">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_GetAssemblyNameFromAssemblyFileName_" data-uid="Kephas.Application.AppRuntimeBase.GetAssemblyNameFromAssemblyFileName*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_GetAssemblyNameFromAssemblyFileName_System_String_" data-uid="Kephas.Application.AppRuntimeBase.GetAssemblyNameFromAssemblyFileName(System.String)">GetAssemblyNameFromAssemblyFileName(String)</h4>
@@ -661,7 +682,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetFileName_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetFileName(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L220">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L261">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_GetFileName_" data-uid="Kephas.Application.AppRuntimeBase.GetFileName*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_GetFileName_System_Reflection_Assembly_" data-uid="Kephas.Application.AppRuntimeBase.GetFileName(System.Reflection.Assembly)">GetFileName(Assembly)</h4>
@@ -708,10 +729,74 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetHostAddress.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetHostAddress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L118">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppRuntimeBase_GetHostAddress_" data-uid="Kephas.Application.AppRuntimeBase.GetHostAddress*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_GetHostAddress" data-uid="Kephas.Application.AppRuntimeBase.GetHostAddress">GetHostAddress()</h4>
+  <div class="markdown level1 summary"><p>Gets host address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IPAddress GetHostAddress()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><p>The host address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetHostName.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetHostName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L130">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppRuntimeBase_GetHostName_" data-uid="Kephas.Application.AppRuntimeBase.GetHostName*"></a>
+  <h4 id="Kephas_Application_AppRuntimeBase_GetHostName" data-uid="Kephas.Application.AppRuntimeBase.GetHostName">GetHostName()</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the host where the application process runs.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual string GetHostName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The host name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetLoadedAssemblies.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetLoadedAssemblies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L136">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L141">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_GetLoadedAssemblies_" data-uid="Kephas.Application.AppRuntimeBase.GetLoadedAssemblies*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_GetLoadedAssemblies" data-uid="Kephas.Application.AppRuntimeBase.GetLoadedAssemblies">GetLoadedAssemblies()</h4>
@@ -743,7 +828,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase_GetReferencedAssemblies_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase.GetReferencedAssemblies(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L145">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L150">View Source</a>
   </span>
   <a id="Kephas_Application_AppRuntimeBase_GetReferencedAssemblies_" data-uid="Kephas.Application.AppRuntimeBase.GetReferencedAssemblies*"></a>
   <h4 id="Kephas_Application_AppRuntimeBase_GetReferencedAssemblies_System_Reflection_Assembly_" data-uid="Kephas.Application.AppRuntimeBase.GetReferencedAssemblies(System.Reflection.Assembly)">GetReferencedAssemblies(Assembly)</h4>
@@ -803,6 +888,9 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -830,6 +918,9 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -846,7 +937,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppRuntimeBase.md&amp;value=---%0Auid%3A%20Kephas.Application.AppRuntimeBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/AppRuntimeBase.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -866,7 +957,7 @@ where assemblies can be loaded from, like in the case of plugin architectures.</
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

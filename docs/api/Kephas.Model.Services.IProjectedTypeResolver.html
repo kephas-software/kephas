@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IProjectedTypeResolver
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -77,7 +77,7 @@
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Model.Services.html">Kephas.Model.Services</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Model.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Model_Services_IProjectedTypeResolver_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
@@ -87,19 +87,19 @@ public interface IProjectedTypeResolver</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Services_IProjectedTypeResolver_ResolveProjectedType_System_Type_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Model.Services.IProjectedTypeResolver.ResolveProjectedType(System.Type%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Services_IProjectedTypeResolver_ResolveProjectedType_System_Type_Kephas_Services_IContext_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Model.Services.IProjectedTypeResolver.ResolveProjectedType(System.Type%2CKephas.Services.IContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Services/IProjectedTypeResolver.cs/#L30">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/Services/IProjectedTypeResolver.cs/#L32">View Source</a>
   </span>
   <a id="Kephas_Model_Services_IProjectedTypeResolver_ResolveProjectedType_" data-uid="Kephas.Model.Services.IProjectedTypeResolver.ResolveProjectedType*"></a>
-  <h4 id="Kephas_Model_Services_IProjectedTypeResolver_ResolveProjectedType_System_Type_System_Boolean_" data-uid="Kephas.Model.Services.IProjectedTypeResolver.ResolveProjectedType(System.Type,System.Boolean)">ResolveProjectedType(Type, Boolean)</h4>
+  <h4 id="Kephas_Model_Services_IProjectedTypeResolver_ResolveProjectedType_System_Type_Kephas_Services_IContext_System_Boolean_" data-uid="Kephas.Model.Services.IProjectedTypeResolver.ResolveProjectedType(System.Type,Kephas.Services.IContext,System.Boolean)">ResolveProjectedType(Type, IContext, Boolean)</h4>
   <div class="markdown level1 summary"><p>Resolves the projected type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Type ResolveProjectedType(Type projectionType, bool throwOnNotFound = true)</code></pre>
+    <pre><code class="lang-csharp hljs">Type ResolveProjectedType(Type projectionType, IContext context = null, bool throwOnNotFound = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -118,9 +118,15 @@ public interface IProjectedTypeResolver</code></pre>
 </td>
       </tr>
       <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>An optional context for the resolution.</p>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">throwOnNotFound</span></td>
-        <td><p>Indicates whether to throw or not when the indicated type is not found.</p>
+        <td><p>Indicates whether to throw or not when the indicated type is not found (optional).</p>
 </td>
       </tr>
     </tbody>
@@ -136,12 +142,15 @@ public interface IProjectedTypeResolver</code></pre>
     <tbody>
       <tr>
         <td><span class="xref">System.Type</span></td>
-        <td><p>A Type.</p>
+        <td><p>The resolved type or <code>null</code>, if <code data-dev-comment-type="paramref" class="paramref">throwOnNotFound</code> is set to false and a projected type could not be found.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -186,7 +195,7 @@ public interface IProjectedTypeResolver</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Services_IProjectedTypeResolver.md&amp;value=---%0Auid%3A%20Kephas.Model.Services.IProjectedTypeResolver%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Services/IProjectedTypeResolver.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/Services/IProjectedTypeResolver.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -206,7 +215,7 @@ public interface IProjectedTypeResolver</code></pre>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

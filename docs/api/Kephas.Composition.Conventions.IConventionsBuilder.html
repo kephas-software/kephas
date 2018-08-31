@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IConventionsBuilder
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -86,10 +86,122 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder_ForInstance_System_Type_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder.ForInstance(System.Type%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L49">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IConventionsBuilder_ForInstance_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForInstance*"></a>
+  <h4 id="Kephas_Composition_Conventions_IConventionsBuilder_ForInstance_System_Type_System_Object_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForInstance(System.Type,System.Object)">ForInstance(Type, Object)</h4>
+  <div class="markdown level1 summary"><p>Defines a registration for the specified type and its singleton instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartBuilder ForInstance(Type type, object instance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The registered service type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">instance</span></td>
+        <td><p>The instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartBuilder.html">IPartBuilder</a></td>
+        <td><p>A <a class="xref" href="Kephas.Composition.Conventions.IPartBuilder.html">IPartBuilder</a> to further configure the rule.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder_ForInstanceFactory_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder.ForInstanceFactory(System.Type%2CSystem.Func%7BKephas.Composition.ICompositionContext%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L57">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IConventionsBuilder_ForInstanceFactory_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForInstanceFactory*"></a>
+  <h4 id="Kephas_Composition_Conventions_IConventionsBuilder_ForInstanceFactory_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForInstanceFactory(System.Type,System.Func{Kephas.Composition.ICompositionContext,System.Object})">ForInstanceFactory(Type, Func&lt;ICompositionContext, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Defines a registration for the specified type and its instance factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartBuilder ForInstanceFactory(Type type, Func&lt;ICompositionContext, object&gt; factory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The registered service type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a>, <span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">factory</span></td>
+        <td><p>The service factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartBuilder.html">IPartBuilder</a></td>
+        <td><p>A <a class="xref" href="Kephas.Composition.Conventions.IPartBuilder.html">IPartBuilder</a> to further configure the rule.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder_ForType_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder.ForType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L40">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L41">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_IConventionsBuilder_ForType_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForType*"></a>
   <h4 id="Kephas_Composition_Conventions_IConventionsBuilder_ForType_System_Type_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForType(System.Type)">ForType(Type)</h4>
@@ -139,7 +251,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder_ForTypesDerivedFrom_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder.ForTypesDerivedFrom(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L24">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L25">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_IConventionsBuilder_ForTypesDerivedFrom_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForTypesDerivedFrom*"></a>
   <h4 id="Kephas_Composition_Conventions_IConventionsBuilder_ForTypesDerivedFrom_System_Type_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForTypesDerivedFrom(System.Type)">ForTypesDerivedFrom(Type)</h4>
@@ -189,7 +301,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder_ForTypesMatching_System_Predicate_System_Type__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder.ForTypesMatching(System.Predicate%7BSystem.Type%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L33">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L34">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_IConventionsBuilder_ForTypesMatching_" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForTypesMatching*"></a>
   <h4 id="Kephas_Composition_Conventions_IConventionsBuilder_ForTypesMatching_System_Predicate_System_Type__" data-uid="Kephas.Composition.Conventions.IConventionsBuilder.ForTypesMatching(System.Predicate{System.Type})">ForTypesMatching(Predicate&lt;Type&gt;)</h4>
@@ -236,6 +348,9 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -269,6 +384,12 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Composition.Conventions.ConventionsBuilderExtensions.html#Kephas_Composition_Conventions_ConventionsBuilderExtensions_ForInstance__1_Kephas_Composition_Conventions_IConventionsBuilder___0_">ConventionsBuilderExtensions.ForInstance&lt;TService&gt;(IConventionsBuilder, TService)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Composition.Conventions.ConventionsBuilderExtensions.html#Kephas_Composition_Conventions_ConventionsBuilderExtensions_ForInstanceFactory__1_Kephas_Composition_Conventions_IConventionsBuilder_System_Func_Kephas_Composition_ICompositionContext___0__">ConventionsBuilderExtensions.ForInstanceFactory&lt;TService&gt;(IConventionsBuilder, Func&lt;ICompositionContext, TService&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Composition.Conventions.ConventionsBuilderExtensions.html#Kephas_Composition_Conventions_ConventionsBuilderExtensions_RegisterConventions_Kephas_Composition_Conventions_IConventionsBuilder_System_Collections_Generic_IEnumerable_System_Type__System_Collections_Generic_IEnumerable_System_Type__Kephas_Composition_Hosting_ICompositionRegistrationContext_">ConventionsBuilderExtensions.RegisterConventions(IConventionsBuilder, IEnumerable&lt;Type&gt;, IEnumerable&lt;Type&gt;, ICompositionRegistrationContext)</a>
   </div>
   <div>
@@ -285,7 +406,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IConventionsBuilder.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IConventionsBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IConventionsBuilder.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -305,7 +426,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

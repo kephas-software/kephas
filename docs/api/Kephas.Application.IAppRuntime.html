@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAppRuntime
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -82,7 +82,7 @@
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary">IExpando.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <span class="xref">System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression)</span>
@@ -101,19 +101,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppRuntime_GetAppAssembliesAsync_System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppRuntime.GetAppAssembliesAsync(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppRuntime_GetAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppRuntime.GetAppAssemblies(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/IAppRuntime.cs/#L41">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/IAppRuntime.cs/#L40">View Source</a>
   </span>
-  <a id="Kephas_Application_IAppRuntime_GetAppAssembliesAsync_" data-uid="Kephas.Application.IAppRuntime.GetAppAssembliesAsync*"></a>
-  <h4 id="Kephas_Application_IAppRuntime_GetAppAssembliesAsync_System_Func_System_Reflection_AssemblyName_System_Boolean__System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppRuntime.GetAppAssembliesAsync(System.Func{System.Reflection.AssemblyName,System.Boolean},System.Threading.CancellationToken)">GetAppAssembliesAsync(Func&lt;AssemblyName, Boolean&gt;, CancellationToken)</h4>
+  <a id="Kephas_Application_IAppRuntime_GetAppAssemblies_" data-uid="Kephas.Application.IAppRuntime.GetAppAssemblies*"></a>
+  <h4 id="Kephas_Application_IAppRuntime_GetAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.IAppRuntime.GetAppAssemblies(System.Func{System.Reflection.AssemblyName,System.Boolean})">GetAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</h4>
   <div class="markdown level1 summary"><p>Gets the application assemblies.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;Assembly&gt;&gt; GetAppAssembliesAsync(Func&lt;AssemblyName, bool&gt; assemblyFilter = null, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;Assembly&gt; GetAppAssemblies(Func&lt;AssemblyName, bool&gt; assemblyFilter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -131,12 +131,6 @@
         <td><p>A filter for the assemblies (optional).</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -149,8 +143,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;&gt;</td>
-        <td><p>A promise of an enumeration of application assemblies.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;</td>
+        <td><p>An enumeration of application assemblies.</p>
 </td>
       </tr>
     </tbody>
@@ -187,7 +181,74 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppRuntime_GetHostAddress.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppRuntime.GetHostAddress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/IAppRuntime.cs/#L48">View Source</a>
+  </span>
+  <a id="Kephas_Application_IAppRuntime_GetHostAddress_" data-uid="Kephas.Application.IAppRuntime.GetHostAddress*"></a>
+  <h4 id="Kephas_Application_IAppRuntime_GetHostAddress" data-uid="Kephas.Application.IAppRuntime.GetHostAddress">GetHostAddress()</h4>
+  <div class="markdown level1 summary"><p>Gets host address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPAddress GetHostAddress()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.IPAddress</span></td>
+        <td><p>The host address.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppRuntime_GetHostName.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppRuntime.GetHostName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/IAppRuntime.cs/#L56">View Source</a>
+  </span>
+  <a id="Kephas_Application_IAppRuntime_GetHostName_" data-uid="Kephas.Application.IAppRuntime.GetHostName*"></a>
+  <h4 id="Kephas_Application_IAppRuntime_GetHostName" data-uid="Kephas.Application.IAppRuntime.GetHostName">GetHostName()</h4>
+  <div class="markdown level1 summary"><p>Gets host name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string GetHostName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The host name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -214,6 +275,9 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
@@ -252,7 +316,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

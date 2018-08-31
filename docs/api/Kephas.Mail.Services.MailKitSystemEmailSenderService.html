@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MailKitSystemEmailSenderService
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -90,22 +90,28 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_SendAsync_Kephas_Mail_IEmailMessage_System_Threading_CancellationToken_">MailKitEmailSenderServiceBase.SendAsync(IEmailMessage, CancellationToken)</a>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_SendAsync_Kephas_Mail_IEmailMessage_Kephas_Services_IContext_System_Threading_CancellationToken_">MailKitEmailSenderServiceBase.SendAsync(IEmailMessage, IContext, CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetConnectionData_Kephas_Mail_IEmailMessage_">MailKitEmailSenderServiceBase.GetConnectionData(IEmailMessage)</a>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_Logger">MailKitEmailSenderServiceBase.Logger</a>
     </div>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_CreateEmailMessageBuilder_Kephas_Services_IContext_">MailKitEmailSenderServiceBase.CreateEmailMessageBuilder(IContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetNormalizedMailMessage_Kephas_Mail_IEmailMessage_">MailKitEmailSenderServiceBase.GetNormalizedMailMessage(IEmailMessage)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetSmtpClientAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">MailKitEmailSenderServiceBase.GetSmtpClientAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetConnectionData_Kephas_Services_IContext_">MailKitEmailSenderServiceBase.GetConnectionData(IContext)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -115,6 +121,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Mail.Services.html">Kephas.Mail.Services</a></h6>
@@ -128,19 +140,19 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Services_MailKitSystemEmailSenderService__ctor_Kephas_Configuration_IConfiguration_Kephas_Mail_Configuration_SystemEmailSenderSettings__.md&amp;value=---%0Auid%3A%20Kephas.Mail.Services.MailKitSystemEmailSenderService.%23ctor(Kephas.Configuration.IConfiguration%7BKephas.Mail.Configuration.SystemEmailSenderSettings%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Services_MailKitSystemEmailSenderService__ctor_Kephas_Configuration_IConfiguration_Kephas_Mail_Configuration_SystemSmtpSettings__.md&amp;value=---%0Auid%3A%20Kephas.Mail.Services.MailKitSystemEmailSenderService.%23ctor(Kephas.Configuration.IConfiguration%7BKephas.Mail.Configuration.SystemSmtpSettings%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L34">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L35">View Source</a>
   </span>
   <a id="Kephas_Mail_Services_MailKitSystemEmailSenderService__ctor_" data-uid="Kephas.Mail.Services.MailKitSystemEmailSenderService.#ctor*"></a>
-  <h4 id="Kephas_Mail_Services_MailKitSystemEmailSenderService__ctor_Kephas_Configuration_IConfiguration_Kephas_Mail_Configuration_SystemEmailSenderSettings__" data-uid="Kephas.Mail.Services.MailKitSystemEmailSenderService.#ctor(Kephas.Configuration.IConfiguration{Kephas.Mail.Configuration.SystemEmailSenderSettings})">MailKitSystemEmailSenderService(IConfiguration&lt;SystemEmailSenderSettings&gt;)</h4>
+  <h4 id="Kephas_Mail_Services_MailKitSystemEmailSenderService__ctor_Kephas_Configuration_IConfiguration_Kephas_Mail_Configuration_SystemSmtpSettings__" data-uid="Kephas.Mail.Services.MailKitSystemEmailSenderService.#ctor(Kephas.Configuration.IConfiguration{Kephas.Mail.Configuration.SystemSmtpSettings})">MailKitSystemEmailSenderService(IConfiguration&lt;SystemSmtpSettings&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Mail.Services.MailKitSystemEmailSenderService.html">MailKitSystemEmailSenderService</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MailKitSystemEmailSenderService(IConfiguration&lt;SystemEmailSenderSettings&gt; systemEmailSenderConfig)</code></pre>
+    <pre><code class="lang-csharp hljs">public MailKitSystemEmailSenderService(IConfiguration&lt;SystemSmtpSettings&gt; systemEmailSenderConfig)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -153,7 +165,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Configuration.IConfiguration-1.html">IConfiguration</a>&lt;<a class="xref" href="Kephas.Mail.Configuration.SystemEmailSenderSettings.html">SystemEmailSenderSettings</a>&gt;</td>
+        <td><a class="xref" href="Kephas.Configuration.IConfiguration-1.html">IConfiguration</a>&lt;<a class="xref" href="Kephas.Mail.Configuration.SystemSmtpSettings.html">SystemSmtpSettings</a>&gt;</td>
         <td><span class="parametername">systemEmailSenderConfig</span></td>
         <td><p>The system email sender configuration.</p>
 </td>
@@ -167,7 +179,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Services_MailKitSystemEmailSenderService_GetEmailSenderSettings.md&amp;value=---%0Auid%3A%20Kephas.Mail.Services.MailKitSystemEmailSenderService.GetEmailSenderSettings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L47">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L48">View Source</a>
   </span>
   <a id="Kephas_Mail_Services_MailKitSystemEmailSenderService_GetEmailSenderSettings_" data-uid="Kephas.Mail.Services.MailKitSystemEmailSenderService.GetEmailSenderSettings*"></a>
   <h4 id="Kephas_Mail_Services_MailKitSystemEmailSenderService_GetEmailSenderSettings" data-uid="Kephas.Mail.Services.MailKitSystemEmailSenderService.GetEmailSenderSettings">GetEmailSenderSettings()</h4>
@@ -176,7 +188,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override EmailSenderSettings GetEmailSenderSettings()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override SmtpSettings GetEmailSenderSettings()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -188,7 +200,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Mail.Configuration.EmailSenderSettings.html">EmailSenderSettings</a></td>
+        <td><a class="xref" href="Kephas.Mail.Configuration.SmtpSettings.html">SmtpSettings</a></td>
         <td><p>The email sender settings.</p>
 </td>
       </tr>
@@ -204,6 +216,9 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
       <a class="xref" href="Kephas.Mail.Services.IEmailSenderService.html">IEmailSenderService</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -248,7 +263,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Services_MailKitSystemEmailSenderService.md&amp;value=---%0Auid%3A%20Kephas.Mail.Services.MailKitSystemEmailSenderService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Services/MailKitSystemEmailSenderService.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -268,7 +283,7 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

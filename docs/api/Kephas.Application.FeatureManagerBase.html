@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FeatureManagerBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -83,24 +83,21 @@
       <div class="level2"><a class="xref" href="Kephas.Application.PreserveCultureThreadContextFeatureManager.html">PreserveCultureThreadContextFeatureManager</a></div>
       <div class="level2"><a class="xref" href="Kephas.Data.MongoDB.Application.MongoFeatureManager.html">MongoFeatureManager</a></div>
       <div class="level2"><a class="xref" href="Kephas.Model.Application.ModelFeatureManager.html">ModelFeatureManager</a></div>
+      <div class="level2"><a class="xref" href="Kephas.Orchestration.Application.OrchestrationFeatureManager.html">OrchestrationFeatureManager</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Kephas.Application.IFeatureManager.html">IFeatureManager</a></div>
+    <div><a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a></div>
+    <div><a class="xref" href="Kephas.Services.IAsyncFinalizable.html">IAsyncFinalizable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -111,12 +108,18 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Application_FeatureManagerBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class FeatureManagerBase : IFeatureManager</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class FeatureManagerBase : IFeatureManager, IAsyncInitializable, IAsyncFinalizable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -125,7 +128,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase__ctor.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L39">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L41">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureManagerBase__ctor_" data-uid="Kephas.Application.FeatureManagerBase.#ctor*"></a>
   <h4 id="Kephas_Application_FeatureManagerBase__ctor" data-uid="Kephas.Application.FeatureManagerBase.#ctor">FeatureManagerBase()</h4>
@@ -143,7 +146,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_FinalizationMonitor.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.FinalizationMonitor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L33">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L35">View Source</a>
   </span>
   <h4 id="Kephas_Application_FeatureManagerBase_FinalizationMonitor" data-uid="Kephas.Application.FeatureManagerBase.FinalizationMonitor">FinalizationMonitor</h4>
   <div class="markdown level1 summary"><p>The finalization monitor.</p>
@@ -173,7 +176,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_InitializationMonitor.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.InitializationMonitor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L28">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L30">View Source</a>
   </span>
   <h4 id="Kephas_Application_FeatureManagerBase_InitializationMonitor" data-uid="Kephas.Application.FeatureManagerBase.InitializationMonitor">InitializationMonitor</h4>
   <div class="markdown level1 summary"><p>The initialization monitor.</p>
@@ -205,7 +208,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_FinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.FinalizeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L77">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L79">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureManagerBase_FinalizeAsync_" data-uid="Kephas.Application.FeatureManagerBase.FinalizeAsync*"></a>
   <h4 id="Kephas_Application_FeatureManagerBase_FinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.FinalizeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeAsync(IAppContext, CancellationToken)</h4>
@@ -214,7 +217,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -261,7 +264,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_FinalizeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.FinalizeCoreAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L114">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L142">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureManagerBase_FinalizeCoreAsync_" data-uid="Kephas.Application.FeatureManagerBase.FinalizeCoreAsync*"></a>
   <h4 id="Kephas_Application_FeatureManagerBase_FinalizeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.FinalizeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeCoreAsync(IAppContext, CancellationToken)</h4>
@@ -317,7 +320,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_InitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.InitializeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L53">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L55">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureManagerBase_InitializeAsync_" data-uid="Kephas.Application.FeatureManagerBase.InitializeAsync*"></a>
   <h4 id="Kephas_Application_FeatureManagerBase_InitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.InitializeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeAsync(IAppContext, CancellationToken)</h4>
@@ -326,7 +329,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -373,7 +376,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_InitializeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.InitializeCoreAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L101">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L129">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureManagerBase_InitializeCoreAsync_" data-uid="Kephas.Application.FeatureManagerBase.InitializeCoreAsync*"></a>
   <h4 id="Kephas_Application_FeatureManagerBase_InitializeCoreAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.InitializeCoreAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeCoreAsync(IAppContext, CancellationToken)</h4>
@@ -424,11 +427,134 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncFinalizable_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.Kephas%23Services%23IAsyncFinalizable%23FinalizeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L116">View Source</a>
+  </span>
+  <a id="Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncFinalizable_FinalizeAsync_" data-uid="Kephas.Application.FeatureManagerBase.Kephas#Services#IAsyncFinalizable#FinalizeAsync*"></a>
+  <h4 id="Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncFinalizable_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.Kephas#Services#IAsyncFinalizable#FinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">IAsyncFinalizable.FinalizeAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Finalizes the service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>An optional context for finalization.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncInitializable_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase.Kephas%23Services%23IAsyncInitializable%23InitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L103">View Source</a>
+  </span>
+  <a id="Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncInitializable_InitializeAsync_" data-uid="Kephas.Application.FeatureManagerBase.Kephas#Services#IAsyncInitializable#InitializeAsync*"></a>
+  <h4 id="Kephas_Application_FeatureManagerBase_Kephas_Services_IAsyncInitializable_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureManagerBase.Kephas#Services#IAsyncInitializable#InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">IAsyncInitializable.InitializeAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Initializes the service asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>An optional context for initialization.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An awaitable task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Application.IFeatureManager.html">IFeatureManager</a>
   </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IAsyncFinalizable.html">IAsyncFinalizable</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -473,7 +599,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureManagerBase.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureManagerBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Application/FeatureManagerBase.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -493,7 +619,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

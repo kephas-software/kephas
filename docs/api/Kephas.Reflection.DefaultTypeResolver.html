@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultTypeResolver
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -88,16 +88,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -107,6 +101,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Reflection.html">Kephas.Reflection</a></h6>
@@ -123,7 +123,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver__ctor_Kephas_Reflection_IAssemblyLoader_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.%23ctor(Kephas.Reflection.IAssemblyLoader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L40">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L43">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver__ctor_" data-uid="Kephas.Reflection.DefaultTypeResolver.#ctor*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver__ctor_Kephas_Reflection_IAssemblyLoader_" data-uid="Kephas.Reflection.DefaultTypeResolver.#ctor(Kephas.Reflection.IAssemblyLoader)">DefaultTypeResolver(IAssemblyLoader)</h4>
@@ -152,6 +152,40 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_Logger.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L56">View Source</a>
+  </span>
+  <a id="Kephas_Reflection_DefaultTypeResolver_Logger_" data-uid="Kephas.Reflection.DefaultTypeResolver.Logger*"></a>
+  <h4 id="Kephas_Reflection_DefaultTypeResolver_Logger" data-uid="Kephas.Reflection.DefaultTypeResolver.Logger">Logger</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultTypeResolver&gt; Logger { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Reflection.DefaultTypeResolver.html">DefaultTypeResolver</a>&gt;</td>
+        <td><p>The logger.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -159,7 +193,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_ResolveType_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.ResolveType(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L55">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver_ResolveType_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveType*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver_ResolveType_System_String_System_Boolean_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveType(System.String,System.Boolean)">ResolveType(String, Boolean)</h4>
@@ -215,7 +249,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L73">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L84">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_System_String_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore(System.String)">ResolveTypeCore(String)</h4>
@@ -224,7 +258,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Type ResolveTypeCore(string typeName)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Type ResolveTypeCore(string typeName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -265,6 +299,9 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
       <a class="xref" href="Kephas.Reflection.ITypeResolver.html">ITypeResolver</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -309,7 +346,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -329,7 +366,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

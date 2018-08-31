@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BinaryExpressionConverterBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -80,7 +80,6 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">BinaryExpressionConverterBase</span></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.EqExpressionConverter.html">EqExpressionConverter</a></div>
       <div class="level2"><a class="xref" href="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.GteExpressionConverter.html">GteExpressionConverter</a></div>
       <div class="level2"><a class="xref" href="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.GtExpressionConverter.html">GtExpressionConverter</a></div>
       <div class="level2"><a class="xref" href="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.LteExpressionConverter.html">LteExpressionConverter</a></div>
@@ -94,16 +93,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -113,6 +106,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.html">Kephas.Data.Client.Queries.Conversion.ExpressionConverters</a></h6>
@@ -211,62 +210,6 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Client_Queries_Conversion_ExpressionConverters_BinaryExpressionConverterBase_GetConvertedValueExpression_System_Object_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.Client.Queries.Conversion.ExpressionConverters.BinaryExpressionConverterBase.GetConvertedValueExpression(System.Object%2CSystem.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Client/Queries/Conversion/ExpressionConverters/BinaryExpressionConverterBase.cs/#L97">View Source</a>
-  </span>
-  <a id="Kephas_Data_Client_Queries_Conversion_ExpressionConverters_BinaryExpressionConverterBase_GetConvertedValueExpression_" data-uid="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.BinaryExpressionConverterBase.GetConvertedValueExpression*"></a>
-  <h4 id="Kephas_Data_Client_Queries_Conversion_ExpressionConverters_BinaryExpressionConverterBase_GetConvertedValueExpression_System_Object_System_Type_" data-uid="Kephas.Data.Client.Queries.Conversion.ExpressionConverters.BinaryExpressionConverterBase.GetConvertedValueExpression(System.Object,System.Type)">GetConvertedValueExpression(Object, Type)</h4>
-  <div class="markdown level1 summary"><p>Gets an expression for the value so that it has a compatible type with the member type.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Expression GetConvertedValueExpression(object value, Type memberType)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>The value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><span class="parametername">memberType</span></td>
-        <td><p>Type of the member.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Linq.Expressions.Expression</span></td>
-        <td><p>The converted value expression.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Client_Queries_Conversion_ExpressionConverters_BinaryExpressionConverterBase_PreProcessArguments_System_Collections_Generic_IList_System_Linq_Expressions_Expression__.md&amp;value=---%0Auid%3A%20Kephas.Data.Client.Queries.Conversion.ExpressionConverters.BinaryExpressionConverterBase.PreProcessArguments(System.Collections.Generic.IList%7BSystem.Linq.Expressions.Expression%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -320,6 +263,9 @@
       <a class="xref" href="Kephas.Data.Client.Queries.Conversion.IExpressionConverter.html">IExpressionConverter</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -384,7 +330,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

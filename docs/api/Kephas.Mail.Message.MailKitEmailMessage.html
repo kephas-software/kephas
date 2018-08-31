@@ -1,0 +1,720 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MailKitEmailMessage
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MailKitEmailMessage
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Mail.Message.MailKitEmailMessage">
+  
+  
+  <h1 id="Kephas_Mail_Message_MailKitEmailMessage" data-uid="Kephas.Mail.Message.MailKitEmailMessage" class="text-break">Class MailKitEmailMessage
+  </h1>
+  <div class="markdown level0 summary"><p>A mail kit email message.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">MimeKit.MimeMessage</span></div>
+    <div class="level2"><span class="xref">MailKitEmailMessage</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Mail.IEmailMessage.html">IEmailMessage</a></div>
+    <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.GetTextBody(MimeKit.Text.TextFormat)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Accept(MimeKit.MimeVisitor)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Prepare(MimeKit.EncodingConstraint, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(MimeKit.FormatOptions, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(MimeKit.FormatOptions, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(MimeKit.FormatOptions, System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(MimeKit.FormatOptions, System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(MimeKit.FormatOptions, System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(MimeKit.FormatOptions, System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteTo(System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.WriteToAsync(System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.FormatOptions, MimeKit.Cryptography.DkimSigner, System.Collections.Generic.IList&lt;System.String&gt;, MimeKit.Cryptography.DkimCanonicalizationAlgorithm, MimeKit.Cryptography.DkimCanonicalizationAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.Cryptography.DkimSigner, System.Collections.Generic.IList&lt;System.String&gt;, MimeKit.Cryptography.DkimCanonicalizationAlgorithm, MimeKit.Cryptography.DkimCanonicalizationAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.FormatOptions, MimeKit.Cryptography.DkimSigner, System.Collections.Generic.IList&lt;MimeKit.HeaderId&gt;, MimeKit.Cryptography.DkimCanonicalizationAlgorithm, MimeKit.Cryptography.DkimCanonicalizationAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.Cryptography.DkimSigner, System.Collections.Generic.IList&lt;MimeKit.HeaderId&gt;, MimeKit.Cryptography.DkimCanonicalizationAlgorithm, MimeKit.Cryptography.DkimCanonicalizationAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Verify(MimeKit.FormatOptions, MimeKit.Header, MimeKit.Cryptography.IDkimPublicKeyLocator, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.VerifyAsync(MimeKit.FormatOptions, MimeKit.Header, MimeKit.Cryptography.IDkimPublicKeyLocator, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Verify(MimeKit.Header, MimeKit.Cryptography.IDkimPublicKeyLocator, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.VerifyAsync(MimeKit.Header, MimeKit.Cryptography.IDkimPublicKeyLocator, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.Cryptography.CryptographyContext, MimeKit.Cryptography.DigestAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sign(MimeKit.Cryptography.CryptographyContext)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Encrypt(MimeKit.Cryptography.CryptographyContext)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.SignAndEncrypt(MimeKit.Cryptography.CryptographyContext, MimeKit.Cryptography.DigestAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.SignAndEncrypt(MimeKit.Cryptography.CryptographyContext)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(MimeKit.ParserOptions, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(MimeKit.ParserOptions, System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(MimeKit.ParserOptions, System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(MimeKit.ParserOptions, System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(System.IO.Stream, System.Boolean, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(MimeKit.ParserOptions, System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(MimeKit.ParserOptions, System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Load(System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.LoadAsync(System.String, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Headers</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Importance</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Priority</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.XPriority</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Sender</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentSender</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.From</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentFrom</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ReplyTo</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentReplyTo</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.To</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentTo</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Cc</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentCc</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Bcc</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentBcc</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Subject</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Date</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentDate</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.References</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.InReplyTo</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.MessageId</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.ResentMessageId</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.MimeVersion</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Body</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.TextBody</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.HtmlBody</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.BodyParts</span>
+    </div>
+    <div>
+      <span class="xref">MimeKit.MimeMessage.Attachments</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Mail.Message.html">Kephas.Mail.Message</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Mail.MailKit.dll</h6>
+  <h5 id="Kephas_Mail_Message_MailKitEmailMessage_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MailKitEmailMessage : MimeMessage, IEmailMessage, IIndexable</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Item_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Item(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L91">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Item_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Item*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Item_System_String_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Item(System.String)">Item[String]</h4>
+  <div class="markdown level1 summary"><p>Convenience method that provides a string Indexer
+to the Properties collection AND the strongly typed
+properties of the object by name.
+// dynamic
+exp[&quot;Address&quot;] = &quot;112 nowhere lane&quot;;
+// strong
+var name = exp[&quot;StronglyTypedProperty&quot;] as string;.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object this[string key] { get; set; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">key</span></td>
+        <td><p>The key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The <span class="xref">System.Object</span> identified by the key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Attachments.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23Attachments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L75">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Attachments_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Attachments*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Attachments" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Attachments">IEmailMessage.Attachments</h4>
+  <div class="markdown level1 summary"><p>Gets the attachments of the email.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAttachment&gt; IEmailMessage.Attachments { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAttachment.html">IEmailAttachment</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Bcc.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23Bcc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L52">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Bcc_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Bcc*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Bcc" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Bcc">IEmailMessage.Bcc</h4>
+  <div class="markdown level1 summary"><p>Gets the addresses of the &apos;BCC&apos; recipients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; IEmailMessage.Bcc { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyHtml.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23BodyHtml%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L57">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyHtml_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#BodyHtml*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyHtml" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#BodyHtml">IEmailMessage.BodyHtml</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the HTML body of the email.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string IEmailMessage.BodyHtml { get; set; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyText.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23BodyText%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L66">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyText_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#BodyText*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_BodyText" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#BodyText">IEmailMessage.BodyText</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the text body of the email.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string IEmailMessage.BodyText { get; set; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Cc.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23Cc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L47">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Cc_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Cc*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Cc" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Cc">IEmailMessage.Cc</h4>
+  <div class="markdown level1 summary"><p>Gets the addresses of the &apos;CC&apos; recipients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; IEmailMessage.Cc { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_From.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23From%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L28">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_From_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#From*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_From" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#From">IEmailMessage.From</h4>
+  <div class="markdown level1 summary"><p>Gets the &apos;on behalf&apos; sender of the email.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; IEmailMessage.From { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Sender.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23Sender%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L33">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Sender_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Sender*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_Sender" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#Sender">IEmailMessage.Sender</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the sender&apos;s address.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEmailAddress IEmailMessage.Sender { get; set; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_To.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage.Kephas%23Mail%23IEmailMessage%23To%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L42">View Source</a>
+  </span>
+  <a id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_To_" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#To*"></a>
+  <h4 id="Kephas_Mail_Message_MailKitEmailMessage_Kephas_Mail_IEmailMessage_To" data-uid="Kephas.Mail.Message.MailKitEmailMessage.Kephas#Mail#IEmailMessage#To">IEmailMessage.To</h4>
+  <div class="markdown level1 summary"><p>Gets the addresses of the &apos;To&apos; recipients.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; IEmailMessage.To { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Mail.IEmailMessage.html">IEmailMessage</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_Message_MailKitEmailMessage.md&amp;value=---%0Auid%3A%20Kephas.Mail.Message.MailKitEmailMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail.MailKit/Message/MailKitEmailMessage.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

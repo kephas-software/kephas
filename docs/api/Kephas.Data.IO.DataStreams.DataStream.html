@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DataStream
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -93,10 +93,13 @@
       <span class="xref">System.IO.Stream.Null</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
@@ -105,43 +108,37 @@
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.Close()</span>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.Dispose()</span>
-    </div>
-    <div>
-      <span class="xref">System.IO.Stream.FlushAsync()</span>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+      <span class="xref">System.IO.Stream.Dispose()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
-    </div>
-    <div>
-      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
-    </div>
-    <div>
       <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
     </div>
     <div>
-      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
-    </div>
-    <div>
-      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.ObjectInvariant()</span>
     </div>
     <div>
-      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
@@ -150,7 +147,7 @@
       <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
     </div>
     <div>
-      <span class="xref">System.MarshalByRefObject.CreateObjRef(System.Type)</span>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -159,13 +156,13 @@
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
       <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.IO.DataStreams.html">Kephas.Data.IO.DataStreams</a></h6>
@@ -181,7 +178,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream__ctor_System_IO_Stream_System_String_System_String_System_Text_Encoding_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.%23ctor(System.IO.Stream%2CSystem.String%2CSystem.String%2CSystem.Text.Encoding%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L38">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream__ctor_" data-uid="Kephas.Data.IO.DataStreams.DataStream.#ctor*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream__ctor_System_IO_Stream_System_String_System_String_System_Text_Encoding_System_Boolean_" data-uid="Kephas.Data.IO.DataStreams.DataStream.#ctor(System.IO.Stream,System.String,System.String,System.Text.Encoding,System.Boolean)">DataStream(Stream, String, String, Encoding, Boolean)</h4>
@@ -241,7 +238,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_CanRead.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L53">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_CanRead_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanRead*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_CanRead" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanRead">CanRead</h4>
@@ -275,7 +272,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_CanSeek.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L57">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L58">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_CanSeek_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanSeek*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_CanSeek" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanSeek">CanSeek</h4>
@@ -309,7 +306,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_CanTimeout.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.CanTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L65">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_CanTimeout_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanTimeout*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_CanTimeout" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanTimeout">CanTimeout</h4>
@@ -343,7 +340,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_CanWrite.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L61">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L62">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_CanWrite_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanWrite*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_CanWrite" data-uid="Kephas.Data.IO.DataStreams.DataStream.CanWrite">CanWrite</h4>
@@ -377,7 +374,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Encoding.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Encoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L134">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L135">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Encoding_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Encoding*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Encoding" data-uid="Kephas.Data.IO.DataStreams.DataStream.Encoding">Encoding</h4>
@@ -409,7 +406,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Guid.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Guid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L109">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L110">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Guid_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Guid*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Guid" data-uid="Kephas.Data.IO.DataStreams.DataStream.Guid">Guid</h4>
@@ -441,7 +438,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Length.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L71">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L72">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Length_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Length*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Length" data-uid="Kephas.Data.IO.DataStreams.DataStream.Length">Length</h4>
@@ -496,7 +493,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_MediaType.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.MediaType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L126">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L127">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_MediaType_" data-uid="Kephas.Data.IO.DataStreams.DataStream.MediaType*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_MediaType" data-uid="Kephas.Data.IO.DataStreams.DataStream.MediaType">MediaType</h4>
@@ -528,7 +525,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Name.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L118">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L119">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Name_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Name*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Name" data-uid="Kephas.Data.IO.DataStreams.DataStream.Name">Name</h4>
@@ -563,7 +560,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Position.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L78">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L79">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Position_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Position*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Position" data-uid="Kephas.Data.IO.DataStreams.DataStream.Position">Position</h4>
@@ -623,7 +620,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_RawStream.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.RawStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L142">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L143">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_RawStream_" data-uid="Kephas.Data.IO.DataStreams.DataStream.RawStream*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_RawStream" data-uid="Kephas.Data.IO.DataStreams.DataStream.RawStream">RawStream</h4>
@@ -655,7 +652,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_ReadTimeout.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.ReadTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L87">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L88">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_ReadTimeout_" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadTimeout*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_ReadTimeout" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadTimeout">ReadTimeout</h4>
@@ -705,7 +702,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_WriteTimeout.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.WriteTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L97">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L98">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_WriteTimeout_" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteTimeout*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_WriteTimeout" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteTimeout">WriteTimeout</h4>
@@ -757,7 +754,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_CopyToAsync_System_IO_Stream_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.CopyToAsync(System.IO.Stream%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L222">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L223">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_CopyToAsync_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CopyToAsync*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_CopyToAsync_System_IO_Stream_System_Int32_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.DataStreams.DataStream.CopyToAsync(System.IO.Stream,System.Int32,System.Threading.CancellationToken)">CopyToAsync(Stream, Int32, CancellationToken)</h4>
@@ -852,7 +849,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L316">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L317">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Dispose_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Dispose*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Dispose_System_Boolean_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -889,7 +886,7 @@ releases the managed resources.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Flush.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L148">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L149">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Flush_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Flush*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Flush" data-uid="Kephas.Data.IO.DataStreams.DataStream.Flush">Flush()</h4>
@@ -908,7 +905,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_FlushAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.FlushAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L231">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L232">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_FlushAsync_" data-uid="Kephas.Data.IO.DataStreams.DataStream.FlushAsync*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_FlushAsync_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.DataStreams.DataStream.FlushAsync(System.Threading.CancellationToken)">FlushAsync(CancellationToken)</h4>
@@ -976,7 +973,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_GetHashCode.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L238">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L239">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_GetHashCode_" data-uid="Kephas.Data.IO.DataStreams.DataStream.GetHashCode*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_GetHashCode" data-uid="Kephas.Data.IO.DataStreams.DataStream.GetHashCode">GetHashCode()</h4>
@@ -1010,7 +1007,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L166">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L167">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Read_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Read*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
@@ -1115,7 +1112,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_ReadAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.ReadAsync(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L257">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L258">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_ReadAsync_" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadAsync*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_ReadAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">ReadAsync(Byte[], Int32, Int32, CancellationToken)</h4>
@@ -1226,7 +1223,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_ReadByte.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L266">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L267">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_ReadByte_" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadByte*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_ReadByte" data-uid="Kephas.Data.IO.DataStreams.DataStream.ReadByte">ReadByte()</h4>
@@ -1281,7 +1278,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L178">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L179">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Seek_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Seek*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
@@ -1365,7 +1362,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L188">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L189">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_SetLength_" data-uid="Kephas.Data.IO.DataStreams.DataStream.SetLength*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_SetLength_System_Int64_" data-uid="Kephas.Data.IO.DataStreams.DataStream.SetLength(System.Int64)">SetLength(Int64)</h4>
@@ -1427,7 +1424,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_ToString.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L306">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L307">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_ToString_" data-uid="Kephas.Data.IO.DataStreams.DataStream.ToString*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_ToString" data-uid="Kephas.Data.IO.DataStreams.DataStream.ToString">ToString()</h4>
@@ -1461,7 +1458,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L206">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L207">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_Write_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Write*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="Kephas.Data.IO.DataStreams.DataStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
@@ -1550,7 +1547,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_WriteAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.WriteAsync(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L295">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L296">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_WriteAsync_" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteAsync*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_WriteAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">WriteAsync(Byte[], Int32, Int32, CancellationToken)</h4>
@@ -1661,7 +1658,7 @@ buffered data to be written to the underlying device.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream_WriteByte_System_Byte_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream.WriteByte(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L276">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L277">View Source</a>
   </span>
   <a id="Kephas_Data_IO_DataStreams_DataStream_WriteByte_" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteByte*"></a>
   <h4 id="Kephas_Data_IO_DataStreams_DataStream_WriteByte_System_Byte_" data-uid="Kephas.Data.IO.DataStreams.DataStream.WriteByte(System.Byte)">WriteByte(Byte)</h4>
@@ -1724,6 +1721,9 @@ buffered data to be written to the underlying device.</p>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -1751,6 +1751,12 @@ buffered data to be written to the underlying device.</p>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.IO.StreamExtensions.html#Kephas_IO_StreamExtensions_ReadAllBytes_System_IO_Stream_">StreamExtensions.ReadAllBytes(Stream)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.IO.StreamExtensions.html#Kephas_IO_StreamExtensions_ReadAllBytesAsync_System_IO_Stream_System_Threading_CancellationToken_">StreamExtensions.ReadAllBytesAsync(Stream, CancellationToken)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -1767,7 +1773,7 @@ buffered data to be written to the underlying device.</p>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_DataStreams_DataStream.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.DataStreams.DataStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/DataStreams/DataStream.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -1787,7 +1793,7 @@ buffered data to be written to the underlying device.</p>
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

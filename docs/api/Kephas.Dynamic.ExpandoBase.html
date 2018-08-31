@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ExpandoBase
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -82,7 +82,7 @@ native properties or properties from values in the dictionary.
 </p>
 <p>
 This type allows you three ways to access its properties:
-<ul><li>Directlyany explicitly declared properties are accessible</li><li>Dynamicdynamic cast allows access to dictionary and native properties/methods</li><li>DictionaryAny of the extended properties are accessible via IDictionary interface</li></ul> 
+<ul><li>Directlyany explicitly declared properties are accessible</li><li>Dynamicdynamic cast allows access to dictionary and native properties/methods</li><li>DictionaryAny of the extended properties are accessible via IDictionary interface</li></ul>
 </p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -91,7 +91,6 @@ This type allows you three ways to access its properties:
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
     <div class="level2"><span class="xref">ExpandoBase</span></div>
-      <div class="level3"><a class="xref" href="Kephas.Application.Configuration.DefaultAppConfiguration.html">DefaultAppConfiguration</a></div>
       <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
   </div>
   <div classs="implements">
@@ -103,7 +102,10 @@ This type allows you three ways to access its properties:
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -112,37 +114,28 @@ This type allows you three ways to access its properties:
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -152,6 +145,12 @@ This type allows you three ways to access its properties:
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Dynamic.html">Kephas.Dynamic</a></h6>
@@ -167,7 +166,7 @@ This type allows you three ways to access its properties:
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase__ctor_System_Collections_Generic_IDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.%23ctor(System.Collections.Generic.IDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L93">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L94">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase__ctor_" data-uid="Kephas.Dynamic.ExpandoBase.#ctor*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase__ctor_System_Collections_Generic_IDictionary_System_String_System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">ExpandoBase(IDictionary&lt;String, Object&gt;)</h4>
@@ -203,7 +202,7 @@ If not provided, a new dictionary will be created.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase__ctor_System_Object_System_Collections_Generic_IDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.%23ctor(System.Object%2CSystem.Collections.Generic.IDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L108">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L109">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase__ctor_" data-uid="Kephas.Dynamic.ExpandoBase.#ctor*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase__ctor_System_Object_System_Collections_Generic_IDictionary_System_String_System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.#ctor(System.Object,System.Collections.Generic.IDictionary{System.String,System.Object})">ExpandoBase(Object, IDictionary&lt;String, Object&gt;)</h4>
@@ -247,7 +246,7 @@ If not provided, a new dictionary will be created.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_Item_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.Item(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L128">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L142">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_Item_" data-uid="Kephas.Dynamic.ExpandoBase.Item*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_Item_System_String_" data-uid="Kephas.Dynamic.ExpandoBase.Item(System.String)">Item[String]</h4>
@@ -306,7 +305,7 @@ The setter checks the instance properties before checking the Properties diction
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.GetDynamicMemberNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L145">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L159">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames_" data-uid="Kephas.Dynamic.ExpandoBase.GetDynamicMemberNames*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames" data-uid="Kephas.Dynamic.ExpandoBase.GetDynamicMemberNames">GetDynamicMemberNames()</h4>
@@ -340,7 +339,7 @@ The setter checks the instance properties before checking the Properties diction
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.GetInnerObjectTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L319">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L351">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo_" data-uid="Kephas.Dynamic.ExpandoBase.GetInnerObjectTypeInfo*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo" data-uid="Kephas.Dynamic.ExpandoBase.GetInnerObjectTypeInfo">GetInnerObjectTypeInfo()</h4>
@@ -372,7 +371,7 @@ The setter checks the instance properties before checking the Properties diction
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_GetThisTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.GetThisTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L332">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L364">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_GetThisTypeInfo_" data-uid="Kephas.Dynamic.ExpandoBase.GetThisTypeInfo*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_GetThisTypeInfo" data-uid="Kephas.Dynamic.ExpandoBase.GetThisTypeInfo">GetThisTypeInfo()</h4>
@@ -404,7 +403,7 @@ The setter checks the instance properties before checking the Properties diction
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_HasMember_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.HasMember(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L180">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L194">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_HasMember_" data-uid="Kephas.Dynamic.ExpandoBase.HasMember*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_HasMember_System_String_" data-uid="Kephas.Dynamic.ExpandoBase.HasMember(System.String)">HasMember(String)</h4>
@@ -451,20 +450,45 @@ The setter checks the instance properties before checking the Properties diction
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_ToDictionary.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.ToDictionary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.ToDictionary(System.Func%7BSystem.String%2CSystem.String%7D%2CSystem.Func%7BSystem.Object%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L286">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L308">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_ToDictionary_" data-uid="Kephas.Dynamic.ExpandoBase.ToDictionary*"></a>
-  <h4 id="Kephas_Dynamic_ExpandoBase_ToDictionary" data-uid="Kephas.Dynamic.ExpandoBase.ToDictionary">ToDictionary()</h4>
-  <div class="markdown level1 summary"><p>Converts the expando to a dictionary having as keys the property names and as values the respective properties&apos; values.</p>
+  <h4 id="Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.ToDictionary(System.Func{System.String,System.String},System.Func{System.Object,System.Object})">ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Converts the expando to a dictionary having as keys the property names and as values the
+respective properties&apos; values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual IDictionary&lt;string, object&gt; ToDictionary()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IDictionary&lt;string, object&gt; ToDictionary(Func&lt;string, string&gt; keyFunc = null, Func&lt;object, object&gt; valueFunc = null)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">keyFunc</span></td>
+        <td><p>The key transformation function (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>, <span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">valueFunc</span></td>
+        <td><p>The value transformation function (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -486,7 +510,7 @@ The setter checks the instance properties before checking the Properties diction
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.TryGetMember(System.Dynamic.GetMemberBinder%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L215">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L229">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_TryGetMember_" data-uid="Kephas.Dynamic.ExpandoBase.TryGetMember*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">TryGetMember(GetMemberBinder, out Object)</h4>
@@ -545,7 +569,7 @@ followed by the collection entries.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_TryGetValue_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.TryGetValue(System.String%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L350">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L382">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_TryGetValue_" data-uid="Kephas.Dynamic.ExpandoBase.TryGetValue*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_TryGetValue_System_String_System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.TryGetValue(System.String,System.Object@)">TryGetValue(String, out Object)</h4>
@@ -606,7 +630,7 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.TryInvokeMember(System.Dynamic.InvokeMemberBinder%2CSystem.Object%5B%5D%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L245">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L264">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_TryInvokeMember_" data-uid="Kephas.Dynamic.ExpandoBase.TryInvokeMember*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__" data-uid="Kephas.Dynamic.ExpandoBase.TryInvokeMember(System.Dynamic.InvokeMemberBinder,System.Object[],System.Object@)">TryInvokeMember(InvokeMemberBinder, Object[], out Object)</h4>
@@ -671,7 +695,7 @@ operation (no ability to add methods dynamically).</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_TrySetMember_System_Dynamic_SetMemberBinder_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.TrySetMember(System.Dynamic.SetMemberBinder%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L230">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L244">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_TrySetMember_" data-uid="Kephas.Dynamic.ExpandoBase.TrySetMember*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_TrySetMember_System_Dynamic_SetMemberBinder_System_Object_" data-uid="Kephas.Dynamic.ExpandoBase.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">TrySetMember(SetMemberBinder, Object)</h4>
@@ -730,7 +754,7 @@ first then into this object.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.TrySetValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L395">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L430">View Source</a>
   </span>
   <a id="Kephas_Dynamic_ExpandoBase_TrySetValue_" data-uid="Kephas.Dynamic.ExpandoBase.TrySetValue*"></a>
   <h4 id="Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_" data-uid="Kephas.Dynamic.ExpandoBase.TrySetValue(System.String,System.Object)">TrySetValue(String, Object)</h4>
@@ -798,6 +822,9 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -825,6 +852,9 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -841,7 +871,7 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L55" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L56" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -861,7 +891,7 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

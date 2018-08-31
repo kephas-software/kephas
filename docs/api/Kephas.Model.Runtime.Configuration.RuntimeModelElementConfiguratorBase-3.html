@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RuntimeModelElementConfiguratorBase&lt;TElement, TRuntimeElement, TConfigurator&gt;
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -80,7 +80,9 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">RuntimeModelElementConfiguratorBase&lt;TElement, TRuntimeElement, TConfigurator&gt;</span></div>
+      <div class="level2"><a class="xref" href="Kephas.Model.Runtime.Configuration.ClassifierConfiguratorBase-3.html">ClassifierConfiguratorBase&lt;TElement, TRuntimeElement, TConfigurator&gt;</a></div>
       <div class="level2"><a class="xref" href="Kephas.Model.Runtime.Configuration.ModelDimensionElementConfiguratorBase-1.html">ModelDimensionElementConfiguratorBase&lt;TRuntimeElement&gt;</a></div>
+      <div class="level2"><a class="xref" href="Kephas.Model.Runtime.Configuration.PropertyConfigurator.html">PropertyConfigurator</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -91,16 +93,10 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -110,6 +106,12 @@
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Model.Runtime.Configuration.html">Kephas.Model.Runtime.Configuration</a></h6>
@@ -148,10 +150,193 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddAttribute__1.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.AddAttribute%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L131">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddAttribute_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddAttribute*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddAttribute__1" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddAttribute``1">AddAttribute&lt;TAttribute&gt;()</h4>
+  <div class="markdown level1 summary"><p>Adds an attribute to the configured element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TConfigurator AddAttribute&lt;TAttribute&gt;()
+    where TAttribute : Attribute</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TConfigurator</span></td>
+        <td><p>A TConfigurator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TAttribute</span></td>
+        <td><p>Type of the attribute.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddConfiguration_System_Action_Kephas_Model_Construction_IModelConstructionContext__0__.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.AddConfiguration(System.Action%7BKephas.Model.Construction.IModelConstructionContext%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L142">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddConfiguration_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddConfiguration*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddConfiguration_System_Action_Kephas_Model_Construction_IModelConstructionContext__0__" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddConfiguration(System.Action{Kephas.Model.Construction.IModelConstructionContext,`0})">AddConfiguration(Action&lt;IModelConstructionContext, TElement&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds an element configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddConfiguration(Action&lt;IModelConstructionContext, TElement&gt; config)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<a class="xref" href="Kephas.Model.Construction.IModelConstructionContext.html">IModelConstructionContext</a>, TElement&gt;</td>
+        <td><span class="parametername">config</span></td>
+        <td><p>The configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_Kephas_Model_INamedElement_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.AddMember(Kephas.Model.INamedElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L68">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddMember*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_Kephas_Model_INamedElement_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddMember(Kephas.Model.INamedElement)">AddMember(INamedElement)</h4>
+  <div class="markdown level1 summary"><p>Adds a member to the configured element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TConfigurator AddMember(INamedElement member)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.INamedElement.html">INamedElement</a></td>
+        <td><span class="parametername">member</span></td>
+        <td><p>The member to be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TConfigurator</span></td>
+        <td><p>This configurator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.AddMember(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L94">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddMember*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_AddMember_System_Object_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.AddMember(System.Object)">AddMember(Object)</h4>
+  <div class="markdown level1 summary"><p>Adds a member out of the runtime element to the configured model element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TConfigurator AddMember(object runtimeElement)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">runtimeElement</span></td>
+        <td><p>The runtime element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TConfigurator</span></td>
+        <td><p>This configurator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Configure_Kephas_Model_Construction_IModelConstructionContext__0_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.Configure(Kephas.Model.Construction.IModelConstructionContext%2C%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L40">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L53">View Source</a>
   </span>
   <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Configure_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Configure*"></a>
   <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Configure_Kephas_Model_Construction_IModelConstructionContext__0_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Configure(Kephas.Model.Construction.IModelConstructionContext,`0)">Configure(IModelConstructionContext, TElement)</h4>
@@ -160,7 +345,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void Configure(IModelConstructionContext constructionContext, TElement element)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Configure(IModelConstructionContext constructionContext, TElement element)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +378,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Configuration_IElementConfigurator_Configure_Kephas_Model_Construction_IModelConstructionContext_Kephas_Model_INamedElement_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.Kephas%23Model%23Configuration%23IElementConfigurator%23Configure(Kephas.Model.Construction.IModelConstructionContext%2CKephas.Model.INamedElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L30">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L43">View Source</a>
   </span>
   <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Configuration_IElementConfigurator_Configure_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Configuration#IElementConfigurator#Configure*"></a>
   <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Configuration_IElementConfigurator_Configure_Kephas_Model_Construction_IModelConstructionContext_Kephas_Model_INamedElement_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Configuration#IElementConfigurator#Configure(Kephas.Model.Construction.IModelConstructionContext,Kephas.Model.INamedElement)">IElementConfigurator.Configure(IModelConstructionContext, INamedElement)</h4>
@@ -228,6 +413,106 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_Kephas_Model_INamedElement_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.Kephas%23Model%23Runtime%23Configuration%23IRuntimeModelElementConfigurator%23AddMember(Kephas.Model.INamedElement)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L154">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Runtime#Configuration#IRuntimeModelElementConfigurator#AddMember*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_Kephas_Model_INamedElement_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Runtime#Configuration#IRuntimeModelElementConfigurator#AddMember(Kephas.Model.INamedElement)">IRuntimeModelElementConfigurator.AddMember(INamedElement)</h4>
+  <div class="markdown level1 summary"><p>Adds a member to the configured element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IRuntimeModelElementConfigurator IRuntimeModelElementConfigurator.AddMember(INamedElement member)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.INamedElement.html">INamedElement</a></td>
+        <td><span class="parametername">member</span></td>
+        <td><p>The member to be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.Runtime.Configuration.IRuntimeModelElementConfigurator.html">IRuntimeModelElementConfigurator</a></td>
+        <td><p>An IRuntimeModelElementConfigurator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603.Kephas%23Model%23Runtime%23Configuration%23IRuntimeModelElementConfigurator%23AddMember(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L166">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Runtime#Configuration#IRuntimeModelElementConfigurator#AddMember*"></a>
+  <h4 id="Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3_Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_AddMember_System_Object_" data-uid="Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase`3.Kephas#Model#Runtime#Configuration#IRuntimeModelElementConfigurator#AddMember(System.Object)">IRuntimeModelElementConfigurator.AddMember(Object)</h4>
+  <div class="markdown level1 summary"><p>Adds a member out of the runtime element to the configured model element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IRuntimeModelElementConfigurator IRuntimeModelElementConfigurator.AddMember(object runtimeElement)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">runtimeElement</span></td>
+        <td><p>The runtime element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.Runtime.Configuration.IRuntimeModelElementConfigurator.html">IRuntimeModelElementConfigurator</a></td>
+        <td><p>An IRuntimeModelElementConfigurator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Model.Runtime.Configuration.IRuntimeModelElementConfigurator-2.html">IRuntimeModelElementConfigurator&lt;TElement, TRuntimeElement&gt;</a>
@@ -239,6 +524,9 @@
       <a class="xref" href="Kephas.Model.Configuration.IElementConfigurator.html">IElementConfigurator</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -283,7 +571,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Configuration_RuntimeModelElementConfiguratorBase_3.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase%603%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Configuration/RuntimeModelElementConfiguratorBase.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -303,7 +591,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class AmbientServices
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -113,7 +113,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary">ExpandoBase.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
@@ -128,7 +128,10 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
@@ -137,37 +140,28 @@
       <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
     </div>
     <div>
       <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
       <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -178,6 +172,12 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.html">Kephas</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
@@ -187,9 +187,9 @@
   </div>
   <h5 id="Kephas_AmbientServices_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>It is a recommended practice to not use global services, instead get the services
-using the composition (the classical example is the unit testing, where the classes 
+using the composition (the classical example is the unit testing, where the classes
 should be sandboxed as much as possible). However, there may be cases when this cannot be avoided,
-such as static classes or classes which get instantiated outside of the developer&apos;s control 
+such as static classes or classes which get instantiated outside of the developer&apos;s control
 (like in the case of the entities instatiated by the ORMs). Those are cases where the
 <a class="xref" href="Kephas.AmbientServices.html">AmbientServices</a> can be safely used.</p>
 </div>
@@ -200,7 +200,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices__ctor.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L57">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_AmbientServices__ctor_" data-uid="Kephas.AmbientServices.#ctor*"></a>
   <h4 id="Kephas_AmbientServices__ctor" data-uid="Kephas.AmbientServices.#ctor">AmbientServices()</h4>
@@ -218,7 +218,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_AppConfiguration.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.AppConfiguration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L98">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L126">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_AppConfiguration_" data-uid="Kephas.AmbientServices.AppConfiguration*"></a>
   <h4 id="Kephas_AmbientServices_AppConfiguration" data-uid="Kephas.AmbientServices.AppConfiguration">AppConfiguration</h4>
@@ -250,7 +250,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L90">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L118">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_AppRuntime_" data-uid="Kephas.AmbientServices.AppRuntime*"></a>
   <h4 id="Kephas_AmbientServices_AppRuntime" data-uid="Kephas.AmbientServices.AppRuntime">AppRuntime</h4>
@@ -279,10 +279,42 @@ such as static classes or classes which get instantiated outside of the develope
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_AssemblyLoader.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.AssemblyLoader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L110">View Source</a>
+  </span>
+  <a id="Kephas_AmbientServices_AssemblyLoader_" data-uid="Kephas.AmbientServices.AssemblyLoader*"></a>
+  <h4 id="Kephas_AmbientServices_AssemblyLoader" data-uid="Kephas.AmbientServices.AssemblyLoader">AssemblyLoader</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly loader.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAssemblyLoader AssemblyLoader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.IAssemblyLoader.html">IAssemblyLoader</a></td>
+        <td><p>The assembly loader.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_CompositionContainer.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.CompositionContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L82">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L102">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_CompositionContainer_" data-uid="Kephas.AmbientServices.CompositionContainer*"></a>
   <h4 id="Kephas_AmbientServices_CompositionContainer" data-uid="Kephas.AmbientServices.CompositionContainer">CompositionContainer</h4>
@@ -314,16 +346,16 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_Instance.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L74">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L80">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_Instance_" data-uid="Kephas.AmbientServices.Instance*"></a>
   <h4 id="Kephas_AmbientServices_Instance" data-uid="Kephas.AmbientServices.Instance">Instance</h4>
-  <div class="markdown level1 summary"><p>Gets the static instance of the ambient services.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the static instance of the ambient services.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IAmbientServices Instance { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IAmbientServices Instance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -341,12 +373,17 @@ such as static classes or classes which get instantiated outside of the develope
       </tr>
     </tbody>
   </table>
+  <h5 id="Kephas_AmbientServices_Instance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Setting the globally available instance must be executed
+before getting its value for the first time, otherwise
+it will be initialized with the default instance.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_LogManager.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.LogManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L106">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L134">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_LogManager_" data-uid="Kephas.AmbientServices.LogManager*"></a>
   <h4 id="Kephas_AmbientServices_LogManager" data-uid="Kephas.AmbientServices.LogManager">LogManager</h4>
@@ -380,7 +417,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_GetService_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.GetService(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L181">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L209">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_GetService_" data-uid="Kephas.AmbientServices.GetService*"></a>
   <h4 id="Kephas_AmbientServices_GetService_System_Type_" data-uid="Kephas.AmbientServices.GetService(System.Type)">GetService(Type)</h4>
@@ -430,7 +467,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_IsRegistered_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.IsRegistered(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L169">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L197">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_IsRegistered_" data-uid="Kephas.AmbientServices.IsRegistered*"></a>
   <h4 id="Kephas_AmbientServices_IsRegistered_System_Type_" data-uid="Kephas.AmbientServices.IsRegistered(System.Type)">IsRegistered(Type)</h4>
@@ -480,7 +517,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_RegisterService_System_Type_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.RegisterService(System.Type%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L149">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L177">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_RegisterService_" data-uid="Kephas.AmbientServices.RegisterService*"></a>
   <h4 id="Kephas_AmbientServices_RegisterService_System_Type_System_Func_System_Object__" data-uid="Kephas.AmbientServices.RegisterService(System.Type,System.Func{System.Object})">RegisterService(Type, Func&lt;Object&gt;)</h4>
@@ -489,7 +526,7 @@ such as static classes or classes which get instantiated outside of the develope
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAmbientServices RegisterService(Type serviceType, Func&lt;object&gt; serviceFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAmbientServices RegisterService(Type serviceType, Func&lt;object&gt; serviceFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -536,7 +573,7 @@ such as static classes or classes which get instantiated outside of the develope
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_AmbientServices_RegisterService_System_Type_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.AmbientServices.RegisterService(System.Type%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L116">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/AmbientServices.cs/#L144">View Source</a>
   </span>
   <a id="Kephas_AmbientServices_RegisterService_" data-uid="Kephas.AmbientServices.RegisterService*"></a>
   <h4 id="Kephas_AmbientServices_RegisterService_System_Type_System_Object_" data-uid="Kephas.AmbientServices.RegisterService(System.Type,System.Object)">RegisterService(Type, Object)</h4>
@@ -545,7 +582,7 @@ such as static classes or classes which get instantiated outside of the develope
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAmbientServices RegisterService(Type serviceType, object service)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual IAmbientServices RegisterService(Type serviceType, object service)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -605,6 +642,9 @@ such as static classes or classes which get instantiated outside of the develope
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.AmbientServicesExtensions.html#Kephas_AmbientServicesExtensions_GetLogger_Kephas_IAmbientServices_System_String_">AmbientServicesExtensions.GetLogger(IAmbientServices, String)</a>
   </div>
   <div>
@@ -650,6 +690,9 @@ such as static classes or classes which get instantiated outside of the develope
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -686,7 +729,7 @@ such as static classes or classes which get instantiated outside of the develope
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

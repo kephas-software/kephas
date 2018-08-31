@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DataConversionTargetResolverBase&lt;TSource, TTarget&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DataConversionTargetResolverBase&lt;TSource, TTarget&gt;
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2">
+  
+  
+  <h1 id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2" class="text-break">Class DataConversionTargetResolverBase&lt;TSource, TTarget&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Base class for data conversion target resolver.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">DataConversionTargetResolverBase&lt;TSource, TTarget&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Conversion.IDataConversionTargetResolver-2.html">IDataConversionTargetResolver</a>&lt;TSource, TTarget&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Conversion.IDataConversionTargetResolver.html">IDataConversionTargetResolver</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Conversion.TargetResolvers.html">Kephas.Data.Conversion.TargetResolvers</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
+  <h5 id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class DataConversionTargetResolverBase&lt;TSource, TTarget&gt; : IDataConversionTargetResolver&lt;TSource, TTarget&gt;, IDataConversionTargetResolver</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TSource</span></td>
+        <td><p>Type of the source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TTarget</span></td>
+        <td><p>Type of the target.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo__0_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase%602.TryResolveTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2C%600%2CKephas.Data.Capabilities.IEntityInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/TargetResolvers/DataConversionTargetResolverBase.cs/#L64">View Source</a>
+  </span>
+  <a id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2.TryResolveTargetEntityAsync*"></a>
+  <h4 id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo__0_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2.TryResolveTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,`0,Kephas.Data.Capabilities.IEntityInfo,System.Threading.CancellationToken)">TryResolveTargetEntityAsync(IDataContext, TypeInfo, TSource, IEntityInfo, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Tries to resolve the target entity asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task&lt;TTarget&gt; TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, TSource sourceEntity, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">targetDataContext</span></td>
+        <td><p>Context for the target data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">targetType</span></td>
+        <td><p>The type of the target object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TSource</span></td>
+        <td><span class="parametername">sourceEntity</span></td>
+        <td><p>The source entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
+        <td><span class="parametername">sourceEntityInfo</span></td>
+        <td><p>The source entity information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;TTarget&gt;</td>
+        <td><p>A promise of the target entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase%602.TryResolveTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2CSystem.Object%2CKephas.Data.Capabilities.IEntityInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/TargetResolvers/DataConversionTargetResolverBase.cs/#L38">View Source</a>
+  </span>
+  <a id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2.TryResolveTargetEntityAsync*"></a>
+  <h4 id="Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase`2.TryResolveTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,System.Object,Kephas.Data.Capabilities.IEntityInfo,System.Threading.CancellationToken)">TryResolveTargetEntityAsync(IDataContext, TypeInfo, Object, IEntityInfo, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Tries to resolve the target entity asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;object&gt; TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">targetDataContext</span></td>
+        <td><p>Context for the target data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">targetType</span></td>
+        <td><p>The type of the target object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sourceEntity</span></td>
+        <td><p>The source entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
+        <td><span class="parametername">sourceEntityInfo</span></td>
+        <td><p>The source entity information, if available.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>A promise of the target entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Conversion.IDataConversionTargetResolver-2.html">IDataConversionTargetResolver&lt;TSource, TTarget&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Conversion.IDataConversionTargetResolver.html">IDataConversionTargetResolver</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_TargetResolvers_DataConversionTargetResolverBase_2.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.TargetResolvers.DataConversionTargetResolverBase%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/TargetResolvers/DataConversionTargetResolverBase.cs/#L25" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

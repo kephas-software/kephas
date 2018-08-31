@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IEmailMessage
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -79,15 +79,6 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary">IExpando.ToDictionary()</a>
-    </div>
-    <div>
-      <span class="xref">System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression)</span>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
   </div>
@@ -95,7 +86,7 @@
   <h6><strong>Assembly</strong>: Kephas.Mail.dll</h6>
   <h5 id="Kephas_Mail_IEmailMessage_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IEmailMessage : IExpando, IDynamicMetaObjectProvider, IIndexable</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IEmailMessage : IIndexable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -104,7 +95,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Attachments.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Attachments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L59">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Mail_IEmailMessage_Attachments_" data-uid="Kephas.Mail.IEmailMessage.Attachments*"></a>
   <h4 id="Kephas_Mail_IEmailMessage_Attachments" data-uid="Kephas.Mail.IEmailMessage.Attachments">Attachments</h4>
@@ -113,7 +104,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICollection&lt;IEmailAttachment&gt; Attachments { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAttachment&gt; Attachments { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -125,26 +116,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAttachment.html">IEmailAttachment</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAttachment.html">IEmailAttachment</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_BccRecipients.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.BccRecipients%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Bcc.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Bcc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L44">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L45">View Source</a>
   </span>
-  <a id="Kephas_Mail_IEmailMessage_BccRecipients_" data-uid="Kephas.Mail.IEmailMessage.BccRecipients*"></a>
-  <h4 id="Kephas_Mail_IEmailMessage_BccRecipients" data-uid="Kephas.Mail.IEmailMessage.BccRecipients">BccRecipients</h4>
+  <a id="Kephas_Mail_IEmailMessage_Bcc_" data-uid="Kephas.Mail.IEmailMessage.Bcc*"></a>
+  <h4 id="Kephas_Mail_IEmailMessage_Bcc" data-uid="Kephas.Mail.IEmailMessage.Bcc">Bcc</h4>
   <div class="markdown level1 summary"><p>Gets the addresses of the &apos;BCC&apos; recipients.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICollection&lt;IEmailAddress&gt; BccRecipients { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; Bcc { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,26 +147,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Body.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Body%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_BodyHtml.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.BodyHtml%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L54">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L55">View Source</a>
   </span>
-  <a id="Kephas_Mail_IEmailMessage_Body_" data-uid="Kephas.Mail.IEmailMessage.Body*"></a>
-  <h4 id="Kephas_Mail_IEmailMessage_Body" data-uid="Kephas.Mail.IEmailMessage.Body">Body</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the body of the email.</p>
+  <a id="Kephas_Mail_IEmailMessage_BodyHtml_" data-uid="Kephas.Mail.IEmailMessage.BodyHtml*"></a>
+  <h4 id="Kephas_Mail_IEmailMessage_BodyHtml" data-uid="Kephas.Mail.IEmailMessage.BodyHtml">BodyHtml</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the HTML body of the email.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IEmailBody Body { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">string BodyHtml { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,26 +178,57 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Mail.IEmailBody.html">IEmailBody</a></td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_CcRecipients.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.CcRecipients%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_BodyText.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.BodyText%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L39">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L60">View Source</a>
   </span>
-  <a id="Kephas_Mail_IEmailMessage_CcRecipients_" data-uid="Kephas.Mail.IEmailMessage.CcRecipients*"></a>
-  <h4 id="Kephas_Mail_IEmailMessage_CcRecipients" data-uid="Kephas.Mail.IEmailMessage.CcRecipients">CcRecipients</h4>
+  <a id="Kephas_Mail_IEmailMessage_BodyText_" data-uid="Kephas.Mail.IEmailMessage.BodyText*"></a>
+  <h4 id="Kephas_Mail_IEmailMessage_BodyText" data-uid="Kephas.Mail.IEmailMessage.BodyText">BodyText</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the text body of the email.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">string BodyText { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Cc.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Cc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L40">View Source</a>
+  </span>
+  <a id="Kephas_Mail_IEmailMessage_Cc_" data-uid="Kephas.Mail.IEmailMessage.Cc*"></a>
+  <h4 id="Kephas_Mail_IEmailMessage_Cc" data-uid="Kephas.Mail.IEmailMessage.Cc">Cc</h4>
   <div class="markdown level1 summary"><p>Gets the addresses of the &apos;CC&apos; recipients.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICollection&lt;IEmailAddress&gt; CcRecipients { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; Cc { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,7 +240,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -228,16 +250,16 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_From.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.From%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L24">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L25">View Source</a>
   </span>
   <a id="Kephas_Mail_IEmailMessage_From_" data-uid="Kephas.Mail.IEmailMessage.From*"></a>
   <h4 id="Kephas_Mail_IEmailMessage_From" data-uid="Kephas.Mail.IEmailMessage.From">From</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the &apos;on behalf&apos; sender of the email.</p>
+  <div class="markdown level1 summary"><p>Gets the &apos;on behalf&apos; sender of the email.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IEmailAddress From { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; From { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -249,7 +271,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a></td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -259,7 +281,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Sender.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Sender%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L29">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L30">View Source</a>
   </span>
   <a id="Kephas_Mail_IEmailMessage_Sender_" data-uid="Kephas.Mail.IEmailMessage.Sender*"></a>
   <h4 id="Kephas_Mail_IEmailMessage_Sender" data-uid="Kephas.Mail.IEmailMessage.Sender">Sender</h4>
@@ -290,7 +312,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_Subject.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.Subject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L49">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Mail_IEmailMessage_Subject_" data-uid="Kephas.Mail.IEmailMessage.Subject*"></a>
   <h4 id="Kephas_Mail_IEmailMessage_Subject" data-uid="Kephas.Mail.IEmailMessage.Subject">Subject</h4>
@@ -318,19 +340,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_ToRecipients.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.ToRecipients%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage_To.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage.To%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L34">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L35">View Source</a>
   </span>
-  <a id="Kephas_Mail_IEmailMessage_ToRecipients_" data-uid="Kephas.Mail.IEmailMessage.ToRecipients*"></a>
-  <h4 id="Kephas_Mail_IEmailMessage_ToRecipients" data-uid="Kephas.Mail.IEmailMessage.ToRecipients">ToRecipients</h4>
+  <a id="Kephas_Mail_IEmailMessage_To_" data-uid="Kephas.Mail.IEmailMessage.To*"></a>
+  <h4 id="Kephas_Mail_IEmailMessage_To" data-uid="Kephas.Mail.IEmailMessage.To">To</h4>
   <div class="markdown level1 summary"><p>Gets the addresses of the &apos;To&apos; recipients.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ICollection&lt;IEmailAddress&gt; ToRecipients { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IEmailAddress&gt; To { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,12 +364,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Mail.IEmailAddress.html">IEmailAddress</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -381,9 +406,6 @@
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
-  <div>
-      <a class="xref" href="Kephas.Mail.EmailMessageExtensions.html#Kephas_Mail_EmailMessageExtensions_ToMailMessage_Kephas_Mail_IEmailMessage_">EmailMessageExtensions.ToMailMessage(IEmailMessage)</a>
-  </div>
 </article>
           </div>
           
@@ -395,7 +417,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Mail_IEmailMessage.md&amp;value=---%0Auid%3A%20Kephas.Mail.IEmailMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Mail/IEmailMessage.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -415,7 +437,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

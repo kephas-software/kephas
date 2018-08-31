@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAmbientServices
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -82,7 +82,7 @@
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary">IExpando.ToDictionary()</a>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
     </div>
     <div>
       <span class="xref">System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression)</span>
@@ -107,7 +107,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_AppConfiguration.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.AppConfiguration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L48">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L57">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_AppConfiguration_" data-uid="Kephas.IAmbientServices.AppConfiguration*"></a>
   <h4 id="Kephas_IAmbientServices_AppConfiguration" data-uid="Kephas.IAmbientServices.AppConfiguration">AppConfiguration</h4>
@@ -139,7 +139,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L40">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L49">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_AppRuntime_" data-uid="Kephas.IAmbientServices.AppRuntime*"></a>
   <h4 id="Kephas_IAmbientServices_AppRuntime" data-uid="Kephas.IAmbientServices.AppRuntime">AppRuntime</h4>
@@ -168,10 +168,42 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_AssemblyLoader.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.AssemblyLoader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L41">View Source</a>
+  </span>
+  <a id="Kephas_IAmbientServices_AssemblyLoader_" data-uid="Kephas.IAmbientServices.AssemblyLoader*"></a>
+  <h4 id="Kephas_IAmbientServices_AssemblyLoader" data-uid="Kephas.IAmbientServices.AssemblyLoader">AssemblyLoader</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly loader.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAssemblyLoader AssemblyLoader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.IAssemblyLoader.html">IAssemblyLoader</a></td>
+        <td><p>The assembly loader.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_CompositionContainer.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.CompositionContainer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L32">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L33">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_CompositionContainer_" data-uid="Kephas.IAmbientServices.CompositionContainer*"></a>
   <h4 id="Kephas_IAmbientServices_CompositionContainer" data-uid="Kephas.IAmbientServices.CompositionContainer">CompositionContainer</h4>
@@ -203,7 +235,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_LogManager.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.LogManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L56">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_LogManager_" data-uid="Kephas.IAmbientServices.LogManager*"></a>
   <h4 id="Kephas_IAmbientServices_LogManager" data-uid="Kephas.IAmbientServices.LogManager">LogManager</h4>
@@ -237,7 +269,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_IsRegistered_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.IsRegistered(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L85">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L94">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_IsRegistered_" data-uid="Kephas.IAmbientServices.IsRegistered*"></a>
   <h4 id="Kephas_IAmbientServices_IsRegistered_System_Type_" data-uid="Kephas.IAmbientServices.IsRegistered(System.Type)">IsRegistered(Type)</h4>
@@ -287,7 +319,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_RegisterService_System_Type_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.RegisterService(System.Type%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L76">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L85">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_RegisterService_" data-uid="Kephas.IAmbientServices.RegisterService*"></a>
   <h4 id="Kephas_IAmbientServices_RegisterService_System_Type_System_Func_System_Object__" data-uid="Kephas.IAmbientServices.RegisterService(System.Type,System.Func{System.Object})">RegisterService(Type, Func&lt;Object&gt;)</h4>
@@ -343,7 +375,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices_RegisterService_System_Type_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices.RegisterService(System.Type%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L66">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L75">View Source</a>
   </span>
   <a id="Kephas_IAmbientServices_RegisterService_" data-uid="Kephas.IAmbientServices.RegisterService*"></a>
   <h4 id="Kephas_IAmbientServices_RegisterService_System_Type_System_Object_" data-uid="Kephas.IAmbientServices.RegisterService(System.Type,System.Object)">RegisterService(Type, Object)</h4>
@@ -396,6 +428,9 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.AmbientServicesExtensions.html#Kephas_AmbientServicesExtensions_GetLogger_Kephas_IAmbientServices_System_String_">AmbientServicesExtensions.GetLogger(IAmbientServices, String)</a>
   </div>
   <div>
@@ -441,6 +476,9 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -457,7 +495,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_IAmbientServices.md&amp;value=---%0Auid%3A%20Kephas.IAmbientServices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/IAmbientServices.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -477,7 +515,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

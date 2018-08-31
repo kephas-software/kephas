@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultDataConversionService
    ">
-    <meta name="generator" content="docfx 2.27.0.0">
+    <meta name="generator" content="docfx 2.38.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
     
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
         
@@ -84,21 +84,15 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Kephas.Data.Conversion.IDataConversionService.html">IDataConversionService</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
+    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
@@ -109,31 +103,37 @@
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Conversion.html">Kephas.Data.Conversion</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Conversion_DefaultDataConversionService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultDataConversionService : IDataConversionService, IAmbientServicesAware</code></pre>
+public class DefaultDataConversionService : IDataConversionService, ICompositionContextAware</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService__ctor_Kephas_IAmbientServices_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConverter_Kephas_Data_Conversion_Composition_DataConverterMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.%23ctor(Kephas.IAmbientServices%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Data.Conversion.IDataConverter%2CKephas.Data.Conversion.Composition.DataConverterMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConverter_Kephas_Data_Conversion_Composition_DataConverterMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConversionTargetResolver_Kephas_Data_Conversion_Composition_DataConversionTargetResolverMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.%23ctor(Kephas.Composition.ICompositionContext%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Data.Conversion.IDataConverter%2CKephas.Data.Conversion.Composition.DataConverterMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Data.Conversion.IDataConversionTargetResolver%2CKephas.Data.Conversion.Composition.DataConversionTargetResolverMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L52">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService__ctor_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.#ctor*"></a>
-  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService__ctor_Kephas_IAmbientServices_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConverter_Kephas_Data_Conversion_Composition_DataConverterMetadata___" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.#ctor(Kephas.IAmbientServices,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Data.Conversion.IDataConverter,Kephas.Data.Conversion.Composition.DataConverterMetadata}})">DefaultDataConversionService(IAmbientServices, ICollection&lt;IExportFactory&lt;IDataConverter, DataConverterMetadata&gt;&gt;)</h4>
+  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConverter_Kephas_Data_Conversion_Composition_DataConverterMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Data_Conversion_IDataConversionTargetResolver_Kephas_Data_Conversion_Composition_DataConversionTargetResolverMetadata___" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.#ctor(Kephas.Composition.ICompositionContext,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Data.Conversion.IDataConverter,Kephas.Data.Conversion.Composition.DataConverterMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Data.Conversion.IDataConversionTargetResolver,Kephas.Data.Conversion.Composition.DataConversionTargetResolverMetadata}})">DefaultDataConversionService(ICompositionContext, ICollection&lt;IExportFactory&lt;IDataConverter, DataConverterMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IDataConversionTargetResolver, DataConversionTargetResolverMetadata&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Conversion.DefaultDataConversionService.html">DefaultDataConversionService</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultDataConversionService(IAmbientServices ambientServices, ICollection&lt;IExportFactory&lt;IDataConverter, DataConverterMetadata&gt;&gt; converterExportFactories)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultDataConversionService(ICompositionContext compositionContext, ICollection&lt;IExportFactory&lt;IDataConverter, DataConverterMetadata&gt;&gt; converterExportFactories, ICollection&lt;IExportFactory&lt;IDataConversionTargetResolver, DataConversionTargetResolverMetadata&gt;&gt; targetResolverFactories)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,9 +146,9 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services.</p>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>The composition context.</p>
 </td>
       </tr>
       <tr>
@@ -157,25 +157,31 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
         <td><p>The converter export factories.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Data.Conversion.IDataConversionTargetResolver.html">IDataConversionTargetResolver</a>, <a class="xref" href="Kephas.Data.Conversion.Composition.DataConversionTargetResolverMetadata.html">DataConversionTargetResolverMetadata</a>&gt;&gt;</td>
+        <td><span class="parametername">targetResolverFactories</span></td>
+        <td><p>The target resolver factories.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_AmbientServices.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.AmbientServices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L77">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L93">View Source</a>
   </span>
-  <a id="Kephas_Data_Conversion_DefaultDataConversionService_AmbientServices_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.AmbientServices*"></a>
-  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_AmbientServices" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.AmbientServices">AmbientServices</h4>
-  <div class="markdown level1 summary"><p>Gets the ambient services.</p>
+  <a id="Kephas_Data_Conversion_DefaultDataConversionService_CompositionContext_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CompositionContext*"></a>
+  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_CompositionContext" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CompositionContext">CompositionContext</h4>
+  <div class="markdown level1 summary"><p>Gets a context for the dependency injection/composition.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAmbientServices AmbientServices { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICompositionContext CompositionContext { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,8 +193,8 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><p>The ambient services.</p>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><p>The composition context.</p>
 </td>
       </tr>
     </tbody>
@@ -198,7 +204,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_Logger.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L69">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L85">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_Logger_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.Logger*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_Logger" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.Logger">Logger</h4>
@@ -232,7 +238,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_ConvertAsync__2___0___1_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.ConvertAsync%60%602(%60%600%2C%60%601%2CKephas.Data.Conversion.IDataConversionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L91">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L107">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_ConvertAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.ConvertAsync*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_ConvertAsync__2___0___1_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.ConvertAsync``2(``0,``1,Kephas.Data.Conversion.IDataConversionContext,System.Threading.CancellationToken)">ConvertAsync&lt;TSource, TTarget&gt;(TSource, TTarget, IDataConversionContext, CancellationToken)</h4>
@@ -241,7 +247,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IDataConversionResult&gt; ConvertAsync&lt;TSource, TTarget&gt;(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IDataConversionResult&gt; ConvertAsync&lt;TSource, TTarget&gt;(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -321,7 +327,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_ConvertCoreAsync_System_Object_System_Reflection_TypeInfo_System_Object_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.ConvertCoreAsync(System.Object%2CSystem.Reflection.TypeInfo%2CSystem.Object%2CSystem.Reflection.TypeInfo%2CKephas.Data.Conversion.IDataConversionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L158">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L190">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_ConvertCoreAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.ConvertCoreAsync*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_ConvertCoreAsync_System_Object_System_Reflection_TypeInfo_System_Object_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.ConvertCoreAsync(System.Object,System.Reflection.TypeInfo,System.Object,System.Reflection.TypeInfo,Kephas.Data.Conversion.IDataConversionContext,System.Threading.CancellationToken)">ConvertCoreAsync(Object, TypeInfo, Object, TypeInfo, IDataConversionContext, CancellationToken)</h4>
@@ -330,7 +336,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IDataConversionResult&gt; ConvertCoreAsync(object source, TypeInfo sourceType, object target, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken = default (CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IDataConversionResult&gt; ConvertCoreAsync(object source, TypeInfo sourceType, object target, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -401,7 +407,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_CreateDataConversionResult.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.CreateDataConversionResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L325">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L364">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_CreateDataConversionResult_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CreateDataConversionResult*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_CreateDataConversionResult" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CreateDataConversionResult">CreateDataConversionResult()</h4>
@@ -430,19 +436,19 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_CreateTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.CreateTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_CreateTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.CreateTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2CKephas.Data.Conversion.IDataConversionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L285">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L324">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_CreateTargetEntityAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CreateTargetEntityAsync*"></a>
-  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_CreateTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CreateTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,System.Threading.CancellationToken)">CreateTargetEntityAsync(IDataContext, TypeInfo, CancellationToken)</h4>
+  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_CreateTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.CreateTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,Kephas.Data.Conversion.IDataConversionContext,System.Threading.CancellationToken)">CreateTargetEntityAsync(IDataContext, TypeInfo, IDataConversionContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Creates the target entity asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;object&gt; CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;object&gt; CreateTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, IDataConversionContext conversionContext, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -464,6 +470,12 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
         <td><span class="xref">System.Reflection.TypeInfo</span></td>
         <td><span class="parametername">targetType</span></td>
         <td><p>The type of the target object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Conversion.IDataConversionContext.html">IDataConversionContext</a></td>
+        <td><span class="parametername">conversionContext</span></td>
+        <td><p>The conversion context.</p>
 </td>
       </tr>
       <tr>
@@ -495,7 +507,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_EnsureTargetEntity_System_Object_System_Object_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.EnsureTargetEntity(System.Object%2CSystem.Object%2CSystem.Reflection.TypeInfo%2CKephas.Data.Conversion.IDataConversionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L206">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L238">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_EnsureTargetEntity_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.EnsureTargetEntity*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_EnsureTargetEntity_System_Object_System_Object_System_Reflection_TypeInfo_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.EnsureTargetEntity(System.Object,System.Object,System.Reflection.TypeInfo,Kephas.Data.Conversion.IDataConversionContext,System.Threading.CancellationToken)">EnsureTargetEntity(Object, Object, TypeInfo, IDataConversionContext, CancellationToken)</h4>
@@ -566,93 +578,19 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_FindTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.FindTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_GetInstanceTypeInfo_System_Object_System_Type_System_Type_Kephas_Data_Conversion_IDataConversionContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.GetInstanceTypeInfo(System.Object%2CSystem.Type%2CSystem.Type%2CKephas.Data.Conversion.IDataConversionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L268">View Source</a>
-  </span>
-  <a id="Kephas_Data_Conversion_DefaultDataConversionService_FindTargetEntityAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.FindTargetEntityAsync*"></a>
-  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_FindTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.FindTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,System.Object,System.Boolean,System.Threading.CancellationToken)">FindTargetEntityAsync(IDataContext, TypeInfo, Object, Boolean, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Searches for the target entity asynchronously.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;object&gt; FindTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object id, bool throwIfNotFound, CancellationToken cancellationToken)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">targetDataContext</span></td>
-        <td><p>Context for the target data.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Reflection.TypeInfo</span></td>
-        <td><span class="parametername">targetType</span></td>
-        <td><p>The type of the target object.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">id</span></td>
-        <td><p>The identifier.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">throwIfNotFound</span></td>
-        <td><p>True to throw if not found.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><p>A promise of the target entity.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_GetInstanceTypeInfo_System_Object_System_Type_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.GetInstanceTypeInfo(System.Object%2CSystem.Type%2CSystem.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L135">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L152">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_GetInstanceTypeInfo_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.GetInstanceTypeInfo*"></a>
-  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_GetInstanceTypeInfo_System_Object_System_Type_System_Type_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.GetInstanceTypeInfo(System.Object,System.Type,System.Type)">GetInstanceTypeInfo(Object, Type, Type)</h4>
+  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_GetInstanceTypeInfo_System_Object_System_Type_System_Type_Kephas_Data_Conversion_IDataConversionContext_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.GetInstanceTypeInfo(System.Object,System.Type,System.Type,Kephas.Data.Conversion.IDataConversionContext)">GetInstanceTypeInfo(Object, Type, Type, IDataConversionContext)</h4>
   <div class="markdown level1 summary"><p>Gets the type information for the instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual TypeInfo GetInstanceTypeInfo(object instance, Type declaredType, Type providedType, IDataConversionContext conversionContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -682,6 +620,12 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
         <td><p>Type of the provided.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Conversion.IDataConversionContext.html">IDataConversionContext</a></td>
+        <td><span class="parametername">conversionContext</span></td>
+        <td><p>The conversion context.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -705,7 +649,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_InvokeConvertersAsync_System_Collections_Generic_IEnumerable_Kephas_Data_Conversion_IDataConverter__System_Object_System_Object_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.InvokeConvertersAsync(System.Collections.Generic.IEnumerable%7BKephas.Data.Conversion.IDataConverter%7D%2CSystem.Object%2CSystem.Object%2CKephas.Data.Conversion.IDataConversionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L307">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L346">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DefaultDataConversionService_InvokeConvertersAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.InvokeConvertersAsync*"></a>
   <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_InvokeConvertersAsync_System_Collections_Generic_IEnumerable_Kephas_Data_Conversion_IDataConverter__System_Object_System_Object_Kephas_Data_Conversion_IDataConversionContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.InvokeConvertersAsync(System.Collections.Generic.IEnumerable{Kephas.Data.Conversion.IDataConverter},System.Object,System.Object,Kephas.Data.Conversion.IDataConversionContext,System.Threading.CancellationToken)">InvokeConvertersAsync(IEnumerable&lt;IDataConverter&gt;, Object, Object, IDataConversionContext, CancellationToken)</h4>
@@ -774,14 +718,91 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService.TryResolveTargetEntityAsync(Kephas.Data.IDataContext%2CSystem.Reflection.TypeInfo%2CSystem.Object%2CKephas.Data.Capabilities.IEntityInfo%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L291">View Source</a>
+  </span>
+  <a id="Kephas_Data_Conversion_DefaultDataConversionService_TryResolveTargetEntityAsync_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.TryResolveTargetEntityAsync*"></a>
+  <h4 id="Kephas_Data_Conversion_DefaultDataConversionService_TryResolveTargetEntityAsync_Kephas_Data_IDataContext_System_Reflection_TypeInfo_System_Object_Kephas_Data_Capabilities_IEntityInfo_System_Threading_CancellationToken_" data-uid="Kephas.Data.Conversion.DefaultDataConversionService.TryResolveTargetEntityAsync(Kephas.Data.IDataContext,System.Reflection.TypeInfo,System.Object,Kephas.Data.Capabilities.IEntityInfo,System.Threading.CancellationToken)">TryResolveTargetEntityAsync(IDataContext, TypeInfo, Object, IEntityInfo, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Tries to resolve the target entity asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;object&gt; TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">targetDataContext</span></td>
+        <td><p>Context for the target data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.TypeInfo</span></td>
+        <td><span class="parametername">targetType</span></td>
+        <td><p>The type of the target object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">sourceEntity</span></td>
+        <td><p>The source entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
+        <td><span class="parametername">sourceEntityInfo</span></td>
+        <td><p>The source entity information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>A promise of the target entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Data.Conversion.IDataConversionService.html">IDataConversionService</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -826,7 +847,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DefaultDataConversionService.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DefaultDataConversionService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L33" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DefaultDataConversionService.cs/#L34" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -846,7 +867,7 @@ public class DefaultDataConversionService : IDataConversionService, IAmbientServ
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2017 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
