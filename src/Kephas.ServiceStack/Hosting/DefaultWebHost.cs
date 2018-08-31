@@ -137,8 +137,8 @@ namespace Kephas.ServiceStack.Hosting
         /// <summary>
         /// Finalizes the service.
         /// </summary>
-        /// <param name="context">(Optional) An optional context for finalization.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="context">Optional. An optional context for finalization.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>

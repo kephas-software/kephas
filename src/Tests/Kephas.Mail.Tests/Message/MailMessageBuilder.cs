@@ -173,7 +173,7 @@ namespace Kephas.Mail.Tests.Message
         /// Creates email address.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">(Optional) Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// The new email address.
         /// </returns>

@@ -21,8 +21,8 @@ namespace Kephas.Data.Validation
         /// Initializes a new instance of the <see cref="DataValidationResultItem"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="memberName">(Optional) the member name.</param>
-        /// <param name="severity">(Optional) the severity.</param>
+        /// <param name="memberName">Optional. the member name.</param>
+        /// <param name="severity">Optional. the severity.</param>
         public DataValidationResultItem(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
             Requires.NotNull(message, nameof(message));

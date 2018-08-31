@@ -325,7 +325,7 @@ namespace Kephas.Data.IO.Import
             /// <param name="result">The result.</param>
             /// <param name="behaviors">The behaviors.</param>
             /// <param name="reversedBehaviors">The reversed behaviors.</param>
-            /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+            /// <param name="cancellationToken">Optional. The cancellation token.</param>
             /// <returns>
             /// A task for continuation.
             /// </returns>

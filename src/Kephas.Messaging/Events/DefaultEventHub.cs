@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Events
         /// </summary>
         /// <param name="event">The event.</param>
         /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
