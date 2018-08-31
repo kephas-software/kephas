@@ -100,6 +100,7 @@ public interface IServiceBehaviorProvider</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IEnumerable&lt;TService&gt; WhereEnabled&lt;TService&gt;(IEnumerable&lt;TService&gt; services, IContext context = null)
+
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -173,6 +174,7 @@ public interface IServiceBehaviorProvider</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IEnumerable&lt;IExportFactory&lt;TService&gt;&gt; WhereEnabled&lt;TService&gt;(IEnumerable&lt;IExportFactory&lt;TService&gt;&gt; serviceFactories, IContext context = null)
+
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -246,6 +248,7 @@ public interface IServiceBehaviorProvider</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IEnumerable&lt;IExportFactory&lt;TService, TMetadata&gt;&gt; WhereEnabled&lt;TService, TMetadata&gt;(IEnumerable&lt;IExportFactory&lt;TService, TMetadata&gt;&gt; serviceFactories, IContext context = null)
+
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

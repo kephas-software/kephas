@@ -106,6 +106,7 @@ public interface IMessageBroker : IDisposable</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">BrokeredMessageBuilder&lt;TMessage&gt; CreateBrokeredMessageBuilder&lt;TMessage&gt;(IContext context = null)
+
     where TMessage : BrokeredMessage, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
