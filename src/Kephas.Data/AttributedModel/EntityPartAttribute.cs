@@ -12,6 +12,8 @@ namespace Kephas.Data.AttributedModel
 {
     using System;
 
+    using Kephas.Model.AttributedModel;
+
     /// <summary>
     /// Values that represent entity part kinds.
     /// </summary>
@@ -29,7 +31,7 @@ namespace Kephas.Data.AttributedModel
     }
 
     /// <summary>
-    /// Marks a navigation property as modelling an entity part,
+    /// Marks a navigation property as modeling an entity part,
     /// meaning that the property content is an aggregated part of the declaring entity.
     /// If applied to an entity, marks it as being a second class entity used only
     /// as an aggregate of another entity.
@@ -38,7 +40,7 @@ namespace Kephas.Data.AttributedModel
     /// Entity parts can be both self contained entities or collections.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public class EntityPartAttribute : Attribute
+    public class EntityPartAttribute : PartAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityPartAttribute"/> class.

@@ -446,6 +446,9 @@
     <Compile Include="..\Kephas.Core\Logging\TypedLogger.cs">
       <Link>Logging\TypedLogger.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Model\AttributedModel\PartAttribute.cs">
+      <Link>Model\AttributedModel\PartAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Model\AttributedModel\ProjectionForAttribute.cs">
       <Link>Model\AttributedModel\ProjectionForAttribute.cs</Link>
     </Compile>
