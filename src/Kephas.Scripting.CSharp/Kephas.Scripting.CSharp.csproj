@@ -3,12 +3,12 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>4.5.2</Version>
+        <Version>5.0.0</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>4.5.0.0</AssemblyVersion>
-        <FileVersion>4.5.2.0</FileVersion>
+        <AssemblyVersion>5.0.0.0</AssemblyVersion>
+        <FileVersion>5.0.0.0</FileVersion>
         <Description>Provides the infrastructure for executing C# scripts.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

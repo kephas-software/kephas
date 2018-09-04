@@ -5,9 +5,9 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Description>Provides abstractions for managing data: retrieving, persisting, querying, so on.</Description>
-    <Version>4.5.2</Version>
-    <AssemblyVersion>4.5.0.0</AssemblyVersion>
-    <FileVersion>4.5.2.0</FileVersion>
+    <Version>5.0.0</Version>
+    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <FileVersion>5.0.0.0</FileVersion>
     <Authors>Kephas Software SRL</Authors>
     <Company>Kephas Software SRL</Company>
     <Product>Kephas Framework</Product>
