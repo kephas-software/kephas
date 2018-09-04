@@ -4,8 +4,8 @@
         <id>Kephas.Mail.MailKit</id>
         <version>$version$</version>
         <title>Kephas.Mail.MailKit</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>Provides the mailing implementation using the MailKit project.</description>
         <releaseNotes>
         </releaseNotes>
@@ -17,7 +17,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
@@ -31,7 +31,7 @@
         <references>
             <reference file="Kephas.Mail.MailKit.dll" />
         </references>
-        <tags>kephas framework mail mailkit quartz-software</tags>
+        <tags>kephas framework mail mailkit</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

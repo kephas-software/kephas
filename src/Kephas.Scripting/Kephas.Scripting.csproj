@@ -4,19 +4,19 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Version>4.5.2</Version>
-        <Authors>Quartz Software SRL</Authors>
-        <Company>Quartz Software SRL</Company>
+        <Authors>Kephas Software SRL</Authors>
+        <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
         <AssemblyVersion>4.5.0.0</AssemblyVersion>
         <FileVersion>4.5.2.0</FileVersion>
         <Description>Provides the infrastructure for executing scripts.</Description>
-        <Copyright>Copyright Quartz Software SRL 2010-2018</Copyright>
+        <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas framework scripting quartz-software</PackageTags>
+        <PackageTags>kephas framework scripting</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <RootNamespace>Kephas.Scripting</RootNamespace>

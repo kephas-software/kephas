@@ -33,7 +33,7 @@
       </Rules>
       <AnalyzerSettings>
         <StringProperty Name="CompanyName">Quartz Software SRL</StringProperty>
-        <StringProperty Name="Copyright">Copyright (c) Quartz Software SRL. All rights reserved.</StringProperty>
+        <StringProperty Name="Copyright">Copyright (c) Kephas Software SRL. All rights reserved.</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">

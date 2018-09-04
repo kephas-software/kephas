@@ -4,8 +4,8 @@
         <id>Kephas.Data.IO</id>
         <version>$version$</version>
         <title>Kephas.Data.IO</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>Provides functionality for data import/export (input/output).</description>
         <releaseNotes>
         </releaseNotes>
@@ -15,7 +15,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
@@ -26,7 +26,7 @@
         <references>
             <reference file="Kephas.Data.IO.dll" />
         </references>
-        <tags>kephas framework data input output import export quartz-software</tags>
+        <tags>kephas framework data input output import export</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

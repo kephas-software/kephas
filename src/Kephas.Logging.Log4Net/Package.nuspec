@@ -4,8 +4,8 @@
         <id>Kephas.Logging.Log4Net</id>
         <version>$version$</version>
         <title>Kephas.Logging.Log4Net</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>
             Provides the log4net 2 (and later) logging services implementation.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
@@ -23,7 +23,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="log4net" version="2.0.8" />
@@ -31,7 +31,7 @@
         <references>
             <reference file="Kephas.Logging.Log4net.dll" />
         </references>
-        <tags>kephas framework logging log4net quartz-software</tags>
+        <tags>kephas framework logging log4net</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

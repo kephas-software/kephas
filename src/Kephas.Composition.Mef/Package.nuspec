@@ -4,8 +4,8 @@
         <id>Kephas.Composition.Mef</id>
         <version>$version$</version>
         <title>Kephas.Composition.Mef</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>
             Provides the composition services implementation using the System.Composition framework.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
@@ -21,7 +21,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="System.Composition" version="1.0.31" />
@@ -36,7 +36,7 @@
                 <reference file="Kephas.Composition.Mef.dll" />
             </group>
         </references>
-        <tags>kephas framework composition mef quartz-software</tags>
+        <tags>kephas framework composition mef</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

@@ -11,16 +11,16 @@
     <FileVersion>4.5.2.0</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Authors>Quartz Software SRL</Authors>
-    <Company>Quartz Software SRL</Company>
+    <Authors>Kephas Software SRL</Authors>
+    <Company>Kephas Software SRL</Company>
     <Product>Kephas Framework</Product>
     <Description>Provides composable messaging infrastructure in form of request/response service layer.</Description>
-    <Copyright>Copyright Quartz Software SRL 2010-2018</Copyright>
+    <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
     <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
     <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
-    <PackageTags>kephas framework messaging request response service layer quartz-software</PackageTags>
+    <PackageTags>kephas framework messaging request response service layer</PackageTags>
     <RepositoryType>github</RepositoryType>
     <PackageReleaseNotes>Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
 Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</PackageReleaseNotes>
