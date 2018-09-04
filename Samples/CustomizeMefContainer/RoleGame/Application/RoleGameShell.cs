@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RoleGameShell.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="RoleGameShell.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 // </copyright>
 // <summary>
 //   Implements the role game shell class.

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CalculatorShell.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="CalculatorShell.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 // </copyright>
 // <summary>
 //   Implements the calculator shell class.
