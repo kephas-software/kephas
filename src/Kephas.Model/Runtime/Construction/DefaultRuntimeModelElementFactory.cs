@@ -58,7 +58,8 @@ namespace Kephas.Model.Runtime.Construction
             this.modelElementConfigurators =
                 (from cfg in modelElementConfigurators
                  group cfg by cfg.Metadata.RuntimeElementType
-                 into cfgGroup select cfgGroup).ToDictionary(
+                 into cfgGroup
+                select cfgGroup).ToDictionary(
                      g => g.Key.AsRuntimeTypeInfo(),
                      g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExport().Value).ToList());
         }

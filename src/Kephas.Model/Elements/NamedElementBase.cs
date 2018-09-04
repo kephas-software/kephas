@@ -66,7 +66,7 @@ namespace Kephas.Model.Elements
             this.ModelSpace = constructionContext.ModelSpace;
             var memberNameDiscriminator = typeof(TModelContract).GetMemberNameDiscriminator();
 
-            // some constructors prepend the member name dicriminator to the name,
+            // some constructors prepend the member name discriminator to the name,
             // therefore add it to the qualified name only if not already added.
             this.QualifiedFullName =
                 !string.IsNullOrEmpty(memberNameDiscriminator) && name.StartsWith(memberNameDiscriminator)
