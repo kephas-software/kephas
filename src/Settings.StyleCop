@@ -32,7 +32,7 @@
         </Rule>
       </Rules>
       <AnalyzerSettings>
-        <StringProperty Name="CompanyName">Quartz Software SRL</StringProperty>
+        <StringProperty Name="CompanyName">Kephas Software SRL</StringProperty>
         <StringProperty Name="Copyright">Copyright (c) Kephas Software SRL. All rights reserved.</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
