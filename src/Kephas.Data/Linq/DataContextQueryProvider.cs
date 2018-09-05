@@ -145,7 +145,7 @@ namespace Kephas.Data.Linq
             Requires.NotNull(expression, nameof(expression));
 
             var executionResult = this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
-            this.AttachEntitiesToDataContext(executionResult);
+            this.AttachEntitiesToDataContext<TResult>(executionResult);
             return executionResult;
         }
 
@@ -247,7 +247,8 @@ namespace Kephas.Data.Linq
         /// Attach entities to data context.
         /// </summary>
         /// <param name="executionResult">The execution result.</param>
-        protected virtual void AttachEntitiesToDataContext(object executionResult)
+        /// <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
+        protected virtual void AttachEntitiesToDataContext<TResult>(object executionResult)
         {
             if (executionResult == null)
             {
