@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISecurityService.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="ISecurityService.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authentication
 {
     using System.Security.Principal;
     using System.Threading;
@@ -17,11 +17,23 @@ namespace Kephas.Security
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for security.
+    /// Shared application service contract for handing authentication.
     /// </summary>
     [SharedAppServiceContract]
-    public interface ISecurityService
+    public interface IAuthenticationService
     {
+        /// <summary>
+        /// Authenticates the user asynchronously.
+        /// </summary>
+        /// <param name="authContext">Context for the authentication.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the identity.
+        /// </returns>
+        Task<IIdentity> AuthenticateAsync(
+            IAuthenticationContext authContext,
+            CancellationToken cancellationToken = default);
+
         /// <summary>
         /// Gets asynchronously the identity for the provided token.
         /// </summary>

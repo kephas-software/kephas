@@ -30,9 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{B5E8C7E1-C334-4C6C-B7C1-61D4618B21E7}"
 	ProjectSection(SolutionItems) = preProject
-		Deployment\CreateNugetPackages.cmd = Deployment\CreateNugetPackages.cmd
+		Deployment\CreateNugetPackages.ps1 = Deployment\CreateNugetPackages.ps1
 		Deployment\NuGet.exe = Deployment\NuGet.exe
-		Deployment\PushNugetPackages.bat = Deployment\PushNugetPackages.bat
+		Deployment\PushNugetPackages.ps1 = Deployment\PushNugetPackages.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
@@ -231,7 +231,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.CSharp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.CSharp.Tests", "Tests\Kephas.Scripting.CSharp.Tests\Kephas.Scripting.CSharp.Tests.csproj", "{C499C5B0-CA3C-49FC-9392-9977A4B8EB42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Orchestration.Tests", "Tests\Kephas.Orchestration.Tests\Kephas.Orchestration.Tests.csproj", "{68126EAA-829A-4DF6-9A73-44A75C11AAF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Orchestration.Tests", "Tests\Kephas.Orchestration.Tests\Kephas.Orchestration.Tests.csproj", "{68126EAA-829A-4DF6-9A73-44A75C11AAF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

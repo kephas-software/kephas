@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BrokeredMessageBuilder.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="BrokeredMessageBuilder.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -36,15 +37,15 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder{TMessage}"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
-        /// <param name="context">The sending context (optional).</param>
-        public BrokeredMessageBuilder(IAppManifest appManifest, ISecurityService securityService, IContext context = null)
+        /// <param name="authenticationService">The authentication service.</param>
+        /// <param name="context">Optional. The sending context (optional).</param>
+        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService, IContext context = null)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
-            Requires.NotNull(securityService, nameof(securityService));
+            Requires.NotNull(authenticationService, nameof(authenticationService));
 
             this.AppManifest = appManifest;
-            this.SecurityService = securityService;
+            this.AuthenticationService = authenticationService;
             this.Context = context;
 
             // ReSharper disable once VirtualMemberCallInConstructor
@@ -73,12 +74,12 @@ namespace Kephas.Messaging.Distributed
         public IAppManifest AppManifest { get; }
 
         /// <summary>
-        /// Gets the security service.
+        /// Gets the authentication service.
         /// </summary>
         /// <value>
-        /// The security service.
+        /// The authentication service.
         /// </value>
-        public ISecurityService SecurityService { get; }
+        public IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Gets the sending context.
@@ -274,7 +275,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual string GetBearerToken(IContext context)
         {
-            return this.SecurityService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
+            return this.AuthenticationService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
         }
     }
 }

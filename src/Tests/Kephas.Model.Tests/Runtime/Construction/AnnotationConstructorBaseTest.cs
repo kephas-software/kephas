@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationConstructorBaseTest.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="AnnotationConstructorBaseTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -11,7 +11,6 @@
 namespace Kephas.Model.Tests.Runtime.Construction
 {
     using System;
-    using System.Linq;
 
     using Kephas.Composition;
     using Kephas.Model.Construction;
@@ -52,7 +51,17 @@ namespace Kephas.Model.Tests.Runtime.Construction
             var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = Substitute.For<IModelSpace>() };
             var annotation = constructor.TryCreateModelElement(context, new MultipleAttribute());
             Assert.IsNotNull(annotation);
-            Assert.AreEqual("@Multiple_" + annotation.Parts.Single().GetHashCode(), annotation.Name);
+            Assert.IsTrue(annotation.Name.StartsWith("@Multiple_"));
+        }
+
+        [Test]
+        public void TryCreateModelElement_Name_allow_multiple_different_names()
+        {
+            var constructor = new TestAnnotationConstructor();
+            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>()) { ModelSpace = Substitute.For<IModelSpace>() };
+            var annotation = constructor.TryCreateModelElement(context, new MultipleAttribute());
+            var annotation2 = constructor.TryCreateModelElement(context, new MultipleAttribute());
+            Assert.AreNotEqual(annotation2.Name, annotation.Name);
         }
 
         [Test]

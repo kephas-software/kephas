@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultOrchestrationManagerTest.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="DefaultOrchestrationManagerTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -20,6 +20,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     using NSubstitute;
@@ -36,7 +37,7 @@ namespace Kephas.Orchestration.Tests
             messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>().Returns(
                 ci => new BrokeredMessageBuilder<BrokeredMessage>(
                     Substitute.For<IAppManifest>(),
-                    Substitute.For<ISecurityService>(),
+                    Substitute.For<IAuthenticationService>(),
                     Substitute.For<IContext>()));
             var appManifest = Substitute.For<IAppManifest>();
             var appRuntime = Substitute.For<IAppRuntime>();

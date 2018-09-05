@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryDataContext.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="InMemoryDataContext.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -10,7 +10,6 @@
 
 namespace Kephas.Data.InMemory
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,7 +24,6 @@ namespace Kephas.Data.InMemory
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Serialization;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Client data context managing.

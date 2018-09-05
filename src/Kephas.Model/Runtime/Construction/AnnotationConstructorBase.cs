@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AnnotationConstructorBase.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="AnnotationConstructorBase.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -12,6 +12,7 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System;
     using System.Reflection;
+    using System.Threading;
 
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -31,13 +32,18 @@ namespace Kephas.Model.Runtime.Construction
         public const string AnnotationDiscriminator = "Attribute";
 
         /// <summary>
+        /// The name counter.
+        /// </summary>
+        private static int nameCounter = 0;
+
+        /// <summary>
         /// Gets the element name discriminator.
         /// </summary>
         /// <value>
         /// The element name discriminator.
         /// </value>
         /// <remarks>
-        /// This dicriminator can be used as a suffix in the name to identify the element type.
+        /// This discriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
         protected override string ElementNameDiscriminator => AnnotationDiscriminator;
 
@@ -59,7 +65,8 @@ namespace Kephas.Model.Runtime.Construction
             var name = typeof(IAnnotation).GetMemberNameDiscriminator() + base.TryComputeNameCore(attrTypeInfo);
             if (usage == null || usage.AllowMultiple)
             {
-                name = name + "_" + runtimeElement.GetHashCode();
+                var counter = Interlocked.Increment(ref nameCounter);
+                name = name + "_" + counter;
             }
 
             return name;

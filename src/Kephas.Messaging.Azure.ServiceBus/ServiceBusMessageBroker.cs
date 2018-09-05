@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceBusMessageBroker.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="ServiceBusMessageBroker.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Azure.ServiceBus
     using Kephas.Application;
     using Kephas.Messaging.Distributed;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     /// <summary>
@@ -27,9 +28,9 @@ namespace Kephas.Messaging.Azure.ServiceBus
         /// Initializes a new instance of the <see cref="ServiceBusMessageBroker"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
-        public ServiceBusMessageBroker(IAppManifest appManifest, ISecurityService securityService)
-            : base(appManifest, securityService)
+        /// <param name="authenticationService">The authentication service.</param>
+        public ServiceBusMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService)
+            : base(appManifest, authenticationService)
         {
         }
 

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageBrokerBase.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="MessageBrokerBase.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     /// <summary>
@@ -40,14 +41,14 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
-        protected MessageBrokerBase(IAppManifest appManifest, ISecurityService securityService)
+        /// <param name="authenticationService">The authentication service.</param>
+        protected MessageBrokerBase(IAppManifest appManifest, IAuthenticationService authenticationService)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
-            Requires.NotNull(securityService, nameof(securityService));
+            Requires.NotNull(authenticationService, nameof(authenticationService));
 
             this.AppManifest = appManifest;
-            this.SecurityService = securityService;
+            this.AuthenticationService = authenticationService;
         }
 
         /// <summary>
@@ -67,12 +68,12 @@ namespace Kephas.Messaging.Distributed
         public IAppManifest AppManifest { get; }
 
         /// <summary>
-        /// Gets the security service.
+        /// Gets the authentication service.
         /// </summary>
         /// <value>
-        /// The security service.
+        /// The authentication service.
         /// </value>
-        public ISecurityService SecurityService { get; }
+        public IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Dispatches the brokered message asynchronously.
@@ -161,7 +162,7 @@ namespace Kephas.Messaging.Distributed
         public virtual BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>(IContext context = null)
             where TMessage : BrokeredMessage, new()
         {
-            return new BrokeredMessageBuilder<TMessage>(this.AppManifest, this.SecurityService, context);
+            return new BrokeredMessageBuilder<TMessage>(this.AppManifest, this.AuthenticationService, context);
         }
 
         /// <summary>

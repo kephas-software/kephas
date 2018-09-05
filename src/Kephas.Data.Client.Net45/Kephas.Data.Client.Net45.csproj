@@ -48,6 +48,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.Client\Capabilities\ClientEntityInfo.cs">
+      <Link>Capabilities\ClientEntityInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\ClientQuery.cs">
       <Link>Queries\ClientQuery.cs</Link>
     </Compile>

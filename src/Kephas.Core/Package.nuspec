@@ -4,8 +4,8 @@
         <id>Kephas.Core</id>
         <version>$version$</version>
         <title>Kephas.Core</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>
             Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application bootstrapping, and others.
             Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
@@ -21,7 +21,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <group targetFramework="net45" />
             <group targetFramework="netstandard2.0">
@@ -36,7 +36,7 @@
         <references>
             <reference file="Kephas.Core.dll" />
         </references>
-        <tags>kephas framework core quartz-software</tags>
+        <tags>kephas framework core</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

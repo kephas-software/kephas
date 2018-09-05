@@ -4,8 +4,8 @@
         <id>Kephas.Serialization.ServiceStack.Text</id>
         <version>$version$</version>
         <title>Kephas.Serialization.ServiceStack.Text</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>
             Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
         </description>
@@ -19,7 +19,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
@@ -34,7 +34,7 @@
         <references>
             <reference file="Kephas.Serialization.ServiceStack.Text.dll" />
         </references>
-        <tags>kephas framework serialization json xml servicestack quartz-software</tags>
+        <tags>kephas framework serialization json xml servicestack</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

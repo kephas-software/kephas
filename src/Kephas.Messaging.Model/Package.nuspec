@@ -4,8 +4,8 @@
         <id>Kephas.Messaging.Model</id>
         <version>$version$</version>
         <title>Kephas.Messaging.Model</title>
-        <authors>Quartz Software SRL</authors>
-        <owners>Quartz Software SRL</owners>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
         <description>Provides the model for messaging, including the Message classifier and Messaging scope dimension.</description>
         <releaseNotes>
         </releaseNotes>
@@ -15,7 +15,7 @@
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-        <copyright>Copyright Quartz Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <dependency id="Kephas.Messaging" version="$refversion$" />
             <dependency id="Kephas.Model" version="$refversion$" />
@@ -23,7 +23,7 @@
         <references>
             <reference file="Kephas.Messaging.Model.dll" />
         </references>
-        <tags>kephas framework messaging model quartz-software</tags>
+        <tags>kephas framework messaging model</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

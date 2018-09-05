@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BrokeredMessageHandler.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="BrokeredMessageHandler.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -44,28 +45,28 @@ namespace Kephas.Messaging.Distributed
         private readonly IExportFactory<IMessageBroker> messageBrokerFactory;
 
         /// <summary>
-        /// The security service.
+        /// The authentication service.
         /// </summary>
-        private readonly ISecurityService securityService;
+        private readonly IAuthenticationService authenticationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageHandler"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="messageBrokerFactory">The message broker factory.</param>
-        /// <param name="securityService">The security service.</param>
+        /// <param name="authenticationService">The authentication service.</param>
         public BrokeredMessageHandler(
             IMessageProcessor messageProcessor,
             IExportFactory<IMessageBroker> messageBrokerFactory,
-            ISecurityService securityService)
+            IAuthenticationService authenticationService)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(messageBrokerFactory, nameof(messageBrokerFactory));
-            Requires.NotNull(securityService, nameof(securityService));
+            Requires.NotNull(authenticationService, nameof(authenticationService));
 
             this.messageProcessor = messageProcessor;
             this.messageBrokerFactory = messageBrokerFactory;
-            this.securityService = securityService;
+            this.authenticationService = authenticationService;
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override async Task<IMessage> ProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var identity = await this.securityService.GetIdentityAsync(message.BearerToken, context, token).PreserveThreadContext();
+            var identity = await this.authenticationService.GetIdentityAsync(message.BearerToken, context, token).PreserveThreadContext();
             var processContext = new MessageProcessingContext(this.messageProcessor)
                                      {
                                          Identity = identity

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NamedElementBase.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="NamedElementBase.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -66,7 +66,7 @@ namespace Kephas.Model.Elements
             this.ModelSpace = constructionContext.ModelSpace;
             var memberNameDiscriminator = typeof(TModelContract).GetMemberNameDiscriminator();
 
-            // some constructors prepend the member name dicriminator to the name,
+            // some constructors prepend the member name discriminator to the name,
             // therefore add it to the qualified name only if not already added.
             this.QualifiedFullName =
                 !string.IsNullOrEmpty(memberNameDiscriminator) && name.StartsWith(memberNameDiscriminator)

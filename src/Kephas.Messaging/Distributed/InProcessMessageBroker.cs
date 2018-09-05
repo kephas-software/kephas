@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InProcessMessageBroker.cs" company="Quartz Software SRL">
-//   Copyright (c) Quartz Software SRL. All rights reserved.
+// <copyright file="InProcessMessageBroker.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -37,10 +38,10 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
+        /// <param name="authenticationService">The authentication service.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor)
-            : base(appManifest, securityService)
+        public InProcessMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor)
+            : base(appManifest, authenticationService)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
