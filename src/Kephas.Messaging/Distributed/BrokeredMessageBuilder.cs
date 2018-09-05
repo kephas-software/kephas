@@ -36,15 +36,15 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder{TMessage}"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
-        /// <param name="context">The sending context (optional).</param>
-        public BrokeredMessageBuilder(IAppManifest appManifest, ISecurityService securityService, IContext context = null)
+        /// <param name="authenticationService">The authentication service.</param>
+        /// <param name="context">Optional. The sending context (optional).</param>
+        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService, IContext context = null)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
-            Requires.NotNull(securityService, nameof(securityService));
+            Requires.NotNull(authenticationService, nameof(authenticationService));
 
             this.AppManifest = appManifest;
-            this.SecurityService = securityService;
+            this.AuthenticationService = authenticationService;
             this.Context = context;
 
             // ReSharper disable once VirtualMemberCallInConstructor
@@ -73,12 +73,12 @@ namespace Kephas.Messaging.Distributed
         public IAppManifest AppManifest { get; }
 
         /// <summary>
-        /// Gets the security service.
+        /// Gets the authentication service.
         /// </summary>
         /// <value>
-        /// The security service.
+        /// The authentication service.
         /// </value>
-        public ISecurityService SecurityService { get; }
+        public IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Gets the sending context.
@@ -274,7 +274,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual string GetBearerToken(IContext context)
         {
-            return this.SecurityService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
+            return this.AuthenticationService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
         }
     }
 }

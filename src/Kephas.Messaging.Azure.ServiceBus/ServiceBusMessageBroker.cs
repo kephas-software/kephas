@@ -27,9 +27,9 @@ namespace Kephas.Messaging.Azure.ServiceBus
         /// Initializes a new instance of the <see cref="ServiceBusMessageBroker"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
-        public ServiceBusMessageBroker(IAppManifest appManifest, ISecurityService securityService)
-            : base(appManifest, securityService)
+        /// <param name="authenticationService">The authentication service.</param>
+        public ServiceBusMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService)
+            : base(appManifest, authenticationService)
         {
         }
 

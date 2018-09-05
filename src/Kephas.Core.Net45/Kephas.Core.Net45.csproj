@@ -623,11 +623,35 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeKind.cs">
       <Link>Runtime\RuntimeTypeKind.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\ISecurityService.cs">
-      <Link>Security\ISecurityService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\AuthenticationContext.cs">
+      <Link>Security\AuthenticationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\NullSecurityService.cs">
-      <Link>Security\NullSecurityService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\AuthorizationContext.cs">
+      <Link>Security\AuthorizationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\IAuthenticationContext.cs">
+      <Link>Security\IAuthenticationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\IAuthenticationService.cs">
+      <Link>Security\IAuthenticationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\IAuthorizationContext.cs">
+      <Link>Security\IAuthorizationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\IAuthorizationService.cs">
+      <Link>Security\IAuthorizationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\NullAuthenticationService.cs">
+      <Link>Security\NullAuthenticationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\NullAuthorizationService.cs">
+      <Link>Security\NullAuthorizationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\PasswordAuthenticationContext.cs">
+      <Link>Security\PasswordAuthenticationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\TokenAuthenticationContext.cs">
+      <Link>Security\TokenAuthenticationContext.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>

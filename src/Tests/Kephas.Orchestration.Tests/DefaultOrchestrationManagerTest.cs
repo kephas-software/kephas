@@ -36,7 +36,7 @@ namespace Kephas.Orchestration.Tests
             messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>().Returns(
                 ci => new BrokeredMessageBuilder<BrokeredMessage>(
                     Substitute.For<IAppManifest>(),
-                    Substitute.For<ISecurityService>(),
+                    Substitute.For<IAuthenticationService>(),
                     Substitute.For<IContext>()));
             var appManifest = Substitute.For<IAppManifest>();
             var appRuntime = Substitute.For<IAppRuntime>();

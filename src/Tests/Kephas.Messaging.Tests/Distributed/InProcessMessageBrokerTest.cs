@@ -261,21 +261,12 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             private readonly ISerializationService serializationService;
 
-            public RemoteMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor, ISerializationService serializationService)
-                : base(appManifest, securityService, messageProcessor)
+            public RemoteMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor, ISerializationService serializationService)
+                : base(appManifest, authenticationService, messageProcessor)
             {
                 this.serializationService = serializationService;
             }
 
-            /// <summary>
-            /// Sends the brokered message asynchronously over the physical medium.
-            /// </summary>
-            /// <param name="brokeredMessage">The brokered message.</param>
-            /// <param name="context"></param>
-            /// <param name="cancellationToken">The cancellation token (optional).</param>
-            /// <returns>
-            /// The asynchronous result that yields an IMessage.
-            /// </returns>
             protected override async Task SendAsync(
                 IBrokeredMessage brokeredMessage,
                 IContext context,

@@ -37,10 +37,10 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
-        /// <param name="securityService">The security service.</param>
+        /// <param name="authenticationService">The authentication service.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor)
-            : base(appManifest, securityService)
+        public InProcessMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor)
+            : base(appManifest, authenticationService)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
