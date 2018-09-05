@@ -57,6 +57,9 @@
     <Compile Include="..\Kephas.Messaging\Behaviors\Composition\MessageProcessingBehaviorMetadata.cs">
       <Link>Behaviors\Composition\MessageProcessingBehaviorMetadata.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs">
+      <Link>Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Behaviors\IMessageProcessingBehavior.cs">
       <Link>Behaviors\IMessageProcessingBehavior.cs</Link>
     </Compile>

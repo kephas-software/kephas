@@ -11,6 +11,7 @@
 namespace Kephas.Security.Authorization
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Services;
 
@@ -25,6 +26,16 @@ namespace Kephas.Security.Authorization
         /// <param name="executingContext">Context for the executing.</param>
         /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
         public AuthorizationContext(IContext executingContext, params string[] requiredPermissions)
+            : this(executingContext, (IEnumerable<string>)requiredPermissions)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
+        /// </summary>
+        /// <param name="executingContext">Context for the executing.</param>
+        /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
+        public AuthorizationContext(IContext executingContext, IEnumerable<string> requiredPermissions)
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;
