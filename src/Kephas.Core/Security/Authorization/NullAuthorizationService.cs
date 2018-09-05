@@ -19,7 +19,7 @@ namespace Kephas.Security.Authorization
     /// A null authorization service.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullAuthorizationService : IAuthorizationService
+    public class NullAuthorizationService : IAuthorizationService, ISyncAuthorizationService
     {
         /// <summary>
         /// Authorizes the provided context asynchronously.
@@ -32,6 +32,18 @@ namespace Kephas.Security.Authorization
         public Task<bool> AuthorizeAsync(IAuthorizationContext authContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// Query if the authorization context has the requested permission.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// True if permission is granted, false if not.
+        /// </returns>
+        public bool Authorize(IAuthorizationContext context)
+        {
+            return true;
         }
     }
 }

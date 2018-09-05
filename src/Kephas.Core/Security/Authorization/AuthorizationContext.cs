@@ -39,7 +39,6 @@ namespace Kephas.Security.Authorization
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;
-            this.ThrowOnFailure = true;
             this.RequiredPermissions = requiredPermissions;
         }
 
@@ -57,6 +56,6 @@ namespace Kephas.Security.Authorization
         /// <value>
         /// True if throw on failure, false if not.
         /// </value>
-        public bool ThrowOnFailure { get; set; }
+        public bool ThrowOnFailure { get; set; } = true;
     }
 }

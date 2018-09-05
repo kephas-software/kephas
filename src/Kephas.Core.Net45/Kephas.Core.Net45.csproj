@@ -656,6 +656,9 @@
     <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationService.cs">
       <Link>Security\Authorization\IAuthorizationService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\ISyncAuthorizationService.cs">
+      <Link>Security\Authorization\ISyncAuthorizationService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Security\Authorization\NullAuthorizationService.cs">
       <Link>Security\Authorization\NullAuthorizationService.cs</Link>
     </Compile>

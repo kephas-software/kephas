@@ -27,7 +27,6 @@ namespace Kephas.Security.Authentication
         public AuthenticationContext(ICompositionContext compositionContext = null)
             : base(compositionContext)
         {
-            this.ThrowOnFailure = true;
         }
 
         /// <summary>
@@ -36,6 +35,6 @@ namespace Kephas.Security.Authentication
         /// <value>
         /// True if throw on failure, false if not.
         /// </value>
-        public bool ThrowOnFailure { get; set; }
+        public bool ThrowOnFailure { get; set; } = true;
     }
 }
