@@ -8,8 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authorization
 {
+    using System.Collections.Generic;
+
     using Kephas.Services;
 
     /// <summary>
@@ -21,12 +23,22 @@ namespace Kephas.Security
         /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
         /// </summary>
         /// <param name="executingContext">Context for the executing.</param>
-        public AuthorizationContext(IContext executingContext)
+        /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
+        public AuthorizationContext(IContext executingContext, params string[] requiredPermissions)
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;
             this.ThrowOnFailure = true;
+            this.RequiredPermissions = requiredPermissions;
         }
+
+        /// <summary>
+        /// Gets the required permissions.
+        /// </summary>
+        /// <value>
+        /// The required permissions.
+        /// </value>
+        public IEnumerable<string> RequiredPermissions { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw on failure.

@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

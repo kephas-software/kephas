@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullSecurityService.cs" company="Kephas Software SRL">
+// <copyright file="ISecurityService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the null security service class.
+//   Declares the ISecurityService interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authentication
 {
     using System.Security.Principal;
     using System.Threading;
@@ -17,10 +17,10 @@ namespace Kephas.Security
     using Kephas.Services;
 
     /// <summary>
-    /// A null security service.
+    /// Shared application service contract for handing authentication.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
-    public class NullAuthenticationService : IAuthenticationService
+    [SharedAppServiceContract]
+    public interface IAuthenticationService
     {
         /// <summary>
         /// Authenticates the user asynchronously.
@@ -30,10 +30,9 @@ namespace Kephas.Security
         /// <returns>
         /// An asynchronous result that yields the identity.
         /// </returns>
-        public Task<IIdentity> AuthenticateAsync(IAuthenticationContext authContext, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<IIdentity>(null);
-        }
+        Task<IIdentity> AuthenticateAsync(
+            IAuthenticationContext authContext,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets asynchronously the identity for the provided token.
@@ -44,10 +43,10 @@ namespace Kephas.Security
         /// <returns>
         /// An asynchronous result that yields the identity.
         /// </returns>
-        public Task<IIdentity> GetIdentityAsync(string token, IContext context = null, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<IIdentity>(null);
-        }
+        Task<IIdentity> GetIdentityAsync(
+            string token,
+            IContext context = null,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets asynchronously a token for the provided identity.
@@ -58,9 +57,9 @@ namespace Kephas.Security
         /// <returns>
         /// An asynchronous result that yields the token.
         /// </returns>
-        public Task<string> GetTokenAsync(IIdentity identity, IContext context = null, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<string>(null);
-        }
+        Task<string> GetTokenAsync(
+            IIdentity identity,
+            IContext context = null,
+            CancellationToken cancellationToken = default);
     }
 }

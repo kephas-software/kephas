@@ -20,6 +20,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     using NSubstitute;

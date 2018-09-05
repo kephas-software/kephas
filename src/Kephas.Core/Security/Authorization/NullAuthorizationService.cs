@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authorization
 {
     using System.Threading;
     using System.Threading.Tasks;

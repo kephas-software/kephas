@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

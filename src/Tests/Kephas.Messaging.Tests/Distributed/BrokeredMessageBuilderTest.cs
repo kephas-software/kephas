@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Application;
     using Kephas.Messaging.Distributed;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
 
     using NSubstitute;
 

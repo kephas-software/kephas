@@ -26,6 +26,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Security;
+    using Kephas.Security.Authentication;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;

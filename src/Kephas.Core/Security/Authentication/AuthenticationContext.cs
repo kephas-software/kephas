@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authentication
 {
     using Kephas.Composition;
     using Kephas.Services;

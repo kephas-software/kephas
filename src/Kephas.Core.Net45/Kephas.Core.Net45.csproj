@@ -623,35 +623,44 @@
     <Compile Include="..\Kephas.Core\Runtime\RuntimeTypeKind.cs">
       <Link>Runtime\RuntimeTypeKind.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\AuthenticationContext.cs">
-      <Link>Security\AuthenticationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\AuthenticationContext.cs">
+      <Link>Security\Authentication\AuthenticationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\AuthorizationContext.cs">
-      <Link>Security\AuthorizationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\IAuthenticationContext.cs">
+      <Link>Security\Authentication\IAuthenticationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\IAuthenticationContext.cs">
-      <Link>Security\IAuthenticationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\IAuthenticationService.cs">
+      <Link>Security\Authentication\IAuthenticationService.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\IAuthenticationService.cs">
-      <Link>Security\IAuthenticationService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\NullAuthenticationService.cs">
+      <Link>Security\Authentication\NullAuthenticationService.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\IAuthorizationContext.cs">
-      <Link>Security\IAuthorizationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\PasswordAuthenticationContext.cs">
+      <Link>Security\Authentication\PasswordAuthenticationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\IAuthorizationService.cs">
-      <Link>Security\IAuthorizationService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authentication\TokenAuthenticationContext.cs">
+      <Link>Security\Authentication\TokenAuthenticationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\NullAuthenticationService.cs">
-      <Link>Security\NullAuthenticationService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authorization\AuthorizationContext.cs">
+      <Link>Security\Authorization\AuthorizationContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\NullAuthorizationService.cs">
-      <Link>Security\NullAuthorizationService.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authorization\AuthorizationException.cs">
+      <Link>Security\Authorization\AuthorizationException.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\PasswordAuthenticationContext.cs">
-      <Link>Security\PasswordAuthenticationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authorization\GrantsPermissionAttribute.cs">
+      <Link>Security\Authorization\GrantsPermissionAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Security\TokenAuthenticationContext.cs">
-      <Link>Security\TokenAuthenticationContext.cs</Link>
+    <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationContext.cs">
+      <Link>Security\Authorization\IAuthorizationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationService.cs">
+      <Link>Security\Authorization\IAuthorizationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\NullAuthorizationService.cs">
+      <Link>Security\Authorization\NullAuthorizationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\RequiresPermissionAttribute.cs">
+      <Link>Security\Authorization\RequiresPermissionAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>
@@ -830,5 +839,6 @@
     <None Include="packages.config" />
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,22 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IAuthenticationContext.cs" company="Kephas Software SRL">
+// <copyright file="IAuthorizationContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IAuthenticationContext interface.
+//   Declares the IAuthorizationContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security
+namespace Kephas.Security.Authorization
 {
+    using System.Collections.Generic;
+
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for authentication context.
+    /// Interface for authorization context.
     /// </summary>
-    public interface IAuthenticationContext : IContext
+    public interface IAuthorizationContext : IContext
     {
+        /// <summary>
+        /// Gets the required permissions.
+        /// </summary>
+        /// <value>
+        /// The required permissions.
+        /// </value>
+        IEnumerable<string> RequiredPermissions { get; }
+
         /// <summary>
         /// Gets a value indicating whether to throw on failure.
         /// </summary>
