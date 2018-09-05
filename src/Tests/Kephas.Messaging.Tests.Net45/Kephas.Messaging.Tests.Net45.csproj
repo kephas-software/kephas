@@ -82,6 +82,9 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging.Tests\Behaviors\EnsureAuthorizedMessageProcessingBehaviorTest.cs">
+      <Link>Behaviors\EnsureAuthorizedMessageProcessingBehaviorTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging.Tests\Composition\MessageHandlerMetadataTest.cs">
       <Link>Composition\MessageHandlerMetadataTest.cs</Link>
     </Compile>
