@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.InMemory
+namespace Kephas.Data
 {
     using System;
     using System.Collections.Generic;
@@ -24,6 +24,11 @@ namespace Kephas.Data.InMemory
     public static class ContextExtensions
     {
         /// <summary>
+        /// Name of the initial data configuration.
+        /// </summary>
+        public const string InitialDataConfigurationName = "InitialData";
+
+        /// <summary>
         /// Gets the initial data.
         /// </summary>
         /// <param name="context">The context to act on.</param>
@@ -32,7 +37,7 @@ namespace Kephas.Data.InMemory
         /// </returns>
         public static IEnumerable<IEntityInfo> GetInitialData(this IContext context)
         {
-            return context?[nameof(InMemoryDataContextConfiguration.InitialData)] as IEnumerable<IEntityInfo>;
+            return context?[InitialDataConfigurationName] as IEnumerable<IEntityInfo>;
         }
 
         /// <summary>
@@ -44,7 +49,7 @@ namespace Kephas.Data.InMemory
         {
             Requires.NotNull(context, nameof(context));
 
-            context[nameof(InMemoryDataContextConfiguration.InitialData)] =
+            context[InitialDataConfigurationName] =
                     initialData
                         ?.Where(t => t.Item1 != null)
                         .Select(t => new EntityInfo(t.Item1) { ChangeState = t.Item2 });
@@ -59,7 +64,7 @@ namespace Kephas.Data.InMemory
         {
             Requires.NotNull(context, nameof(context));
 
-            context[nameof(InMemoryDataContextConfiguration.InitialData)] =
+            context[InitialDataConfigurationName] =
                     initialData
                         ?.Where(o => o != null)
                         .Select(o => new EntityInfo(o));
@@ -74,7 +79,7 @@ namespace Kephas.Data.InMemory
         {
             Requires.NotNull(context, nameof(context));
 
-            context[nameof(InMemoryDataContextConfiguration.InitialData)] = initialData?.Where(e => e != null);
+            context[InitialDataConfigurationName] = initialData?.Where(e => e != null);
         }
     }
 }

@@ -22,6 +22,7 @@
                 <dependency id="Kephas.Data" version="$refversion$" />
                 <dependency id="Kephas.Data.Client" version="$refversion$" />
                 <dependency id="Kephas.Messaging" version="$refversion$" />
+                <dependency id="System.ValueTuple" version="4.3.0" />
             </group>
         </dependencies>
         <references>

@@ -10,7 +10,6 @@
 
 namespace Kephas.Data.InMemory
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
@@ -25,7 +24,6 @@ namespace Kephas.Data.InMemory
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Serialization;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Client data context managing.
