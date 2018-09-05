@@ -217,57 +217,57 @@ namespace Kephas.Core.Tests.Dynamic
         {
             var expando = new Expando();
             expando["Age"] = 12;
-            Assert.IsTrue(expando.HasMember("Age"));
+            Assert.IsTrue(expando.HasDynamicMember("Age"));
 
             expando["Age"] = null;
-            Assert.IsFalse(expando.HasMember("Age"));
+            Assert.IsFalse(expando.HasDynamicMember("Age"));
         }
 
         [Test]
         public void Indexer_set_to_null_non_existing_member()
         {
             var expando = new Expando();
-            Assert.IsFalse(expando.HasMember("Age"));
+            Assert.IsFalse(expando.HasDynamicMember("Age"));
 
             expando["Age"] = null;
-            Assert.IsFalse(expando.HasMember("Age"));
+            Assert.IsFalse(expando.HasDynamicMember("Age"));
         }
 
         [Test]
-        public void HasMember_Property_existing_in_dictionary()
+        public void HasDynamicMember_Property_existing_in_dictionary()
         {
             var expando = new Expando();
             expando["Age"] = 12;
-            Assert.IsTrue(expando.HasMember("Age"));
+            Assert.IsTrue(expando.HasDynamicMember("Age"));
         }
 
         [Test]
-        public void HasMember_Property_existing_in_object()
+        public void HasDynamicMember_Property_existing_in_object()
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
-            Assert.IsTrue(expando.HasMember(nameof(IIdentifiable.Id)));
+            Assert.IsTrue(expando.HasDynamicMember(nameof(IIdentifiable.Id)));
         }
 
         [Test]
-        public void HasMember_Property_existing_in_dictionary_not_object()
+        public void HasDynamicMember_Property_existing_in_dictionary_not_object()
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
             expando["Age"] = 12;
-            Assert.IsTrue(expando.HasMember("Age"));
+            Assert.IsTrue(expando.HasDynamicMember("Age"));
         }
 
         [Test]
-        public void HasMember_Property_non_existing()
+        public void HasDynamicMember_Property_non_existing()
         {
             var expando = new Expando();
-            Assert.IsFalse(expando.HasMember("Age"));
+            Assert.IsFalse(expando.HasDynamicMember("Age"));
         }
 
         [Test]
-        public void HasMember_Property_non_existing_in_object()
+        public void HasDynamicMember_Property_non_existing_in_object()
         {
             var expando = new Expando(Substitute.For<IIdentifiable>());
-            Assert.IsFalse(expando.HasMember("Age"));
+            Assert.IsFalse(expando.HasDynamicMember("Age"));
         }
 
         [Test]

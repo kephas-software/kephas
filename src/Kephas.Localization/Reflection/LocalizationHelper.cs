@@ -90,7 +90,7 @@ namespace Kephas.Reflection
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
             var localization = typeInfo[LocalizationPropertyName] as ITypeInfoLocalization;
-            if (localization == null && !typeInfo.HasMember(LocalizationPropertyName))
+            if (localization == null && !typeInfo.HasDynamicMember(LocalizationPropertyName))
             {
                 localization = CreateTypeInfoLocalization(typeInfo) ?? new TypeInfoLocalization(typeInfo);
                 typeInfo[LocalizationPropertyName] = localization;
@@ -127,7 +127,7 @@ namespace Kephas.Reflection
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
             var localization = propertyInfo[LocalizationPropertyName] as IMemberInfoLocalization;
-            if (localization == null && !propertyInfo.HasMember(LocalizationPropertyName))
+            if (localization == null && !propertyInfo.HasDynamicMember(LocalizationPropertyName))
             {
                 var typeInfo = propertyInfo.DeclaringContainer as ITypeInfo;
                 var typeInfoLocalization = GetLocalization(typeInfo);
