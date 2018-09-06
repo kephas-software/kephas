@@ -36,7 +36,9 @@ namespace Kephas.Data.Model.Runtime
             {
                 typeof(IRef<>),
                 typeof(IServiceRef<>),
-                typeof(ICollection<>)
+                typeof(ICollection<>),
+                typeof(IList<>),
+                typeof(IDictionary<,>),
             };
 
         /// <summary>
