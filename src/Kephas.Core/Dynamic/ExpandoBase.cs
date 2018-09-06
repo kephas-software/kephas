@@ -191,7 +191,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// True if defined, false if not.
         /// </returns>
-        public virtual bool HasMember(string memberName)
+        public virtual bool HasDynamicMember(string memberName)
         {
             // First check for public properties via reflection
             if (this.innerObject != null)
