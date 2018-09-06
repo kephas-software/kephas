@@ -11,7 +11,6 @@
 namespace Kephas.Security.Authorization
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Services;
 
@@ -35,11 +34,13 @@ namespace Kephas.Security.Authorization
         /// </summary>
         /// <param name="executingContext">Context for the executing.</param>
         /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
-        public AuthorizationContext(IContext executingContext, IEnumerable<string> requiredPermissions)
+        /// <param name="scope">Optional. The authorization scope.</param>
+        public AuthorizationContext(IContext executingContext, IEnumerable<string> requiredPermissions, object scope = null)
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;
             this.RequiredPermissions = requiredPermissions;
+            this.Scope = scope;
         }
 
         /// <summary>
@@ -49,6 +50,14 @@ namespace Kephas.Security.Authorization
         /// The required permissions.
         /// </value>
         public IEnumerable<string> RequiredPermissions { get; }
+
+        /// <summary>
+        /// Gets or sets the authorization scope.
+        /// </summary>
+        /// <value>
+        /// The scope.
+        /// </value>
+        public object Scope { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw on failure.

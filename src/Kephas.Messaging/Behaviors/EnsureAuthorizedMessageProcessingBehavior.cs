@@ -68,7 +68,7 @@ namespace Kephas.Messaging.Behaviors
             var requiredPermissions = this.GetRequiredPermissions(messageType);
             if (requiredPermissions != null && requiredPermissions.Count > 0)
             {
-                var authContext = new AuthorizationContext(context, requiredPermissions.ToArray());
+                var authContext = new AuthorizationContext(context, requiredPermissions);
                 await this.authorizationService.AuthorizeAsync(authContext, token).PreserveThreadContext();
             }
         }

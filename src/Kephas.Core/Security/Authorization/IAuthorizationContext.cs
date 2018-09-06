@@ -28,6 +28,14 @@ namespace Kephas.Security.Authorization
         IEnumerable<string> RequiredPermissions { get; }
 
         /// <summary>
+        /// Gets the authorization scope.
+        /// </summary>
+        /// <value>
+        /// The scope.
+        /// </value>
+        object Scope { get; }
+
+        /// <summary>
         /// Gets a value indicating whether to throw on failure.
         /// </summary>
         /// <value>
