@@ -21,8 +21,9 @@ namespace Kephas.Model.AttributedModel
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueTypeAttribute"/> class.
         /// </summary>
-        public ValueTypeAttribute()
-            : base(typeof(IValueType))
+        /// <param name="classifierName">Optional. Name of the classifier.</param>
+        public ValueTypeAttribute(string classifierName = null)
+            : base(typeof(IValueType), classifierName)
         {
         }
     }

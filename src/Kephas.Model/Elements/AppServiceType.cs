@@ -24,7 +24,7 @@ namespace Kephas.Model.Elements
     using Kephas.Services;
 
     /// <summary>
-    /// An application service.
+    /// Classifier class for application services.
     /// </summary>
     public class AppServiceType : ClassifierBase<IAppServiceType>, IAppServiceType
     {

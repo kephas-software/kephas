@@ -23,11 +23,13 @@ namespace Kephas.Model.AttributedModel
         /// Initializes a new instance of the <see cref="ClassifierKindAttribute"/> class.
         /// </summary>
         /// <param name="classifierType">The type of the classifier.</param>
-        protected ClassifierKindAttribute(Type classifierType)
+        /// <param name="classifierName">Optional. Name of the classifier.</param>
+        protected ClassifierKindAttribute(Type classifierType, string classifierName = null)
         {
             Requires.NotNull(classifierType, nameof(classifierType));
 
             this.ClassifierType = classifierType;
+            this.ClassifierName = classifierName;
         }
 
         /// <summary>
@@ -37,5 +39,13 @@ namespace Kephas.Model.AttributedModel
         /// The type of the classifier.
         /// </value>
         public Type ClassifierType { get; }
+
+        /// <summary>
+        /// Gets the name of the classifier.
+        /// </summary>
+        /// <value>
+        /// The name of the classifier.
+        /// </value>
+        public string ClassifierName { get; }
     }
 }
