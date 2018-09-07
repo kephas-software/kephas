@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Security.Authorization
+namespace Kephas.Security.Authorization.AttributedModel
 {
     using System;
 
@@ -30,6 +30,25 @@ namespace Kephas.Security.Authorization
 
             this.Permissions = permissions;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrantsPermissionAttribute"/> class.
+        /// </summary>
+        /// <param name="permissions">A variable-length parameters list containing the required permissions.</param>
+        public GrantsPermissionAttribute(params Type[] permissions)
+        {
+            Requires.NotNullOrEmpty(permissions, nameof(permissions));
+
+            this.PermissionTypes = permissions;
+        }
+
+        /// <summary>
+        /// Gets the types of the granted permissions.
+        /// </summary>
+        /// <value>
+        /// The types of the granted permissions.
+        /// </value>
+        public Type[] PermissionTypes { get; }
 
         /// <summary>
         /// Gets the granted permissions.
