@@ -632,6 +632,9 @@
     <Compile Include="..\Kephas.Core\Security\Authentication\IAuthenticationService.cs">
       <Link>Security\Authentication\IAuthenticationService.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authentication\ISyncAuthenticationService.cs">
+      <Link>Security\Authentication\ISyncAuthenticationService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Security\Authentication\NullAuthenticationService.cs">
       <Link>Security\Authentication\NullAuthenticationService.cs</Link>
     </Compile>

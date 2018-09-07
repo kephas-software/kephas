@@ -16,10 +16,8 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Resources;
-    using Kephas.Security;
     using Kephas.Security.Authentication;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A brokered message builder.
@@ -275,7 +273,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual string GetBearerToken(IContext context)
         {
-            return this.AuthenticationService.GetTokenAsync(context?.Identity, context).GetResultNonLocking();
+            return this.AuthenticationService.GetToken(context?.Identity, context)?.ToString();
         }
     }
 }
