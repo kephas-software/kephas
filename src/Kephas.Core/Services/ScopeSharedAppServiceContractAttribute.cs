@@ -27,7 +27,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="ScopeSharedAppServiceContractAttribute"/> class.
         /// </summary>
         /// <param name="scopeName">Name of the scope.</param>
-        public ScopeSharedAppServiceContractAttribute(string scopeName = ScopeNames.Default)
+        public ScopeSharedAppServiceContractAttribute(string scopeName = CompositionScopeNames.Default)
             : base(AppServiceLifetime.ScopeShared)
         {
             Requires.NotNullOrEmpty(scopeName, nameof(scopeName));

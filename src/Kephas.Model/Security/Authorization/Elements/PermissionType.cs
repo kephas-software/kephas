@@ -18,7 +18,9 @@ namespace Kephas.Model.Security.Authorization.Elements
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Resources;
+    using Kephas.Model.Security.Authorization.AttributedModel;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
 
@@ -50,6 +52,14 @@ namespace Kephas.Model.Security.Authorization.Elements
         public IEnumerable<IPermissionType> GrantedPermissions { get; private set; }
 
         /// <summary>
+        /// Gets the scoping.
+        /// </summary>
+        /// <value>
+        /// The scoping.
+        /// </value>
+        public Scoping Scoping { get; private set; }
+
+        /// <summary>
         /// Called when the construction is complete.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -58,6 +68,11 @@ namespace Kephas.Model.Security.Authorization.Elements
             base.OnCompleteConstruction(constructionContext);
 
             this.GrantedPermissions = new ReadOnlyCollection<IPermissionType>(this.BaseMixins.OfType<IPermissionType>().ToList());
+            var permTypeAttr = this.Parts
+                .OfType<ITypeInfo>()
+                .Select(p => p.GetAttribute<PermissionTypeAttribute>())
+                .FirstOrDefault();
+            this.Scoping = permTypeAttr?.Scoping ?? Scoping.None;
         }
 
         /// <summary>

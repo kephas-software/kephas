@@ -13,6 +13,7 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
     using System;
 
     using Kephas.Model.AttributedModel;
+    using Kephas.Security.Authorization;
 
     /// <summary>
     /// Attribute used to mark permission types.
@@ -24,9 +25,19 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
         /// Initializes a new instance of the <see cref="PermissionTypeAttribute"/> class.
         /// </summary>
         /// <param name="classifierName">Optional. Name of the classifier.</param>
-        public PermissionTypeAttribute(string classifierName = null)
+        /// <param name="scoping">Optional. The scoping.</param>
+        public PermissionTypeAttribute(string classifierName = null, Scoping scoping = default)
             : base(typeof(IPermissionType), classifierName)
         {
+            this.Scoping = scoping;
         }
+
+        /// <summary>
+        /// Gets the permission scoping.
+        /// </summary>
+        /// <value>
+        /// The permission scoping.
+        /// </value>
+        public Scoping Scoping { get; }
     }
 }

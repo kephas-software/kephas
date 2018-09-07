@@ -203,6 +203,9 @@
     <Compile Include="..\Kephas.Core\Composition\CompositionException.cs">
       <Link>Composition\CompositionException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\CompositionScopeNames.cs">
+      <Link>Composition\CompositionScopeNames.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\Configuration\CompositionSettings.cs">
       <Link>Composition\Configuration\CompositionSettings.cs</Link>
     </Compile>
@@ -286,9 +289,6 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Composition\Metadata\MetadataExtensions.cs">
       <Link>Composition\Metadata\MetadataExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Composition\ScopeNames.cs">
-      <Link>Composition\ScopeNames.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Configuration\Composition\ConfigurationProviderMetadata.cs">
       <Link>Configuration\Composition\ConfigurationProviderMetadata.cs</Link>
@@ -664,6 +664,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Security\Authorization\NullAuthorizationService.cs">
       <Link>Security\Authorization\NullAuthorizationService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\Scoping.cs">
+      <Link>Security\Authorization\Scoping.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Serialization\Composition\SerializerMetadata.cs">
       <Link>Serialization\Composition\SerializerMetadata.cs</Link>

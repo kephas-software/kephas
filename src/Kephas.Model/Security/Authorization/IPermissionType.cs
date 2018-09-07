@@ -12,6 +12,8 @@ namespace Kephas.Model.Security.Authorization
 {
     using System.Collections.Generic;
 
+    using Kephas.Security.Authorization;
+
     /// <summary>
     /// Interface for permission type.
     /// </summary>
@@ -28,5 +30,13 @@ namespace Kephas.Model.Security.Authorization
         /// The granted permissions.
         /// </value>
         IEnumerable<IPermissionType> GrantedPermissions { get; }
+
+        /// <summary>
+        /// Gets the scoping.
+        /// </summary>
+        /// <value>
+        /// The scoping.
+        /// </value>
+        Scoping Scoping { get; }
     }
 }
