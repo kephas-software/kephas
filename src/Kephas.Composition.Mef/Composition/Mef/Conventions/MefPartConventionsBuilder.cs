@@ -56,7 +56,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
+        public IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
         {
             Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
 

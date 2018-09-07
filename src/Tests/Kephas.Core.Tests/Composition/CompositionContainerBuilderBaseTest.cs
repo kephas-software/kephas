@@ -220,7 +220,7 @@ namespace Kephas.Core.Tests.Composition
             /// </summary>
             /// <param name="scopeName"></param>
             /// <returns>A part builder allowing further configuration of the part.</returns>
-            public IPartConventionsBuilder ScopeShared(string scopeName = ScopeNames.Default)
+            public IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
             {
                 // TODO test this
                 this.IsShared = true;

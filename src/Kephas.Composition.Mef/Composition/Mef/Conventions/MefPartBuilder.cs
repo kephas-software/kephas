@@ -98,7 +98,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartBuilder ScopeShared(string scopeName = ScopeNames.Default)
+        public IPartBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
         {
             // TODO What to do with the scope?
             this.IsShared = true;

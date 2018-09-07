@@ -30,6 +30,6 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartBuilder ScopeShared(string scopeName = ScopeNames.Default);
+        IPartBuilder ScopeShared(string scopeName = CompositionScopeNames.Default);
     }
 }

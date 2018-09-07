@@ -154,7 +154,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public virtual ICompositionContext CreateScopedContext(string scopeName = ScopeNames.Default)
+        public virtual ICompositionContext CreateScopedContext(string scopeName = CompositionScopeNames.Default)
         {
             var scopeProvider = this.GetExport<IMefScopeFactory>(scopeName);
 

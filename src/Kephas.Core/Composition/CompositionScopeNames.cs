@@ -13,7 +13,7 @@ namespace Kephas.Composition
     /// <summary>
     /// Provides the built-in scope names.
     /// </summary>
-    public static class ScopeNames
+    public static class CompositionScopeNames
     {
         /// <summary>
         /// The default scope name.
