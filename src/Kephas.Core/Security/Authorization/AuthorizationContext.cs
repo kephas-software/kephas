@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Services;
@@ -25,7 +26,17 @@ namespace Kephas.Security.Authorization
         /// <param name="executingContext">Context for the executing.</param>
         /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
         public AuthorizationContext(IContext executingContext, params string[] requiredPermissions)
-            : this(executingContext, (IEnumerable<string>)requiredPermissions)
+            : this(executingContext, requiredPermissions, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
+        /// </summary>
+        /// <param name="executingContext">Context for the executing.</param>
+        /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
+        public AuthorizationContext(IContext executingContext, params Type[] requiredPermissions)
+            : this(executingContext, null, requiredPermissions, null)
         {
         }
 
@@ -36,10 +47,34 @@ namespace Kephas.Security.Authorization
         /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
         /// <param name="scope">Optional. The authorization scope.</param>
         public AuthorizationContext(IContext executingContext, IEnumerable<string> requiredPermissions, object scope = null)
+            : this(executingContext, requiredPermissions, null, scope)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
+        /// </summary>
+        /// <param name="executingContext">Context for the executing.</param>
+        /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        public AuthorizationContext(IContext executingContext, IEnumerable<Type> requiredPermissions, object scope = null)
+            : this(executingContext, null, requiredPermissions, scope)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
+        /// </summary>
+        /// <param name="executingContext">Context for the executing.</param>
+        /// <param name="requiredPermissions">The required permissions.</param>
+        /// <param name="requiredPermissionTypes">The required permission types.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        public AuthorizationContext(IContext executingContext, IEnumerable<string> requiredPermissions, IEnumerable<Type> requiredPermissionTypes, object scope = null)
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;
-            this.RequiredPermissions = requiredPermissions;
+            this.RequiredPermissions = requiredPermissions ?? this.RequiredPermissions;
+            this.RequiredPermissionTypes = requiredPermissionTypes ?? this.RequiredPermissionTypes;
             this.Scope = scope;
         }
 
@@ -49,7 +84,15 @@ namespace Kephas.Security.Authorization
         /// <value>
         /// The required permissions.
         /// </value>
-        public IEnumerable<string> RequiredPermissions { get; }
+        public IEnumerable<string> RequiredPermissions { get; } = new string[0];
+
+        /// <summary>
+        /// Gets the types of the required permissions.
+        /// </summary>
+        /// <value>
+        /// The types of the required permissions.
+        /// </value>
+        public IEnumerable<Type> RequiredPermissionTypes { get; } = new Type[0];
 
         /// <summary>
         /// Gets or sets the authorization scope.

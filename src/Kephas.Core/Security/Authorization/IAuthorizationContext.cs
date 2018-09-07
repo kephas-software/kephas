@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Services;
@@ -26,6 +27,14 @@ namespace Kephas.Security.Authorization
         /// The required permissions.
         /// </value>
         IEnumerable<string> RequiredPermissions { get; }
+
+        /// <summary>
+        /// Gets the types of the required permissions.
+        /// </summary>
+        /// <value>
+        /// The types of the required permissions.
+        /// </value>
+        IEnumerable<Type> RequiredPermissionTypes { get; }
 
         /// <summary>
         /// Gets the authorization scope.

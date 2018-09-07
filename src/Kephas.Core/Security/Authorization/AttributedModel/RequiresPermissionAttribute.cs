@@ -48,7 +48,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The types of the required permissions.
         /// </value>
-        public Type[] PermissionTypes { get; }
+        public Type[] PermissionTypes { get; } = new Type[0];
 
         /// <summary>
         /// Gets the required permissions.
@@ -56,6 +56,6 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The required permissions.
         /// </value>
-        public string[] Permissions { get; }
+        public string[] Permissions { get; } = new string[0];
     }
 }
