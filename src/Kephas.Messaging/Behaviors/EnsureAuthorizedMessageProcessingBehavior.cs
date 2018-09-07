@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Behaviors
     using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Messaging.Composition;
     using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

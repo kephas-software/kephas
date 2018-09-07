@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Tests.Behaviors
 
     using Kephas.Messaging.Behaviors;
     using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     using NSubstitute;
 
