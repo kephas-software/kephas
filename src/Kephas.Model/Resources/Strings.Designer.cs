@@ -143,6 +143,15 @@ namespace Kephas.Model.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Some indicated granted permissions for {0} are not found: {1}..
+        /// </summary>
+        internal static string PermissionType_MissingGrantedPermissions_Exception {
+            get {
+                return ResourceManager.GetString("PermissionType_MissingGrantedPermissions_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property &apos;{0}&apos; in &apos;{1}&apos; does not have any parts to be able to compute the property type..
         /// </summary>
         internal static string Property_MissingPartsToComputePropertyType_Exception {

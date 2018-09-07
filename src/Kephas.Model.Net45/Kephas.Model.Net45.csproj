@@ -363,6 +363,21 @@
     <Compile Include="..\Kephas.Model\Runtime\SystemPrimitiveTypesModelInfoProvider.cs">
       <Link>Runtime\SystemPrimitiveTypesModelInfoProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Security\Authorization\AttributedModel\PermissionAssemblyAttribute.cs">
+      <Link>Security\Authorization\AttributedModel\PermissionAssemblyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Security\Authorization\AttributedModel\PermissionTypeAttribute.cs">
+      <Link>Security\Authorization\AttributedModel\PermissionTypeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Security\Authorization\Elements\PermissionType.cs">
+      <Link>Security\Authorization\Elements\PermissionType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Security\Authorization\IPermissionType.cs">
+      <Link>Security\Authorization\IPermissionType.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Security\Authorization\Runtime\Construction\PermissionTypeConstructor.cs">
+      <Link>Security\Authorization\Runtime\Construction\PermissionTypeConstructor.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Services\DefaultModelSpaceProvider.cs">
       <Link>Services\DefaultModelSpaceProvider.cs</Link>
     </Compile>

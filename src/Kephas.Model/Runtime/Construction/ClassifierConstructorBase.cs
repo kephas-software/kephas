@@ -10,6 +10,7 @@
 
 namespace Kephas.Model.Runtime.Construction
 {
+    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Reflection;
@@ -41,6 +42,25 @@ namespace Kephas.Model.Runtime.Construction
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Computes the model element name based on the runtime element.
+        /// </summary>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
+        protected override string TryComputeNameCore(object runtimeElement)
+        {
+            if (runtimeElement is IRuntimeTypeInfo typeInfo)
+            {
+                var kindAttr = typeInfo.GetAttribute<ClassifierKindAttribute>();
+                if (kindAttr != null && !string.IsNullOrEmpty(kindAttr.ClassifierName))
+                {
+                    return kindAttr.ClassifierName;
+                }
+            }
+
+            return base.TryComputeNameCore(runtimeElement);
         }
     }
 }

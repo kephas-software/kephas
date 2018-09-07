@@ -151,4 +151,7 @@
   <data name="ClassifierConfiguratorBase_WithProperty_ForeignProperty_Exception" xml:space="preserve">
     <value>The element '{0}' must be a direct member of '{1}', not inherited, to be used in its configurator.</value>
   </data>
+  <data name="PermissionType_MissingGrantedPermissions_Exception" xml:space="preserve">
+    <value>Some indicated granted permissions for {0} are not found: {1}.</value>
+  </data>
 </root>
