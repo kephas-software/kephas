@@ -29,6 +29,7 @@ namespace Kephas.Security.Authorization.AttributedModel
             Requires.NotNullOrEmpty(permissions, nameof(permissions));
 
             this.Permissions = permissions;
+            this.PermissionTypes = new Type[0];
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         {
             Requires.NotNullOrEmpty(permissions, nameof(permissions));
 
+            this.Permissions = new string[0];
             this.PermissionTypes = permissions;
         }
 
@@ -48,7 +50,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The types of the required permissions.
         /// </value>
-        public Type[] PermissionTypes { get; } = new Type[0];
+        public Type[] PermissionTypes { get; }
 
         /// <summary>
         /// Gets the required permissions.
@@ -56,6 +58,6 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The required permissions.
         /// </value>
-        public string[] Permissions { get; } = new string[0];
+        public string[] Permissions { get; }
     }
 }
