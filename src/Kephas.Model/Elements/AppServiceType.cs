@@ -22,6 +22,7 @@ namespace Kephas.Model.Elements
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Classifier class for application services.
@@ -31,7 +32,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The application service attribute.
         /// </summary>
-        private readonly AppServiceContractAttribute appServiceAttribute;
+        private readonly IAppServiceInfo appServiceInfo;
 
         /// <summary>
         /// Context for the composition.
@@ -42,19 +43,19 @@ namespace Kephas.Model.Elements
         /// Initializes a new instance of the <see cref="AppServiceType" /> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
-        /// <param name="appServiceAttribute">The application service attribute.</param>
+        /// <param name="appServiceInfo">The application service information.</param>
         /// <param name="name">The name.</param>
         public AppServiceType(
             IModelConstructionContext constructionContext,
-            AppServiceContractAttribute appServiceAttribute,
+            IAppServiceInfo appServiceInfo,
             string name)
             : base(constructionContext, name)
         {
-            Requires.NotNull(appServiceAttribute, nameof(appServiceAttribute));
+            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
-            this.appServiceAttribute = appServiceAttribute;
+            this.appServiceInfo = appServiceInfo;
             this.compositionContext = constructionContext.CompositionContext;
-            this.ContractType = this.appServiceAttribute.ContractType;
+            this.ContractType = this.appServiceInfo.ContractType;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// True if allow multiple, false if not.
         /// </value>
-        public bool AllowMultiple => this.appServiceAttribute.AllowMultiple;
+        public bool AllowMultiple => this.appServiceInfo.AllowMultiple;
 
         /// <summary>
         /// Gets a value indicating whether the service is exported as an open generic.
@@ -71,7 +72,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// True if the service is exported as an open generic, false if not.
         /// </value>
-        public bool AsOpenGeneric => this.appServiceAttribute.AsOpenGeneric;
+        public bool AsOpenGeneric => this.appServiceInfo.AsOpenGeneric;
 
         /// <summary>
         /// Gets the type of the contract.
@@ -80,6 +81,14 @@ namespace Kephas.Model.Elements
         /// The type of the contract.
         /// </value>
         public Type ContractType { get; private set; }
+
+        /// <summary>
+        /// Gets the service lifetime.
+        /// </summary>
+        /// <value>
+        /// The service lifetime.
+        /// </value>
+        public AppServiceLifetime Lifetime => this.appServiceInfo.Lifetime;
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).

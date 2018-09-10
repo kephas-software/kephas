@@ -18,13 +18,13 @@ namespace Kephas.Services.Composition
     public class AttributedAppServiceConventionsRegistrar : AppServiceConventionsRegistrarBase
     {
         /// <summary>
-        /// Tries to get the <see cref="AppServiceContractAttribute"/> for the provided type.
+        /// Tries to get the <see cref="IAppServiceInfo"/> for the provided type.
         /// </summary>
         /// <param name="typeInfo">Information describing the type.</param>
         /// <returns>
-        /// An <see cref="AppServiceContractAttribute"/> or <c>null</c>, if the provided type is not a service contract.
+        /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
-        protected override AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo)
+        protected override IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
         {
             return typeInfo.GetCustomAttribute<AppServiceContractAttribute>();
         }

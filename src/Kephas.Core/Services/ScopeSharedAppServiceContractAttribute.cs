@@ -13,7 +13,6 @@ namespace Kephas.Services
     using System;
 
     using Kephas.Composition;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Marks an interface to be a shared application service contract within a specific scope.
@@ -28,19 +27,8 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="scopeName">Name of the scope.</param>
         public ScopeSharedAppServiceContractAttribute(string scopeName = CompositionScopeNames.Default)
-            : base(AppServiceLifetime.ScopeShared)
+            : base(scopeName)
         {
-            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
-
-            this.ScopeName = scopeName;
         }
-
-        /// <summary>
-        /// Gets the name of the scope.
-        /// </summary>
-        /// <value>
-        /// The name of the scope.
-        /// </value>
-        public string ScopeName { get; }
     }
 }

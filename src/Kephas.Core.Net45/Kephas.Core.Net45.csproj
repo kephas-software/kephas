@@ -737,6 +737,9 @@
     <Compile Include="..\Kephas.Core\Services\DefaultNamedServiceProvider.cs">
       <Link>Services\DefaultNamedServiceProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\IAppServiceInfo.cs">
+      <Link>Services\IAppServiceInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\IAsyncFinalizable.cs">
       <Link>Services\IAsyncFinalizable.cs</Link>
     </Compile>

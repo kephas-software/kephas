@@ -186,7 +186,7 @@ namespace Kephas.Core.Tests.Services.Composition
                 this.attrProvider = attrProvider;
             }
 
-            protected override AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo)
+            protected override IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
             {
                 return this.attrProvider(typeInfo);
             }

@@ -142,35 +142,42 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <returns>
-        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the value is the <see cref="AppServiceContractAttribute"/>.
+        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<KeyValuePair<TypeInfo, AppServiceContractAttribute>> GetAppServiceContracts(IList<TypeInfo> candidateTypes)
+        protected virtual IEnumerable<KeyValuePair<TypeInfo, IAppServiceInfo>> GetAppServiceContracts(
+            IList<TypeInfo> candidateTypes)
         {
-            return candidateTypes.ToDictionary(ti => ti, this.TryGetAppServiceContractAttribute);
+            return candidateTypes.ToDictionary(ti => ti, this.TryGetAppServiceInfo);
         }
 
         /// <summary>
-        /// Tries to get the <see cref="AppServiceContractAttribute"/> for the provided type.
+        /// Tries to get the <see cref="IAppServiceInfo"/> for the provided type.
         /// </summary>
         /// <param name="typeInfo">Information describing the type.</param>
         /// <returns>
-        /// An <see cref="AppServiceContractAttribute"/> or <c>null</c>, if the provided type is not a service contract.
+        /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
-        protected abstract AppServiceContractAttribute TryGetAppServiceContractAttribute(TypeInfo typeInfo);
+        protected abstract IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo);
 
         /// <summary>
         /// Configures the part builder.
         /// </summary>
         /// <param name="partBuilder">The part builder.</param>
         /// <param name="serviceContract">The service contract.</param>
-        /// <param name="serviceContractMetadata">The service contract metadata.</param>
+        /// <param name="appServiceInfo">The application service metadata.</param>
         /// <param name="appServiceContractInfo">Information describing the application service contract.</param>
         /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
         /// <param name="logger">The logger.</param>
-        protected void ConfigurePartBuilder(IPartConventionsBuilder partBuilder, TypeInfo serviceContract, AppServiceContractAttribute serviceContractMetadata, KeyValuePair<TypeInfo, AppServiceContractAttribute> appServiceContractInfo, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos, ILogger logger)
+        protected void ConfigurePartBuilder(
+            IPartConventionsBuilder partBuilder,
+            TypeInfo serviceContract,
+            IAppServiceInfo appServiceInfo,
+            KeyValuePair<TypeInfo, IAppServiceInfo> appServiceContractInfo,
+            List<KeyValuePair<TypeInfo, IAppServiceInfo>> appServiceContractsInfos,
+            ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
-            var exportedContractType = serviceContractMetadata.ContractType ?? serviceContractType;
+            var exportedContractType = appServiceInfo.ContractType ?? serviceContractType;
             var exportedContract = exportedContractType.GetTypeInfo();
             if (!this.CheckExportedContractType(exportedContractType, serviceContract, serviceContractType, logger))
             {
@@ -179,13 +186,13 @@ namespace Kephas.Services.Composition
 
             if (logger.IsDebugEnabled())
             {
-                logger.Debug(this.SerializeServiceContractMetadata(serviceContract, serviceContractMetadata));
+                logger.Debug(this.SerializeServiceContractMetadata(serviceContract, appServiceInfo));
             }
 
             var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
             if (exportedContract.IsGenericTypeDefinition)
             {
-                if (serviceContractMetadata.AsOpenGeneric)
+                if (appServiceInfo.AsOpenGeneric)
                 {
                     partBuilder.ExportInterfaces(
                         t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
@@ -194,9 +201,7 @@ namespace Kephas.Services.Composition
                     if (metadataAttributes.Count > 0)
                     {
                         var hasCustomMetadataAttributes = metadataAttributes.Any(
-                            a => a != typeof(SharedAppServiceContractAttribute)
-                                 && a != typeof(ScopeSharedAppServiceContractAttribute)
-                                 && a != typeof(AppServiceContractAttribute));
+                            a => !typeof(IAppServiceInfo).IsAssignableFrom(a));
 
                         // warn about metadata on open generic exports only if custom attributes are provided.
                         if (hasCustomMetadataAttributes)
@@ -222,13 +227,13 @@ namespace Kephas.Services.Composition
 
             partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
 
-            if (serviceContractMetadata.IsShared)
+            if (appServiceInfo.IsShared())
             {
                 partBuilder.Shared();
             }
-            else if (serviceContractMetadata.IsScopeShared)
+            else if (appServiceInfo.IsScopeShared())
             {
-                var scopeName = ((ScopeSharedAppServiceContractAttribute)serviceContractMetadata).ScopeName;
+                var scopeName = appServiceInfo.ScopeName;
                 partBuilder.ScopeShared(scopeName);
             }
         }
@@ -241,7 +246,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The serialized service contract information.
         /// </returns>
-        private string SerializeServiceContractMetadata(TypeInfo serviceContract, AppServiceContractAttribute contractMetadata)
+        private string SerializeServiceContractMetadata(TypeInfo serviceContract, IAppServiceInfo contractMetadata)
         {
             var sb = new StringBuilder();
             sb.Append("{'")
@@ -263,18 +268,18 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Gets metadata attributes.
         /// </summary>
-        /// <param name="contractAttribute">The contract attribute.</param>
+        /// <param name="appServiceInfo">The contract information.</param>
         /// <returns>
         /// An collection of attribute types.
         /// </returns>
-        private IReadOnlyCollection<Type> GetMetadataAttributes(AppServiceContractAttribute contractAttribute)
+        private IReadOnlyCollection<Type> GetMetadataAttributes(IAppServiceInfo appServiceInfo)
         {
-            if (contractAttribute.MetadataAttributes == null || contractAttribute.MetadataAttributes.Length == 0)
+            if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
             {
                 return AppServiceContractAttribute.DefaultMetadataAttributeTypes;
             }
 
-            var attrs = contractAttribute.MetadataAttributes.ToList();
+            var attrs = appServiceInfo.MetadataAttributes.ToList();
             foreach (var attr in AppServiceContractAttribute.DefaultMetadataAttributeTypes)
             {
                 if (!attrs.Contains(attr))
@@ -292,7 +297,9 @@ namespace Kephas.Services.Composition
         /// <param name="pi">The pi.</param>
         /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
         /// <returns><c>true</c> if the specified property imports an application service, otherwise <c>false</c>.</returns>
-        private bool IsAppServiceImport(PropertyInfo pi, List<KeyValuePair<TypeInfo, AppServiceContractAttribute>> appServiceContractsInfos)
+        private bool IsAppServiceImport(
+            PropertyInfo pi,
+            IList<KeyValuePair<TypeInfo, IAppServiceInfo>> appServiceContractsInfos)
         {
             if (pi == null || !pi.CanWrite || !pi.SetMethod.IsPublic)
             {
@@ -614,7 +621,7 @@ namespace Kephas.Services.Composition
         /// Tries to get the part builder.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
-        /// <param name="serviceContractMetadata">The service contract metadata.</param>
+        /// <param name="appServiceInfo">The service contract metadata.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="conventions">The conventions.</param>
         /// <param name="typeInfos">The type infos.</param>
@@ -623,7 +630,7 @@ namespace Kephas.Services.Composition
         /// The part builder or <c>null</c>.
         /// </returns>
         private IPartConventionsBuilder TryGetPartBuilder(
-            AppServiceContractAttribute serviceContractMetadata,
+            IAppServiceInfo appServiceInfo,
             TypeInfo serviceContract,
             IConventionsBuilder conventions,
             IEnumerable<TypeInfo> typeInfos,
@@ -643,7 +650,7 @@ namespace Kephas.Services.Composition
                 return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType));
             }
 
-            if (serviceContractMetadata.AllowMultiple)
+            if (appServiceInfo.AllowMultiple)
             {
                 if (logger.IsDebugEnabled())
                 {

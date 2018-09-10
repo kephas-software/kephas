@@ -12,6 +12,8 @@ namespace Kephas.Model
 {
     using System;
 
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for application service.
     /// </summary>
@@ -40,5 +42,13 @@ namespace Kephas.Model
         /// The type of the contract.
         /// </value>
         Type ContractType { get; }
+
+        /// <summary>
+        /// Gets the service lifetime.
+        /// </summary>
+        /// <value>
+        /// The service lifetime.
+        /// </value>
+        AppServiceLifetime Lifetime { get; }
     }
 }

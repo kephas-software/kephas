@@ -16,13 +16,16 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Services.Composition;
+
     /// <summary>
     /// Marks an interface to be an application service contract.
     /// Application services are automatically identified by the composition
     /// and added to the container.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class AppServiceContractAttribute : Attribute
+    public class AppServiceContractAttribute : Attribute, IAppServiceInfo
     {
         /// <summary>
         /// The default metadata attribute types.
@@ -40,6 +43,11 @@ namespace Kephas.Services
                       typeof(OptionalServiceAttribute),
                       typeof(ServiceNameAttribute)
                   };
+
+        /// <summary>
+        /// Name of the scope.
+        /// </summary>
+        private readonly string scopeName;
 
         /// <summary>
         /// Initializes static members of the <see cref="AppServiceContractAttribute"/> class.
@@ -64,6 +72,18 @@ namespace Kephas.Services
         protected AppServiceContractAttribute(AppServiceLifetime lifetime)
         {
             this.Lifetime = lifetime;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
+        /// </summary>
+        /// <param name="scopeName">Name of the scope.</param>
+        protected AppServiceContractAttribute(string scopeName)
+            : this(AppServiceLifetime.ScopeShared)
+        {
+            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
+
+            this.scopeName = scopeName;
         }
 
         /// <summary>
@@ -100,36 +120,36 @@ namespace Kephas.Services
         public Type[] MetadataAttributes { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the application service is shared.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if shared; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsShared => this.Lifetime == AppServiceLifetime.Shared;
-
-        /// <summary>
-        /// Gets a value indicating whether the application service is instanced per request.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if instanced per request; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsInstance => this.Lifetime == AppServiceLifetime.Instance;
-
-        /// <summary>
-        /// Gets a value indicating whether the application service is shared within a scope.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if shared within a scope; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsScopeShared => this.Lifetime == AppServiceLifetime.ScopeShared;
-
-        /// <summary>
         /// Gets or sets the contract type of the export.
         /// </summary>
         /// <value>
         /// The contract type of the export.
         /// </value>
         public Type ContractType { get; set; }
+
+        /// <summary>
+        /// Gets the service instance.
+        /// </summary>
+        /// <value>
+        /// The service instance.
+        /// </value>
+        object IAppServiceInfo.Instance { get; }
+
+        /// <summary>
+        /// Gets the service instance factory.
+        /// </summary>
+        /// <value>
+        /// The service instance factory.
+        /// </value>
+        Func<object> IAppServiceInfo.InstanceFactory { get; }
+
+        /// <summary>
+        /// Gets the name of the scope for scoped shared services.
+        /// </summary>
+        /// <value>
+        /// The name of the scope for scoped shared services.
+        /// </value>
+        string IAppServiceInfo.ScopeName => this.scopeName;
 
         /// <summary>
         /// Registers the provided metadata attribute types as default attributes.
