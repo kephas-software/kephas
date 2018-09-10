@@ -218,14 +218,14 @@
     <Compile Include="..\Kephas.Core.Tests\Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs">
       <Link>Services\Behavior\EnabledServiceBehaviorRuleBaseTest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core.Tests\Services\Composition\AppServiceConventionsRegistrarBaseTest.cs">
-      <Link>Services\Composition\AppServiceConventionsRegistrarBaseTest.cs</Link>
+    <Compile Include="..\Kephas.Core.Tests\Services\Composition\AppServiceInfoConventionsRegistrarOverrideTest.cs">
+      <Link>Services\Composition\AppServiceInfoConventionsRegistrarOverrideTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Services\Composition\AppServiceInfoConventionsRegistrarTest.cs">
+      <Link>Services\Composition\AppServiceInfoConventionsRegistrarTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\Composition\AppServiceMetadataTest.cs">
       <Link>Services\Composition\AppServiceMetadataTest.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core.Tests\Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs">
-      <Link>Services\Composition\AttributedAppServiceConventionsRegistrarTest.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core.Tests\Services\ContextTest.cs">
       <Link>Services\ContextTest.cs</Link>

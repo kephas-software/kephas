@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceConventionsRegistrarBase.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceInfoConventionsRegistrar.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -30,7 +30,7 @@ namespace Kephas.Services.Composition
     /// <summary>
     /// Base for conventions registrars of application services.
     /// </summary>
-    public abstract class AppServiceConventionsRegistrarBase : IConventionsRegistrar
+    public class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
         /// <summary>
         /// The attribute suffix.
@@ -76,33 +76,46 @@ namespace Kephas.Services.Composition
             var logger = this.GetLogger(registrationContext);
 
             var conventions = builder;
-            var typeInfos = candidateTypes.ToList();
+            var typeInfos = (candidateTypes as IList<TypeInfo>) ?? candidateTypes.ToList();
 
             // get all type infos from the composition assemblies
-            var contracts = this.GetAppServiceContracts(typeInfos);
-            if (contracts == null)
+            var appServiceContractsInfos = this.GetAppServiceContracts(typeInfos, registrationContext)?.ToList();
+            if (appServiceContractsInfos == null)
             {
                 return;
             }
 
-            var appServiceContractsInfos = contracts
-                    .Where(ta => ta.Value != null)
-                    .ToList();
+            var appServiceContracts = appServiceContractsInfos.Select(e => e.contractType).ToList();
 
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
-                var serviceContract = appServiceContractInfo.Key;
-                var serviceContractMetadata = appServiceContractInfo.Value;
+                var appServiceContract = appServiceContractInfo.contractType;
+                var appServiceInfo = appServiceContractInfo.appServiceInfo;
 
-                var partBuilder = this.TryGetPartBuilder(serviceContractMetadata, serviceContract, conventions, typeInfos, logger);
+                var partBuilder = this.TryGetPartBuilder(
+                    appServiceInfo,
+                    appServiceContract,
+                    conventions,
+                    typeInfos,
+                    logger);
 
                 if (partBuilder == null)
                 {
-                    logger.Warn($"Part builder for {serviceContract} not found.");
-                    continue;
+                    var partConventionsBuilder = this.TryGetPartConventionsBuilder(
+                        appServiceInfo,
+                        appServiceContract,
+                        conventions,
+                        typeInfos,
+                        logger);
+                    if (partConventionsBuilder != null)
+                    {
+                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, appServiceContracts, logger);
+                    }
+                    else
+                    {
+                        logger.Warn($"No part conventions builders nor part builders found for {appServiceContract}.");
+                    }
                 }
-
-                this.ConfigurePartBuilder(partBuilder, serviceContract, serviceContractMetadata, appServiceContractInfo, appServiceContractsInfos, logger);
             }
         }
 
@@ -141,23 +154,50 @@ namespace Kephas.Services.Composition
         /// Gets the application service contracts to register.
         /// </summary>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="registrationContext">The registration context.</param>
         /// <returns>
-        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the value is the <see cref="IAppServiceInfo"/>.
+        /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
+        /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<KeyValuePair<TypeInfo, IAppServiceInfo>> GetAppServiceContracts(
-            IList<TypeInfo> candidateTypes)
+        protected virtual IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
+            IList<TypeInfo> candidateTypes,
+            ICompositionRegistrationContext registrationContext)
         {
-            return candidateTypes.ToDictionary(ti => ti, this.TryGetAppServiceInfo);
+            var appServiceInfoProviders = this.GetAppServiceInfoProviders(candidateTypes, registrationContext);
+            if (appServiceInfoProviders == null)
+            {
+                yield break;
+            }
+
+            foreach (var appServiceInfoProvider in appServiceInfoProviders)
+            {
+                foreach (var item in appServiceInfoProvider.GetAppServiceInfos(candidateTypes, registrationContext))
+                {
+                    yield return item;
+                }
+            }
         }
 
         /// <summary>
-        /// Tries to get the <see cref="IAppServiceInfo"/> for the provided type.
+        /// Gets the application service information providers.
         /// </summary>
-        /// <param name="typeInfo">Information describing the type.</param>
+        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
-        /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
+        /// An enumeration of <see cref="IAppServiceInfoProvider"/> objects.
         /// </returns>
-        protected abstract IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo);
+        protected virtual IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(
+            IList<TypeInfo> candidateTypes,
+            ICompositionRegistrationContext registrationContext)
+        {
+            foreach (var candidateType in candidateTypes)
+            {
+                if (candidateType.IsInstantiableAppServiceInfoProviderType())
+                {
+                    yield return (IAppServiceInfoProvider)candidateType.AsRuntimeTypeInfo().CreateInstance();
+                }
+            }
+        }
 
         /// <summary>
         /// Configures the part builder.
@@ -165,15 +205,13 @@ namespace Kephas.Services.Composition
         /// <param name="partBuilder">The part builder.</param>
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="appServiceInfo">The application service metadata.</param>
-        /// <param name="appServiceContractInfo">Information describing the application service contract.</param>
-        /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
+        /// <param name="appServiceContracts">The application service contracts.</param>
         /// <param name="logger">The logger.</param>
         protected void ConfigurePartBuilder(
             IPartConventionsBuilder partBuilder,
             TypeInfo serviceContract,
             IAppServiceInfo appServiceInfo,
-            KeyValuePair<TypeInfo, IAppServiceInfo> appServiceContractInfo,
-            List<KeyValuePair<TypeInfo, IAppServiceInfo>> appServiceContractsInfos,
+            IList<TypeInfo> appServiceContracts,
             ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
@@ -189,7 +227,7 @@ namespace Kephas.Services.Composition
                 logger.Debug(this.SerializeServiceContractMetadata(serviceContract, appServiceInfo));
             }
 
-            var metadataAttributes = this.GetMetadataAttributes(appServiceContractInfo.Value);
+            var metadataAttributes = this.GetMetadataAttributes(appServiceInfo);
             if (exportedContract.IsGenericTypeDefinition)
             {
                 if (appServiceInfo.AsOpenGeneric)
@@ -225,7 +263,7 @@ namespace Kephas.Services.Composition
 
             partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
 
-            partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContractsInfos));
+            partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContracts));
 
             if (appServiceInfo.IsShared())
             {
@@ -295,11 +333,11 @@ namespace Kephas.Services.Composition
         /// Determines whether the specified property imports an application service.
         /// </summary>
         /// <param name="pi">The pi.</param>
-        /// <param name="appServiceContractsInfos">The application service contracts infos.</param>
+        /// <param name="appServiceContracts">The application service contracts.</param>
         /// <returns><c>true</c> if the specified property imports an application service, otherwise <c>false</c>.</returns>
         private bool IsAppServiceImport(
             PropertyInfo pi,
-            IList<KeyValuePair<TypeInfo, IAppServiceInfo>> appServiceContractsInfos)
+            IList<TypeInfo> appServiceContracts)
         {
             if (pi == null || !pi.CanWrite || !pi.SetMethod.IsPublic)
             {
@@ -335,7 +373,7 @@ namespace Kephas.Services.Composition
             }
 
             var serviceContractTypeInfo = serviceContractType.GetTypeInfo();
-            var isImport = appServiceContractsInfos.Any(kv => kv.Key.Equals(serviceContractTypeInfo));
+            var isImport = appServiceContracts.Any(svc => svc.Equals(serviceContractTypeInfo));
             return isImport;
         }
 
@@ -618,7 +656,7 @@ namespace Kephas.Services.Composition
         }
 
         /// <summary>
-        /// Tries to get the part builder.
+        /// Tries to get the conventions part builder.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
         /// <param name="appServiceInfo">The service contract metadata.</param>
@@ -629,7 +667,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The part builder or <c>null</c>.
         /// </returns>
-        private IPartConventionsBuilder TryGetPartBuilder(
+        private IPartConventionsBuilder TryGetPartConventionsBuilder(
             IAppServiceInfo appServiceInfo,
             TypeInfo serviceContract,
             IConventionsBuilder conventions,
@@ -702,6 +740,40 @@ namespace Kephas.Services.Composition
                 }
 
                 return conventions.ForType(selectedPart.AsType());
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to get the conventions part builder.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
+        /// <param name="appServiceInfo">The service contract metadata.</param>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="conventions">The conventions.</param>
+        /// <param name="typeInfos">The type infos.</param>
+        /// <param name="logger">The logger.</param>
+        /// <returns>
+        /// The part builder or <c>null</c>.
+        /// </returns>
+        private IPartBuilder TryGetPartBuilder(
+            IAppServiceInfo appServiceInfo,
+            TypeInfo serviceContract,
+            IConventionsBuilder conventions,
+            IEnumerable<TypeInfo> typeInfos,
+            ILogger logger)
+        {
+            var serviceContractType = serviceContract.AsType();
+
+            if (appServiceInfo.Instance != null)
+            {
+                return conventions.ForInstance(serviceContractType, appServiceInfo.Instance);
+            }
+
+            if (appServiceInfo.InstanceFactory != null)
+            {
+                return conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
             }
 
             return null;

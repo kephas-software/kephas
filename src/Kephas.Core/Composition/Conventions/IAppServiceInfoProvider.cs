@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConventionsRegistrar.cs" company="Kephas Software SRL">
+// <copyright file="IAppServiceInfoProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Registrar for composition conventions.
+//   Declares the IAppServiceInfoProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,19 +14,21 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Hosting;
-    using Kephas.Services.Composition;
+    using Kephas.Services;
 
     /// <summary>
-    /// Registrar for composition conventions.
+    /// Interface for application service information provider.
     /// </summary>
-    public interface IConventionsRegistrar
+    public interface IAppServiceInfoProvider
     {
         /// <summary>
-        /// Registers the conventions.
+        /// Gets an enumeration of application service information objects.
         /// </summary>
-        /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
-        void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext);
+        /// <returns>
+        /// An enumeration of application service information objects and their associated contract type.
+        /// </returns>
+        IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext);
     }
 }

@@ -16,8 +16,8 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Marks an interface to be an application service contract.
@@ -141,7 +141,7 @@ namespace Kephas.Services
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<object> IAppServiceInfo.InstanceFactory { get; }
+        Func<ICompositionContext, object> IAppServiceInfo.InstanceFactory { get; }
 
         /// <summary>
         /// Gets the name of the scope for scoped shared services.

@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Composition
+namespace Kephas.Services
 {
     using System;
     using System.Runtime.CompilerServices;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -75,7 +76,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<object> InstanceFactory { get; }
+        Func<ICompositionContext, object> InstanceFactory { get; }
 
         /// <summary>
         /// Gets the name of the scope for scoped shared services.

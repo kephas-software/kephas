@@ -16,13 +16,16 @@ namespace Kephas.AspNetCore.Services.Composition
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
+    using Kephas.Reflection;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A conventions registrar for a collection of service definitions.
     /// </summary>
-    public class ServiceCollectionConventionsRegistrar : IConventionsRegistrar
+    public class ServiceCollectionConventionsRegistrar : IAppServiceInfoProvider
     {
         /// <summary>
         /// Registers the conventions.
@@ -64,6 +67,43 @@ namespace Kephas.AspNetCore.Services.Composition
                     }
 
                     partBuilder.Export(b => b.AsContractType(descriptor.ServiceType));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets an enumeration of application service information objects.
+        /// </summary>
+        /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+        /// <param name="registrationContext">Context for the registration.</param>
+        /// <returns>
+        /// An enumeration of application service information objects and their associated contract type.
+        /// </returns>
+        public IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
+        {
+            var ambientServices = registrationContext.AmbientServices;
+            var serviceCollection = ambientServices.GetService<IServiceCollection>();
+
+            foreach (var descriptor in serviceCollection)
+            {
+                if (descriptor.ImplementationInstance != null)
+                {
+                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, descriptor.ImplementationInstance));
+                }
+                else if (descriptor.ImplementationFactory != null)
+                {
+                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, descriptor.ImplementationFactory));
+                }
+                else
+                {
+                    var instanceType = descriptor.ImplementationType ?? descriptor.ServiceType;
+                    var lifetime = descriptor.Lifetime == ServiceLifetime.Singleton
+                                       ? AppServiceLifetime.Shared
+                                       : descriptor.Lifetime == ServiceLifetime.Scoped
+                                           ? AppServiceLifetime.ScopeShared
+                                           : AppServiceLifetime.Instance;
+
+                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, instanceType, lifetime));
                 }
             }
         }

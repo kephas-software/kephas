@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AttributedAppServiceConventionsRegistrarTest.cs" company="Kephas Software SRL">
+// <copyright file="AppServiceInfoConventionsRegistrarTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Test class for <see cref="AttributedAppServiceConventionsRegistrar" />.
+//   Test class for <see cref="AttributedAppServiceInfoConventionsRegistrar" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,6 +15,7 @@ namespace Kephas.Core.Tests.Services.Composition
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Composition.Conventions;
     using Kephas.Composition.Metadata;
     using Kephas.Core.Tests.Composition;
     using Kephas.Core.Tests.Services.Composition.CustomNamedValueAppServiceMetadata;
@@ -27,21 +28,22 @@ namespace Kephas.Core.Tests.Services.Composition
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="AttributedAppServiceConventionsRegistrar"/>.
+    /// Test class for <see cref="AppServiceInfoConventionsRegistrar"/>.
     /// </summary>
     [TestFixture]
-    public class AttributedAppServiceConventionsRegistrarTest
+    public class AppServiceInfoConventionsRegistrarTest
     {
         [Test]
         public void RegisterConventions_Multiple()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IMultipleTestAppService).GetTypeInfo(), 
                         typeof(MultipleTestService).GetTypeInfo(),
                         typeof(NewMultipleTestService).GetTypeInfo(),
@@ -60,11 +62,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo()
                     },
@@ -79,11 +82,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleOverrideTestService).GetTypeInfo(),
@@ -99,11 +103,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             Assert.Throws<InvalidOperationException>(() => registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ISingleTestAppService).GetTypeInfo(), 
                         typeof(SingleTestService).GetTypeInfo(),
                         typeof(SingleSameOverrideTestService).GetTypeInfo(),
@@ -116,11 +121,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IGenericAppService<>).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
@@ -136,11 +142,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IDefaultMetadataAppService).GetTypeInfo(),
                         typeof(DefaultMetadataAppService).GetTypeInfo(),
                     },
@@ -175,11 +182,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IOneGenericAppService<>).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
@@ -194,11 +202,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IOneGenericAppService<>).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
@@ -218,11 +227,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ITwoGenericAppService<,>).GetTypeInfo(),
                     },
                 new TestRegistrationContext());
@@ -246,11 +256,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(IExplicitMetadataAppService).GetTypeInfo(),
                         typeof(ExplicitMetadataAppService).GetTypeInfo(),
                         typeof(NullExplicitMetadataAppService).GetTypeInfo(),
@@ -277,11 +288,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ICustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
@@ -308,11 +320,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ICustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomValueNullMetadataAppService).GetTypeInfo(),
@@ -339,11 +352,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             registrar.RegisterConventions(
                 conventions,
                 new[]
                     {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                         typeof(ICustomNamedValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomNamedValueMetadataAppService).GetTypeInfo(),
                         typeof(CustomNamedValueNullMetadataAppService).GetTypeInfo(),
@@ -375,11 +389,12 @@ namespace Kephas.Core.Tests.Services.Composition
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var registrar = new AttributedAppServiceConventionsRegistrar();
+            var registrar = new AppServiceInfoConventionsRegistrar();
             Assert.Throws<CompositionException>(
                 () => registrar.RegisterConventions(
                     conventions,
                     new[] {
+                            typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
                             typeof(IBadAppService).GetTypeInfo(), 
                             typeof(BadAppService).GetTypeInfo(),
                     },
@@ -392,7 +407,7 @@ namespace Kephas.Core.Tests.Services.Composition
         [SharedAppServiceContract(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
-        public class SingleTestService : AttributedAppServiceConventionsRegistrarTest.ISingleTestAppService { }
+        public class SingleTestService : AppServiceInfoConventionsRegistrarTest.ISingleTestAppService { }
 
         [OverridePriority(Priority.High)]
         public class SingleOverrideTestService : ISingleTestAppService { }

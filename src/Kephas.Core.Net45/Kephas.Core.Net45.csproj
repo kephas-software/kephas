@@ -45,6 +45,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Kephas.Core\Activation\ActivationException.cs">
@@ -209,8 +212,17 @@
     <Compile Include="..\Kephas.Core\Composition\Configuration\CompositionSettings.cs">
       <Link>Composition\Configuration\CompositionSettings.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\AttributedAppServiceInfoProvider.cs">
+      <Link>Composition\Conventions\AttributedAppServiceInfoProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Composition\Conventions\ConventionsBuilderExtensions.cs">
       <Link>Composition\Conventions\ConventionsBuilderExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\ConventionsTypeExtensions.cs">
+      <Link>Composition\Conventions\ConventionsTypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Composition\Conventions\IAppServiceInfoProvider.cs">
+      <Link>Composition\Conventions\IAppServiceInfoProvider.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Composition\Conventions\IConventionsBuilder.cs">
       <Link>Composition\Conventions\IConventionsBuilder.cs</Link>
@@ -698,6 +710,9 @@
     <Compile Include="..\Kephas.Core\Services\AppServiceContractAttribute.cs">
       <Link>Services\AppServiceContractAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Services\AppServiceInfo.cs">
+      <Link>Services\AppServiceInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Services\AppServiceLifetime.cs">
       <Link>Services\AppServiceLifetime.cs</Link>
     </Compile>
@@ -722,14 +737,11 @@
     <Compile Include="..\Kephas.Core\Services\Behavior\ServiceBehaviorContext.cs">
       <Link>Services\Behavior\ServiceBehaviorContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Services\Composition\AppServiceConventionsRegistrarBase.cs">
-      <Link>Services\Composition\AppServiceConventionsRegistrarBase.cs</Link>
+    <Compile Include="..\Kephas.Core\Services\Composition\AppServiceInfoConventionsRegistrar.cs">
+      <Link>Services\Composition\AppServiceInfoConventionsRegistrar.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Composition\AppServiceMetadata.cs">
       <Link>Services\Composition\AppServiceMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Core\Services\Composition\AttributedAppServiceConventionsRegistrar.cs">
-      <Link>Services\Composition\AttributedAppServiceConventionsRegistrar.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Services\Context.cs">
       <Link>Services\Context.cs</Link>

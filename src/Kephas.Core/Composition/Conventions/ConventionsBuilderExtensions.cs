@@ -28,11 +28,6 @@ namespace Kephas.Composition.Conventions
     public static class ConventionsBuilderExtensions
     {
         /// <summary>
-        /// Information describing the convention registrar contract type.
-        /// </summary>
-        private static readonly TypeInfo ConventionRegistrarContractTypeInfo = typeof(IConventionsRegistrar).GetTypeInfo();
-
-        /// <summary>
         /// Defines a registration for the specified type and its singleton instance.
         /// </summary>
         /// <typeparam name="TService">Type of the registered service.</typeparam>
@@ -80,7 +75,7 @@ namespace Kephas.Composition.Conventions
             Requires.NotNull(parts, nameof(parts));
             Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            return RegisterConventionsCore(builder, () => registrarTypes.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
+            return RegisterConventionsCore(builder, () => registrarTypes.Where(t => t.IsInstantiableConventionsRegistrarType()).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
         }
 
         /// <summary>
@@ -101,7 +96,7 @@ namespace Kephas.Composition.Conventions
             Requires.NotNull(parts, nameof(parts));
             Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            return RegisterConventionsCore(builder, () => parts.Where(IsConventionRegistrar).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
+            return RegisterConventionsCore(builder, () => parts.Where(t => t.IsInstantiableConventionsRegistrarType()).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
         }
 
         /// <summary>
@@ -146,20 +141,6 @@ namespace Kephas.Composition.Conventions
             }
 
             return builder;
-        }
-
-        /// <summary>
-        /// Determines whether the specified type is an instantiable convention registrar.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if the specified type is an instantiable convention registrar, otherwise <c>false</c>.</returns>
-        private static bool IsConventionRegistrar(Type type)
-        {
-            var typeInfo = type.GetTypeInfo();
-            return typeInfo.IsClass
-                    && !typeInfo.IsAbstract
-                    && ConventionRegistrarContractTypeInfo.IsAssignableFrom(typeInfo)
-                    && typeInfo.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null;
         }
     }
 }

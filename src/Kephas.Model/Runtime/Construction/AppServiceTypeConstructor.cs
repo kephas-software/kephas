@@ -16,6 +16,7 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Elements;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Services;
     using Kephas.Services.Composition;
 
     /// <summary>

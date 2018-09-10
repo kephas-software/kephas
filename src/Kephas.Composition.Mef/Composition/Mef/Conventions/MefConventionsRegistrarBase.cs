@@ -19,7 +19,6 @@ namespace Kephas.Composition.Mef.Conventions
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Resources;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
 
     /// <summary>
     /// Base class for MEF conventions registrars.

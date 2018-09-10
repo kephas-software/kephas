@@ -120,7 +120,7 @@ namespace Kephas.Services.Composition
         protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object> metadata, TValue defaultValue = default)
             where TAttribute : IMetadataValue<TValue>
         {
-            var metadataName = AppServiceConventionsRegistrarBase.GetMetadataNameFromAttributeType(typeof(TAttribute));
+            var metadataName = AppServiceInfoConventionsRegistrar.GetMetadataNameFromAttributeType(typeof(TAttribute));
             var value = metadata.TryGetValue(metadataName, defaultValue);
             if (value == null && !typeof(TValue).IsByRef)
             {

@@ -1,22 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppServiceConventionsRegistrarBaseTest.cs" company="Kephas Software SRL">
-//   Copyright (c) Kephas Software SRL. All rights reserved.
-//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
-// </copyright>
-// <summary>
-//   Implements the application service conventions registrar base test class.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Kephas.Core.Tests.Services.Composition
+﻿namespace Kephas.Core.Tests.Services.Composition
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Application;
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Conventions;
+    using Kephas.Composition.Hosting;
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -27,7 +18,7 @@ namespace Kephas.Core.Tests.Services.Composition
     /// An application service conventions registrar base test.
     /// </summary>
     [TestFixture]
-    public class AppServiceConventionsRegistrarBaseTest
+    public class AppServiceInfoConventionsRegistrarOverrideTest
     {
         [Test]
         public void RegisterConventions_hierarchy_with_properties_with_same_name()
@@ -177,7 +168,7 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [ExcludeFromComposition]
-        public class TestRegistrar : AppServiceConventionsRegistrarBase
+        public class TestRegistrar : AppServiceInfoConventionsRegistrar
         {
             private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;
 
@@ -186,9 +177,24 @@ namespace Kephas.Core.Tests.Services.Composition
                 this.attrProvider = attrProvider;
             }
 
-            protected override IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
+            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
             {
-                return this.attrProvider(typeInfo);
+                yield return new TestAppServiceInfoProvider(this.attrProvider);
+            }
+
+            private class TestAppServiceInfoProvider : AttributedAppServiceInfoProvider
+            {
+                private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;
+
+                public TestAppServiceInfoProvider(Func<TypeInfo, AppServiceContractAttribute> attrProvider)
+                {
+                    this.attrProvider = attrProvider;
+                }
+
+                protected override IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
+                {
+                    return this.attrProvider(typeInfo);
+                }
             }
         }
 
@@ -248,7 +254,7 @@ namespace Kephas.Core.Tests.Services.Composition
         public abstract class ClassifierFactoryBase : IClassifierFactory
         {
             protected ClassifierFactoryBase(Func<Type> factory)
-              : this(factory, t => true)
+                : this(factory, t => true)
             {
             }
 
@@ -261,7 +267,7 @@ namespace Kephas.Core.Tests.Services.Composition
         public class StringClassifierFactory : ClassifierFactoryBase
         {
             public StringClassifierFactory()
-              : base(() => typeof(string), t => t.IsInterface)
+                : base(() => typeof(string), t => t.IsInterface)
             {
             }
         }
@@ -269,7 +275,7 @@ namespace Kephas.Core.Tests.Services.Composition
         public class IntClassifierFactory : ClassifierFactoryBase
         {
             public IntClassifierFactory()
-              : base(() => typeof(int), t => t.IsInterface)
+                : base(() => typeof(int), t => t.IsInterface)
             {
             }
         }
