@@ -37,6 +37,9 @@ namespace Kephas.AspNetCore
     /// <summary>
     /// Base class for the ASP.NET startup.
     /// </summary>
+    /// <remarks>
+    /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.1 for more options.
+    /// </remarks>
     public abstract class StartupBase
     {
         /// <summary>
