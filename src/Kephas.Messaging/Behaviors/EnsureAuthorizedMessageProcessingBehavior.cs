@@ -70,7 +70,7 @@ namespace Kephas.Messaging.Behaviors
             var (names, types) = this.GetRequiredPermissions(messageType);
             if ((names != null && names.Count > 0) || (types != null && types.Count > 0))
             {
-                var authContext = new AuthorizationContext(context, names, types);
+                var authContext = new AuthorizationContext(context, names, types, message);
                 await this.authorizationService.AuthorizeAsync(authContext, token).PreserveThreadContext();
             }
         }
