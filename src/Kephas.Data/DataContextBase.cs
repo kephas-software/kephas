@@ -259,7 +259,8 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        protected abstract IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext);
+        protected abstract IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
+            where T : class;
 
         /// <summary>
         /// Initializes the service asynchronously.
