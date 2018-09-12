@@ -20,6 +20,14 @@
         }
 
         [Test]
+        public void WaitNonLocking_custom_exception()
+        {
+            var task = new Task(() => throw new InvalidOperationException());
+            task.Start();
+            Assert.Throws<InvalidOperationException>(() => task.WaitNonLocking(TimeSpan.FromMilliseconds(200)));
+        }
+
+        [Test]
         public void GetResultNonLocking_timeout_exception()
         {
             var task = new Task<int>(() => { Thread.Sleep(1000); return 1000; });

@@ -97,6 +97,12 @@ namespace Kephas.Threading.Tasks
 
             if (task.IsFaulted)
             {
+                var aggregateException = task.Exception;
+                if (aggregateException.InnerExceptions.Count == 1)
+                {
+                    throw aggregateException.InnerException;
+                }
+
                 throw task.Exception;
             }
 
@@ -123,7 +129,7 @@ namespace Kephas.Threading.Tasks
                 return task.Result;
             }
 
-            return default(T);
+            return default;
         }
 
         /// <summary>

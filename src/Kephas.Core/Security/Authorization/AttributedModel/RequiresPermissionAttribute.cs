@@ -13,6 +13,7 @@ namespace Kephas.Security.Authorization.AttributedModel
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// Attribute indicating the required permission to access/execute/use the decorated element.
@@ -20,6 +21,16 @@ namespace Kephas.Security.Authorization.AttributedModel
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
     public class RequiresPermissionAttribute : Attribute
     {
+        /// <summary>
+        /// The permission types metadata key.
+        /// </summary>
+        public const string PermissionTypesMetadataKey = "RequiresPermissionTypes";
+
+        /// <summary>
+        /// The permissions metadata key.
+        /// </summary>
+        public const string PermissionsMetadataKey = "RequiresPermissions";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RequiresPermissionAttribute"/> class.
         /// </summary>
@@ -50,6 +61,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The types of the required permissions.
         /// </value>
+        [MetadataValue(PermissionTypesMetadataKey)]
         public Type[] PermissionTypes { get; }
 
         /// <summary>
@@ -58,6 +70,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The required permissions.
         /// </value>
+        [MetadataValue(PermissionsMetadataKey)]
         public string[] Permissions { get; }
     }
 }
