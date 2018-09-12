@@ -88,6 +88,12 @@
     <Compile Include="..\Kephas.Data\Behaviors\IOnPersistBehavior.cs">
       <Link>Behaviors\IOnPersistBehavior.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\IOnQueryBehavior.cs">
+      <Link>Behaviors\IOnQueryBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Behaviors\QueryBehaviorBase.cs">
+      <Link>Behaviors\QueryBehaviorBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Caching\DataContextCache.cs">
       <Link>Caching\DataContextCache.cs</Link>
     </Compile>

@@ -28,7 +28,7 @@ namespace Kephas.Data.Tests
         {
         }
 
-        public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+        protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext = null)
         {
             return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }

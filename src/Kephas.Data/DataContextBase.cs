@@ -16,13 +16,16 @@ namespace Kephas.Data
     using System.Reflection;
 
     using Kephas.Activation;
+    using Kephas.Collections;
     using Kephas.Composition;
+    using Kephas.Data.Behaviors;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -38,6 +41,16 @@ namespace Kephas.Data
         protected readonly InitializationMonitor<DataContextBase> InitializationMonitor;
 
         /// <summary>
+        /// The query method.
+        /// </summary>
+        private static readonly MethodInfo QueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<IIdentifiable>(null));
+
+        /// <summary>
+        /// The data behavior provider.
+        /// </summary>
+        private readonly IDataBehaviorProvider dataBehaviorProvider;
+
+        /// <summary>
         /// The data command provider.
         /// </summary>
         private readonly IDataCommandProvider dataCommandProvider;
@@ -45,15 +58,20 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context (optional).</param>
-        /// <param name="dataCommandProvider">The data command provider (optional). If not provided, the <see cref="DefaultDataCommandProvider"/> will be used.</param>
-        /// <param name="localCache">The local cache (optional). If not provided, a new <see cref="DataContextCache"/> will be created.</param>
+        /// <param name="compositionContext">Optional. The composition context.</param>
+        /// <param name="dataCommandProvider">Optional. The data command provider. If not
+        ///                                   provided, the <see cref="DefaultDataCommandProvider"/>
+        ///                                   will be used.</param>
+        /// <param name="dataBehaviorProvider">Optional. The data behavior provider.</param>
+        /// <param name="localCache">Optional. The local cache. If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
+            IDataBehaviorProvider dataBehaviorProvider = null,
             IDataContextCache localCache = null)
             : base(compositionContext)
         {
+            this.dataBehaviorProvider = dataBehaviorProvider;
             this.dataCommandProvider = dataCommandProvider ?? new DefaultDataCommandProvider(compositionContext);
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();
@@ -109,15 +127,39 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets a query over the entity type for the given query operationContext, if any is provided.
+        /// Gets a query over the entity type for the given query operation context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="queryOperationContext">Context for the query.</param>
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public abstract IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
-            where T : class;
+        public virtual IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+            where T : class
+        {
+            queryOperationContext = queryOperationContext ?? new QueryOperationContext(this);
+            var entityType = typeof(T);
+            var implementationTypeInfo = this.EntityActivator.GetImplementationType(
+                entityType.AsRuntimeTypeInfo(),
+                queryOperationContext);
+            var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
+            if (implementationType != entityType)
+            {
+                var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
+                var implementationQuery = queryMethod.Call(this, queryOperationContext);
+                return (IQueryable<T>)implementationQuery;
+            }
+
+            var queryBehaviors = this.dataBehaviorProvider?.GetDataBehaviors<IOnQueryBehavior>(typeof(T));
+            queryBehaviors?.ForEach(b => b.BeforeQuery(typeof(T), queryOperationContext));
+
+            var query = this.QueryCore<T>(queryOperationContext);
+            queryOperationContext.Query = query;
+
+            queryBehaviors?.ForEach(b => b.AfterQuery(typeof(T), queryOperationContext));
+            query = (IQueryable<T>)queryOperationContext.Query;
+            return query;
+        }
 
         /// <summary>
         /// Creates the command with the provided type.
@@ -208,6 +250,16 @@ namespace Kephas.Data
         {
             return t => entityId.Equals(((IIdentifiable)t).Id);
         }
+
+        /// <summary>
+        /// Gets a query over the entity type for the given query operation context, if any is provided (core implementation).
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="queryOperationContext">Context for the query.</param>
+        /// <returns>
+        /// A query over the entity type.
+        /// </returns>
+        protected abstract IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext);
 
         /// <summary>
         /// Initializes the service asynchronously.
