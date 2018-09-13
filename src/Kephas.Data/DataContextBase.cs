@@ -137,6 +137,8 @@ namespace Kephas.Data
         public virtual IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
             where T : class
         {
+            this.InitializationMonitor.AssertIsCompletedSuccessfully();
+
             queryOperationContext = queryOperationContext ?? new QueryOperationContext(this);
             var entityType = typeof(T);
             var implementationTypeInfo = this.EntityActivator.GetImplementationType(
@@ -171,6 +173,8 @@ namespace Kephas.Data
         public IDataCommand CreateCommand(Type commandType)
         {
             Requires.NotNull(commandType, nameof(commandType));
+
+            this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
             if (!typeof(IDataCommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
             {
