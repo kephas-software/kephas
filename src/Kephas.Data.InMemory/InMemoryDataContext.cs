@@ -166,7 +166,7 @@ namespace Kephas.Data.InMemory
             this.InitializeData(serializedData);
 
             this.InitializeData(config?.InitialData);
-            this.InitializeData(dataInitializationContext?.InitializationContext?.GetInitialData());
+            this.InitializeData(dataInitializationContext?.InitializationContext?.InitialData());
         }
 
         /// <summary>

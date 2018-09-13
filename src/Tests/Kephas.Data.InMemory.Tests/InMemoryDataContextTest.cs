@@ -131,7 +131,7 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = this.CreateInMemoryDataContext();
 
             var initializationContext = new DataOperationContext(dataContext);
-            initializationContext.SetInitialData(new[]
+            initializationContext.WithInitialData(new[]
                                                      {
                                                          "mama",
                                                          "papa"
@@ -156,7 +156,7 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = this.CreateInMemoryDataContext();
 
             var initializationContext = new DataOperationContext(dataContext);
-            initializationContext.SetInitialData(new[]
+            initializationContext.WithInitialData(new[]
                                                      {
                                                          new EntityInfo("papa")
                                                      });

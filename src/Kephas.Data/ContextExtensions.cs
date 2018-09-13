@@ -35,7 +35,7 @@ namespace Kephas.Data
         /// <returns>
         /// An enumeration of entity information.
         /// </returns>
-        public static IEnumerable<IEntityInfo> GetInitialData(this IContext context)
+        public static IEnumerable<IEntityInfo> InitialData(this IContext context)
         {
             return context?[InitialDataConfigurationName] as IEnumerable<IEntityInfo>;
         }
@@ -43,24 +43,56 @@ namespace Kephas.Data
         /// <summary>
         /// Sets the initial data.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
         /// <param name="initialData">The initial data.</param>
-        public static void SetInitialData(this IContext context, IEnumerable<Tuple<object, ChangeState>> initialData)
+        /// <returns>
+        /// This context.
+        /// </returns>
+        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<IChangeStateTrackableEntityInfo> initialData)
+            where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
 
             context[InitialDataConfigurationName] =
                     initialData
-                        ?.Where(t => t.Item1 != null)
-                        .Select(t => new EntityInfo(t.Item1) { ChangeState = t.Item2 });
+                        ?.Where(t => t.Entity != null)
+                        .Select(t => new EntityInfo(t.Entity) { ChangeState = t.ChangeState });
+            return context;
         }
 
         /// <summary>
         /// Sets the initial data.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="initialData">The initial data.</param>
+        /// <returns>
+        /// This context.
+        /// </returns>
+        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<(object entity, ChangeState changeState)> initialData)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context[InitialDataConfigurationName] =
+                initialData
+                    ?.Where(t => t.entity != null)
+                    .Select(t => new EntityInfo(t.entity) { ChangeState = t.changeState });
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the initial data.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
         /// <param name="initialData">The initial data as an enumeration of entities.</param>
-        public static void SetInitialData(this IContext context, IEnumerable<object> initialData)
+        /// <returns>
+        /// This context.
+        /// </returns>
+        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<object> initialData)
+            where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
 
@@ -68,18 +100,25 @@ namespace Kephas.Data
                     initialData
                         ?.Where(o => o != null)
                         .Select(o => new EntityInfo(o));
+            return context;
         }
 
         /// <summary>
         /// Sets the initial data.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
         /// <param name="initialData">The initial data as an enumeration of entities.</param>
-        public static void SetInitialData(this IContext context, IEnumerable<IEntityInfo> initialData)
+        /// <returns>
+        /// This context.
+        /// </returns>
+        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<IEntityInfo> initialData)
+            where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
 
             context[InitialDataConfigurationName] = initialData?.Where(e => e != null);
+            return context;
         }
     }
 }

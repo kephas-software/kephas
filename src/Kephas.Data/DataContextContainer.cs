@@ -79,7 +79,7 @@ namespace Kephas.Data
                                                         {
                                                             Identity = context?.Identity,
                                                         };
-                                                    initializationContext.SetInitialData(
+                                                    initializationContext.WithInitialData(
                                                         g.Select(
                                                             entry => new EntityInfo(entry.Entity)
                                                             {

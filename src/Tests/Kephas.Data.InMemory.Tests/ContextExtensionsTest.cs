@@ -25,7 +25,7 @@ namespace Kephas.Data.InMemory.Tests
         public void GetInitialData_not_set()
         {
             var context = new TestContext();
-            var initialData = context.GetInitialData();
+            var initialData = context.InitialData();
             Assert.IsNull(initialData);
         }
 
@@ -33,9 +33,9 @@ namespace Kephas.Data.InMemory.Tests
         public void SetInitialData_object_enumeration()
         {
             var context = new TestContext();
-            context.SetInitialData(new[] { "ana", "are", "mere" });
+            context.WithInitialData(new[] { "ana", "are", "mere" });
 
-            var initialData = context.GetInitialData();
+            var initialData = context.InitialData();
             Assert.IsNotNull(initialData);
             Assert.AreEqual(3, initialData.Count());
 
@@ -52,14 +52,14 @@ namespace Kephas.Data.InMemory.Tests
         public void SetInitialData_tuple_enumeration()
         {
             var context = new TestContext();
-            context.SetInitialData(new[]
+            context.WithInitialData(new[]
                                        {
                                            Tuple.Create<object, ChangeState>("ana", ChangeState.Added),
                                            Tuple.Create<object, ChangeState>("are", ChangeState.Changed),
                                            Tuple.Create<object, ChangeState>("mere", ChangeState.NotChanged),
                                        });
 
-            var initialData = context.GetInitialData();
+            var initialData = context.InitialData();
             Assert.IsNotNull(initialData);
             Assert.AreEqual(3, initialData.Count());
 
@@ -76,14 +76,14 @@ namespace Kephas.Data.InMemory.Tests
         public void SetInitialData_entity_info_enumeration()
         {
             var context = new TestContext();
-            context.SetInitialData(new[]
+            context.WithInitialData(new[]
                                        {
                                            new EntityInfo("ana") { ChangeState = ChangeState.Added },
                                            new EntityInfo("are") { ChangeState = ChangeState.Changed },
                                            new EntityInfo("mere") { ChangeState = ChangeState.NotChanged },
                                        });
 
-            var initialData = context.GetInitialData();
+            var initialData = context.InitialData();
             Assert.IsNotNull(initialData);
             Assert.AreEqual(3, initialData.Count());
 
