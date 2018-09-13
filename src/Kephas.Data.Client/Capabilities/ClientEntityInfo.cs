@@ -15,7 +15,7 @@ namespace Kephas.Data.Client.Capabilities
     /// <summary>
     /// DTO holding information about the entity.
     /// </summary>
-    public class ClientEntityInfo : IChangeStateTrackable
+    public class ClientEntityInfo : IChangeStateTrackableEntityInfo
     {
         /// <summary>
         /// Gets or sets the change state of the entity.
