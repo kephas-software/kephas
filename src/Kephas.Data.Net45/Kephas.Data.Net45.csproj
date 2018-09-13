@@ -115,6 +115,9 @@
     <Compile Include="..\Kephas.Data\Capabilities\IChangeStateTrackable.cs">
       <Link>Capabilities\IChangeStateTrackable.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Capabilities\IChangeStateTrackableEntityInfo.cs">
+      <Link>Capabilities\IChangeStateTrackableEntityInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\Capabilities\IEntityInfo.cs">
       <Link>Capabilities\IEntityInfo.cs</Link>
     </Compile>
@@ -328,6 +331,9 @@
     <Compile Include="..\Kephas.Data\DataContextConfiguration.cs">
       <Link>DataContextConfiguration.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\DataContextContainer.cs">
+      <Link>DataContextContainer.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\DataContextExtensions.cs">
       <Link>DataContextExtensions.cs</Link>
     </Compile>
@@ -348,6 +354,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data\IDataContextConfiguration.cs">
       <Link>IDataContextConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataContextContainer.cs">
+      <Link>IDataContextContainer.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\IDataContextFactory.cs">
       <Link>IDataContextFactory.cs</Link>
