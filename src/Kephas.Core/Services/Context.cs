@@ -98,7 +98,7 @@ namespace Kephas.Services
             get => this.identity;
             set
             {
-                if (this.identity != null)
+                if (this.identity != null && this.identity != value)
                 {
                     throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
                 }
