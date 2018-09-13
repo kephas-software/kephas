@@ -11,6 +11,8 @@
 namespace Kephas.Threading.Tasks
 {
     using System;
+    using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
@@ -79,31 +81,44 @@ namespace Kephas.Threading.Tasks
             var timeoutOccurred = false;
             var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
             var startTime = DateTime.Now;
-            while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
-            {
-                task.Wait(waitInterval);
-                var elapsed = DateTime.Now - startTime;
-                if (elapsed > timeout)
-                {
-                    if (throwOnTimeout)
-                    {
-                        throw new TimeoutException($"The allotted time of {timeout} expired. Please try again the operation.");
-                    }
 
-                    timeoutOccurred = true;
-                    break;
+            AggregateException taskException = null;
+            try
+            {
+                while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+                {
+                    task.Wait(waitInterval);
+                    var elapsed = DateTime.Now - startTime;
+                    if (elapsed > timeout)
+                    {
+                        if (throwOnTimeout)
+                        {
+                            throw new TimeoutException($"The allotted time of {timeout} expired. Please try again the operation.");
+                        }
+
+                        timeoutOccurred = true;
+                        break;
+                    }
                 }
             }
-
-            if (task.IsFaulted)
+            catch (AggregateException ex)
             {
-                var aggregateException = task.Exception;
-                if (aggregateException.InnerExceptions.Count == 1)
+                taskException = ex;
+            }
+
+            if (taskException == null && task.IsFaulted)
+            {
+                taskException = task.Exception;
+            }
+
+            if (taskException != null)
+            {
+                if (taskException.InnerExceptions.Count == 1)
                 {
-                    throw aggregateException.InnerException;
+                    throw taskException.InnerException;
                 }
 
-                throw task.Exception;
+                throw taskException;
             }
 
             return !timeoutOccurred;

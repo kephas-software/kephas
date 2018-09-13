@@ -22,7 +22,7 @@
         [Test]
         public void WaitNonLocking_custom_exception()
         {
-            var task = new Task(() => throw new InvalidOperationException());
+            var task = new Task(() => throw new InvalidOperationException("must throw!"));
             task.Start();
             Assert.Throws<InvalidOperationException>(() => task.WaitNonLocking(TimeSpan.FromMilliseconds(200)));
         }

@@ -164,7 +164,7 @@ namespace Kephas.Data.Tests
             var behaviorProvider = Substitute.For<IDataBehaviorProvider>();
 
             var dataContext = TestDataContext.CreateDataContext(dataBehaviorProvider: behaviorProvider, localCache: localCache);
-            dataContext.Initialize(dataContext.CreateDataInitializationContext(activator: TestDataContext.CreateActivatorForInterfaces()));
+            dataContext.Initialize(dataContext.CreateDataInitializationContext(activator: TestDataContext.CreateIdempotentActivator()));
 
             var behavior = Substitute.For<IOnQueryBehavior>();
             behaviorProvider.GetDataBehaviors<IOnQueryBehavior>(typeof(IEntity)).Returns(new[] { behavior });

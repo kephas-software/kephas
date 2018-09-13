@@ -79,6 +79,15 @@ namespace Kephas.Data.Tests
             return activator;
         }
 
+        public static IActivator CreateIdempotentActivator()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator
+                .GetImplementationType(Arg.Any<ITypeInfo>(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(ci => ci.Arg<ITypeInfo>());
+            return activator;
+        }
+
         public IDataInitializationContext CreateDataInitializationContext(
             IDataStore dataStore = null,
             IIdentity identity = null,
