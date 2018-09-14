@@ -334,9 +334,6 @@
     <Compile Include="..\Kephas.Data\DataContextConfiguration.cs">
       <Link>DataContextConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\DataContextContainer.cs">
-      <Link>DataContextContainer.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data\DataContextExtensions.cs">
       <Link>DataContextExtensions.cs</Link>
     </Compile>
@@ -349,6 +346,9 @@
     <Compile Include="..\Kephas.Data\DataOperationContext.cs">
       <Link>DataOperationContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\DataSpace.cs">
+      <Link>DataSpace.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\DefaultDataContextFactory.cs">
       <Link>DefaultDataContextFactory.cs</Link>
     </Compile>
@@ -358,9 +358,6 @@
     <Compile Include="..\Kephas.Data\IDataContextConfiguration.cs">
       <Link>IDataContextConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\IDataContextContainer.cs">
-      <Link>IDataContextContainer.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data\IDataContextFactory.cs">
       <Link>IDataContextFactory.cs</Link>
     </Compile>
@@ -369,6 +366,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data\IDataOperationContext.cs">
       <Link>IDataOperationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\IDataSpace.cs">
+      <Link>IDataSpace.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Initialization\AttributedModel\InitialDataKindAttribute.cs">
       <Link>Initialization\AttributedModel\InitialDataKindAttribute.cs</Link>

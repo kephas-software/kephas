@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataContextContainer.cs" company="Kephas Software SRL">
+// <copyright file="IDataSpace.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IDataContextContainer interface.
+//   Declares the IDataSpace interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace Kephas.Data
     /// <summary>
     /// Interface for data context container.
     /// </summary>
-    public interface IDataContextContainer : IExpando, IReadOnlyCollection<IDataContext>, IDisposable
+    public interface IDataSpace : IExpando, IReadOnlyCollection<IDataContext>, IDisposable
     {
         /// <summary>
         /// Gets the data context for the provided entity type.

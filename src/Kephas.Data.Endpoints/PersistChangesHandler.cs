@@ -92,7 +92,7 @@ namespace Kephas.Data.Endpoints
                 return response;
             }
 
-            using (var dataContextContainer = new DataContextContainer(
+            using (var dataContextContainer = new DataSpace(
                 this.dataContextFactory,
                 this.dataStoreSelector,
                 context,
@@ -163,7 +163,7 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <param name="response">The response.</param>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataContextContainer">Manager for data context.</param>
+        /// <param name="dataSpace">Manager for data context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -171,7 +171,7 @@ namespace Kephas.Data.Endpoints
         protected virtual Task PrePersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataContextContainer dataContextContainer,
+            DataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
@@ -182,7 +182,7 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <param name="response">The response.</param>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataContextContainer">Manager for data context.</param>
+        /// <param name="dataSpace">Manager for data context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -190,7 +190,7 @@ namespace Kephas.Data.Endpoints
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataContextContainer dataContextContainer,
+            DataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             // convert back to client entities
@@ -198,7 +198,7 @@ namespace Kephas.Data.Endpoints
             {
                 if (clientEntityInfo.ChangeState != ChangeState.Deleted && clientEntityInfo.Entity != entity)
                 {
-                    var domainDataContext = dataContextContainer[entity.GetType()];
+                    var domainDataContext = dataSpace[entity.GetType()];
                     var conversionContext = this.CreateDataConversionContextForResponse(domainDataContext, null /* TODO add an InMemoryDataContext */);
                     var result = await this.dataConversionService.ConvertAsync(entity, clientEntityInfo.Entity, conversionContext, cancellationToken).PreserveThreadContext();
                 }

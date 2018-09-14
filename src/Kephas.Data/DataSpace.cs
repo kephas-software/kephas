@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataContextContainer.cs" company="Kephas Software SRL">
+// <copyright file="DataSpace.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Kephas.Data
     /// <summary>
     /// Container class for data contexts indexed by contained entity types.
     /// </summary>
-    public class DataContextContainer : Expando, IDataContextContainer
+    public class DataSpace : Expando, IDataSpace
     {
         /// <summary>
         /// The data context factory.
@@ -48,13 +48,13 @@ namespace Kephas.Data
         private readonly IDictionary<string, IDataContext> dataContexts;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContextContainer"/> class.
+        /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreSelector">The data store selector.</param>
         /// <param name="context">Optional. Context for the data processing.</param>
         /// <param name="entityInfos">Optional. The entity infos for initial data.</param>
-        public DataContextContainer(
+        public DataSpace(
             IDataContextFactory dataContextFactory,
             IDataStoreSelector dataStoreSelector,
             IContext context = null,
