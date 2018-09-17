@@ -16,6 +16,7 @@ namespace Kephas.Data.InMemory
 
     using Kephas.Collections;
     using Kephas.Composition;
+    using Kephas.Data.Behaviors;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands.Factory;
@@ -50,12 +51,14 @@ namespace Kephas.Data.InMemory
         /// </summary>
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
+        /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public InMemoryDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, ISerializationService serializationService)
-            : base(compositionContext, dataCommandProvider)
+        public InMemoryDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider, ISerializationService serializationService)
+            : base(compositionContext, dataCommandProvider, dataBehaviorProvider)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
+            Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
             Requires.NotNull(serializationService, nameof(serializationService));
 
             this.SerializationService = serializationService;
@@ -93,19 +96,6 @@ namespace Kephas.Data.InMemory
         }
 
         /// <summary>
-        /// Gets a query over the entity type for the given query operationContext, if any is provided.
-        /// </summary>
-        /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="queryOperationContext">Context for the query.</param>
-        /// <returns>
-        /// A query over the entity type.
-        /// </returns>
-        public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
-        {
-            return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
-        }
-
-        /// <summary>
         /// Gets the entity extended information.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -118,6 +108,19 @@ namespace Kephas.Data.InMemory
             // the InitializationMonitor is not in the Completed state yet.
             var entityInfo = this.workingCache?.Values.FirstOrDefault(ei => ei.Entity == entity);
             return entityInfo;
+        }
+
+        /// <summary>
+        /// Gets a query over the entity type for the given query operationContext, if any is provided.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="queryOperationContext">Context for the query.</param>
+        /// <returns>
+        /// A query over the entity type.
+        /// </returns>
+        protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
+        {
+            return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
 
         /// <summary>
@@ -163,7 +166,7 @@ namespace Kephas.Data.InMemory
             this.InitializeData(serializedData);
 
             this.InitializeData(config?.InitialData);
-            this.InitializeData(dataInitializationContext?.InitializationContext?.GetInitialData());
+            this.InitializeData(dataInitializationContext?.InitializationContext?.InitialData());
         }
 
         /// <summary>

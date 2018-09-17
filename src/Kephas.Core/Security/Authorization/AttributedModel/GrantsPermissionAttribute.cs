@@ -13,6 +13,7 @@ namespace Kephas.Security.Authorization.AttributedModel
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// Attribute indicating that the permission to access/execute/use the decorated element is granted.
@@ -20,6 +21,16 @@ namespace Kephas.Security.Authorization.AttributedModel
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
     public class GrantsPermissionAttribute : Attribute
     {
+        /// <summary>
+        /// The permission types metadata key.
+        /// </summary>
+        public const string PermissionTypesMetadataKey = "GrantsPermissionTypes";
+
+        /// <summary>
+        /// The permissions metadata key.
+        /// </summary>
+        public const string PermissionsMetadataKey = "GrantsPermissions";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GrantsPermissionAttribute"/> class.
         /// </summary>
@@ -50,6 +61,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The types of the granted permissions.
         /// </value>
+        [MetadataValue(PermissionTypesMetadataKey)]
         public Type[] PermissionTypes { get; }
 
         /// <summary>
@@ -58,6 +70,7 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// <value>
         /// The granted permissions.
         /// </value>
+        [MetadataValue(PermissionsMetadataKey)]
         public string[] Permissions { get; }
     }
 }

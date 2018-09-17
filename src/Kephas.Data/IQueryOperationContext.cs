@@ -11,6 +11,7 @@
 namespace Kephas.Data
 {
     using System;
+    using System.Linq;
 
     using Kephas.Services;
 
@@ -26,5 +27,13 @@ namespace Kephas.Data
         /// The implementation type resolver.
         /// </value>
         Func<Type, IContext, Type> ImplementationTypeResolver { get; set; }
+
+        /// <summary>
+        /// Gets or sets the query.
+        /// </summary>
+        /// <value>
+        /// The query.
+        /// </value>
+        IQueryable Query { get; set; }
     }
 }

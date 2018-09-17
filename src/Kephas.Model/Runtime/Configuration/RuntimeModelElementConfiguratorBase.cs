@@ -136,15 +136,6 @@ namespace Kephas.Model.Runtime.Configuration
         }
 
         /// <summary>
-        /// Adds an element configuration.
-        /// </summary>
-        /// <param name="config">The configuration.</param>
-        protected void AddConfiguration(Action<IModelConstructionContext, TElement> config)
-        {
-            this.configs.Add(config);
-        }
-
-        /// <summary>
         /// Adds a member to the configured element.
         /// </summary>
         /// <param name="member">The member to be added.</param>
@@ -166,6 +157,15 @@ namespace Kephas.Model.Runtime.Configuration
         IRuntimeModelElementConfigurator IRuntimeModelElementConfigurator.AddMember(object runtimeElement)
         {
             return this.AddMember(runtimeElement);
+        }
+
+        /// <summary>
+        /// Adds an element configuration.
+        /// </summary>
+        /// <param name="config">The configuration.</param>
+        protected void AddConfiguration(Action<IModelConstructionContext, TElement> config)
+        {
+            this.configs.Add(config);
         }
     }
 }

@@ -21,6 +21,16 @@ namespace Kephas.Data.Conversion
     public class DataConversionContext : Context, IDataConversionContext
     {
         /// <summary>
+        /// Context for the source data.
+        /// </summary>
+        private IDataContext sourceDataContext;
+
+        /// <summary>
+        /// Context for the target data.
+        /// </summary>
+        private IDataContext targetDataContext;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.
         /// </summary>
         /// <param name="conversionService">The conversion service.</param>
@@ -68,7 +78,18 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The source data context.
         /// </value>
-        public IDataContext SourceDataContext { get; set; }
+        public IDataContext SourceDataContext
+        {
+            get => this.sourceDataContext;
+            set
+            {
+                this.sourceDataContext = value;
+                if (this.Identity == null && this.sourceDataContext != null)
+                {
+                    this.Identity = this.sourceDataContext.Identity;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets a <see cref="IDataContext"/> for the target object.
@@ -76,7 +97,18 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The target data context.
         /// </value>
-        public IDataContext TargetDataContext { get; set; }
+        public IDataContext TargetDataContext
+        {
+            get => this.targetDataContext;
+            set
+            {
+                this.targetDataContext = value;
+                if (this.Identity == null && this.targetDataContext != null)
+                {
+                    this.Identity = this.targetDataContext.Identity;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the type of the source root object.

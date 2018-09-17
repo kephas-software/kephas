@@ -25,6 +25,8 @@ namespace Kephas.Data.MongoDB
 
     using global::MongoDB.Driver;
 
+    using Kephas.Data.Behaviors;
+
     /// <summary>
     /// A data context for MongoDB.
     /// </summary>
@@ -42,11 +44,13 @@ namespace Kephas.Data.MongoDB
         /// </summary>
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
-        public MongoDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider)
-            : base(compositionContext, dataCommandProvider)
+        /// <param name="dataBehaviorProvider">The data behavior provider.</param>
+        public MongoDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider)
+            : base(compositionContext, dataCommandProvider, dataBehaviorProvider)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
+            Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
         }
 
         /// <summary>
@@ -74,22 +78,6 @@ namespace Kephas.Data.MongoDB
         public IMongoDatabase Database { get; private set; }
 
         /// <summary>
-        /// Gets a query over the entity type for the given query operationContext, if any is provided.
-        /// </summary>
-        /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="queryOperationContext">Context for the query.</param>
-        /// <returns>
-        /// A query over the entity type.
-        /// </returns>
-        public override IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
-        {
-            var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
-            var provider = new MongoQueryProvider(queryOperationContext ?? new QueryOperationContext(this), nativeQuery.Provider);
-            var query = new MongoQuery<T>(provider, nativeQuery);
-            return query;
-        }
-
-        /// <summary>
         /// Gets the collection name for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
@@ -99,6 +87,22 @@ namespace Kephas.Data.MongoDB
         protected internal virtual string GetCollectionName(Type entityType)
         {
             return entityType.Name;
+        }
+
+        /// <summary>
+        /// Gets a query over the entity type for the given query operation context, if any is provided.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="queryOperationContext">Context for the query.</param>
+        /// <returns>
+        /// A query over the entity type.
+        /// </returns>
+        protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
+        {
+            var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
+            var provider = new MongoQueryProvider(queryOperationContext, nativeQuery.Provider);
+            var query = new MongoQuery<T>(provider, nativeQuery);
+            return query;
         }
 
         /// <summary>

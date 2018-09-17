@@ -15,12 +15,16 @@ namespace Kephas.Data.InMemory.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Activation;
     using Kephas.Composition;
+    using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
+    using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -68,6 +72,7 @@ namespace Kephas.Data.InMemory.Tests
             var findCommand = Substitute.For<IFindCommand>();
             dataCommandProvider.CreateCommand(typeof(InMemoryDataContext), typeof(IFindCommand)).Returns(findCommand);
             var dataContext = this.CreateInMemoryDataContext(dataCommandProvider: dataCommandProvider);
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration("")));
 
             var actualCommand = dataContext.CreateCommand(typeof(IFindCommand));
             Assert.AreSame(findCommand, actualCommand);
@@ -104,14 +109,14 @@ namespace Kephas.Data.InMemory.Tests
                 this.GetDataInitializationContext(
                     dataContext,
                     new InMemoryDataContextConfiguration(string.Empty)
-                        {
-                            InitialData =
+                    {
+                        InitialData =
                                 new[]
                                     {
                                         new EntityInfo("mama"),
                                         new EntityInfo("papa")
                                     }
-                        }));
+                    }));
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -126,7 +131,7 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = this.CreateInMemoryDataContext();
 
             var initializationContext = new DataOperationContext(dataContext);
-            initializationContext.SetInitialData(new[]
+            initializationContext.WithInitialData(new[]
                                                      {
                                                          "mama",
                                                          "papa"
@@ -151,7 +156,7 @@ namespace Kephas.Data.InMemory.Tests
             var dataContext = this.CreateInMemoryDataContext();
 
             var initializationContext = new DataOperationContext(dataContext);
-            initializationContext.SetInitialData(new[]
+            initializationContext.WithInitialData(new[]
                                                      {
                                                          new EntityInfo("papa")
                                                      });
@@ -159,13 +164,13 @@ namespace Kephas.Data.InMemory.Tests
                 this.GetDataInitializationContext(
                     dataContext,
                     new InMemoryDataContextConfiguration(string.Empty)
-                        {
-                            InitialData =
+                    {
+                        InitialData =
                                 new[]
                                     {
                                         new EntityInfo("mama"),
                                     }
-                        },
+                    },
                     initializationContext));
 
             var query = dataContext.Query<string>();
@@ -211,11 +216,13 @@ namespace Kephas.Data.InMemory.Tests
         private InMemoryDataContext CreateInMemoryDataContext(
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
+            IDataBehaviorProvider dataBehaviorProvider = null,
             ISerializationService serializationService = null)
         {
             return new InMemoryDataContext(
                 compositionContext ?? Substitute.For<ICompositionContext>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
+                dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
                 serializationService ?? Substitute.For<ISerializationService>());
         }
 
@@ -229,7 +236,31 @@ namespace Kephas.Data.InMemory.Tests
 
         private IDataStore GetDataStore(IDataContextConfiguration config)
         {
-            return new DataStore("test", "test-kind", dataContextConfiguration: config);
+            var activator = this.CreateActivatorForInterfaces();
+            var dataStore = new DataStore("test", "test-kind", dataContextConfiguration: config, entityActivator: activator);
+
+            return dataStore;
+        }
+
+        private IActivator CreateActivatorForInterfaces()
+        {
+            var activator = Substitute.For<IActivator>();
+            activator
+                .GetImplementationType(Arg.Any<ITypeInfo>(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(
+                    ci =>
+                        {
+                            ITypeInfo implementationType = null;
+                            var typeInfo = (IRuntimeTypeInfo)ci.Arg<ITypeInfo>();
+                            if (typeInfo.Type.IsInterface || typeInfo.Type.IsAbstract)
+                            {
+                                var inst = Substitute.For(new[] { typeInfo.Type }, new object[0]);
+                                return inst.GetType().AsRuntimeTypeInfo();
+                            }
+
+                            return typeInfo;
+                        });
+            return activator;
         }
     }
 }

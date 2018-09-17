@@ -75,7 +75,7 @@ namespace Kephas.Data.Capabilities
         public object Entity { get; }
 
         /// <summary>
-        /// Gets a copy of the original entity, before any changes occured.
+        /// Gets a copy of the original entity, before any changes occurred.
         /// </summary>
         /// <value>
         /// The original entity.

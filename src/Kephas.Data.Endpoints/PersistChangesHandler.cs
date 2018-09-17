@@ -10,13 +10,11 @@
 
 namespace Kephas.Data.Endpoints
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Client.Capabilities;
     using Kephas.Data.Conversion;
@@ -24,7 +22,6 @@ namespace Kephas.Data.Endpoints
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
     using Kephas.Model.Services;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -95,11 +92,11 @@ namespace Kephas.Data.Endpoints
                 return response;
             }
 
-            using (var dataContextManager = new DataContextManager(
-                message.EntityInfos,
+            using (var dataContextContainer = new DataSpace(
                 this.dataContextFactory,
                 this.dataStoreSelector,
-                context))
+                context,
+                message.EntityInfos))
             {
                 // convert to entities
                 foreach (var clientEntityInfo in message.EntityInfos.Where(e => e.Entity != null))
@@ -111,8 +108,8 @@ namespace Kephas.Data.Endpoints
 
                     if (clientEntityType != domainEntityType)
                     {
-                        var clientDataContext = dataContextManager.GetDataContext(clientEntityType);
-                        var domainDataContext = dataContextManager.GetDataContext(domainEntityType);
+                        var clientDataContext = dataContextContainer[clientEntityType];
+                        var domainDataContext = dataContextContainer[domainEntityType];
                         var conversionContext = new DataConversionContext(this.dataConversionService, clientDataContext, domainDataContext, rootTargetType: domainEntityType);
                         var result = await this.dataConversionService.ConvertAsync(clientEntity, (object)null, conversionContext, token).PreserveThreadContext();
                         mappings.Add((clientEntityInfo, result.Target));
@@ -141,13 +138,16 @@ namespace Kephas.Data.Endpoints
                 }
 
                 // prepare the persistence
-                await this.PrePersistChangesAsync(response, mappings, dataContextManager, cancellationToken: token).PreserveThreadContext();
+                await this.PrePersistChangesAsync(response, mappings, dataContextContainer, cancellationToken: token).PreserveThreadContext();
 
                 // save changes
-                await dataContextManager.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
+                foreach (var dataContext in dataContextContainer)
+                {
+                    await dataContext.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
+                }
 
                 // finalize the persistence
-                await this.PostPersistChangesAsync(response, mappings, dataContextManager, cancellationToken: token).PreserveThreadContext();
+                await this.PostPersistChangesAsync(response, mappings, dataContextContainer, cancellationToken: token).PreserveThreadContext();
             }
 
             foreach (var entry in response.EntityInfos)
@@ -163,7 +163,7 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <param name="response">The response.</param>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataContextManager">Manager for data context.</param>
+        /// <param name="dataSpace">Manager for data context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -171,7 +171,7 @@ namespace Kephas.Data.Endpoints
         protected virtual Task PrePersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataContextManager dataContextManager,
+            DataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
@@ -182,7 +182,7 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <param name="response">The response.</param>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataContextManager">Manager for data context.</param>
+        /// <param name="dataSpace">Manager for data context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A Task.
@@ -190,7 +190,7 @@ namespace Kephas.Data.Endpoints
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataContextManager dataContextManager,
+            DataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             // convert back to client entities
@@ -198,7 +198,7 @@ namespace Kephas.Data.Endpoints
             {
                 if (clientEntityInfo.ChangeState != ChangeState.Deleted && clientEntityInfo.Entity != entity)
                 {
-                    var domainDataContext = dataContextManager.GetDataContext(entity.GetType());
+                    var domainDataContext = dataSpace[entity.GetType()];
                     var conversionContext = this.CreateDataConversionContextForResponse(domainDataContext, null /* TODO add an InMemoryDataContext */);
                     var result = await this.dataConversionService.ConvertAsync(entity, clientEntityInfo.Entity, conversionContext, cancellationToken).PreserveThreadContext();
                 }
@@ -232,104 +232,6 @@ namespace Kephas.Data.Endpoints
                 sourceDataContext,
                 targetDataContext);
             return conversionContext;
-        }
-
-        /// <summary>
-        /// Manager for data contexts.
-        /// </summary>
-        public class DataContextManager : IDisposable
-        {
-            private readonly IDataContextFactory dataContextFactory;
-
-            /// <summary>
-            /// The data store selector.
-            /// </summary>
-            private readonly IDataStoreSelector dataStoreSelector;
-
-            /// <summary>
-            /// Context for the processing.
-            /// </summary>
-            private readonly IMessageProcessingContext processingContext;
-
-            /// <summary>
-            /// The data contexts.
-            /// </summary>
-            private readonly IDictionary<string, IDataContext> dataContexts;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DataContextManager"/> class.
-            /// </summary>
-            /// <param name="entries">The entries.</param>
-            /// <param name="dataContextFactory">The data context factory.</param>
-            /// <param name="dataStoreSelector">The data store selector.</param>
-            /// <param name="processingContext">Context for the processing.</param>
-            public DataContextManager(
-                IList<ClientEntityInfo> entries,
-                IDataContextFactory dataContextFactory,
-                IDataStoreSelector dataStoreSelector,
-                IMessageProcessingContext processingContext)
-            {
-                this.dataContextFactory = dataContextFactory;
-                this.dataStoreSelector = dataStoreSelector;
-                this.processingContext = processingContext;
-                this.dataContexts = entries.GroupBy(e => this.dataStoreSelector.GetDataStoreName(e.Entity.GetType(), this.processingContext), e => e).ToDictionary(
-                    g => g.Key,
-                    g =>
-                    {
-                        var initializationContext = new Context(processingContext.CompositionContext)
-                        {
-                            Identity = processingContext.Identity,
-                        };
-                        initializationContext.SetInitialData(
-                            g.Select(entry => new EntityInfo(entry.Entity) { ChangeState = entry.ChangeState }));
-                        return dataContextFactory.CreateDataContext(g.Key, initializationContext);
-                    });
-            }
-
-            /// <summary>
-            /// Gets the data context for the provided entity type.
-            /// </summary>
-            /// <param name="entityType">Type of the entity.</param>
-            /// <returns>
-            /// The data context.
-            /// </returns>
-            public IDataContext GetDataContext(Type entityType)
-            {
-                var dataStoreName = this.dataStoreSelector.GetDataStoreName(entityType, this.processingContext);
-                var dataContext = this.dataContexts.TryGetValue(dataStoreName);
-                if (dataContext == null)
-                {
-                    dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.processingContext);
-                    this.dataContexts.Add(dataStoreName, dataContext);
-                }
-
-                return dataContext;
-            }
-
-            /// <summary>
-            /// Persists the changes asynchronously.
-            /// </summary>
-            /// <param name="cancellationToken">Optional. The cancellation token.</param>
-            /// <returns>
-            /// An asynchronous result.
-            /// </returns>
-            public async Task PersistChangesAsync(CancellationToken cancellationToken = default)
-            {
-                foreach (var dataContextEntry in this.dataContexts)
-                {
-                    var dataContext = dataContextEntry.Value;
-                    await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-                }
-            }
-
-            /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-            public void Dispose()
-            {
-                foreach (var dataContext in this.dataContexts.Values)
-                {
-                    dataContext.Dispose();
-                }
-            }
         }
     }
 }
