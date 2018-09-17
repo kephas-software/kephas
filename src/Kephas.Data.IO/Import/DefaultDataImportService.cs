@@ -107,7 +107,7 @@ namespace Kephas.Data.IO.Import
             IDataImportContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context.SourceDataContext, nameof(context.SourceDataContext));
+            Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
 
             var result = context.EnsureResult();
             result.OperationState = DataIOOperationState.InProgress;
@@ -166,14 +166,9 @@ namespace Kephas.Data.IO.Import
             private readonly IDataStreamReadService dataSourceReader;
 
             /// <summary>
-            /// The source data context.
+            /// The data space.
             /// </summary>
-            private readonly IDataContext sourceDataContext;
-
-            /// <summary>
-            /// The target data context.
-            /// </summary>
-            private readonly IDataContext targetDataContext;
+            private readonly IDataSpace dataSpace;
 
             /// <summary>
             /// The conversion service.
@@ -215,8 +210,7 @@ namespace Kephas.Data.IO.Import
                 this.dataSource = dataSource;
                 this.context = context;
                 this.dataSourceReader = dataSourceReader;
-                this.sourceDataContext = context.SourceDataContext;
-                this.targetDataContext = context.TargetDataContext;
+                this.dataSpace = context.DataSpace;
                 this.conversionService = conversionService;
                 this.projectedTypeResolver = projectedTypeResolver;
                 this.behaviorFactories = behaviorFactories;
@@ -335,6 +329,7 @@ namespace Kephas.Data.IO.Import
 
                 foreach (var importEntry in importEntries)
                 {
+                    IDataContext targetDataContext = null;
                     try
                     {
                         // Convert the entity to import
@@ -347,6 +342,7 @@ namespace Kephas.Data.IO.Import
 
                         cancellationToken.ThrowIfCancellationRequested();
                         var targetEntry = await this.ConvertEntityAsync(importEntry, cancellationToken).PreserveThreadContext();
+                        targetDataContext = targetEntry.DataContext ?? this.dataSpace[targetEntry.Entity.GetType()];
 
                         // Persist the converted entity
                         cancellationToken.ThrowIfCancellationRequested();
@@ -357,9 +353,9 @@ namespace Kephas.Data.IO.Import
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        var persistContext = new PersistChangesContext(this.targetDataContext);
+                        var persistContext = new PersistChangesContext(targetDataContext);
                         this.context.PersistChangesContextConfig?.Invoke(persistContext);
-                        await this.targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
+                        await targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
 
                         importEntry.AcceptChanges();
                         result.MergeMessage(new ImportEntitySuccessfulMessage(importEntry.Entity));
@@ -374,13 +370,13 @@ namespace Kephas.Data.IO.Import
                     }
                     catch (OperationCanceledException)
                     {
-                        this.targetDataContext.DiscardChanges();
+                        targetDataContext?.DiscardChanges();
                         throw;
                     }
                     catch (Exception ex)
                     {
                         result.MergeException(new ImportEntityException(importEntry.Entity, ex));
-                        this.targetDataContext.DiscardChanges();
+                        targetDataContext?.DiscardChanges();
                     }
                 }
             }
@@ -403,13 +399,15 @@ namespace Kephas.Data.IO.Import
                         changeState = ChangeState.AddedOrChanged;
                     }
 
-                    sourceEntityInfo = this.sourceDataContext.AttachEntity(sourceEntityInfo.Entity);
+                    var sourceDataContext = this.dataSpace[sourceEntityInfo.Entity.GetType(), this.context];
+                    sourceEntityInfo = sourceDataContext.AttachEntity(sourceEntityInfo.Entity);
                     sourceEntityInfo.ChangeState = changeState;
                 }
                 else
                 {
                     // the imported entity is the real entity. Set the change state as added or changed.
-                    sourceEntityInfo = this.sourceDataContext.AttachEntity(source);
+                    var sourceDataContext = this.dataSpace[source.GetType(), this.context];
+                    sourceEntityInfo = sourceDataContext.AttachEntity(source);
                     sourceEntityInfo.ChangeState = ChangeState.AddedOrChanged;
                 }
 
@@ -427,9 +425,7 @@ namespace Kephas.Data.IO.Import
             private async Task<IEntityInfo> ConvertEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityInfo.Entity;
-                var conversionContext = new DataConversionContextBuilder(this.conversionService)
-                    .WithSourceDataContext(this.sourceDataContext)
-                    .WithTargetDataContext(this.targetDataContext)
+                var conversionContext = new DataConversionContextBuilder(this.dataSpace, this.conversionService)
                     .WithRootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context))
                     .ConversionContext;
 
@@ -442,7 +438,8 @@ namespace Kephas.Data.IO.Import
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var targetEntity = conversionResult.Target;
-                var targetEntityInfo = this.targetDataContext.AttachEntity(targetEntity);
+                var targetDataContext = this.dataSpace[targetEntity.GetType(), this.context];
+                var targetEntityInfo = targetDataContext.AttachEntity(targetEntity);
 
                 // force the change of the entity change state only if
                 // * the target entity is not changed - or -

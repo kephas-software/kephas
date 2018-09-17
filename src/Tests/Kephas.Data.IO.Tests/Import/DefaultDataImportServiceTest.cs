@@ -46,6 +46,7 @@ namespace Kephas.Data.IO.Tests.Import
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
+            var dataSpace = this.CreateDataSpace<string, StringBuilder>(sourceDataContext, targetDataContext);
 
             var service = new DefaultDataImportService(reader, conversionService, resolver);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
@@ -53,10 +54,10 @@ namespace Kephas.Data.IO.Tests.Import
                 reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                     .Returns(Task.FromResult((object)"hello"));
 
-                conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
-                    .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget("kitty")));
+                conversionService.ConvertAsync("hello", Arg.Any<StringBuilder>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
+                    .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(sourceDataContext, targetDataContext);
+                var context = new DataImportContext(dataSpace);
                 var result = await service.ImportDataAsync(dataStream, context);
 
                 Assert.AreEqual(DataIOOperationState.CompletedSuccessfully, result.OperationState);
@@ -65,7 +66,7 @@ namespace Kephas.Data.IO.Tests.Import
             }
 
             Assert.AreEqual(1, changedTargetEntities.Count);
-            Assert.AreEqual("kitty", changedTargetEntities[0].Entity);
+            Assert.AreEqual("kitty", changedTargetEntities[0].Entity.ToString());
             Assert.AreEqual(ChangeState.AddedOrChanged, changedTargetEntities[0].ChangeState);
         }
 
@@ -80,6 +81,7 @@ namespace Kephas.Data.IO.Tests.Import
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
+            var dataSpace = this.CreateDataSpace<string, StringBuilder>(sourceDataContext, targetDataContext);
 
             var service = new DefaultDataImportService(reader, conversionService, resolver);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
@@ -88,9 +90,9 @@ namespace Kephas.Data.IO.Tests.Import
                     .Returns(Task.FromResult((object)"hello"));
 
                 conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
-                    .Returns(ci => Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget((string)ci.Arg<IDataConversionContext>()["entity"] == "hello" ? "mimi" : "kitty")));
+                    .Returns(ci => Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget((string)ci.Arg<IDataConversionContext>()["entity"] == "hello" ? new StringBuilder("mimi") : new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(sourceDataContext, targetDataContext)
+                var context = new DataImportContext(dataSpace)
                                   {
                                       DataConversionContextConfig = (e, ctx) => ctx["entity"] = e
                                   };
@@ -102,7 +104,7 @@ namespace Kephas.Data.IO.Tests.Import
             }
 
             Assert.AreEqual(1, changedTargetEntities.Count);
-            Assert.AreEqual("mimi", changedTargetEntities[0].Entity);
+            Assert.AreEqual("mimi", changedTargetEntities[0].Entity.ToString());
             Assert.AreEqual(ChangeState.AddedOrChanged, changedTargetEntities[0].ChangeState);
         }
 
@@ -115,6 +117,7 @@ namespace Kephas.Data.IO.Tests.Import
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext();
+            var dataSpace = this.CreateDataSpace<string, StringBuilder>(sourceDataContext, targetDataContext);
 
             var sb = new StringBuilder();
             var b1 = this.CreateBehaviorFactory(sb, "b1", Priority.Low);
@@ -127,9 +130,9 @@ namespace Kephas.Data.IO.Tests.Import
                     .Returns(Task.FromResult((object)"hello"));
 
                 conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
-                    .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget("kitty")));
+                    .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(sourceDataContext, targetDataContext);
+                var context = new DataImportContext(dataSpace);
                 var result = await service.ImportDataAsync(dataStream, context);
             }
 
@@ -211,6 +214,16 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var reader = Substitute.For<IDataStreamReadService>();
             return reader;
+        }
+
+        private IDataSpace CreateDataSpace<TSource, TTarget>(
+            IDataContext sourceDataContext,
+            IDataContext targetDataContext)
+        {
+            var dataSpace = Substitute.For<IDataSpace>();
+            dataSpace[typeof(TSource), Arg.Any<IContext>()].Returns(sourceDataContext);
+            dataSpace[typeof(TTarget), Arg.Any<IContext>()].Returns(targetDataContext);
+            return dataSpace;
         }
 
         private IDataContext CreateSourceDataContext()

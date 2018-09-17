@@ -11,7 +11,9 @@
 namespace Kephas.Data.Conversion
 {
     using System;
+    using System.Runtime.CompilerServices;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -19,6 +21,14 @@ namespace Kephas.Data.Conversion
     /// </summary>
     public interface IDataConversionContext : IContext
     {
+        /// <summary>
+        /// Gets the data space.
+        /// </summary>
+        /// <value>
+        /// The data space.
+        /// </value>
+        IDataSpace DataSpace { get; }
+
         /// <summary>
         /// Gets the data conversion service.
         /// </summary>
@@ -36,22 +46,6 @@ namespace Kephas.Data.Conversion
         bool ThrowOnError { get; set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="IDataContext"/> for the source object.
-        /// </summary>
-        /// <value>
-        /// The source data context.
-        /// </value>
-        IDataContext SourceDataContext { get; set; }
-
-        /// <summary>
-        /// Gets or sets a <see cref="IDataContext"/> for the target object.
-        /// </summary>
-        /// <value>
-        /// The target data context.
-        /// </value>
-        IDataContext TargetDataContext { get; set; }
-
-        /// <summary>
         /// Gets or sets the type of the root source.
         /// </summary>
         /// <value>
@@ -66,5 +60,43 @@ namespace Kephas.Data.Conversion
         /// The type of the root target.
         /// </value>
         Type RootTargetType { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IDataConversionContext"/>.
+    /// </summary>
+    public static class DataConversionContextExtensions
+    {
+        /// <summary>
+        /// Gets the data context for the provided entity type.
+        /// </summary>
+        /// <param name="conversionContext">The conversionContext to act on.</param>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IDataContext GetDataContext(this IDataConversionContext conversionContext, Type entityType)
+        {
+            Requires.NotNull(conversionContext, nameof(conversionContext));
+
+            return conversionContext.DataSpace[entityType, conversionContext];
+        }
+
+        /// <summary>
+        /// Gets the data context for the provided entity.
+        /// </summary>
+        /// <param name="conversionContext">The conversionContext to act on.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IDataContext GetDataContext(this IDataConversionContext conversionContext, object entity)
+        {
+            Requires.NotNull(conversionContext, nameof(conversionContext));
+
+            return conversionContext.DataSpace[entity.GetType(), conversionContext];
+        }
     }
 }

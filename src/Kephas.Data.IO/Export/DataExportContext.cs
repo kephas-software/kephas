@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// A data export context.
@@ -28,7 +29,9 @@ namespace Kephas.Data.IO.Export
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="output">The export output.</param>
-        public DataExportContext(ClientQuery query, DataStream output)
+        /// <param name="operationContext">Optional. The parent operation context.</param>
+        public DataExportContext(ClientQuery query, DataStream output, IContext operationContext = null)
+            : base(operationContext)
         {
             Requires.NotNull(query, nameof(query));
             Requires.NotNull(output, nameof(output));

@@ -242,17 +242,18 @@ namespace Kephas.Data.Conversion
             IDataConversionContext conversionContext,
             CancellationToken cancellationToken)
         {
-            if (target != null || conversionContext.TargetDataContext == null)
+            if (target != null)
             {
                 return target;
             }
 
-            var sourceEntityInfo = conversionContext.SourceDataContext?.GetEntityInfo(source);
+            var sourceDataContext = conversionContext.GetDataContext(source);
+            var sourceEntityInfo = sourceDataContext?.GetEntityInfo(source);
             var sourceId = sourceEntityInfo?.EntityId;
             var sourceChangeState = sourceEntityInfo?.ChangeState;
 
-            var targetDataContext = conversionContext.TargetDataContext;
             targetType = conversionContext.RootTargetType?.GetTypeInfo() ?? targetType;
+            var targetDataContext = conversionContext.GetDataContext(targetType);
             target = await this.TryResolveTargetEntityAsync(
                          targetDataContext,
                          targetType,

@@ -10,14 +10,13 @@
 
 namespace Kephas.Data.IO.Tests.Initialization
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
 
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Initialization;
-    using Kephas.Services;
 
     using NSubstitute;
 
@@ -37,11 +36,10 @@ namespace Kephas.Data.IO.Tests.Initialization
         {
             private readonly IEnumerable<string> filePaths;
 
-            public InitialDataHandler(IDataImportService dataImportService = null, Func<IContext, IDataContext> sourceDataContextProvider = null, Func<IContext, IDataContext> targetDataContextProvider = null, IEnumerable<string> filePaths = null)
+            public InitialDataHandler(IDataImportService dataImportService = null, IDataSpace dataSpace = null, IEnumerable<string> filePaths = null)
                 : base(
                     dataImportService ?? Substitute.For<IDataImportService>(),
-                    sourceDataContextProvider ?? (ctx => Substitute.For<IDataContext>()),
-                    targetDataContextProvider ?? (ctx => Substitute.For<IDataContext>()))
+                    new ExportFactory<IDataSpace>(() => dataSpace ?? Substitute.For<IDataSpace>()))
             {
                 this.filePaths = filePaths;
             }

@@ -19,6 +19,7 @@ namespace Kephas.Data.IO.Tests.Export
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Export;
+    using Kephas.Services;
 
     using NSubstitute;
 
@@ -43,7 +44,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream);
+                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream, this.GetOperationContext());
                 await service.ExportDataAsync(context);
             }
 
@@ -63,7 +64,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream) { ThrowOnNotFound = true };
+                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream, this.GetOperationContext()) { ThrowOnNotFound = true };
                 Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
             }
         }
@@ -124,6 +125,12 @@ namespace Kephas.Data.IO.Tests.Export
                 var context = new DataExportContext(new object[0], dataStream) { ThrowOnNotFound = true };
                 Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
             }
+        }
+
+        public IContext GetOperationContext()
+        {
+            var context = Substitute.For<IContext>();
+            return context;
         }
     }
 }

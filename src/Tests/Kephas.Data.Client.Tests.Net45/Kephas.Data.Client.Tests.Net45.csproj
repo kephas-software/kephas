@@ -62,9 +62,6 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Client.Tests\Queries\ClientQueryExecutorBaseTest.cs">
-      <Link>Queries\ClientQueryExecutorBaseTest.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\DefaultClientQueryConverterTest.cs">
       <Link>Queries\Conversion\DefaultClientQueryConverterTest.cs</Link>
     </Compile>
@@ -76,6 +73,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverterTest.cs">
       <Link>Queries\Conversion\ExpressionConverters\SubstringOfExpressionConverterTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\DefaultClientQueryExecutorTest.cs">
+      <Link>Queries\DefaultClientQueryExecutorTest.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

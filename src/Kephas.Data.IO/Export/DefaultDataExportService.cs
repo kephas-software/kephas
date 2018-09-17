@@ -113,7 +113,7 @@ namespace Kephas.Data.IO.Export
 
             if (context.Query != null)
             {
-                var queryExecutionContext = new ClientQueryExecutionContext(this.compositionContext);
+                var queryExecutionContext = new ClientQueryExecutionContext(context);
                 context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
                 data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
                            .PreserveThreadContext();

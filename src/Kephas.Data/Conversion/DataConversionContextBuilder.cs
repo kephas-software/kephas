@@ -14,6 +14,7 @@ namespace Kephas.Data.Conversion
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Services;
 
     /// <summary>
     /// A data conversion context builder.
@@ -34,12 +35,14 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContextBuilder"/> class.
         /// </summary>
+        /// <param name="dataSpace">The data space.</param>
         /// <param name="conversionService">The data conversion service.</param>
-        public DataConversionContextBuilder(IDataConversionService conversionService)
+        public DataConversionContextBuilder(IDataSpace dataSpace, IDataConversionService conversionService)
         {
+            Requires.NotNull(dataSpace, nameof(dataSpace));
             Requires.NotNull(conversionService, nameof(conversionService));
 
-            this.ConversionContext = new DataConversionContext(conversionService);
+            this.ConversionContext = new DataConversionContext(conversionService, dataSpace);
         }
 
         /// <summary>
@@ -70,22 +73,6 @@ namespace Kephas.Data.Conversion
         }
 
         /// <summary>
-        /// Uses the provided target data context.
-        /// </summary>
-        /// <param name="targetDataContext">The target <see cref="IDataContext"/>.</param>
-        /// <returns>
-        /// This <see cref="DataConversionContextBuilder"/>.
-        /// </returns>
-        public DataConversionContextBuilder WithTargetDataContext(IDataContext targetDataContext)
-        {
-            Requires.NotNull(targetDataContext, nameof(targetDataContext));
-
-            this.ConversionContext.TargetDataContext = targetDataContext;
-
-            return this;
-        }
-
-        /// <summary>
         /// Uses the provided type for the target root object if the conversion needs to create or identify it.
         /// </summary>
         /// <param name="rootTargetType">The type of the target root object.</param>
@@ -97,22 +84,6 @@ namespace Kephas.Data.Conversion
             Requires.NotNull(rootTargetType, nameof(rootTargetType));
 
             this.ConversionContext.RootTargetType = rootTargetType;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Uses the provided source data context.
-        /// </summary>
-        /// <param name="sourceDataContext">The source <see cref="IDataContext"/>.</param>
-        /// <returns>
-        /// This <see cref="DataConversionContextBuilder"/>.
-        /// </returns>
-        public DataConversionContextBuilder WithSourceDataContext(IDataContext sourceDataContext)
-        {
-            Requires.NotNull(sourceDataContext, nameof(sourceDataContext));
-
-            this.ConversionContext.SourceDataContext = sourceDataContext;
 
             return this;
         }

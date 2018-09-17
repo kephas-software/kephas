@@ -15,13 +15,14 @@ namespace Kephas.Data.Endpoints
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Client.Capabilities;
     using Kephas.Data.Conversion;
-    using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
     using Kephas.Model.Services;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -29,11 +30,6 @@ namespace Kephas.Data.Endpoints
     /// </summary>
     public class PersistChangesHandler : MessageHandlerBase<PersistChangesMessage, PersistChangesResponseMessage>
     {
-        /// <summary>
-        /// The entity data context provider.
-        /// </summary>
-        private readonly IDataContextFactory dataContextFactory;
-
         /// <summary>
         /// The data conversion service.
         /// </summary>
@@ -45,32 +41,28 @@ namespace Kephas.Data.Endpoints
         private readonly IProjectedTypeResolver projectedTypeResolver;
 
         /// <summary>
-        /// The data store selector.
+        /// The data space factory.
         /// </summary>
-        private readonly IDataStoreSelector dataStoreSelector;
+        private readonly IExportFactory<IDataSpace> dataSpaceFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistChangesHandler"/> class.
         /// </summary>
-        /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataConversionService">The data conversion service.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
-        /// <param name="dataStoreSelector">The data store selector.</param>
+        /// <param name="dataSpaceFactory">The data space factory.</param>
         public PersistChangesHandler(
-            IDataContextFactory dataContextFactory,
             IDataConversionService dataConversionService,
             IProjectedTypeResolver projectedTypeResolver,
-            IDataStoreSelector dataStoreSelector)
+            IExportFactory<IDataSpace> dataSpaceFactory)
         {
-            Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
             Requires.NotNull(dataConversionService, nameof(dataConversionService));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
-            Requires.NotNull(dataStoreSelector, nameof(dataStoreSelector));
+            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
-            this.dataContextFactory = dataContextFactory;
             this.dataConversionService = dataConversionService;
             this.projectedTypeResolver = projectedTypeResolver;
-            this.dataStoreSelector = dataStoreSelector;
+            this.dataSpaceFactory = dataSpaceFactory;
         }
 
         /// <summary>
@@ -92,12 +84,11 @@ namespace Kephas.Data.Endpoints
                 return response;
             }
 
-            using (var dataContextContainer = new DataSpace(
-                this.dataContextFactory,
-                this.dataStoreSelector,
-                context,
-                message.EntityInfos))
+            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue())
             {
+                var dataSpaceContext = new Context(context).WithInitialData(message.EntityInfos);
+                dataSpace.Initialize(dataSpaceContext);
+
                 // convert to entities
                 foreach (var clientEntityInfo in message.EntityInfos.Where(e => e.Entity != null))
                 {
@@ -108,15 +99,14 @@ namespace Kephas.Data.Endpoints
 
                     if (clientEntityType != domainEntityType)
                     {
-                        var clientDataContext = dataContextContainer[clientEntityType];
-                        var domainDataContext = dataContextContainer[domainEntityType];
-                        var conversionContext = new DataConversionContext(this.dataConversionService, clientDataContext, domainDataContext, rootTargetType: domainEntityType);
+                        var conversionContext = new DataConversionContext(this.dataConversionService, dataSpace, rootTargetType: domainEntityType);
                         var result = await this.dataConversionService.ConvertAsync(clientEntity, (object)null, conversionContext, token).PreserveThreadContext();
                         mappings.Add((clientEntityInfo, result.Target));
 
                         // deleted entities are marked as deleted
                         if (clientEntityInfo.ChangeState == ChangeState.Deleted)
                         {
+                            var domainDataContext = dataSpace[domainEntityType, context];
                             var changeStateEntity = domainDataContext.GetEntityInfo(result.Target);
                             changeStateEntity.ChangeState = ChangeState.Deleted;
                         }
@@ -138,16 +128,16 @@ namespace Kephas.Data.Endpoints
                 }
 
                 // prepare the persistence
-                await this.PrePersistChangesAsync(response, mappings, dataContextContainer, cancellationToken: token).PreserveThreadContext();
+                await this.PrePersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
 
                 // save changes
-                foreach (var dataContext in dataContextContainer)
+                foreach (var dataContext in dataSpace)
                 {
                     await dataContext.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
                 }
 
                 // finalize the persistence
-                await this.PostPersistChangesAsync(response, mappings, dataContextContainer, cancellationToken: token).PreserveThreadContext();
+                await this.PostPersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
             }
 
             foreach (var entry in response.EntityInfos)
@@ -171,7 +161,7 @@ namespace Kephas.Data.Endpoints
         protected virtual Task PrePersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataSpace dataSpace,
+            IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
@@ -190,7 +180,7 @@ namespace Kephas.Data.Endpoints
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
             IList<(ClientEntityInfo clientEntry, object entity)> mappings,
-            DataSpace dataSpace,
+            IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             // convert back to client entities
@@ -198,8 +188,7 @@ namespace Kephas.Data.Endpoints
             {
                 if (clientEntityInfo.ChangeState != ChangeState.Deleted && clientEntityInfo.Entity != entity)
                 {
-                    var domainDataContext = dataSpace[entity.GetType()];
-                    var conversionContext = this.CreateDataConversionContextForResponse(domainDataContext, null /* TODO add an InMemoryDataContext */);
+                    var conversionContext = this.CreateDataConversionContextForResponse(dataSpace);
                     var result = await this.dataConversionService.ConvertAsync(entity, clientEntityInfo.Entity, conversionContext, cancellationToken).PreserveThreadContext();
                 }
             }
@@ -220,17 +209,13 @@ namespace Kephas.Data.Endpoints
         /// <summary>
         /// Creates data conversion context for response.
         /// </summary>
-        /// <param name="sourceDataContext">Context for the source data.</param>
-        /// <param name="targetDataContext">Context for the target data.</param>
+        /// <param name="dataSpace">Manager for data context.</param>
         /// <returns>
         /// The new data conversion context for response.
         /// </returns>
-        protected virtual IDataConversionContext CreateDataConversionContextForResponse(IDataContext sourceDataContext, IDataContext targetDataContext)
+        protected virtual IDataConversionContext CreateDataConversionContextForResponse(IDataSpace dataSpace)
         {
-            var conversionContext = new DataConversionContext(
-                this.dataConversionService,
-                sourceDataContext,
-                targetDataContext);
+            var conversionContext = new DataConversionContext(this.dataConversionService, dataSpace);
             return conversionContext;
         }
     }

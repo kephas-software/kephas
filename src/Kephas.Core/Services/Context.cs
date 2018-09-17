@@ -40,6 +40,30 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
+        /// <param name="parentContext">The parent context.</param>
+        /// <param name="isThreadSafe">Optional. <c>true</c> if this object is thread safe when working
+        ///                            with the internal dictionary, <c>false</c> otherwise. Default is
+        ///                            <c>false</c>.</param>
+        /// <param name="merge">Optional. True to merge the parent context into the new context.</param>
+        public Context(IContext parentContext, bool isThreadSafe = false, bool merge = false)
+            : this(parentContext?.CompositionContext, isThreadSafe)
+        {
+            if (merge)
+            {
+                if (parentContext != null)
+                {
+                    this.Merge(parentContext);
+                }
+            }
+            else
+            {
+                this.Identity = parentContext?.Identity;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// </summary>
         /// <param name="ambientServices">The ambient services (optional). If not provided,
         /// <see cref="M:AmbientServices.Instance"/> will be considered.
         /// </param>

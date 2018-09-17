@@ -13,20 +13,22 @@ namespace Kephas.Data
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Dynamic;
+    using Kephas.Services;
 
     /// <summary>
     /// Interface for data context container.
     /// </summary>
-    public interface IDataSpace : IExpando, IReadOnlyCollection<IDataContext>, IDisposable
+    [AppServiceContract]
+    public interface IDataSpace : IContext, IReadOnlyCollection<IDataContext>, IDisposable, IInitializable
     {
         /// <summary>
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        IDataContext this[Type entityType] { get; }
+        IDataContext this[Type entityType, IContext context = null] { get; }
     }
 }

@@ -23,12 +23,11 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="dataContext">The data context.</param>
         public DataOperationContext(IDataContext dataContext)
-            : base(dataContext?.CompositionContext)
+            : base(dataContext)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
             this.DataContext = dataContext;
-            this.Identity = dataContext?.Identity;
         }
 
         /// <summary>

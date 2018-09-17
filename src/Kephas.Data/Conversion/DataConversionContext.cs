@@ -21,40 +21,36 @@ namespace Kephas.Data.Conversion
     public class DataConversionContext : Context, IDataConversionContext
     {
         /// <summary>
-        /// Context for the source data.
-        /// </summary>
-        private IDataContext sourceDataContext;
-
-        /// <summary>
-        /// Context for the target data.
-        /// </summary>
-        private IDataContext targetDataContext;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.
         /// </summary>
         /// <param name="conversionService">The conversion service.</param>
-        /// <param name="sourceDataContext">The source data context (optional).</param>
-        /// <param name="targetDataContext">The target data context (optional).</param>
-        /// <param name="rootSourceType">The type of the source root object (optional).</param>
-        /// <param name="rootTargetType">The type of the target root object (optional).</param>
+        /// <param name="dataSpace">The data space.</param>
+        /// <param name="rootSourceType">Optional. The type of the source root object.</param>
+        /// <param name="rootTargetType">Optional. The type of the target root object.</param>
         public DataConversionContext(
-                IDataConversionService conversionService,
-                IDataContext sourceDataContext = null,
-                IDataContext targetDataContext = null,
-                Type rootSourceType = null,
-                Type rootTargetType = null)
+            IDataConversionService conversionService,
+            IDataSpace dataSpace,
+            Type rootSourceType = null,
+            Type rootTargetType = null)
             : base(conversionService?.CompositionContext)
         {
             Requires.NotNull(conversionService, nameof(conversionService));
+            Requires.NotNull(dataSpace, nameof(dataSpace));
 
+            this.DataSpace = dataSpace;
             this.DataConversionService = conversionService;
-            this.SourceDataContext = sourceDataContext;
-            this.TargetDataContext = targetDataContext;
             this.RootSourceType = rootSourceType;
             this.RootTargetType = rootTargetType;
             this.ThrowOnError = true;
         }
+
+        /// <summary>
+        /// Gets the data space.
+        /// </summary>
+        /// <value>
+        /// The data space.
+        /// </value>
+        public IDataSpace DataSpace { get; }
 
         /// <summary>
         /// Gets the data conversion service.
@@ -71,44 +67,6 @@ namespace Kephas.Data.Conversion
         /// <c>true</c> to throw an error on exceptions, <c>false</c> if not.
         /// </value>
         public bool ThrowOnError { get; set; }
-
-        /// <summary>
-        /// Gets or sets a <see cref="IDataContext"/> for the source object.
-        /// </summary>
-        /// <value>
-        /// The source data context.
-        /// </value>
-        public IDataContext SourceDataContext
-        {
-            get => this.sourceDataContext;
-            set
-            {
-                this.sourceDataContext = value;
-                if (this.Identity == null && this.sourceDataContext != null)
-                {
-                    this.Identity = this.sourceDataContext.Identity;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a <see cref="IDataContext"/> for the target object.
-        /// </summary>
-        /// <value>
-        /// The target data context.
-        /// </value>
-        public IDataContext TargetDataContext
-        {
-            get => this.targetDataContext;
-            set
-            {
-                this.targetDataContext = value;
-                if (this.Identity == null && this.targetDataContext != null)
-                {
-                    this.Identity = this.targetDataContext.Identity;
-                }
-            }
-        }
 
         /// <summary>
         /// Gets or sets the type of the source root object.

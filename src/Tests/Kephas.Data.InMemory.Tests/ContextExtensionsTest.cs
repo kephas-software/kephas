@@ -54,9 +54,9 @@ namespace Kephas.Data.InMemory.Tests
             var context = new TestContext();
             context.WithInitialData(new[]
                                        {
-                                           Tuple.Create<object, ChangeState>("ana", ChangeState.Added),
-                                           Tuple.Create<object, ChangeState>("are", ChangeState.Changed),
-                                           Tuple.Create<object, ChangeState>("mere", ChangeState.NotChanged),
+                                           ((object)"ana", ChangeState.Added),
+                                           ((object)"are", ChangeState.Changed),
+                                           ((object)"mere", ChangeState.NotChanged),
                                        });
 
             var initialData = context.InitialData();
@@ -64,11 +64,11 @@ namespace Kephas.Data.InMemory.Tests
             Assert.AreEqual(3, initialData.Count());
 
             var initialDataList = initialData.ToList();
-            Assert.AreEqual("ana", initialDataList[0].Entity);
+            Assert.AreEqual("ana", (string)initialDataList[0].Entity);
             Assert.AreEqual(ChangeState.Added, initialDataList[0].ChangeState);
-            Assert.AreEqual("are", initialDataList[1].Entity);
+            Assert.AreEqual("are", (string)initialDataList[1].Entity);
             Assert.AreEqual(ChangeState.Changed, initialDataList[1].ChangeState);
-            Assert.AreEqual("mere", initialDataList[2].Entity);
+            Assert.AreEqual("mere", (string)initialDataList[2].Entity);
             Assert.AreEqual(ChangeState.NotChanged, initialDataList[2].ChangeState);
         }
 

@@ -17,13 +17,13 @@ namespace Kephas.Data.IO.Initialization
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Data.Initialization;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -35,20 +35,16 @@ namespace Kephas.Data.IO.Initialization
         /// Initializes a new instance of the <see cref="InitialDataIOHandlerBase"/> class.
         /// </summary>
         /// <param name="dataImportService">The data import service.</param>
-        /// <param name="sourceDataContextProvider">Source data context provider.</param>
-        /// <param name="targetDataContextProvider">Target data context provider.</param>
+        /// <param name="dataSpaceFactory">The data space factory.</param>
         protected InitialDataIOHandlerBase(
             IDataImportService dataImportService,
-            Func<IContext, IDataContext> sourceDataContextProvider,
-            Func<IContext, IDataContext> targetDataContextProvider)
+            IExportFactory<IDataSpace> dataSpaceFactory)
         {
             Requires.NotNull(dataImportService, nameof(dataImportService));
-            Requires.NotNull(sourceDataContextProvider, nameof(sourceDataContextProvider));
-            Requires.NotNull(targetDataContextProvider, nameof(targetDataContextProvider));
+            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
             this.DataImportService = dataImportService;
-            this.SourceDataContextProvider = sourceDataContextProvider;
-            this.TargetDataContextProvider = targetDataContextProvider;
+            this.DataSpaceFactory = dataSpaceFactory;
         }
 
         /// <summary>
@@ -68,20 +64,12 @@ namespace Kephas.Data.IO.Initialization
         public IDataImportService DataImportService { get; }
 
         /// <summary>
-        /// Gets the source data context provider.
+        /// Gets the data space factory.
         /// </summary>
         /// <value>
-        /// The source data context provider.
+        /// The data space factory.
         /// </value>
-        protected Func<IContext, IDataContext> SourceDataContextProvider { get; }
-
-        /// <summary>
-        /// Gets the target data context provider.
-        /// </summary>
-        /// <value>
-        /// The target data context provider.
-        /// </value>
-        protected Func<IContext, IDataContext> TargetDataContextProvider { get; }
+        public IExportFactory<IDataSpace> DataSpaceFactory { get; }
 
         /// <summary>
         /// Creates the initial data asynchronously.
@@ -125,10 +113,10 @@ namespace Kephas.Data.IO.Initialization
         protected virtual async Task<IDataIOResult> ImportDataFileAsync(IInitialDataContext initialDataContext, string dataFilePath, CancellationToken cancellationToken)
         {
             using (var dataSource = this.CreateDataSource(dataFilePath))
-            using (var sourceDataContext = this.SourceDataContextProvider(initialDataContext))
-            using (var targetDataContext = this.TargetDataContextProvider(initialDataContext))
+            using (var dataSpace = this.DataSpaceFactory.CreateExportedValue())
             {
-                var importContext = this.CreateDataImportContext(initialDataContext, sourceDataContext, targetDataContext);
+                dataSpace.Initialize(initialDataContext);
+                var importContext = this.CreateDataImportContext(initialDataContext, dataSpace);
 
                 try
                 {
@@ -155,20 +143,15 @@ namespace Kephas.Data.IO.Initialization
         /// Creates the data import context.
         /// </summary>
         /// <param name="initialDataContext">Context for the initial data.</param>
-        /// <param name="sourceDataContext">Context for the source data.</param>
-        /// <param name="targetDataContext">Context for the target data.</param>
+        /// <param name="dataSpace">The data space.</param>
         /// <returns>
         /// The new data import context.
         /// </returns>
         protected virtual IDataImportContext CreateDataImportContext(
             IInitialDataContext initialDataContext,
-            IDataContext sourceDataContext,
-            IDataContext targetDataContext)
+            IDataSpace dataSpace)
         {
-            return new DataImportContext(sourceDataContext, targetDataContext)
-                       {
-                           Identity = initialDataContext?.Identity
-                       };
+            return new DataImportContext(dataSpace, initialDataContext);
         }
 
         /// <summary>

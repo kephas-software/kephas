@@ -15,6 +15,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using Kephas.Collections;
     using Kephas.Composition;
@@ -124,13 +125,13 @@ namespace Kephas.Data.Client.Queries.Conversion
             var orderExpressions = this.ConvertOrder(queryEntityType, queryClientEntityType, clientQuery.Order)?.ToList();
             if (orderExpressions != null && orderExpressions.Count > 0)
             {
-                Func<LinqExpression, Type> extractKeySelectorType = e => e.Type.GetTypeInfo().GenericTypeArguments[1];
+                Type ExtractKeySelectorType(LinqExpression e) => e.Type.GetTypeInfo().GenericTypeArguments[1];
 
                 var firstOrder = orderExpressions[0];
                 var orderByGenericMethod = firstOrder.op == AscExpressionConverter.Operator
                                         ? QueryableMethods.QueryableOrderByGeneric
                                         : QueryableMethods.QueryableOrderByDescendingGeneric;
-                var orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, extractKeySelectorType(firstOrder.expression));
+                var orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, ExtractKeySelectorType(firstOrder.expression));
                 queryable = (IQueryable)orderByMethod.Call(null, queryable, firstOrder.expression);
 
                 foreach (var nextOrder in orderExpressions.Skip(1))
@@ -138,7 +139,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                     orderByGenericMethod = nextOrder.op == AscExpressionConverter.Operator
                                                    ? QueryableMethods.QueryableThenByGeneric
                                                    : QueryableMethods.QueryableThenByDescendingGeneric;
-                    orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, extractKeySelectorType(nextOrder.expression));
+                    orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, ExtractKeySelectorType(nextOrder.expression));
                     queryable = (IQueryable)orderByMethod.Call(null, queryable, nextOrder.expression);
                 }
             }

@@ -16,16 +16,15 @@ namespace Kephas.Data
     using System.Linq;
 
     using Kephas.Collections;
-    using Kephas.Data.Capabilities;
+    using Kephas.Composition;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Services;
 
     /// <summary>
     /// Container class for data contexts indexed by contained entity types.
     /// </summary>
-    public class DataSpace : Expando, IDataSpace
+    public class DataSpace : Context, IDataSpace
     {
         /// <summary>
         /// The data context factory.
@@ -38,80 +37,72 @@ namespace Kephas.Data
         private readonly IDataStoreSelector dataStoreSelector;
 
         /// <summary>
-        /// Context for the processing.
+        /// Context for the operation.
         /// </summary>
-        private readonly IContext context;
+        private IContext operationContext;
 
         /// <summary>
-        /// The data contexts.
+        /// The data contexts' map.
         /// </summary>
-        private readonly IDictionary<string, IDataContext> dataContexts;
+        private IDictionary<string, IDataContext> dataContextMap = new Dictionary<string, IDataContext>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSpace"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
         /// <param name="dataStoreSelector">The data store selector.</param>
-        /// <param name="context">Optional. Context for the data processing.</param>
-        /// <param name="entityInfos">Optional. The entity infos for initial data.</param>
         public DataSpace(
+            ICompositionContext compositionContext,
+            IDataContextFactory dataContextFactory,
+            IDataStoreSelector dataStoreSelector)
+            : this(compositionContext, dataContextFactory, dataStoreSelector, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSpace"/> class.
+        /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="dataContextFactory">The data context factory.</param>
+        /// <param name="dataStoreSelector">The data store selector.</param>
+        /// <param name="isThreadSafe">True if this object is thread safe.</param>
+        protected DataSpace(
+            ICompositionContext compositionContext,
             IDataContextFactory dataContextFactory,
             IDataStoreSelector dataStoreSelector,
-            IContext context = null,
-            IEnumerable<IChangeStateTrackableEntityInfo> entityInfos = null)
+            bool isThreadSafe)
+            : base(compositionContext, isThreadSafe)
         {
             Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
             Requires.NotNull(dataStoreSelector, nameof(dataStoreSelector));
 
             this.dataContextFactory = dataContextFactory;
             this.dataStoreSelector = dataStoreSelector;
-            this.context = context;
-            this.dataContexts = entityInfos == null
-                                    ? new Dictionary<string, IDataContext>()
-                                    : entityInfos
-                                        .GroupBy(e => this.dataStoreSelector.GetDataStoreName(e.Entity.GetType(), this.context), e => e)
-                                        .ToDictionary(
-                                            g => g.Key,
-                                            g =>
-                                                {
-                                                    var initializationContext =
-                                                        new Context(context?.CompositionContext)
-                                                        {
-                                                            Identity = context?.Identity,
-                                                        };
-                                                    initializationContext.WithInitialData(
-                                                        g.Select(
-                                                            entry => new EntityInfo(entry.Entity)
-                                                            {
-                                                                ChangeState = entry.ChangeState
-                                                            }));
-                                                    return dataContextFactory.CreateDataContext(
-                                                        g.Key,
-                                                        initializationContext);
-                                                });
         }
 
         /// <summary>Gets the number of elements in the collection.</summary>
         /// <returns>The number of elements in the collection. </returns>
-        public int Count => this.dataContexts.Count;
+        public int Count => this.dataContextMap.Count;
 
         /// <summary>
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        public IDataContext this[Type entityType]
+        public virtual IDataContext this[Type entityType, IContext context = null]
         {
             get
             {
-                var dataStoreName = this.dataStoreSelector.GetDataStoreName(entityType, this.context);
-                var dataContext = this.dataContexts.TryGetValue(dataStoreName);
+                var dataStoreName = this.dataStoreSelector.GetDataStoreName(entityType, this.operationContext);
+                var dataContext = this.dataContextMap.TryGetValue(dataStoreName);
                 if (dataContext == null)
                 {
-                    dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.context);
-                    this.dataContexts.Add(dataStoreName, dataContext);
+                    dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.operationContext);
+                    this.dataContextMap.Add(dataStoreName, dataContext);
                 }
 
                 return dataContext;
@@ -119,21 +110,16 @@ namespace Kephas.Data
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
-            foreach (var dataContext in this.dataContexts.Values)
-            {
-                dataContext.Dispose();
-            }
-
-            this.dataContexts.Clear();
+            this.ClearDataContextMap();
         }
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<IDataContext> GetEnumerator()
         {
-            return this.dataContexts.Values.GetEnumerator();
+            return this.dataContextMap.Values.GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -141,6 +127,52 @@ namespace Kephas.Data
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        public virtual void Initialize(IContext context = null)
+        {
+            this.operationContext = context;
+            if (this.Identity == null)
+            {
+                this.Identity = context?.Identity;
+            }
+
+            this.ClearDataContextMap();
+            var entityInfos = context?.InitialData();
+            if (entityInfos != null)
+            {
+                this.dataContextMap = entityInfos
+                                          .GroupBy(e => this.dataStoreSelector.GetDataStoreName(e.Entity.GetType(), this.operationContext), e => e)
+                                          .ToDictionary(
+                                              g => g.Key,
+                                              g =>
+                                                  {
+                                                      var initializationContext = new Context(this.CompositionContext)
+                                                                                      {
+                                                                                          Identity = this.Identity,
+                                                                                      }.WithInitialData(g);
+                                                      return this.dataContextFactory.CreateDataContext(
+                                                          g.Key,
+                                                          initializationContext);
+                                                  });
+            }
+        }
+
+        /// <summary>
+        /// Clears the data context map.
+        /// </summary>
+        protected virtual void ClearDataContextMap()
+        {
+            foreach (var dataContext in this.dataContextMap.Values)
+            {
+                dataContext.Dispose();
+            }
+
+            this.dataContextMap.Clear();
         }
     }
 }

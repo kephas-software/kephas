@@ -14,6 +14,7 @@ namespace Kephas.Data.IO.Tests.Initialization
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Initialization;
@@ -56,13 +57,17 @@ namespace Kephas.Data.IO.Tests.Initialization
         {
             private readonly IEnumerable<string> fileNames;
 
-            public AssemblyEmbeddedInitialDataHandler(IDataImportService dataImportService = null, Func<IContext, IDataContext> sourceDataContextProvider = null, Func<IContext, IDataContext> targetDataContextProvider = null, IEnumerable<string> fileNames = null)
+            public AssemblyEmbeddedInitialDataHandler(IDataImportService dataImportService = null, IDataSpace dataSpace = null, IEnumerable<string> fileNames = null)
                 : base(
                     dataImportService ?? Substitute.For<IDataImportService>(),
-                    sourceDataContextProvider ?? (ctx => Substitute.For<IDataContext>()),
-                    targetDataContextProvider ?? (ctx => Substitute.For<IDataContext>()))
+                    new ExportFactory<IDataSpace>(() => dataSpace ?? GetDataSpace()))
             {
                 this.fileNames = fileNames;
+            }
+
+            private static IDataSpace GetDataSpace()
+            {
+                return Substitute.For<IDataSpace>();
             }
 
             protected override IEnumerable<string> GetDataFileNames()

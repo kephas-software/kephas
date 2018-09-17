@@ -84,10 +84,7 @@ namespace Kephas.Data.Endpoints
             QueryMessage message,
             IMessageProcessingContext context)
         {
-            var executionContext = new ClientQueryExecutionContext(this.compositionContext)
-                                       {
-                                           Identity = context.Identity
-                                       };
+            var executionContext = new ClientQueryExecutionContext(context);
             executionContext.Merge(message.Options);
             return executionContext;
         }

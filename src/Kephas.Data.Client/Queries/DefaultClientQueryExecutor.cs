@@ -17,43 +17,61 @@ namespace Kephas.Data.Client.Queries
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
     using Kephas.Data.Linq;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Model.Services;
     using Kephas.Reflection;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for client query executors.
     /// </summary>
-    public abstract class ClientQueryExecutorBase : IClientQueryExecutor
+    [OverridePriority(Priority.Low)]
+    public class DefaultClientQueryExecutor : IClientQueryExecutor
     {
         /// <summary>
         /// Gets the generic method of <see cref="ExecuteQueryAsync{TClientEntity,TEntity}"/>.
         /// </summary>
         private static readonly MethodInfo ExecuteQueryAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(
-                _ => ((ClientQueryExecutorBase)null).ExecuteQueryAsync<string, string>(null, null, CancellationToken.None));
+                _ => ((DefaultClientQueryExecutor)null).ExecuteQueryAsync<string, string>(null, null, CancellationToken.None));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientQueryExecutorBase"/> class.
+        /// Initializes a new instance of the <see cref="DefaultClientQueryExecutor"/> class.
         /// </summary>
         /// <param name="clientQueryConverter">The client query converter.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        protected ClientQueryExecutorBase(
+        /// <param name="projectedTypeResolver">The projected type resolver.</param>
+        /// <param name="dataSpaceFactory">The data space factory.</param>
+        protected DefaultClientQueryExecutor(
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
-            ITypeResolver typeResolver)
+            ITypeResolver typeResolver,
+            IProjectedTypeResolver projectedTypeResolver,
+            IExportFactory<IDataSpace> dataSpaceFactory)
         {
             Requires.NotNull(clientQueryConverter, nameof(clientQueryConverter));
             Requires.NotNull(conversionService, nameof(conversionService));
+            Requires.NotNull(typeResolver, nameof(typeResolver));
+            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
+            Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
+            this.DataSpaceFactory = dataSpaceFactory;
             this.ClientQueryConverter = clientQueryConverter;
             this.ConversionService = conversionService;
             this.TypeResolver = typeResolver;
+            this.ProjectedTypeResolver = projectedTypeResolver;
         }
+
+        /// <summary>
+        /// Gets the data space factory.
+        /// </summary>
+        public IExportFactory<IDataSpace> DataSpaceFactory { get; }
 
         /// <summary>
         /// Gets the client query converter.
@@ -80,6 +98,14 @@ namespace Kephas.Data.Client.Queries
         public ITypeResolver TypeResolver { get; }
 
         /// <summary>
+        /// Gets the projected type resolver.
+        /// </summary>
+        /// <value>
+        /// The projected type resolver.
+        /// </value>
+        public IProjectedTypeResolver ProjectedTypeResolver { get; }
+
+        /// <summary>
         /// Executes the query asynchronously.
         /// </summary>
         /// <param name="query">The query.</param>
@@ -95,7 +121,7 @@ namespace Kephas.Data.Client.Queries
         {
             var clientEntityType = this.TypeResolver.ResolveType(query.EntityType, throwOnNotFound: false);
             var entityType = this.ResolveEntityType(clientEntityType);
-            executionContext = executionContext ?? new ClientQueryExecutionContext(this.ConversionService.CompositionContext);
+            executionContext = executionContext ?? new ClientQueryExecutionContext();
             executionContext.EntityType = entityType;
             executionContext.ClientEntityType = clientEntityType;
 
@@ -112,25 +138,10 @@ namespace Kephas.Data.Client.Queries
         /// <returns>
         /// A type representing the entity type.
         /// </returns>
-        protected abstract Type ResolveEntityType(Type clientEntityType);
-
-        /// <summary>
-        /// Creates the client data context.
-        /// </summary>
-        /// <param name="executionContext">Context for the execution.</param>
-        /// <returns>
-        /// The new client data context.
-        /// </returns>
-        protected abstract IDataContext CreateClientDataContext(IClientQueryExecutionContext executionContext);
-
-        /// <summary>
-        /// Creates the entity data context.
-        /// </summary>
-        /// <param name="executionContext">Context for the execution.</param>
-        /// <returns>
-        /// The new data context.
-        /// </returns>
-        protected abstract IDataContext CreateDataContext(IClientQueryExecutionContext executionContext);
+        protected virtual Type ResolveEntityType(Type clientEntityType)
+        {
+            return this.ProjectedTypeResolver.ResolveProjectedType(clientEntityType);
+        }
 
         /// <summary>
         /// Executes the query operation.
@@ -152,10 +163,11 @@ namespace Kephas.Data.Client.Queries
         {
             var mappings = new List<(TClientEntity clientEntity, TEntity entity)>();
 
-            using (var dataContext = this.CreateDataContext(executionContext))
+            using (var dataSpace = this.DataSpaceFactory.CreateExportedValue())
             {
+                var dataContext = dataSpace[executionContext.EntityType, executionContext];
                 var queryConversionContext = new ClientQueryConversionContext(dataContext);
-                executionContext?.ClientQueryConversionContextConfig?.Invoke(queryConversionContext);
+                executionContext.ClientQueryConversionContextConfig?.Invoke(queryConversionContext);
                 var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
                 var entities = await query.ToListAsync(token).PreserveThreadContext();
 
@@ -165,19 +177,13 @@ namespace Kephas.Data.Client.Queries
                     return entities.Cast<object>().ToList();
                 }
 
-                using (var clientDataContext = this.CreateClientDataContext(executionContext))
+                var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
+                foreach (var entity in entities)
                 {
-                    var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
-                    foreach (var entity in entities)
-                    {
-                        var context = new DataConversionContext(this.ConversionService, sourceDataContext: dataContext, targetDataContext: clientDataContext, rootTargetType: clientEntityTypeInfo.Type)
-                                          {
-                                              Identity = executionContext?.Identity
-                                          };
-                        executionContext?.DataConversionContextConfig?.Invoke(entity, context);
-                        var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
-                        mappings.Add(((TClientEntity)result.Target, entity));
-                    }
+                    var context = new DataConversionContext(this.ConversionService, dataSpace, rootTargetType: clientEntityTypeInfo.Type);
+                    executionContext?.DataConversionContextConfig?.Invoke(entity, context);
+                    var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
+                    mappings.Add(((TClientEntity)result.Target, entity));
                 }
             }
 

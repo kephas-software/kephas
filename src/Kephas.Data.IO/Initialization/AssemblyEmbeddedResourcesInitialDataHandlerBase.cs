@@ -15,11 +15,11 @@ namespace Kephas.Data.IO.Initialization
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Composition;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Resources;
     using Kephas.Net.Mime;
-    using Kephas.Services;
 
     /// <summary>
     /// An initial data handler base using the assembly embedded resources.
@@ -27,13 +27,15 @@ namespace Kephas.Data.IO.Initialization
     public abstract class AssemblyEmbeddedResourcesInitialDataHandlerBase : InitialDataIOHandlerBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyEmbeddedResourcesInitialDataHandlerBase"/> class.
+        /// Initializes a new instance of the
+        /// <see cref="AssemblyEmbeddedResourcesInitialDataHandlerBase"/> class.
         /// </summary>
         /// <param name="dataImportService">The data import service.</param>
-        /// <param name="sourceDataContextProvider">Source data context provider.</param>
-        /// <param name="targetDataContextProvider">Target data context provider.</param>
-        protected AssemblyEmbeddedResourcesInitialDataHandlerBase(IDataImportService dataImportService, Func<IContext, IDataContext> sourceDataContextProvider, Func<IContext, IDataContext> targetDataContextProvider)
-            : base(dataImportService, sourceDataContextProvider, targetDataContextProvider)
+        /// <param name="dataSpaceFactory">The data space factory.</param>
+        protected AssemblyEmbeddedResourcesInitialDataHandlerBase(
+            IDataImportService dataImportService,
+            IExportFactory<IDataSpace> dataSpaceFactory)
+            : base(dataImportService, dataSpaceFactory)
         {
             this.ResourcesAssembly = this.GetType().Assembly;
         }

@@ -57,9 +57,6 @@
     <Compile Include="..\Kephas.Data.Client\Queries\ClientQueryExecutionContext.cs">
       <Link>Queries\ClientQueryExecutionContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Client\Queries\ClientQueryExecutorBase.cs">
-      <Link>Queries\ClientQueryExecutorBase.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ClientQueryConversionContext.cs">
       <Link>Queries\Conversion\ClientQueryConversionContext.cs</Link>
     </Compile>
@@ -134,6 +131,9 @@
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\OperatorAttribute.cs">
       <Link>Queries\Conversion\OperatorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Client\Queries\DefaultClientQueryExecutor.cs">
+      <Link>Queries\DefaultClientQueryExecutor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Expression.cs">
       <Link>Queries\Expression.cs</Link>

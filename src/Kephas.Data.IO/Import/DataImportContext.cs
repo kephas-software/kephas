@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Data.Conversion;
     using Kephas.Data.IO;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// A data import context.
@@ -26,32 +27,23 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Initializes a new instance of the <see cref="DataImportContext"/> class.
         /// </summary>
-        /// <param name="sourceDataContext">The source data context.</param>
-        /// <param name="targetDataContext">The target data context.</param>
-        public DataImportContext(IDataContext sourceDataContext, IDataContext targetDataContext)
+        /// <param name="dataSpace">The data space.</param>
+        /// <param name="operationContext">Optional. Context for the operation.</param>
+        public DataImportContext(IDataSpace dataSpace, IContext operationContext = null)
+            : base(operationContext ?? dataSpace)
         {
-            Requires.NotNull(sourceDataContext, nameof(sourceDataContext));
-            Requires.NotNull(targetDataContext, nameof(targetDataContext));
+            Requires.NotNull(dataSpace, nameof(dataSpace));
 
-            this.SourceDataContext = sourceDataContext;
-            this.TargetDataContext = targetDataContext;
+            this.DataSpace = dataSpace;
         }
 
         /// <summary>
-        /// Gets or sets the source data context.
+        /// Gets the data space.
         /// </summary>
         /// <value>
-        /// The source data context.
+        /// The data space.
         /// </value>
-        public IDataContext SourceDataContext { get; set; }
-
-        /// <summary>
-        /// Gets or sets the target data context.
-        /// </summary>
-        /// <value>
-        /// The target data context.
-        /// </value>
-        public IDataContext TargetDataContext { get; set; }
+        public IDataSpace DataSpace { get; }
 
         /// <summary>
         /// Gets or sets the data conversion context configuration.

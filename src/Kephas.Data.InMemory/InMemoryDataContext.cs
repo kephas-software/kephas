@@ -198,7 +198,7 @@ namespace Kephas.Data.InMemory
         /// Initializes the data.
         /// </summary>
         /// <param name="initialData">The initial data.</param>
-        private void InitializeData(IEnumerable<IEntityInfo> initialData)
+        private void InitializeData(IEnumerable<IChangeStateTrackableEntityInfo> initialData)
         {
             if (initialData == null)
             {

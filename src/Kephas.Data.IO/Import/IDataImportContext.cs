@@ -24,20 +24,12 @@ namespace Kephas.Data.IO.Import
     public interface IDataImportContext : IDataIOContext
     {
         /// <summary>
-        /// Gets or sets the source data context.
+        /// Gets the data space.
         /// </summary>
         /// <value>
-        /// The source data context.
+        /// The data space.
         /// </value>
-        IDataContext SourceDataContext { get; set; }
-
-        /// <summary>
-        /// Gets or sets the target data context.
-        /// </summary>
-        /// <value>
-        /// The target data context.
-        /// </value>
-        IDataContext TargetDataContext { get; set; }
+        IDataSpace DataSpace { get; }
 
         /// <summary>
         /// Gets or sets the data conversion context configuration.

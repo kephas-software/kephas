@@ -25,9 +25,9 @@ namespace Kephas.Data.Client.Queries
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryExecutionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
-        public ClientQueryExecutionContext(ICompositionContext compositionContext = null)
-            : base(compositionContext)
+        /// <param name="operationContext">Optional. The operation context.</param>
+        public ClientQueryExecutionContext(IContext operationContext = null)
+            : base(operationContext)
         {
         }
 

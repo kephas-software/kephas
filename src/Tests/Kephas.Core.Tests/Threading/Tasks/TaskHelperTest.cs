@@ -24,7 +24,7 @@
         {
             var task = new Task(() => throw new InvalidOperationException("must throw!"));
             task.Start();
-            Assert.Throws<InvalidOperationException>(() => task.WaitNonLocking(TimeSpan.FromMilliseconds(200)));
+            Assert.Throws<InvalidOperationException>(() => task.WaitNonLocking(TimeSpan.FromMilliseconds(500)));
         }
 
         [Test]

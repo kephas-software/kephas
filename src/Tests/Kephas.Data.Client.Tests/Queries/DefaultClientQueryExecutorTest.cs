@@ -16,17 +16,21 @@ namespace Kephas.Data.Client.Tests.Queries
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
+    using Kephas.Model.Services;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class ClientQueryExecutorBaseTest
+    public class DefaultClientQueryExecutorTest
     {
         [Test]
         public async Task ExecuteQueryAsync()
@@ -54,7 +58,7 @@ namespace Kephas.Data.Client.Tests.Queries
                         return Task.FromResult(result);
                     });
 
-            var executor = new TestClientQueryExecutor(queryConverter, conversionService, typeResolver);
+            var executor = new TestDefaultClientQueryExecutor(queryConverter, conversionService, typeResolver);
             var results = (await executor.ExecuteQueryAsync(clientQuery)).Cast<TestClientEntity>().ToList();
 
             Assert.AreEqual(3, results.Count);
@@ -87,11 +91,11 @@ namespace Kephas.Data.Client.Tests.Queries
                         throw new InvalidOperationException("Conversion should be skipped");
                     });
 
-            var executor = new TestClientQueryExecutor(
+            var executor = new TestDefaultClientQueryExecutor(
                 queryConverter,
                 conversionService,
                 typeResolver,
-                clientDataContextCreator: ctx => throw new InvalidOperationException("Client data context creation should be skipped"));
+                clientDataContextCreator: () => throw new InvalidOperationException("Client data context creation should be skipped"));
             var results = (await executor.ExecuteQueryAsync(clientQuery)).Cast<TestEntity>().ToList();
 
             Assert.AreEqual(3, results.Count);
@@ -132,7 +136,7 @@ namespace Kephas.Data.Client.Tests.Queries
                 ClientQueryConversionContextConfig = ctx => ctx["gigi"] = "belogea",
                 DataConversionContextConfig = (entity, ctx) => ctx["entity"] = entity,
             };
-            var executor = new TestClientQueryExecutor(queryConverter, conversionService, typeResolver);
+            var executor = new TestDefaultClientQueryExecutor(queryConverter, conversionService, typeResolver);
 
             var results = (await executor.ExecuteQueryAsync(clientQuery, executionContext)).Cast<TestClientEntity>().ToList();
 
@@ -152,37 +156,37 @@ namespace Kephas.Data.Client.Tests.Queries
             public string Name { get; set; }
         }
 
-        public class TestClientQueryExecutor : ClientQueryExecutorBase
+        public class TestDefaultClientQueryExecutor : DefaultClientQueryExecutor
         {
-            private readonly Func<IClientQueryExecutionContext, IDataContext> dataContextCreator;
-
-            private readonly Func<IClientQueryExecutionContext, IDataContext> clientDataContextCreator;
-
-            public TestClientQueryExecutor(
+            public TestDefaultClientQueryExecutor(
                 IClientQueryConverter clientQueryConverter,
                 IDataConversionService conversionService,
                 ITypeResolver typeResolver,
-                Func<IClientQueryExecutionContext, IDataContext> dataContextCreator = null,
-                Func<IClientQueryExecutionContext, IDataContext> clientDataContextCreator = null)
-                : base(clientQueryConverter, conversionService, typeResolver)
+                IProjectedTypeResolver projectedTypeResolver = null,
+                Func<IDataContext> dataContextCreator = null,
+                Func<IDataContext> clientDataContextCreator = null)
+                : base(clientQueryConverter, conversionService, typeResolver, projectedTypeResolver ?? GetProjectedTypeResolver(), GetDataSpaceFactory(dataContextCreator, clientDataContextCreator))
             {
-                this.dataContextCreator = dataContextCreator;
-                this.clientDataContextCreator = clientDataContextCreator;
             }
 
-            protected override Type ResolveEntityType(Type clientEntityType)
+            private static IExportFactory<IDataSpace> GetDataSpaceFactory(
+                Func<IDataContext> dataContextCreator,
+                Func<IDataContext> clientDataContextCreator)
             {
-                return clientEntityType == typeof(TestClientEntity) ? typeof(TestEntity) : clientEntityType;
+                var dataSpace = Substitute.For<IDataSpace>();
+                dataSpace[typeof(TestClientEntity), Arg.Any<IContext>()].Returns(clientDataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
+                dataSpace[typeof(TestEntity), Arg.Any<IContext>()].Returns(dataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
+                var factory = new ExportFactory<IDataSpace>(() => dataSpace);
+                return factory;
             }
 
-            protected override IDataContext CreateClientDataContext(IClientQueryExecutionContext context)
+            private static IProjectedTypeResolver GetProjectedTypeResolver()
             {
-                return this.clientDataContextCreator?.Invoke(context) ?? Substitute.For<IDataContext>();
-            }
-
-            protected override IDataContext CreateDataContext(IClientQueryExecutionContext context)
-            {
-                return this.dataContextCreator?.Invoke(context) ?? Substitute.For<IDataContext>();
+                var resolver = Substitute.For<IProjectedTypeResolver>();
+                resolver
+                    .ResolveProjectedType(Arg.Any<Type>(), Arg.Any<IContext>(), Arg.Any<bool>())
+                    .Returns(ci => ci.Arg<Type>() == typeof(TestClientEntity) ? typeof(TestEntity) : ci.Arg<Type>());
+                return resolver;
             }
         }
     }

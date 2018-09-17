@@ -12,7 +12,6 @@ namespace Kephas.Data.IO
 {
     using System;
 
-    using Kephas.Composition;
     using Kephas.Serialization;
     using Kephas.Services;
 
@@ -24,9 +23,9 @@ namespace Kephas.Data.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition (optional).</param>
-        public DataIOContext(ICompositionContext compositionContext = null)
-            : base(compositionContext)
+        /// <param name="operationContext">Optional. The parent operation context.</param>
+        public DataIOContext(IContext operationContext = null)
+            : base(operationContext)
         {
         }
 
