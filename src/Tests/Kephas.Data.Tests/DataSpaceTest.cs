@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+
 namespace Kephas.Data.Tests
 {
     using System.Linq;
@@ -45,7 +47,7 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public void Indexer()
+        public void Indexer_type()
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
@@ -56,6 +58,22 @@ namespace Kephas.Data.Tests
 
             var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
             var dc = dataSpace[typeof(string)];
+            Assert.AreSame(dataContext, dc);
+        }
+
+        [Test]
+        public void Indexer_typeInfo()
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+            var dataContextFactory = Substitute.For<IDataContextFactory>();
+            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
+            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataContext = Substitute.For<IDataContext>();
+            dataContextFactory.CreateDataContext("default").Returns(dataContext);
+
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo();
+            var dc = dataSpace[ti];
             Assert.AreSame(dataContext, dc);
         }
 

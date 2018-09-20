@@ -119,34 +119,7 @@ namespace Kephas.Data
         /// <returns>
         /// The data context.
         /// </returns>
-        public IDataContext this[ITypeInfo entityType, IContext context]
-        {
-            get
-            {
-                // TODO optimize
-                Type type = null;
-                if (entityType is IRuntimeTypeInfo runtimeEntityType)
-                {
-                    type = runtimeEntityType.Type;
-                }
-                else if (entityType is IAggregatedElementInfo aggregate)
-                {
-                    type = aggregate.Parts.OfType<Type>().FirstOrDefault();
-                    if (type == null)
-                    {
-                        type = aggregate.Parts.OfType<IRuntimeTypeInfo>().FirstOrDefault()?.Type;
-                    }
-                }
-
-                if (type == null)
-                {
-                    // TODO localization
-                    throw new DataException($"No type could be identified for {entityType}.");
-                }
-
-                return this[type];
-            }
-        }
+        public virtual IDataContext this[ITypeInfo entityType, IContext context = null] => this[entityType.AsType()];
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public virtual void Dispose()

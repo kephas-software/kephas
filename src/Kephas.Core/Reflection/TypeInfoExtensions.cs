@@ -43,6 +43,41 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.
+        /// </summary>
+        /// <param name="typeInfo">The type information instance.</param>
+        /// <returns>
+        /// The provided <see cref="ITypeInfo"/>'s associated <see cref="Type"/>.
+        /// </returns>
+        public static Type AsType(this ITypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            // TODO optimize
+            Type type = null;
+            if (typeInfo is IRuntimeTypeInfo runtimeEntityType)
+            {
+                type = runtimeEntityType.Type;
+            }
+            else if (typeInfo is IAggregatedElementInfo aggregate)
+            {
+                type = aggregate.Parts.OfType<Type>().FirstOrDefault();
+                if (type == null)
+                {
+                    type = aggregate.Parts.OfType<IRuntimeTypeInfo>().FirstOrDefault()?.Type;
+                }
+            }
+
+            if (type == null)
+            {
+                // TODO localization
+                throw new InvalidOperationException($"No type could be identified for {typeInfo}.");
+            }
+
+            return type;
+        }
+
+        /// <summary>
         /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
         /// if the type is not a nullable type, the type itself.
         /// </summary>
