@@ -84,7 +84,8 @@ namespace Kephas.Data.Linq
         /// </returns>
         public virtual IEnumerator<T> GetEnumerator()
         {
-            return this.queryProvider.Execute<IEnumerator<T>>(this.Expression);
+            var enumerable = this.queryProvider.Execute<IEnumerable<T>>(this.Expression);
+            return enumerable.GetEnumerator();
         }
 
         /// <summary>

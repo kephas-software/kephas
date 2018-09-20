@@ -131,6 +131,9 @@
     <Compile Include="..\Kephas.Data.Tests\Linq\DataContextQueryProviderTest.cs">
       <Link>Linq\DataContextQueryProviderTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Linq\DataContextQueryTest.cs">
+      <Link>Linq\DataContextQueryTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Linq\Expressions\SubstituteTypeExpressionVisitorTest.cs">
       <Link>Linq\Expressions\SubstituteTypeExpressionVisitorTest.cs</Link>
     </Compile>
