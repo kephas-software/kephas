@@ -857,6 +857,13 @@
         <e p="DataOperationContext.cs" t="Include" />
         <e p="DataSpace.cs" t="Include" />
         <e p="DefaultDataContextFactory.cs" t="Include" />
+        <e p="Editing" t="Include">
+          <e p="DataSourceContext.cs" t="Include" />
+          <e p="DefaultDataSourceService.cs" t="Include" />
+          <e p="IDataSourceContext.cs" t="Include" />
+          <e p="IDataSourceProvider.cs" t="Include" />
+          <e p="IDataSourceService.cs" t="Include" />
+        </e>
         <e p="IDataContext.cs" t="Include" />
         <e p="IDataContextConfiguration.cs" t="Include" />
         <e p="IDataContextFactory.cs" t="Include" />
@@ -1021,6 +1028,8 @@
       </e>
       <e p="Kephas.Data.Endpoints" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="DataSourceHandler.cs" t="Include" />
+        <e p="DataSourceMessage.cs" t="Include" />
         <e p="Kephas.Data.Endpoints.csproj" t="IncludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -1333,6 +1342,7 @@
           <e p="Composition" t="Include" />
           <e p="TargetResolvers" t="Include" />
         </e>
+        <e p="Editing" t="Include" />
         <e p="Initialization" t="Include">
           <e p="AttributedModel" t="Include" />
           <e p="Composition" t="Include" />
@@ -2716,6 +2726,7 @@
           <e p="Kephas.Data.Tests.csproj" t="IncludeRecursive" />
           <e p="Linq" t="Include">
             <e p="DataContextQueryProviderTest.cs" t="Include" />
+            <e p="DataContextQueryTest.cs" t="Include" />
             <e p="Expressions" t="Include">
               <e p="SubstituteTypeExpressionVisitorTest.cs" t="Include" />
             </e>
