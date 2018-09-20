@@ -144,7 +144,7 @@ namespace Kephas.Data.Linq
         {
             Requires.NotNull(expression, nameof(expression));
 
-            var executionResult = this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
+            var executionResult = (TResult)this.NativeQueryProvider.Execute(this.GetExecutableExpression(expression));
             this.AttachEntitiesToDataContext<TResult>(executionResult);
             return executionResult;
         }
