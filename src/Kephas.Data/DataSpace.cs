@@ -19,6 +19,8 @@ namespace Kephas.Data
     using Kephas.Composition;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -106,6 +108,43 @@ namespace Kephas.Data
                 }
 
                 return dataContext;
+            }
+        }
+
+        /// <summary>
+        /// Gets the data context for the provided entity type.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        public IDataContext this[ITypeInfo entityType, IContext context]
+        {
+            get
+            {
+                // TODO optimize
+                Type type = null;
+                if (entityType is IRuntimeTypeInfo runtimeEntityType)
+                {
+                    type = runtimeEntityType.Type;
+                }
+                else if (entityType is IAggregatedElementInfo aggregate)
+                {
+                    type = aggregate.Parts.OfType<Type>().FirstOrDefault();
+                    if (type == null)
+                    {
+                        type = aggregate.Parts.OfType<IRuntimeTypeInfo>().FirstOrDefault()?.Type;
+                    }
+                }
+
+                if (type == null)
+                {
+                    // TODO localization
+                    throw new DataException($"No type could be identified for {entityType}.");
+                }
+
+                return this[type];
             }
         }
 

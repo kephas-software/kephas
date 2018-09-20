@@ -13,6 +13,7 @@ namespace Kephas.Data
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -30,5 +31,15 @@ namespace Kephas.Data
         /// The data context.
         /// </returns>
         IDataContext this[Type entityType, IContext context = null] { get; }
+
+        /// <summary>
+        /// Gets the data context for the provided entity type.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        IDataContext this[ITypeInfo entityType, IContext context = null] { get; }
     }
 }

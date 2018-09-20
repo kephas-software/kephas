@@ -352,6 +352,21 @@
     <Compile Include="..\Kephas.Data\DefaultDataContextFactory.cs">
       <Link>DefaultDataContextFactory.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\Editing\DataSourceContext.cs">
+      <Link>Editing\DataSourceContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Editing\DefaultDataSourceService.cs">
+      <Link>Editing\DefaultDataSourceService.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Editing\IDataSourceContext.cs">
+      <Link>Editing\IDataSourceContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Editing\IDataSourceProvider.cs">
+      <Link>Editing\IDataSourceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Editing\IDataSourceService.cs">
+      <Link>Editing\IDataSourceService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\IDataContext.cs">
       <Link>IDataContext.cs</Link>
     </Compile>

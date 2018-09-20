@@ -48,6 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.Endpoints\DataSourceHandler.cs">
+      <Link>DataSourceHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Endpoints\DataSourceMessage.cs">
+      <Link>DataSourceMessage.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Endpoints\PersistChangesHandler.cs">
       <Link>PersistChangesHandler.cs</Link>
     </Compile>
