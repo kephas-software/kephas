@@ -74,13 +74,13 @@ namespace Kephas.Data.MongoDB.Commands
             foreach (var mongoDocType in mongoDocTypes)
             {
                 var collectionName = dataContext.GetCollectionName(mongoDocType);
-                    await((Task)BulkWriteAsyncMethod.Call(
-                         this,
-                         operationContext,
-                         changeSet,
-                         collectionName,
-                         cancellationToken))
-                        .PreserveThreadContext();
+                await ((Task)BulkWriteAsyncMethod.Call(
+                     this,
+                     operationContext,
+                     changeSet,
+                     collectionName,
+                     cancellationToken))
+                    .PreserveThreadContext();
             }
         }
 
@@ -99,7 +99,8 @@ namespace Kephas.Data.MongoDB.Commands
             IPersistChangesContext operationContext,
             IList<IEntityInfo> changeSet,
             string collectionName,
-            CancellationToken cancellationToken) where T : IIdentifiable
+            CancellationToken cancellationToken)
+            where T : IIdentifiable
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var collection = dataContext.Database.GetCollection<T>(collectionName);
@@ -126,7 +127,8 @@ namespace Kephas.Data.MongoDB.Commands
             IPersistChangesContext operationContext,
             IMongoCollection<T> collection,
             IList<WriteModel<T>> writeRequests,
-            CancellationToken cancellationToken) where T : IIdentifiable
+            CancellationToken cancellationToken)
+            where T : IIdentifiable
         {
             BulkWriteResult<T> saveResult = null;
             Exception exception = null;
