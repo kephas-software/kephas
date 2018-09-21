@@ -16,31 +16,26 @@ namespace Kephas.Npgsql.Application
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Npgsql.Logging;
-    using Kephas.Services;
 
     using global::Npgsql.Logging;
 
     /// <summary>
-    /// A Npgsql feature manager.
+    /// The Npgsql application lifecycle behavior.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
-    [FeatureInfo(FeatureName, isRequired: true)]
-    public class NpgsqlFeatureManager : FeatureManagerBase
+    public class NpgsqlAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         /// <summary>
-        /// Name of the feature.
+        /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        public const string FeatureName = "npgsql";
-
-        /// <summary>
-        /// Initializes the application asynchronously.
-        /// </summary>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.CompositionContext.GetExport<ILogManager>());
 

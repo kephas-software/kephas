@@ -149,8 +149,8 @@
     <Compile Include="..\Kephas.Core\Application\NullAppManifest.cs">
       <Link>Application\NullAppManifest.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\PreserveCultureThreadContextFeatureManager.cs">
-      <Link>Application\PreserveCultureThreadContextFeatureManager.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\PreserveCultureThreadContextAppLifecycleBehavior.cs">
+      <Link>Application\PreserveCultureThreadContextAppLifecycleBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
       <Link>Application\RequiredFeatureAttribute.cs</Link>

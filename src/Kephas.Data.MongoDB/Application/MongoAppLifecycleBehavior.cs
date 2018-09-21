@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MongoFeatureManager.cs" company="Kephas Software SRL">
+// <copyright file="MongoAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,25 +19,25 @@ namespace Kephas.Data.MongoDB.Application
     using global::MongoDB.Bson;
 
     /// <summary>
-    /// Feature manager for MongoDB.
+    /// A MongoDB application lifecycle behavior.
     /// </summary>
-    [FeatureInfo(FeatureName, isRequired: true)]
-    public class MongoFeatureManager : FeatureManagerBase
+    /// <remarks>
+    /// Adds the <see cref="Id"/> temporary and empty values the ObjectId correspondents.
+    /// </remarks>
+    public class MongoAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         /// <summary>
-        /// Name of the feature.
+        /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        public const string FeatureName = "MongoDB";
-
-        /// <summary>
-        /// Initializes the MongoDB infrastructure asynchronously.
-        /// </summary>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             var originalIsTemporary = Id.IsTemporary;
             Id.IsTemporary = value =>

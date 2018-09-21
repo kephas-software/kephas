@@ -21,23 +21,20 @@ namespace Kephas.Application
     /// Feature manager configuring the <see cref="ThreadContextAwaiter"/> to preserve the thread culture.
     /// </summary>
     [ProcessingPriority(Priority.Highest)]
-    [FeatureInfo(FeatureName, isRequired: true)]
-    public class PreserveCultureThreadContextFeatureManager : FeatureManagerBase
+    public class PreserveCultureThreadContextAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         /// <summary>
-        /// Name of the feature.
+        /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        public const string FeatureName = "PreserveCultureThreadContext";
-
-        /// <summary>
-        /// Initializes the <see cref="ThreadContextAwaiter"/> asynchronously.
-        /// </summary>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             new ThreadContextBuilder(appContext.AmbientServices)
                 .WithStoreAction(StoreThreadCulture)

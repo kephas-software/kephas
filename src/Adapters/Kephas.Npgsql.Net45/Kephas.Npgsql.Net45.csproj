@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Kephas.Npgsql.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Kephas.Npgsql.xml</DocumentationFile>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -53,8 +55,8 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Npgsql\Application\NpgsqlFeatureManager.cs">
-      <Link>Application\NpgsqlFeatureManager.cs</Link>
+    <Compile Include="..\Kephas.Npgsql\Application\NpgsqlAppLifecycleBehavior.cs">
+      <Link>Application\NpgsqlAppLifecycleBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Npgsql\Logging\NpgsqlLoggerAdapter.cs">
       <Link>Logging\NpgsqlLoggerAdapter.cs</Link>

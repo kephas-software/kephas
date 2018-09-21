@@ -57,8 +57,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Data.MongoDB\Application\MongoFeatureManager.cs">
-      <Link>Application\MongoFeatureManager.cs</Link>
+    <Compile Include="..\Kephas.Data.MongoDB\Application\MongoAppLifecycleBehavior.cs">
+      <Link>Application\MongoAppLifecycleBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.MongoDB\Commands\MongoPersistChangesCommand.cs">
       <Link>Commands\MongoPersistChangesCommand.cs</Link>
