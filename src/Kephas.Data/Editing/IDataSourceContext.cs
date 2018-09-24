@@ -10,10 +10,35 @@
 
 namespace Kephas.Data.Editing
 {
+    using Kephas.Reflection;
+
     /// <summary>
     /// Interface for data source context.
     /// </summary>
     public interface IDataSourceContext : IDataOperationContext
     {
+        /// <summary>
+        /// Gets the type of the entity.
+        /// </summary>
+        /// <value>
+        /// The type of the entity.
+        /// </value>
+        ITypeInfo EntityType { get; }
+
+        /// <summary>
+        /// Gets the type of the projected entity.
+        /// </summary>
+        /// <value>
+        /// The type of the projected entity.
+        /// </value>
+        ITypeInfo ProjectedEntityType { get; }
+
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        object Options { get; set; }
     }
 }

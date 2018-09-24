@@ -18,6 +18,7 @@ namespace Kephas.Data.Endpoints
     using Kephas.Composition;
     using Kephas.Data.Editing;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Messaging;
     using Kephas.Model.Services;
     using Kephas.Reflection;
@@ -88,17 +89,19 @@ namespace Kephas.Data.Endpoints
                 dataSpace.Initialize(context);
                 var projectedType = this.ResolveProjectedEntityType(entityType);
                 var dataContext = dataSpace[projectedType];
-                var listSource = await this.dataSourceService.GetDataSourceAsync(
+                var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
+                                            {
+                                                Options = message.Options
+                                            };
+                dataSourceContext.Merge(message.Options);
+                var dataSource = await this.dataSourceService.GetDataSourceAsync(
                                      property,
-                                     new DataSourceContext(dataContext, entityType, projectedType)
-                                         {
-                                             Options = message.Options
-                                         },
+                                     dataSourceContext,
                                      token).PreserveThreadContext();
 
                 return new DataSourceResponseMessage
                 {
-                    DataSource = listSource?.ToList()
+                    DataSource = dataSource?.ToList()
                 };
             }
         }
