@@ -32,6 +32,14 @@ namespace Kephas.Model.Security.Authorization
         IEnumerable<IPermissionType> GrantedPermissions { get; }
 
         /// <summary>
+        /// Gets the required permissions to access this permission.
+        /// </summary>
+        /// <value>
+        /// The required permissions.
+        /// </value>
+        IEnumerable<IPermissionType> RequiredPermissions { get; }
+
+        /// <summary>
         /// Gets the scoping.
         /// </summary>
         /// <value>

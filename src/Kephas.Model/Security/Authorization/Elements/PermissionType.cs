@@ -52,6 +52,14 @@ namespace Kephas.Model.Security.Authorization.Elements
         public IEnumerable<IPermissionType> GrantedPermissions { get; private set; }
 
         /// <summary>
+        /// Gets the required permissions to access this permission.
+        /// </summary>
+        /// <value>
+        /// The required permissions.
+        /// </value>
+        public IEnumerable<IPermissionType> RequiredPermissions { get; private set; }
+
+        /// <summary>
         /// Gets the scoping.
         /// </summary>
         /// <value>
@@ -73,6 +81,21 @@ namespace Kephas.Model.Security.Authorization.Elements
                 .Select(p => p.GetAttribute<PermissionTypeAttribute>())
                 .FirstOrDefault();
             this.Scoping = permTypeAttr?.Scoping ?? Scoping.None;
+            this.RequiredPermissions = this.GetAttributes<RequiresPermissionAttribute>()
+                .SelectMany(
+                    attr => attr.PermissionTypes
+                        .Select(
+                            t => constructionContext.ModelSpace.TryGetClassifier(
+                                t.AsRuntimeTypeInfo(),
+                                constructionContext))
+                        .Union(attr.Permissions
+                            .Select(p => constructionContext.ConstructedClassifiers
+                                .OfType<IPermissionType>()
+                                .FirstOrDefault(c => c.Name == p))))
+                .OfType<IPermissionType>()
+                .Distinct()
+                .ToList()
+                .AsReadOnly();
         }
 
         /// <summary>
