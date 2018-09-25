@@ -23,21 +23,21 @@ namespace Kephas.Data
     public abstract class RefBase
     {
         /// <summary>
-        /// The entity information provider.
+        /// The container entity information provider.
         /// </summary>
-        private readonly WeakReference<object> entityRef;
+        private readonly WeakReference<object> containerEntityRef;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RefBase"/> class.
         /// </summary>
-        /// <param name="entity">The entity containing the reference.</param>
+        /// <param name="containerEntity">The entity containing the reference.</param>
         /// <param name="refFieldName">The name of the reference field.</param>
-        protected RefBase(object entity, string refFieldName)
+        protected RefBase(object containerEntity, string refFieldName)
         {
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(containerEntity, nameof(containerEntity));
             Requires.NotNull(refFieldName, nameof(refFieldName));
 
-            this.entityRef = new WeakReference<object>(entity);
+            this.containerEntityRef = new WeakReference<object>(containerEntity);
             this.RefFieldName = refFieldName;
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual object GetEntityPropertyValue(string propertyName)
         {
-            var entity = this.GetEntity();
+            var entity = this.GetContainerEntity();
             return entity is IIndexable expandoEntity
                        ? expandoEntity[propertyName]
                        : entity.GetPropertyValue(propertyName);
@@ -71,7 +71,7 @@ namespace Kephas.Data
         /// <param name="value">The value.</param>
         protected virtual void SetEntityPropertyValue(string propertyName, object value)
         {
-            var entity = this.GetEntity();
+            var entity = this.GetContainerEntity();
             if (entity is IIndexable expandoEntity)
             {
                 expandoEntity[propertyName] = value;
@@ -88,9 +88,9 @@ namespace Kephas.Data
         /// <returns>
         /// The entity containing the reference.
         /// </returns>
-        protected virtual object GetEntity()
+        protected virtual object GetContainerEntity()
         {
-            var entity = this.GetEntityInfo()?.Entity;
+            var entity = this.GetContainerEntityInfo()?.Entity;
             if (entity == null)
             {
                 throw new DataException(string.Format(Strings.RefBase_GetEntity_Null_Exception, this.RefFieldName));
@@ -100,20 +100,20 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets entity information.
+        /// Gets the container entity information.
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown when the entity has been disposed.</exception>
         /// <returns>
-        /// The entity information.
+        /// The container entity information.
         /// </returns>
-        protected virtual IEntityInfo GetEntityInfo()
+        protected virtual IEntityInfo GetContainerEntityInfo()
         {
-            if (!this.entityRef.TryGetTarget(out var entity))
+            if (!this.containerEntityRef.TryGetTarget(out var containerEntity))
             {
                 throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.RefBase_GetEntityInfo_Disposed_Exception, this.RefFieldName));
             }
 
-            var entityInfo = entity.TryGetAttachedEntityInfo();
+            var entityInfo = containerEntity.TryGetAttachedEntityInfo();
             if (entityInfo == null)
             {
                 throw new DataException(string.Format(Strings.RefBase_GetEntityInfo_Null_Exception, this.RefFieldName));

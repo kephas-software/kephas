@@ -36,6 +36,18 @@ namespace Kephas.Data
         Type EntityType { get; }
 
         /// <summary>
+        /// Gets or sets the referenced entity.
+        /// </summary>
+        /// <remarks>
+        /// The entity is not ensured to be set prior to calling <see cref="GetAsync"/>
+        /// due to performance reasons, but the actual behavior is left to the implementor.
+        /// </remarks>
+        /// <value>
+        /// The referenced entity.
+        /// </value>
+        object Entity { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether the reference is empty/not set.
         /// </summary>
         /// <value>
@@ -61,6 +73,18 @@ namespace Kephas.Data
     public interface IRef<T> : IRef
         where T : class
     {
+        /// <summary>
+        /// Gets or sets the referenced entity.
+        /// </summary>
+        /// <remarks>
+        /// The entity is not ensured to be set prior to calling <see cref="GetAsync"/>
+        /// due to performance reasons, but the actual behavior is left to the implementor.
+        /// </remarks>
+        /// <value>
+        /// The referenced entity.
+        /// </value>
+        new T Entity { get; set; }
+
         /// <summary>
         /// Gets the referenced entity asynchronously.
         /// </summary>

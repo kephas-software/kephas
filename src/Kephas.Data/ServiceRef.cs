@@ -23,10 +23,10 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRef{TService}"/> class.
         /// </summary>
-        /// <param name="entity">The entity containing the reference.</param>
+        /// <param name="containerEntity">The entity containing the reference.</param>
         /// <param name="refFieldName">Name of the reference service property.</param>
-        public ServiceRef(object entity, string refFieldName)
-            : base(entity, refFieldName)
+        public ServiceRef(object containerEntity, string refFieldName)
+            : base(containerEntity, refFieldName)
         {
             this.ServiceType = typeof(TService);
         }
@@ -85,7 +85,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual INamedServiceProvider GetNamedServiceProvider()
         {
-            var dataContext = this.GetDataContext(this.GetEntityInfo());
+            var dataContext = this.GetDataContext(this.GetContainerEntityInfo());
             var compositionContext = dataContext.CompositionContext;
             return compositionContext.GetExport<INamedServiceProvider>();
         }

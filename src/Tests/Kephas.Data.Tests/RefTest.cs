@@ -47,6 +47,37 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
+        public void Entity_is_reset_upon_id_change()
+        {
+            var refEntity = new RefEntity();
+            var dataContext = this.CreateDataContext((id, _) => id.Equals(1) ? refEntity : throw new KeyNotFoundException("ex"));
+
+            var entity = new TestEntity(dataContext) { ReferenceId = 1 };
+            var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
+
+            r.Entity = refEntity;
+            Assert.IsNotNull(r.Entity);
+
+            r.Id = 2;
+            Assert.IsNull(r.Entity);
+        }
+
+        [Test]
+        public async Task GetAsync_entity_set_id_not_set()
+        {
+            var refEntity = new RefEntity();
+            var dataContext = this.CreateDataContext((_, throwOnNotFound) => throw new NotSupportedException("Should not call the data context."));
+
+            var entity = new TestEntity(dataContext);
+            var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
+
+            r.Entity = refEntity;
+            var result = await r.GetAsync();
+
+            Assert.AreSame(result, refEntity);
+        }
+
+        [Test]
         public async Task GetAsync_null_reference()
         {
             var refEntity = new RefEntity();
@@ -75,7 +106,24 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public async Task GetAsync_not_resolved_reference()
+        public async Task GetAsync_entity_is_set()
+        {
+            var refEntity = new RefEntity();
+            var dataContext = this.CreateDataContext((id, _) => id.Equals(1) ? refEntity : throw new KeyNotFoundException("ex"));
+
+            var entity = new TestEntity(dataContext) { ReferenceId = 1 };
+            var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
+
+            Assert.IsNull(r.Entity);
+            
+            var result = await r.GetAsync();
+
+            Assert.AreSame(refEntity, result);
+            Assert.AreSame(refEntity, r.Entity);
+        }
+        
+        [Test]
+        public void GetAsync_not_resolved_reference()
         {
             var refEntity = new RefEntity();
             var dataContext = this.CreateDataContext((id, throwOnNotFound) => id.Equals(1) ? refEntity : throwOnNotFound ? throw new KeyNotFoundException("ex") : (object)null);
@@ -149,8 +197,15 @@ namespace Kephas.Data.Tests
             public void SetEntityInfo(IEntityInfo entityInfo) => this.entityInfo = entityInfo;
         }
 
-        public class RefEntity
+        public class RefEntity : IIdentifiable
         {
+            /// <summary>
+            /// Gets the identifier for this instance.
+            /// </summary>
+            /// <value>
+            /// The identifier.
+            /// </value>
+            public object Id { get; }
         }
     }
 }

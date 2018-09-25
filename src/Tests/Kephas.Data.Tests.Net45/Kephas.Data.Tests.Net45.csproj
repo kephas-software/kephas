@@ -128,6 +128,9 @@
     <Compile Include="..\Kephas.Data.Tests\DefaultDataContextFactoryTest.cs">
       <Link>DefaultDataContextFactoryTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Initialization\DefaultInitialDataServiceTest.cs">
+      <Link>Initialization\DefaultInitialDataServiceTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Linq\DataContextQueryProviderTest.cs">
       <Link>Linq\DataContextQueryProviderTest.cs</Link>
     </Compile>
