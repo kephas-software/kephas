@@ -80,7 +80,7 @@ namespace Kephas.Model.Security.Authorization.Elements
                 .OfType<ITypeInfo>()
                 .Select(p => p.GetAttribute<PermissionTypeAttribute>())
                 .FirstOrDefault();
-            this.Scoping = permTypeAttr?.Scoping ?? Scoping.None;
+            this.Scoping = permTypeAttr?.Scoping ?? Scoping.Global;
             this.RequiredPermissions = this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(
                     attr => attr.PermissionTypes

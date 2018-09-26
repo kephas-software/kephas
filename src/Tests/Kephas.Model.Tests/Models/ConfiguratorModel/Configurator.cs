@@ -15,7 +15,7 @@
 
     public interface IOverrideName : INamed
     {
-        string Name { get; set; }
+        new string Name { get; set; }
     }
 
     public interface IOtherNamed

@@ -26,7 +26,7 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
         /// </summary>
         /// <param name="classifierName">Optional. Name of the classifier.</param>
         /// <param name="scoping">Optional. The scoping.</param>
-        public PermissionTypeAttribute(string classifierName = null, Scoping scoping = default)
+        public PermissionTypeAttribute(string classifierName = null, Scoping scoping = Scoping.Global)
             : base(typeof(IPermissionType), classifierName)
         {
             this.Scoping = scoping;

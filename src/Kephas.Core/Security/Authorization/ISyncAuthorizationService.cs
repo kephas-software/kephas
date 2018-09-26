@@ -11,7 +11,7 @@
 namespace Kephas.Security.Authorization
 {
     /// <summary>
-    /// Interface for synchronous authorization service.
+    /// Interface providing synchronous methods for the authorization service.
     /// </summary>
     public interface ISyncAuthorizationService
     {

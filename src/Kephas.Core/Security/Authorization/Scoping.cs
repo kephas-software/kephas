@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ScopeKind.cs" company="Kephas Software SRL">
+// <copyright file="Scoping.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,24 +10,32 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
+
     /// <summary>
     /// Values that represent permission scoping.
     /// </summary>
+    [Flags]
     public enum Scoping
     {
         /// <summary>
-        /// No scoping required for this permission type.
+        /// Scoping is not supported by this permission type.
         /// </summary>
-        None,
+        None = 0x00,
+        
+        /// <summary>
+        /// No scoping required for this permission type, it will be granted and verified at global level.
+        /// </summary>
+        Global = 0x0001,
 
         /// <summary>
-        /// The scoping is allowed, but not required.
+        /// The scoping is granted and verified at type level.
         /// </summary>
-        Allowed,
+        Type = 0x0010,
 
         /// <summary>
-        /// The scoping is required.
+        /// The scoping is granted and verified at type level.
         /// </summary>
-        Required,
+        Instance = 0x0100,
     }
 }
