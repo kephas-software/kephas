@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAuthorizationScopeProvider.cs" company="Kephas Software SRL">
+// <copyright file="IAuthorizationScopeProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default authorization scope provider class.
+//   Declares the IAuthorizationScopeProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Authorization
+namespace Kephas.Security.Authorization
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -16,26 +16,19 @@ namespace Kephas.Messaging.Authorization
     using Kephas.Services;
 
     /// <summary>
-    /// Default implementation of an authorization scope provider.
+    /// Shared application service contract for providing the authorization scope for a message.
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    public class DefaultAuthorizationScopeProvider : IAuthorizationScopeProvider
+    [SharedAppServiceContract(AllowMultiple = true)]
+    public interface IAuthorizationScopeProvider
     {
         /// <summary>
         /// Gets the authorization scope asynchronously.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="context">The message processing context.</param>
+        /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. the cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        public Task<object> GetAuthorizationScopeAsync(
-            IMessage message,
-            IMessageProcessingContext context,
-            CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult<object>(message);
-        }
+        Task<(object scope, bool canResolve)> GetAuthorizationScopeAsync(IContext context, CancellationToken cancellationToken = default);
     }
 }

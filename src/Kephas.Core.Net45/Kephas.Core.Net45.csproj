@@ -668,8 +668,17 @@
     <Compile Include="..\Kephas.Core\Security\Authorization\AuthorizationException.cs">
       <Link>Security\Authorization\AuthorizationException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\DefaultAuthorizationScopeService.cs">
+      <Link>Security\Authorization\DefaultAuthorizationScopeService.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationContext.cs">
       <Link>Security\Authorization\IAuthorizationContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationScopeProvider.cs">
+      <Link>Security\Authorization\IAuthorizationScopeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationScopeService.cs">
+      <Link>Security\Authorization\IAuthorizationScopeService.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Security\Authorization\IAuthorizationService.cs">
       <Link>Security\Authorization\IAuthorizationService.cs</Link>

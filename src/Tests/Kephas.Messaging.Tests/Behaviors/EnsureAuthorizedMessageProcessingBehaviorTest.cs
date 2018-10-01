@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Tests.Behaviors
                         throw new AuthorizationException("Should not be called!");
                         return Task.FromResult(false);
                     });
-            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeProvider>());
+            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
             var message = new FreeMessage();
             // this should not crash, no required permissions
             await behavior.BeforeProcessAsync(
@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Tests.Behaviors
                         throw new AuthorizationException($"Should be called with {string.Join(",", ci.Arg<IAuthorizationContext>().RequiredPermissions)}!");
                         return Task.FromResult(false);
                     });
-            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeProvider>());
+            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
             var message = new NonFreeMessage();
             Assert.ThrowsAsync<AuthorizationException>(() => behavior.BeforeProcessAsync(
                 message,
@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Tests.Behaviors
                         Assert.AreEqual("gigi", perms[0]);
                         return Task.FromResult(true);
                     });
-            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeProvider>());
+            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
             var message = new NonFreeMessage();
             await behavior.BeforeProcessAsync(
                 message,
