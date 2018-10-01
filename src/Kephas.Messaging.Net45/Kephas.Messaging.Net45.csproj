@@ -51,14 +51,20 @@
     <Compile Include="..\Kephas.Messaging\AttributedModel\MessageHandlerAttribute.cs">
       <Link>AttributedModel\MessageHandlerAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Messaging\Authorization\Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs">
+      <Link>Authorization\Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Authorization\DefaultAuthorizationScopeProvider.cs">
+      <Link>Authorization\DefaultAuthorizationScopeProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Messaging\Authorization\IAuthorizationScopeProvider.cs">
+      <Link>Authorization\IAuthorizationScopeProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Messaging\Behaviors\AttributedModel\MessageProcessingBehaviorAttribute.cs">
       <Link>Behaviors\AttributedModel\MessageProcessingBehaviorAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Behaviors\Composition\MessageProcessingBehaviorMetadata.cs">
       <Link>Behaviors\Composition\MessageProcessingBehaviorMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Messaging\Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs">
-      <Link>Behaviors\EnsureAuthorizedMessageProcessingBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging\Behaviors\IMessageProcessingBehavior.cs">
       <Link>Behaviors\IMessageProcessingBehavior.cs</Link>

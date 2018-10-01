@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Behaviors
+namespace Kephas.Messaging.Authorization.Behaviors
 {
     using System;
     using System.Collections.Concurrent;
@@ -20,6 +20,8 @@ namespace Kephas.Messaging.Behaviors
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Authorization;
+    using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Messaging.Composition;
     using Kephas.Security.Authorization;
@@ -40,20 +42,29 @@ namespace Kephas.Messaging.Behaviors
         private readonly IAuthorizationService authorizationService;
 
         /// <summary>
+        /// The authorization scope provider.
+        /// </summary>
+        private readonly IAuthorizationScopeProvider authorizationScopeProvider;
+
+        /// <summary>
         /// The permissions map.
         /// </summary>
         private readonly ConcurrentDictionary<Type, (IReadOnlyList<string> names, IReadOnlyList<Type> types)>
             permissionsMap = new ConcurrentDictionary<Type, (IReadOnlyList<string> names, IReadOnlyList<Type> types)>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/> class.
+        /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/>
+        /// class.
         /// </summary>
         /// <param name="authorizationService">The authorization service.</param>
-        public EnsureAuthorizedMessageProcessingBehavior(IAuthorizationService authorizationService)
+        /// <param name="authorizationScopeProvider">The authorization scope provider.</param>
+        public EnsureAuthorizedMessageProcessingBehavior(IAuthorizationService authorizationService, IAuthorizationScopeProvider authorizationScopeProvider)
         {
             Requires.NotNull(authorizationService, nameof(authorizationService));
+            Requires.NotNull(authorizationScopeProvider, nameof(authorizationScopeProvider));
 
             this.authorizationService = authorizationService;
+            this.authorizationScopeProvider = authorizationScopeProvider;
         }
 
         /// <summary>
@@ -70,7 +81,8 @@ namespace Kephas.Messaging.Behaviors
             var (names, types) = this.GetRequiredPermissions(messageType);
             if ((names != null && names.Count > 0) || (types != null && types.Count > 0))
             {
-                var authContext = new AuthorizationContext(context, names, types, message);
+                var authScope = await this.authorizationScopeProvider.GetAuthorizationScopeAsync(message, context, token).PreserveThreadContext();
+                var authContext = new AuthorizationContext(context, names, types, authScope);
                 await this.authorizationService.AuthorizeAsync(authContext, token).PreserveThreadContext();
             }
         }
