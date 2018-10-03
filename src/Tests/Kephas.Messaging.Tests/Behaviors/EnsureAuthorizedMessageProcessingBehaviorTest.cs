@@ -14,9 +14,7 @@ namespace Kephas.Messaging.Tests.Behaviors
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Messaging.Authorization;
     using Kephas.Messaging.Authorization.Behaviors;
-    using Kephas.Messaging.Behaviors;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
 
