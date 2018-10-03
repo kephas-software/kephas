@@ -48,6 +48,14 @@ namespace Kephas.Data.Client.Queries
         public Type ClientEntityType { get; set; }
 
         /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        public object Options { get; set; }
+        
+        /// <summary>
         /// Gets or sets the client query conversion context configuration.
         /// </summary>
         /// <value>

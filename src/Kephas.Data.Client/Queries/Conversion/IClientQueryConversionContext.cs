@@ -15,5 +15,12 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// </summary>
     public interface IClientQueryConversionContext : IDataOperationContext
     {
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        object Options { get; set; }
     }
 }

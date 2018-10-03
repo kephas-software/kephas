@@ -23,5 +23,13 @@ namespace Kephas.Data.Client.Queries.Conversion
             : base(dataContext)
         {
         }
+        
+        /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        public object Options { get; set; }
     }
 }

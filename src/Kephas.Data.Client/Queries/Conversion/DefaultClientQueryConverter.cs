@@ -103,15 +103,13 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <returns>
         /// The converted query.
         /// </returns>
-        public IQueryable ConvertQuery(ClientQuery clientQuery, IClientQueryConversionContext context)
+        public virtual IQueryable ConvertQuery(ClientQuery clientQuery, IClientQueryConversionContext context)
         {
             var queryClientEntityType = this.GetQueryClientEntityType(clientQuery);
             var queryEntityType = this.GetQueryEntityType(clientQuery, queryClientEntityType);
 
             // create the query
-            var queryMethod = DataContextQueryMethod.MakeGenericMethod(queryEntityType);
-            var queryContext = new QueryOperationContext(context.DataContext);
-            var queryable = (IQueryable)queryMethod.Call(context.DataContext, queryContext);
+            var queryable = this.CreateQuery(queryEntityType, context);
 
             // apply the filter expression
             var filterExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter);
@@ -144,6 +142,23 @@ namespace Kephas.Data.Client.Queries.Conversion
                 }
             }
 
+            return queryable;
+        }
+
+        /// <summary>
+        /// Creates the query.
+        /// </summary>
+        /// <param name="entityType">The entity type.</param>
+        /// <param name="context">The query conversion context.</param>
+        /// <returns>The new query.</returns>
+        protected virtual IQueryable CreateQuery(Type entityType, IClientQueryConversionContext context)
+        {
+            var queryMethod = DataContextQueryMethod.MakeGenericMethod(entityType);
+            var queryContext = new QueryOperationContext(context.DataContext)
+                                    {
+                                        Options = context.Options
+                                    };
+            var queryable = (IQueryable) queryMethod.Call(context.DataContext, queryContext);
             return queryable;
         }
 

@@ -40,6 +40,14 @@ namespace Kephas.Data
         public Func<Type, IContext, Type> ImplementationTypeResolver { get; set; }
 
         /// <summary>
+        /// Gets or sets options for controlling the operation.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        public object Options { get; set; }
+        
+        /// <summary>
         /// Gets or sets the query.
         /// </summary>
         /// <value>

@@ -166,7 +166,10 @@ namespace Kephas.Data.Client.Queries
             using (var dataSpace = this.DataSpaceFactory.CreateExportedValue())
             {
                 var dataContext = dataSpace[executionContext.EntityType, executionContext];
-                var queryConversionContext = new ClientQueryConversionContext(dataContext);
+                var queryConversionContext = new ClientQueryConversionContext(dataContext)
+                                                {
+                                                    Options = executionContext.Options
+                                                };
                 executionContext.ClientQueryConversionContextConfig?.Invoke(queryConversionContext);
                 var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
                 var entities = await query.ToListAsync(token).PreserveThreadContext();
