@@ -23,7 +23,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             : base(dataContext)
         {
         }
-        
+
         /// <summary>
         /// Gets or sets options for controlling the operation.
         /// </summary>
@@ -31,5 +31,16 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// The options.
         /// </value>
         public object Options { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this object uses the member access convention.
+        /// </summary>
+        /// <remarks>
+        /// The member access convention considers all strings starting with . (dot) as member access expressions.
+        /// </remarks>
+        /// <value>
+        /// True if the member access convention should be used, false if not.
+        /// </value>
+        public bool UseMemberAccessConvention { get; set; }
     }
 }

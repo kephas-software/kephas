@@ -112,7 +112,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             var queryable = this.CreateQuery(queryEntityType, context);
 
             // apply the filter expression
-            var filterExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter);
+            var filterExpression = this.ConvertFilter(queryEntityType, queryClientEntityType, clientQuery.Filter, context);
             if (filterExpression != null)
             {
                 var whereMethod = QueryableMethods.QueryableWhereGeneric.MakeGenericMethod(queryEntityType);
@@ -120,7 +120,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             }
 
             // apply the order by expressions
-            var orderExpressions = this.ConvertOrder(queryEntityType, queryClientEntityType, clientQuery.Order)?.ToList();
+            var orderExpressions = this.ConvertOrder(queryEntityType, queryClientEntityType, clientQuery.Order, context)?.ToList();
             if (orderExpressions != null && orderExpressions.Count > 0)
             {
                 Type ExtractKeySelectorType(LinqExpression e) => e.Type.GetTypeInfo().GenericTypeArguments[1];
@@ -168,10 +168,15 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <param name="itemType">The item type.</param>
         /// <param name="clientItemType">The client item type.</param>
         /// <param name="where">The where clause.</param>
+        /// <param name="context">The query conversion context.</param>
         /// <returns>
         /// The converted where clause.
         /// </returns>
-        protected virtual LinqExpression ConvertFilter(Type itemType, Type clientItemType, Expression where)
+        protected virtual LinqExpression ConvertFilter(
+            Type itemType,
+            Type clientItemType,
+            Expression @where,
+            IClientQueryConversionContext context)
         {
             if (where == null)
             {
@@ -179,7 +184,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             }
 
             var lambdaArg = LinqExpression.Parameter(itemType, "e");
-            var body = this.ConvertExpression(where, clientItemType, lambdaArg);
+            var body = this.ConvertExpression(where, clientItemType, lambdaArg, context);
             return body == null ? null : LinqExpression.Lambda(body, lambdaArg);
         }
 
@@ -189,10 +194,15 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <param name="itemType">The item type.</param>
         /// <param name="clientItemType">The client item type.</param>
         /// <param name="order">The order clause.</param>
+        /// <param name="context">The query conversion context.</param>
         /// <returns>
         /// The converted order clause.
         /// </returns>
-        protected virtual IEnumerable<(string op, LinqExpression expression)> ConvertOrder(Type itemType, Type clientItemType, Expression order)
+        protected virtual IEnumerable<(string op, LinqExpression expression)> ConvertOrder(
+            Type itemType,
+            Type clientItemType,
+            Expression order,
+            IClientQueryConversionContext context)
         {
             if (order?.Args == null || order.Args.Count == 0)
             {
@@ -224,14 +234,14 @@ namespace Kephas.Data.Client.Queries.Conversion
                         || orderArgExpression.Op == DescExpressionConverter.Operator
                             ? orderArgExpression.Op
                             : AscExpressionConverter.Operator,
-                        this.ConvertExpression(orderArgExpression, clientItemType, lambdaArg))
+                        this.ConvertExpression(orderArgExpression, clientItemType, lambdaArg, context))
 
-                    : MemberExpressionConverter.IsMemberAccess(orderArg)
+                    : context.UseMemberAccessConvention && MemberAccessExpressionConverter.IsMemberAccess(orderArg)
                         // make member access
                         ? GetOrder(
                             orderArg,
                             AscExpressionConverter.Operator,
-                            MemberExpressionConverter.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
+                            MemberAccessExpressionConverter.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
 
                         // constants are not relevant for sorting, so just ignore them.
                         : null;
@@ -274,10 +284,11 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <param name="expression">The expression.</param>
         /// <param name="clientItemType">The client item type.</param>
         /// <param name="lambdaArg">The lambda argument.</param>
+        /// <param name="context">The query conversion context.</param>
         /// <returns>
         /// The converted LINQ expression.
         /// </returns>
-        protected virtual LinqExpression ConvertExpression(Expression expression, Type clientItemType, ParameterExpression lambdaArg)
+        protected virtual LinqExpression ConvertExpression(Expression expression, Type clientItemType, ParameterExpression lambdaArg, IClientQueryConversionContext context)
         {
             var converter = this.expressionConverters.TryGetValue(expression.Op);
             if (converter == null)
@@ -294,9 +305,9 @@ namespace Kephas.Data.Client.Queries.Conversion
                     var arg = exprArgs[i];
                     args.Add(
                         arg is Expression argExpression
-                            ? this.ConvertExpression(argExpression, clientItemType, lambdaArg)
-                            : MemberExpressionConverter.IsMemberAccess(arg)
-                                ? MemberExpressionConverter.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
+                            ? this.ConvertExpression(argExpression, clientItemType, lambdaArg, context)
+                            : context.UseMemberAccessConvention && MemberAccessExpressionConverter.IsMemberAccess(arg)
+                                ? MemberAccessExpressionConverter.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
                                 : this.MakeConstantExpression(arg));
                 }
             }

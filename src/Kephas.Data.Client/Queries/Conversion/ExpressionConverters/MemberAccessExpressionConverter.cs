@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemberExpressionConverter.cs" company="Kephas Software SRL">
+// <copyright file="MemberAccessExpressionConverter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,9 +21,14 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     /// <summary>
     /// A member expression converter.
     /// </summary>
-    [Operator("$m")]
-    public class MemberExpressionConverter : IExpressionConverter
+    [Operator(Operator)]
+    public class MemberAccessExpressionConverter : IExpressionConverter
     {
+        /// <summary>
+        /// The operator for descending sort.
+        /// </summary>
+        public const string Operator = "$m";
+
         /// <summary>
         /// The member operator.
         /// </summary>
@@ -45,7 +50,14 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
                 throw new DataException(string.Format(Strings.ExpressionConverter_BadArgumentsCount_Exception, args.Count, 1));
             }
 
-            return MakeMemberAccessExpression(args[0], clientItemType, lambdaArg);
+            var arg = args[0];
+            if (arg is ConstantExpression constExprArg)
+            {
+                return MakeMemberAccessExpression(constExprArg.Value, clientItemType, lambdaArg);
+            }
+
+            // TODO localization
+            throw new DataException($"Only constant expressions supported, instead {arg} provided.");
         }
 
         /// <summary>

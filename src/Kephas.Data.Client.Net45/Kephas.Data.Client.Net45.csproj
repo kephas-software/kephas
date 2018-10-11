@@ -99,8 +99,8 @@
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\LtExpressionConverter.cs">
       <Link>Queries\Conversion\ExpressionConverters\LtExpressionConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\MemberExpressionConverter.cs">
-      <Link>Queries\Conversion\ExpressionConverters\MemberExpressionConverter.cs</Link>
+    <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\MemberAccessExpressionConverter.cs">
+      <Link>Queries\Conversion\ExpressionConverters\MemberAccessExpressionConverter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Client\Queries\Conversion\ExpressionConverters\MethodCallExpressionConverterBase.cs">
       <Link>Queries\Conversion\ExpressionConverters\MethodCallExpressionConverterBase.cs</Link>
