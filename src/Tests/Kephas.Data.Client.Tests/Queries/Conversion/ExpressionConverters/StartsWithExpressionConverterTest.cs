@@ -26,18 +26,18 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new StartsWithExpressionConverter();
 
             var expr = (MethodCallExpression)converter.ConvertExpression(new List<Expression>
-                                            {
-                                                Expression.Constant("123"),
-                                                Expression.Constant("12"),
-                                            });
+            {
+                Expression.Constant("123"),
+                Expression.Constant("12"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
 
             expr = (MethodCallExpression)converter.ConvertExpression(new List<Expression>
-                                            {
-                                                Expression.Constant("123"),
-                                                Expression.Constant("23"),
-                                            });
+            {
+                Expression.Constant("123"),
+                Expression.Constant("23"),
+            }, null, null);
             result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsFalse((bool)result);
         }

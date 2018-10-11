@@ -226,12 +226,12 @@ namespace Kephas.Data.Client.Queries.Conversion
                             : AscExpressionConverter.Operator,
                         this.ConvertExpression(orderArgExpression, clientItemType, lambdaArg))
 
-                    : this.IsMemberAccess(orderArg, i)
+                    : MemberExpressionConverter.IsMemberAccess(orderArg)
                         // make member access
                         ? GetOrder(
                             orderArg,
                             AscExpressionConverter.Operator,
-                            this.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
+                            MemberExpressionConverter.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
 
                         // constants are not relevant for sorting, so just ignore them.
                         : null;
@@ -295,13 +295,13 @@ namespace Kephas.Data.Client.Queries.Conversion
                     args.Add(
                         arg is Expression argExpression
                             ? this.ConvertExpression(argExpression, clientItemType, lambdaArg)
-                            : this.IsMemberAccess(arg, i)
-                                ? this.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
+                            : MemberExpressionConverter.IsMemberAccess(arg)
+                                ? MemberExpressionConverter.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
                                 : this.MakeConstantExpression(arg));
                 }
             }
 
-            return converter.ConvertExpression(args);
+            return converter.ConvertExpression(args, clientItemType, lambdaArg);
         }
 
         /// <summary>
@@ -314,44 +314,6 @@ namespace Kephas.Data.Client.Queries.Conversion
         protected virtual LinqExpression MakeConstantExpression(object arg)
         {
             return LinqExpression.Constant(arg);
-        }
-
-        /// <summary>
-        /// Makes a member access expression.
-        /// </summary>
-        /// <param name="arg">The argument.</param>
-        /// <param name="clientItemType">The client item type.</param>
-        /// <param name="lambdaArg">The lambda argument.</param>
-        /// <returns>
-        /// A LINQ expression.
-        /// </returns>
-        protected virtual LinqExpression MakeMemberAccessExpression(object arg, Type clientItemType, ParameterExpression lambdaArg)
-        {
-            var memberName = (string)arg;
-            memberName = memberName.Substring(1, memberName.Length - 1); // cut leading dot (.)
-            memberName = memberName.ToPascalCase();
-
-            var queryItemTypeInfo = lambdaArg.Type.AsRuntimeTypeInfo();
-            if (!queryItemTypeInfo.Properties.TryGetValue(memberName, out var propertyInfo))
-            {
-                throw new MissingMemberException(string.Format(Strings.DefaultClientQueryConverter_MissingMember_Exception, memberName, queryItemTypeInfo));
-            }
-
-            return LinqExpression.MakeMemberAccess(lambdaArg, propertyInfo.PropertyInfo);
-        }
-
-        /// <summary>
-        /// Query if 'arg' is member access.
-        /// </summary>
-        /// <param name="arg">The argument.</param>
-        /// <param name="argIndex">Zero-based index of the argument.</param>
-        /// <returns>
-        /// True if member access, false if not.
-        /// </returns>
-        protected virtual bool IsMemberAccess(object arg, int argIndex)
-        {
-            var stringArg = arg as string;
-            return !string.IsNullOrEmpty(stringArg) && stringArg[0] == '.';
         }
     }
 }

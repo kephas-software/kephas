@@ -64,10 +64,12 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// Converts the provided expression to a LINQ expression.
         /// </summary>
         /// <param name="args">The arguments.</param>
+        /// <param name="clientItemType">The client item type.</param>
+        /// <param name="lambdaArg">The lambda argument.</param>
         /// <returns>
         /// The converted expression.
         /// </returns>
-        public Expression ConvertExpression(IList<Expression> args)
+        public Expression ConvertExpression(IList<Expression> args, Type clientItemType, ParameterExpression lambdaArg)
         {
             if (args.Count != this.argCount)
             {

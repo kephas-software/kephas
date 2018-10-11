@@ -26,10 +26,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new EqExpressionConverter();
 
             var expr = converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
-                                                                             Expression.Constant(3),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
+                Expression.Constant(3),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -41,10 +41,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
 
             var age = (int?)3;
             var expr = converter.ConvertExpression(new List<Expression>
-                                                       {
-                                                           Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
-                                                           Expression.Constant(age),
-                                                       });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
+                Expression.Constant(age),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -55,10 +55,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new EqExpressionConverter();
 
             var expr = converter.ConvertExpression(new List<Expression>
-                                                       {
-                                                           Expression.MakeMemberAccess(Expression.Constant(new Person { Name = "gigi" }), typeof(Person).GetProperty("Name")),
-                                                           Expression.Constant("gigi"),
-                                                       });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new Person { Name = "gigi" }), typeof(Person).GetProperty("Name")),
+                Expression.Constant("gigi"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -69,10 +69,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new EqExpressionConverter();
 
             var expr = converter.ConvertExpression(new List<Expression>
-                                                       {
-                                                           Expression.MakeMemberAccess(Expression.Constant(new Person { Name = "gigi" }), typeof(Person).GetProperty("Name")),
-                                                           Expression.Constant("non-gigi"),
-                                                       });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new Person { Name = "gigi" }), typeof(Person).GetProperty("Name")),
+                Expression.Constant("non-gigi"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsFalse((bool)result);
         }
@@ -83,10 +83,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new EqExpressionConverter();
 
             var expr = converter.ConvertExpression(new List<Expression>
-                                                       {
-                                                           Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
-                                                           Expression.Constant("3"),
-                                                       });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new Person { Age = 3 }), typeof(Person).GetProperty("Age")),
+                Expression.Constant("3"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }

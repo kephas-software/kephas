@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System.Collections.Generic;
@@ -25,9 +27,11 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// Converts the provided expression to a LINQ expression.
         /// </summary>
         /// <param name="args">The arguments.</param>
+        /// <param name="clientItemType">The client item type.</param>
+        /// <param name="lambdaArg">The lambda argument.</param>
         /// <returns>
         /// The converted expression.
         /// </returns>
-        Expression ConvertExpression(IList<Expression> args);
+        Expression ConvertExpression(IList<Expression> args, Type clientItemType, ParameterExpression lambdaArg);
     }
 }

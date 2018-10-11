@@ -27,10 +27,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                             {
-                                                                                 Expression.Constant("123"),
-                                                                                 Expression.Constant("12"),
-                                                                             });
+            {
+                Expression.Constant("123"),
+                Expression.Constant("12"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsFalse((bool)result);
         }
@@ -41,10 +41,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
-                                                                             Expression.Constant(3),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
+                Expression.Constant(3),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -55,10 +55,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
-                                                                             Expression.Constant((int?)3),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
+                Expression.Constant((int?)3),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -69,10 +69,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
-                                                                             Expression.Constant("3"),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant("123"), typeof(string).GetProperty("Length")),
+                Expression.Constant("3"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -83,10 +83,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant(new NullableAge { Age = 3 }), typeof(NullableAge).GetProperty("Age")),
-                                                                             Expression.Constant("3"),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new NullableAge { Age = 3 }), typeof(NullableAge).GetProperty("Age")),
+                Expression.Constant("3"),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
@@ -97,10 +97,10 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion.ExpressionConverters
             var converter = new TestBinaryExpressionConverter(Expression.Equal);
 
             var expr = (BinaryExpression)converter.ConvertExpression(new List<Expression>
-                                                                         {
-                                                                             Expression.MakeMemberAccess(Expression.Constant(new NullableAge { Age = 3 }), typeof(NullableAge).GetProperty("Age")),
-                                                                             Expression.Constant(new Age(3)),
-                                                                         });
+            {
+                Expression.MakeMemberAccess(Expression.Constant(new NullableAge { Age = 3 }), typeof(NullableAge).GetProperty("Age")),
+                Expression.Constant(new Age(3)),
+            }, null, null);
             var result = Expression.Lambda(expr).Compile().DynamicInvoke();
             Assert.IsTrue((bool)result);
         }
