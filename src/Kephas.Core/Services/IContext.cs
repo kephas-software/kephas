@@ -45,7 +45,7 @@ namespace Kephas.Services
     public static class ContextExtensions
     {
         /// <summary>
-        /// Sets the initial data.
+        /// Sets the context identity.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
@@ -59,6 +59,24 @@ namespace Kephas.Services
             Requires.NotNull(context, nameof(context));
 
             context.Identity = identity;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the context logger.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="contextLogger">The context logger.</param>
+        /// <returns>
+        /// This context.
+        /// </returns>
+        public static TContext WithLogger<TContext>(this TContext context, ILogger contextLogger)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.ContextLogger = contextLogger;
             return context;
         }
     }
