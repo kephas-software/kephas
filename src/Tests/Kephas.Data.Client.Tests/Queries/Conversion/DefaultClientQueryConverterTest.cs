@@ -93,6 +93,23 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         }
 
         [Test]
+        [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
+        public void ConvertQuery_member_access_missing_no_member_access_convention(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter(), this.MemberAccessConverter() });
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+                            {
+                                EntityType = "item-type",
+                                Filter = new Expression { Op = ">", Args = new List<object> { new Expression { Op = "$m", Args = new List<object> { ".count" } }, 3 } }
+                            };
+
+            Assert.Throws<MissingMemberException>(() => converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext)));
+        }
+
+        [Test]
         [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
         [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
         [TestCase(arg: new string[] { "hi", "all" })]
