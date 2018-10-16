@@ -662,6 +662,9 @@
     <Compile Include="..\Kephas.Core\Security\Authorization\AttributedModel\RequiresPermissionAttribute.cs">
       <Link>Security\Authorization\AttributedModel\RequiresPermissionAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Security\Authorization\AttributedModel\SupportsPermissionAttribute.cs">
+      <Link>Security\Authorization\AttributedModel\SupportsPermissionAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Security\Authorization\AuthorizationContext.cs">
       <Link>Security\Authorization\AuthorizationContext.cs</Link>
     </Compile>

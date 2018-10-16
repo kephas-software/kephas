@@ -45,10 +45,12 @@ namespace Kephas.Security.Authorization
         object Scope { get; }
 
         /// <summary>
-        /// Gets a value indicating whether to throw on failure.
+        /// Gets a value indicating whether to throw on authorization failure.
+        /// If <c>false</c> is indicated, the authorization check will return <c>false</c> upon failure,
+        /// otherwise an exception will occur.
         /// </summary>
         /// <value>
-        /// True if throw on failure, false if not.
+        /// True to throw on authorization failure, false to not throw and return <c>false</c>.
         /// </value>
         bool ThrowOnFailure { get; }
     }
