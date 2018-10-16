@@ -17,7 +17,7 @@ namespace Kephas.Messaging.Authorization
     using Kephas.Services;
 
     /// <summary>
-    /// Default implementation of an authorization scope provider.
+    /// Default implementation of an authorization scope provider for messages.
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class MessagingAuthorizationScopeProvider : IAuthorizationScopeProvider
