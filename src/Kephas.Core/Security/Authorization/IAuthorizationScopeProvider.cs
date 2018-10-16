@@ -27,7 +27,8 @@ namespace Kephas.Security.Authorization
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. the cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the authorization scope.
+        /// An asynchronous result that yields the authorization scope and a boolean value indicating
+        /// whether the resolution was successful or not.
         /// </returns>
         Task<(object scope, bool canResolve)> GetAuthorizationScopeAsync(IContext context, CancellationToken cancellationToken = default);
     }

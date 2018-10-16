@@ -21,6 +21,10 @@ namespace Kephas.Security.Authorization
         /// <summary>
         /// Scoping is not supported by this permission type.
         /// </summary>
+        /// <remarks>
+        /// This value is provided as default, although it is more or less invalid.
+        /// A permission with scoping <see cref="None"/> is not usable.
+        /// </remarks>
         None = 0x00,
         
         /// <summary>
@@ -34,7 +38,7 @@ namespace Kephas.Security.Authorization
         Type = 0x0010,
 
         /// <summary>
-        /// The scoping is granted and verified at type level.
+        /// The scoping is granted and verified at instance level.
         /// </summary>
         Instance = 0x0100,
     }
