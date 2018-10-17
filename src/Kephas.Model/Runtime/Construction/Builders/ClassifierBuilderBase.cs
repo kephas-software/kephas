@@ -18,8 +18,8 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Dimensions.App;
-    using Kephas.Model.Dimensions.AppFamily;
     using Kephas.Model.Dimensions.Aspect;
+    using Kephas.Model.Dimensions.Layer;
     using Kephas.Model.Dimensions.Module;
     using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Elements;
@@ -76,7 +76,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         public TBuilder InCoreProjection()
         {
             return this.InProjection(b => b
-                            .Dim<IKephasAppFamilyDimensionElement>()
+                            .Dim<IFoundationLayerDimensionElement>()
                             .Dim<IKernelAppDimensionElement>()
                             .Dim<ICoreModuleDimensionElement>()
                             .Dim<IGlobalScopeDimensionElement>()

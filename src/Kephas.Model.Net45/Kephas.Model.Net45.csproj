@@ -111,12 +111,6 @@
     <Compile Include="..\Kephas.Model\Construction\NonConstructibleElementException.cs">
       <Link>Construction\NonConstructibleElementException.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs">
-      <Link>Dimensions\AppFamily\IKephasAppFamilyDimensionElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs">
-      <Link>Dimensions\AppFamily\ISystemAppFamilyDimensionElement.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\App\IKernelAppDimensionElement.cs">
       <Link>Dimensions\App\IKernelAppDimensionElement.cs</Link>
     </Compile>
@@ -126,17 +120,20 @@
     <Compile Include="..\Kephas.Model\Dimensions\IAppDimension.cs">
       <Link>Dimensions\IAppDimension.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Dimensions\IAppFamilyDimension.cs">
-      <Link>Dimensions\IAppFamilyDimension.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\IAspectDimension.cs">
       <Link>Dimensions\IAspectDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\ILayerDimension.cs">
+      <Link>Dimensions\ILayerDimension.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\IModuleDimension.cs">
       <Link>Dimensions\IModuleDimension.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\IScopeDimension.cs">
       <Link>Dimensions\IScopeDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\Layer\IFoundationLayerDimensionElement.cs">
+      <Link>Dimensions\Layer\IFoundationLayerDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\Module\ICoreModuleDimensionElement.cs">
       <Link>Dimensions\Module\ICoreModuleDimensionElement.cs</Link>

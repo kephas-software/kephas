@@ -1,23 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISystemAppFamilyDimensionElement.cs" company="Kephas Software SRL">
+// <copyright file="IFoundationLayerDimensionElement.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ISystemAppFamilyDimensionElement interface.
+//   Element of the <see cref="ILayerDimension" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Dimensions.AppFamily
+namespace Kephas.Model.Dimensions.Layer
 {
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// The System element of the <see cref="IAppFamilyDimension"/>. 
-    /// Here are defined the model elements provided by the runtime, like primitive model elements.
+    /// The Foundation element of the <see cref="ILayerDimension"/>. 
+    /// Here are defined the model elements provided at foundation level.
     /// </summary>
     [ModelDimensionElement]
-    public interface ISystemAppFamilyDimensionElement
+    public interface IFoundationLayerDimensionElement
     {
     }
 }
