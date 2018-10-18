@@ -74,7 +74,7 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
-        /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.
+        /// Tries to get an <see cref="IElementInfo"/> of the model space based on the provided native element information.
         /// </summary>
         /// <param name="nativeElementInfo">The native element information.</param>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -85,7 +85,7 @@ namespace Kephas.Model.Runtime
         /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
         /// For any other errors an exception should be thrown.
         /// </remarks>
-        public virtual IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
+        public virtual IElementInfo TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
         {
             return null;
         }

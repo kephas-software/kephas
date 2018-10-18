@@ -28,7 +28,7 @@ namespace Kephas.Model
         /// </value>
         /// <remarks>
         /// A dimension is aggregatable if its members contains parts of an element which at runtime will be
-        /// aggregated into one integral element. For example, this helps modelling aplication layers or aspects 
+        /// aggregated into one integral element. For example, this helps modeling application layers or aspects 
         /// which provide different logical views on the same element.
         /// </remarks>
         bool IsAggregatable { get; }

@@ -158,9 +158,9 @@ namespace Kephas.Model.Services
                     RuntimeModelElementFactory = this.runtimeModelElementFactory,
                 };
 
-            constructionContext.TryGetElementInfo = 
+            constructionContext.TryGetModelElementInfo = 
                 nativeElementInfo => this.ModelInfoProviders
-                    .Select(p => p.TryGetElementInfo(nativeElementInfo, constructionContext))
+                    .Select(p => p.TryGetModelElementInfo(nativeElementInfo, constructionContext))
                     .FirstOrDefault(p => p != null);
 
             return constructionContext;

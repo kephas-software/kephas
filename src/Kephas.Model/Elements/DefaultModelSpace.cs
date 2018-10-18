@@ -230,7 +230,7 @@ namespace Kephas.Model.Elements
             var constructedGenericsDependencies = this.ComputeConstructedGenericDependencies(constructionContext, unsortedClassifiers);
             unsortedClassifiers.AddRange(
                 constructedGenericsDependencies
-                    .Select(d => constructionContext.TryGetElementInfo?.Invoke(d) as IClassifier)
+                    .Select(d => constructionContext.TryGetModelElementInfo?.Invoke(d) as IClassifier)
                     .Where(c => c != null));
 
             // When constructing generics, must change the signature to include (param, arg) mappings
@@ -357,7 +357,7 @@ namespace Kephas.Model.Elements
                     if (resolvedGenericDefinition != null)
                     {
                         constructionContext = constructionContext ?? this.ConstructionContext;
-                        var constructedType = (IClassifier)constructionContext.TryGetElementInfo(typeInfo);
+                        var constructedType = (IClassifier)constructionContext.TryGetModelElementInfo(typeInfo);
                         this.ResolveAspects(new[] { constructedType }, this.GetAspects(classifiers));
 
                         // TODO: maybe do not complete construction yet, if the model space is still constructing

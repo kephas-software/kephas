@@ -56,7 +56,7 @@ namespace Kephas.Model.Runtime
         }
 
         /// <summary>
-        /// Tries to get an <see cref="IElementInfo"/> based on the provided native element information.
+        /// Tries to get an <see cref="IElementInfo"/> of the model space based on the provided native element information.
         /// </summary>
         /// <param name="nativeElementInfo">The native element information.</param>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -67,10 +67,9 @@ namespace Kephas.Model.Runtime
         /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
         /// For any other errors an exception should be thrown.
         /// </remarks>
-        public override IElementInfo TryGetElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
+        public override IElementInfo TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
         {
-            var runtimeTypeInfo = nativeElementInfo as IRuntimeTypeInfo;
-            if (runtimeTypeInfo == null)
+            if (!(nativeElementInfo is IRuntimeTypeInfo runtimeTypeInfo))
             {
                 return null;
             }
@@ -147,19 +146,15 @@ namespace Kephas.Model.Runtime
         /// <returns>The normalized runtime type.</returns>
         private IRuntimeTypeInfo ToRuntimeTypeInfo(object runtimeElement)
         {
-            var runtimeTypeInfo = runtimeElement as TypeInfo;
-            if (runtimeTypeInfo != null)
+            switch (runtimeElement)
             {
-                return runtimeTypeInfo.AsRuntimeTypeInfo();
+                case TypeInfo runtimeTypeInfo:
+                    return runtimeTypeInfo.AsRuntimeTypeInfo();
+                case Type runtimeType:
+                    return runtimeType.AsRuntimeTypeInfo();
+                default:
+                    return runtimeElement as IRuntimeTypeInfo;
             }
-
-            var runtimeType = runtimeElement as Type;
-            if (runtimeType != null)
-            {
-                return runtimeType.AsRuntimeTypeInfo();
-            }
-
-            return runtimeElement as IRuntimeTypeInfo;
         }
     }
 }
