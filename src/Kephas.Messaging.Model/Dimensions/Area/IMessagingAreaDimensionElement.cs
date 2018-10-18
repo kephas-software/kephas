@@ -1,22 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGlobalScopeDimensionElement.cs" company="Kephas Software SRL">
+// <copyright file="IMessagingAreaDimensionElement.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   The Global element of the <see cref="IScopeDimension" />.
+//   Declares the IMessagingAreaDimensionElement interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Dimensions.Scope
+namespace Kephas.Messaging.Model.Dimensions.Area
 {
     using Kephas.Model.AttributedModel;
+    using Kephas.Model.Dimensions;
 
     /// <summary>
-    /// The Global element of the <see cref="IScopeDimension"/>.
+    /// The Messaging element of the <see cref="IAreaDimension"/>.
     /// </summary>
     [ModelDimensionElement]
-    public interface IGlobalScopeDimensionElement
+    public interface IMessagingAreaDimensionElement
     {
     }
 }

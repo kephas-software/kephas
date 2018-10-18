@@ -59,11 +59,11 @@
     <Compile Include="..\Kephas.Data.Model\AttributedModel\PrimaryKeyAttribute.cs">
       <Link>AttributedModel\PrimaryKeyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IClientScopeDimensionElement.cs">
-      <Link>Dimensions\Scope\IClientScopeDimensionElement.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\Dimensions\Area\IClientAreaDimensionElement.cs">
+      <Link>Dimensions\Area\IClientAreaDimensionElement.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.Model\Dimensions\Scope\IDomainScopeDimensionElement.cs">
-      <Link>Dimensions\Scope\IDomainScopeDimensionElement.cs</Link>
+    <Compile Include="..\Kephas.Data.Model\Dimensions\Area\IDomainAreaDimensionElement.cs">
+      <Link>Dimensions\Area\IDomainAreaDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Model\Elements\Annotations\KeyAnnotation.cs">
       <Link>Elements\Annotations\KeyAnnotation.cs</Link>

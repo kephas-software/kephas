@@ -13,7 +13,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System.Diagnostics.CodeAnalysis;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Dimensions.Scope;
+    using Kephas.Model.Dimensions.Area;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
 
@@ -61,7 +61,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.AreEqual(true, dimElement.IsAggregatable);
         }
 
-        [ModelDimension(12, DefaultDimensionElement = typeof(IGlobalScopeDimensionElement))]
+        [ModelDimension(12, DefaultDimensionElement = typeof(IGlobalAreaDimensionElement))]
         private interface IHelloDimension { }
 
         [ModelDimension(10)]

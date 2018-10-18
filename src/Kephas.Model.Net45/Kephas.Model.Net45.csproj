@@ -114,11 +114,17 @@
     <Compile Include="..\Kephas.Model\Dimensions\App\IKernelAppDimensionElement.cs">
       <Link>Dimensions\App\IKernelAppDimensionElement.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\Area\IGlobalAreaDimensionElement.cs">
+      <Link>Dimensions\Area\IGlobalAreaDimensionElement.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\Aspect\IDefaultAspectDimensionElement.cs">
       <Link>Dimensions\Aspect\IDefaultAspectDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\IAppDimension.cs">
       <Link>Dimensions\IAppDimension.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Dimensions\IAreaDimension.cs">
+      <Link>Dimensions\IAreaDimension.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\IAspectDimension.cs">
       <Link>Dimensions\IAspectDimension.cs</Link>
@@ -129,17 +135,11 @@
     <Compile Include="..\Kephas.Model\Dimensions\IModuleDimension.cs">
       <Link>Dimensions\IModuleDimension.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Model\Dimensions\IScopeDimension.cs">
-      <Link>Dimensions\IScopeDimension.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\Layer\IFoundationLayerDimensionElement.cs">
       <Link>Dimensions\Layer\IFoundationLayerDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Dimensions\Module\ICoreModuleDimensionElement.cs">
       <Link>Dimensions\Module\ICoreModuleDimensionElement.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Model\Dimensions\Scope\IGlobalScopeDimensionElement.cs">
-      <Link>Dimensions\Scope\IGlobalScopeDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Elements\Annotation.cs">
       <Link>Elements\Annotation.cs</Link>

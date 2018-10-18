@@ -1,23 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IClientScopeDimensionElement.cs" company="Kephas Software SRL">
+// <copyright file="IGlobalAreaDimensionElement.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IClientScopeDimensionElement interface.
+//   The Global element of the <see cref="IAreaDimension" />.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Model.Dimensions.Scope
+namespace Kephas.Model.Dimensions.Area
 {
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Dimensions;
 
     /// <summary>
-    /// The Client element of the <see cref="IScopeDimension"/>.
+    /// The Global element of the <see cref="IAreaDimension"/>.
     /// </summary>
     [ModelDimensionElement]
-    public interface IClientScopeDimensionElement
+    public interface IGlobalAreaDimensionElement
     {
     }
 }

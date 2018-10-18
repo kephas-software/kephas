@@ -13,15 +13,14 @@ namespace Kephas.Model.Runtime.Construction.Builders
     using System;
     using System.Linq;
 
-    using Kephas.Dynamic;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Dimensions.App;
+    using Kephas.Model.Dimensions.Area;
     using Kephas.Model.Dimensions.Aspect;
     using Kephas.Model.Dimensions.Layer;
     using Kephas.Model.Dimensions.Module;
-    using Kephas.Model.Dimensions.Scope;
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Model.Runtime.Construction.Annotations;
@@ -79,7 +78,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
                             .Dim<IFoundationLayerDimensionElement>()
                             .Dim<IKernelAppDimensionElement>()
                             .Dim<ICoreModuleDimensionElement>()
-                            .Dim<IGlobalScopeDimensionElement>()
+                            .Dim<IGlobalAreaDimensionElement>()
                             .Dim<IDefaultAspectDimensionElement>());
         }
 

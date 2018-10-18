@@ -48,8 +48,8 @@
     <Compile Include="..\Kephas.Messaging.Model\AttributedModel\MessagePartAttribute.cs">
       <Link>AttributedModel\MessagePartAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Messaging.Model\Dimensions\Scope\IMessagingScopeDimensionElement.cs">
-      <Link>Dimensions\Scope\IMessagingScopeDimensionElement.cs</Link>
+    <Compile Include="..\Kephas.Messaging.Model\Dimensions\Area\IMessagingAreaDimensionElement.cs">
+      <Link>Dimensions\Area\IMessagingAreaDimensionElement.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Messaging.Model\Elements\MessageType.cs">
       <Link>Elements\MessageType.cs</Link>
