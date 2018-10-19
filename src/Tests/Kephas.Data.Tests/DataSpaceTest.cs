@@ -33,12 +33,12 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             var dataContexts = dataSpace.ToList();
@@ -51,12 +51,12 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
             Assert.AreSame(dataContext, dc);
         }
@@ -66,12 +66,12 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo();
             var dc = dataSpace[ti];
             Assert.AreSame(dataContext, dc);
@@ -82,12 +82,12 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc1 = dataSpace[typeof(string)];
             var dc2 = dataSpace[typeof(string)];
             Assert.AreSame(dc1, dc2);
@@ -99,12 +99,12 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("default");
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("default");
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             dataSpace.Dispose();
@@ -116,11 +116,11 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
             var context = new Context(compositionContext) { Identity = identity };
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector);
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             dataSpace.Initialize(context);
 
             Assert.AreSame(identity, dataSpace.Identity);
@@ -131,11 +131,11 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
             var context = new Context { Identity = identity };
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector) { Identity = Substitute.For<IIdentity>() };
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
             Assert.AreNotSame(identity, dataSpace.Identity);
@@ -146,10 +146,10 @@ namespace Kephas.Data.Tests
         {
             var compositionContext = Substitute.For<ICompositionContext>();
             var dataContextFactory = Substitute.For<IDataContextFactory>();
-            var dataStoreSelector = Substitute.For<IDataStoreSelector>();
+            var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
-            dataStoreSelector.GetDataStoreName(typeof(string)).Returns("string");
-            dataStoreSelector.GetDataStoreName(typeof(StringBuilder)).Returns("builder");
+            dataStoreProvider.GetDataStoreName(typeof(string)).Returns("string");
+            dataStoreProvider.GetDataStoreName(typeof(StringBuilder)).Returns("builder");
             var strDataContext = Substitute.For<IDataContext>();
             var bldDataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("string", Arg.Any<IContext>())
@@ -177,7 +177,7 @@ namespace Kephas.Data.Tests
                         new EntityInfo("gigi") { ChangeState = ChangeState.Added },
                         new EntityInfo(new StringBuilder("belogea")) { ChangeState = ChangeState.Changed }
                     });
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreSelector) { Identity = Substitute.For<IIdentity>() };
+            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
             Assert.AreNotSame(identity, dataSpace.Identity);

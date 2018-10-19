@@ -20,7 +20,6 @@ namespace Kephas.Data
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -34,9 +33,9 @@ namespace Kephas.Data
         private readonly IDataContextFactory dataContextFactory;
 
         /// <summary>
-        /// The data store selector.
+        /// The data store provider.
         /// </summary>
-        private readonly IDataStoreSelector dataStoreSelector;
+        private readonly IDataStoreProvider dataStoreProvider;
 
         /// <summary>
         /// Context for the operation.
@@ -53,12 +52,12 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
-        /// <param name="dataStoreSelector">The data store selector.</param>
+        /// <param name="dataStoreProvider">The data store provider.</param>
         public DataSpace(
             ICompositionContext compositionContext,
             IDataContextFactory dataContextFactory,
-            IDataStoreSelector dataStoreSelector)
-            : this(compositionContext, dataContextFactory, dataStoreSelector, false)
+            IDataStoreProvider dataStoreProvider)
+            : this(compositionContext, dataContextFactory, dataStoreProvider, false)
         {
         }
 
@@ -67,20 +66,20 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="dataContextFactory">The data context factory.</param>
-        /// <param name="dataStoreSelector">The data store selector.</param>
+        /// <param name="dataStoreProvider">The data store provider.</param>
         /// <param name="isThreadSafe">True if this object is thread safe.</param>
         protected DataSpace(
             ICompositionContext compositionContext,
             IDataContextFactory dataContextFactory,
-            IDataStoreSelector dataStoreSelector,
+            IDataStoreProvider dataStoreProvider,
             bool isThreadSafe)
             : base(compositionContext, isThreadSafe)
         {
             Requires.NotNull(dataContextFactory, nameof(dataContextFactory));
-            Requires.NotNull(dataStoreSelector, nameof(dataStoreSelector));
+            Requires.NotNull(dataStoreProvider, nameof(dataStoreProvider));
 
             this.dataContextFactory = dataContextFactory;
-            this.dataStoreSelector = dataStoreSelector;
+            this.dataStoreProvider = dataStoreProvider;
         }
 
         /// <summary>Gets the number of elements in the collection.</summary>
@@ -99,7 +98,7 @@ namespace Kephas.Data
         {
             get
             {
-                var dataStoreName = this.dataStoreSelector.GetDataStoreName(entityType, this.operationContext);
+                var dataStoreName = this.dataStoreProvider.GetDataStoreName(entityType, this.operationContext);
                 var dataContext = this.dataContextMap.TryGetValue(dataStoreName);
                 if (dataContext == null)
                 {
@@ -158,7 +157,7 @@ namespace Kephas.Data
             if (entityInfos != null)
             {
                 this.dataContextMap = entityInfos
-                                          .GroupBy(e => this.dataStoreSelector.GetDataStoreName(e.Entity.GetType(), this.operationContext), e => e)
+                                          .GroupBy(e => this.dataStoreProvider.GetDataStoreName(e.Entity.GetType(), this.operationContext), e => e)
                                           .ToDictionary(
                                               g => g.Key,
                                               g =>

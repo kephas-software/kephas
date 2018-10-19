@@ -10,6 +10,8 @@
 
 namespace Kephas.Data.Store
 {
+    using System;
+
     using Kephas.Services;
 
     /// <summary>
@@ -22,9 +24,20 @@ namespace Kephas.Data.Store
         /// Gets data store with the provided name.
         /// </summary>
         /// <param name="dataStoreName">Name of the data store.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data store.
         /// </returns>
-        IDataStore GetDataStore(string dataStoreName);
+        IDataStore GetDataStore(string dataStoreName, IContext context = null);
+
+        /// <summary>
+        /// Gets the data store name for the provided entity type.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The data store name.
+        /// </returns>
+        string GetDataStoreName(Type entityType, IContext context = null);
     }
 }
