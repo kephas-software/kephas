@@ -24,7 +24,7 @@ namespace Kephas.Application
     /// and reacts to them. Such features could log the performance of initialization,
     /// check prerequisites like proper licensing or whatever the application needs.
     /// </remarks>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(AppliesToFeatureAttribute) })]
     public interface IFeatureLifecycleBehavior
     {
         /// <summary>

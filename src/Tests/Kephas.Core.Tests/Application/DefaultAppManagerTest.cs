@@ -336,21 +336,13 @@ namespace Kephas.Core.Tests.Application
             featureManager2.InitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var behavior1 = Substitute.For<IFeatureLifecycleBehavior>();
-            behavior1.BeforeInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("Before1"));
-            behavior1.AfterInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("After1"));
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
+                _ => order.Add("Before1"), 
+                _ => order.Add("After1"));
 
-            var behavior2 = Substitute.For<IFeatureLifecycleBehavior>();
-            behavior2.BeforeInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("Before2"));
-            behavior2.AfterInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("After2"));
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
+                _ => order.Add("Before2"), 
+                _ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
@@ -364,8 +356,8 @@ namespace Kephas.Core.Tests.Application
                     },
                 new[]
                     {
-                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
-                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: 1)),
                     });
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -379,6 +371,65 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("Before1", order[5]);
             Assert.AreEqual("After1", order[6]);
             Assert.AreEqual("After2", order[7]);
+        }
+
+        [Test]
+        public async Task InitializeAppAsync_right_feature_behavior_order_with_filter()
+        {
+            var order = new List<int>();
+
+            var finalizer1 = this.CreateFeatureManager(initialization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(initialization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(initialization: _ => order.Add(3));
+
+            var behaviors = new List<string>();
+
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
+                    ci => behaviors.Add("BeforeInit 1"),
+                    ci => behaviors.Add("AfterInit 1"));
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
+                    ci => behaviors.Add("BeforeInit 2"),
+                    ci => behaviors.Add("AfterInit 2"));
+            var behavior3 = this.CreateFeatureLifecycleBehavior(
+                    ci => behaviors.Add("BeforeInit 3"),
+                    ci => behaviors.Add("AfterInit 3"));
+
+            var appManager = new DefaultAppManager(
+                Substitute.For<IAppManifest>(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
+                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
+                new[]
+                    {
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "1" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
+                    },
+                new[]
+                    {
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata("1")),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata("2")),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
+                    });
+
+            await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+
+            Assert.AreEqual(3, order.Count);
+            Assert.AreEqual(3, order[0]);
+            Assert.AreEqual(1, order[1]);
+            Assert.AreEqual(2, order[2]);
+
+            Assert.AreEqual(10, behaviors.Count);
+            Assert.AreEqual("BeforeInit 3", behaviors[0]);
+            Assert.AreEqual("AfterInit 3", behaviors[1]);
+            Assert.AreEqual("BeforeInit 1", behaviors[2]);
+            Assert.AreEqual("BeforeInit 3", behaviors[3]);
+            Assert.AreEqual("AfterInit 1", behaviors[4]);
+            Assert.AreEqual("AfterInit 3", behaviors[5]);
+            Assert.AreEqual("BeforeInit 2", behaviors[6]);
+            Assert.AreEqual("BeforeInit 3", behaviors[7]);
+            Assert.AreEqual("AfterInit 2", behaviors[8]);
+            Assert.AreEqual("AfterInit 3", behaviors[9]);
         }
 
         [Test]
@@ -473,7 +524,6 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual(2, order[1]);
         }
 
-
         [Test]
         public async Task FinalizeAppAsync_right_featureManager_order_processingPriority_marginal_values()
         {
@@ -546,6 +596,65 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
+        public async Task FinalizeAppAsync_right_feature_behavior_order_with_filter()
+        {
+            var order = new List<int>();
+
+            var finalizer1 = this.CreateFeatureManager(finalization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(finalization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(finalization: _ => order.Add(3));
+
+            var behaviors = new List<string>();
+
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
+                    beforeFinalize: ci => behaviors.Add("BeforeFin 1"),
+                    afterFinalize: ci => behaviors.Add("AfterFin 1"));
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
+                    beforeFinalize: ci => behaviors.Add("BeforeFin 2"),
+                    afterFinalize: ci => behaviors.Add("AfterFin 2"));
+            var behavior3 = this.CreateFeatureLifecycleBehavior(
+                    beforeFinalize: ci => behaviors.Add("BeforeFin 3"),
+                    afterFinalize: ci => behaviors.Add("AfterFin 3"));
+
+            var appManager = new DefaultAppManager(
+                Substitute.For<IAppManifest>(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
+                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
+                new[]
+                    {
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer1, new FeatureManagerMetadata(new FeatureInfo("1", "1.0", dependencies: new[] { "3" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer2, new FeatureManagerMetadata(new FeatureInfo("2", "1.0", dependencies: new[] { "1" }))),
+                        new ExportFactory<IFeatureManager, FeatureManagerMetadata>(() => finalizer3, new FeatureManagerMetadata(new FeatureInfo("3", "1.0"))),
+                    },
+                new[]
+                    {
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata("1")),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata("2")),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior3, new FeatureLifecycleBehaviorMetadata()),
+                    });
+
+            await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
+
+            Assert.AreEqual(3, order.Count);
+            Assert.AreEqual(2, order[0]);
+            Assert.AreEqual(1, order[1]);
+            Assert.AreEqual(3, order[2]);
+
+            Assert.AreEqual(10, behaviors.Count);
+            Assert.AreEqual("BeforeFin 2", behaviors[0]);
+            Assert.AreEqual("BeforeFin 3", behaviors[1]);
+            Assert.AreEqual("AfterFin 2", behaviors[2]);
+            Assert.AreEqual("AfterFin 3", behaviors[3]);
+            Assert.AreEqual("BeforeFin 1", behaviors[4]);
+            Assert.AreEqual("BeforeFin 3", behaviors[5]);
+            Assert.AreEqual("AfterFin 1", behaviors[6]);
+            Assert.AreEqual("AfterFin 3", behaviors[7]);
+            Assert.AreEqual("BeforeFin 3", behaviors[8]);
+            Assert.AreEqual("AfterFin 3", behaviors[9]);
+        }
+
+        [Test]
         public async Task FinalizeAppAsync_right_behavior_order()
         {
             var order = new List<string>();
@@ -553,21 +662,13 @@ namespace Kephas.Core.Tests.Application
             var featureManager1 = this.CreateFeatureManager();
             var featureManager2 = this.CreateFeatureManager();
 
-            var behavior1 = Substitute.For<IFeatureLifecycleBehavior>();
-            behavior1.BeforeFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("Before1"));
-            behavior1.AfterFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("After1"));
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
+                beforeFinalize: _ => order.Add("Before1"), 
+                afterFinalize:_ => order.Add("After1"));
 
-            var behavior2 = Substitute.For<IFeatureLifecycleBehavior>();
-            behavior2.BeforeFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("Before2"));
-            behavior2.AfterFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
-                .AndDoes(_ => order.Add("After2"));
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
+                beforeFinalize: _ => order.Add("Before2"), 
+                afterFinalize:_ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppManifest>(),
@@ -581,8 +682,8 @@ namespace Kephas.Core.Tests.Application
                     },
                 new[]
                     {
-                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior1, new AppServiceMetadata(processingPriority: 2)),
-                        new ExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>(() => behavior2, new AppServiceMetadata(processingPriority: 1)),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior1, new FeatureLifecycleBehaviorMetadata(processingPriority: 2)),
+                        new ExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>(() => behavior2, new FeatureLifecycleBehaviorMetadata(processingPriority: 1)),
                     });
 
             await appManager.FinalizeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
@@ -620,6 +721,29 @@ namespace Kephas.Core.Tests.Application
             featureManager.FinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0))
                 .AndDoes(_ => finalization?.Invoke(_));
+
+            return featureManager;
+        }
+
+        private IFeatureLifecycleBehavior CreateFeatureLifecycleBehavior(
+            Action<CallInfo> beforeInit = null,
+            Action<CallInfo> afterInit = null,
+            Action<CallInfo> beforeFinalize = null,
+            Action<CallInfo> afterFinalize = null)
+        {
+            var featureManager = Substitute.For<IFeatureLifecycleBehavior>();
+            featureManager.BeforeInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => beforeInit?.Invoke(_));
+            featureManager.AfterInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => afterInit?.Invoke(_));
+            featureManager.BeforeFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => beforeFinalize?.Invoke(_));
+            featureManager.AfterFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(0))
+                .AndDoes(_ => afterFinalize?.Invoke(_));
 
             return featureManager;
         }

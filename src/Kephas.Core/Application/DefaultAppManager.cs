@@ -50,7 +50,7 @@ namespace Kephas.Application
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> featureLifecycleBehaviorFactories)
+            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(compositionContext, nameof(compositionContext));
@@ -70,7 +70,7 @@ namespace Kephas.Application
                                                    this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
 
             this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
-                                                         ? new List<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>>()
+                                                         ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
                                                          : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
         }
 
@@ -122,7 +122,7 @@ namespace Kephas.Application
         /// <value>
         /// The feature lifecycle behavior factories.
         /// </value>
-        public ICollection<IExportFactory<IFeatureLifecycleBehavior, AppServiceMetadata>> FeatureLifecycleBehaviorFactories { get; }
+        public ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> FeatureLifecycleBehaviorFactories { get; }
 
         /// <summary>
         /// Initializes the application asynchronously.
@@ -362,14 +362,18 @@ namespace Kephas.Application
         /// A Task.
         /// </returns>
         protected virtual async Task BeforeFeatureInitializeAsync(
-            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            ICollection<IExport<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
             CancellationToken cancellationToken)
         {
             foreach (var behavior in behaviors)
             {
-                await behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                var featureRef = behavior.Metadata.AppliesToFeature;
+                if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
+                {
+                    await behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                }
             }
         }
 
@@ -384,14 +388,18 @@ namespace Kephas.Application
         /// A Task.
         /// </returns>
         protected virtual async Task AfterFeatureInitializeAsync(
-            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            ICollection<IExport<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
             CancellationToken cancellationToken)
         {
             foreach (var behavior in behaviors)
             {
-                await behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                var featureRef = behavior.Metadata.AppliesToFeature;
+                if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
+                {
+                    await behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                }
             }
         }
 
@@ -530,14 +538,18 @@ namespace Kephas.Application
         /// A Task.
         /// </returns>
         protected virtual async Task BeforeFeatureFinalizeAsync(
-            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            ICollection<IExport<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
             CancellationToken cancellationToken)
         {
             foreach (var behavior in behaviors)
             {
-                await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                var featureRef = behavior.Metadata.AppliesToFeature;
+                if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
+                {
+                    await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                }
             }
         }
 
@@ -552,14 +564,18 @@ namespace Kephas.Application
         /// A Task.
         /// </returns>
         protected virtual async Task AfterFeatureFinalizeAsync(
-            ICollection<IExport<IFeatureLifecycleBehavior, AppServiceMetadata>> behaviors,
+            ICollection<IExport<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> behaviors,
             IAppContext appContext,
             FeatureManagerMetadata appServiceMetadata,
             CancellationToken cancellationToken)
         {
             foreach (var behavior in behaviors)
             {
-                await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                var featureRef = behavior.Metadata.AppliesToFeature;
+                if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
+                {
+                    await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                }
             }
         }
 

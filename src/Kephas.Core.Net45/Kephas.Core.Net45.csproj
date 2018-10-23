@@ -77,6 +77,9 @@
     <Compile Include="..\Kephas.Core\Application\AppContext.cs">
       <Link>Application\AppContext.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\AppliesToFeatureAttribute.cs">
+      <Link>Application\AppliesToFeatureAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\AppLifecycleBehaviorBase.cs">
       <Link>Application\AppLifecycleBehaviorBase.cs</Link>
     </Compile>
@@ -88,6 +91,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\AppRuntimeBase.cs">
       <Link>Application\AppRuntimeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\Composition\FeatureLifecycleBehaviorMetadata.cs">
+      <Link>Application\Composition\FeatureLifecycleBehaviorMetadata.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureManagerMetadata.cs">
       <Link>Application\Composition\FeatureManagerMetadata.cs</Link>
@@ -121,6 +127,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\FeatureManagerBase.cs">
       <Link>Application\FeatureManagerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\FeatureRef.cs">
+      <Link>Application\FeatureRef.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\IAppContext.cs">
       <Link>Application\IAppContext.cs</Link>
