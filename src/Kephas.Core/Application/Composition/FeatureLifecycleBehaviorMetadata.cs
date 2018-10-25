@@ -10,10 +10,8 @@
 
 namespace Kephas.Application.Composition
 {
-    using System;
     using System.Collections.Generic;
 
-    using Kephas.Collections;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -33,7 +31,7 @@ namespace Kephas.Application.Composition
                 return;
             }
 
-            this.AppliesToFeature = (FeatureRef)metadata.TryGetValue(nameof(this.AppliesToFeature));
+            this.Target = this.GetMetadataValue<TargetsFeatureAttribute, FeatureRef>(metadata);
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace Kephas.Application.Composition
         {
             if (!string.IsNullOrEmpty(feature))
             {
-                this.AppliesToFeature = new FeatureRef(feature, version);
+                this.Target = new FeatureRef(feature, version);
             }
         }
 
@@ -59,6 +57,6 @@ namespace Kephas.Application.Composition
         /// <value>
         /// The feature reference for which the behavior applies.
         /// </value>
-        public FeatureRef AppliesToFeature { get; set; }
+        public FeatureRef Target { get; set; }
     }
 }

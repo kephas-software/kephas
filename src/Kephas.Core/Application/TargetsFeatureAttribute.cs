@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppliesToFeatureAttribute.cs" company="Kephas Software SRL">
+// <copyright file="TargetsFeatureAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,17 +15,17 @@ namespace Kephas.Application
     using Kephas.Composition.Metadata;
 
     /// <summary>
-    /// Attribute for indicating features for which the applies to feature.
+    /// Attribute for indicating the feature for which a behavior apply.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class AppliesToFeatureAttribute : Attribute, IMetadataValue<FeatureRef>
+    public class TargetsFeatureAttribute : Attribute, IMetadataValue<FeatureRef>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppliesToFeatureAttribute"/> class.
+        /// Initializes a new instance of the <see cref="TargetsFeatureAttribute"/> class.
         /// </summary>
         /// <param name="featureName">Name of the feature.</param>
         /// <param name="featureVersion">Optional. The feature version.</param>
-        public AppliesToFeatureAttribute(string featureName, string featureVersion = null)
+        public TargetsFeatureAttribute(string featureName, string featureVersion = null)
         {
             this.Value = new FeatureRef(featureName, featureVersion);
         }

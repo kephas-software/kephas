@@ -77,9 +77,6 @@
     <Compile Include="..\Kephas.Core\Application\AppContext.cs">
       <Link>Application\AppContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\AppliesToFeatureAttribute.cs">
-      <Link>Application\AppliesToFeatureAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Core\Application\AppLifecycleBehaviorBase.cs">
       <Link>Application\AppLifecycleBehaviorBase.cs</Link>
     </Compile>
@@ -163,6 +160,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
       <Link>Application\RequiredFeatureAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\TargetsFeatureAttribute.cs">
+      <Link>Application\TargetsFeatureAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Behavior\AsyncBehaviorRuleBase.cs">
       <Link>Behavior\AsyncBehaviorRuleBase.cs</Link>

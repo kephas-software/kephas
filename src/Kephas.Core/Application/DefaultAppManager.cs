@@ -369,7 +369,7 @@ namespace Kephas.Application
         {
             foreach (var behavior in behaviors)
             {
-                var featureRef = behavior.Metadata.AppliesToFeature;
+                var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
                     await behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
@@ -395,7 +395,7 @@ namespace Kephas.Application
         {
             foreach (var behavior in behaviors)
             {
-                var featureRef = behavior.Metadata.AppliesToFeature;
+                var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
                     await behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
@@ -545,7 +545,7 @@ namespace Kephas.Application
         {
             foreach (var behavior in behaviors)
             {
-                var featureRef = behavior.Metadata.AppliesToFeature;
+                var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
                     await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
@@ -571,7 +571,7 @@ namespace Kephas.Application
         {
             foreach (var behavior in behaviors)
             {
-                var featureRef = behavior.Metadata.AppliesToFeature;
+                var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
                     await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
