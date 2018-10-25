@@ -46,7 +46,7 @@ namespace Kephas.Data.Tests.Setup
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext { DataKinds = new[] { "1" } };
+            var context = new DataSetupContext { Targets = new[] { "1" } };
             var result = await manager.InstallDataAsync(context);
 
             Assert.AreEqual(1, list.Count);
@@ -73,7 +73,7 @@ namespace Kephas.Data.Tests.Setup
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
             var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext { DataKinds = new[] { "2" } };
+            var context = new DataSetupContext { Targets = new[] { "2" } };
             var result = await manager.UninstallDataAsync(context);
 
             Assert.AreEqual(1, list.Count);

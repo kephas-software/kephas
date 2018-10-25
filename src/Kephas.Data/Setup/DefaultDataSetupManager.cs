@@ -107,24 +107,24 @@ namespace Kephas.Data.Setup
         /// </returns>
         protected virtual List<IDataInstaller> GetOrderedDataInstallers(IDataSetupContext dataSetupContext)
         {
-            var dataKinds = this.GetDataKinds(dataSetupContext);
+            var targets = this.GetTargets(dataSetupContext);
             var dataInstallers = this.dataInstallerFactories.OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
-                .Where(f => dataKinds == null || dataKinds.Contains(f.Metadata.DataKind)).Select(f => f.CreateExportedValue())
+                .Where(f => targets == null || targets.Contains(f.Metadata.Target)).Select(f => f.CreateExportedValue())
                 .ToList();
             return dataInstallers;
         }
 
         /// <summary>
-        /// Gets data kinds.
+        /// Gets the targets.
         /// </summary>
         /// <param name="dataSetupContext">Context for the data setup.</param>
         /// <returns>
-        /// The data kinds.
+        /// The targets.
         /// </returns>
-        protected virtual IList<string> GetDataKinds(IDataSetupContext dataSetupContext)
+        protected virtual IList<string> GetTargets(IDataSetupContext dataSetupContext)
         {
-            return dataSetupContext?.DataKinds?.ToList();
+            return dataSetupContext?.Targets?.ToList();
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Kephas.Data.Setup
     public interface IDataSetupContext : IContext
     {
         /// <summary>
-        /// Gets the data kinds.
+        /// Gets the data targets.
         /// </summary>
         /// <value>
-        /// The data kinds.
+        /// The data targets.
         /// </value>
-        IEnumerable<string> DataKinds { get; }
+        IEnumerable<string> Targets { get; }
     }
 }

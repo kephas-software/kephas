@@ -41,11 +41,11 @@ namespace Kephas.Data.Setup
         }
 
         /// <summary>
-        /// Gets or sets the data kinds.
+        /// Gets or sets the data targets.
         /// </summary>
         /// <value>
-        /// The data kinds.
+        /// The data targets.
         /// </value>
-        public IEnumerable<string> DataKinds { get; set; }
+        public IEnumerable<string> Targets { get; set; }
     }
 }

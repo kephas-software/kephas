@@ -460,8 +460,8 @@
     <Compile Include="..\Kephas.Data\ServiceRef.cs">
       <Link>ServiceRef.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\Setup\AttributedModel\DataKindAttribute.cs">
-      <Link>Setup\AttributedModel\DataKindAttribute.cs</Link>
+    <Compile Include="..\Kephas.Data\Setup\AttributedModel\DataTargetAttribute.cs">
+      <Link>Setup\AttributedModel\DataTargetAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Setup\Composition\DataInstallerMetadata.cs">
       <Link>Setup\Composition\DataInstallerMetadata.cs</Link>

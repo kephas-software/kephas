@@ -164,7 +164,7 @@
     <value>Ambiguous data context for data store '{0}': at least '{1}' and '{2}' found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate.</value>
   </data>
   <data name="DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception" xml:space="preserve">
-    <value>No data context was found for data store '{0}' of kind '{1}'.</value>
+    <value>No data context was found for data store '{0}' of target '{1}'.</value>
   </data>
   <data name="DataContextBase_BadInitializationContext_Exception" xml:space="preserve">
     <value>The provided context is not a '{0}'.</value>

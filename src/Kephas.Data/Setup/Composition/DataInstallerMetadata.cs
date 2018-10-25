@@ -32,30 +32,30 @@ namespace Kephas.Data.Setup.Composition
                 return;
             }
 
-            this.DataKind = this.GetMetadataValue<DataKindAttribute, string>(metadata);
+            this.Target = this.GetMetadataValue<DataTargetAttribute, string>(metadata);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataInstallerMetadata" /> class.
         /// </summary>
-        /// <param name="dataKind">The data kind.</param>
+        /// <param name="target">The data target.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="optionalService">Optional. <c>true</c> if the service is optional, <c>false</c> if
         ///                               not.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public DataInstallerMetadata(string dataKind, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
+        public DataInstallerMetadata(string target, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
             : base(processingPriority, overridePriority, optionalService, serviceName)
         {
-            this.DataKind = dataKind;
+            this.Target = target;
         }
 
         /// <summary>
-        /// Gets the data kind.
+        /// Gets the data target.
         /// </summary>
         /// <value>
-        /// The data kind.
+        /// The data target.
         /// </value>
-        public string DataKind { get; }
+        public string Target { get; }
     }
 }
