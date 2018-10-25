@@ -122,7 +122,7 @@ namespace Kephas.Data.IO.Setup
         /// </returns>
         protected virtual IEnumerable<string> GetDataFilePaths(string operationNamespace, IEnumerable<string> fileNames)
         {
-            var resourceNamespace = $"{this.GetDataFileResourceNamespace()}.{operationNamespace}";
+            var resourceNamespace = $"{this.GetDataFileResourceNamespace()}{operationNamespace}.";
 
             // if file names provided, use them by prepending the resource namespace to them.
             if (fileNames != null)

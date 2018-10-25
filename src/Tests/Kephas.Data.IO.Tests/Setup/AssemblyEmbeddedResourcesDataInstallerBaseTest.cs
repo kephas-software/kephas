@@ -112,7 +112,7 @@ namespace Kephas.Data.IO.Tests.Setup
 
             public new IEnumerable<string> GetUninstallDataFilePaths()
             {
-                return base.GetInstallDataFilePaths();
+                return base.GetUninstallDataFilePaths();
             }
 
             public new DataStream CreateDataSource(string dataFilePath)
