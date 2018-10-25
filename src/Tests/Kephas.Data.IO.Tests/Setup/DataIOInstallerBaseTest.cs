@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitialDataIOHandlerBaseTest.cs" company="Kephas Software SRL">
+// <copyright file="DataIOInstallerBaseTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO.Tests.Initialization
+namespace Kephas.Data.IO.Tests.Setup
 {
     using System.Collections.Generic;
     using System.IO;
@@ -16,32 +16,39 @@ namespace Kephas.Data.IO.Tests.Initialization
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
-    using Kephas.Data.IO.Initialization;
+    using Kephas.Data.IO.Setup;
 
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class InitialDataIOHandlerBaseTest
+    public class DataIOInstallerBaseTest
     {
         [Test]
         public void CreateDataSource_missing_file()
         {
-            var handler = new InitialDataHandler();
+            var handler = new DataInstaller();
             Assert.Throws<IOException>(() => handler.CreateDataSource("dummy file which does not exist"));
         }
 
-        public class InitialDataHandler : InitialDataIOHandlerBase
+        public class DataInstaller : DataIOInstallerBase
         {
-            private readonly IEnumerable<string> filePaths;
+            private readonly IEnumerable<string> installFilePaths;
 
-            public InitialDataHandler(IDataImportService dataImportService = null, IDataSpace dataSpace = null, IEnumerable<string> filePaths = null)
+            private readonly IEnumerable<string> uninstallFilePaths;
+
+            public DataInstaller(
+                IDataImportService dataImportService = null,
+                IDataSpace dataSpace = null,
+                IEnumerable<string> installFilePaths = null,
+                IEnumerable<string> uninstallFilePaths = null)
                 : base(
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? Substitute.For<IDataSpace>()))
             {
-                this.filePaths = filePaths;
+                this.installFilePaths = installFilePaths;
+                this.uninstallFilePaths = uninstallFilePaths;
             }
 
             /// <summary>
@@ -50,9 +57,21 @@ namespace Kephas.Data.IO.Tests.Initialization
             /// <returns>
             /// An enumerator that allows foreach to be used to process the data files in this collection.
             /// </returns>
-            protected override IEnumerable<string> GetDataFilePaths()
+            protected override IEnumerable<string> GetInstallDataFilePaths()
             {
-                return this.filePaths;
+                return this.installFilePaths;
+            }
+
+            /// <summary>
+            /// Gets the files containing data to be uninstalled.
+            /// </summary>
+            /// <returns>
+            /// An enumeration of file paths.
+            /// collection.
+            /// </returns>
+            protected override IEnumerable<string> GetUninstallDataFilePaths()
+            {
+                return this.uninstallFilePaths;
             }
 
             /// <summary>

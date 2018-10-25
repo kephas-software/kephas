@@ -5,13 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\Install\my-embedded-data-2.json" />
+    <None Remove="Data\Install\my-embedded-data.json" />
     <None Remove="Data\my-embedded-data-2.json" />
     <None Remove="Data\my-embedded-data.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\my-embedded-data-2.json" />
-    <EmbeddedResource Include="Data\my-embedded-data.json" />
+    <EmbeddedResource Include="Data\Install\my-embedded-data-2.json" />
+    <EmbeddedResource Include="Data\Install\my-embedded-data.json" />
+    <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data-2.json" />
+    <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data.json" />
   </ItemGroup>
 
   <ItemGroup>

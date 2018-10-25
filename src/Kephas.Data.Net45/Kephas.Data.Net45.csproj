@@ -385,27 +385,6 @@
     <Compile Include="..\Kephas.Data\IDataSpace.cs">
       <Link>IDataSpace.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\AttributedModel\InitialDataKindAttribute.cs">
-      <Link>Initialization\AttributedModel\InitialDataKindAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\Composition\InitialDataHandlerMetadata.cs">
-      <Link>Initialization\Composition\InitialDataHandlerMetadata.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\DefaultInitialDataService.cs">
-      <Link>Initialization\DefaultInitialDataService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\IInitialDataContext.cs">
-      <Link>Initialization\IInitialDataContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\IInitialDataHandler.cs">
-      <Link>Initialization\IInitialDataHandler.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\IInitialDataService.cs">
-      <Link>Initialization\IInitialDataService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data\Initialization\InitialDataContext.cs">
-      <Link>Initialization\InitialDataContext.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data\IQueryOperationContext.cs">
       <Link>IQueryOperationContext.cs</Link>
     </Compile>
@@ -480,6 +459,30 @@
     </Compile>
     <Compile Include="..\Kephas.Data\ServiceRef.cs">
       <Link>ServiceRef.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\AttributedModel\DataKindAttribute.cs">
+      <Link>Setup\AttributedModel\DataKindAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\Composition\DataInstallerMetadata.cs">
+      <Link>Setup\Composition\DataInstallerMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\DataSetupContext.cs">
+      <Link>Setup\DataSetupContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\DefaultDataSetupManager.cs">
+      <Link>Setup\DefaultDataSetupManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\IDataInstaller.cs">
+      <Link>Setup\IDataInstaller.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\IDataSetupContext.cs">
+      <Link>Setup\IDataSetupContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\IDataSetupManager.cs">
+      <Link>Setup\IDataSetupManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\Setup\IDataSetupResult.cs">
+      <Link>Setup\IDataSetupResult.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data\Store\ConnectionStringParser.cs">
       <Link>Store\ConnectionStringParser.cs</Link>

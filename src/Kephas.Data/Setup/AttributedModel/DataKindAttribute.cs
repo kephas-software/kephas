@@ -1,29 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitialDataKindAttribute.cs" company="Kephas Software SRL">
+// <copyright file="DataKindAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the initial data kind attribute class.
+//   Implements the data kind attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Initialization.AttributedModel
+namespace Kephas.Data.Setup.AttributedModel
 {
     using System;
 
     using Kephas.Composition.Metadata;
 
     /// <summary>
-    /// Attribute for indicating the initial data kind.
+    /// Attribute for indicating the data kind.
     /// </summary>
-    public class InitialDataKindAttribute : Attribute, IMetadataValue<string>
+    public class DataKindAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitialDataKindAttribute"/> class.
+        /// Initializes a new instance of the <see cref="DataKindAttribute"/> class.
         /// </summary>
         /// <param name="kind">The data kind.</param>
-        public InitialDataKindAttribute(string kind)
+        public DataKindAttribute(string kind)
         {
             this.Value = kind;
         }

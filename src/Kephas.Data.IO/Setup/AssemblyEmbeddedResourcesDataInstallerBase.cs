@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyEmbeddedResourcesInitialDataHandlerBase.cs" company="Kephas Software SRL">
+// <copyright file="AssemblyEmbeddedResourcesDataInstallerBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO.Initialization
+namespace Kephas.Data.IO.Setup
 {
     using System;
     using System.Collections.Generic;
@@ -24,15 +24,15 @@ namespace Kephas.Data.IO.Initialization
     /// <summary>
     /// An initial data handler base using the assembly embedded resources.
     /// </summary>
-    public abstract class AssemblyEmbeddedResourcesInitialDataHandlerBase : InitialDataIOHandlerBase
+    public abstract class AssemblyEmbeddedResourcesDataInstallerBase : DataIOInstallerBase
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="AssemblyEmbeddedResourcesInitialDataHandlerBase"/> class.
+        /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
-        protected AssemblyEmbeddedResourcesInitialDataHandlerBase(
+        protected AssemblyEmbeddedResourcesDataInstallerBase(
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
             : base(dataImportService, dataSpaceFactory)
@@ -59,34 +59,72 @@ namespace Kephas.Data.IO.Initialization
         }
 
         /// <summary>
-        /// Gets the data file names to be imported.
+        /// Gets the file names of the data to be installed.
         /// </summary>
         /// <remarks>
         /// When overridden in a derived class, the file names should not contain the
-        /// resource namespace, because it will be prepended by the <see cref="GetDataFilePaths"/>.
+        /// resource namespace, because it will be prepended by the <see cref="GetInstallDataFilePaths"/>.
         /// Also, the file names should be provided in the right order for the import.
         /// </remarks>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the data file names in this
-        /// collection.
+        /// An enumeration of file names.
         /// </returns>
-        protected virtual IEnumerable<string> GetDataFileNames()
+        protected virtual IEnumerable<string> GetInstallDataFileNames()
         {
             return null;
         }
 
         /// <summary>
-        /// Gets the data files to be imported.
+        /// Gets the data file names of the data to be uninstalled.
+        /// </summary>
+        /// <remarks>
+        /// When overridden in a derived class, the file names should not contain the
+        /// resource namespace, because it will be prepended by the <see cref="GetInstallDataFilePaths"/>.
+        /// Also, the file names should be provided in the right order for the import.
+        /// </remarks>
+        /// <returns>
+        /// An enumeration of file names.
+        /// </returns>
+        protected virtual IEnumerable<string> GetUninstallDataFileNames()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the files for the data to be installed.
         /// </summary>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the data files in this collection.
+        /// An enumeration of file paths.
         /// </returns>
-        protected override IEnumerable<string> GetDataFilePaths()
+        protected override IEnumerable<string> GetInstallDataFilePaths()
         {
-            var resourceNamespace = this.GetDataFileResourceNamespace();
+            return this.GetDataFilePaths("Install", this.GetInstallDataFileNames());
+        }
+
+        /// <summary>
+        /// Gets the files for the data to be uninstalled.
+        /// </summary>
+        /// <returns>
+        /// An enumeration of file paths.
+        /// </returns>
+        protected override IEnumerable<string> GetUninstallDataFilePaths()
+        {
+            return this.GetDataFilePaths("Uninstall", this.GetUninstallDataFileNames());
+        }
+
+        /// <summary>
+        /// Gets the data files to be imported for the provided operation namespace.
+        /// </summary>
+        /// <param name="operationNamespace">The operation namespace.</param>
+        /// <param name="fileNames">List of names of the files.</param>
+        /// <returns>
+        /// An enumeration of file paths.
+        /// </returns>
+        protected virtual IEnumerable<string> GetDataFilePaths(string operationNamespace, IEnumerable<string> fileNames)
+        {
+            var resourceNamespace = $"{this.GetDataFileResourceNamespace()}.{operationNamespace}";
 
             // if file names provided, use them by prepending the resource namespace to them.
-            var fileNames = this.GetDataFileNames();
             if (fileNames != null)
             {
                 return fileNames.Select(f => resourceNamespace + f);

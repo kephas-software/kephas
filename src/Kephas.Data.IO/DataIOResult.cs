@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data I/O result class.
+//   Implements the data i/o result class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

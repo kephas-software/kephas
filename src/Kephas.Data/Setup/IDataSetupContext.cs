@@ -1,30 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInitialDataContext.cs" company="Kephas Software SRL">
+// <copyright file="IDataSetupContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IInitialDataContext interface.
+//   Declares the IDataSetupContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Initialization
+namespace Kephas.Data.Setup
 {
     using System.Collections.Generic;
 
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for initial data context.
+    /// Interface for data setup context.
     /// </summary>
-    public interface IInitialDataContext : IContext
+    public interface IDataSetupContext : IContext
     {
         /// <summary>
-        /// Gets the initial data kinds.
+        /// Gets the data kinds.
         /// </summary>
         /// <value>
-        /// The initial data kinds.
+        /// The data kinds.
         /// </value>
-        IEnumerable<string> InitialDataKinds { get; }
+        IEnumerable<string> DataKinds { get; }
     }
 }

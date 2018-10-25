@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InitialDataIOHandlerBase.cs" company="Kephas Software SRL">
+// <copyright file="DataIOInstallerBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the initial data i/o handler base class.
+//   Implements the data I/O installer base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO.Initialization
+namespace Kephas.Data.IO.Setup
 {
     using System;
     using System.Collections.Generic;
@@ -18,9 +18,9 @@ namespace Kephas.Data.IO.Initialization
 
     using Kephas.Collections;
     using Kephas.Composition;
-    using Kephas.Data.Initialization;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
+    using Kephas.Data.Setup;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
@@ -29,14 +29,14 @@ namespace Kephas.Data.IO.Initialization
     /// <summary>
     /// An initial data i/o handler base.
     /// </summary>
-    public abstract class InitialDataIOHandlerBase : IInitialDataHandler
+    public abstract class DataIOInstallerBase : IDataInstaller
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitialDataIOHandlerBase"/> class.
+        /// Initializes a new instance of the <see cref="DataIOInstallerBase"/> class.
         /// </summary>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
-        protected InitialDataIOHandlerBase(
+        protected DataIOInstallerBase(
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
         {
@@ -53,7 +53,7 @@ namespace Kephas.Data.IO.Initialization
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<IInitialDataHandler> Logger { get; set; }
+        public ILogger<IDataInstaller> Logger { get; set; }
 
         /// <summary>
         /// Gets the data import service.
@@ -72,57 +72,109 @@ namespace Kephas.Data.IO.Initialization
         public IExportFactory<IDataSpace> DataSpaceFactory { get; }
 
         /// <summary>
-        /// Creates the initial data asynchronously.
+        /// Installs the data asynchronously.
         /// </summary>
-        /// <param name="initialDataContext">Context for the initial data.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual async Task<object> CreateDataAsync(
-            IInitialDataContext initialDataContext,
+        public virtual Task<IDataSetupResult> InstallDataAsync(
+            IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default)
         {
-            var result = new DataIOResult();
-            foreach (var dataFilePath in this.GetDataFilePaths())
+            return this.ImportDataAsync(dataSetupContext, this.GetInstallDataFilePaths(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Uninstalls the data asynchronously.
+        /// </summary>
+        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result returning the data creation result.
+        /// </returns>
+        public virtual Task<IDataSetupResult> UninstallDataAsync(
+            IDataSetupContext dataSetupContext,
+            CancellationToken cancellationToken = default)
+        {
+            return this.ImportDataAsync(dataSetupContext, this.GetUninstallDataFilePaths(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the files containing data to be installed.
+        /// </summary>
+        /// <returns>
+        /// An enumeration of file paths.
+        /// </returns>
+        protected virtual IEnumerable<string> GetInstallDataFilePaths()
+        {
+            return new string[0];
+        }
+
+        /// <summary>
+        /// Gets the files containing data to be uninstalled.
+        /// </summary>
+        /// <returns>
+        /// An enumeration of file paths.
+        /// collection.
+        /// </returns>
+        protected virtual IEnumerable<string> GetUninstallDataFilePaths()
+        {
+            return new string[0];
+        }
+
+        /// <summary>
+        /// Imports the data contained in the provided files asynchronously.
+        /// </summary>
+        /// <param name="dataSetupContext">Context for the initial data.</param>
+        /// <param name="dataFilePaths">The data file paths.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result returning the data setup result.
+        /// </returns>
+        protected virtual async Task<IDataSetupResult> ImportDataAsync(
+            IDataSetupContext dataSetupContext,
+            IEnumerable<string> dataFilePaths,
+            CancellationToken cancellationToken = default)
+        {
+            var result = new DataIOSetupResult();
+            if (dataFilePaths != null)
             {
-                var fileResult = await this.ImportDataFileAsync(initialDataContext, dataFilePath, cancellationToken).PreserveThreadContext();
-                result.MergeResult(fileResult);
+                foreach (var dataFilePath in dataFilePaths)
+                {
+                    var fileResult = await this.ImportDataFileAsync(dataSetupContext, dataFilePath, cancellationToken).PreserveThreadContext();
+                    result.MergeResult(fileResult);
+                }
             }
 
             return result;
         }
 
         /// <summary>
-        /// Gets the data files to be imported.
-        /// </summary>
-        /// <returns>
-        /// An enumerator that allows foreach to be used to process the data files in this collection.
-        /// </returns>
-        protected abstract IEnumerable<string> GetDataFilePaths();
-
-        /// <summary>
         /// Import data file asynchronously.
         /// </summary>
-        /// <param name="initialDataContext">Context for the initial data.</param>
+        /// <param name="dataSetupContext">Context for the initial data.</param>
         /// <param name="dataFilePath">The data file path.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// The asynchronous result returning the data import result.
         /// </returns>
-        protected virtual async Task<IDataIOResult> ImportDataFileAsync(IInitialDataContext initialDataContext, string dataFilePath, CancellationToken cancellationToken)
+        protected virtual async Task<IDataIOSetupResult> ImportDataFileAsync(IDataSetupContext dataSetupContext, string dataFilePath, CancellationToken cancellationToken)
         {
             using (var dataSource = this.CreateDataSource(dataFilePath))
             using (var dataSpace = this.DataSpaceFactory.CreateExportedValue())
             {
-                dataSpace.Initialize(initialDataContext);
-                var importContext = this.CreateDataImportContext(initialDataContext, dataSpace);
+                dataSpace.Initialize(dataSetupContext);
+                var importContext = this.CreateDataImportContext(dataSetupContext, dataSpace);
 
+                var result = new DataIOSetupResult();
                 try
                 {
-                    var result = await this.DataImportService
+                    var importResult = await this.DataImportService
                                      .ImportDataAsync(dataSource, importContext, cancellationToken)
                                      .PreserveThreadContext();
+                    result.MergeResult(importResult);
                     result.Messages?.ForEach(m => this.Logger.Info($"{m.Timestamp}: {m.Message}"));
                     var errorMessage = $"Exception while importing {dataFilePath}.";
                     result.Exceptions?.ForEach(e => this.Logger.Error(e, errorMessage));
@@ -132,7 +184,6 @@ namespace Kephas.Data.IO.Initialization
                 {
                     var errorMessage = $"Exception while importing {dataFilePath}.";
                     this.Logger.Error(ex, errorMessage);
-                    var result = new DataIOResult();
                     result.MergeException(ex);
                     return result;
                 }
@@ -142,16 +193,16 @@ namespace Kephas.Data.IO.Initialization
         /// <summary>
         /// Creates the data import context.
         /// </summary>
-        /// <param name="initialDataContext">Context for the initial data.</param>
+        /// <param name="dataSetupContext">Context for the initial data.</param>
         /// <param name="dataSpace">The data space.</param>
         /// <returns>
         /// The new data import context.
         /// </returns>
         protected virtual IDataImportContext CreateDataImportContext(
-            IInitialDataContext initialDataContext,
+            IDataSetupContext dataSetupContext,
             IDataSpace dataSpace)
         {
-            return new DataImportContext(dataSpace, initialDataContext);
+            return new DataImportContext(dataSpace, dataSetupContext);
         }
 
         /// <summary>

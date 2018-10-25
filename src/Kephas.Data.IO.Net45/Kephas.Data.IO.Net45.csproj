@@ -150,17 +150,23 @@
     <Compile Include="..\Kephas.Data.IO\Import\ImportEntitySuccessfulMessage.cs">
       <Link>Import\ImportEntitySuccessfulMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.IO\Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBase.cs">
-      <Link>Initialization\AssemblyEmbeddedResourcesInitialDataHandlerBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\Initialization\InitialDataIOHandlerBase.cs">
-      <Link>Initialization\InitialDataIOHandlerBase.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.IO\Resources\Strings.Designer.cs">
       <Link>Resources\Strings.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Setup\AssemblyEmbeddedResourcesDataInstallerBase.cs">
+      <Link>Setup\AssemblyEmbeddedResourcesDataInstallerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Setup\DataIOInstallerBase.cs">
+      <Link>Setup\DataIOInstallerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Setup\DataIOSetupResult.cs">
+      <Link>Setup\DataIOSetupResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.IO\Setup\IDataIOSetupResult.cs">
+      <Link>Setup\IDataIOSetupResult.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>

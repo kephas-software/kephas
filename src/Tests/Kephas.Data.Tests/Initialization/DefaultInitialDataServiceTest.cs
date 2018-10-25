@@ -16,8 +16,8 @@ namespace Kephas.Data.Tests.Initialization
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
-    using Kephas.Data.Initialization;
-    using Kephas.Data.Initialization.Composition;
+    using Kephas.Data.Setup;
+    using Kephas.Data.Setup.Composition;
 
     using NSubstitute;
 
@@ -29,20 +29,20 @@ namespace Kephas.Data.Tests.Initialization
         [Test]
         public async Task CreateDataAsync_filter_initial_data_kinds()
         {
-            var handler1 = Substitute.For<IInitialDataHandler>();
-            var handler2 = Substitute.For<IInitialDataHandler>();
-            var factories = new List<IExportFactory<IInitialDataHandler, InitialDataHandlerMetadata>>
+            var handler1 = Substitute.For<IDataInstaller>();
+            var handler2 = Substitute.For<IDataInstaller>();
+            var factories = new List<IExportFactory<IDataInstaller, DataInstallerMetadata>>
                                 {
-                                    new ExportFactory<IInitialDataHandler, InitialDataHandlerMetadata>(() => handler1, new InitialDataHandlerMetadata("system")),
-                                    new ExportFactory<IInitialDataHandler, InitialDataHandlerMetadata>(() => handler2, new InitialDataHandlerMetadata("test")),
+                                    new ExportFactory<IDataInstaller, DataInstallerMetadata>(() => handler1, new DataInstallerMetadata("system")),
+                                    new ExportFactory<IDataInstaller, DataInstallerMetadata>(() => handler2, new DataInstallerMetadata("test")),
                                 };
-            var service = new DefaultInitialDataService(factories);
-            var context = Substitute.For<IInitialDataContext>();
-            context.InitialDataKinds.Returns((IEnumerable<string>)new[] { "test" });
-            var result = await service.CreateDataAsync(context);
+            var service = new DefaultDataSetupManager(factories);
+            var context = Substitute.For<IDataSetupContext>();
+            context.DataKinds.Returns((IEnumerable<string>)new[] { "test" });
+            var result = await service.InstallDataAsync(context);
 
-            handler1.Received(0).CreateDataAsync(context, Arg.Any<CancellationToken>());
-            handler2.Received(1).CreateDataAsync(context, Arg.Any<CancellationToken>());
+            handler1.Received(0).InstallDataAsync(context, Arg.Any<CancellationToken>());
+            handler2.Received(1).InstallDataAsync(context, Arg.Any<CancellationToken>());
         }
     }
 }
