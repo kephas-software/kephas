@@ -24,6 +24,16 @@ namespace Kephas.Security.Authorization
         /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
         /// </summary>
         /// <param name="executingContext">Context for the executing.</param>
+        /// <param name="scope">The authorization scope.</param>
+        public AuthorizationContext(IContext executingContext, object scope)
+            : this(executingContext, null, null, scope)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationContext"/> class.
+        /// </summary>
+        /// <param name="executingContext">Context for the executing.</param>
         /// <param name="requiredPermissions">A variable-length parameters list containing required permissions.</param>
         public AuthorizationContext(IContext executingContext, params string[] requiredPermissions)
             : this(executingContext, requiredPermissions, null, null)
