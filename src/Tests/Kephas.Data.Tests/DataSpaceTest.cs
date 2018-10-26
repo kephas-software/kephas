@@ -38,7 +38,7 @@ namespace Kephas.Data.Tests
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             var dataContexts = dataSpace.ToList();
@@ -56,7 +56,7 @@ namespace Kephas.Data.Tests
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
             Assert.AreSame(dataContext, dc);
         }
@@ -71,7 +71,7 @@ namespace Kephas.Data.Tests
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo();
             var dc = dataSpace[ti];
             Assert.AreSame(dataContext, dc);
@@ -87,7 +87,7 @@ namespace Kephas.Data.Tests
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc1 = dataSpace[typeof(string)];
             var dc2 = dataSpace[typeof(string)];
             Assert.AreSame(dc1, dc2);
@@ -104,7 +104,7 @@ namespace Kephas.Data.Tests
             var dataContext = Substitute.For<IDataContext>();
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
-            var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
+            IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
             var dc = dataSpace[typeof(string)];
 
             dataSpace.Dispose();

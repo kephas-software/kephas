@@ -94,21 +94,7 @@ namespace Kephas.Data
         /// <returns>
         /// The data context.
         /// </returns>
-        public virtual IDataContext this[Type entityType, IContext context = null]
-        {
-            get
-            {
-                var dataStoreName = this.dataStoreProvider.GetDataStoreName(entityType, this.operationContext);
-                var dataContext = this.dataContextMap.TryGetValue(dataStoreName);
-                if (dataContext == null)
-                {
-                    dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.operationContext);
-                    this.dataContextMap.Add(dataStoreName, dataContext);
-                }
-
-                return dataContext;
-            }
-        }
+        IDataContext IDataSpace.this[Type entityType, IContext context = null] => this.GetDataContext(entityType, context);
 
         /// <summary>
         /// Gets the data context for the provided entity type.
@@ -118,7 +104,7 @@ namespace Kephas.Data
         /// <returns>
         /// The data context.
         /// </returns>
-        public virtual IDataContext this[ITypeInfo entityType, IContext context = null] => this[entityType.AsType()];
+        IDataContext IDataSpace.this[ITypeInfo entityType, IContext context = null] => this.GetDataContext(entityType, context);
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public virtual void Dispose()
@@ -171,6 +157,38 @@ namespace Kephas.Data
                                                           initializationContext);
                                                   });
             }
+        }
+
+        /// <summary>
+        /// Gets the data context for the provided entity type.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        protected virtual IDataContext GetDataContext(ITypeInfo entityType, IContext context) =>
+            this.GetDataContext(entityType.AsType(), context);
+
+        /// <summary>
+        /// Gets the data context for the provided entity type.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The data context.
+        /// </returns>
+        protected virtual IDataContext GetDataContext(Type entityType, IContext context)
+        {
+            var dataStoreName = this.dataStoreProvider.GetDataStoreName(entityType, this.operationContext);
+            var dataContext = this.dataContextMap.TryGetValue(dataStoreName);
+            if (dataContext == null)
+            {
+                dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.operationContext);
+                this.dataContextMap.Add(dataStoreName, dataContext);
+            }
+
+            return dataContext;
         }
 
         /// <summary>
