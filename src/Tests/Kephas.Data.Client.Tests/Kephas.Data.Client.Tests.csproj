@@ -18,4 +18,10 @@
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

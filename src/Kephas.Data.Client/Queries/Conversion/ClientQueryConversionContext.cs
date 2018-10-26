@@ -10,11 +10,18 @@
 
 namespace Kephas.Data.Client.Queries.Conversion
 {
+    using Kephas.Reflection;
+
     /// <summary>
     /// A client query conversion context.
     /// </summary>
     public class ClientQueryConversionContext : DataOperationContext, IClientQueryConversionContext
     {
+        /// <summary>
+        /// Options for controlling the operation.
+        /// </summary>
+        private object options;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientQueryConversionContext"/> class.
         /// </summary>
@@ -30,7 +37,26 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <value>
         /// The options.
         /// </value>
-        public object Options { get; set; }
+        public object Options
+        {
+            get => this.options;
+            set
+            {
+                this.options = value;
+                if (value != null)
+                {
+                    var expandoValue = value.ToExpando();
+                    if (expandoValue[nameof(this.UseMemberAccessConvention)] is bool useMemberAccessConvention)
+                    {
+                        this.UseMemberAccessConvention = useMemberAccessConvention;
+                    }
+                    else if (expandoValue[nameof(this.UseMemberAccessConvention).ToCamelCase()] is bool useMemberAccessConventionCamel)
+                    {
+                        this.UseMemberAccessConvention = useMemberAccessConventionCamel;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this object uses the member access convention.

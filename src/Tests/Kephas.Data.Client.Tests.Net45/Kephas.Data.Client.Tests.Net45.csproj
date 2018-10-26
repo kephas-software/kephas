@@ -62,6 +62,9 @@
     <Compile Include="..\..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\ClientQueryConversionContextTest.cs">
+      <Link>Queries\Conversion\ClientQueryConversionContextTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Client.Tests\Queries\Conversion\DefaultClientQueryConverterTest.cs">
       <Link>Queries\Conversion\DefaultClientQueryConverterTest.cs</Link>
     </Compile>
