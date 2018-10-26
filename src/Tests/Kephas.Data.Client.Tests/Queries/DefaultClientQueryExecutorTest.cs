@@ -33,6 +33,19 @@ namespace Kephas.Data.Client.Tests.Queries
     public class DefaultClientQueryExecutorTest
     {
         [Test]
+        public void Constructor()
+        {
+            var executor = new DefaultClientQueryExecutor(
+                Substitute.For<IClientQueryConverter>(),
+                Substitute.For<IDataConversionService>(),
+                Substitute.For<ITypeResolver>(),
+                Substitute.For<IProjectedTypeResolver>(),
+                Substitute.For<IExportFactory<IDataSpace>>());
+
+            Assert.IsInstanceOf<DefaultClientQueryExecutor>(executor);
+        }
+
+        [Test]
         public async Task ExecuteQueryAsync()
         {
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
