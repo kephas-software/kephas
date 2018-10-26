@@ -26,7 +26,7 @@ namespace Kephas.Security.Authorization
         /// A permission with scoping <see cref="None"/> is not usable.
         /// </remarks>
         None = 0x00,
-        
+
         /// <summary>
         /// No scoping required for this permission type, it will be granted and verified at global level.
         /// </summary>

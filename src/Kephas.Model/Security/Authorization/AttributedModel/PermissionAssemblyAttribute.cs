@@ -13,7 +13,6 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
     using System;
 
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Security.Authorization.Elements;
 
     /// <summary>
     /// Marks an assembly as exporting <see cref="IPermissionType"/> model elements.

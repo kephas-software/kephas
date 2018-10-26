@@ -54,7 +54,7 @@ namespace Kephas.Data.Client.Queries
         /// The options.
         /// </value>
         public object Options { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the client query conversion context configuration.
         /// </summary>
