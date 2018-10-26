@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PersistChangesMessage.cs" company="Kephas Software SRL">
+// <copyright file="IDataResponseMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the persist changes message class.
+//   Declares the IDataResponseMessage interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,23 +16,16 @@ namespace Kephas.Data.Endpoints
     using Kephas.Messaging;
 
     /// <summary>
-    /// A persist changes message.
+    /// Contract for response messages returning updated data (to be used for refreshing the client cache, for example).
     /// </summary>
-    public class PersistChangesMessage : IMessage
+    public interface IDataResponseMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets the entity infos to persist.
+        /// Gets or sets the entity infos after a data operation.
         /// </summary>
         /// <value>
-        /// The entity infos to persist.
+        /// The entity infos after a data operation.
         /// </value>
-        public IList<ClientEntityInfo> EntityInfos { get; set; }
-    }
-
-    /// <summary>
-    /// A persist changes response message.
-    /// </summary>
-    public class PersistChangesResponseMessage : DataResponseMessage
-    {
+        IList<ClientEntityInfo> EntityInfos { get; set; }
     }
 }
