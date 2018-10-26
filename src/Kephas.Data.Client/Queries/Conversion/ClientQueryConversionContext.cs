@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Client.Queries.Conversion
 {
+    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
@@ -46,14 +47,9 @@ namespace Kephas.Data.Client.Queries.Conversion
                 if (value != null)
                 {
                     var expandoValue = value.ToExpando();
-                    if (expandoValue[nameof(this.UseMemberAccessConvention)] is bool useMemberAccessConvention)
-                    {
-                        this.UseMemberAccessConvention = useMemberAccessConvention;
-                    }
-                    else if (expandoValue[nameof(this.UseMemberAccessConvention).ToCamelCase()] is bool useMemberAccessConventionCamel)
-                    {
-                        this.UseMemberAccessConvention = useMemberAccessConventionCamel;
-                    }
+                    this.UseMemberAccessConvention = expandoValue.GetLaxValue(
+                        nameof(this.UseMemberAccessConvention),
+                        this.UseMemberAccessConvention);
                 }
             }
         }

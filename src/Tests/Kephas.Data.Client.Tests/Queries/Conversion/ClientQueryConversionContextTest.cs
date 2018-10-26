@@ -29,6 +29,17 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         }
 
         [Test]
+        public void Options_pascal_case_as_string()
+        {
+            var context = new ClientQueryConversionContext(Substitute.For<IDataContext>())
+                              {
+                                  Options = new Dictionary<string, object> { { "UseMemberAccessConvention", "true" } }
+                              };
+
+            Assert.IsTrue(context.UseMemberAccessConvention);
+        }
+
+        [Test]
         public void Options_pascal_case()
         {
             var context = new ClientQueryConversionContext(Substitute.For<IDataContext>())

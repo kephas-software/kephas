@@ -17,6 +17,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
     using System.Linq;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -58,6 +59,15 @@ namespace Kephas.Dynamic
         /// Information describing the string type.
         /// </summary>
         private static readonly IRuntimeTypeInfo StringTypeInfo = typeof(string).AsRuntimeTypeInfo();
+
+        private static readonly IDictionary<Type, Func<string, object>> Parsers = new Dictionary<Type, Func<string, object>>
+        {
+            { typeof(bool), v => bool.TryParse(v, out var b) ? (object)b : null },
+            { typeof(int), v => int.TryParse(v, out var b) ? (object)b : null },
+            { typeof(long), v => long.TryParse(v, out var b) ? (object)b : null },
+            { typeof(DateTime), v => DateTime.TryParse(v, out var b) ? (object)b : null },
+            { typeof(Guid), v => Guid.TryParse(v, out var b) ? (object)b : null },
+        };
 
         /// <summary>
         /// Merges the source object properties into the expando.
@@ -107,6 +117,53 @@ namespace Kephas.Dynamic
             }
 
             return expando;
+        }
+
+        /// <summary>
+        /// An IExpando extension method that gets a member value using lax rules.
+        /// </summary>
+        /// <remarks>
+        /// The member name may be either Pascal or camel case, and in case it is a string
+        /// it is tried to be parsed.
+        /// </remarks>
+        /// <typeparam name="T">The value type.</typeparam>
+        /// <param name="expando">The expando to act on.</param>
+        /// <param name="member">The member.</param>
+        /// <param name="defaultValue">Optional. The default value.</param>
+        /// <returns>
+        /// The lax value.
+        /// </returns>
+        public static T GetLaxValue<T>(this IExpando expando, string member, T defaultValue = default)
+        {
+            Requires.NotNull(expando, nameof(expando));
+
+            var pascalName = member.ToPascalCase();
+            var value = expando[pascalName];
+            if (value == null)
+            {
+                var camelName = member.ToCamelCase();
+                value = expando[camelName];
+            }
+
+            if (value == null)
+            {
+                return defaultValue;
+            }
+
+            if (value is T typedValue)
+            {
+                return typedValue;
+            }
+
+            if (value is string stringValue)
+            {
+                if (Parsers.TryGetValue(typeof(T), out var parser))
+                {
+                    return (T)(parser(stringValue) ?? defaultValue);
+                }
+            }
+
+            return defaultValue;
         }
     }
 }
