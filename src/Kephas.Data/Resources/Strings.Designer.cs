@@ -10,8 +10,8 @@
 
 namespace Kephas.Data.Resources {
     using System;
-    using System.Reflection;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -39,7 +39,7 @@ namespace Kephas.Data.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Data.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Data.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -215,7 +215,7 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No data context was found for data store &apos;{0}&apos; of kind &apos;{1}&apos;..
+        ///   Looks up a localized string similar to No data context was found for data store &apos;{0}&apos; of target &apos;{1}&apos;..
         /// </summary>
         internal static string DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception {
             get {
@@ -256,6 +256,15 @@ namespace Kephas.Data.Resources {
         internal static string EntityInfo_DataContextAlreadySet_Exception {
             get {
                 return ResourceManager.GetString("EntityInfo_DataContextAlreadySet_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; must be initialized before working with entities..
+        /// </summary>
+        internal static string InMemoryDataContext_NotInitialized_Exception {
+            get {
+                return ResourceManager.GetString("InMemoryDataContext_NotInitialized_Exception", resourceCulture);
             }
         }
         

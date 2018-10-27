@@ -73,20 +73,12 @@ namespace Kephas.Data.InMemory
         public ISerializationService SerializationService { get; }
 
         /// <summary>
-        /// Gets a value indicating whether to use the shared cache or not.
-        /// </summary>
-        /// <value>
-        /// True if shared cache is used, false if not.
-        /// </value>
-        protected bool UseSharedCache { get; private set; }
-
-        /// <summary>
         /// Gets the local cache where the session entities are stored.
         /// </summary>
         /// <value>
         /// The local cache.
         /// </value>
-        protected override IDataContextCache LocalCache
+        protected internal override IDataContextCache LocalCache
         {
             get
             {
@@ -94,6 +86,14 @@ namespace Kephas.Data.InMemory
                 return this.workingCache;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether to use the shared cache or not.
+        /// </summary>
+        /// <value>
+        /// True if shared cache is used, false if not.
+        /// </value>
+        protected bool UseSharedCache { get; private set; }
 
         /// <summary>
         /// Gets the entity extended information.

@@ -8,9 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.InMemory.Tests
+namespace Kephas.Data.Tests.InMemory
 {
-    using System;
     using System.Linq;
 
     using Kephas.Data.Capabilities;

@@ -57,7 +57,7 @@ namespace Kephas.Data.Behaviors
         /// <typeparam name="TBehavior">Type of the behavior.</typeparam>
         /// <param name="type">The type.</param>
         /// <returns>
-        /// An enumeration of behaviors mathing the provided type.
+        /// An enumeration of behaviors matching the provided type.
         /// </returns>
         public IEnumerable<TBehavior> GetDataBehaviors<TBehavior>(Type type)
         {

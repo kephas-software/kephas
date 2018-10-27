@@ -128,6 +128,12 @@
     <Compile Include="..\Kephas.Data.Tests\DefaultDataContextFactoryTest.cs">
       <Link>DefaultDataContextFactoryTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\InMemory\ContextExtensionsTest.cs">
+      <Link>InMemory\ContextExtensionsTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Tests\InMemory\InMemoryDataContextTest.cs">
+      <Link>InMemory\InMemoryDataContextTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Linq\DataContextQueryProviderTest.cs">
       <Link>Linq\DataContextQueryProviderTest.cs</Link>
     </Compile>

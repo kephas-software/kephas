@@ -385,6 +385,15 @@
     <Compile Include="..\Kephas.Data\IDataSpace.cs">
       <Link>IDataSpace.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\InMemory\Caching\SharedDataContextCache.cs">
+      <Link>InMemory\Caching\SharedDataContextCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\InMemory\InMemoryDataContext.cs">
+      <Link>InMemory\InMemoryDataContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data\InMemory\InMemoryDataContextConfiguration.cs">
+      <Link>InMemory\InMemoryDataContextConfiguration.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\IQueryOperationContext.cs">
       <Link>IQueryOperationContext.cs</Link>
     </Compile>

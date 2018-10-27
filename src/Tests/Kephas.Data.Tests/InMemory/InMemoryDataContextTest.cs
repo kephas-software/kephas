@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.InMemory.Tests
+namespace Kephas.Data.Tests.InMemory
 {
     using System.IO;
     using System.Linq;

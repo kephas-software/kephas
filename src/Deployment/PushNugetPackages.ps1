@@ -17,7 +17,6 @@ $packages = @(
     "Kephas.Data.Model",
     "Kephas.Data.Model.Abstractions",
     "Kephas.Data.MongoDB",
-    "Kephas.Data.InMemory",
     "Kephas.Data.IO",
     "Kephas.Data.Endpoints",
     "Kephas.Serialization.Json",

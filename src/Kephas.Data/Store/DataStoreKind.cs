@@ -16,6 +16,11 @@ namespace Kephas.Data.Store
     public enum DataStoreKind
     {
         /// <summary>
+        /// Temporary in-memory storage for DTOs.
+        /// </summary>
+        DTO,
+
+        /// <summary>
         /// In-Memory database.
         /// </summary>
         InMemory,
