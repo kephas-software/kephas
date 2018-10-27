@@ -48,11 +48,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Kephas.Data.Endpoints\DataResponseMessage.cs">
+      <Link>DataResponseMessage.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Endpoints\DataSourceHandler.cs">
       <Link>DataSourceHandler.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Endpoints\DataSourceMessage.cs">
       <Link>DataSourceMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Endpoints\EntityMessage.cs">
+      <Link>EntityMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Endpoints\IDataResponseMessage.cs">
+      <Link>IDataResponseMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Data.Endpoints\IEntityMessage.cs">
+      <Link>IEntityMessage.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.Endpoints\PersistChangesHandler.cs">
       <Link>PersistChangesHandler.cs</Link>

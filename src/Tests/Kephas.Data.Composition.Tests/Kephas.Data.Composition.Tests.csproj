@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,18 +9,14 @@
     <PackageReference Include="NSubstitute" Version="3.1.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="System.Composition" Version="1.0.31" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
     <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
   </ItemGroup>
 
 </Project>

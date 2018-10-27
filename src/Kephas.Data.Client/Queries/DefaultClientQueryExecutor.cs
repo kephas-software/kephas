@@ -48,7 +48,7 @@ namespace Kephas.Data.Client.Queries
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
-        protected DefaultClientQueryExecutor(
+        public DefaultClientQueryExecutor(
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
             ITypeResolver typeResolver,
@@ -165,6 +165,7 @@ namespace Kephas.Data.Client.Queries
 
             using (var dataSpace = this.DataSpaceFactory.CreateExportedValue())
             {
+                dataSpace.Initialize(executionContext);
                 var dataContext = dataSpace[executionContext.EntityType, executionContext];
                 var queryConversionContext = new ClientQueryConversionContext(dataContext)
                                                 {

@@ -15,7 +15,6 @@ namespace Kephas.Data.Client.Queries.Conversion
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     using Kephas.Collections;
     using Kephas.Composition;

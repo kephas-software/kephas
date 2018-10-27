@@ -120,11 +120,11 @@ namespace Kephas.Data
 
                 return value;
             }
-            
+
             set
             {
                 this.SetEntityPropertyValue(this.RefFieldName, value);
-                
+
                 // if the referenced entity ID is not the same with
                 // the provided one, clean the reference to enable a clean get.
                 if (this.entity != null && !Equals(this.entity.Id, value))
