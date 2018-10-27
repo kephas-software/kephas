@@ -32,9 +32,9 @@ namespace Kephas.Application
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 
@@ -42,9 +42,9 @@ namespace Kephas.Application
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
 

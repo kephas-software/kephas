@@ -48,8 +48,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Kephas.Model\Application\ModelFeatureManager.cs">
-      <Link>Application\ModelFeatureManager.cs</Link>
+    <Compile Include="..\Kephas.Model\Application\ModelAppLifecycleBehavior.cs">
+      <Link>Application\ModelAppLifecycleBehavior.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\AttributedModel\AbstractAttribute.cs">
       <Link>AttributedModel\AbstractAttribute.cs</Link>
