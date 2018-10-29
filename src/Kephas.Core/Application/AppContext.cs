@@ -23,11 +23,11 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional). If not provided,
+        /// <param name="ambientServices">Optional. The ambient services. If not provided,
         ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
-        /// <param name="appManifest">The application manifest (optional).</param>
-        /// <param name="appArgs">The application arguments (optional).</param>
-        /// <param name="signalShutdown">Function for signalling the application shutdown.</param>
+        /// <param name="appManifest">Optional. The application manifest.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        /// <param name="signalShutdown">Function for signaling the application shutdown.</param>
         public AppContext(
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,

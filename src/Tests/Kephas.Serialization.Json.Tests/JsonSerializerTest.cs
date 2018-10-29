@@ -116,7 +116,7 @@ namespace Kephas.Serialization.Json.Tests
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);
         }
 
-        [Test, Ignore("The solution of deserializing objects by default in dictionaries still pending...")]
+        [Test, Ignore("The solution of deserializing objects by default in dictionaries still pending... Try wrapping the resulted IDictionary<string, JToken> into a IDictionary<string, object>.")]
         public async Task DeserializeAsync_untyped()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));

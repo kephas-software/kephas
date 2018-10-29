@@ -78,7 +78,6 @@ namespace Kephas.Data.Tests.Conversion
                                     .ConversionContext;
 
             Assert.AreSame(serviceTarget, contextTarget.DataConversionService);
-            Assert.AreSame(serviceTarget.CompositionContext, contextTarget.CompositionContext);
             Assert.AreSame(contextSource.DataSpace, contextTarget.DataSpace);
             Assert.AreSame(contextSource.RootTargetType, contextTarget.RootTargetType);
             Assert.AreSame(contextSource.RootSourceType, contextTarget.RootSourceType);
