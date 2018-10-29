@@ -10,7 +10,12 @@
 
 namespace Kephas.Composition
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Non-generic contract used to import parts that wish to dynamically create instances of other parts.
@@ -68,7 +73,7 @@ namespace Kephas.Composition
         /// Convenience method that creates the exported value.
         /// </summary>
         /// <typeparam name="T">The exported value type.</typeparam>
-        /// <param name="exportFactory">The exportFactory to act on.</param>
+        /// <param name="exportFactory">The export factory.</param>
         /// <returns>
         /// The exported value.
         /// </returns>
@@ -77,6 +82,50 @@ namespace Kephas.Composition
             Requires.NotNull(exportFactory, nameof(exportFactory));
 
             return exportFactory.CreateExport().Value;
+        }
+
+        /// <summary>
+        /// Convenience method that creates the exported value and initializes it.
+        /// </summary>
+        /// <typeparam name="T">The exported value type.</typeparam>
+        /// <param name="exportFactory">The export factory.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// The exported value.
+        /// </returns>
+        public static T CreateExportedValue<T>(
+            this IExportFactory<T> exportFactory,
+            IContext context)
+            where T : IInitializable
+        {
+            Requires.NotNull(exportFactory, nameof(exportFactory));
+
+            var export = exportFactory.CreateExport().Value;
+            export.Initialize(context);
+            return export;
+        }
+
+        /// <summary>
+        /// Convenience method that creates the exported value and initializes it asynchronously.
+        /// </summary>
+        /// <typeparam name="T">The exported value type.</typeparam>
+        /// <param name="exportFactory">The export factory.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The exported value.
+        /// </returns>
+        public static async Task<T> CreateExportedValueAsync<T>(
+            this IExportFactory<T> exportFactory,
+            IContext context,
+            CancellationToken cancellationToken = default)
+            where T : IAsyncInitializable
+        {
+            Requires.NotNull(exportFactory, nameof(exportFactory));
+
+            var export = exportFactory.CreateExport().Value;
+            await export.InitializeAsync(context, cancellationToken).PreserveThreadContext();
+            return export;
         }
     }
 }

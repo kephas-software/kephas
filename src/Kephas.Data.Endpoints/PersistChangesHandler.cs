@@ -84,11 +84,9 @@ namespace Kephas.Data.Endpoints
                 return response;
             }
 
-            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue())
+            var dataSpaceContext = new Context(context).WithInitialData(message.EntityInfos);
+            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue(dataSpaceContext))
             {
-                var dataSpaceContext = new Context(context).WithInitialData(message.EntityInfos);
-                dataSpace.Initialize(dataSpaceContext);
-
                 // convert to entities
                 foreach (var clientEntityInfo in message.EntityInfos.Where(e => e.Entity != null))
                 {

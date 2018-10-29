@@ -113,6 +113,9 @@
     <Compile Include="..\Kephas.Core.Tests\Composition\Conventions\ConventionsBuilderExtensionsTest.cs">
       <Link>Composition\Conventions\ConventionsBuilderExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Composition\ExportFactoryExtensionsTest.cs">
+      <Link>Composition\ExportFactoryExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Composition\Internal\CompositionContextServiceProviderAdapterTest.cs">
       <Link>Composition\Internal\CompositionContextServiceProviderAdapterTest.cs</Link>
     </Compile>

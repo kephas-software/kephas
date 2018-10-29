@@ -70,8 +70,7 @@ namespace Kephas.ServiceStack.Application
             LogManager.LogFactory = new LogFactory(appContext.CompositionContext.GetExport<ILogManager>());
 
             // initialize the web host
-            this.webHost = this.webHostFactory.CreateExportedValue();
-            await this.webHost.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+            this.webHost = await this.webHostFactory.CreateExportedValueAsync(appContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>

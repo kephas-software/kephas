@@ -84,9 +84,8 @@ namespace Kephas.Data.Endpoints
             var entityType = this.ResolveEntityType(message.EntityType);
             var property = this.ResolveProperty(entityType, message.Property);
 
-            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue())
+            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue(context))
             {
-                dataSpace.Initialize(context);
                 var projectedType = this.ResolveProjectedEntityType(entityType);
                 var dataContext = dataSpace[projectedType];
                 var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
