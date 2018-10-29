@@ -147,6 +147,9 @@
     <Compile Include="..\Kephas.Data.IO\Import\ImportEntityException.cs">
       <Link>Import\ImportEntityException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Import\ImportEntityInfo.cs">
+      <Link>Import\ImportEntityInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\ImportEntitySuccessfulMessage.cs">
       <Link>Import\ImportEntitySuccessfulMessage.cs</Link>
     </Compile>
