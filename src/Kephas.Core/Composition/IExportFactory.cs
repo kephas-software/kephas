@@ -99,6 +99,7 @@ namespace Kephas.Composition
             where T : IInitializable
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
+            Requires.NotNull(context, nameof(context));
 
             var export = exportFactory.CreateExport().Value;
             export.Initialize(context);
@@ -122,6 +123,7 @@ namespace Kephas.Composition
             where T : IAsyncInitializable
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
+            Requires.NotNull(context, nameof(context));
 
             var export = exportFactory.CreateExport().Value;
             await export.InitializeAsync(context, cancellationToken).PreserveThreadContext();
