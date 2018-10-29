@@ -12,11 +12,65 @@
     public class TaskHelperTest
     {
         [Test]
-        public void WaitNonLocking_timeout_exception()
+        public async Task WithTimeout_timeout_exception()
         {
             var task = new Task(() => Thread.Sleep(1000));
             task.Start();
-            Assert.Throws<TimeoutException>(() => task.WaitNonLocking(TimeSpan.FromMilliseconds(200)));
+            try
+            {
+                await task.WithTimeout(TimeSpan.FromMilliseconds(200));
+            }
+            catch (TaskTimeoutException tex)
+            {
+                Assert.AreSame(task, tex.Task);
+            }
+        }
+
+        [Test]
+        public async Task WithTimeout_success()
+        {
+            var task = new Task(() => { });
+            task.Start();
+            await task.WithTimeout(TimeSpan.FromMilliseconds(200));
+        }
+
+        [Test]
+        public async Task WithTimeout_result_timeout_exception()
+        {
+            var task = new Task<int>(() => { Thread.Sleep(1000); return 1000; });
+            task.Start();
+            try
+            {
+                await task.WithTimeout(TimeSpan.FromMilliseconds(200));
+            }
+            catch (TaskTimeoutException tex)
+            {
+                Assert.AreSame(task, tex.Task);
+            }
+        }
+
+        [Test]
+        public async Task WithTimeout_result_success()
+        {
+            var task = new Task<int>(() => 1000);
+            task.Start();
+            var result = await task.WithTimeout(TimeSpan.FromMilliseconds(200));
+            Assert.AreEqual(1000, result);
+        }
+
+        [Test]
+        public async Task WaitNonLocking_timeout_exception()
+        {
+            var task = new Task(() => Thread.Sleep(1000));
+            task.Start();
+            try
+            {
+                task.WaitNonLocking(TimeSpan.FromMilliseconds(200));
+            }
+            catch (TaskTimeoutException tex)
+            {
+                Assert.AreSame(task, tex.Task);
+            }
         }
 
         [Test]
@@ -32,7 +86,7 @@
         {
             var task = new Task<int>(() => { Thread.Sleep(1000); return 1000; });
             task.Start();
-            Assert.Throws<TimeoutException>(() => task.GetResultNonLocking(TimeSpan.FromMilliseconds(200)));
+            Assert.Throws<TaskTimeoutException>(() => task.GetResultNonLocking(TimeSpan.FromMilliseconds(200)));
         }
 
         [Test]

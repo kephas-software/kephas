@@ -848,6 +848,9 @@
     <Compile Include="..\Kephas.Core\Threading\Tasks\TaskHelper.cs">
       <Link>Threading\Tasks\TaskHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Threading\Tasks\TaskTimeoutException.cs">
+      <Link>Threading\Tasks\TaskTimeoutException.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Threading\Tasks\ThreadContext.cs">
       <Link>Threading\Tasks\ThreadContext.cs</Link>
     </Compile>

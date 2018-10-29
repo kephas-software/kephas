@@ -11,8 +11,8 @@
 namespace Kephas.Threading.Tasks
 {
     using System;
-    using System.Linq;
-    using System.Linq.Expressions;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
@@ -93,7 +93,7 @@ namespace Kephas.Threading.Tasks
                     {
                         if (throwOnTimeout)
                         {
-                            throw new TimeoutException($"The allotted time of {timeout} expired. Please try again the operation.");
+                            throw new TaskTimeoutException(task, $"The allotted time of {timeout} expired. Please try again the operation.");
                         }
 
                         timeoutOccurred = true;
@@ -160,6 +160,8 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// A <see cref="ThreadContextAwaiter{TResult}"/>.
         /// </returns>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this Task<TResult> task)
         {
             Requires.NotNull(task, nameof(task));
@@ -179,11 +181,61 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// A <see cref="ThreadContextAwaiter"/>.
         /// </returns>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ThreadContextAwaiter PreserveThreadContext(this Task task)
         {
             Requires.NotNull(task, nameof(task));
 
             return new ThreadContextAwaiter(task);
+        }
+
+        /// <summary>
+        /// Configures a timeout for the provided task. If the task ends within the indicated time,
+        /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
+        /// </remarks>
+        /// <typeparam name="T">The task result type.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>
+        /// The result of the original task.
+        /// </returns>
+        public static async Task WithTimeout(this Task task, TimeSpan timeout)
+        {
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+            if (completedTask == task)
+            {
+                return;
+            }
+
+            throw new TaskTimeoutException(task);
+        }
+
+        /// <summary>
+        /// Configures a timeout for the provided task. If the task ends within the indicated time,
+        /// the original task result is returned, otherwise a <see cref="TaskTimeoutException"/> occurs.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
+        /// </remarks>
+        /// <typeparam name="T">The task result type.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>
+        /// The result of the original task.
+        /// </returns>
+        public static async Task<T> WithTimeout<T>(this Task<T> task, TimeSpan timeout)
+        {
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+            if (completedTask == task)
+            {
+                return task.Result;
+            }
+
+            throw new TaskTimeoutException(task);
         }
     }
 }
