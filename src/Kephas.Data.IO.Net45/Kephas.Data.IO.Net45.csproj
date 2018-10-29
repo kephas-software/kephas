@@ -165,6 +165,9 @@
     <Compile Include="..\Kephas.Data.IO\Setup\DataIOSetupResult.cs">
       <Link>Setup\DataIOSetupResult.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.IO\Setup\DirectoryDataInstallerBase.cs">
+      <Link>Setup\DirectoryDataInstallerBase.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.IO\Setup\IDataIOSetupResult.cs">
       <Link>Setup\IDataIOSetupResult.cs</Link>
     </Compile>

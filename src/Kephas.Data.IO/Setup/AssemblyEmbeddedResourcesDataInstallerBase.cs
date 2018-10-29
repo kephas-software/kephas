@@ -19,6 +19,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Resources;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
 
     /// <summary>
@@ -30,6 +31,9 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the
         /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
+        /// <remarks>
+        /// The assembly containing the resources is the assembly where the data installer class is declared.
+        /// </remarks>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         protected AssemblyEmbeddedResourcesDataInstallerBase(
@@ -38,6 +42,24 @@ namespace Kephas.Data.IO.Setup
             : base(dataImportService, dataSpaceFactory)
         {
             this.ResourcesAssembly = this.GetType().Assembly;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
+        /// </summary>
+        /// <param name="dataImportService">The data import service.</param>
+        /// <param name="dataSpaceFactory">The data space factory.</param>
+        /// <param name="assembly">The assembly containing the resources.</param>
+        protected AssemblyEmbeddedResourcesDataInstallerBase(
+            IDataImportService dataImportService,
+            IExportFactory<IDataSpace> dataSpaceFactory,
+            Assembly assembly)
+            : base(dataImportService, dataSpaceFactory)
+        {
+            Requires.NotNull(assembly, nameof(assembly));
+
+            this.ResourcesAssembly = assembly;
         }
 
         /// <summary>
