@@ -37,7 +37,7 @@ namespace Kephas.Model.Runtime.Construction
         /// The element name discriminator.
         /// </value>
         /// <remarks>
-        /// This dicriminator can be used as a suffix in the name to identify the element type.
+        /// This discriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
         protected override string ElementNameDiscriminator => DimensionElementNameDiscriminator;
 
@@ -84,8 +84,8 @@ namespace Kephas.Model.Runtime.Construction
             }
 
             var modelElement = new ModelDimensionElement(constructionContext, this.TryComputeNameCore(runtimeElement))
-                                        {
-                                            DimensionName = this.ComputeDimensionName(typeInfo.Namespace)
+            {
+                DimensionName = this.ComputeDimensionName(typeInfo.Namespace)
             };
             return modelElement;
         }

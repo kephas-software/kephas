@@ -49,10 +49,10 @@ namespace Kephas.Model.Elements
                 return null;
             };
 
-    /// <summary>
-    /// Unique identifier.
-    /// </summary>
-    private readonly Guid guid = Guid.NewGuid();
+        /// <summary>
+        /// Unique identifier.
+        /// </summary>
+        private readonly Guid guid = Guid.NewGuid();
 
         /// <summary>
         /// The classifier cache key.
@@ -234,7 +234,7 @@ namespace Kephas.Model.Elements
                     .Where(c => c != null));
 
             // When constructing generics, must change the signature to include (param, arg) mappings
-            
+
             // 3. resolve the aspects.
             // TODO aspects can be applied only to non-generic or open-generics
             this.ResolveAspects(unsortedClassifiers, this.GetAspects(unsortedClassifiers));
@@ -305,7 +305,8 @@ namespace Kephas.Model.Elements
                 var projection = new ModelProjection(
                     constructionContext,
                     this.ComputeProjectionName(elements),
-                    this.ComputeProjectionName(aggregatedElements)) { DimensionElements = elements.ToArray() };
+                    this.ComputeProjectionName(aggregatedElements))
+                { DimensionElements = elements.ToArray() };
                 projections.Add(projection);
                 return;
             }
@@ -429,7 +430,7 @@ namespace Kephas.Model.Elements
             {
                 var newDependencies = constructedGenericsDependencies
                     .SelectMany(d => d.GenericTypeArguments)
-                    .Where(t => !constructedGenericsDependencies.Contains(t) && 
+                    .Where(t => !constructedGenericsDependencies.Contains(t) &&
                                 t.IsConstructedGenericType() && genericDefinitions.Contains(t.GenericTypeDefinition))
                     .ToList();
                 if (!newDependencies.Any())
