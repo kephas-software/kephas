@@ -26,11 +26,11 @@ namespace Kephas.Data.IO.Import
         public ChangeState ChangeState { get; set; }
 
         /// <summary>
-        /// Gets the entity.
+        /// Gets or sets the entity.
         /// </summary>
         /// <value>
         /// The entity.
         /// </value>
-        public object Entity { get; }
+        public object Entity { get; set; }
     }
 }
