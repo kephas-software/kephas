@@ -113,6 +113,9 @@
     <Compile Include="..\Kephas.Data.Tests\Conversion\DataConversionContextBuilderTest.cs">
       <Link>Conversion\DataConversionContextBuilderTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\Conversion\DataConversionContextTest.cs">
+      <Link>Conversion\DataConversionContextTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\Conversion\DefaultDataConversionServiceTest.cs">
       <Link>Conversion\DefaultDataConversionServiceTest.cs</Link>
     </Compile>

@@ -32,7 +32,7 @@ namespace Kephas.Data.Conversion
             IDataSpace dataSpace,
             Type rootSourceType = null,
             Type rootTargetType = null)
-            : base(conversionService?.CompositionContext)
+            : base(dataSpace)
         {
             Requires.NotNull(conversionService, nameof(conversionService));
             Requires.NotNull(dataSpace, nameof(dataSpace));
