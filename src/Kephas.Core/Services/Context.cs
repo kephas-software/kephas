@@ -98,46 +98,62 @@ namespace Kephas.Services
         /// <summary>
         /// Gets the ambient services.
         /// </summary>
-        /// <value>
+        /// <newValue>
         /// The ambient services.
-        /// </value>
+        /// </newValue>
         public IAmbientServices AmbientServices { get; private set; }
 
         /// <summary>
         /// Gets the dependency injection/composition context.
         /// </summary>
-        /// <value>
+        /// <newValue>
         /// The composition context.
-        /// </value>
+        /// </newValue>
         public ICompositionContext CompositionContext { get; private set; }
 
         /// <summary>
         /// Gets or sets the authenticated user.
         /// </summary>
-        /// <value>
+        /// <newValue>
         /// The authenticated user.
-        /// </value>
+        /// </newValue>
         public IIdentity Identity
         {
             get => this.identity;
             set
             {
-                if (this.identity != null && this.identity != value)
+                if (this.ValidateIdentity(this.identity, value))
                 {
-                    throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
+                    this.identity = value;
                 }
-
-                this.identity = value;
             }
         }
 
         /// <summary>
         /// Gets or sets the context logger.
         /// </summary>
-        /// <value>
+        /// <newValue>
         /// The context logger.
-        /// </value>
+        /// </newValue>
         public ILogger ContextLogger { get; set; }
+
+        /// <summary>
+        /// Validates the identity before changing it.
+        /// </summary>
+        /// <param name="currentValue">The current value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <returns>
+        /// True if validation succeeds, false if it fails.
+        /// </returns>
+        protected virtual bool ValidateIdentity(IIdentity currentValue, IIdentity newValue)
+        {
+            if (currentValue != null && currentValue != newValue)
+            {
+                throw new SecurityException(Strings.Context_CannotChangeIdentity_Exception);
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Sets composition context.
