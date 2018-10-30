@@ -54,7 +54,7 @@
         {
             var task = new Task<int>(() => 1000);
             task.Start();
-            var result = await task.WithTimeout(TimeSpan.FromMilliseconds(200));
+            var result = await task.WithTimeout(TimeSpan.FromMilliseconds(1000));
             Assert.AreEqual(1000, result);
         }
 

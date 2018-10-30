@@ -133,7 +133,8 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The lax value.
         /// </returns>
-        public static T GetLaxValue<T>(this IExpando expando, string member, T defaultValue = default)
+        public static T GetLaxValue<T>(
+            this IIndexable expando, string member, T defaultValue = default)
         {
             Requires.NotNull(expando, nameof(expando));
 
