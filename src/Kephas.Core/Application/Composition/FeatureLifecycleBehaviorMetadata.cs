@@ -31,7 +31,7 @@ namespace Kephas.Application.Composition
                 return;
             }
 
-            this.Target = this.GetMetadataValue<TargetsFeatureAttribute, FeatureRef>(metadata);
+            this.Target = this.GetMetadataValue<TargetFeatureAttribute, FeatureRef>(metadata);
         }
 
         /// <summary>

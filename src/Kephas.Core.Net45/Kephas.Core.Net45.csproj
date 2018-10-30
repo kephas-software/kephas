@@ -158,8 +158,8 @@
     <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
       <Link>Application\RequiredFeatureAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Core\Application\TargetsFeatureAttribute.cs">
-      <Link>Application\TargetsFeatureAttribute.cs</Link>
+    <Compile Include="..\Kephas.Core\Application\TargetFeatureAttribute.cs">
+      <Link>Application\TargetFeatureAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Behavior\AsyncBehaviorRuleBase.cs">
       <Link>Behavior\AsyncBehaviorRuleBase.cs</Link>
