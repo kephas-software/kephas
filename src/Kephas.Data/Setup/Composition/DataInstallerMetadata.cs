@@ -32,7 +32,7 @@ namespace Kephas.Data.Setup.Composition
                 return;
             }
 
-            this.Target = this.GetMetadataValue<DataTargetAttribute, string>(metadata);
+            this.Target = this.GetMetadataValue<TargetPackageAttribute, string>(metadata);
         }
 
         /// <summary>

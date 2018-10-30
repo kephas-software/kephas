@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTargetAttribute.cs" company="Kephas Software SRL">
+// <copyright file="TargetPackageAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data target attribute class.
+//   Implements the target package attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,15 +15,15 @@ namespace Kephas.Data.Setup.AttributedModel
     using Kephas.Composition.Metadata;
 
     /// <summary>
-    /// Attribute for indicating the data target.
+    /// Attribute for indicating the package targeted by the <see cref="IDataInstaller"/>.
     /// </summary>
-    public class DataTargetAttribute : Attribute, IMetadataValue<string>
+    public class TargetPackageAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTargetAttribute"/> class.
+        /// Initializes a new instance of the <see cref="TargetPackageAttribute"/> class.
         /// </summary>
-        /// <param name="target">The data target.</param>
-        public DataTargetAttribute(string target)
+        /// <param name="target">The target package.</param>
+        public TargetPackageAttribute(string target)
         {
             this.Value = target;
         }
