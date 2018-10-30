@@ -72,5 +72,33 @@ namespace Kephas.Core.Tests.Services
 
             Assert.Throws<SecurityException>(() => context.Identity = Substitute.For<IIdentity>());
         }
+
+        [Test]
+        public void Identity_can_be_set_multiple_when_overridable()
+        {
+            var context = new OverrideIdentityContext();
+            context.Identity = Substitute.For<IIdentity>();
+
+            var newIdentity = Substitute.For<IIdentity>();
+            context.Identity = newIdentity;
+
+            Assert.AreSame(newIdentity, context.Identity);
+        }
+
+        public class OverrideIdentityContext : Context
+        {
+            /// <summary>
+            /// Validates the identity before changing it.
+            /// </summary>
+            /// <param name="currentValue">The current value.</param>
+            /// <param name="newValue">The new value.</param>
+            /// <returns>
+            /// True if validation succeeds, false if it fails.
+            /// </returns>
+            protected override bool ValidateIdentity(IIdentity currentValue, IIdentity newValue)
+            {
+                return true;
+            }
+        }
     }
 }
