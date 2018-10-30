@@ -80,7 +80,6 @@
     </PackageReference>
     <PackageReference Include="System.Composition">
       <Version>1.2.0</Version>
-      <Version>1.0.31</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
