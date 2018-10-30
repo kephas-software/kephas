@@ -24,12 +24,7 @@
         <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="System.Composition" version="1.0.31" />
-            <dependency id="System.Composition.AttributedModel" version="1.0.31" />
-            <dependency id="System.Composition.Convention" version="1.0.31" />
-            <dependency id="System.Composition.Hosting" version="1.0.31" />
-            <dependency id="System.Composition.Runtime" version="1.0.31" />
-            <dependency id="System.Composition.TypedParts" version="1.0.31" />
+            <dependency id="System.Composition" version="1.2.0" />
         </dependencies>
         <references>
             <group>
