@@ -28,6 +28,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Services;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -102,7 +103,7 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A data import result.
         /// </returns>
-        public async Task<IDataIOResult> ImportDataAsync(
+        public async Task<IOperationResult> ImportDataAsync(
             DataStream dataSource,
             IDataImportContext context,
             CancellationToken cancellationToken = default)
@@ -110,9 +111,9 @@ namespace Kephas.Data.IO.Import
             Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
 
             var result = context.EnsureResult();
-            result.OperationState = DataIOOperationState.InProgress;
+            result.OperationState = OperationState.InProgress;
 
-            IDataIOResult jobResult = null;
+            IOperationResult jobResult = null;
             var elapsed = await Profiler.WithStopwatchAsync(
                 async () =>
                     {
@@ -122,9 +123,7 @@ namespace Kephas.Data.IO.Import
 
             result.MergeResult(jobResult);
             result.Elapsed = elapsed;
-            result.OperationState = result.Exceptions.Count > 0
-                                        ? DataIOOperationState.CompletedWithErrors
-                                        : DataIOOperationState.CompletedSuccessfully;
+            result.OperationState = OperationState.Completed;
             return result;
         }
 
@@ -137,7 +136,7 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A list of import jobs.
         /// </returns>
-        private DataSourceImportJob CreateImportJob(DataStream dataSource, IDataImportContext context, IDataIOResult result)
+        private DataSourceImportJob CreateImportJob(DataStream dataSource, IDataImportContext context, IOperationResult result)
         {
             var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver, this.behaviorFactories);
             job.PropertyChanged += (j, ea) => result.PercentCompleted = ((DataSourceImportJob)j).PercentCompleted;
@@ -247,9 +246,9 @@ namespace Kephas.Data.IO.Import
             /// <returns>
             /// A data exchange result.
             /// </returns>
-            public async Task<IDataIOResult> ExecuteAsync(CancellationToken cancellationToken = default)
+            public async Task<IOperationResult> ExecuteAsync(CancellationToken cancellationToken = default)
             {
-                var result = new DataIOResult();
+                var result = new OperationResult();
 
                 var behaviors = this.behaviorFactories.Select(f => f.CreateExportedValue()).ToList();
                 var reversedBehaviors = new List<IDataImportBehavior>(behaviors);
@@ -323,7 +322,7 @@ namespace Kephas.Data.IO.Import
             /// <returns>
             /// A task for continuation.
             /// </returns>
-            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IDataIOResult result, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
+            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IOperationResult result, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
             {
                 var importEntityInfos = sourceEntities.Select(this.AttachSourceEntity).ToList();
                 foreach (var importEntityInfo in importEntityInfos)

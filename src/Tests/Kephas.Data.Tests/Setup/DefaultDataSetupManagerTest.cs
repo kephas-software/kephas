@@ -18,6 +18,7 @@ namespace Kephas.Data.Tests.Setup
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.Setup;
     using Kephas.Data.Setup.Composition;
+    using Kephas.Operations;
 
     using NSubstitute;
 
@@ -87,13 +88,13 @@ namespace Kephas.Data.Tests.Setup
                 ci =>
                     {
                         list.Add("1");
-                        return Task.FromResult(Substitute.For<IDataSetupResult>());
+                        return Task.FromResult(Substitute.For<IOperationResult>());
                     });
             installer1.UninstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("u-1");
-                        return Task.FromResult(Substitute.For<IDataSetupResult>());
+                        return Task.FromResult(Substitute.For<IOperationResult>());
                     });
 
             var installer2 = Substitute.For<IDataInstaller>();
@@ -101,13 +102,13 @@ namespace Kephas.Data.Tests.Setup
                 ci =>
                     {
                         list.Add("2");
-                        return Task.FromResult(Substitute.For<IDataSetupResult>());
+                        return Task.FromResult(Substitute.For<IOperationResult>());
                     });
             installer2.UninstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("u-2");
-                        return Task.FromResult(Substitute.For<IDataSetupResult>());
+                        return Task.FromResult(Substitute.For<IOperationResult>());
                     });
 
             var installerFactories = new List<IExportFactory<IDataInstaller, DataInstallerMetadata>>

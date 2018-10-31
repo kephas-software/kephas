@@ -18,6 +18,7 @@ namespace Kephas.Data.Setup
     using Kephas.Composition;
     using Kephas.Data.Setup.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -51,19 +52,19 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
-        public async Task<object> InstallDataAsync(
+        public async Task<IOperationResult> InstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default)
         {
             var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
 
-            var result = new List<object>();
+            var result = new OperationResult();
             foreach (var dataInstaller in dataInstallers)
             {
                 var handlerResult = await dataInstaller.InstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
                 if (handlerResult != null)
                 {
-                    result.Add(handlerResult);
+                    result.MergeResult(handlerResult);
                 }
             }
 
@@ -78,20 +79,20 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
-        public async Task<object> UninstallDataAsync(
+        public async Task<IOperationResult> UninstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default)
         {
             var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
             dataInstallers.Reverse();
 
-            var result = new List<object>();
+            var result = new OperationResult();
             foreach (var dataInstaller in dataInstallers)
             {
                 var handlerResult = await dataInstaller.UninstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
                 if (handlerResult != null)
                 {
-                    result.Add(handlerResult);
+                    result.MergeResult(handlerResult);
                 }
             }
 

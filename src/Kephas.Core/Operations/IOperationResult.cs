@@ -1,29 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataIOResult.cs" company="Kephas Software SRL">
+// <copyright file="IOperationResult.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IDataIOResult interface.
+//   Declares the IOperationResult interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     using System;
     using System.Collections.Concurrent;
     using System.ComponentModel;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Collections;
-    using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
+    using Kephas.Resources;
 
     /// <summary>
-    /// Contract for data exchange result.
+    /// Contract for operation results.
     /// </summary>
-    public interface IDataIOResult : IExpando, INotifyPropertyChanged
+    public interface IOperationResult : IExpando, INotifyPropertyChanged
     {
         /// <summary>
         /// Gets or sets the state of the operation.
@@ -31,7 +33,7 @@ namespace Kephas.Data.IO
         /// <value>
         /// The state of the operation.
         /// </value>
-        DataIOOperationState OperationState { get; set; }
+        OperationState OperationState { get; set; }
 
         /// <summary>
         /// Gets or sets the percent completed.
@@ -55,7 +57,7 @@ namespace Kephas.Data.IO
         /// <value>
         /// The messages.
         /// </value>
-        IProducerConsumerCollection<IDataIOMessage> Messages { get; }
+        IProducerConsumerCollection<IOperationMessage> Messages { get; }
 
         /// <summary>
         /// Gets the exceptions.
@@ -67,9 +69,9 @@ namespace Kephas.Data.IO
     }
 
     /// <summary>
-    /// Extensions for <see cref="IDataIOResult"/>.
+    /// Extensions for <see cref="IOperationResult"/>.
     /// </summary>
-    public static class DataExchangeResultExtensions
+    public static class OperationResultExtensions
     {
         /// <summary>
         /// Merges the exception.
@@ -81,7 +83,7 @@ namespace Kephas.Data.IO
         /// The provided result.
         /// </returns>
         public static TResult MergeException<TResult>(this TResult result, Exception ex)
-            where TResult : class, IDataIOResult
+            where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(ex, nameof(ex));
@@ -101,12 +103,12 @@ namespace Kephas.Data.IO
         /// The provided result.
         /// </returns>
         public static TResult MergeMessage<TResult>(this TResult result, string message)
-            where TResult : class, IDataIOResult
+            where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(message, nameof(message));
 
-            result.Messages.TryAdd(new DataIOMessage(message));
+            result.Messages.TryAdd(new OperationMessage(message));
 
             return result;
         }
@@ -120,8 +122,8 @@ namespace Kephas.Data.IO
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessage<TResult>(this TResult result, IDataIOMessage message)
-            where TResult : class, IDataIOResult
+        public static TResult MergeMessage<TResult>(this TResult result, IOperationMessage message)
+            where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(message, nameof(message));
@@ -140,8 +142,8 @@ namespace Kephas.Data.IO
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeResult<TResult>(this TResult result, IDataIOResult resultToMerge)
-            where TResult : class, IDataIOResult
+        public static TResult MergeResult<TResult>(this TResult result, IOperationResult resultToMerge)
+            where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(resultToMerge, nameof(resultToMerge));
@@ -157,24 +159,56 @@ namespace Kephas.Data.IO
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="result">The result.</param>
-        /// <param name="task">The task of which result will be merged.</param>
+        /// <param name="asyncResult">The task of which result will be merged.</param>
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeResult<TResult>(this TResult result, Task<IDataIOResult> task)
-            where TResult : class, IDataIOResult
+        public static TResult MergeResult<TResult>(this TResult result, Task<IOperationResult> asyncResult)
+            where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
-            Requires.NotNull(task, nameof(task));
+            Requires.NotNull(asyncResult, nameof(asyncResult));
 
-            if (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)
+            if (!asyncResult.IsCompleted && !asyncResult.IsCanceled && !asyncResult.IsFaulted)
             {
-                throw new InvalidOperationException(Strings.DataIOResult_Merge_TaskNotCompleteException);
+                throw new InvalidOperationException(Strings.OperationResult_Merge_TaskNotCompleteException);
             }
 
-            return task.Exception == null
-                    ? MergeResult(result, task.Result)
-                    : MergeException(result, task.Exception);
+            return asyncResult.Exception == null
+                    ? MergeResult(result, asyncResult.Result)
+                    : MergeException(result, asyncResult.Exception);
+        }
+
+        /// <summary>
+        /// Marks the result as completed and computes the operation state.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// A TResult.
+        /// </returns>
+        public static bool HasErrors(this IOperationResult result)
+        {
+            Requires.NotNull(result, nameof(result));
+
+            return result.Exceptions.Any(
+                e => (e is ISeverityQualifiedException qex
+                      && (qex.Severity == SeverityLevel.Error || qex.Severity == SeverityLevel.Fatal))
+                     || !(e is ISeverityQualifiedException));
+        }
+
+        /// <summary>
+        /// Marks the result as completed and computes the operation state.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// A TResult.
+        /// </returns>
+        public static bool HasWarnings(this IOperationResult result)
+        {
+            Requires.NotNull(result, nameof(result));
+
+            return result.Exceptions.Any(
+                e => e is ISeverityQualifiedException qex && qex.Severity == SeverityLevel.Warning);
         }
     }
 }

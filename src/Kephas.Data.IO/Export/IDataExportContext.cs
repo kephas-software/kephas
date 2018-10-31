@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
 
     /// <summary>
     /// Interface for data export context.
@@ -90,13 +91,13 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// The result, once it is set into the context.
         /// </returns>
-        public static IDataIOResult EnsureResult(this IDataExportContext dataExportContext, Func<IDataIOResult> resultFactory = null)
+        public static IOperationResult EnsureResult(this IDataExportContext dataExportContext, Func<IOperationResult> resultFactory = null)
         {
             Requires.NotNull(dataExportContext, nameof(dataExportContext));
 
-            if (!(dataExportContext[ResultKey] is IDataIOResult result))
+            if (!(dataExportContext[ResultKey] is IOperationResult result))
             {
-                resultFactory = resultFactory ?? (() => new DataIOResult());
+                resultFactory = resultFactory ?? (() => new OperationResult());
                 dataExportContext[ResultKey] = result = resultFactory();
             }
 
@@ -108,11 +109,11 @@ namespace Kephas.Data.IO.Export
         /// </summary>
         /// <param name="dataExportContext">The data export context.</param>
         /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult GetResult(this IDataExportContext dataExportContext)
+        public static IOperationResult GetResult(this IDataExportContext dataExportContext)
         {
             Requires.NotNull(dataExportContext, nameof(dataExportContext));
 
-            return dataExportContext[ResultKey] as IDataIOResult;
+            return dataExportContext[ResultKey] as IOperationResult;
         }
 
         /// <summary>

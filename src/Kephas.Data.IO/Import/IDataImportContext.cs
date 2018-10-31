@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Data.Conversion;
     using Kephas.Data.IO;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
 
     /// <summary>
     /// Contract for data import contexts.
@@ -64,13 +65,13 @@ namespace Kephas.Data.IO.Import
         /// <param name="self">The self.</param>
         /// <param name="resultFactory">The result factory.</param>
         /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult EnsureResult(this IDataImportContext self, Func<IDataIOResult> resultFactory = null)
+        public static IOperationResult EnsureResult(this IDataImportContext self, Func<IOperationResult> resultFactory = null)
         {
             Requires.NotNull(self, nameof(self));
 
-            if (!(self[ResultKey] is IDataIOResult result))
+            if (!(self[ResultKey] is IOperationResult result))
             {
-                resultFactory = resultFactory ?? (() => new DataIOResult());
+                resultFactory = resultFactory ?? (() => new OperationResult());
                 self[ResultKey] = result = resultFactory();
             }
 
@@ -82,11 +83,11 @@ namespace Kephas.Data.IO.Import
         /// </summary>
         /// <param name="self">The self.</param>
         /// <returns>The result, once it is set into the options.</returns>
-        public static IDataIOResult GetResult(this IDataImportContext self)
+        public static IOperationResult GetResult(this IDataImportContext self)
         {
             Requires.NotNull(self, nameof(self));
 
-            return self[ResultKey] as IDataIOResult;
+            return self[ResultKey] as IOperationResult;
         }
 
         /// <summary>

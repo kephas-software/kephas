@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.Editing
+namespace Kephas.Data.DataSources
 {
     using Kephas.Reflection;
 

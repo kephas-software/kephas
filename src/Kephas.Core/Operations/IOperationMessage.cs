@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDataIOMessage.cs" company="Kephas Software SRL">
+// <copyright file="IOperationMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Contract for data I/O messages.
+//   Declares the IOperationMessage interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     using System;
 
     /// <summary>
-    /// Contract for data exchange messages.
+    /// Contract for data operation messages.
     /// </summary>
-    public interface IDataIOMessage
+    public interface IOperationMessage
     {
         /// <summary>
         /// Gets the message.

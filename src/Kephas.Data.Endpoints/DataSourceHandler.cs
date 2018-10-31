@@ -16,7 +16,7 @@ namespace Kephas.Data.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Composition;
-    using Kephas.Data.Editing;
+    using Kephas.Data.DataSources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging;

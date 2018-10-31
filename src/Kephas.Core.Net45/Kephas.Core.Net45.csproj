@@ -503,6 +503,24 @@
     <Compile Include="..\Kephas.Core\Net\Mime\XmlMediaType.cs">
       <Link>Net\Mime\XmlMediaType.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Operations\IOperationMessage.cs">
+      <Link>Operations\IOperationMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Operations\IOperationResult.cs">
+      <Link>Operations\IOperationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Operations\OperationException.cs">
+      <Link>Operations\OperationException.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Operations\OperationMessage.cs">
+      <Link>Operations\OperationMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Operations\OperationResult.cs">
+      <Link>Operations\OperationResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Operations\OperationState.cs">
+      <Link>Operations\OperationState.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Properties\AssemblyInfo.Manifest.cs">
       <Link>Properties\AssemblyInfo.Manifest.cs</Link>
     </Compile>

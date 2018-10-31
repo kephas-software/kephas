@@ -29,7 +29,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetInstallDataFilePaths_explicit_file_names()
         {
-            var handler = new AssemblyEmbeddedResourcesDataInstaller(installFileNames: new[] { "my-embedded-data.json" });
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(installFileNames: new[] { "my-embedded-data.json" });
             var filePaths = handler.GetInstallDataFilePaths().ToList();
             Assert.AreEqual(1, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Install.my-embedded-data.json", filePaths[0]);
@@ -38,7 +38,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetInstallDataFilePaths_implicit_all_file_names()
         {
-            var handler = new AssemblyEmbeddedResourcesDataInstaller();
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller();
             var filePaths = handler.GetInstallDataFilePaths().ToList();
             Assert.AreEqual(2, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Install.my-embedded-data.json", filePaths[0]);
@@ -48,7 +48,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetUninstallDataFilePaths_explicit_file_names()
         {
-            var handler = new AssemblyEmbeddedResourcesDataInstaller(uninstallFileNames: new[] { "my-u-embedded-data.json" });
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller(uninstallFileNames: new[] { "my-u-embedded-data.json" });
             var filePaths = handler.GetUninstallDataFilePaths().ToList();
             Assert.AreEqual(1, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Uninstall.my-u-embedded-data.json", filePaths[0]);
@@ -57,7 +57,7 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void GetUninstallDataFilePaths_implicit_all_file_names()
         {
-            var handler = new AssemblyEmbeddedResourcesDataInstaller();
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller();
             var filePaths = handler.GetUninstallDataFilePaths().ToList();
             Assert.AreEqual(2, filePaths.Count);
             Assert.AreEqual("Kephas.Data.IO.Tests.Data.Uninstall.my-u-embedded-data.json", filePaths[0]);
@@ -67,17 +67,17 @@ namespace Kephas.Data.IO.Tests.Setup
         [Test]
         public void CreateDataSource_missing_resource()
         {
-            var handler = new AssemblyEmbeddedResourcesDataInstaller();
+            var handler = new TestAssemblyEmbeddedResourcesDataInstaller();
             Assert.Throws<ArgumentException>(() => handler.CreateDataSource("Kephas.Data.IO.Tests.Data.my-data.json"));
         }
 
-        public class AssemblyEmbeddedResourcesDataInstaller : AssemblyEmbeddedResourcesDataInstallerBase
+        public class TestAssemblyEmbeddedResourcesDataInstaller : AssemblyEmbeddedResourcesDataInstallerBase
         {
             private readonly IEnumerable<string> installFileNames;
 
             private readonly IEnumerable<string> uninstallFileNames;
 
-            public AssemblyEmbeddedResourcesDataInstaller(
+            public TestAssemblyEmbeddedResourcesDataInstaller(
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFileNames = null,

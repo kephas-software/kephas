@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataIOResult.cs" company="Kephas Software SRL">
+// <copyright file="OperationResult.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data i/o result class.
+//   Implements the operation result class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     using System;
     using System.Collections.Concurrent;
@@ -19,14 +19,14 @@ namespace Kephas.Data.IO
     using Kephas.Dynamic;
 
     /// <summary>
-    /// The default implementation of the <see cref="IDataIOResult"/>.
+    /// Encapsulates the result of an operation.
     /// </summary>
-    public class DataIOResult : Expando, IDataIOResult
+    public class OperationResult : Expando, IOperationResult
     {
         /// <summary>
         /// The operation state.
         /// </summary>
-        private DataIOOperationState operationState;
+        private OperationState operationState;
 
         /// <summary>
         /// The percent completed.
@@ -39,12 +39,12 @@ namespace Kephas.Data.IO
         private TimeSpan elapsed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataIOResult"/> class.
+        /// Initializes a new instance of the <see cref="OperationResult"/> class.
         /// </summary>
-        public DataIOResult()
+        public OperationResult()
         {
             this.Exceptions = new ConcurrentBag<Exception>();
-            this.Messages = new ConcurrentBag<IDataIOMessage>();
+            this.Messages = new ConcurrentBag<IOperationMessage>();
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kephas.Data.IO
         /// <value>
         /// The state of the operation.
         /// </value>
-        public DataIOOperationState OperationState
+        public OperationState OperationState
         {
             get => this.operationState;
             set => this.SetProperty(ref this.operationState, value);
@@ -94,7 +94,7 @@ namespace Kephas.Data.IO
         /// <value>
         /// The message.
         /// </value>
-        public IProducerConsumerCollection<IDataIOMessage> Messages { get; set; }
+        public IProducerConsumerCollection<IOperationMessage> Messages { get; set; }
 
         /// <summary>
         /// Gets the exceptions.

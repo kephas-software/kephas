@@ -25,6 +25,7 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Model.Services;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -60,7 +61,7 @@ namespace Kephas.Data.IO.Tests.Import
                 var context = new DataImportContext(dataSpace);
                 var result = await service.ImportDataAsync(dataStream, context);
 
-                Assert.AreEqual(DataIOOperationState.CompletedSuccessfully, result.OperationState);
+                Assert.AreEqual(OperationState.Completed, result.OperationState);
                 Assert.AreEqual(0, result.Exceptions.Count);
                 Assert.AreEqual(1, result.Messages.Count);
             }
@@ -98,7 +99,7 @@ namespace Kephas.Data.IO.Tests.Import
                                   };
                 var result = await service.ImportDataAsync(dataStream, context);
 
-                Assert.AreEqual(DataIOOperationState.CompletedSuccessfully, result.OperationState);
+                Assert.AreEqual(OperationState.Completed, result.OperationState);
                 Assert.AreEqual(0, result.Exceptions.Count);
                 Assert.AreEqual(1, result.Messages.Count);
             }

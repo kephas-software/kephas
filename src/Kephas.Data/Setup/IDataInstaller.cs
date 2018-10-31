@@ -14,6 +14,7 @@ namespace Kephas.Data.Setup
     using System.Threading.Tasks;
 
     using Kephas.Data.Setup.AttributedModel;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
-        Task<IDataSetupResult> InstallDataAsync(
+        Task<IOperationResult> InstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default);
 
@@ -42,7 +43,7 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
-        Task<IDataSetupResult> UninstallDataAsync(
+        Task<IOperationResult> UninstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default);
     }

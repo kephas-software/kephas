@@ -13,6 +13,7 @@ namespace Kephas.Data.IO.Export
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -29,6 +30,6 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// A data export result.
         /// </returns>
-        Task<IDataIOResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default);
     }
 }

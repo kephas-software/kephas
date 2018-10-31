@@ -165,6 +165,9 @@
     <Compile Include="..\Kephas.Core.Tests\Model\Services\DefaultProjectedTypeResolverTest.cs">
       <Link>Model\Services\DefaultProjectedTypeResolverTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core.Tests\Operations\OperationMessageTest.cs">
+      <Link>Operations\OperationMessageTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core.Tests\Reflection\DefaultTypeResolverTest.cs">
       <Link>Reflection\DefaultTypeResolverTest.cs</Link>
     </Compile>

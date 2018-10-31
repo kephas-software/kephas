@@ -22,6 +22,7 @@ namespace Kephas.Data.IO.Export
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.ExceptionHandling;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -74,7 +75,7 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// A data export result.
         /// </returns>
-        public async Task<IDataIOResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
 

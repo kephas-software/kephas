@@ -1,27 +1,27 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataIOMessage.cs" company="Kephas Software SRL">
+// <copyright file="OperationMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data exchange message class.
+//   Implements the operation message class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     using System;
 
     /// <summary>
-    /// The data I/O message.
+    /// An operation message.
     /// </summary>
-    public class DataIOMessage : IDataIOMessage
+    public class OperationMessage : IOperationMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataIOMessage"/> class.
+        /// Initializes a new instance of the <see cref="OperationMessage"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DataIOMessage(string message)
+        public OperationMessage(string message)
         {
             this.Message = message;
             this.Timestamp = DateTimeOffset.Now;

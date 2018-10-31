@@ -11,11 +11,12 @@
 namespace Kephas.Data.IO.Import
 {
     using Kephas.Data.IO.Resources;
+    using Kephas.Operations;
 
     /// <summary>
     /// The import entity successful message.
     /// </summary>
-    public class ImportEntitySuccessfulMessage : DataIOMessage
+    public class ImportEntitySuccessfulMessage : OperationMessage
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ImportEntitySuccessfulMessage"/> class.

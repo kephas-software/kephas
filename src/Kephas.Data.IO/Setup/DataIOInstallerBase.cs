@@ -24,6 +24,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Net.Mime;
+    using Kephas.Operations;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -79,7 +80,7 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual Task<IDataSetupResult> InstallDataAsync(
+        public virtual Task<IOperationResult> InstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default)
         {
@@ -94,7 +95,7 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual Task<IDataSetupResult> UninstallDataAsync(
+        public virtual Task<IOperationResult> UninstallDataAsync(
             IDataSetupContext dataSetupContext,
             CancellationToken cancellationToken = default)
         {
@@ -133,12 +134,12 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
-        protected virtual async Task<IDataSetupResult> ImportDataAsync(
+        protected virtual async Task<IOperationResult> ImportDataAsync(
             IDataSetupContext dataSetupContext,
             IEnumerable<string> dataFilePaths,
             CancellationToken cancellationToken = default)
         {
-            var result = new DataIOSetupResult();
+            var result = new OperationResult();
             if (dataFilePaths != null)
             {
                 foreach (var dataFilePath in dataFilePaths)
@@ -160,14 +161,14 @@ namespace Kephas.Data.IO.Setup
         /// <returns>
         /// The asynchronous result returning the data import result.
         /// </returns>
-        protected virtual async Task<IDataIOSetupResult> ImportDataFileAsync(IDataSetupContext dataSetupContext, string dataFilePath, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> ImportDataFileAsync(IDataSetupContext dataSetupContext, string dataFilePath, CancellationToken cancellationToken)
         {
             using (var dataSource = this.CreateDataSource(dataFilePath))
             using (var dataSpace = this.DataSpaceFactory.CreateExportedValue(dataSetupContext))
             {
                 var importContext = this.CreateDataImportContext(dataSetupContext, dataSpace);
 
-                var result = new DataIOSetupResult();
+                var result = new OperationResult();
                 try
                 {
                     var importResult = await this.DataImportService

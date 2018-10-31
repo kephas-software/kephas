@@ -14,6 +14,7 @@ namespace Kephas.Data.IO.Import
     using System.Threading.Tasks;
 
     using Kephas.Data.IO.DataStreams;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -31,6 +32,6 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A data import result.
         /// </returns>
-        Task<IDataIOResult> ImportDataAsync(DataStream dataSource, IDataImportContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> ImportDataAsync(DataStream dataSource, IDataImportContext context, CancellationToken cancellationToken = default);
     }
 }

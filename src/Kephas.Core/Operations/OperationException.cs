@@ -1,40 +1,40 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataIOException.cs" company="Kephas Software SRL">
+// <copyright file="OperationException.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data i/o exception class.
+//   Implements the operation exception class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     using System;
 
-    using Kephas.Operations;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
-    /// Exception for signaling data I/O errors.
+    /// Exception for signaling operation errors.
     /// </summary>
-    public class DataIOException : DataException, IOperationMessage
+    public class OperationException : Exception, ISeverityQualifiedException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataIOException"/> class.
+        /// Initializes a new instance of the <see cref="OperationException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public DataIOException(string message)
+        public OperationException(string message)
             : base(message)
         {
             this.Timestamp = DateTimeOffset.Now;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataIOException"/> class.
+        /// Initializes a new instance of the <see cref="OperationException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        public DataIOException(string message, Exception inner)
+        public OperationException(string message, Exception inner)
             : base(message, inner)
         {
             this.Timestamp = DateTimeOffset.Now;
@@ -47,6 +47,14 @@ namespace Kephas.Data.IO
         /// The timestamp.
         /// </value>
         public DateTimeOffset Timestamp { get; }
+
+        /// <summary>
+        /// Gets or sets the severity.
+        /// </summary>
+        /// <value>
+        /// The severity.
+        /// </value>
+        public SeverityLevel Severity { get; set; }
 
         /// <summary>Creates and returns a string representation of the current exception.</summary>
         /// <returns>A string representation of the current exception.</returns>

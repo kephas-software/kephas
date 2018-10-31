@@ -485,6 +485,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot merge the task result, the task is not completed..
+        /// </summary>
+        internal static string OperationResult_Merge_TaskNotCompleteException {
+            get {
+                return ResourceManager.GetString("OperationResult_Merge_TaskNotCompleteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided comparer function produces cycles in the sorted graph. This indicates that there are cyclic dependencies which need to be broken in order to produce an ordered set. Check the following nodes: {0}..
         /// </summary>
         internal static string PartialOrderedSet_BadComparer_ProducesCycles_Exception {

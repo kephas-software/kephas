@@ -1,43 +1,53 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataIOOperationState.cs" company="Kephas Software SRL">
+// <copyright file="OperationState.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data i/o operation state class.
+//   Implements the operation state class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.IO
+namespace Kephas.Operations
 {
     /// <summary>
-    /// The data exchange operation state.
+    /// The operation state.
     /// </summary>
-    public enum DataIOOperationState
+    public enum OperationState
     {
         /// <summary>
-        /// The not started state.
+        /// The operation is not started.
         /// </summary>
         NotStarted,
 
         /// <summary>
-        /// The in progress state.
+        /// The operation is in progress.
         /// </summary>
         InProgress,
 
         /// <summary>
-        /// The canceled state.
+        /// The operation is paused.
+        /// </summary>
+        Paused,
+
+        /// <summary>
+        /// The operation completed.
+        /// </summary>
+        Completed,
+
+        /// <summary>
+        /// The operation was canceled.
         /// </summary>
         Canceled,
 
         /// <summary>
-        /// The completed successfully state.
+        /// The operation failed.
         /// </summary>
-        CompletedSuccessfully,
+        Failed,
 
         /// <summary>
-        /// The completed with errors state.
+        /// The operation timed out.
         /// </summary>
-        CompletedWithErrors,
+        TimedOut,
     }
 }

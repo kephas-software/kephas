@@ -297,4 +297,7 @@
   <data name="Context_CannotChangeIdentity_Exception" xml:space="preserve">
     <value>Cannot change the identity in the context once it has been set.</value>
   </data>
+  <data name="OperationResult_Merge_TaskNotCompleteException" xml:space="preserve">
+    <value>Cannot merge the task result, the task is not completed.</value>
+  </data>
 </root>

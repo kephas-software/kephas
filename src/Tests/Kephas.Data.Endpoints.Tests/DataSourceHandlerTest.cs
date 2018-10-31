@@ -16,7 +16,7 @@ namespace Kephas.Data.Endpoints.Tests
     using System.Threading.Tasks;
 
     using Kephas.Composition.ExportFactories;
-    using Kephas.Data.Editing;
+    using Kephas.Data.DataSources;
     using Kephas.Messaging;
     using Kephas.Model.Services;
     using Kephas.Reflection;

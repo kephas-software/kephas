@@ -51,15 +51,6 @@
     <Compile Include="..\Kephas.Data.IO\DataIOException.cs">
       <Link>DataIOException.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.IO\DataIOMessage.cs">
-      <Link>DataIOMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\DataIOOperationState.cs">
-      <Link>DataIOOperationState.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\DataIOResult.cs">
-      <Link>DataIOResult.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.IO\DataStreams\Composition\DataStreamReaderMetadata.cs">
       <Link>DataStreams\Composition\DataStreamReaderMetadata.cs</Link>
     </Compile>
@@ -114,14 +105,8 @@
     <Compile Include="..\Kephas.Data.IO\IDataIOContext.cs">
       <Link>IDataIOContext.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.IO\IDataIOMessage.cs">
-      <Link>IDataIOMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.IO\IDataIOResourceService.cs">
       <Link>IDataIOResourceService.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\IDataIOResult.cs">
-      <Link>IDataIOResult.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Data.IO\Import\DataImportBehaviorBase.cs">
       <Link>Import\DataImportBehaviorBase.cs</Link>
@@ -165,14 +150,8 @@
     <Compile Include="..\Kephas.Data.IO\Setup\DataIOInstallerBase.cs">
       <Link>Setup\DataIOInstallerBase.cs</Link>
     </Compile>
-    <Compile Include="..\Kephas.Data.IO\Setup\DataIOSetupResult.cs">
-      <Link>Setup\DataIOSetupResult.cs</Link>
-    </Compile>
     <Compile Include="..\Kephas.Data.IO\Setup\DirectoryDataInstallerBase.cs">
       <Link>Setup\DirectoryDataInstallerBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Kephas.Data.IO\Setup\IDataIOSetupResult.cs">
-      <Link>Setup\IDataIOSetupResult.cs</Link>
     </Compile>
     <Compile Include="..\Shared\AssemblyInfo.Kephas.cs">
       <Link>Properties\AssemblyInfo.Kephas.cs</Link>
