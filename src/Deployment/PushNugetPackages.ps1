@@ -4,6 +4,7 @@ param (
 
 $packages = @(
     "Kephas.Core",
+    "Kephas.CodeAnalysis",
     "Kephas.Localization",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Log4Net",
@@ -20,7 +21,6 @@ $packages = @(
     "Kephas.Data.IO",
     "Kephas.Data.Endpoints",
     "Kephas.Serialization.Json",
-    "Kephas.CodeAnalysis",
     "Kephas.Mail",
     "Kephas.Mail.MailKit",
     "Kephas.Npgsql",
