@@ -13,6 +13,7 @@ namespace Kephas.Core.Tests.Services.Composition
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
 
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
@@ -22,8 +23,11 @@ namespace Kephas.Core.Tests.Services.Composition
     using Kephas.Core.Tests.Services.Composition.CustomValueAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultAppServiceMetadata;
     using Kephas.Core.Tests.Services.Composition.DefaultExplicitAppServiceMetadata;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -252,6 +256,33 @@ namespace Kephas.Core.Tests.Services.Composition
         }
 
         [Test]
+        public void RegisterConventions_as_open_generic_ILogger()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var log = new StringBuilder();
+
+            var registrar = new AppServiceInfoConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
+                        typeof(ILogger<>).GetTypeInfo(),
+                    },
+                new TestRegistrationContext(this.GetTestAmbientServices(m => log.AppendLine(m))));
+
+            var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.Single();
+            var metadata = testBuilder.ExportBuilder.Metadata;
+
+            // should not warn that metadata attributes are not supported
+            Assert.IsFalse(log.ToString().Contains(LogLevel.Warning.ToString()));
+
+            Assert.AreEqual(0, metadata.Count);
+            Assert.AreEqual(1, testBuilder.ImportedProperties.Count);
+        }
+
+        [Test]
         public void RegisterConventions_metadata()
         {
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
@@ -399,6 +430,25 @@ namespace Kephas.Core.Tests.Services.Composition
                             typeof(BadAppService).GetTypeInfo(),
                     },
                     new TestRegistrationContext()));
+        }
+
+        private IAmbientServices GetTestAmbientServices(Action<string> logAction = null)
+        {
+            var logger = Substitute.For<ILogger>();
+            logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
+            if (logAction != null)
+            {
+                logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
+                    .Do(ci => logAction(ci.Arg<LogLevel>().ToString() + ": " + ci.Arg<string>()));
+            }
+
+            var logManager = Substitute.For<ILogManager>();
+            logManager.GetLogger(Arg.Any<string>()).Returns(logger);
+
+            var ambientServices = Substitute.For<IAmbientServices>();
+            ambientServices.LogManager.Returns(logManager);
+
+            return ambientServices;
         }
 
         [SharedAppServiceContract(AllowMultiple = false)]

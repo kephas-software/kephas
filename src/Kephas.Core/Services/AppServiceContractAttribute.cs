@@ -33,6 +33,11 @@ namespace Kephas.Services
         public static readonly IReadOnlyCollection<Type> DefaultMetadataAttributeTypes;
 
         /// <summary>
+        /// The empty metadata attribute types.
+        /// </summary>
+        public static readonly IReadOnlyCollection<Type> EmptyMetadataAttributeTypes;
+
+        /// <summary>
         /// The default metadata attribute types.
         /// </summary>
         private static readonly IList<Type> WritableDefaultMetadataAttributeTypes
@@ -55,6 +60,7 @@ namespace Kephas.Services
         static AppServiceContractAttribute()
         {
             DefaultMetadataAttributeTypes = new ReadOnlyCollection<Type>(WritableDefaultMetadataAttributeTypes);
+            EmptyMetadataAttributeTypes = new ReadOnlyCollection<Type>(new List<Type>());
         }
 
         /// <summary>

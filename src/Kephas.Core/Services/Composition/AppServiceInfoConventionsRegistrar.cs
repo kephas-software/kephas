@@ -314,7 +314,9 @@ namespace Kephas.Services.Composition
         {
             if (appServiceInfo.MetadataAttributes == null || appServiceInfo.MetadataAttributes.Length == 0)
             {
-                return AppServiceContractAttribute.DefaultMetadataAttributeTypes;
+                return appServiceInfo.AsOpenGeneric
+                           ? AppServiceContractAttribute.EmptyMetadataAttributeTypes
+                           : AppServiceContractAttribute.DefaultMetadataAttributeTypes;
             }
 
             var attrs = appServiceInfo.MetadataAttributes.ToList();
