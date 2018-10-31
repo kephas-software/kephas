@@ -109,7 +109,6 @@ namespace Kephas.Data.IO.Setup
             return this.GetDataFilePaths("Uninstall", this.GetUninstallDataFileNames());
         }
 
-
         /// <summary>
         /// Gets the data files to be imported for the provided operation namespace.
         /// </summary>
@@ -126,7 +125,7 @@ namespace Kephas.Data.IO.Setup
             if (fileNames == null)
             {
                 fileNames = this.GetDataFilePatterns()
-                    .SelectMany(p => Directory.EnumerateFiles(dataPath, p))
+                    .SelectMany(p => Directory.Exists(dataPath) ? Directory.EnumerateFiles(dataPath, p) : new string[0])
                     .OrderBy(n => n)
                     .ToArray();
             }
