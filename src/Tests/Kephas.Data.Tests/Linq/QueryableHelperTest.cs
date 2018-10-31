@@ -21,6 +21,8 @@ namespace Kephas.Data.Tests.Linq
     using Kephas.Data.Linq;
     using Kephas.Reflection;
 
+    using NSubstitute;
+
     using NUnit.Framework;
 
     [TestFixture]
@@ -275,6 +277,31 @@ namespace Kephas.Data.Tests.Linq
             Assert.IsInstanceOf<List<string>>(value);
             Assert.IsTrue(value.Contains("Hi"));
             Assert.IsTrue(value.Contains("there"));
+        }
+
+        [Test]
+        public async Task ToListAsync_null_result()
+        {
+            var queryable = Substitute.For<IQueryable<string>>();
+            var asyncProvider = Substitute.For<IQueryProvider, IAsyncQueryProvider>();
+            queryable.Provider.Returns(asyncProvider);
+            ((IAsyncQueryProvider)asyncProvider).ExecuteAsync(Arg.Any<Expression>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<object>(null));
+            var value = await queryable.ToListAsync();
+            Assert.IsNull(value);
+        }
+
+        [Test]
+        public async Task ToListAsync_single_result()
+        {
+            var queryable = Substitute.For<IQueryable<string>>();
+            var asyncProvider = Substitute.For<IQueryProvider, IAsyncQueryProvider>();
+            queryable.Provider.Returns(asyncProvider);
+            ((IAsyncQueryProvider)asyncProvider).ExecuteAsync(Arg.Any<Expression>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<object>("gigi"));
+            var value = await queryable.ToListAsync();
+            Assert.IsInstanceOf<List<string>>(value);
+            Assert.IsTrue(value.Contains("gigi"));
         }
 
         ////[Test]

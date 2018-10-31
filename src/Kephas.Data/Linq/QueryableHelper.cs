@@ -18,6 +18,7 @@ namespace Kephas.Data.Linq
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
 
@@ -415,6 +416,12 @@ namespace Kephas.Data.Linq
             if (query.Provider is IAsyncQueryProvider asyncProvider)
             {
                 var result = await asyncProvider.ExecuteAsync(query.Expression, cancellationToken).PreserveThreadContext();
+
+                if (result == null)
+                {
+                    return null;
+                }
+
                 if (result is IList<T> listResult)
                 {
                     return listResult;
@@ -425,8 +432,17 @@ namespace Kephas.Data.Linq
                     return enumerableResult.ToList();
                 }
 
-                var objectEnumerableResult = (IEnumerable<object>)result;
-                return objectEnumerableResult.Cast<T>().ToList();
+                if (result is IEnumerable<object> objectEnumerableResult)
+                {
+                    return objectEnumerableResult.Cast<T>().ToList();
+                }
+
+                if (result is T objectResult)
+                {
+                    return new List<T> { objectResult };
+                }
+
+                throw new DataException(string.Format(Strings.QueryHelper_ToListAsync_CannotConvertToListException, result, result.GetType(), typeof(T)));
             }
 
             return query.ToList();

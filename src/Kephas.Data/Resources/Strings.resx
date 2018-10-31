@@ -208,4 +208,7 @@
   <data name="InMemoryDataContext_NotInitialized_Exception" xml:space="preserve">
     <value>The '{0}' must be initialized before working with entities.</value>
   </data>
+  <data name="QueryHelper_ToListAsync_CannotConvertToListException" xml:space="preserve">
+    <value>The value '{0}' of type '{1}' cannot be converted to a list of '{2}'.</value>
+  </data>
 </root>

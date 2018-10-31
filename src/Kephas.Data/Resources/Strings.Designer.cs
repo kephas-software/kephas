@@ -296,6 +296,15 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value &apos;{0}&apos; of type &apos;{1}&apos; cannot be converted to a list of &apos;{2}&apos;..
+        /// </summary>
+        internal static string QueryHelper_ToListAsync_CannotConvertToListException {
+            get {
+                return ResourceManager.GetString("QueryHelper_ToListAsync_CannotConvertToListException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot retrieve a data context for reference {0}..
         /// </summary>
         internal static string RefBase_GetDataContext_NullDataContext_Exception {
