@@ -17,6 +17,7 @@ namespace Kephas.Data
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Threading.Tasks;
@@ -41,6 +42,21 @@ namespace Kephas.Data
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
             return dataSpace[typeof(T)].Query<T>(operationContext);
+        }
+        /// <summary>
+        /// An IDataSpace extension method that gets the entity information.
+        /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <param name="dataSpace">The dataSpace to act on.</param>
+        /// <param name="entity">The entity.</param>
+        /// <returns>
+        /// The entity information.
+        /// </returns>
+        public static IEntityInfo GetEntityInfo<T>(this IDataSpace dataSpace, T entity)
+        {
+            Requires.NotNull(dataSpace, nameof(dataSpace));
+
+            return dataSpace[typeof(T)].GetEntityInfo(entity);
         }
 
         /// <summary>
