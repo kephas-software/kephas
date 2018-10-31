@@ -129,10 +129,7 @@ namespace Kephas.Data.Endpoints
                 await this.PrePersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
 
                 // save changes
-                foreach (var dataContext in dataSpace)
-                {
-                    await dataContext.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
-                }
+                await dataSpace.PersistChangesAsync(cancellationToken: token).PreserveThreadContext();
 
                 // finalize the persistence
                 await this.PostPersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();

@@ -129,5 +129,48 @@ namespace Kephas.Data.Tests
 
             Assert.ThrowsAsync<DataException>(() => DataContextExtensions.ExecuteAsync(dataContext, commandContext));
         }
+
+        [Test]
+        public async Task CreateEntityAsync_delegate_to_data_context()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var stringCmd = Substitute.For<ICreateEntityCommand>();
+            dataContext.CreateCommand(typeof(ICreateEntityCommand)).Returns(stringCmd);
+            stringCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new CreateEntityResult("created", Substitute.For<IEntityInfo>()));
+
+            var newEntity = await dataContext.CreateEntityAsync<string>();
+
+            Assert.AreEqual("created", newEntity);
+
+            dataContext.Received(1).CreateCommand(typeof(ICreateEntityCommand));
+            stringCmd.Received(1).ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public async Task PersistChangesAsync_delegate_to_command()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var stringCmd = Substitute.For<IPersistChangesCommand>();
+            dataContext.CreateCommand(typeof(IPersistChangesCommand)).Returns(stringCmd);
+
+            await dataContext.PersistChangesAsync();
+
+            dataContext.Received(1).CreateCommand(typeof(IPersistChangesCommand));
+            stringCmd.Received(1).ExecuteAsync(Arg.Any<IPersistChangesContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public void DiscardChanges_delegate_to_command()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var stringCmd = Substitute.For<IDiscardChangesCommand>();
+            dataContext.CreateCommand(typeof(IDiscardChangesCommand)).Returns(stringCmd);
+
+            dataContext.DiscardChanges();
+
+            dataContext.Received(1).CreateCommand(typeof(IDiscardChangesCommand));
+            stringCmd.Received(1).Execute(Arg.Any<IDiscardChangesContext>());
+        }
     }
 }

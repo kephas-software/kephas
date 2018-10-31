@@ -346,6 +346,9 @@
     <Compile Include="..\Kephas.Data\DataSpace.cs">
       <Link>DataSpace.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data\DataSpaceExtensions.cs">
+      <Link>DataSpaceExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data\DefaultDataContextFactory.cs">
       <Link>DefaultDataContextFactory.cs</Link>
     </Compile>

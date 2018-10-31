@@ -109,6 +109,9 @@
     <Compile Include="..\Kephas.Data.Tests\DataContextExtensionsTest.cs">
       <Link>DataContextExtensionsTest.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Data.Tests\DataSpaceExtensionsTest.cs">
+      <Link>DataSpaceExtensionsTest.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Data.Tests\DataSpaceTest.cs">
       <Link>DataSpaceTest.cs</Link>
     </Compile>

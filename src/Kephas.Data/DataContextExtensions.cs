@@ -418,7 +418,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        private static async Task<object> CreateEntityCoreAsync(
+        internal static async Task<object> CreateEntityCoreAsync(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken)
@@ -437,7 +437,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        private static async Task<object> FindCoreAsync(
+        internal static async Task<object> FindCoreAsync(
             this IDataContext dataContext,
             IFindContext findContext,
             CancellationToken cancellationToken)
@@ -456,7 +456,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the found entity.
         /// </returns>
-        private static async Task<object> FindOneCoreAsync(
+        internal static async Task<object> FindOneCoreAsync(
             this IDataContext dataContext,
             IFindOneContext findContext,
             CancellationToken cancellationToken)
