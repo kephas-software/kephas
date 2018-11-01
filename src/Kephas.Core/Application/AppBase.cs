@@ -69,7 +69,8 @@ namespace Kephas.Application
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
-                var appContext = await this.InitializeAppManagerAsync(appArgs, ambientServices, cancellationToken);
+                var appContext = this.CreateAppContext(appArgs, ambientServices);
+                await this.InitializeAppManagerAsync(appContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
 
@@ -145,16 +146,14 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes the application manager asynchronously.
         /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of the <see cref="IAppContext"/>.
         /// </returns>
-        protected virtual async Task<IAppContext> InitializeAppManagerAsync(string[] appArgs, IAmbientServices ambientServices, CancellationToken cancellationToken)
+        protected virtual async Task<IAppContext> InitializeAppManagerAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var container = ambientServices.CompositionContainer;
-            var appContext = this.CreateAppContext(appArgs, ambientServices);
+            var container = appContext.CompositionContext;
             var appManager = container.GetExport<IAppManager>();
 
             await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();

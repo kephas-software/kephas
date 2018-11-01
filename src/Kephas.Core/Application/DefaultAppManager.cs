@@ -134,6 +134,10 @@ namespace Kephas.Application
         /// </returns>
         public virtual async Task InitializeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
+            // registers the application context as a global service, so that other services can benefit from it.
+            // it is important to do it before initial
+            appContext.AmbientServices.RegisterService(appContext);
+
             try
             {
                 // set the features in the app manifest.
@@ -141,9 +145,6 @@ namespace Kephas.Application
                     .Select(f => f.Metadata.FeatureInfo)
                     .ToList();
                 this.SetAppManifestFeatures(features);
-
-                // registers the application context as a global service, so that other services can benefit from it.
-                this.CompositionContext.GetExport<IAmbientServices>().RegisterService(appContext);
 
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
