@@ -13,7 +13,6 @@ namespace Kephas.Configuration
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Configuration.Composition;
@@ -66,15 +65,12 @@ namespace Kephas.Configuration
         public TSettings Settings => this.settings ?? (this.settings = this.ComputeSettings());
 
         /// <summary>
-        /// Gets or sets the configuration provider.
+        /// Gets the configuration provider.
         /// </summary>
         /// <value>
         /// The configuration provider.
         /// </value>
-        public IConfigurationProvider Provider
-        {
-            get => this.provider ?? (this.provider = this.ComputeConfigurationProvider());
-        }
+        public IConfigurationProvider Provider => this.provider ?? (this.provider = this.ComputeConfigurationProvider());
 
         /// <summary>
         /// Calculates the settings.
