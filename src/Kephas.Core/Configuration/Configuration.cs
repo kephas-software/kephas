@@ -22,10 +22,10 @@ namespace Kephas.Configuration
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Provides the configuration for the settings type indicated as the generic paramter type.
+    /// Provides the configuration for the settings type indicated as the generic parameter type.
     /// </summary>
     /// <remarks>
-    /// Being an <see cref="Expando"/>, various values may be added to runtime to this configuration.
+    /// Being an <see cref="Expando"/>, various values may be added at runtime to this configuration.
     /// </remarks>
     /// <typeparam name="TSettings">Type of the settings.</typeparam>
     public class Configuration<TSettings> : Expando, IConfiguration<TSettings>
@@ -40,6 +40,11 @@ namespace Kephas.Configuration
         /// The settings.
         /// </summary>
         private TSettings settings;
+
+        /// <summary>
+        /// The configuration provider.
+        /// </summary>
+        private IConfigurationProvider provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration{TSettings}"/> class.
@@ -61,12 +66,35 @@ namespace Kephas.Configuration
         public TSettings Settings => this.settings ?? (this.settings = this.ComputeSettings());
 
         /// <summary>
+        /// Gets or sets the configuration provider.
+        /// </summary>
+        /// <value>
+        /// The configuration provider.
+        /// </value>
+        public IConfigurationProvider Provider
+        {
+            get => this.provider ?? (this.provider = this.ComputeConfigurationProvider());
+        }
+
+        /// <summary>
         /// Calculates the settings.
         /// </summary>
         /// <returns>
         /// The calculated settings.
         /// </returns>
         private TSettings ComputeSettings()
+        {
+            return (TSettings)this.Provider.GetSettings(typeof(TSettings));
+        }
+
+        /// <summary>
+        /// Calculates the configuration provider.
+        /// </summary>
+        /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
+        /// <returns>
+        /// The calculated configuration provider.
+        /// </returns>
+        private IConfigurationProvider ComputeConfigurationProvider()
         {
             var orderedFactories = this.providerFactories
                 .OrderBy(f => f.Metadata.OverridePriority)
@@ -86,10 +114,10 @@ namespace Kephas.Configuration
             if (factory == null)
             {
                 // TODO provide a more explicit exception information.
-                throw new NotSupportedException();
+                throw new NotSupportedException($"No provider found for settings type {typeof(TSettings)}.");
             }
 
-            return (TSettings)factory.CreateExportedValue().GetSettings(typeof(TSettings));
+            return factory.CreateExportedValue();
         }
     }
 }

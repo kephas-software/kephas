@@ -10,6 +10,7 @@
 
 namespace Kephas.Configuration
 {
+    using Kephas.Configuration.Providers;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -27,5 +28,13 @@ namespace Kephas.Configuration
         /// The settings.
         /// </value>
         TSettings Settings { get; }
+
+        /// <summary>
+        /// Gets the configuration provider.
+        /// </summary>
+        /// <value>
+        /// The configuration provider.
+        /// </value>
+        IConfigurationProvider Provider { get; }
     }
 }
