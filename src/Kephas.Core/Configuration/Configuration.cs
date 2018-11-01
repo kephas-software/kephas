@@ -104,7 +104,7 @@ namespace Kephas.Configuration
             var factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == typeof(TSettings));
             if (factory == null)
             {
-                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType?.GetTypeInfo().IsAssignableFrom(typeof(TSettings).GetTypeInfo()) ?? false);
+                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType?.IsAssignableFrom(typeof(TSettings)) ?? false);
                 if (factory == null)
                 {
                     factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == null);
