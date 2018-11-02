@@ -52,7 +52,7 @@ namespace Kephas.Model.Elements
         {
             get => this.propertyType ?? (this.propertyType = this.ComputeValueType());
             protected internal set => this.propertyType = value;
-        } 
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the property can be written to.

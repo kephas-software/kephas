@@ -12,9 +12,7 @@ namespace Kephas.Model.Runtime.Construction
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
-    using Kephas.Model.AttributedModel;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements;
@@ -73,6 +71,13 @@ namespace Kephas.Model.Runtime.Construction
                 members.AddRange(properties);
             }
 
+
+            var methods = this.ComputeMemberMethods(constructionContext, runtimeElement);
+            if (methods != null)
+            {
+                members.AddRange(methods);
+            }
+
             return members;
         }
 
@@ -113,6 +118,30 @@ namespace Kephas.Model.Runtime.Construction
                 .Where(p => p.DeclaringContainer == typeInfo && !p.PropertyInfo.IsExcludedFromModel())
                 .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
                 .Where(property => property != null);
+            return properties;
+        }
+
+        /// <summary>
+        /// Computes the member properties from the runtime element.
+        /// </summary>
+        /// <param name="constructionContext">The model construction context.</param>
+        /// <param name="runtimeElement">The runtime member information.</param>
+        /// <returns>
+        /// An enumeration of <see cref="INamedElement"/>.
+        /// </returns>
+        protected virtual IEnumerable<INamedElement> ComputeMemberMethods(IModelConstructionContext constructionContext, TRuntime runtimeElement)
+        {
+            var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
+            if (!(runtimeElement is IRuntimeTypeInfo typeInfo))
+            {
+                return new List<INamedElement>();
+            }
+
+            // TODO optimize typeInfo.DeclaredMethods
+            var properties = typeInfo.Methods.SelectMany(m => m.Value)
+                .Where(p => p.DeclaringContainer == typeInfo && !p.MethodInfo.IsExcludedFromModel())
+                .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
+                .Where(method => method != null);
             return properties;
         }
     }

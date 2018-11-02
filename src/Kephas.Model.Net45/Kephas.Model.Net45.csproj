@@ -165,6 +165,9 @@
     <Compile Include="..\Kephas.Model\Elements\ElementNotFoundException.cs">
       <Link>Elements\ElementNotFoundException.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Method.cs">
+      <Link>Elements\Method.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Elements\ModelDimension.cs">
       <Link>Elements\ModelDimension.cs</Link>
     </Compile>
@@ -183,6 +186,9 @@
     <Compile Include="..\Kephas.Model\Elements\NamedElementBase.cs">
       <Link>Elements\NamedElementBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Elements\Parameter.cs">
+      <Link>Elements\Parameter.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Elements\Property.cs">
       <Link>Elements\Property.cs</Link>
     </Compile>
@@ -200,6 +206,9 @@
     </Compile>
     <Compile Include="..\Kephas.Model\IClassifier.cs">
       <Link>IClassifier.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IMethod.cs">
+      <Link>IMethod.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\IModelDimension.cs">
       <Link>IModelDimension.cs</Link>
@@ -221,6 +230,9 @@
     </Compile>
     <Compile Include="..\Kephas.Model\INamedElement.cs">
       <Link>INamedElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\IParameter.cs">
+      <Link>IParameter.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\IProperty.cs">
       <Link>IProperty.cs</Link>
@@ -312,6 +324,9 @@
     <Compile Include="..\Kephas.Model\Runtime\Construction\IRuntimeModelElementFactory.cs">
       <Link>Runtime\Construction\IRuntimeModelElementFactory.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\MethodConstructor.cs">
+      <Link>Runtime\Construction\MethodConstructor.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\ModelDimensionConstructor.cs">
       <Link>Runtime\Construction\ModelDimensionConstructor.cs</Link>
     </Compile>
@@ -323,6 +338,9 @@
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\NamedElementConstructorBase.cs">
       <Link>Runtime\Construction\NamedElementConstructorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Model\Runtime\Construction\ParameterConstructor.cs">
+      <Link>Runtime\Construction\ParameterConstructor.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Model\Runtime\Construction\PropertyConstructor.cs">
       <Link>Runtime\Construction\PropertyConstructor.cs</Link>

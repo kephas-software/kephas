@@ -30,10 +30,33 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
             await provider.InitializeAsync();
 
             var modelSpace = provider.GetModelSpace();
-            var disposableClassifier = modelSpace.Classifiers.Single(c => c.Name == "SimpleService");
+            var simpleServiceClassifier = modelSpace.Classifiers.Single(c => c.Name == "SimpleService");
 
-            Assert.IsInstanceOf<AppServiceType>(disposableClassifier);
-            Assert.AreEqual(1, disposableClassifier.Parts.Count());
+            Assert.IsInstanceOf<AppServiceType>(simpleServiceClassifier);
+            Assert.AreEqual(1, simpleServiceClassifier.Parts.Count());
+        }
+
+        [Test]
+        public async Task InitializeAsync_simple_app_service_methods()
+        {
+            var container = this.CreateContainerForModel(typeof(ISimpleService), typeof(IDisposableService));
+            var provider = container.GetExport<IModelSpaceProvider>();
+
+            await provider.InitializeAsync();
+
+            var modelSpace = provider.GetModelSpace();
+            var simpleServiceClassifier = modelSpace.Classifiers.Single(c => c.Name == "SimpleService");
+            var disposableServiceClassifier = modelSpace.Classifiers.Single(c => c.Name == "DisposableService");
+
+            Assert.AreEqual(2, simpleServiceClassifier.Methods.Count());
+
+            var doSomethingMethod =
+                simpleServiceClassifier.Methods.Single(m => m.Name == nameof(ISimpleService.DoSomething));
+
+            Assert.IsInstanceOf<Method>(doSomethingMethod);
+            Assert.AreEqual(1, doSomethingMethod.Parameters.Count());
+            var param1 = doSomethingMethod.Parameters.Single();
+            Assert.AreSame(disposableServiceClassifier, param1.ValueType);
         }
 
         [Test]

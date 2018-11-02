@@ -84,6 +84,14 @@ namespace Kephas.Model.Elements
         public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
 
         /// <summary>
+        /// Gets the classifier methods.
+        /// </summary>
+        /// <value>
+        /// The classifier methods.
+        /// </value>
+        public IEnumerable<IMethod> Methods => this.Members.OfType<IMethod>();
+
+        /// <summary>
         /// Gets the members.
         /// </summary>
         /// <value>

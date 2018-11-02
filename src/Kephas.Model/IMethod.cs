@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProperty.cs" company="Kephas Software SRL">
+// <copyright file="IMethod.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Contract for properties.
+//   Declares the IMethod interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ namespace Kephas.Model
     using Kephas.Reflection;
 
     /// <summary>
-    /// Contract for properties.
+    /// Interface for method.
     /// </summary>
-    public interface IProperty : IModelElement, IPropertyInfo
+    public interface IMethod : IModelElement, IMethodInfo
     {
     }
 }

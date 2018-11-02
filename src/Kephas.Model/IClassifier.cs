@@ -58,6 +58,14 @@ namespace Kephas.Model
         new IEnumerable<IProperty> Properties { get; }
 
         /// <summary>
+        /// Gets the classifier methods.
+        /// </summary>
+        /// <value>
+        /// The classifier methods.
+        /// </value>
+        new IEnumerable<IMethod> Methods { get; }
+
+        /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.
         /// </summary>
         /// <value>

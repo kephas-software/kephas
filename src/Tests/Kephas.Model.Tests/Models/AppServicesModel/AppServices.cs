@@ -15,7 +15,12 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
     using Kephas.Services;
 
     [ScopeSharedAppServiceContract]
-    interface ISimpleService {}
+    interface ISimpleService
+    {
+        void DoSomething(IDisposableService disposableService);
+
+        string GetSomething(string name);
+    }
 
     interface IDisposableService : IDisposable {}
 

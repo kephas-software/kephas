@@ -27,7 +27,12 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The members.
         /// </summary>
-        private readonly IDictionary<string, INamedElement> members = new Dictionary<string, INamedElement>();
+        private readonly Dictionary<string, INamedElement> members = new Dictionary<string, INamedElement>();
+
+        /// <summary>
+        /// The member counter.
+        /// </summary>
+        private int memberCounter = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelElementBase{TModelContract}"/> class.
@@ -91,7 +96,14 @@ namespace Kephas.Model.Elements
                 memberBuilder?.SetDeclaringContainer(this);
             }
 
-            this.members.Add(member.Name, member);
+            if (this.members.ContainsKey(member.Name))
+            {
+                this.members.Add($"{member.Name}_{this.memberCounter++}", member);
+            }
+            else
+            {
+                this.members.Add(member.Name, member);
+            }
         }
 
         /// <summary>

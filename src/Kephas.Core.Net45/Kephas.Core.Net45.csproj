@@ -545,6 +545,12 @@
     <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicElementInfo.cs">
       <Link>Reflection\Dynamic\DynamicElementInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicMethodInfo.cs">
+      <Link>Reflection\Dynamic\DynamicMethodInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicParameterInfo.cs">
+      <Link>Reflection\Dynamic\DynamicParameterInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Reflection\Dynamic\DynamicPropertyInfo.cs">
       <Link>Reflection\Dynamic\DynamicPropertyInfo.cs</Link>
     </Compile>
