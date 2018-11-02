@@ -188,9 +188,12 @@ namespace Kephas.Application
         protected virtual IAppContext CreateAppContext(string[] appArgs, IAmbientServices ambientServices)
         {
             var appContext = new AppContext(
-                ambientServices,
-                appArgs: appArgs,
-                signalShutdown: c => this.ShutdownAsync(ambientServices));
+                                     ambientServices,
+                                     appArgs: appArgs,
+                                     signalShutdown: c => this.ShutdownAsync(ambientServices))
+                                 {
+                                     ContextLogger = this.Logger
+                                 };
             return appContext;
         }
 
