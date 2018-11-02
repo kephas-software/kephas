@@ -89,6 +89,28 @@ namespace Kephas.Core.Tests.Dynamic
             var dictionary = expando.ToDictionary(k => k.ToLower(), v => v is string stringValue ? stringValue.ToUpper() : v);
             Assert.AreEqual("BELOGEA", dictionary["name"]);
         }
+
+        [Test]
+        public void Indexer_non_conflicting_with_constant()
+        {
+            var dict = new Dictionary<string, object>();
+            var expando = new TestExpandoWithConstants(dict);
+            expando[nameof(TestExpandoWithConstants.Constant)] = "something";
+
+            Assert.AreEqual("something", expando[nameof(TestExpandoWithConstants.Constant)]);
+        }
+    }
+
+    public class TestExpandoWithConstants : ExpandoBase
+    {
+        public const string Constant = "gigi";
+
+        public TestExpandoWithConstants(object inner, IDictionary<string, object> innerDictionary = null)
+            : base(inner, innerDictionary)
+        {
+        }
+
+        public string Name { get; set; }
     }
 
     public class TestExpando : ExpandoBase

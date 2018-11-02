@@ -386,7 +386,7 @@ namespace Kephas.Dynamic
             // first, check the properties in this object
             if (this != this.innerObject)
             {
-                propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+                propInfo = this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     value = propInfo.GetValue(this);
@@ -397,7 +397,7 @@ namespace Kephas.Dynamic
             // then, check the inner object
             if (this.innerObject != null)
             {
-                propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
+                propInfo = this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     value = propInfo.GetValue(this.innerObject);
@@ -434,7 +434,7 @@ namespace Kephas.Dynamic
             // first, check the properties in this object
             if (this != this.innerObject)
             {
-                propInfo = (IPropertyInfo)this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false);
+                propInfo = this.GetThisTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     if (propInfo.CanWrite)
@@ -450,7 +450,7 @@ namespace Kephas.Dynamic
             // then check the inner object
             if (this.innerObject != null)
             {
-                propInfo = (IPropertyInfo)this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false);
+                propInfo = this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     if (propInfo.CanWrite)
