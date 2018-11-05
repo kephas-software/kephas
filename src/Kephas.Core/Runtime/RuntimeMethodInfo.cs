@@ -239,7 +239,7 @@ namespace Kephas.Runtime
             foreach (var parameterInfo in parameterInfos)
             {
                 var runtimeParameterInfo = new RuntimeParameterInfo(parameterInfo, this);
-                var parameterName = parameterInfo.Name;
+                var parameterName = runtimeParameterInfo.Name;
                 runtimeParameterInfos.Add(parameterName, runtimeParameterInfo);
             }
 

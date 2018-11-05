@@ -15,5 +15,20 @@ namespace Kephas.Reflection
     /// </summary>
     public interface IParameterInfo : IValueElementInfo
     {
+        /// <summary>
+        /// Gets the position in the parameter's list.
+        /// </summary>
+        /// <value>
+        /// The position in the parameter's list.
+        /// </value>
+        int Position { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this parameter is optional.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the parameter is optional, <c>false</c> otherwise.
+        /// </value>
+        bool IsOptional { get; }
     }
 }

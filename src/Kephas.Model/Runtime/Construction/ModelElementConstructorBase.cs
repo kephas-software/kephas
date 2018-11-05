@@ -139,7 +139,7 @@ namespace Kephas.Model.Runtime.Construction
 
             // TODO optimize typeInfo.DeclaredMethods
             var properties = typeInfo.Methods.SelectMany(m => m.Value)
-                .Where(p => p.DeclaringContainer == typeInfo && !p.MethodInfo.IsExcludedFromModel())
+                .Where(p => p.DeclaringContainer == typeInfo && !p.MethodInfo.IsExcludedFromModel() && !p.MethodInfo.IsSpecialName)
                 .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
                 .Where(method => method != null);
             return properties;

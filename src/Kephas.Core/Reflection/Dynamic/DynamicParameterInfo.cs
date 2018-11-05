@@ -27,6 +27,22 @@ namespace Kephas.Reflection.Dynamic
         public ITypeInfo ValueType { get; protected internal set; }
 
         /// <summary>
+        /// Gets or sets the position in the parameter's list.
+        /// </summary>
+        /// <value>
+        /// The position in the parameter's list.
+        /// </value>
+        public int Position { get; protected internal set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this parameter is optional.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the parameter is optional, <c>false</c> otherwise.
+        /// </value>
+        public bool IsOptional { get; protected internal set; }
+
+        /// <summary>
         /// Sets the specified value.
         /// </summary>
         /// <param name="obj">The object.</param>

@@ -41,7 +41,7 @@ namespace Kephas.Runtime
             : base(isThreadSafe: true)
         {
             this.ParameterInfo = parameterInfo;
-            this.Name = parameterInfo.Name;
+            this.Name = parameterInfo.Name ?? $"__unnamed_{this.Position}";
             this.FullName = parameterInfo.Member.DeclaringType?.FullName + "." + parameterInfo.Member.Name + "." + parameterInfo.Name;
             this.declaringContainerRef = new WeakReference<IElementInfo>(declaringContainer);
         }
@@ -96,6 +96,22 @@ namespace Kephas.Runtime
         /// Information describing the parameter.
         /// </value>
         public ParameterInfo ParameterInfo { get; }
+
+        /// <summary>
+        /// Gets the position in the parameter's list.
+        /// </summary>
+        /// <value>
+        /// The position.
+        /// </value>
+        public int Position => this.ParameterInfo.Position;
+
+        /// <summary>
+        /// Gets a value indicating whether this parameter is optional.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if the parameter is optional, <c>false</c> otherwise.
+        /// </value>
+        public bool IsOptional => this.ParameterInfo.IsOptional;
 
         /// <summary>
         /// Gets the type of the field.
