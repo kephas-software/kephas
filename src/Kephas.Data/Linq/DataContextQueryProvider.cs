@@ -23,6 +23,7 @@ namespace Kephas.Data.Linq
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A data context query provider base.
@@ -40,6 +41,19 @@ namespace Kephas.Data.Linq
         /// </summary>
         private static readonly MethodInfo ExecuteMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((IQueryProvider)null).Execute<int>(null));
+
+        /// <summary>
+        /// The generic method of DataContextQueryProvider.ExecuteAsync{TResult}.
+        /// </summary>
+        private static readonly MethodInfo ExecuteAsyncMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((DataContextQueryProvider)null).ExecuteAsync<int>(null, default));
+
+        /// <summary>
+        /// The attach entity collection method.
+        /// </summary>
+        private static readonly MethodInfo AttachEntityCollectionMethod =
+            ReflectionHelper.GetGenericMethodOf(
+                _ => ((DataContextQueryProvider)null).AttachEntityCollection<IEnumerable<int>, int>(new int[0]));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextQueryProvider"/> class.
@@ -145,8 +159,7 @@ namespace Kephas.Data.Linq
             Requires.NotNull(expression, nameof(expression));
 
             var executionResult = this.NativeQueryProvider.Execute<TResult>(this.GetExecutableExpression(expression));
-            this.AttachEntitiesToDataContext<TResult>(executionResult);
-            return executionResult;
+            return this.AttachEntitiesToDataContext(executionResult);
         }
 
         /// <summary>
@@ -160,9 +173,21 @@ namespace Kephas.Data.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public virtual Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
+        public virtual async Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(this.Execute(expression));
+            Requires.NotNull(expression, nameof(expression));
+
+            var expressionType = expression.Type;
+            var expressionElementType = expressionType.TryGetEnumerableItemType();
+            if (expressionElementType != null)
+            {
+                expressionType = typeof(IEnumerable<>).MakeGenericType(expressionElementType);
+            }
+
+            var executeAsync = ExecuteAsyncMethod.MakeGenericMethod(expressionType);
+            var typedTask = (Task)executeAsync.Call(this, expression, cancellationToken);
+            await typedTask.PreserveThreadContext();
+            return typedTask.GetPropertyValue(nameof(Task<int>.Result));
         }
 
         /// <summary>
@@ -246,34 +271,75 @@ namespace Kephas.Data.Linq
         /// <summary>
         /// Attach entities to data context.
         /// </summary>
-        /// <param name="executionResult">The execution result.</param>
         /// <typeparam name="TResult">The type of the value that results from executing the query.</typeparam>
-        protected virtual void AttachEntitiesToDataContext<TResult>(object executionResult)
+        /// <param name="executionResult">The execution result.</param>
+        /// <returns>
+        /// The result containing attached entities.
+        /// </returns>
+        protected virtual TResult AttachEntitiesToDataContext<TResult>(TResult executionResult)
         {
-            if (executionResult == null)
+            if (object.Equals(executionResult, default))
             {
-                return;
+                return default;
             }
 
             var enumerableItemType = executionResult.GetType().TryGetEnumerableItemType();
             if (enumerableItemType != null && this.IsAttachableType(enumerableItemType))
             {
-                foreach (var entity in (IEnumerable<object>)executionResult)
-                {
-                    if (this.IsAttachable(entity))
-                    {
-                        this.DataContext.AttachEntity(entity);
-                    }
-                }
+                var enumerableResultItemType = typeof(TResult).TryGetEnumerableItemType();
+                var attachEntityCollection = AttachEntityCollectionMethod.MakeGenericMethod(typeof(TResult), enumerableResultItemType);
+                return (TResult)attachEntityCollection.Call(this, executionResult);
             }
-            else
+
+            if (this.IsAttachable(executionResult))
             {
-                var entity = executionResult;
+                return (TResult)this.DataContext.AttachEntity(executionResult).Entity;
+            }
+
+            return executionResult;
+        }
+
+        /// <summary>
+        /// Attaches an entity collection.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="executionResult">The execution result.</param>
+        /// <returns>
+        /// A list of attached entities.
+        /// </returns>
+        protected TResult AttachEntityCollection<TResult, T>(TResult executionResult)
+            where TResult : IEnumerable<T>
+        {
+            var attachedList = new List<T>();
+            foreach (var entity in executionResult)
+            {
                 if (this.IsAttachable(entity))
                 {
-                    this.DataContext.AttachEntity(entity);
+                    attachedList.Add((T)this.DataContext.AttachEntity(entity).Entity);
+                }
+                else
+                {
+                    attachedList.Add(entity);
                 }
             }
+
+            return this.ToExecutionResult<TResult, T>(attachedList);
+        }
+
+        /// <summary>
+        /// Converts the list of attached entities to an execution result.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <typeparam name="T">The item type.</typeparam>
+        /// <param name="attachedList">List of attached entities.</param>
+        /// <returns>
+        /// The attached entity list as a TResult.
+        /// </returns>
+        protected virtual TResult ToExecutionResult<TResult, T>(IList<T> attachedList)
+            where TResult : IEnumerable<T>
+        {
+            return (TResult)attachedList;
         }
 
         /// <summary>
