@@ -320,6 +320,11 @@ namespace Kephas.Data
             var entityInfo = this.GetEntityInfo(entity);
             if (entityInfo != null)
             {
+                if (entity != entityInfo.Entity)
+                {
+                    return this.ResolveAttachEntityConflict(entityInfo, entity, attachEntityGraph);
+                }
+
                 return entityInfo;
             }
 
@@ -344,6 +349,23 @@ namespace Kephas.Data
                 }
             }
 
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// Resolves the attach conflict between an existing attached entity and a challenger.
+        /// </summary>
+        /// <remarks>
+        /// By default, the entity challenger is ignored. A derived class may decide to update the existing entity with refreshed information.
+        /// </remarks>
+        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityChallenger">The entity challenger.</param>
+        /// <param name="attachEntityGraph"><c>true</c> to attach the whole entity graph.</param>
+        /// <returns>
+        /// An resolved <see cref="IEntityInfo"/>.
+        /// </returns>
+        protected virtual IEntityInfo ResolveAttachEntityConflict(IEntityInfo entityInfo, object entityChallenger, bool attachEntityGraph)
+        {
             return entityInfo;
         }
 
