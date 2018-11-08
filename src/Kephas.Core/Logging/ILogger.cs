@@ -125,6 +125,19 @@ namespace Kephas.Logging
         }
 
         /// <summary>
+        /// Logs the exception at the log level indicated be the exception's severity level.
+        /// This is calculated to be <see cref="SeverityLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedException"/>,
+        /// otherwise the level indicated by the severity level.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="exception">The exception.</param>
+        public static void Log(this ILogger logger, Exception exception)
+        {
+            var logLevel = GetLogLevel(exception);
+            logger?.Log(logLevel, exception, exception.Message);
+        }
+
+        /// <summary>
         /// Logs the exception with a formatted message at the log level indicated be the exception's severity level.
         /// This is calculated to be <see cref="SeverityLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedException"/>,
         /// otherwise the level indicated by the severity level.
