@@ -86,6 +86,9 @@
     <Compile Include="..\Kephas.Core\Application\AppRuntimeBase.cs">
       <Link>Application\AppRuntimeBase.cs</Link>
     </Compile>
+    <Compile Include="..\Kephas.Core\Application\BootstrapException.cs">
+      <Link>Application\BootstrapException.cs</Link>
+    </Compile>
     <Compile Include="..\Kephas.Core\Application\Composition\FeatureLifecycleBehaviorMetadata.cs">
       <Link>Application\Composition\FeatureLifecycleBehaviorMetadata.cs</Link>
     </Compile>
@@ -157,6 +160,9 @@
     </Compile>
     <Compile Include="..\Kephas.Core\Application\RequiredFeatureAttribute.cs">
       <Link>Application\RequiredFeatureAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Kephas.Core\Application\ShutdownException.cs">
+      <Link>Application\ShutdownException.cs</Link>
     </Compile>
     <Compile Include="..\Kephas.Core\Application\TargetFeatureAttribute.cs">
       <Link>Application\TargetFeatureAttribute.cs</Link>

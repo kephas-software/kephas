@@ -34,6 +34,14 @@ namespace Kephas.Application
         string[] AppArgs { get; }
 
         /// <summary>
+        /// Gets or sets the application root exception.
+        /// </summary>
+        /// <value>
+        /// The application root exception.
+        /// </value>
+        Exception Exception { get; set; }
+
+        /// <summary>
         /// Gets a function for signalling the application to shutdown.
         /// </summary>
         /// <value>

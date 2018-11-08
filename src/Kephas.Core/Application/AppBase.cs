@@ -62,14 +62,23 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
+                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
+                                             {
+                                                 AmbientServices = ambientServices,
+                                             };
+                this.Log((LogLevel)bootstrapException.Severity, bootstrapException);
                 throw;
             }
 
+            IAppContext appContext = null;
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
-                var appContext = this.CreateAppContext(appArgs, ambientServices);
+                appContext = this.CreateAppContext(appArgs, ambientServices);
+
+                // registers the application context as a global service, so that other services can benefit from it.
+                // it is important to do it before initializing the application manager.
+                ambientServices.RegisterService(appContext);
                 await this.InitializeAppManagerAsync(appContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
@@ -78,7 +87,17 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringInitialization_Exception);
+                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
+                                             {
+                                                 AppContext = appContext,
+                                                 AmbientServices = ambientServices,
+                                             };
+                if (appContext != null)
+                {
+                    appContext.Exception = bootstrapException;
+                }
+
+                this.Log(LogLevel.Fatal, bootstrapException);
 
                 try
                 {
@@ -89,7 +108,7 @@ namespace Kephas.Application
                     this.Log(LogLevel.Fatal, shutdownEx, Strings.App_BootstrapAsync_ErrorDuringForcedShutdown_Exception);
                 }
 
-                throw;
+                throw bootstrapException;
             }
         }
 
@@ -105,12 +124,15 @@ namespace Kephas.Application
             IAmbientServices ambientServices = null,
             CancellationToken cancellationToken = default)
         {
+            IAppContext appContext = null;
+            ambientServices = ambientServices ?? AmbientServices.Instance;
+
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
-                ambientServices = ambientServices ?? AmbientServices.Instance;
-                var appContext = await this.FinalizeAppManagerAsync(ambientServices, cancellationToken);
+                appContext = ambientServices.GetService<IAppContext>();
+                appContext = await this.FinalizeAppManagerAsync(ambientServices, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 
@@ -118,8 +140,13 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception);
-                throw;
+                var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
+                                            {
+                                                AmbientServices = ambientServices,
+                                                AppContext = appContext
+                                            };
+                this.Log(LogLevel.Fatal, shutdownException);
+                throw shutdownException;
             }
         }
 
@@ -204,9 +231,9 @@ namespace Kephas.Application
         /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        protected virtual void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        protected virtual void Log(LogLevel level, Exception exception, string messageFormat = null, params object[] args)
         {
-            this.Logger?.Log(level, exception, messageFormat, args);
+            this.Logger?.Log(level, exception, messageFormat ?? exception.Message, args);
         }
     }
 }
