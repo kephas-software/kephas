@@ -300,4 +300,10 @@
   <data name="OperationResult_Merge_TaskNotCompleteException" xml:space="preserve">
     <value>Cannot merge the task result, the task is not completed.</value>
   </data>
+  <data name="UnhandledException_InProcess_Message" xml:space="preserve">
+    <value>Unhandled exception in process.</value>
+  </data>
+  <data name="UnhandledException_Terminating_Message" xml:space="preserve">
+    <value>Unhandled exception terminating the process.</value>
+  </data>
 </root>

@@ -609,5 +609,23 @@ namespace Kephas.Resources {
                 return ResourceManager.GetString("TransitionMonitor_AssertIsNotStarted_Exception", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled exception in process..
+        /// </summary>
+        internal static string UnhandledException_InProcess_Message {
+            get {
+                return ResourceManager.GetString("UnhandledException_InProcess_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unhandled exception terminating the process..
+        /// </summary>
+        internal static string UnhandledException_Terminating_Message {
+            get {
+                return ResourceManager.GetString("UnhandledException_Terminating_Message", resourceCulture);
+            }
+        }
     }
 }

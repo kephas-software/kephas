@@ -27,6 +27,14 @@ namespace Kephas.Application
     public abstract class AppBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppBase"/> class.
+        /// </summary>
+        protected AppBase()
+        {
+            AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
+        }
+
+        /// <summary>
         /// Gets or sets the logger.
         /// </summary>
         /// <value>
@@ -63,9 +71,9 @@ namespace Kephas.Application
             catch (Exception ex)
             {
                 var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
-                                             {
-                                                 AmbientServices = ambientServices,
-                                             };
+                {
+                    AmbientServices = ambientServices,
+                };
                 this.Log((LogLevel)bootstrapException.Severity, bootstrapException);
                 throw;
             }
@@ -88,10 +96,10 @@ namespace Kephas.Application
             catch (Exception ex)
             {
                 var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
-                                             {
-                                                 AppContext = appContext,
-                                                 AmbientServices = ambientServices,
-                                             };
+                {
+                    AppContext = appContext,
+                    AmbientServices = ambientServices,
+                };
                 if (appContext != null)
                 {
                     appContext.Exception = bootstrapException;
@@ -109,6 +117,23 @@ namespace Kephas.Application
                 }
 
                 throw bootstrapException;
+            }
+        }
+
+        /// <summary>
+        /// Handles the unhandled exception event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="e">Event information to send to registered event handlers.</param>
+        protected virtual void OnCurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.IsTerminating)
+            {
+                this.Log(LogLevel.Fatal, e.ExceptionObject as Exception, Strings.UnhandledException_Terminating_Message);
+            }
+            else
+            {
+                this.Log(LogLevel.Fatal, e.ExceptionObject as Exception, Strings.UnhandledException_InProcess_Message);
             }
         }
 
@@ -141,10 +166,10 @@ namespace Kephas.Application
             catch (Exception ex)
             {
                 var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
-                                            {
-                                                AmbientServices = ambientServices,
-                                                AppContext = appContext
-                                            };
+                {
+                    AmbientServices = ambientServices,
+                    AppContext = appContext
+                };
                 this.Log(LogLevel.Fatal, shutdownException);
                 throw shutdownException;
             }
@@ -218,9 +243,9 @@ namespace Kephas.Application
                                      ambientServices,
                                      appArgs: appArgs,
                                      signalShutdown: c => this.ShutdownAsync(ambientServices))
-                                 {
-                                     ContextLogger = this.Logger
-                                 };
+            {
+                ContextLogger = this.Logger
+            };
             return appContext;
         }
 
