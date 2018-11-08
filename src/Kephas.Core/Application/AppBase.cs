@@ -127,14 +127,13 @@ namespace Kephas.Application
         /// <param name="e">Event information to send to registered event handlers.</param>
         protected virtual void OnCurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (e.IsTerminating)
-            {
-                this.Log(LogLevel.Fatal, e.ExceptionObject as Exception, Strings.UnhandledException_Terminating_Message);
-            }
-            else
-            {
-                this.Log(LogLevel.Fatal, e.ExceptionObject as Exception, Strings.UnhandledException_InProcess_Message);
-            }
+            var messageFormat = e.IsTerminating
+                                    ? Strings.UnhandledException_Terminating_Message
+                                    : Strings.UnhandledException_InProcess_Message;
+            this.Log(
+                LogLevel.Fatal,
+                e.ExceptionObject as Exception,
+                messageFormat);
         }
 
         /// <summary>
