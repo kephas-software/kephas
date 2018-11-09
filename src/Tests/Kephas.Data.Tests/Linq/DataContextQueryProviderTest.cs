@@ -14,6 +14,7 @@ namespace Kephas.Data.Tests.Linq
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Capabilities;
     using Kephas.Data.Linq;
 
     using NSubstitute;
@@ -141,6 +142,13 @@ namespace Kephas.Data.Tests.Linq
         public void Execute_attaches_identifiable_entities_single_entity()
         {
             var dataContext = Substitute.For<IDataContext>();
+            dataContext.AttachEntity(Arg.Any<object>()).Returns(
+                ci =>
+                    {
+                        var entityInfo = Substitute.For<IEntityInfo>();
+                        entityInfo.Entity.Returns(ci.Arg<object>());
+                        return entityInfo;
+                    });
             var context = new QueryOperationContext(dataContext);
 
             var item1 = Substitute.For<IIdentifiable>();
