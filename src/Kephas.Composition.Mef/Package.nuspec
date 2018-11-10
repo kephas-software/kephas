@@ -38,8 +38,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Mef.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Mef.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Mef.xml" target="lib\netstandard2.0" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.dll" target="lib\net45" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.pdb" target="lib\net45" />
-        <file src="..\Kephas.Composition.Mef.Net45\bin\$configuration$\Kephas.Composition.Mef.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Composition.Mef.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Composition.Mef.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Composition.Mef.xml" target="lib\net45" />
     </files>
 </package>
