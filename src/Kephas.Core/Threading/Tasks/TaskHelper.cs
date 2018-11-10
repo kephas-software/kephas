@@ -197,7 +197,6 @@ namespace Kephas.Threading.Tasks
         /// <remarks>
         /// The <see cref="TaskTimeoutException"/> contains the original task that timed out.
         /// </remarks>
-        /// <typeparam name="T">The task result type.</typeparam>
         /// <param name="task">The task.</param>
         /// <param name="timeout">The timeout.</param>
         /// <returns>
