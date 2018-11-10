@@ -34,8 +34,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.CodeAnalysis.xml" target="lib\netstandard2.0" />
-        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.dll" target="lib\net45" />
-        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.pdb" target="lib\net45" />
-        <file src="..\Kephas.CodeAnalysis.Net45\bin\$configuration$\Kephas.CodeAnalysis.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.CodeAnalysis.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.CodeAnalysis.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.CodeAnalysis.xml" target="lib\net45" />
     </files>
 </package>
