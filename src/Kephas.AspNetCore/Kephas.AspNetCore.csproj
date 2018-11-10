@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Version>5.0.0-rc10</Version>
@@ -28,14 +29,14 @@
         </PackageReleaseNotes>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>bin\Debug\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
-      <LangVersion>latest</LangVersion>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DocumentationFile>bin\Release\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
-      <LangVersion>latest</LangVersion>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
