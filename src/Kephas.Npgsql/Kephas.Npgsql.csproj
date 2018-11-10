@@ -20,7 +20,7 @@
         <RepositoryType>github</RepositoryType>
         <PackageTags>kephas framework npgsql postgres</PackageTags>
         <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <RootNamespace>Kephas.Npgsql</RootNamespace>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageReleaseNotes>
