@@ -1,41 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="3.1.0" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Application\DefaultAppRuntimeTest.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
-    <None Include="Application\DefaultAppRuntimeTest.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
 
 </Project>
