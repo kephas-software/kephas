@@ -22,24 +22,24 @@ namespace Kephas.Core.Tests.Application
     public class DefaultAppRuntimeTest
     {
         [Test]
-        public async Task GetAppAssembliesAsync_filter()
+        public void GetAppAssemblies_filter()
         {
             var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
-            var assemblies = await appEnv.GetAppAssembliesAsync(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
+            var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
             Assert.AreEqual(0, assemblyList.Count(a => a.FullName.StartsWith("JetBrains")));
         }
 
         [Test]
-        public async Task GetAppAssembliesAsync_no_filter()
+        public void GetAppAssemblies_no_filter()
         {
             var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
-            var assemblies = await appEnv.GetAppAssembliesAsync();
+            var assemblies = appEnv.GetAppAssemblies();
             var assemblyList = assemblies.ToList();
 
-            Assert.AreEqual(3, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
+            Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
         }
     }
 }

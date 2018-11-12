@@ -7,7 +7,7 @@
 )
 
 function get-packagename([string]$pathname) {
-    return $pathname.Replace("..\", "").Replace("Adapters\", "")
+    return $pathname.Replace("..\", "")
 }
 
 $paths = @(
@@ -31,7 +31,7 @@ $paths = @(
     "..\Kephas.CodeAnalysis",
     "..\Kephas.Mail",
     "..\Kephas.Mail.MailKit",
-    "..\Adapters\Kephas.Npgsql",
+    "..\Kephas.Npgsql",
     "..\Kephas.ServiceStack",
     "..\Kephas.Serialization.ServiceStack.Text",
     "..\Kephas.Scripting",

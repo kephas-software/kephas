@@ -32,15 +32,15 @@
         <references>
             <reference file="Kephas.Npgsql.dll" />
         </references>
-        <tags>kephas framework npgsql postgresql adapter</tags>
+        <tags>kephas framework npgsql postgres</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard2.0\Kephas.Npgsql.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Npgsql.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Npgsql.xml" target="lib\netstandard2.0" />
-        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.dll" target="lib\net45" />
-        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.pdb" target="lib\net45" />
-        <file src="..\Kephas.Npgsql.Net45\bin\$configuration$\Kephas.Npgsql.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Npgsql.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Npgsql.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Npgsql.xml" target="lib\net45" />
     </files>
 </package>

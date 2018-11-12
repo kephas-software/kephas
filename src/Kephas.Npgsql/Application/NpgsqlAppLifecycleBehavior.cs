@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NpgsqlFeatureManager.cs" company="Kephas Software SRL">
+// <copyright file="NpgsqlAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,11 +13,11 @@ namespace Kephas.Npgsql.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using global::Npgsql.Logging;
+
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Npgsql.Logging;
-
-    using global::Npgsql.Logging;
 
     /// <summary>
     /// The Npgsql application lifecycle behavior.

@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>5.0.0</Version>
+        <Version>5.0.0-rc10</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -28,15 +29,23 @@
         </PackageReleaseNotes>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DocumentationFile>bin\Debug\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
-      <LangVersion>latest</LangVersion>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DocumentationFile>bin\Release\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
-      <LangVersion>latest</LangVersion>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.AspNetCore.xml</DocumentationFile>
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Properties\" />
@@ -47,6 +56,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
     </ItemGroup>
