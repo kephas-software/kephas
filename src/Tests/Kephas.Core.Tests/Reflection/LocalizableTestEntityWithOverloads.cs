@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Reflection
+namespace Kephas.Core.Tests.Reflection
 {
     using System.ComponentModel.DataAnnotations;
 

@@ -1,41 +1,45 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Data\Install\my-embedded-data-2.json" />
-    <None Remove="Data\Install\my-embedded-data.json" />
-    <None Remove="Data\my-embedded-data-2.json" />
-    <None Remove="Data\my-embedded-data.json" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Data\Install\my-embedded-data-2.json" />
-    <EmbeddedResource Include="Data\Install\my-embedded-data.json" />
-    <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data-2.json" />
-    <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data.json" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="3.1.0" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="Data\Install\my-embedded-data-2.json" />
+        <None Remove="Data\Install\my-embedded-data.json" />
+        <None Remove="Data\my-embedded-data-2.json" />
+        <None Remove="Data\my-embedded-data.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data.IO\Kephas.Data.IO.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Data\Install\my-embedded-data-2.json" />
+        <EmbeddedResource Include="Data\Install\my-embedded-data.json" />
+        <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data-2.json" />
+        <EmbeddedResource Include="Data\Uninstall\my-u-embedded-data.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Data\my-data.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
+        <ProjectReference Include="..\..\Kephas.Data.IO\Kephas.Data.IO.csproj" />
+        <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Data\my-data.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

@@ -1,27 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
-    <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="3.1.0" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
+        <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="NSubstitute">
+            <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
 </Project>

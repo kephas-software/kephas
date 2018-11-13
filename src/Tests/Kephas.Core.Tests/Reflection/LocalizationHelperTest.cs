@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Reflection
+namespace Kephas.Core.Tests.Reflection
 {
-    using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Reflection.Localization;
 

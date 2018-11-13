@@ -1,4 +1,4 @@
-﻿namespace Kephas.Tests.Reflection.Localization
+﻿namespace Kephas.Core.Tests.Reflection.Localization
 {
     using System.Linq;
 
