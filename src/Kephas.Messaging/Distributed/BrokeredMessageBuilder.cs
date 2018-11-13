@@ -238,6 +238,25 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Makes the message as a reply to another message.
+        /// </summary>
+        /// <param name="message">The message to reply to.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public virtual BrokeredMessageBuilder<TMessage> ReplyTo(IBrokeredMessage message)
+        {
+            Requires.NotNull(message, nameof(message));
+
+            if (string.IsNullOrEmpty(this.brokeredMessage.BearerToken))
+            {
+                this.brokeredMessage.BearerToken = message.BearerToken;
+            }
+
+            return this.ReplyTo(message.Id, message.Sender);
+        }
+
+        /// <summary>
         /// Creates the brokered message.
         /// </summary>
         /// <returns>
