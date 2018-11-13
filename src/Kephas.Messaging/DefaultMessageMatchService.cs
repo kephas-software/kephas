@@ -14,6 +14,7 @@ namespace Kephas.Messaging
 
     using Kephas.Data;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.Distributed;
     using Kephas.Services;
 
     /// <summary>
@@ -43,6 +44,13 @@ namespace Kephas.Messaging
         /// </returns>
         public virtual object GetMessageId(IMessage message)
         {
+            // brokered messages are not identifiable in the sense
+            // that the ID is a logical behavior/handler discriminator.
+            if (message is IBrokeredMessage)
+            {
+                return null;
+            }
+
             var expandoMessage = message.ToExpando();
             var messageId = expandoMessage[nameof(IIdentifiable.Id)]
                             ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
@@ -63,7 +71,7 @@ namespace Kephas.Messaging
             var m = messageMatch;
             return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
                     || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && (m.MessageType?.IsAssignableFrom(messageType) ?? true)))
-                   && ((m.MessageIdMatching == MessageIdMatching.Id && Equals(m.MessageId, messageId))
+                   && ((m.MessageIdMatching == MessageIdMatching.Id && object.Equals(m.MessageId, messageId))
                        || m.MessageIdMatching == MessageIdMatching.All);
         }
     }

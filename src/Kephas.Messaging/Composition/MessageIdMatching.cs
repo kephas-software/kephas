@@ -17,13 +17,13 @@ namespace Kephas.Messaging.Composition
     public enum MessageIdMatching
     {
         /// <summary>
-        /// The handler can handle messages with the indicated ID.
-        /// </summary>
-        Id,
-
-        /// <summary>
         /// The handler can handle all messages, independent of the ID.
         /// </summary>
         All,
+
+        /// <summary>
+        /// The handler can handle messages with the indicated ID.
+        /// </summary>
+        Id,
     }
 }
