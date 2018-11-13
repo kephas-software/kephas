@@ -10,8 +10,12 @@
 
 namespace Kephas.Messaging.Tests
 {
+    using Kephas.Data;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -56,6 +60,26 @@ namespace Kephas.Messaging.Tests
             Assert.IsTrue(matchService.IsMatch(match, typeof(IMessage), null));
             Assert.IsTrue(matchService.IsMatch(match, typeof(IEvent), null));  // inherited
             Assert.IsFalse(matchService.IsMatch(match, typeof(string), null));
+        }
+
+        [Test]
+        public void GetMessageId_brokered_message_is_null()
+        {
+            var message = Substitute.For<IBrokeredMessage>();
+            message.Id.Returns("abcd");
+            var matchService = new DefaultMessageMatchService();
+            var messageId = matchService.GetMessageId(message);
+            Assert.IsNull(messageId);
+        }
+
+        [Test]
+        public void GetMessageId_message_is_not_null()
+        {
+            var message = Substitute.For<IMessage, IIdentifiable>();
+            ((IIdentifiable)message).Id.Returns("abcd");
+            var matchService = new DefaultMessageMatchService();
+            var messageId = matchService.GetMessageId(message);
+            Assert.AreEqual("abcd", (string)messageId);
         }
     }
 }

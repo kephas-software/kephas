@@ -183,8 +183,8 @@ namespace Kephas.Messaging.Tests
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", overridePriority: (int)Priority.Low)),
-                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", overridePriority: (int)Priority.High))
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.Low)),
+                                                                new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.High))
                                                             });
             var result = await processor.ProcessAsync(message, null, default);
 
