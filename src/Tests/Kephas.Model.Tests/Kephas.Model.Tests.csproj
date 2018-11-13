@@ -21,6 +21,10 @@
         <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+    </ItemGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj" />

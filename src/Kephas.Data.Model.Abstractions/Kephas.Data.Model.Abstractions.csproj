@@ -66,8 +66,13 @@
         <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
         <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
