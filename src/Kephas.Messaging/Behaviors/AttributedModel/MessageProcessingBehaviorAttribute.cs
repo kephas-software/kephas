@@ -32,6 +32,7 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
             Requires.NotNull(messageId, nameof(messageId));
 
             this.MessageId = messageId;
+            this.MessageIdMatching = MessageIdMatching.Id;
         }
 
         /// <summary>
@@ -55,19 +56,6 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorAttribute"/> class.
-        /// </summary>
-        /// <param name="messageTypeMatching">The message type matching.</param>
-        /// <param name="messageId">The ID of the handled messages.</param>
-        /// <param name="messageIdMatching">The message ID matching.</param>
-        public MessageProcessingBehaviorAttribute(MessageTypeMatching messageTypeMatching, object messageId, MessageIdMatching messageIdMatching)
-            : this(messageId)
-        {
-            this.MessageTypeMatching = messageTypeMatching;
-            this.MessageIdMatching = messageIdMatching;
-        }
-
-        /// <summary>
         /// Gets or sets the message ID.
         /// </summary>
         /// <value>
@@ -83,7 +71,7 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// The message type matching.
         /// </value>
         [MetadataValue(nameof(MessageTypeMatching))]
-        public MessageTypeMatching MessageTypeMatching { get; set; }
+        public MessageTypeMatching MessageTypeMatching { get; set; } = MessageTypeMatching.Type;
 
         /// <summary>
         /// Gets or sets the message ID matching.
@@ -92,6 +80,6 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         /// The message ID matching.
         /// </value>
         [MetadataValue(nameof(MessageIdMatching))]
-        public MessageIdMatching MessageIdMatching { get; set; }
+        public MessageIdMatching MessageIdMatching { get; set; } = MessageIdMatching.All;
     }
 }

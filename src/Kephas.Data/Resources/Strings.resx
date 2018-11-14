@@ -211,4 +211,7 @@
   <data name="QueryHelper_ToListAsync_CannotConvertToListException" xml:space="preserve">
     <value>The value '{0}' of type '{1}' cannot be converted to a list of '{2}'.</value>
   </data>
+  <data name="RequiredRefAttribute_ValidationError" xml:space="preserve">
+    <value>The field '{0}' is required.</value>
+  </data>
 </root>

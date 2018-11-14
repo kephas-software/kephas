@@ -1,65 +1,93 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-      <TargetFramework>netstandard2.0</TargetFramework>
-      <SignAssembly>True</SignAssembly>
-      <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-      <Version>5.0.0</Version>
-      <AssemblyVersion>5.0.0.0</AssemblyVersion>
-      <FileVersion>5.0.0.0</FileVersion>
-      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-      <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-      <Authors>Kephas Software SRL</Authors>
-      <Company>Kephas Software SRL</Company>
-      <Product>Kephas Framework</Product>
-      <Description>Provides modelling abstractions for data, like identifiable entities, hierarchy nodes, and so on.</Description>
-      <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
-      <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-      <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
-      <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
-      <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
-      <PackageTags>kephas framework data model abstractions</PackageTags>
-      <RepositoryType>github</RepositoryType>
-      <PackageReleaseNotes>Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <Version>5.0.0</Version>
+        <AssemblyVersion>5.0.0.0</AssemblyVersion>
+        <FileVersion>5.0.0.0</FileVersion>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Authors>Kephas Software SRL</Authors>
+        <Company>Kephas Software SRL</Company>
+        <Product>Kephas Framework</Product>
+        <Description>Provides modelling abstractions for data, like identifiable entities, hierarchy nodes, and so on.</Description>
+        <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+        <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+        <PackageTags>kephas framework data model abstractions</PackageTags>
+        <RepositoryType>github</RepositoryType>
+        <PackageReleaseNotes>Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
           Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</PackageReleaseNotes>
-      <NeutralLanguage>en</NeutralLanguage>
-      <RootNamespace>Kephas.Data.Model</RootNamespace>
-  </PropertyGroup>
+        <NeutralLanguage>en</NeutralLanguage>
+        <RootNamespace>Kephas.Data.Model</RootNamespace>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\Kephas.snk" Link="Kephas.snk" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+        <DocumentationFile>bin\Debug\net45\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
-    <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
-    <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+        <DocumentationFile>bin\Release\net45\Kephas.Data.Model.Abstractions.xml</DocumentationFile>
+        <DefineConstants>NET45</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="Abstractions\Resources\ModelStrings.Designer.cs">
-      <DependentUpon>ModelStrings.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Abstractions\Resources\ModelStrings.resx">
-      <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
+        <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
+        <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Abstractions\Resources\ModelStrings.Designer.cs">
+            <DependentUpon>ModelStrings.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Abstractions\Resources\ModelStrings.resx">
+            <LastGenOutput>ModelStrings.Designer.cs</LastGenOutput>
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
 
 </Project>

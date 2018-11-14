@@ -13,16 +13,25 @@ namespace Kephas.Data.AttributedModel
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Kephas.Data.Resources;
+
     /// <summary>
     /// Attribute marking required references.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
-    public class RequiredRefAttribute : RequiredAttribute
+    public class RequiredRefAttribute : ValidationAttribute
     {
-        /// <summary>Checks that the value of the required data field is not empty.</summary>
-        /// <returns>true if validation is successful; otherwise, false.</returns>
-        /// <param name="value">The data field value to validate.</param>
-        /// <exception cref="T:System.ComponentModel.DataAnnotations.ValidationException">The data field value was null.</exception>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequiredRefAttribute"/> class.
+        /// </summary>
+        public RequiredRefAttribute()
+            : base(() => Strings.RequiredRefAttribute_ValidationError)
+        {
+        }
+
+        /// <summary>Determines whether the specified value of the object is valid. </summary>
+        /// <returns>true if the specified value is valid; otherwise, false.</returns>
+        /// <param name="value">The value of the object to validate. </param>
         public override bool IsValid(object value)
         {
             if (value is IRef refValue)

@@ -22,7 +22,6 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
-    using Kephas.Security;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -88,11 +87,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override async Task<IMessage> ProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var identity = await this.authenticationService.GetIdentityAsync(message.BearerToken, context, token).PreserveThreadContext();
-            var processContext = new MessageProcessingContext(this.messageProcessor)
-                                     {
-                                         Identity = identity
-                                     };
+            var processContext = new MessageProcessingContext(this.messageProcessor) { Identity = context.Identity };
 
             if (message.ReplyToMessageId != null)
             {

@@ -38,7 +38,7 @@ namespace Kephas.Messaging.Behaviors.Composition
             this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType));
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? MessageTypeMatching.TypeOrHierarchy;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
-            this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? MessageIdMatching.Id;
+            this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? MessageIdMatching.All;
 
             this.MessageMatch = new MessageMatch
                                     {
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// <param name="messageIdMatching">The message ID matching (optional).</param>
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
-        public MessageProcessingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.Id, int processingPriority = 0, int overridePriority = 0)
+        public MessageProcessingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;

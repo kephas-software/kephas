@@ -61,6 +61,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
 
     <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
         <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
         <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
         <PackageReference Include="System.Reflection" Version="4.3.0" />
@@ -70,6 +71,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
 
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
         <Reference Include="System" />
+        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="Microsoft.CSharp" />

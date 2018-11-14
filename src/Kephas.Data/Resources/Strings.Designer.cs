@@ -22,7 +22,7 @@ namespace Kephas.Data.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Kephas.Data.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Data.Resources.Strings", typeof(Strings).Assembly);
@@ -51,7 +51,7 @@ namespace Kephas.Data.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Not enough elements after {0} in the destination array..
         /// </summary>
-        internal static string CollectionAdapter_CopyTo_NotEnoughElements_Exception {
+        public static string CollectionAdapter_CopyTo_NotEnoughElements_Exception {
             get {
                 return ResourceManager.GetString("CollectionAdapter_CopyTo_NotEnoughElements_Exception", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The command {0} is not supported..
         /// </summary>
-        internal static string DataCommandFactory_CreateCommand_NotSupported_Exception {
+        public static string DataCommandFactory_CreateCommand_NotSupported_Exception {
             get {
                 return ResourceManager.GetString("DataCommandFactory_CreateCommand_NotSupported_Exception", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Ambiguous match for command &apos;{0}&apos; of &apos;{1}&apos;: at least &apos;{2}&apos; and &apos;{3}&apos; found. To disambiguate, please provide an override priority between them..
         /// </summary>
-        internal static string DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception {
+        public static string DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception {
             get {
                 return ResourceManager.GetString("DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Operation completed successfully..
         /// </summary>
-        internal static string DataCommandResult_Successful_Message {
+        public static string DataCommandResult_Successful_Message {
             get {
                 return ResourceManager.GetString("DataCommandResult_Successful_Message", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Multiple entries were found with the provided criteria {0}..
         /// </summary>
-        internal static string DataContext_FindAsync_AmbiguousMatch_Exception {
+        public static string DataContext_FindAsync_AmbiguousMatch_Exception {
             get {
                 return ResourceManager.GetString("DataContext_FindAsync_AmbiguousMatch_Exception", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided ID is empty..
         /// </summary>
-        internal static string DataContext_FindAsync_IdEmpty_Exception {
+        public static string DataContext_FindAsync_IdEmpty_Exception {
             get {
                 return ResourceManager.GetString("DataContext_FindAsync_IdEmpty_Exception", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No entry was found with the provided criteria {0}..
         /// </summary>
-        internal static string DataContext_FindAsync_NotFound_Exception {
+        public static string DataContext_FindAsync_NotFound_Exception {
             get {
                 return ResourceManager.GetString("DataContext_FindAsync_NotFound_Exception", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided command execution context targets a different data context than the one supposed to execute the command..
         /// </summary>
-        internal static string DataContext_MismatchedDataContextInCommand_Exception {
+        public static string DataContext_MismatchedDataContextInCommand_Exception {
             get {
                 return ResourceManager.GetString("DataContext_MismatchedDataContextInCommand_Exception", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided context is not a &apos;{0}&apos;..
         /// </summary>
-        internal static string DataContextBase_BadInitializationContext_Exception {
+        public static string DataContextBase_BadInitializationContext_Exception {
             get {
                 return ResourceManager.GetString("DataContextBase_BadInitializationContext_Exception", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The command type parameter &apos;{0}&apos; must inherit {1}..
         /// </summary>
-        internal static string DataContextBase_CreateCommand_BadCommandType_Exception {
+        public static string DataContextBase_CreateCommand_BadCommandType_Exception {
             get {
                 return ResourceManager.GetString("DataContextBase_CreateCommand_BadCommandType_Exception", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided entity &apos;{0}&apos; is not attached to the data context..
         /// </summary>
-        internal static string DataContextBase_EntityNotAttached_Exception {
+        public static string DataContextBase_EntityNotAttached_Exception {
             get {
                 return ResourceManager.GetString("DataContextBase_EntityNotAttached_Exception", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The key (&apos;{0}&apos;) and then entity info ID (&apos;{1}&apos;) do not match..
         /// </summary>
-        internal static string DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception {
+        public static string DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception {
             get {
                 return ResourceManager.GetString("DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Expected a {0} provider in query {1}..
         /// </summary>
-        internal static string DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception {
+        public static string DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception {
             get {
                 return ResourceManager.GetString("DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No data converters were found for source type &apos;{0}&apos; and target type &apos;{1}&apos;..
         /// </summary>
-        internal static string DataConverterNotFound_Exception {
+        public static string DataConverterNotFound_Exception {
             get {
                 return ResourceManager.GetString("DataConverterNotFound_Exception", resourceCulture);
             }
@@ -190,7 +190,7 @@ namespace Kephas.Data.Resources {
         ///   Looks up a localized string similar to Validation failed for {0}:
         ///{1}..
         /// </summary>
-        internal static string DataValidationException_Message {
+        public static string DataValidationException_Message {
             get {
                 return ResourceManager.GetString("DataValidationException_Message", resourceCulture);
             }
@@ -199,7 +199,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Expected an object of type &apos;{0}&apos;, but received one of type &apos;{1}&apos;..
         /// </summary>
-        internal static string DataValidator_MismatchedEntityType_Exception {
+        public static string DataValidator_MismatchedEntityType_Exception {
             get {
                 return ResourceManager.GetString("DataValidator_MismatchedEntityType_Exception", resourceCulture);
             }
@@ -208,7 +208,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Ambiguous data context for data store &apos;{0}&apos;: at least &apos;{1}&apos; and &apos;{2}&apos; found. Please provide a proper [ProcessingPriority] attribute on the implementation DataContext classes to be able to disambiguate..
         /// </summary>
-        internal static string DefaultDataContextProvider_AmbiguousDataContext_Exception {
+        public static string DefaultDataContextProvider_AmbiguousDataContext_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataContextProvider_AmbiguousDataContext_Exception", resourceCulture);
             }
@@ -217,7 +217,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No data context was found for data store &apos;{0}&apos; of target &apos;{1}&apos;..
         /// </summary>
-        internal static string DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception {
+        public static string DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataContextProvider_DataContextNotFoundForDataStoreKind_Exception", resourceCulture);
             }
@@ -226,7 +226,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to No data context with type &apos;{0}&apos; was found for data store &apos;{1}&apos;..
         /// </summary>
-        internal static string DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception {
+        public static string DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataContextProvider_DataStoreDataContextTypeNotFound_Exception", resourceCulture);
             }
@@ -235,7 +235,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided source object is null and a type information cannot be identified for it. No conversion has been performed..
         /// </summary>
-        internal static string DefaultDataConversionService_NonTypedSourceIsNull_Exception {
+        public static string DefaultDataConversionService_NonTypedSourceIsNull_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataConversionService_NonTypedSourceIsNull_Exception", resourceCulture);
             }
@@ -244,7 +244,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided target object is null and a type information cannot be identified for it..
         /// </summary>
-        internal static string DefaultDataConversionService_NonTypedTargetIsNull_Exception {
+        public static string DefaultDataConversionService_NonTypedTargetIsNull_Exception {
             get {
                 return ResourceManager.GetString("DefaultDataConversionService_NonTypedTargetIsNull_Exception", resourceCulture);
             }
@@ -253,7 +253,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The data context is already set in the entity information structure, cannot set multiple times..
         /// </summary>
-        internal static string EntityInfo_DataContextAlreadySet_Exception {
+        public static string EntityInfo_DataContextAlreadySet_Exception {
             get {
                 return ResourceManager.GetString("EntityInfo_DataContextAlreadySet_Exception", resourceCulture);
             }
@@ -262,7 +262,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The &apos;{0}&apos; must be initialized before working with entities..
         /// </summary>
-        internal static string InMemoryDataContext_NotInitialized_Exception {
+        public static string InMemoryDataContext_NotInitialized_Exception {
             get {
                 return ResourceManager.GetString("InMemoryDataContext_NotInitialized_Exception", resourceCulture);
             }
@@ -271,7 +271,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The maximum number of iterations ({0}) was exceeded when saving with activated behaviors. Could not update the changed entities. See the affected entities for more information..
         /// </summary>
-        internal static string PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception {
+        public static string PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception {
             get {
                 return ResourceManager.GetString("PersistChangesCommand_MaximumNumberOfIterationsExceeded_Exception", resourceCulture);
             }
@@ -280,7 +280,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to There are no modified root entities to save..
         /// </summary>
-        internal static string PersistChangesCommand_NoRootEntitiesToSave_Exception {
+        public static string PersistChangesCommand_NoRootEntitiesToSave_Exception {
             get {
                 return ResourceManager.GetString("PersistChangesCommand_NoRootEntitiesToSave_Exception", resourceCulture);
             }
@@ -289,7 +289,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Persisted {0} changes..
         /// </summary>
-        internal static string PersistChangesCommand_ResultMessage {
+        public static string PersistChangesCommand_ResultMessage {
             get {
                 return ResourceManager.GetString("PersistChangesCommand_ResultMessage", resourceCulture);
             }
@@ -298,7 +298,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The value &apos;{0}&apos; of type &apos;{1}&apos; cannot be converted to a list of &apos;{2}&apos;..
         /// </summary>
-        internal static string QueryHelper_ToListAsync_CannotConvertToListException {
+        public static string QueryHelper_ToListAsync_CannotConvertToListException {
             get {
                 return ResourceManager.GetString("QueryHelper_ToListAsync_CannotConvertToListException", resourceCulture);
             }
@@ -307,7 +307,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot retrieve a data context for reference {0}..
         /// </summary>
-        internal static string RefBase_GetDataContext_NullDataContext_Exception {
+        public static string RefBase_GetDataContext_NullDataContext_Exception {
             get {
                 return ResourceManager.GetString("RefBase_GetDataContext_NullDataContext_Exception", resourceCulture);
             }
@@ -316,7 +316,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The entity for reference {0} could not be retrieved (null reference)..
         /// </summary>
-        internal static string RefBase_GetEntity_Null_Exception {
+        public static string RefBase_GetEntity_Null_Exception {
             get {
                 return ResourceManager.GetString("RefBase_GetEntity_Null_Exception", resourceCulture);
             }
@@ -325,7 +325,7 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The entity for reference {0} has been disposed..
         /// </summary>
-        internal static string RefBase_GetEntityInfo_Disposed_Exception {
+        public static string RefBase_GetEntityInfo_Disposed_Exception {
             get {
                 return ResourceManager.GetString("RefBase_GetEntityInfo_Disposed_Exception", resourceCulture);
             }
@@ -334,9 +334,18 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The entity information for reference {0} could not be retrieved (null reference)..
         /// </summary>
-        internal static string RefBase_GetEntityInfo_Null_Exception {
+        public static string RefBase_GetEntityInfo_Null_Exception {
             get {
                 return ResourceManager.GetString("RefBase_GetEntityInfo_Null_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field &apos;{0}&apos; is required..
+        /// </summary>
+        public static string RequiredRefAttribute_ValidationError {
+            get {
+                return ResourceManager.GetString("RequiredRefAttribute_ValidationError", resourceCulture);
             }
         }
     }
