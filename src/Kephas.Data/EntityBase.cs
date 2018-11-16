@@ -16,6 +16,7 @@ namespace Kephas.Data
     using Kephas;
     using Kephas.Data.Capabilities;
     using Kephas.Dynamic;
+    using Kephas.Model;
     using Kephas.Reflection;
 
     /// <summary>
