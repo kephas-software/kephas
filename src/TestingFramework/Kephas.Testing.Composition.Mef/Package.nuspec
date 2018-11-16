@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Testing.Composition.Mef</id>
+        <version>$version$</version>
+        <title>Kephas.Testing.Composition.Mef</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>Provides a common infrastructure for testing with MEF composition.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides a common infrastructure for testing with MEF composition.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Composition.Mef" version="$refversion$" />
+                <dependency id="System.Composition" version="1.2.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Testing.Composition.Mef.dll" />
+        </references>
+        <tags>kephas framework testing test composition mef</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.xml" target="lib\net45" />
+    </files>
+</package>

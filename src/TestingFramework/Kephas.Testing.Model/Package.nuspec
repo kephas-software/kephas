@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Testing.Model</id>
+        <version>$version$</version>
+        <title>Kephas.Testing.Model</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>Provides a common infrastructure for testing model related assemblies.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides a common infrastructure for testing model related assemblies.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Composition.Mef" version="$refversion$" />
+                <dependency id="Kephas.Model" version="$refversion$" />
+                <dependency id="Kephas.Testing.Composition.Mef" version="$refversion$" />
+                <dependency id="System.Composition" version="1.2.0" />
+                <dependency id="NSubstitute" version="3.1.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Testing.Model.dll" />
+        </references>
+        <tags>kephas framework testing test model</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Model.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Model.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Model.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Model.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Model.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Testing.Model.xml" target="lib\net45" />
+    </files>
+</package>

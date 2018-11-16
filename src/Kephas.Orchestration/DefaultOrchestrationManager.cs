@@ -193,11 +193,11 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return Task.CompletedTask;
+                return TaskHelper.CompletedTask;
             }
 
             this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
-            return Task.CompletedTask;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -214,11 +214,11 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return Task.CompletedTask;
+                return TaskHelper.CompletedTask;
             }
 
             this.liveApps.TryRemove(appKey, out _);
-            return Task.CompletedTask;
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -235,11 +235,11 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return Task.CompletedTask;
+                return TaskHelper.CompletedTask;
             }
 
             this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
-            return Task.CompletedTask;
+            return TaskHelper.CompletedTask;
         }
 
         private AppHeartbeatEvent CreateAppHeartbeatEvent()

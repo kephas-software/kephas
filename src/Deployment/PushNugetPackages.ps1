@@ -29,6 +29,8 @@ $packages = @(
     "Kephas.Scripting.CSharp",
     "Kephas.Orchestration",
     "Kephas.AspNetCore"
+    "Kephas.Testing.Composition.Mef"
+    "Kephas.Testing.Model"
 )
 
 foreach ($package in $packages) {

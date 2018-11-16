@@ -7,7 +7,7 @@
 )
 
 function get-packagename([string]$pathname) {
-    return $pathname.Replace("..\", "")
+    return $pathname.Replace("..\", "").Replace("TestingFramework\", "")
 }
 
 $paths = @(
@@ -37,6 +37,8 @@ $paths = @(
     "..\Kephas.Scripting.CSharp",
     "..\Kephas.Orchestration",
     "..\Kephas.AspNetCore"
+    "..\TestingFramework\Kephas.Testing.Composition.Mef"
+    "..\TestingFramework\Kephas.Testing.Model"
 )
 
 foreach ($path in $paths) {
