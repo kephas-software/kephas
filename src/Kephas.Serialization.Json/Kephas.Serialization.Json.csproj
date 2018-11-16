@@ -14,10 +14,10 @@
         <Description>Provides JSON serialization infrastructure using the Newtonsoft.Json implementation.</Description>
         <Version>5.0.0-rc10</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
         <PackageTags>kephas framework json newtonsoft serialization</PackageTags>
-        <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>

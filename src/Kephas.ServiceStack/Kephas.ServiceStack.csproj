@@ -15,13 +15,13 @@
         <Description>Provides integration with the ServiceStack framework.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/quartz-software/kephas</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
-        <RepositoryUrl>https://github.com/quartz-software/kephas</RepositoryUrl>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageTags>kephas framework servicestack</PackageTags>
         <PackageReleaseNotes>
-          Check the documentation and the samples from https://github.com/quartz-software/kephas/wiki and https://github.com/quartz-software/kephas/tree/master/Samples.
+          Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
           Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
       </PackageReleaseNotes>
         <NeutralLanguage>en</NeutralLanguage>

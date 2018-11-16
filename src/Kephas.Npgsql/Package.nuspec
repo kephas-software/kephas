@@ -15,7 +15,7 @@
             Provides the Kephas adapters for the Npgsql library.
         </summary>
         <language>en-US</language>
-        <projectUrl>https://github.com/quartz-software/kephas</projectUrl>
+        <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>

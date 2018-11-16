@@ -78,7 +78,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         public static bool TryAttachToEntity(this IEntityInfo entityInfo, object entity)
         {
-            // TODO see issue https://github.com/quartz-software/kephas/issues/36
+            // TODO see issue https://github.com/kephas-software/kephas/issues/36
             if (entityInfo == null || entity == null)
             {
                 return false;
@@ -102,7 +102,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         public static IEntityInfo TryGetAttachedEntityInfo(this object entity)
         {
-            // TODO see issue https://github.com/quartz-software/kephas/issues/36
+            // TODO see issue https://github.com/kephas-software/kephas/issues/36
             if (entity is IEntityInfoAware entityInfoAware)
             {
                 return entityInfoAware.GetEntityInfo();
