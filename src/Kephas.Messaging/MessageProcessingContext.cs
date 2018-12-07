@@ -23,10 +23,33 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
         /// </summary>
+        /// <param name="parentContext">Context for the parent.</param>
+        /// <param name="message">Optional. The Message.</param>
+        /// <param name="handler">Optional. The handler.</param>
+        public MessageProcessingContext(
+            IMessageProcessingContext parentContext,
+            IMessage message = null,
+            IMessageHandler handler = null)
+            : base(parentContext)
+        {
+            Requires.NotNull(parentContext, nameof(parentContext));
+            Requires.NotNull(parentContext.MessageProcessor, nameof(parentContext.MessageProcessor));
+
+            this.MessageProcessor = parentContext.MessageProcessor;
+            this.Message = message;
+            this.Handler = handler;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
+        /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">The Message.</param>
         /// <param name="handler">The handler.</param>
-        public MessageProcessingContext(IMessageProcessor messageProcessor, IMessage message = null, IMessageHandler handler = null)
+        public MessageProcessingContext(
+            IMessageProcessor messageProcessor,
+            IMessage message = null,
+            IMessageHandler handler = null)
             : base(messageProcessor?.CompositionContext)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
