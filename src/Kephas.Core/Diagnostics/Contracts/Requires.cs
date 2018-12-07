@@ -16,6 +16,7 @@ namespace Kephas.Diagnostics.Contracts
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     using Kephas.Resources;
 
@@ -33,8 +34,30 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotNull<T>(T value, string parameterName)
             where T : class
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(parameterName);
+            }
+
+            Contract.EndContractBlock();
+        }
+
+        /// <summary>
+        /// Requires that the argument is not null.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Thrown when the required argument is null.</exception>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <param name="value">The value.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        [DebuggerStepThrough]
+        [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void NotNull<T>(T? value, string parameterName)
+            where T : struct
         {
             if (value == null)
             {
@@ -52,6 +75,7 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotNullOrEmpty(string value, string parameterName)
         {
             NotNull(value, parameterName);
@@ -74,6 +98,7 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotNullOrEmpty<T>(IEnumerable<T> value, string parameterName)
         {
             NotNull(value, parameterName);
@@ -96,6 +121,7 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotNullOrEmpty<T>(ICollection<T> value, string parameterName)
         {
             NotNull(value, parameterName);
@@ -118,6 +144,7 @@ namespace Kephas.Diagnostics.Contracts
         /// <param name="parameterName">Name of the parameter.</param>
         [DebuggerStepThrough]
         [ContractArgumentValidator]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void NotNullOrEmpty<T>(T[] value, string parameterName)
         {
             NotNull(value, parameterName);
