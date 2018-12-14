@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Kephas.Messaging</id>
+        <id>Kephas.Messaging.Azure.ServiceBus</id>
         <version>$version$</version>
-        <title>Kephas.Messaging</title>
+        <title>Kephas.Messaging.Azure.ServiceBus</title>
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>
