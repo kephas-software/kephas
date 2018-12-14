@@ -1,30 +1,75 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <AssemblyName>Kephas.Messaging.Azure.ServiceBus</AssemblyName>
+        <RootNamespace>Kephas.Messaging.Azure.ServiceBus</RootNamespace>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <Version>5.0.0-rc11</Version>
+        <AssemblyVersion>5.0.0.0</AssemblyVersion>
+        <FileVersion>5.0.0.0</FileVersion>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Authors>Kephas Software SRL</Authors>
+        <Company>Kephas Software SRL</Company>
+        <Product>Kephas Framework</Product>
+        <Description>Provides specific messaging implementation for Azure ServiceBus.</Description>
+        <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
+        <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
+        <PackageTags>kephas framework messaging request response service layer azure servicebus</PackageTags>
+        <RepositoryType>github</RepositoryType>
+        <PackageReleaseNotes>Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+          Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</PackageReleaseNotes>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.0.0" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+        <DocumentationFile>bin\Debug\net461\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NET46</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-    <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+        <DocumentationFile>bin\Release\net461\Kephas.Messaging.Azure.ServiceBus.xml</DocumentationFile>
+        <DefineConstants>NET46</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+    <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
 
 </Project>

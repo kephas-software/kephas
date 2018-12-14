@@ -17,6 +17,7 @@ $paths = @(
     "..\Kephas.Composition.Mef",
     "..\Kephas.Messaging",
     "..\Kephas.Messaging.Model",
+    "..\Kephas.Messaging.Azure.ServiceBus",
     "..\Kephas.Model",
     "..\Kephas.Data",
     "..\Kephas.Data.Client",

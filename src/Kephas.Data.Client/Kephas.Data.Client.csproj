@@ -13,10 +13,10 @@
         <FileVersion>5.0.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2018</Copyright>
         <Description>Provides the client infrastructure for the data flow.</Description>
-        <Version>5.0.0-rc10</Version>
+        <Version>5.0.0-rc11</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</PackageIconUrl>
+        <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <PackageTags>kephas framework data client</PackageTags>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

@@ -12,9 +12,9 @@
         <summary>Provides the client infrastructure for the data flow.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
-        <iconUrl>http://kephas-framework.com/Media/Default/Logo/kephas.logo.transparent.png</iconUrl>
+        <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
         <dependencies>
             <group>
