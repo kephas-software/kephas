@@ -6,6 +6,11 @@
     [string]$Timestamper = "http://timestamp.digicert.com"
 )
 
+# The symbol source is changed since Nov. 2018
+# https://blog.nuget.org/20181116/Improved-debugging-experience-with-the-NuGet-org-symbol-server-and-snupkg.html
+# however, a bug is still present - until it is fixed stay with the ols symbols
+
+
 function get-packagename([string]$pathname) {
     return $pathname.Replace("..\", "").Replace("TestingFramework\", "")
 }
@@ -43,7 +48,7 @@ $paths = @(
 )
 
 foreach ($path in $paths) {
-    .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
+    .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols <# -SymbolPackageFormat snupkg #> -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
     $packagename = get-packagename $path
     .\NuGet.exe sign "$packagename.$version.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
 }
