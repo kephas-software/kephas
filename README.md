@@ -1,8 +1,8 @@
 Kephas Framework
 ======
 
-Kephas Runtime [![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)
-Kephas Samples [![Build Status](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)](https://kephas-framework.visualstudio.com/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)
+Kephas Runtime [![Build Status](https://dev.azure.com/kephas-framework/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)](https://dev.azure.com/kephas-framework/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/1/badge)
+Kephas Samples [![Build Status](https://dev.azure.com/kephas-framework/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)](https://dev.azure.com/kephas-framework/_apis/public/build/definitions/95b0b065-47ef-49f0-bce5-90b8a019e929/2/badge)
 
 *Our commitment to innovation*
 
