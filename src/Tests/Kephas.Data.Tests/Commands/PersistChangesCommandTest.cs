@@ -84,6 +84,31 @@ namespace Kephas.Data.Tests.Commands
         }
 
         [Test]
+        public async Task ExecuteAsync_pre_persist_change_state_properly_set()
+        {
+            var behaviorProvider = Substitute.For<IDataBehaviorProvider>();
+            var cmd = new PersistChangesCommand(behaviorProvider);
+
+            var localCache = new DataContextCache();
+            var dataContext = new TestDataContext(localCache: localCache);
+            var entityInfos = new IEntityInfo[5];
+            (entityInfos[0] = dataContext.AttachEntity("123")).ChangeState = ChangeState.Added;
+            (entityInfos[1] = dataContext.AttachEntity("abc")).ChangeState = ChangeState.Changed;
+            (entityInfos[2] = dataContext.AttachEntity("-123")).ChangeState = ChangeState.Deleted;
+            (entityInfos[3] = dataContext.AttachEntity("123abc")).ChangeState = ChangeState.AddedOrChanged;
+            (entityInfos[4] = dataContext.AttachEntity("same")).ChangeState = ChangeState.NotChanged;
+
+            var context = new PersistChangesContext(dataContext);
+            var result = await cmd.ExecuteAsync(context);
+
+            Assert.AreEqual(ChangeState.Added, entityInfos[0].PrePersistChangeState);
+            Assert.AreEqual(ChangeState.Changed, entityInfos[1].PrePersistChangeState);
+            Assert.AreEqual(ChangeState.Deleted, entityInfos[2].PrePersistChangeState);
+            Assert.AreEqual(ChangeState.AddedOrChanged, entityInfos[3].PrePersistChangeState);
+            Assert.AreEqual(ChangeState.NotChanged, entityInfos[4].PrePersistChangeState);
+        }
+
+        [Test]
         public async Task ExecuteAsync_added_with_behaviors()
         {
             var behavior = Substitute.For<IOnPersistBehavior>();

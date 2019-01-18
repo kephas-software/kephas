@@ -44,6 +44,19 @@ namespace Kephas.Data.Capabilities
         IDataContext DataContext { get; set; }
 
         /// <summary>
+        /// Gets or sets the change state of the entity before persisting to the data store.
+        /// </summary>
+        /// <remarks>
+        /// This value is typically used in the post processing part of the persist behavior.
+        /// Outside this behavior this value is not reliable, as the behaviors may trigger multiple persist commands
+        /// for an entity and this state is typically the value before the last persist command.
+        /// </remarks>
+        /// <value>
+        /// The change state.
+        /// </value>
+        ChangeState PrePersistChangeState { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether the provided property changed.
         /// </summary>
         /// <param name="property">The property name.</param>

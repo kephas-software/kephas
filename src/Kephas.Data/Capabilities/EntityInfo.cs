@@ -117,6 +117,14 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
+        /// Gets or sets the change state of the entity before persisting to the data store.
+        /// </summary>
+        /// <value>
+        /// The change state.
+        /// </value>
+        public ChangeState PrePersistChangeState { get; set; }
+
+        /// <summary>
         /// Gets or sets the change state of the entity.
         /// </summary>
         /// <value>

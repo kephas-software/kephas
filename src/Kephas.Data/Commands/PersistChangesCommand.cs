@@ -368,6 +368,9 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Pre processes the change set asynchronously.
         /// </summary>
+        /// <remarks>
+        /// By default, it sets the <see cref="IEntityInfo.PrePersistChangeState"/> to be equal to <see cref="IChangeStateTrackable.ChangeState"/>.
+        /// </remarks>
         /// <param name="changeSet">The modified entities.</param>
         /// <param name="operationContext">The data operation context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -376,6 +379,11 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual Task PreProcessChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
+            foreach (var entityInfo in changeSet)
+            {
+                entityInfo.PrePersistChangeState = entityInfo.ChangeState;
+            }
+
             return Task.FromResult(0);
         }
 
