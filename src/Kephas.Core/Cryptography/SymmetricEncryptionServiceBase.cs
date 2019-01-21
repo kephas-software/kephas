@@ -26,7 +26,7 @@ namespace Kephas.Cryptography
     /// </summary>
     /// <typeparam name="TAlgorithm">Type of the algorithm.</typeparam>
     public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService, ISyncEncryptionService
-        where TAlgorithm : SymmetricAlgorithm, new()
+       where TAlgorithm : SymmetricAlgorithm, new()
     {
         /// <summary>
         /// Generates a key.
@@ -131,7 +131,7 @@ namespace Kephas.Cryptography
         /// <param name="output">The output stream.</param>
         /// <param name="algorithm">The algorithm.</param>
         /// <param name="encryptionContext">Context for the encryption.</param>
-        protected virtual void Encrypt(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext)
+        protected virtual void Encrypt(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext)
         {
             // generate the IV before creating the encryptor
             algorithm.GenerateIV();
@@ -157,7 +157,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task EncryptAsync(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)
+        protected virtual async Task EncryptAsync(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)
         {
             // generate the IV before creating the encryptor
             algorithm.GenerateIV();
@@ -179,7 +179,7 @@ namespace Kephas.Cryptography
         /// <param name="output">The output stream.</param>
         /// <param name="algorithm">The algorithm.</param>
         /// <param name="encryptionContext">Context for the encryption.</param>
-        protected virtual void Decrypt(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext)
+        protected virtual void Decrypt(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext)
         {
             var iv = this.ReadIV(input);
             algorithm.IV = iv;
@@ -203,7 +203,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task DecryptAsync(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)
+        protected virtual async Task DecryptAsync(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)
         {
             var iv = this.ReadIV(input);
             algorithm.IV = iv;
@@ -247,7 +247,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The new symmetric algorithm.
         /// </returns>
-        protected virtual SymmetricAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)
+        protected virtual TAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)
         {
             var algorithm = new TAlgorithm();
 
