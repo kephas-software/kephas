@@ -104,6 +104,19 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         }
 
         [Test]
+        public void Serialize_cyclic()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new CyclicItem();
+            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializedObj = serializer.Serialize(obj, serializationContext);
+            // TODO due to the fact that it doesn't crash, the cyclic serialization is considered successful,
+            // although it should crash.
+            // see also: https://forums.servicestack.net/t/circular-references-in-jsonserializer-and-stackoverflow-exceptions/5725/18
+        }
+
+        [Test]
         public async Task SerializeAsync_Expando()
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
@@ -336,6 +349,11 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         public class ExpandoEntity : Expando
         {
             public string Description { get; set; }
+        }
+
+        public class CyclicItem
+        {
+            public CyclicItem Myself => this;
         }
     }
 }

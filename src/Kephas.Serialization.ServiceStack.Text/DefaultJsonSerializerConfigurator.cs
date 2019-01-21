@@ -12,15 +12,20 @@ namespace Kephas.Serialization.ServiceStack.Text
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
+    using global::ServiceStack.Text;
+
+    using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Serialization.ServiceStack.Text.Composition;
     using Kephas.Serialization.ServiceStack.Text.Resources;
+    using Kephas.Serialization.ServiceStack.Text.TypeSerializers;
     using Kephas.Services;
-
-    using global::ServiceStack.Text;
 
     /// <summary>
     /// A default JSON serializer configurator.
@@ -28,6 +33,17 @@ namespace Kephas.Serialization.ServiceStack.Text
     [OverridePriority(Priority.Low)]
     public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator
     {
+        /// <summary>
+        /// The configure type serialization method.
+        /// </summary>
+        private static readonly MethodInfo ConfigureTypeSerializationMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => ((DefaultJsonSerializerConfigurator)null).ConfigureTypeSerialization<int>(null));
+
+        /// <summary>
+        /// The type serializer factories.
+        /// </summary>
+        private readonly ICollection<IExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>> typeSerializerFactories;
+
         /// <summary>
         /// True if this object is configured.
         /// </summary>
@@ -37,10 +53,12 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// Initializes a new instance of the <see cref="DefaultJsonSerializerConfigurator"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        public DefaultJsonSerializerConfigurator(ITypeResolver typeResolver)
+        /// <param name="typeSerializerFactories">Optional. The type serializer factories.</param>
+        public DefaultJsonSerializerConfigurator(ITypeResolver typeResolver, ICollection<IExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>> typeSerializerFactories = null)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
 
+            this.typeSerializerFactories = typeSerializerFactories ?? this.GetDefaultTypeSerializers();
             this.TypeResolver = typeResolver;
             this.TypeAttr = "$type";
         }
@@ -96,47 +114,34 @@ namespace Kephas.Serialization.ServiceStack.Text
             // without knowing the type of the deserialized object.
             JsConfig.TypeAttr = this.TypeAttr;
             JsConfig.IncludeTypeInfo = true;
+
+            // try to avoid StackOverflow exceptions even if this is not what one
+            // would really need, better a normal exception
+            // https://forums.servicestack.net/t/circular-references-in-jsonserializer-and-stackoverflow-exceptions/5725/18
+            JsConfig.MaxDepth = 100;
+
             JsConfig.EmitCamelCaseNames = true;
             JsConfig.PropertyConvention = PropertyConvention.Lenient;
             JsConfig.ExcludeDefaultValues = false;
-            JsConfig.ThrowOnDeserializationError = false;
             JsConfig.ConvertObjectTypesIntoStringDictionary = true;
             JsConfig.TryToParsePrimitiveTypeValues = false; // otherwise, for untyped jsons, any string value which can't be converted to primitive types will return null.
             JsConfig.DateHandler = DateHandler.ISO8601;
+
+            JsConfig.ThrowOnDeserializationError = false;
             JsConfig.OnDeserializationError = (instance, type, name, str, exception) =>
             {
                 this.Logger.Error(exception, $"Error on deserializing {instance}, type: {type}, name: {name}, str: {str}.");
                 throw exception;
             };
-            var originalTypeFinder = JsConfig.TypeFinder;
-            JsConfig.TypeFinder = typeName =>
-            {
-                try
-                {
-                    var type = originalTypeFinder(typeName);
-                    if (type == null)
-                    {
-                        type = this.TypeResolver.ResolveType(typeName, false);
-                        if (type == null)
-                        {
-                            this.Logger.Warn($"Could not resolve type {typeName}.");
-                        }
-                    }
+            
+            this.ConfigureTypeFinder();
 
-                    return type;
-                }
-                catch (Exception exception)
-                {
-                    this.Logger.Error(exception, $"Errors occurred when trying to resolve type {typeName}.");
-                    throw;
-                }
-            };
-            JsConfig<IExpando>.RawDeserializeFn = json => new JsonExpando(json);
-            JsConfig<IExpando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
-            JsConfig<Expando>.RawDeserializeFn = json => new JsonExpando(json);
-            JsConfig<Expando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
-            JsConfig<JsonExpando>.RawDeserializeFn = json => new JsonExpando(json);
-            JsConfig<JsonExpando>.RawSerializeFn = expando => global::ServiceStack.Text.JsonSerializer.SerializeToString(ToDictionaryDeep(expando));
+            foreach (var typeSerializerFactory in this.typeSerializerFactories)
+            {
+                var typeSerializer = typeSerializerFactory.CreateExportedValue();
+                var configureTypeSerialization = ConfigureTypeSerializationMethod.MakeGenericMethod(typeSerializerFactory.Metadata.ValueType);
+                configureTypeSerialization.Call(this, typeSerializer);
+            }
 
             this.isConfigured = true;
 
@@ -144,15 +149,71 @@ namespace Kephas.Serialization.ServiceStack.Text
         }
 
         /// <summary>
-        /// Converts an expando to a dictionary on all its depth.
+        /// Configures the type finder.
         /// </summary>
-        /// <param name="expando">The expando.</param>
-        /// <returns>
-        /// Expando as an IDictionary&lt;string,object&gt;.
-        /// </returns>
-        private static IDictionary<string, object> ToDictionaryDeep(IExpando expando)
+        private void ConfigureTypeFinder()
         {
-            return expando.ToDictionary(valueFunc: v => v is IExpando expandoValue ? ToDictionaryDeep(expandoValue) : v);
+            var originalTypeFinder = JsConfig.TypeFinder;
+            JsConfig.TypeFinder = typeName =>
+                {
+                    try
+                    {
+                        var type = originalTypeFinder(typeName);
+                        if (type == null)
+                        {
+                            type = this.TypeResolver.ResolveType(typeName, false);
+                            if (type == null)
+                            {
+                                this.Logger.Warn($"Could not resolve type {typeName}.");
+                            }
+                        }
+
+                        return type;
+                    }
+                    catch (Exception exception)
+                    {
+                        this.Logger.Error(exception, $"Errors occurred when trying to resolve type {typeName}.");
+                        throw;
+                    }
+                };
+        }
+
+        /// <summary>
+        /// Gets the default type serializers.
+        /// </summary>
+        /// <returns>
+        /// The default type serializers.
+        /// </returns>
+        private ICollection<IExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>> GetDefaultTypeSerializers()
+        {
+            return new List<IExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>>()
+                       {
+                           new ExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>(
+                               () => new ExpandoSerializer(),
+                               new TypeJsonSerializerMetadata(typeof(Expando))),
+                           new ExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>(
+                               () => new ExpandoInterfaceSerializer(), 
+                               new TypeJsonSerializerMetadata(typeof(IExpando))),
+                           new ExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>(
+                               () => new JsonExpandoSerializer(),
+                               new TypeJsonSerializerMetadata(typeof(JsonExpando))),
+                       };
+        }
+
+        /// <summary>
+        /// Configure custom type serialization.
+        /// </summary>
+        /// <typeparam name="TValue">Type of the value.</typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns>
+        /// This configurator.
+        /// </returns>
+        private DefaultJsonSerializerConfigurator ConfigureTypeSerialization<TValue>(ITypeJsonSerializer<TValue> serializer)
+        {
+            JsConfig<TValue>.RawDeserializeFn = serializer.RawDeserialize;
+            JsConfig<TValue>.RawSerializeFn = serializer.RawSerialize;
+
+            return this;
         }
     }
 }
