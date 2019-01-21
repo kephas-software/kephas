@@ -20,5 +20,12 @@ namespace Kephas.Cryptography
     [OverridePriority(Priority.Low)]
     public class AesEncryptionService : SymmetricEncryptionServiceBase<AesManaged>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
+        /// </summary>
+        public AesEncryptionService()
+            : base(ctx => new AesManaged())
+        {
+        }
     }
 }

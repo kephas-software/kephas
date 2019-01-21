@@ -26,8 +26,24 @@ namespace Kephas.Cryptography
     /// </summary>
     /// <typeparam name="TAlgorithm">Type of the algorithm.</typeparam>
     public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService, ISyncEncryptionService
-       where TAlgorithm : SymmetricAlgorithm, new()
+       where TAlgorithm : SymmetricAlgorithm
     {
+        /// <summary>
+        /// The algorithm constructor.
+        /// </summary>
+        private readonly Func<IEncryptionContext, TAlgorithm> algorithmCtor;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricEncryptionServiceBase{TAlgorithm}"/> class.
+        /// </summary>
+        /// <param name="algorithmCtor">The algorithm constructor.</param>
+        protected SymmetricEncryptionServiceBase(Func<IEncryptionContext, TAlgorithm> algorithmCtor)
+        {
+            Requires.NotNull(algorithmCtor, nameof(algorithmCtor));
+
+            this.algorithmCtor = algorithmCtor;
+        }
+
         /// <summary>
         /// Generates a key.
         /// </summary>
@@ -249,7 +265,7 @@ namespace Kephas.Cryptography
         /// </returns>
         protected virtual TAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)
         {
-            var algorithm = new TAlgorithm();
+            var algorithm = this.algorithmCtor(encryptionContext);
 
             var keySize = this.GetKeySize(encryptionContext);
             if (!algorithm.ValidKeySize(keySize))
