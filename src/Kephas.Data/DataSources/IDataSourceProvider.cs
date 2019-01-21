@@ -24,7 +24,7 @@ namespace Kephas.Data.DataSources
     public interface IDataSourceProvider
     {
         /// <summary>
-        /// Determines whether the provider can handle the list source request.
+        /// Determines whether the provider can handle the data source request.
         /// </summary>
         /// <param name="propertyInfo">Information describing the property.</param>
         /// <param name="context">The context.</param>
@@ -40,7 +40,7 @@ namespace Kephas.Data.DataSources
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// The list source promise.
+        /// A promise of the data source.
         /// </returns>
         Task<IEnumerable<object>> GetDataSourceAsync(
             IPropertyInfo propertyInfo,
