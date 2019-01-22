@@ -133,7 +133,7 @@ namespace Kephas.Serialization.ServiceStack.Text
                 this.Logger.Error(exception, $"Error on deserializing {instance}, type: {type}, name: {name}, str: {str}.");
                 throw exception;
             };
-            
+
             this.ConfigureTypeFinder();
 
             foreach (var typeSerializerFactory in this.typeSerializerFactories)
@@ -192,7 +192,7 @@ namespace Kephas.Serialization.ServiceStack.Text
                                () => new ExpandoSerializer(),
                                new TypeJsonSerializerMetadata(typeof(Expando))),
                            new ExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>(
-                               () => new ExpandoInterfaceSerializer(), 
+                               () => new ExpandoInterfaceSerializer(),
                                new TypeJsonSerializerMetadata(typeof(IExpando))),
                            new ExportFactory<ITypeJsonSerializer, TypeJsonSerializerMetadata>(
                                () => new JsonExpandoSerializer(),
