@@ -53,15 +53,17 @@ namespace Kephas.Cryptography
         /// </returns>
         public virtual byte[] GenerateKey(IEncryptionContext encryptionContext = null)
         {
-            var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
-            var keySize = encryptionContext?.KeySize;
-            if (keySize != null)
+            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
-                algorithm.KeySize = keySize.Value;
-            }
+                var keySize = encryptionContext?.KeySize;
+                if (keySize != null)
+                {
+                    algorithm.KeySize = keySize.Value;
+                }
 
-            algorithm.GenerateKey();
-            return algorithm.Key;
+                algorithm.GenerateKey();
+                return algorithm.Key;
+            }
         }
 
         /// <summary>
@@ -83,8 +85,10 @@ namespace Kephas.Cryptography
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            var algorithm = this.CreateSymmetricAlgorithm(context);
-            return this.EncryptAsync(input, output, algorithm, context, cancellationToken);
+            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            {
+                return this.EncryptAsync(input, output, algorithm, context, cancellationToken);
+            }
         }
 
         /// <summary>
@@ -106,8 +110,10 @@ namespace Kephas.Cryptography
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            var algorithm = this.CreateSymmetricAlgorithm(context);
-            return this.DecryptAsync(input, output, algorithm, context, cancellationToken);
+            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            {
+                return this.DecryptAsync(input, output, algorithm, context, cancellationToken);
+            }
         }
 
         /// <summary>
@@ -121,8 +127,10 @@ namespace Kephas.Cryptography
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            var algorithm = this.CreateSymmetricAlgorithm(context);
-            this.Encrypt(input, output, algorithm, context);
+            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            {
+                this.Encrypt(input, output, algorithm, context);
+            }
         }
 
         /// <summary>
@@ -136,8 +144,10 @@ namespace Kephas.Cryptography
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            var algorithm = this.CreateSymmetricAlgorithm(context);
-            this.Decrypt(input, output, algorithm, context);
+            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            {
+                this.Decrypt(input, output, algorithm, context);
+            }
         }
 
         /// <summary>
