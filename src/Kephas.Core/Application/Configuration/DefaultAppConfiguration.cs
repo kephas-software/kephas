@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETSTANDARD2_0
-#else
-
 namespace Kephas.Application.Configuration
 {
     using System.Collections.Concurrent;
@@ -106,5 +103,3 @@ namespace Kephas.Application.Configuration
         }
     }
 }
-
-#endif

@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETCOREAPP2_0
-#else
-
 namespace Kephas.Core.Tests.Application.Configuration
 {
     using Kephas.Application.Configuration;
@@ -31,6 +28,9 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreSame(value, service["hello"]);
         }
 
+#if NETCOREAPP2_0
+        [Ignore("Find a way to access the assembly config file.")]
+#endif
         [Test]
         public void GetSettings_from_appSettings()
         {
@@ -40,6 +40,9 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
         }
 
+#if NETCOREAPP2_0
+        [Ignore("Find a way to access the assembly config file.")]
+#endif
         [Test]
         public void GetSettings_from_appSettings_read_write()
         {
@@ -52,6 +55,9 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myNewValue", settings["MySettings"]);
         }
 
+#if NETCOREAPP2_0
+        [Ignore("Find a way to access the assembly config file.")]
+#endif
         [Test]
         public void GetSettings_typed_from_appSettings()
         {
@@ -61,6 +67,9 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myOtherValue", settings.MyOtherSetting);
         }
 
+#if NETCOREAPP2_0
+        [Ignore("Find a way to access the assembly config file.")]
+#endif
         [Test]
         public void GetSettings_typed_from_section()
         {
@@ -105,5 +114,3 @@ namespace Kephas.Core.Tests.Application.Configuration
         }
     }
 }
-
-#endif
