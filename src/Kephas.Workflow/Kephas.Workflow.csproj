@@ -5,12 +5,12 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>5.0.0</Version>
+        <Version>5.1.0</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>5.0.0.0</AssemblyVersion>
-        <FileVersion>5.0.0.0</FileVersion>
+        <AssemblyVersion>5.1.0.0</AssemblyVersion>
+        <FileVersion>5.1.0.0</FileVersion>
         <Description>Provides the infrastructure for workflow execution.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

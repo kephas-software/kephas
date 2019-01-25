@@ -6,9 +6,9 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <RootNamespace>Kephas.ServiceStack</RootNamespace>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>5.0.0</Version>
-        <AssemblyVersion>5.0.0.0</AssemblyVersion>
-        <FileVersion>5.0.0.0</FileVersion>
+        <Version>5.1.0</Version>
+        <AssemblyVersion>5.1.0.0</AssemblyVersion>
+        <FileVersion>5.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -80,12 +80,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="ServiceStack">
-            <HintPath>..\..\Packages\ServiceStack.5.0.0\lib\net45\ServiceStack.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>
