@@ -38,6 +38,8 @@ namespace Kephas.Model.Runtime.Construction
                              {
                                  Position = runtimeElement.Position,
                                  IsOptional = runtimeElement.IsOptional,
+                                 IsIn = runtimeElement.IsIn,
+                                 IsOut = runtimeElement.IsOut,
                              };
             return parameter;
         }

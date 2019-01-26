@@ -66,6 +66,22 @@ namespace Kephas.Model.Elements
         public bool IsOptional { get; protected internal set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the parameter is for input.
+        /// </summary>
+        /// <value>
+        /// True if this parameter is for input, false if not.
+        /// </value>
+        public bool IsIn { get; protected internal set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the parameter is for output.
+        /// </summary>
+        /// <value>
+        /// True if this parameter is for output, false if not.
+        /// </value>
+        public bool IsOut { get; protected internal set; }
+
+        /// <summary>
         /// Sets the specified value.
         /// </summary>
         /// <param name="obj">The object.</param>
