@@ -16,7 +16,7 @@ using System.Resources;
 // associated with an assembly.
 [assembly: AssemblyCompany("Kephas Software SRL")]
 [assembly: AssemblyProduct("Kephas Framework")]
-[assembly: AssemblyCopyright("Copyright © Kephas Software SRL 2010-2018")]
+[assembly: AssemblyCopyright("Copyright © Kephas Software SRL 2010-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]

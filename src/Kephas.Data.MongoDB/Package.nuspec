@@ -15,7 +15,7 @@
         <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
-        <copyright>Copyright Kephas Software SRL 2010-2018</copyright>
+        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="Kephas.Data" version="$refversion$" />

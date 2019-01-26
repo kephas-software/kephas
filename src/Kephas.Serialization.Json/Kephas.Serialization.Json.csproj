@@ -10,7 +10,7 @@
         <Product>Kephas Framework</Product>
         <AssemblyVersion>5.1.0.0</AssemblyVersion>
         <FileVersion>5.1.0.0</FileVersion>
-        <Copyright>Copyright © Kephas Software SRL 2010-2018</Copyright>
+        <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides JSON serialization infrastructure using the Newtonsoft.Json implementation.</Description>
         <Version>5.1.0</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

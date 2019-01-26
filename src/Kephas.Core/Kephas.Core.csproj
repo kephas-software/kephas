@@ -12,7 +12,7 @@
         <AssemblyVersion>5.1.0.0</AssemblyVersion>
         <FileVersion>5.1.0.0</FileVersion>
         <Description>Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application management, and others.</Description>
-        <Copyright>Copyright Kephas Software SRL 2010-2018</Copyright>
+        <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
