@@ -11,11 +11,12 @@
 namespace Kephas.Workflow.Model
 {
     using Kephas.Model;
+    using Kephas.Workflow.Reflection;
 
     /// <summary>
     /// An activity type holds metadata about the activities involved in the workflow processing.
     /// </summary>
-    public interface IActivityType : IClassifier
+    public interface IActivityType : IClassifier, IActivityInfo
     {
     }
 }

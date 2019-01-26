@@ -25,15 +25,15 @@ namespace Kephas.Workflow
         /// <summary>
         /// Executes the task asynchronously.
         /// </summary>
-        /// <param name="taskInfo">The task information.</param>
-        /// <param name="arguments">The arguments.</param>
+        /// <param name="activity">The activity to execute.</param>
         /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of an <see cref="IExecutionResult"/>.
+        /// A promise of a result.
         /// </returns>
         Task<IExpando> ExecuteAsync(
             IActivity activity,
             IWorkflowExecutionContext context,
-            CancellationToken cancellationToken = default);    }
+            CancellationToken cancellationToken = default);
+    }
 }

@@ -15,10 +15,14 @@ namespace Kephas.Workflow
     /// <summary>
     /// Base contract for activities.
     /// </summary>
-    /// <remarks>
-    /// The values in the expando are the activity input arguments.
-    /// </remarks>
     public interface IActivity : IExpando, IInstance
     {
+        /// <summary>
+        /// Gets the arguments for the execution.
+        /// </summary>
+        /// <value>
+        /// The arguments.
+        /// </value>
+        IExpando Arguments { get; }
     }
 }
