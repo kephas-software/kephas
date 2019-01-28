@@ -18,6 +18,13 @@ namespace Kephas.Workflow
     /// <summary>
     /// An activity is an executable instance which receives a target, arguments, and an executing context upon execution.
     /// </summary>
+    /// <remarks>
+    /// An activity instance may be executed only once. 
+    /// To execute an activity multiple times, create for each execution an instance and execute it.
+    /// During the execution, it may be canceled or paused,
+    /// and also debuggers may be attached to provide development support.
+    /// The state provide the flags during the execution.
+    /// </remarks>
     public interface IActivity : IExpando, IInstance
     {
         /// <summary>
@@ -65,7 +72,7 @@ namespace Kephas.Workflow
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the execute.
+        /// An asynchronous result that yields the execution result.
         /// </returns>
         Task<IExpando> ExecuteAsync(
             object target,

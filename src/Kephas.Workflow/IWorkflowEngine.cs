@@ -23,16 +23,20 @@ namespace Kephas.Workflow
     public interface IWorkflowEngine
     {
         /// <summary>
-        /// Executes the task asynchronously.
+        /// Executes the activity asynchronously, enabling the activity execution behaviors.
         /// </summary>
         /// <param name="activity">The activity to execute.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="target">The activity target.</param>
+        /// <param name="arguments">The execution arguments.</param>
+        /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of a result.
+        /// A promise of the execution result.
         /// </returns>
         Task<IExpando> ExecuteAsync(
             IActivity activity,
+            object target,
+            IExpando arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default);
     }
