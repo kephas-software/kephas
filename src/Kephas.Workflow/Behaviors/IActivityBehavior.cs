@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IWorkflowExecutionBehavior.cs" company="Kephas Software SRL">
+// <copyright file="IActivityBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IWorkflowExecutionBehavior interface.
+//   Declares the IActivityBehavior interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,9 @@ namespace Kephas.Workflow.Behaviors
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for workflow execution behavior.
+    /// Base contract for controlling the execution of activities.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
-    public interface IWorkflowExecutionBehavior
+    public interface IActivityBehavior
     {
         /// <summary>
         /// Interception called before invoking the service to execute the activity.
@@ -27,7 +26,7 @@ namespace Kephas.Workflow.Behaviors
         /// <param name="context">The execution context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        Task BeforeExecuteAsync(IWorkflowExecutionContext context, CancellationToken token);
+        Task BeforeExecuteAsync(IActivityContext context, CancellationToken token);
 
         /// <summary>
         /// Interception called after invoking the service to execute the activity.
@@ -39,6 +38,16 @@ namespace Kephas.Workflow.Behaviors
         /// The context will contain the response returned by the service.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        Task AfterExecuteAsync(IWorkflowExecutionContext context, CancellationToken token);
+        Task AfterExecuteAsync(IActivityContext context, CancellationToken token);
+    }
+
+    /// <summary>
+    /// Shared application service contract for controlling the execution of activities.
+    /// </summary>
+    /// <typeparam name="TActivity">Type of the activity.</typeparam>
+    [SharedAppServiceContract(AllowMultiple = true, ContractType = typeof(IActivityBehavior))]
+    public interface IActivityBehavior<TActivity> : IActivityBehavior
+        where TActivity : IActivity
+    {
     }
 }

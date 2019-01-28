@@ -42,8 +42,10 @@ $paths = @(
     "..\Kephas.Scripting",
     "..\Kephas.Scripting.CSharp",
     "..\Kephas.Orchestration",
-    "..\Kephas.AspNetCore"
-    "..\TestingFramework\Kephas.Testing.Composition.Mef"
+    "..\Kephas.AspNetCore",
+    "..\Kephas.Workflow",
+    "..\Kephas.Workflow.Model",
+    "..\TestingFramework\Kephas.Testing.Composition.Mef",
     "..\TestingFramework\Kephas.Testing.Model"
 )
 

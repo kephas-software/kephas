@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Workflow</id>
+        <version>$version$</version>
+        <title>Kephas.Workflow</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>
+            Provides the infrastructure for the workflow execution.
+            Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides the infrastructure for the workflow execution.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <dependencies>
+            <dependency id="Kephas.Core" version="$refversion$" />
+            <dependency id="System.ValueTuple" version="4.3.0" />
+        </dependencies>
+        <references>
+            <reference file="Kephas.Workflow.dll" />
+        </references>
+        <tags>kephas framework workflow activity</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net45\Kephas.Workflow.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Workflow.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Workflow.xml" target="lib\net45" />
+    </files>
+</package>

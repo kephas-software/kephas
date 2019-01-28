@@ -33,7 +33,7 @@ namespace Kephas.Workflow
         /// </returns>
         Task<IExpando> ExecuteAsync(
             IActivity activity,
-            IWorkflowExecutionContext context,
+            IActivityContext context,
             CancellationToken cancellationToken = default);
     }
 }

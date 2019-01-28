@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IWorkflowExecutionContext.cs" company="Kephas Software SRL">
+// <copyright file="IActivityContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IWorkflowExecutionContext interface.
+//   Declares the IActivityContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ namespace Kephas.Workflow
     /// <summary>
     /// Interface for workflow execution context.
     /// </summary>
-    public interface IWorkflowExecutionContext : IContext
+    public interface IActivityContext : IContext
     {
         /// <summary>
         /// Gets the message processor.
