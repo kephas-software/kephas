@@ -85,6 +85,24 @@ namespace Kephas.Core.Tests.Dynamic
             Assert.AreEqual(3, expando["you"]);
         }
 
+        [Test]
+        public void GetLaxValue_string()
+        {
+            var expando = new Expando { ["myWay"] = "Frank Sinatra" };
+            var actual = expando.GetLaxValue<string>("MyWay");
+
+            Assert.AreEqual("Frank Sinatra", actual);
+        }
+
+        [Test]
+        public void GetLaxValue_long_as_string()
+        {
+            var expando = new Expando { ["costs"] = "120000" };
+            var actual = expando.GetLaxValue<long>("Costs");
+
+            Assert.AreEqual(120000L, actual);
+        }
+
         public class ExpandoWithReadonlyProperties : Expando
         {
             public ExpandoWithReadonlyProperties(string name)
