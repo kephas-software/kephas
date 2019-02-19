@@ -33,7 +33,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        Task<IExpando> ExecuteAsync(
+        Task<object> ExecuteAsync(
             IActivity activity,
             object target,
             IExpando arguments,

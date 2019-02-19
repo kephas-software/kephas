@@ -11,7 +11,10 @@
 namespace Kephas.Workflow.Reflection
 {
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
@@ -34,5 +37,23 @@ namespace Kephas.Workflow.Reflection
         /// The method parameters.
         /// </value>
         IEnumerable<IParameterInfo> Parameters { get; }
+
+        /// <summary>
+        /// Executes the activity asynchronously.
+        /// </summary>
+        /// <param name="activity">The activity to execute.</param>
+        /// <param name="target">The activity target.</param>
+        /// <param name="arguments">The execution arguments.</param>
+        /// <param name="context">The execution context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the output.
+        /// </returns>
+        Task<object> ExecuteAsync(
+            IActivity activity,
+            object target,
+            IExpando arguments,
+            IActivityContext context,
+            CancellationToken cancellationToken = default);
     }
 }
