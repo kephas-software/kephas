@@ -11,6 +11,7 @@
 namespace Kephas.Logging
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.ExceptionHandling;
     using Kephas.Services;
@@ -93,6 +94,29 @@ namespace Kephas.Logging
     /// </summary>
     public static class LoggerExtensions
     {
+        /// <summary>
+        /// Merges the loggers into one aggregate.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="loggers">A variable-length parameters list containing loggers.</param>
+        /// <returns>
+        /// An aggregated logger.
+        /// </returns>
+        public static ILogger Merge(this ILogger logger, params ILogger[] loggers)
+        {
+            if (loggers == null || loggers.Length == 0)
+            {
+                return logger;
+            }
+
+            if (logger == null)
+            {
+                return loggers.Length == 1 ? loggers[0] : new AggregateLogger(loggers);
+            }
+
+            return new AggregateLogger(new List<ILogger>(loggers) { logger });
+        }
+
         /// <summary>
         /// Gets the log level for an exception.
         /// This is calculated to be <see cref="LogLevel.Error"/> if the exception does not implement <see cref="ISeverityQualifiedException"/>,
