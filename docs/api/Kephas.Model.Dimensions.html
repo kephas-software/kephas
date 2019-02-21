@@ -81,25 +81,25 @@
       <section><p>The app dimension is used to model multiple applications. 
 One possible use is the association of each model with a persistence store, like a database. </p>
 </section>
-      <h4><a class="xref" href="Kephas.Model.Dimensions.IAppFamilyDimension.html">IAppFamilyDimension</a></h4>
-      <section><p>Dimension identifying application families. The application families are specializations at application level
-comprising for each layer specializations of their elements. For example, Kephas is the bottom-most layer providing 
-core functionality; a general purpose CRM system may be built upon it providing common CRM functionality; further on 
-a customer specific layer may be added to customize the CRM core with customer specific needs. Following this principle,
-an application may be structured in such a way that it enables a maximum reuse of the code.</p>
+      <h4><a class="xref" href="Kephas.Model.Dimensions.IAreaDimension.html">IAreaDimension</a></h4>
+      <section><p>Dimension identifying an application area. Application areas may be domain models, client models, 
+application services, messaging, and so on.</p>
 </section>
       <h4><a class="xref" href="Kephas.Model.Dimensions.IAspectDimension.html">IAspectDimension</a></h4>
       <section><p>Dimension identifying orthogonal aspects within the application. 
 By default, Kephas provide a default dimension element named &apos;Main&apos;,
 identifying the main concern of a model element.</p>
 </section>
+      <h4><a class="xref" href="Kephas.Model.Dimensions.ILayerDimension.html">ILayerDimension</a></h4>
+      <section><p>Dimension identifying layers. The layers contain element specializations: the higher the layer, the higher the specialization.
+For example, Foundation is the bottom-most layer providing core functionality;
+a general purpose CRM system may be built upon it providing common CRM functionality;
+further on a customer specific layer may be added to customize the CRM core with customer specific needs.
+Following this principle, an application may be structured in such a way that it enables a maximum reuse of the code.</p>
+</section>
       <h4><a class="xref" href="Kephas.Model.Dimensions.IModuleDimension.html">IModuleDimension</a></h4>
       <section><p>Dimension identifying modules within the application. Modules are functional units of an application which are autonomous
 but at the same time possibly integrated with one another.</p>
-</section>
-      <h4><a class="xref" href="Kephas.Model.Dimensions.IScopeDimension.html">IScopeDimension</a></h4>
-      <section><p>Dimension identifying an application scope. Application scopes may be domain models, client models, 
-application services and so on.</p>
 </section>
 </article>
           </div>

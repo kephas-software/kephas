@@ -1,321 +1,357 @@
 {
-  "metadata": [
-    {
-      "src": [
+    "metadata": [
         {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.CodeAnalysis",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Composition.Mef",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Core",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.Client",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.Endpoints",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.InMemory",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.IO",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.Model",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Data.MongoDB",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Localization",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Logging.Log4Net",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Logging.NLog",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Mail",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Mail.MailKit",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Messaging",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Messaging.Model",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Model",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Orchestration",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Scripting",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Scripting.CSharp",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Serialization.Json",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.Serialization.ServiceStack.Text",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
-        },
-        {
-          "files": [
-            "*.csproj"
-          ],
-          "cwd": "./Kephas.ServiceStack",
-          "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**"
-          ]
+            "src": [
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.AspNetCore",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.CodeAnalysis",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Composition.Mef",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Core",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.Client",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.Endpoints",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.IO",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.Model",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.Model.Abstractions",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Data.MongoDB",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Logging.Log4Net",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Logging.NLog",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Mail",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Mail.MailKit",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Messaging",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Messaging.Model",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Model",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.NpgSql",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Orchestration",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Scripting",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Scripting.CSharp",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Serialization.Json",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Serialization.ServiceStack.Text",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.ServiceStack",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Workflow",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Workflow.Model",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                }
+            ],
+            "dest": "obj/api",
+            "properties": {
+                "TargetFramework": "netstandard2.0"
+            }
         }
-      ],
-      "dest": "obj/api"
+    ],
+    "build": {
+        "content": [
+            {
+                "files": [
+                    "api/**.yml"
+                ],
+                "cwd": "obj"
+            },
+            {
+                "files": [
+                    "api/*.md",
+                    "articles/**.md",
+                    "toc.yml",
+                    "*.md"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "images/**"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
+        "overwrite": [
+            {
+                "files": [
+                    "apidoc/**.md"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
+        "dest": "../docs",
+        "template": [
+            "default"
+        ]
     }
-  ],
-  "build": {
-    "content": [
-      {
-        "files": [
-          "api/**.yml"
-        ],
-        "cwd": "obj"
-      },
-      {
-        "files": [
-          "api/*.md",
-          "articles/**.md",
-          "toc.yml",
-          "*.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
-        ]
-      }
-    ],
-    "resource": [
-      {
-        "files": [
-          "images/**"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
-        ]
-      }
-    ],
-    "overwrite": [
-      {
-        "files": [
-          "apidoc/**.md"
-        ],
-        "exclude": [
-          "obj/**",
-          "_site/**"
-        ]
-      }
-    ],
-    "dest": "../docs",
-    "template": [
-      "default"
-    ]
-  }
 }

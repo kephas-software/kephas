@@ -121,7 +121,7 @@
       <a class="xref" href="Kephas.Reflection.IElementInfo.html#Kephas_Reflection_IElementInfo_Name">IElementInfo.Name</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
@@ -149,7 +149,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_BaseClassifier.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.BaseClassifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L74">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_BaseClassifier_" data-uid="Kephas.Model.IClassifier.BaseClassifier*"></a>
   <h4 id="Kephas_Model_IClassifier_BaseClassifier" data-uid="Kephas.Model.IClassifier.BaseClassifier">BaseClassifier</h4>
@@ -181,7 +181,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_BaseMixins.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.BaseMixins%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L82">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_BaseMixins_" data-uid="Kephas.Model.IClassifier.BaseMixins*"></a>
   <h4 id="Kephas_Model_IClassifier_BaseMixins" data-uid="Kephas.Model.IClassifier.BaseMixins">BaseMixins</h4>
@@ -213,7 +213,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_IsAspect.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.IsAspect%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L90">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L98">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_IsAspect_" data-uid="Kephas.Model.IClassifier.IsAspect*"></a>
   <h4 id="Kephas_Model_IClassifier_IsAspect" data-uid="Kephas.Model.IClassifier.IsAspect">IsAspect</h4>
@@ -245,7 +245,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_IsMixin.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.IsMixin%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L66">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_IsMixin_" data-uid="Kephas.Model.IClassifier.IsMixin*"></a>
   <h4 id="Kephas_Model_IClassifier_IsMixin" data-uid="Kephas.Model.IClassifier.IsMixin">IsMixin</h4>
@@ -300,6 +300,38 @@
       <tr>
         <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Model.INamedElement.html">INamedElement</a>&gt;</td>
         <td><p>The model element members.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_Methods.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.Methods%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L66">View Source</a>
+  </span>
+  <a id="Kephas_Model_IClassifier_Methods_" data-uid="Kephas.Model.IClassifier.Methods*"></a>
+  <h4 id="Kephas_Model_IClassifier_Methods" data-uid="Kephas.Model.IClassifier.Methods">Methods</h4>
+  <div class="markdown level1 summary"><p>Gets the classifier methods.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;IMethod&gt; Methods { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Model.IMethod.html">IMethod</a>&gt;</td>
+        <td><p>The classifier methods.</p>
 </td>
       </tr>
     </tbody>
@@ -413,7 +445,7 @@ For example, annotations use the &amp;quot;@&quot; discriminator, dimensions use
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_GetMember_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.GetMember(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L107">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L115">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_GetMember_" data-uid="Kephas.Model.IClassifier.GetMember*"></a>
   <h4 id="Kephas_Model_IClassifier_GetMember_System_String_System_Boolean_" data-uid="Kephas.Model.IClassifier.GetMember(System.String,System.Boolean)">GetMember(String, Boolean)</h4>
@@ -469,7 +501,7 @@ For example, annotations use the &amp;quot;@&quot; discriminator, dimensions use
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IClassifier_IsAspectOf_Kephas_Model_IClassifier_.md&amp;value=---%0Auid%3A%20Kephas.Model.IClassifier.IsAspectOf(Kephas.Model.IClassifier)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L99">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IClassifier.cs/#L107">View Source</a>
   </span>
   <a id="Kephas_Model_IClassifier_IsAspectOf_" data-uid="Kephas.Model.IClassifier.IsAspectOf*"></a>
   <h4 id="Kephas_Model_IClassifier_IsAspectOf_Kephas_Model_IClassifier_" data-uid="Kephas.Model.IClassifier.IsAspectOf(Kephas.Model.IClassifier)">IsAspectOf(IClassifier)</h4>
@@ -516,12 +548,6 @@ For example, annotations use the &amp;quot;@&quot; discriminator, dimensions use
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Reflection.LocalizationHelper.html#Kephas_Reflection_LocalizationHelper_GetLocalization_Kephas_Reflection_ITypeInfo_">LocalizationHelper.GetLocalization(ITypeInfo)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.Model.ModelElementExtensions.html#Kephas_Model_ModelElementExtensions_GetDeclaredMembers_Kephas_Model_IModelElement_">ModelElementExtensions.GetDeclaredMembers(IModelElement)</a>
   </div>
   <div>
@@ -558,7 +584,13 @@ For example, annotations use the &amp;quot;@&quot; discriminator, dimensions use
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

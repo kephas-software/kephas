@@ -87,6 +87,7 @@
       <div class="level4"><a class="xref" href="Kephas.Model.Runtime.Construction.AppServiceTypeConstructor.html">AppServiceTypeConstructor</a></div>
       <div class="level4"><a class="xref" href="Kephas.Model.Runtime.Construction.ClassifierConstructor.html">ClassifierConstructor</a></div>
       <div class="level4"><a class="xref" href="Kephas.Model.Runtime.Construction.ValueTypeConstructor.html">ValueTypeConstructor</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Model.Security.Authorization.Runtime.Construction.PermissionTypeConstructor.html">PermissionTypeConstructor</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -106,6 +107,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Model.Runtime.Construction.ModelElementConstructorBase-3.html#Kephas_Model_Runtime_Construction_ModelElementConstructorBase_3_ComputeMemberProperties_Kephas_Model_Construction_IModelConstructionContext__2_">ModelElementConstructorBase&lt;TModel, TModelContract, IRuntimeTypeInfo&gt;.ComputeMemberProperties(IModelConstructionContext, IRuntimeTypeInfo)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Model.Runtime.Construction.ModelElementConstructorBase-3.html#Kephas_Model_Runtime_Construction_ModelElementConstructorBase_3_ComputeMemberMethods_Kephas_Model_Construction_IModelConstructionContext__2_">ModelElementConstructorBase&lt;TModel, TModelContract, IRuntimeTypeInfo&gt;.ComputeMemberMethods(IModelConstructionContext, IRuntimeTypeInfo)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Model.Runtime.Construction.NamedElementConstructorBase-3.html#Kephas_Model_Runtime_Construction_NamedElementConstructorBase_3_ElementNameDiscriminator">NamedElementConstructorBase&lt;TModel, TModelContract, IRuntimeTypeInfo&gt;.ElementNameDiscriminator</a>
@@ -184,7 +188,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_CanCreateModelElement_Kephas_Model_Construction_IModelConstructionContext_Kephas_Runtime_IRuntimeTypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Construction.ClassifierConstructorBase%602.CanCreateModelElement(Kephas.Model.Construction.IModelConstructionContext%2CKephas.Runtime.IRuntimeTypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Construction/ClassifierConstructorBase.cs/#L35">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Construction/ClassifierConstructorBase.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_CanCreateModelElement_" data-uid="Kephas.Model.Runtime.Construction.ClassifierConstructorBase`2.CanCreateModelElement*"></a>
   <h4 id="Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_CanCreateModelElement_Kephas_Model_Construction_IModelConstructionContext_Kephas_Runtime_IRuntimeTypeInfo_" data-uid="Kephas.Model.Runtime.Construction.ClassifierConstructorBase`2.CanCreateModelElement(Kephas.Model.Construction.IModelConstructionContext,Kephas.Runtime.IRuntimeTypeInfo)">CanCreateModelElement(IModelConstructionContext, IRuntimeTypeInfo)</h4>
@@ -237,6 +241,58 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Kephas.Model.Runtime.Construction.NamedElementConstructorBase&lt;TModel, TModelContract, Kephas.Runtime.IRuntimeTypeInfo&gt;.CanCreateModelElement(Kephas.Model.Construction.IModelConstructionContext, Kephas.Runtime.IRuntimeTypeInfo)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_TryComputeNameCore_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Construction.ClassifierConstructorBase%602.TryComputeNameCore(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Construction/ClassifierConstructorBase.cs/#L52">View Source</a>
+  </span>
+  <a id="Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_TryComputeNameCore_" data-uid="Kephas.Model.Runtime.Construction.ClassifierConstructorBase`2.TryComputeNameCore*"></a>
+  <h4 id="Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2_TryComputeNameCore_System_Object_" data-uid="Kephas.Model.Runtime.Construction.ClassifierConstructorBase`2.TryComputeNameCore(System.Object)">TryComputeNameCore(Object)</h4>
+  <div class="markdown level1 summary"><p>Computes the model element name based on the runtime element.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override string TryComputeNameCore(object runtimeElement)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">runtimeElement</span></td>
+        <td><p>The runtime element.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The element name, or <code>null</code> if the name could not be computed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Model.Runtime.Construction.NamedElementConstructorBase&lt;TModel, TModelContract, Kephas.Runtime.IRuntimeTypeInfo&gt;.TryComputeNameCore(System.Object)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Model.Runtime.Construction.IRuntimeModelElementConstructor-3.html">IRuntimeModelElementConstructor&lt;TModel, TModelContract, TRuntime&gt;</a>
@@ -245,9 +301,6 @@
       <a class="xref" href="Kephas.Model.Runtime.Construction.IRuntimeModelElementConstructor.html">IRuntimeModelElementConstructor</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -279,7 +332,13 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -292,7 +351,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_Runtime_Construction_ClassifierConstructorBase_2.md&amp;value=---%0Auid%3A%20Kephas.Model.Runtime.Construction.ClassifierConstructorBase%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Construction/ClassifierConstructorBase.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/Runtime/Construction/ClassifierConstructorBase.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

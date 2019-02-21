@@ -90,7 +90,7 @@ public interface IDataExportService</code></pre>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_IDataExportService_ExportDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.IDataExportService.ExportDataAsync(Kephas.Data.IO.Export.IDataExportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/IDataExportService.cs/#L32">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/IDataExportService.cs/#L33">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Export_IDataExportService_ExportDataAsync_" data-uid="Kephas.Data.IO.Export.IDataExportService.ExportDataAsync*"></a>
   <h4 id="Kephas_Data_IO_Export_IDataExportService_ExportDataAsync_Kephas_Data_IO_Export_IDataExportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Export.IDataExportService.ExportDataAsync(Kephas.Data.IO.Export.IDataExportContext,System.Threading.CancellationToken)">ExportDataAsync(IDataExportContext, CancellationToken)</h4>
@@ -99,7 +99,7 @@ public interface IDataExportService</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IDataIOResult&gt; ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IOperationResult&gt; ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,16 +135,13 @@ public interface IDataExportService</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Data.IO.IDataIOResult.html">IDataIOResult</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Operations.IOperationResult.html">IOperationResult</a>&gt;</td>
         <td><p>A data export result.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -176,7 +173,13 @@ public interface IDataExportService</code></pre>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -189,7 +192,7 @@ public interface IDataExportService</code></pre>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Export_IDataExportService.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Export.IDataExportService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/IDataExportService.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Export/IDataExportService.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

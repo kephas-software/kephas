@@ -85,10 +85,17 @@ and added to the container.</p>
     <div class="level2"><a class="xref" href="Kephas.Services.AppServiceContractAttribute.html">AppServiceContractAttribute</a></div>
     <div class="level3"><span class="xref">SharedAppServiceContractAttribute</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Services.IAppServiceInfo.html">IAppServiceInfo</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_DefaultMetadataAttributeTypes">AppServiceContractAttribute.DefaultMetadataAttributeTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_EmptyMetadataAttributeTypes">AppServiceContractAttribute.EmptyMetadataAttributeTypes</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_Lifetime">AppServiceContractAttribute.Lifetime</a>
@@ -103,16 +110,16 @@ and added to the container.</p>
       <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_MetadataAttributes">AppServiceContractAttribute.MetadataAttributes</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_IsShared">AppServiceContractAttribute.IsShared</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_IsInstance">AppServiceContractAttribute.IsInstance</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_IsScopeShared">AppServiceContractAttribute.IsScopeShared</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_ContractType">AppServiceContractAttribute.ContractType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_Kephas_Services_IAppServiceInfo_Instance">AppServiceContractAttribute.IAppServiceInfo.Instance</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_Kephas_Services_IAppServiceInfo_InstanceFactory">AppServiceContractAttribute.IAppServiceInfo.InstanceFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_Kephas_Services_IAppServiceInfo_ScopeName">AppServiceContractAttribute.IAppServiceInfo.ScopeName</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html#Kephas_Services_AppServiceContractAttribute_RegisterDefaultMetadataAttributeTypes_System_Type___">AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes(Type[])</a>
@@ -249,7 +256,7 @@ and added to the container.</p>
   <h5 id="Kephas_Services_SharedAppServiceContractAttribute_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-public class SharedAppServiceContractAttribute : AppServiceContractAttribute</code></pre>
+public class SharedAppServiceContractAttribute : AppServiceContractAttribute, IAppServiceInfo</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -269,10 +276,11 @@ public class SharedAppServiceContractAttribute : AppServiceContractAttribute</co
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public SharedAppServiceContractAttribute()</code></pre>
   </div>
-  <h3 id="extensionmethods">Extension Methods</h3>
+  <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Services.IAppServiceInfo.html">IAppServiceInfo</a>
   </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -304,7 +312,22 @@ public class SharedAppServiceContractAttribute : AppServiceContractAttribute</co
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.AppServiceInfoExtensions.html#Kephas_Services_AppServiceInfoExtensions_IsShared_Kephas_Services_IAppServiceInfo_">AppServiceInfoExtensions.IsShared(IAppServiceInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.AppServiceInfoExtensions.html#Kephas_Services_AppServiceInfoExtensions_IsScopeShared_Kephas_Services_IAppServiceInfo_">AppServiceInfoExtensions.IsScopeShared(IAppServiceInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.AppServiceInfoExtensions.html#Kephas_Services_AppServiceInfoExtensions_IsInstance_Kephas_Services_IAppServiceInfo_">AppServiceInfoExtensions.IsInstance(IAppServiceInfo)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

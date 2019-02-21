@@ -97,6 +97,7 @@ This type allows you three ways to access its properties:
       <div class="level4"><a class="xref" href="Kephas.Application.AppRuntimeBase.html">AppRuntimeBase</a></div>
       <div class="level4"><a class="xref" href="Kephas.Application.Configuration.DynamicAppConfiguration.html">DynamicAppConfiguration</a></div>
       <div class="level4"><a class="xref" href="Kephas.Application.FeatureInfo.html">FeatureInfo</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Application.FeatureRef.html">FeatureRef</a></div>
       <div class="level4"><a class="xref" href="Kephas.Behavior.BehaviorValue-1.html">BehaviorValue&lt;TValue&gt;</a></div>
       <div class="level4"><a class="xref" href="Kephas.Composition.Configuration.CompositionSettings.html">CompositionSettings</a></div>
       <div class="level4"><a class="xref" href="Kephas.Composition.Metadata.ExportMetadataBase.html">ExportMetadataBase</a></div>
@@ -104,13 +105,14 @@ This type allows you three ways to access its properties:
       <div class="level4"><a class="xref" href="Kephas.Data.Capabilities.EntityInfo.html">EntityInfo</a></div>
       <div class="level4"><a class="xref" href="Kephas.Data.Commands.DataCommandResult.html">DataCommandResult</a></div>
       <div class="level4"><a class="xref" href="Kephas.Data.Conversion.DataConversionResult.html">DataConversionResult</a></div>
-      <div class="level4"><a class="xref" href="Kephas.Data.IO.DataIOResult.html">DataIOResult</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Data.EntityBase.html">EntityBase</a></div>
       <div class="level4"><a class="xref" href="Kephas.Dynamic.LazyExpando.html">LazyExpando</a></div>
       <div class="level4"><a class="xref" href="Kephas.Graphs.GraphEdge.html">GraphEdge</a></div>
       <div class="level4"><a class="xref" href="Kephas.Graphs.GraphNode.html">GraphNode</a></div>
       <div class="level4"><a class="xref" href="Kephas.Localization.Localization.html">Localization</a></div>
       <div class="level4"><a class="xref" href="Kephas.Messaging.MessageMatch.html">MessageMatch</a></div>
       <div class="level4"><a class="xref" href="Kephas.Model.Elements.NamedElementBase-1.html">NamedElementBase&lt;TModelContract&gt;</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Operations.OperationResult.html">OperationResult</a></div>
       <div class="level4"><a class="xref" href="Kephas.Orchestration.AppInfo.html">AppInfo</a></div>
       <div class="level4"><a class="xref" href="Kephas.Reflection.Dynamic.DynamicElementInfo.html">DynamicElementInfo</a></div>
       <div class="level4"><a class="xref" href="Kephas.Runtime.RuntimeAssemblyInfo.html">RuntimeAssemblyInfo</a></div>
@@ -122,6 +124,7 @@ This type allows you three ways to access its properties:
       <div class="level4"><a class="xref" href="Kephas.Scripting.Script.html">Script</a></div>
       <div class="level4"><a class="xref" href="Kephas.Scripting.ScriptGlobals.html">ScriptGlobals</a></div>
       <div class="level4"><a class="xref" href="Kephas.Serialization.ServiceStack.Text.JsonExpando.html">JsonExpando</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Services.AppServiceInfo.html">AppServiceInfo</a></div>
       <div class="level4"><a class="xref" href="Kephas.Services.Context.html">Context</a></div>
   </div>
   <div classs="implements">
@@ -139,7 +142,7 @@ This type allows you three ways to access its properties:
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames">ExpandoBase.GetDynamicMemberNames()</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasMember_System_String_">ExpandoBase.HasMember(String)</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_">ExpandoBase.HasDynamicMember(String)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__">ExpandoBase.TryGetMember(GetMemberBinder, Object)</a>
@@ -369,9 +372,6 @@ Dictionary!.</p>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -402,10 +402,19 @@ Dictionary!.</p>
       <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

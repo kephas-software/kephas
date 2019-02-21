@@ -1,0 +1,546 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DirectoryDataInstallerBase
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DirectoryDataInstallerBase
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase">
+  
+  
+  <h1 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase" class="text-break">Class DirectoryDataInstallerBase
+  </h1>
+  <div class="markdown level0 summary"><p>Base class for directory-based data installers.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html">DataIOInstallerBase</a></div>
+    <div class="level2"><span class="xref">DirectoryDataInstallerBase</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_Logger">DataIOInstallerBase.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_DataImportService">DataIOInstallerBase.DataImportService</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_DataSpaceFactory">DataIOInstallerBase.DataSpaceFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_InstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_">DataIOInstallerBase.InstallDataAsync(IDataSetupContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_UninstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_">DataIOInstallerBase.UninstallDataAsync(IDataSetupContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Collections_Generic_IEnumerable_System_String__System_Threading_CancellationToken_">DataIOInstallerBase.ImportDataAsync(IDataSetupContext, IEnumerable&lt;String&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataFileAsync_Kephas_Data_Setup_IDataSetupContext_System_String_System_Threading_CancellationToken_">DataIOInstallerBase.ImportDataFileAsync(IDataSetupContext, String, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataImportContext_Kephas_Data_Setup_IDataSetupContext_Kephas_Data_IDataSpace_">DataIOInstallerBase.CreateDataImportContext(IDataSetupContext, IDataSpace)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataSource_System_String_">DataIOInstallerBase.CreateDataSource(String)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.IO.Setup.html">Kephas.Data.IO.Setup</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
+  <h5 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class DirectoryDataInstallerBase : DataIOInstallerBase, IDataInstaller</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase__ctor_Kephas_Data_IO_Import_IDataImportService_Kephas_Composition_IExportFactory_Kephas_Data_IDataSpace__System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.%23ctor(Kephas.Data.IO.Import.IDataImportService%2CKephas.Composition.IExportFactory%7BKephas.Data.IDataSpace%7D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L32">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase__ctor_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.#ctor*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase__ctor_Kephas_Data_IO_Import_IDataImportService_Kephas_Composition_IExportFactory_Kephas_Data_IDataSpace__System_String_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.#ctor(Kephas.Data.IO.Import.IDataImportService,Kephas.Composition.IExportFactory{Kephas.Data.IDataSpace},System.String)">DirectoryDataInstallerBase(IDataImportService, IExportFactory&lt;IDataSpace&gt;, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.html">DirectoryDataInstallerBase</a>
+class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected DirectoryDataInstallerBase(IDataImportService dataImportService, IExportFactory&lt;IDataSpace&gt; dataSpaceFactory, string dataPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IO.Import.IDataImportService.html">IDataImportService</a></td>
+        <td><span class="parametername">dataImportService</span></td>
+        <td><p>The data import service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.IExportFactory-1.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a>&gt;</td>
+        <td><span class="parametername">dataSpaceFactory</span></td>
+        <td><p>The data space factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dataPath</span></td>
+        <td><p>The full pathname of the location containing the data files.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_DataPath.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.DataPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L44">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_DataPath_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.DataPath*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_DataPath" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.DataPath">DataPath</h4>
+  <div class="markdown level1 summary"><p>Gets the full pathname of the data file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string DataPath { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The full pathname of the data file.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePaths_System_String_System_Collections_Generic_IEnumerable_System_String__.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePaths(System.String%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L120">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePaths_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePaths*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePaths_System_String_System_Collections_Generic_IEnumerable_System_String__" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePaths(System.String,System.Collections.Generic.IEnumerable{System.String})">GetDataFilePaths(String, IEnumerable&lt;String&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the data files to be imported for the provided operation namespace.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetDataFilePaths(string operationPath, IEnumerable&lt;string&gt; fileNames)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">operationPath</span></td>
+        <td><p>The operation relative path.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="parametername">fileNames</span></td>
+        <td><p>List of names of the files.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file paths.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePatterns.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePatterns%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L52">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePatterns_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePatterns*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetDataFilePatterns" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetDataFilePatterns">GetDataFilePatterns()</h4>
+  <div class="markdown level1 summary"><p>Gets the patterns for the data files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetDataFilePatterns()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of data file pattern strings.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFileNames.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFileNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L69">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFileNames_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFileNames*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFileNames" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFileNames">GetInstallDataFileNames()</h4>
+  <div class="markdown level1 summary"><p>Gets the file names of the data to be installed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetInstallDataFileNames()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file names.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFileNames_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When overridden in a derived class, the file names should not contain the
+resource namespace, because it will be prepended by the <a class="xref" href="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.html#Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFilePaths">GetInstallDataFilePaths()</a>.
+Also, the file names should be provided in the right order for the import.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFilePaths.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFilePaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L96">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFilePaths_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFilePaths*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFilePaths" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetInstallDataFilePaths">GetInstallDataFilePaths()</h4>
+  <div class="markdown level1 summary"><p>Gets the files for the data to be installed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; GetInstallDataFilePaths()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file paths.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_GetInstallDataFilePaths">DataIOInstallerBase.GetInstallDataFilePaths()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFileNames.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFileNames%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L85">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFileNames_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFileNames*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFileNames" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFileNames">GetUninstallDataFileNames()</h4>
+  <div class="markdown level1 summary"><p>Gets the data file names of the data to be uninstalled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetUninstallDataFileNames()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file names.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFileNames_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When overridden in a derived class, the file names should not contain the
+resource namespace, because it will be prepended by the <a class="xref" href="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.html#Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetInstallDataFilePaths">GetInstallDataFilePaths()</a>.
+Also, the file names should be provided in the right order for the import.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFilePaths.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFilePaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L107">View Source</a>
+  </span>
+  <a id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFilePaths_" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFilePaths*"></a>
+  <h4 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_GetUninstallDataFilePaths" data-uid="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.GetUninstallDataFilePaths">GetUninstallDataFilePaths()</h4>
+  <div class="markdown level1 summary"><p>Gets the files for the data to be uninstalled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;string&gt; GetUninstallDataFilePaths()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file paths.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_GetUninstallDataFilePaths">DataIOInstallerBase.GetUninstallDataFilePaths()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DirectoryDataInstallerBase.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DirectoryDataInstallerBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DirectoryDataInstallerBase.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

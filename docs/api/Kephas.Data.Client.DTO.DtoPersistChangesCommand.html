@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DtoPersistChangesCommand
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DtoPersistChangesCommand
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Client.DTO.DtoPersistChangesCommand">
+  
+  
+  <h1 id="Kephas_Data_Client_DTO_DtoPersistChangesCommand" data-uid="Kephas.Data.Client.DTO.DtoPersistChangesCommand" class="text-break">Class DtoPersistChangesCommand
+  </h1>
+  <div class="markdown level0 summary"><p>A persist changes command for DTOs.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a></div>
+    <div class="level3"><span class="xref">DtoPersistChangesCommand</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a></div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_BehaviorProvider">PersistChangesCommand.BehaviorProvider</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_Logger">PersistChangesCommand.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ExecuteAsync(IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_AcceptChanges_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__">PersistChangesCommand.AcceptChanges(IPersistChangesContext, IList&lt;IEntityInfo&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteAfterSaveBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Threading_CancellationToken_">PersistChangesCommand.ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityInfo&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteBeforeSaveBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Threading_CancellationToken_">PersistChangesCommand.ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityInfo&gt;, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ComputeIterationChangeSet_Kephas_Data_Commands_IPersistChangesContext_">PersistChangesCommand.ComputeIterationChangeSet(IPersistChangesContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateAndPersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__System_Int32_Kephas_Data_Commands_IPersistChangesContext_System_Text_StringBuilder_System_Threading_CancellationToken_">PersistChangesCommand.ValidateAndPersistChangeSetAsync(IList&lt;IEntityInfo&gt;, Int32, IPersistChangesContext, StringBuilder, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ValidateChangeSetAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ValidateEntityAsync_System_Object_Kephas_Data_Capabilities_IEntityInfo_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ValidateEntityAsync(Object, IEntityInfo, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PreProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PreProcessChangeSetAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PostProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PostProcessChangeSetAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityInfo__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PersistChangeSetAsync(IList&lt;IEntityInfo&gt;, IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_ExecuteAsync__0_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.ExecuteAsync(IPersistChangesContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetLocalCache_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetLocalCache(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Client.DTO.html">Kephas.Data.Client.DTO</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.Client.dll</h6>
+  <h5 id="Kephas_Data_Client_DTO_DtoPersistChangesCommand_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataContextType(typeof(DtoDataContext))]
+public class DtoPersistChangesCommand : PersistChangesCommand, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Client_DTO_DtoPersistChangesCommand__ctor.md&amp;value=---%0Auid%3A%20Kephas.Data.Client.DTO.DtoPersistChangesCommand.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Client/DTO/DtoPersistChangesCommand.cs/#L27">View Source</a>
+  </span>
+  <a id="Kephas_Data_Client_DTO_DtoPersistChangesCommand__ctor_" data-uid="Kephas.Data.Client.DTO.DtoPersistChangesCommand.#ctor*"></a>
+  <h4 id="Kephas_Data_Client_DTO_DtoPersistChangesCommand__ctor" data-uid="Kephas.Data.Client.DTO.DtoPersistChangesCommand.#ctor">DtoPersistChangesCommand()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Client.DTO.DtoPersistChangesCommand.html">DtoPersistChangesCommand</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DtoPersistChangesCommand()</code></pre>
+  </div>
+  <h5 id="Kephas_Data_Client_DTO_DtoPersistChangesCommand__ctor_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The DTO entities do not need behaviors for persistence.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand&lt;TOperationContext, TResult&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Client_DTO_DtoPersistChangesCommand.md&amp;value=---%0Auid%3A%20Kephas.Data.Client.DTO.DtoPersistChangesCommand%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Client/DTO/DtoPersistChangesCommand.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -128,7 +128,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static ISerializationContext CreateOrUpdateSerializationContext&lt;TMediaType&gt;(this ISerializationService serializationService, ISerializationContext context = null, Action&lt;ISerializationContext&gt; contextConfig = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -332,7 +331,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static object Deserialize&lt;TMediaType&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -412,7 +410,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TRootObject Deserialize&lt;TMediaType, TRootObject&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -565,7 +562,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; DeserializeAsync&lt;TMediaType&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -651,7 +647,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;TRootObject&gt; DeserializeAsync&lt;TMediaType, TRootObject&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1310,7 +1305,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static string Serialize&lt;TMediaType&gt;(this ISerializationService serializationService, object obj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1476,7 +1470,6 @@ mismatched in the provided context.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; SerializeAsync&lt;TMediaType&gt;(this ISerializationService serializationService, object obj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

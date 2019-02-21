@@ -96,19 +96,19 @@ properties by their name through an indexer.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_IExpando_HasMember_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.IExpando.HasMember(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_IExpando_HasDynamicMember_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.IExpando.HasDynamicMember(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L36">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L37">View Source</a>
   </span>
-  <a id="Kephas_Dynamic_IExpando_HasMember_" data-uid="Kephas.Dynamic.IExpando.HasMember*"></a>
-  <h4 id="Kephas_Dynamic_IExpando_HasMember_System_String_" data-uid="Kephas.Dynamic.IExpando.HasMember(System.String)">HasMember(String)</h4>
+  <a id="Kephas_Dynamic_IExpando_HasDynamicMember_" data-uid="Kephas.Dynamic.IExpando.HasDynamicMember*"></a>
+  <h4 id="Kephas_Dynamic_IExpando_HasDynamicMember_System_String_" data-uid="Kephas.Dynamic.IExpando.HasDynamicMember(System.String)">HasDynamicMember(String)</h4>
   <div class="markdown level1 summary"><p>Indicates whether the <code data-dev-comment-type="paramref" class="paramref">memberName</code> is defined in the expando.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool HasMember(string memberName)</code></pre>
+    <pre><code class="lang-csharp hljs">bool HasDynamicMember(string memberName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,7 +149,7 @@ properties by their name through an indexer.</p>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.IExpando.ToDictionary(System.Func%7BSystem.String%2CSystem.String%7D%2CSystem.Func%7BSystem.Object%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L47">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L48">View Source</a>
   </span>
   <a id="Kephas_Dynamic_IExpando_ToDictionary_" data-uid="Kephas.Dynamic.IExpando.ToDictionary*"></a>
   <h4 id="Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__" data-uid="Kephas.Dynamic.IExpando.ToDictionary(System.Func{System.String,System.String},System.Func{System.Object,System.Object})">ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</h4>
@@ -203,9 +203,6 @@ respective properties&apos; values.</p>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -236,10 +233,19 @@ respective properties&apos; values.</p>
       <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -252,7 +258,7 @@ respective properties&apos; values.</p>
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_IExpando.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.IExpando%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/IExpando.cs/#L28" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

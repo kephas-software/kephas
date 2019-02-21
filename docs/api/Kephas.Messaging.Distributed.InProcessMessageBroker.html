@@ -96,7 +96,7 @@
       <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerBase.html#Kephas_Messaging_Distributed_MessageBrokerBase_AppManifest">MessageBrokerBase.AppManifest</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerBase.html#Kephas_Messaging_Distributed_MessageBrokerBase_SecurityService">MessageBrokerBase.SecurityService</a>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerBase.html#Kephas_Messaging_Distributed_MessageBrokerBase_AuthenticationService">MessageBrokerBase.AuthenticationService</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerBase.html#Kephas_Messaging_Distributed_MessageBrokerBase_DispatchAsync_Kephas_Messaging_Distributed_IBrokeredMessage_Kephas_Services_IContext_System_Threading_CancellationToken_">MessageBrokerBase.DispatchAsync(IBrokeredMessage, IContext, CancellationToken)</a>
@@ -146,19 +146,19 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_InProcessMessageBroker__ctor_Kephas_Application_IAppManifest_Kephas_Security_ISecurityService_Kephas_Messaging_IMessageProcessor_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.InProcessMessageBroker.%23ctor(Kephas.Application.IAppManifest%2CKephas.Security.ISecurityService%2CKephas.Messaging.IMessageProcessor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_InProcessMessageBroker__ctor_Kephas_Application_IAppManifest_Kephas_Security_Authentication_IAuthenticationService_Kephas_Messaging_IMessageProcessor_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.InProcessMessageBroker.%23ctor(Kephas.Application.IAppManifest%2CKephas.Security.Authentication.IAuthenticationService%2CKephas.Messaging.IMessageProcessor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L42">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L43">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_InProcessMessageBroker__ctor_" data-uid="Kephas.Messaging.Distributed.InProcessMessageBroker.#ctor*"></a>
-  <h4 id="Kephas_Messaging_Distributed_InProcessMessageBroker__ctor_Kephas_Application_IAppManifest_Kephas_Security_ISecurityService_Kephas_Messaging_IMessageProcessor_" data-uid="Kephas.Messaging.Distributed.InProcessMessageBroker.#ctor(Kephas.Application.IAppManifest,Kephas.Security.ISecurityService,Kephas.Messaging.IMessageProcessor)">InProcessMessageBroker(IAppManifest, ISecurityService, IMessageProcessor)</h4>
+  <h4 id="Kephas_Messaging_Distributed_InProcessMessageBroker__ctor_Kephas_Application_IAppManifest_Kephas_Security_Authentication_IAuthenticationService_Kephas_Messaging_IMessageProcessor_" data-uid="Kephas.Messaging.Distributed.InProcessMessageBroker.#ctor(Kephas.Application.IAppManifest,Kephas.Security.Authentication.IAuthenticationService,Kephas.Messaging.IMessageProcessor)">InProcessMessageBroker(IAppManifest, IAuthenticationService, IMessageProcessor)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.InProcessMessageBroker.html">InProcessMessageBroker</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InProcessMessageBroker(IAppManifest appManifest, ISecurityService securityService, IMessageProcessor messageProcessor)</code></pre>
+    <pre><code class="lang-csharp hljs">public InProcessMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,9 +177,9 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Security.ISecurityService.html">ISecurityService</a></td>
-        <td><span class="parametername">securityService</span></td>
-        <td><p>The security service.</p>
+        <td><a class="xref" href="Kephas.Security.Authentication.IAuthenticationService.html">IAuthenticationService</a></td>
+        <td><span class="parametername">authenticationService</span></td>
+        <td><p>The authentication service.</p>
 </td>
       </tr>
       <tr>
@@ -197,7 +197,7 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_InProcessMessageBroker_SendAsync_Kephas_Messaging_Distributed_IBrokeredMessage_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.InProcessMessageBroker.SendAsync(Kephas.Messaging.Distributed.IBrokeredMessage%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L59">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_InProcessMessageBroker_SendAsync_" data-uid="Kephas.Messaging.Distributed.InProcessMessageBroker.SendAsync*"></a>
   <h4 id="Kephas_Messaging_Distributed_InProcessMessageBroker_SendAsync_Kephas_Messaging_Distributed_IBrokeredMessage_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.InProcessMessageBroker.SendAsync(Kephas.Messaging.Distributed.IBrokeredMessage,Kephas.Services.IContext,System.Threading.CancellationToken)">SendAsync(IBrokeredMessage, IContext, CancellationToken)</h4>
@@ -277,9 +277,6 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
       <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IMessageBroker, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -310,7 +307,13 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -323,7 +326,7 @@ public class InProcessMessageBroker : MessageBrokerBase, IMessageBroker, IDispos
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_InProcessMessageBroker.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.InProcessMessageBroker%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/Distributed/InProcessMessageBroker.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

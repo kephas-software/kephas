@@ -115,7 +115,7 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class SymmetricEncryptionServiceBase&lt;TAlgorithm&gt; : IEncryptionService, ISyncEncryptionService where TAlgorithm : SymmetricAlgorithm, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class SymmetricEncryptionServiceBase&lt;TAlgorithm&gt; : IEncryptionService, ISyncEncryptionService where TAlgorithm : SymmetricAlgorithm</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -133,6 +133,42 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1__ctor_System_Func_Kephas_Cryptography_IEncryptionContext__0__.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.%23ctor(System.Func%7BKephas.Cryptography.IEncryptionContext%2C%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L40">View Source</a>
+  </span>
+  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1__ctor_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.#ctor*"></a>
+  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1__ctor_System_Func_Kephas_Cryptography_IEncryptionContext__0__" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.#ctor(System.Func{Kephas.Cryptography.IEncryptionContext,`0})">SymmetricEncryptionServiceBase(Func&lt;IEncryptionContext, TAlgorithm&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Cryptography.SymmetricEncryptionServiceBase-1.html">SymmetricEncryptionServiceBase&lt;TAlgorithm&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SymmetricEncryptionServiceBase(Func&lt;IEncryptionContext, TAlgorithm&gt; algorithmCtor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Kephas.Cryptography.IEncryptionContext.html">IEncryptionContext</a>, TAlgorithm&gt;</td>
+        <td><span class="parametername">algorithmCtor</span></td>
+        <td><p>The algorithm constructor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -140,7 +176,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_CreateSymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.CreateSymmetricAlgorithm(Kephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L250">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L276">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_CreateSymmetricAlgorithm_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.CreateSymmetricAlgorithm*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_CreateSymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.CreateSymmetricAlgorithm(Kephas.Cryptography.IEncryptionContext)">CreateSymmetricAlgorithm(IEncryptionContext)</h4>
@@ -149,7 +185,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual SymmetricAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual TAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,8 +215,60 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Security.Cryptography.SymmetricAlgorithm</span></td>
+        <td><span class="xref">TAlgorithm</span></td>
         <td><p>The new symmetric algorithm.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Decrypt(System.IO.Stream%2CSystem.IO.Stream%2C%600%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L208">View Source</a>
+  </span>
+  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt*"></a>
+  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt(System.IO.Stream,System.IO.Stream,`0,Kephas.Cryptography.IEncryptionContext)">Decrypt(Stream, Stream, TAlgorithm, IEncryptionContext)</h4>
+  <div class="markdown level1 summary"><p>Decrypts the stream content.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Decrypt(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">input</span></td>
+        <td><p>The input stream.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The output stream.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">TAlgorithm</span></td>
+        <td><span class="parametername">algorithm</span></td>
+        <td><p>The algorithm.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Cryptography.IEncryptionContext.html">IEncryptionContext</a></td>
+        <td><span class="parametername">encryptionContext</span></td>
+        <td><p>Context for the encryption.</p>
 </td>
       </tr>
     </tbody>
@@ -190,7 +278,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Decrypt(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L118">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L142">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext)">Decrypt(Stream, Stream, IEncryptionContext)</h4>
@@ -233,19 +321,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Decrypt(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Security.Cryptography.SymmetricAlgorithm%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.DecryptAsync(System.IO.Stream%2CSystem.IO.Stream%2C%600%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L182">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L232">View Source</a>
   </span>
-  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt*"></a>
-  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Decrypt_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Decrypt(System.IO.Stream,System.IO.Stream,System.Security.Cryptography.SymmetricAlgorithm,Kephas.Cryptography.IEncryptionContext)">Decrypt(Stream, Stream, SymmetricAlgorithm, IEncryptionContext)</h4>
-  <div class="markdown level1 summary"><p>Decrypts the stream content.</p>
+  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync*"></a>
+  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync(System.IO.Stream,System.IO.Stream,`0,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">DecryptAsync(Stream, Stream, TAlgorithm, IEncryptionContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Decrypts the stream content asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Decrypt(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task DecryptAsync(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,7 +358,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Security.Cryptography.SymmetricAlgorithm</span></td>
+        <td><span class="xref">TAlgorithm</span></td>
         <td><span class="parametername">algorithm</span></td>
         <td><p>The algorithm.</p>
 </td>
@@ -281,6 +369,28 @@
         <td><p>Context for the encryption.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A Task.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -288,7 +398,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.DecryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L84">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L104">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">DecryptAsync(Stream, Stream, IEncryptionContext, CancellationToken)</h4>
@@ -353,19 +463,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.DecryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Security.Cryptography.SymmetricAlgorithm%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Encrypt(System.IO.Stream%2CSystem.IO.Stream%2C%600%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L206">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L160">View Source</a>
   </span>
-  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync*"></a>
-  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_DecryptAsync_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.DecryptAsync(System.IO.Stream,System.IO.Stream,System.Security.Cryptography.SymmetricAlgorithm,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">DecryptAsync(Stream, Stream, SymmetricAlgorithm, IEncryptionContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Decrypts the stream content asynchronously.</p>
+  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt*"></a>
+  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt(System.IO.Stream,System.IO.Stream,`0,Kephas.Cryptography.IEncryptionContext)">Encrypt(Stream, Stream, TAlgorithm, IEncryptionContext)</h4>
+  <div class="markdown level1 summary"><p>Encrypts the stream content.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task DecryptAsync(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void Encrypt(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -380,7 +490,7 @@
       <tr>
         <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">input</span></td>
-        <td><p>The input stream.</p>
+        <td><p>The input stream to encrypt.</p>
 </td>
       </tr>
       <tr>
@@ -390,7 +500,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Security.Cryptography.SymmetricAlgorithm</span></td>
+        <td><span class="xref">TAlgorithm</span></td>
         <td><span class="parametername">algorithm</span></td>
         <td><p>The algorithm.</p>
 </td>
@@ -401,28 +511,6 @@
         <td><p>Context for the encryption.</p>
 </td>
       </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>A Task.</p>
-</td>
-      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -430,7 +518,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Encrypt(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L103">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L125">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext)">Encrypt(Stream, Stream, IEncryptionContext)</h4>
@@ -473,19 +561,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.Encrypt(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Security.Cryptography.SymmetricAlgorithm%2CKephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.EncryptAsync(System.IO.Stream%2CSystem.IO.Stream%2C%600%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L134">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L186">View Source</a>
   </span>
-  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt*"></a>
-  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_Encrypt_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.Encrypt(System.IO.Stream,System.IO.Stream,System.Security.Cryptography.SymmetricAlgorithm,Kephas.Cryptography.IEncryptionContext)">Encrypt(Stream, Stream, SymmetricAlgorithm, IEncryptionContext)</h4>
-  <div class="markdown level1 summary"><p>Encrypts the stream content.</p>
+  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync*"></a>
+  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream__0_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync(System.IO.Stream,System.IO.Stream,`0,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">EncryptAsync(Stream, Stream, TAlgorithm, IEncryptionContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Encrypts the stream content asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Encrypt(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task EncryptAsync(Stream input, Stream output, TAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -510,7 +598,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Security.Cryptography.SymmetricAlgorithm</span></td>
+        <td><span class="xref">TAlgorithm</span></td>
         <td><span class="parametername">algorithm</span></td>
         <td><p>The algorithm.</p>
 </td>
@@ -521,6 +609,28 @@
         <td><p>Context for the encryption.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A Task.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -528,7 +638,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.EncryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L61">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L79">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync(System.IO.Stream,System.IO.Stream,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">EncryptAsync(Stream, Stream, IEncryptionContext, CancellationToken)</h4>
@@ -593,84 +703,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.EncryptAsync(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Security.Cryptography.SymmetricAlgorithm%2CKephas.Cryptography.IEncryptionContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L160">View Source</a>
-  </span>
-  <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync*"></a>
-  <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_EncryptAsync_System_IO_Stream_System_IO_Stream_System_Security_Cryptography_SymmetricAlgorithm_Kephas_Cryptography_IEncryptionContext_System_Threading_CancellationToken_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.EncryptAsync(System.IO.Stream,System.IO.Stream,System.Security.Cryptography.SymmetricAlgorithm,Kephas.Cryptography.IEncryptionContext,System.Threading.CancellationToken)">EncryptAsync(Stream, Stream, SymmetricAlgorithm, IEncryptionContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Encrypts the stream content asynchronously.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task EncryptAsync(Stream input, Stream output, SymmetricAlgorithm algorithm, IEncryptionContext encryptionContext, CancellationToken cancellationToken)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
-        <td><span class="parametername">input</span></td>
-        <td><p>The input stream to encrypt.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
-        <td><span class="parametername">output</span></td>
-        <td><p>The output stream.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Security.Cryptography.SymmetricAlgorithm</span></td>
-        <td><span class="parametername">algorithm</span></td>
-        <td><p>The algorithm.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Cryptography.IEncryptionContext.html">IEncryptionContext</a></td>
-        <td><span class="parametername">encryptionContext</span></td>
-        <td><p>Context for the encryption.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>A Task.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GenerateKey_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.GenerateKey(Kephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L38">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GenerateKey_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GenerateKey*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GenerateKey_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GenerateKey(Kephas.Cryptography.IEncryptionContext)">GenerateKey(IEncryptionContext)</h4>
@@ -720,7 +756,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKey_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.GetKey(Kephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L238">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L264">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKey_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetKey*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKey_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetKey(Kephas.Cryptography.IEncryptionContext)">GetKey(IEncryptionContext)</h4>
@@ -770,7 +806,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKeySize_Kephas_Cryptography_IEncryptionContext_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.GetKeySize(Kephas.Cryptography.IEncryptionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L226">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L252">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKeySize_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetKeySize*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetKeySize_Kephas_Cryptography_IEncryptionContext_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetKeySize(Kephas.Cryptography.IEncryptionContext)">GetKeySize(IEncryptionContext)</h4>
@@ -820,7 +856,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetMismatchedKeySizeEncryptionException_System_Security_Cryptography_SymmetricAlgorithm_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Cryptography.SymmetricEncryptionServiceBase%601.GetMismatchedKeySizeEncryptionException(System.Security.Cryptography.SymmetricAlgorithm%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L281">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Cryptography/SymmetricEncryptionServiceBase.cs/#L307">View Source</a>
   </span>
   <a id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetMismatchedKeySizeEncryptionException_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetMismatchedKeySizeEncryptionException*"></a>
   <h4 id="Kephas_Cryptography_SymmetricEncryptionServiceBase_1_GetMismatchedKeySizeEncryptionException_System_Security_Cryptography_SymmetricAlgorithm_System_Int32_" data-uid="Kephas.Cryptography.SymmetricEncryptionServiceBase`1.GetMismatchedKeySizeEncryptionException(System.Security.Cryptography.SymmetricAlgorithm,System.Int32)">GetMismatchedKeySizeEncryptionException(SymmetricAlgorithm, Int32)</h4>
@@ -880,9 +916,6 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -937,7 +970,13 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

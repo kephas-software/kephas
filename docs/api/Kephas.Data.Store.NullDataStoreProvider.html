@@ -120,19 +120,19 @@ public class NullDataStoreProvider : IDataStoreProvider</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Store_NullDataStoreProvider_GetDataStore_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.Store.NullDataStoreProvider.GetDataStore(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Store_NullDataStoreProvider_GetDataStore_System_String_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Store.NullDataStoreProvider.GetDataStore(System.String%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Store/NullDataStoreProvider.cs/#L30">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Store/NullDataStoreProvider.cs/#L31">View Source</a>
   </span>
   <a id="Kephas_Data_Store_NullDataStoreProvider_GetDataStore_" data-uid="Kephas.Data.Store.NullDataStoreProvider.GetDataStore*"></a>
-  <h4 id="Kephas_Data_Store_NullDataStoreProvider_GetDataStore_System_String_" data-uid="Kephas.Data.Store.NullDataStoreProvider.GetDataStore(System.String)">GetDataStore(String)</h4>
+  <h4 id="Kephas_Data_Store_NullDataStoreProvider_GetDataStore_System_String_Kephas_Services_IContext_" data-uid="Kephas.Data.Store.NullDataStoreProvider.GetDataStore(System.String,Kephas.Services.IContext)">GetDataStore(String, IContext)</h4>
   <div class="markdown level1 summary"><p>Gets data store with the provided name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IDataStore GetDataStore(string dataStoreName)</code></pre>
+    <pre><code class="lang-csharp hljs">public IDataStore GetDataStore(string dataStoreName, IContext context = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -148,6 +148,12 @@ public class NullDataStoreProvider : IDataStoreProvider</code></pre>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">dataStoreName</span></td>
         <td><p>Name of the data store.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. The context.</p>
 </td>
       </tr>
     </tbody>
@@ -168,14 +174,67 @@ public class NullDataStoreProvider : IDataStoreProvider</code></pre>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Store_NullDataStoreProvider_GetDataStoreName_System_Type_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Store.NullDataStoreProvider.GetDataStoreName(System.Type%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Store/NullDataStoreProvider.cs/#L44">View Source</a>
+  </span>
+  <a id="Kephas_Data_Store_NullDataStoreProvider_GetDataStoreName_" data-uid="Kephas.Data.Store.NullDataStoreProvider.GetDataStoreName*"></a>
+  <h4 id="Kephas_Data_Store_NullDataStoreProvider_GetDataStoreName_System_Type_Kephas_Services_IContext_" data-uid="Kephas.Data.Store.NullDataStoreProvider.GetDataStoreName(System.Type,Kephas.Services.IContext)">GetDataStoreName(Type, IContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the data store name for the provided entity type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetDataStoreName(Type entityType, IContext context = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">entityType</span></td>
+        <td><p>Type of the entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The data store name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Data.Store.IDataStoreProvider.html">IDataStoreProvider</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -207,7 +266,13 @@ public class NullDataStoreProvider : IDataStoreProvider</code></pre>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

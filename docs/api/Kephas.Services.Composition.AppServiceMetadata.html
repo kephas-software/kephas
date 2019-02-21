@@ -84,6 +84,7 @@
     <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
     <div class="level4"><a class="xref" href="Kephas.Composition.Metadata.ExportMetadataBase.html">ExportMetadataBase</a></div>
     <div class="level5"><span class="xref">AppServiceMetadata</span></div>
+      <div class="level6"><a class="xref" href="Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata.html">FeatureLifecycleBehaviorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Application.Composition.FeatureManagerMetadata.html">FeatureManagerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Configuration.Composition.ConfigurationProviderMetadata.html">ConfigurationProviderMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Behaviors.Composition.DataBehaviorMetadata.html">DataBehaviorMetadata</a></div>
@@ -92,9 +93,9 @@
       <div class="level6"><a class="xref" href="Kephas.Data.Composition.DataContextMetadata.html">DataContextMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Conversion.Composition.DataConversionTargetResolverMetadata.html">DataConversionTargetResolverMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.Conversion.Composition.DataConverterMetadata.html">DataConverterMetadata</a></div>
-      <div class="level6"><a class="xref" href="Kephas.Data.Initialization.Composition.InitialDataHandlerMetadata.html">InitialDataHandlerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.IO.DataStreams.Composition.DataStreamReaderMetadata.html">DataStreamReaderMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Data.IO.DataStreams.Composition.DataStreamWriterMetadata.html">DataStreamWriterMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Data.Setup.Composition.DataInstallerMetadata.html">DataInstallerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Messaging.Behaviors.Composition.MessageProcessingBehaviorMetadata.html">MessageProcessingBehaviorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Messaging.Composition.MessageHandlerMetadata.html">MessageHandlerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Model.Runtime.Configuration.Composition.RuntimeModelElementConfiguratorMetadata.html">RuntimeModelElementConfiguratorMetadata</a></div>
@@ -103,8 +104,10 @@
       <div class="level6"><a class="xref" href="Kephas.Scripting.Composition.LanguageServiceMetadata.html">LanguageServiceMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Scripting.Composition.ScriptingBehaviorMetadata.html">ScriptingBehaviorMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Serialization.Composition.SerializerMetadata.html">SerializerMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Serialization.ServiceStack.Text.Composition.TypeJsonSerializerMetadata.html">TypeJsonSerializerMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.Services.Behavior.Composition.ServiceBehaviorRuleMetadata.html">ServiceBehaviorRuleMetadata</a></div>
       <div class="level6"><a class="xref" href="Kephas.ServiceStack.Hosting.Composition.EndpointMetadata.html">EndpointMetadata</a></div>
+      <div class="level6"><a class="xref" href="Kephas.Workflow.Behaviors.Composition.ActivityBehaviorMetadata.html">ActivityBehaviorMetadata</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -121,7 +124,7 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames">ExpandoBase.GetDynamicMemberNames()</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasMember_System_String_">ExpandoBase.HasMember(String)</a>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_">ExpandoBase.HasDynamicMember(String)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__">ExpandoBase.TryGetMember(GetMemberBinder, Object)</a>
@@ -469,7 +472,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected TValue GetMetadataValue&lt;TAttribute, TValue&gt;(IDictionary&lt;string, object&gt; metadata, TValue defaultValue = null)
-
     where TAttribute : IMetadataValue&lt;TValue&gt;</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -579,9 +581,6 @@
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -612,10 +611,19 @@
       <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

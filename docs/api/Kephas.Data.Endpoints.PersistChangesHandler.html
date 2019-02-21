@@ -1,0 +1,577 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PersistChangesHandler
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PersistChangesHandler
+   ">
+    <meta name="generator" content="docfx 2.38.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Endpoints.PersistChangesHandler">
+  
+  
+  <h1 id="Kephas_Data_Endpoints_PersistChangesHandler" data-uid="Kephas.Data.Endpoints.PersistChangesHandler" class="text-break">Class PersistChangesHandler
+  </h1>
+  <div class="markdown level0 summary"><p>A persist changes handler.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html">MessageHandlerBase</a>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a>, <a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a>&gt;</div>
+    <div class="level2"><span class="xref">PersistChangesHandler</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Messaging.IMessageHandler-1.html">IMessageHandler</a>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a>&gt;</div>
+    <div><a class="xref" href="Kephas.Messaging.IMessageHandler.html">IMessageHandler</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_ProcessAsync__0_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_TMessage__ProcessAsync__0_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler&lt;PersistChangesMessage&gt;.ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler.ProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Dispose">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Dispose_System_Boolean_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Endpoints.html">Kephas.Data.Endpoints</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.Endpoints.dll</h6>
+  <h5 id="Kephas_Data_Endpoints_PersistChangesHandler_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PersistChangesHandler : MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;, IMessageHandler&lt;PersistChangesMessage&gt;, IMessageHandler, IDisposable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler__ctor_Kephas_Data_Conversion_IDataConversionService_Kephas_Model_Services_IProjectedTypeResolver_Kephas_Composition_IExportFactory_Kephas_Data_IDataSpace__.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.%23ctor(Kephas.Data.Conversion.IDataConversionService%2CKephas.Model.Services.IProjectedTypeResolver%2CKephas.Composition.IExportFactory%7BKephas.Data.IDataSpace%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L54">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler__ctor_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.#ctor*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler__ctor_Kephas_Data_Conversion_IDataConversionService_Kephas_Model_Services_IProjectedTypeResolver_Kephas_Composition_IExportFactory_Kephas_Data_IDataSpace__" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.#ctor(Kephas.Data.Conversion.IDataConversionService,Kephas.Model.Services.IProjectedTypeResolver,Kephas.Composition.IExportFactory{Kephas.Data.IDataSpace})">PersistChangesHandler(IDataConversionService, IProjectedTypeResolver, IExportFactory&lt;IDataSpace&gt;)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Endpoints.PersistChangesHandler.html">PersistChangesHandler</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PersistChangesHandler(IDataConversionService dataConversionService, IProjectedTypeResolver projectedTypeResolver, IExportFactory&lt;IDataSpace&gt; dataSpaceFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Conversion.IDataConversionService.html">IDataConversionService</a></td>
+        <td><span class="parametername">dataConversionService</span></td>
+        <td><p>The data conversion service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.Services.IProjectedTypeResolver.html">IProjectedTypeResolver</a></td>
+        <td><span class="parametername">projectedTypeResolver</span></td>
+        <td><p>The projected type resolver.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.IExportFactory-1.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a>&gt;</td>
+        <td><span class="parametername">dataSpaceFactory</span></td>
+        <td><p>The data space factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_CreateDataConversionContextForResponse_Kephas_Data_IDataSpace_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.CreateDataConversionContextForResponse(Kephas.Data.IDataSpace)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L211">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler_CreateDataConversionContextForResponse_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.CreateDataConversionContextForResponse*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_CreateDataConversionContextForResponse_Kephas_Data_IDataSpace_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.CreateDataConversionContextForResponse(Kephas.Data.IDataSpace)">CreateDataConversionContextForResponse(IDataSpace)</h4>
+  <div class="markdown level1 summary"><p>Creates data conversion context for response.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IDataConversionContext CreateDataConversionContextForResponse(IDataSpace dataSpace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a></td>
+        <td><span class="parametername">dataSpace</span></td>
+        <td><p>Manager for data context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Conversion.IDataConversionContext.html">IDataConversionContext</a></td>
+        <td><p>The new data conversion context for response.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_GetClientTypeName_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.GetClientTypeName(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L199">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler_GetClientTypeName_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.GetClientTypeName*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_GetClientTypeName_System_Object_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.GetClientTypeName(System.Object)">GetClientTypeName(Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the type name of the client entity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetClientTypeName(object clientEntity)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">clientEntity</span></td>
+        <td><p>The client entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The deleted entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_PostPersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage%2CSystem.Collections.Generic.IList%7BSystem.ValueTuple%7BKephas.Data.Client.Capabilities.ClientEntityInfo%2CSystem.Object%7D%7D%2CKephas.Data.IDataSpace%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L175">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler_PostPersistChangesAsync_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_PostPersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)">PostPersistChangesAsync(PersistChangesResponseMessage, IList&lt;&gt;, IDataSpace, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Post persist changes asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task PostPersistChangesAsync(PersistChangesResponseMessage response, IList&lt;&gt; mappings, IDataSpace dataSpace, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.</span>&gt;</td>
+        <td><span class="parametername">mappings</span></td>
+        <td><p>The mappings.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a></td>
+        <td><span class="parametername">dataSpace</span></td>
+        <td><p>Manager for data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A Task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_PrePersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage%2CSystem.Collections.Generic.IList%7BSystem.ValueTuple%7BKephas.Data.Client.Capabilities.ClientEntityInfo%2CSystem.Object%7D%7D%2CKephas.Data.IDataSpace%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L156">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler_PrePersistChangesAsync_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_PrePersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)">PrePersistChangesAsync(PersistChangesResponseMessage, IList&lt;&gt;, IDataSpace, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Pre persist changes asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task PrePersistChangesAsync(PersistChangesResponseMessage response, IList&lt;&gt; mappings, IDataSpace dataSpace, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a></td>
+        <td><span class="parametername">response</span></td>
+        <td><p>The response.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.</span>&gt;</td>
+        <td><span class="parametername">mappings</span></td>
+        <td><p>The mappings.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a></td>
+        <td><span class="parametername">dataSpace</span></td>
+        <td><p>Manager for data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>A Task.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L77">View Source</a>
+  </span>
+  <a id="Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync*"></a>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage,Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Processes the provided message asynchronously and returns a response promise.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Task&lt;PersistChangesResponseMessage&gt; ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be handled.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a>&gt;</td>
+        <td><p>The response promise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Messaging.MessageHandlerBase&lt;Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Data.Endpoints.PersistChangesResponseMessage&gt;.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Messaging.IMessageProcessingContext, System.Threading.CancellationToken)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Messaging.IMessageHandler-1.html">IMessageHandler&lt;TMessage&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.IMessageHandler.html">IMessageHandler</a>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L31" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -73,7 +73,8 @@
   
   <h1 id="Kephas_Model_IParameter" data-uid="Kephas.Model.IParameter" class="text-break">Interface IParameter
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Contract for parameters.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -105,10 +106,31 @@
       <a class="xref" href="Kephas.Reflection.IAggregatedElementInfo.html#Kephas_Reflection_IAggregatedElementInfo_Parts">IAggregatedElementInfo.Parts</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Reflection.IParameterInfo.html#Kephas_Reflection_IParameterInfo_Position">IParameterInfo.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IParameterInfo.html#Kephas_Reflection_IParameterInfo_IsOptional">IParameterInfo.IsOptional</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IParameterInfo.html#Kephas_Reflection_IParameterInfo_IsIn">IParameterInfo.IsIn</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IParameterInfo.html#Kephas_Reflection_IParameterInfo_IsOut">IParameterInfo.IsOut</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IValueElementInfo.html#Kephas_Reflection_IValueElementInfo_ValueType">IValueElementInfo.ValueType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IValueElementInfo.html#Kephas_Reflection_IValueElementInfo_SetValue_System_Object_System_Object_">IValueElementInfo.SetValue(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Reflection.IValueElementInfo.html#Kephas_Reflection_IValueElementInfo_GetValue_System_Object_">IValueElementInfo.GetValue(Object)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Reflection.IElementInfo.html#Kephas_Reflection_IElementInfo_Name">IElementInfo.Name</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasMember_System_String_">IExpando.HasMember(String)</a>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
@@ -127,12 +149,9 @@
   <h6><strong>Assembly</strong>: Kephas.Model.dll</h6>
   <h5 id="Kephas_Model_IParameter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IParameter : IModelElement, INamedElement, IAggregatedElementInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IParameter : IModelElement, INamedElement, IAggregatedElementInfo, IParameterInfo, IValueElementInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.Model.ModelElementExtensions.html#Kephas_Model_ModelElementExtensions_GetDeclaredMembers_Kephas_Model_IModelElement_">ModelElementExtensions.GetDeclaredMembers(IModelElement)</a>
   </div>
@@ -170,7 +189,13 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -183,7 +208,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IParameter.md&amp;value=---%0Auid%3A%20Kephas.Model.IParameter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IProperty.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IParameter.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

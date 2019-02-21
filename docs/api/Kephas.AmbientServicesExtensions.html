@@ -309,7 +309,6 @@ public static ILogger&lt;T&gt; GetLogger&lt;T&gt;(this IAmbientServices ambientS
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TService GetService&lt;TService&gt;(this IServiceProvider ambientServices)
-
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -378,7 +377,6 @@ service object of type <code data-dev-comment-type="typeparamref" class="typepar
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IAmbientServices RegisterService&lt;TService&gt;(this IAmbientServices ambientServices, TService service)
-
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -452,7 +450,6 @@ service object of type <code data-dev-comment-type="typeparamref" class="typepar
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IAmbientServices RegisterService&lt;TService&gt;(this IAmbientServices ambientServices, Func&lt;TService&gt; serviceFactory)
-
     where TService : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

@@ -91,6 +91,7 @@ This type allows you three ways to access its properties:
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
     <div class="level2"><span class="xref">ExpandoBase</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Application.Configuration.DefaultAppConfiguration.html">DefaultAppConfiguration</a></div>
       <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
   </div>
   <div classs="implements">
@@ -400,19 +401,19 @@ The setter checks the instance properties before checking the Properties diction
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_HasMember_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.HasMember(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Dynamic.ExpandoBase.HasDynamicMember(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Dynamic/ExpandoBase.cs/#L194">View Source</a>
   </span>
-  <a id="Kephas_Dynamic_ExpandoBase_HasMember_" data-uid="Kephas.Dynamic.ExpandoBase.HasMember*"></a>
-  <h4 id="Kephas_Dynamic_ExpandoBase_HasMember_System_String_" data-uid="Kephas.Dynamic.ExpandoBase.HasMember(System.String)">HasMember(String)</h4>
+  <a id="Kephas_Dynamic_ExpandoBase_HasDynamicMember_" data-uid="Kephas.Dynamic.ExpandoBase.HasDynamicMember*"></a>
+  <h4 id="Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_" data-uid="Kephas.Dynamic.ExpandoBase.HasDynamicMember(System.String)">HasDynamicMember(String)</h4>
   <div class="markdown level1 summary"><p>Indicates whether the <code data-dev-comment-type="paramref" class="paramref">memberName</code> is defined in the expando.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual bool HasMember(string memberName)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool HasDynamicMember(string memberName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -822,9 +823,6 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
   <div>
@@ -855,10 +853,19 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
       <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>

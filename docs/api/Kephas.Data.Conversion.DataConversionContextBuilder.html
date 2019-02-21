@@ -118,7 +118,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_Conversion_IDataConversionContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.%23ctor(Kephas.Data.Conversion.IDataConversionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L27">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L28">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder__ctor_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.#ctor*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_Conversion_IDataConversionContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.#ctor(Kephas.Data.Conversion.IDataConversionContext)">DataConversionContextBuilder(IDataConversionContext)</h4>
@@ -149,19 +149,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_Conversion_IDataConversionService_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.%23ctor(Kephas.Data.Conversion.IDataConversionService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_IDataSpace_Kephas_Data_Conversion_IDataConversionService_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.%23ctor(Kephas.Data.IDataSpace%2CKephas.Data.Conversion.IDataConversionService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L38">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L40">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder__ctor_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.#ctor*"></a>
-  <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_Conversion_IDataConversionService_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.#ctor(Kephas.Data.Conversion.IDataConversionService)">DataConversionContextBuilder(IDataConversionService)</h4>
+  <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder__ctor_Kephas_Data_IDataSpace_Kephas_Data_Conversion_IDataConversionService_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.#ctor(Kephas.Data.IDataSpace,Kephas.Data.Conversion.IDataConversionService)">DataConversionContextBuilder(IDataSpace, IDataConversionService)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Conversion.DataConversionContextBuilder.html">DataConversionContextBuilder</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DataConversionContextBuilder(IDataConversionService conversionService)</code></pre>
+    <pre><code class="lang-csharp hljs">public DataConversionContextBuilder(IDataSpace dataSpace, IDataConversionService conversionService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,6 +173,12 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataSpace.html">IDataSpace</a></td>
+        <td><span class="parametername">dataSpace</span></td>
+        <td><p>The data space.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Kephas.Data.Conversion.IDataConversionService.html">IDataConversionService</a></td>
         <td><span class="parametername">conversionService</span></td>
@@ -188,7 +194,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_ConversionContext.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.ConversionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L51">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder_ConversionContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.ConversionContext*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_ConversionContext" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.ConversionContext">ConversionContext</h4>
@@ -222,7 +228,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_Merge_Kephas_Data_Conversion_IDataConversionContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.Merge(Kephas.Data.Conversion.IDataConversionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L60">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L63">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder_Merge_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.Merge*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_Merge_Kephas_Data_Conversion_IDataConversionContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.Merge(Kephas.Data.Conversion.IDataConversionContext)">Merge(IDataConversionContext)</h4>
@@ -272,7 +278,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_ThrowOnError_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.ThrowOnError(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L143">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L114">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder_ThrowOnError_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.ThrowOnError*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_ThrowOnError_System_Boolean_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.ThrowOnError(System.Boolean)">ThrowOnError(Boolean)</h4>
@@ -322,7 +328,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_WithRootSourceType_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.WithRootSourceType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L127">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L98">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder_WithRootSourceType_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithRootSourceType*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_WithRootSourceType_System_Type_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithRootSourceType(System.Type)">WithRootSourceType(Type)</h4>
@@ -372,7 +378,7 @@
     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_WithRootTargetType_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.WithRootTargetType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L95">View Source</a>
+    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_DataConversionContextBuilder_WithRootTargetType_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithRootTargetType*"></a>
   <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_WithRootTargetType_System_Type_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithRootTargetType(System.Type)">WithRootTargetType(Type)</h4>
@@ -417,110 +423,7 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_WithSourceDataContext_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.WithSourceDataContext(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L111">View Source</a>
-  </span>
-  <a id="Kephas_Data_Conversion_DataConversionContextBuilder_WithSourceDataContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithSourceDataContext*"></a>
-  <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_WithSourceDataContext_Kephas_Data_IDataContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithSourceDataContext(Kephas.Data.IDataContext)">WithSourceDataContext(IDataContext)</h4>
-  <div class="markdown level1 summary"><p>Uses the provided source data context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DataConversionContextBuilder WithSourceDataContext(IDataContext sourceDataContext)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">sourceDataContext</span></td>
-        <td><p>The source <a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.Conversion.DataConversionContextBuilder.html">DataConversionContextBuilder</a></td>
-        <td><p>This <a class="xref" href="Kephas.Data.Conversion.DataConversionContextBuilder.html">DataConversionContextBuilder</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder_WithTargetDataContext_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder.WithTargetDataContext(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L79">View Source</a>
-  </span>
-  <a id="Kephas_Data_Conversion_DataConversionContextBuilder_WithTargetDataContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithTargetDataContext*"></a>
-  <h4 id="Kephas_Data_Conversion_DataConversionContextBuilder_WithTargetDataContext_Kephas_Data_IDataContext_" data-uid="Kephas.Data.Conversion.DataConversionContextBuilder.WithTargetDataContext(Kephas.Data.IDataContext)">WithTargetDataContext(IDataContext)</h4>
-  <div class="markdown level1 summary"><p>Uses the provided target data context.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DataConversionContextBuilder WithTargetDataContext(IDataContext targetDataContext)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">targetDataContext</span></td>
-        <td><p>The target <a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.Conversion.DataConversionContextBuilder.html">DataConversionContextBuilder</a></td>
-        <td><p>This <a class="xref" href="Kephas.Data.Conversion.DataConversionContextBuilder.html">DataConversionContextBuilder</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -552,7 +455,13 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
   </div>
 </article>
           </div>
@@ -565,7 +474,7 @@
                     <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_DataConversionContextBuilder.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.DataConversionContextBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/Conversion/DataConversionContextBuilder.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
