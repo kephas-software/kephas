@@ -226,6 +226,17 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Scheduling",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.Scripting",
                     "exclude": [
                         "**/obj/**",

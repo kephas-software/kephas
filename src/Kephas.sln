@@ -141,6 +141,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Npgsql", "Kephas.Npg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow.Tests", "Tests\Kephas.Workflow.Tests\Kephas.Workflow.Tests.csproj", "{3AD2EBEA-C416-46FD-9B96-6042B17E44DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling", "Kephas.Scheduling\Kephas.Scheduling.csproj", "{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Tests", "Tests\Kephas.Scheduling.Tests\Kephas.Scheduling.Tests.csproj", "{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -359,6 +363,14 @@ Global
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,6 +399,7 @@ Global
 		{A159E2DF-4F22-4CFB-837F-07F67D517C6A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{806E17F5-67E7-476D-99EF-B63DCD525278} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

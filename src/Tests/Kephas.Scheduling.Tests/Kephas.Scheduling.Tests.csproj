@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+        <DefineConstants>NET45</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NSubstitute" Version="3.1.0" />
+        <PackageReference Include="NUnit" Version="3.10.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\..\Kephas.Scheduling\Kephas.Scheduling.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+        <Reference Include="System.ComponentModel.DataAnnotations"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    </ItemGroup>
+
+</Project>
