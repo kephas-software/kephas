@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAppManager
    ">
-    <meta name="generator" content="docfx 2.38.1.0">
+    <meta name="generator" content="docfx 2.40.11.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -87,7 +87,7 @@ public interface IAppManager</code></pre>
   <div class="markdown level0 remarks"><p>The application manager is a service whose concern is to initialize and finalize the application.</p>
 </div>
   <h5 id="Kephas_Application_IAppManager_examples"><strong>Examples</strong></h5>
-  <pre><code class="csharp">var appManager = compositionContext.GetExport&lt;IAppManager>();
+  <pre><code class="lang-csharp">var appManager = compositionContext.GetExport&lt;IAppManager>();
 var appContext = new AppContext();
 await appManager.InitializeAppManagerAsync(appContext);
 ...

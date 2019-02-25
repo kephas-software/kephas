@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultWorkflowEngine
    ">
-    <meta name="generator" content="docfx 2.38.1.0">
+    <meta name="generator" content="docfx 2.40.11.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -400,7 +400,7 @@ public class DefaultWorkflowEngine : IWorkflowEngine</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual GetOrderedBehaviors(IActivityInfo activityInfo, IActivityContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual (IEnumerable&lt;IActivityBehavior&gt; behaviors, IEnumerable&lt;IActivityBehavior&gt; reversedBehaviors)GetOrderedBehaviors(IActivityInfo activityInfo, IActivityContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,7 +436,7 @@ public class DefaultWorkflowEngine : IWorkflowEngine</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.</span></td>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Workflow.Behaviors.IActivityBehavior.html">IActivityBehavior</a>&gt;, <span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Workflow.Behaviors.IActivityBehavior.html">IActivityBehavior</a>&gt;&gt;</td>
         <td><p>An enumerator that allows foreach to be used to process the behaviors in this collection.</p>
 </td>
       </tr>

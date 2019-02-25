@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultClientQueryConverter
    ">
-    <meta name="generator" content="docfx 2.38.1.0">
+    <meta name="generator" content="docfx 2.40.11.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -350,7 +350,7 @@ public class DefaultClientQueryConverter : IClientQueryConverter</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;&gt; ConvertOrder(Type itemType, Type clientItemType, Expression order, IClientQueryConversionContext context)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;(string op, Expression expression)&gt; ConvertOrder(Type itemType, Type clientItemType, Expression order, IClientQueryConversionContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -398,7 +398,7 @@ public class DefaultClientQueryConverter : IClientQueryConverter</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Linq.Expressions.Expression</span>&gt;&gt;</td>
         <td><p>The converted order clause.</p>
 </td>
       </tr>

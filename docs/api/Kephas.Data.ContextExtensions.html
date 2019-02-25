@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ContextExtensions
    ">
-    <meta name="generator" content="docfx 2.38.1.0">
+    <meta name="generator" content="docfx 2.40.11.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -349,13 +349,13 @@
     <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/ContextExtensions.cs/#L52">View Source</a>
   </span>
   <a id="Kephas_Data_ContextExtensions_WithInitialData_" data-uid="Kephas.Data.ContextExtensions.WithInitialData*"></a>
-  <h4 id="Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Object_Kephas_Data_Capabilities_ChangeState___" data-uid="Kephas.Data.ContextExtensions.WithInitialData``1(``0,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,Kephas.Data.Capabilities.ChangeState}})">WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;&gt;)</h4>
+  <h4 id="Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Object_Kephas_Data_Capabilities_ChangeState___" data-uid="Kephas.Data.ContextExtensions.WithInitialData``1(``0,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,Kephas.Data.Capabilities.ChangeState}})">WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;(Object entity, ChangeState changeState)&gt;)</h4>
   <div class="markdown level1 summary"><p>Sets the initial data.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TContext WithInitialData&lt;TContext&gt;(this TContext context, IEnumerable&lt;&gt; initialData)
+    <pre><code class="lang-csharp hljs">public static TContext WithInitialData&lt;TContext&gt;(this TContext context, IEnumerable&lt;(object entity, ChangeState changeState)&gt; initialData)
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -375,7 +375,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Object</span>, <a class="xref" href="Kephas.Data.Capabilities.ChangeState.html">ChangeState</a>&gt;&gt;</td>
         <td><span class="parametername">initialData</span></td>
         <td><p>The initial data.</p>
 </td>

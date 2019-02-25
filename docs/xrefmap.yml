@@ -15381,14 +15381,14 @@ references:
   nameWithType: ContextExtensions.WithInitialData<TContext>(TContext, IEnumerable<Object>)
   nameWithType.vb: ContextExtensions.WithInitialData(Of TContext)(TContext, IEnumerable(Of Object))
 - uid: Kephas.Data.ContextExtensions.WithInitialData``1(``0,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,Kephas.Data.Capabilities.ChangeState}})
-  name: WithInitialData<TContext>(TContext, IEnumerable<>)
+  name: WithInitialData<TContext>(TContext, IEnumerable<(Object entity, ChangeState changeState)>)
   href: api/Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Object_Kephas_Data_Capabilities_ChangeState___
   commentId: M:Kephas.Data.ContextExtensions.WithInitialData``1(``0,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,Kephas.Data.Capabilities.ChangeState}})
-  name.vb: WithInitialData(Of TContext)(TContext, IEnumerable(Of ))
-  fullName: Kephas.Data.ContextExtensions.WithInitialData<TContext>(TContext, System.Collections.Generic.IEnumerable<System.>)
-  fullName.vb: Kephas.Data.ContextExtensions.WithInitialData(Of TContext)(TContext, System.Collections.Generic.IEnumerable(Of System.))
-  nameWithType: ContextExtensions.WithInitialData<TContext>(TContext, IEnumerable<>)
-  nameWithType.vb: ContextExtensions.WithInitialData(Of TContext)(TContext, IEnumerable(Of ))
+  name.vb: WithInitialData(Of TContext)(TContext, IEnumerable(Of (entity As Object, changeState As ChangeState)))
+  fullName: Kephas.Data.ContextExtensions.WithInitialData<TContext>(TContext, System.Collections.Generic.IEnumerable<System.ValueTuple<System.Object, Kephas.Data.Capabilities.ChangeState>>)
+  fullName.vb: Kephas.Data.ContextExtensions.WithInitialData(Of TContext)(TContext, System.Collections.Generic.IEnumerable(Of System.ValueTuple(Of System.Object, Kephas.Data.Capabilities.ChangeState)))
+  nameWithType: ContextExtensions.WithInitialData<TContext>(TContext, IEnumerable<(Object entity, ChangeState changeState)>)
+  nameWithType.vb: ContextExtensions.WithInitialData(Of TContext)(TContext, IEnumerable(Of (entity As Object, changeState As ChangeState)))
 - uid: Kephas.Data.Conversion
   name: Kephas.Data.Conversion
   href: api/Kephas.Data.Conversion.html
@@ -17892,14 +17892,14 @@ references:
   fullName: Kephas.Data.Endpoints.PersistChangesHandler.GetClientTypeName
   nameWithType: PersistChangesHandler.GetClientTypeName
 - uid: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)
-  name: PostPersistChangesAsync(PersistChangesResponseMessage, IList<>, IDataSpace, CancellationToken)
+  name: PostPersistChangesAsync(PersistChangesResponseMessage, IList<(ClientEntityInfo clientEntry, Object entity)>, IDataSpace, CancellationToken)
   href: api/Kephas.Data.Endpoints.PersistChangesHandler.html#Kephas_Data_Endpoints_PersistChangesHandler_PostPersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_
   commentId: M:Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)
-  name.vb: PostPersistChangesAsync(PersistChangesResponseMessage, IList(Of ), IDataSpace, CancellationToken)
-  fullName: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList<System.>, Kephas.Data.IDataSpace, System.Threading.CancellationToken)
-  fullName.vb: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList(Of System.), Kephas.Data.IDataSpace, System.Threading.CancellationToken)
-  nameWithType: PersistChangesHandler.PostPersistChangesAsync(PersistChangesResponseMessage, IList<>, IDataSpace, CancellationToken)
-  nameWithType.vb: PersistChangesHandler.PostPersistChangesAsync(PersistChangesResponseMessage, IList(Of ), IDataSpace, CancellationToken)
+  name.vb: PostPersistChangesAsync(PersistChangesResponseMessage, IList(Of (clientEntry As ClientEntityInfo, entity As Object)), IDataSpace, CancellationToken)
+  fullName: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList<System.ValueTuple<Kephas.Data.Client.Capabilities.ClientEntityInfo, System.Object>>, Kephas.Data.IDataSpace, System.Threading.CancellationToken)
+  fullName.vb: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList(Of System.ValueTuple(Of Kephas.Data.Client.Capabilities.ClientEntityInfo, System.Object)), Kephas.Data.IDataSpace, System.Threading.CancellationToken)
+  nameWithType: PersistChangesHandler.PostPersistChangesAsync(PersistChangesResponseMessage, IList<(ClientEntityInfo clientEntry, Object entity)>, IDataSpace, CancellationToken)
+  nameWithType.vb: PersistChangesHandler.PostPersistChangesAsync(PersistChangesResponseMessage, IList(Of (clientEntry As ClientEntityInfo, entity As Object)), IDataSpace, CancellationToken)
 - uid: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync*
   name: PostPersistChangesAsync
   href: api/Kephas.Data.Endpoints.PersistChangesHandler.html#Kephas_Data_Endpoints_PersistChangesHandler_PostPersistChangesAsync_
@@ -17908,14 +17908,14 @@ references:
   fullName: Kephas.Data.Endpoints.PersistChangesHandler.PostPersistChangesAsync
   nameWithType: PersistChangesHandler.PostPersistChangesAsync
 - uid: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)
-  name: PrePersistChangesAsync(PersistChangesResponseMessage, IList<>, IDataSpace, CancellationToken)
+  name: PrePersistChangesAsync(PersistChangesResponseMessage, IList<(ClientEntityInfo clientEntry, Object entity)>, IDataSpace, CancellationToken)
   href: api/Kephas.Data.Endpoints.PersistChangesHandler.html#Kephas_Data_Endpoints_PersistChangesHandler_PrePersistChangesAsync_Kephas_Data_Endpoints_PersistChangesResponseMessage_System_Collections_Generic_IList_System_ValueTuple_Kephas_Data_Client_Capabilities_ClientEntityInfo_System_Object___Kephas_Data_IDataSpace_System_Threading_CancellationToken_
   commentId: M:Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage,System.Collections.Generic.IList{System.ValueTuple{Kephas.Data.Client.Capabilities.ClientEntityInfo,System.Object}},Kephas.Data.IDataSpace,System.Threading.CancellationToken)
-  name.vb: PrePersistChangesAsync(PersistChangesResponseMessage, IList(Of ), IDataSpace, CancellationToken)
-  fullName: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList<System.>, Kephas.Data.IDataSpace, System.Threading.CancellationToken)
-  fullName.vb: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList(Of System.), Kephas.Data.IDataSpace, System.Threading.CancellationToken)
-  nameWithType: PersistChangesHandler.PrePersistChangesAsync(PersistChangesResponseMessage, IList<>, IDataSpace, CancellationToken)
-  nameWithType.vb: PersistChangesHandler.PrePersistChangesAsync(PersistChangesResponseMessage, IList(Of ), IDataSpace, CancellationToken)
+  name.vb: PrePersistChangesAsync(PersistChangesResponseMessage, IList(Of (clientEntry As ClientEntityInfo, entity As Object)), IDataSpace, CancellationToken)
+  fullName: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList<System.ValueTuple<Kephas.Data.Client.Capabilities.ClientEntityInfo, System.Object>>, Kephas.Data.IDataSpace, System.Threading.CancellationToken)
+  fullName.vb: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync(Kephas.Data.Endpoints.PersistChangesResponseMessage, System.Collections.Generic.IList(Of System.ValueTuple(Of Kephas.Data.Client.Capabilities.ClientEntityInfo, System.Object)), Kephas.Data.IDataSpace, System.Threading.CancellationToken)
+  nameWithType: PersistChangesHandler.PrePersistChangesAsync(PersistChangesResponseMessage, IList<(ClientEntityInfo clientEntry, Object entity)>, IDataSpace, CancellationToken)
+  nameWithType.vb: PersistChangesHandler.PrePersistChangesAsync(PersistChangesResponseMessage, IList(Of (clientEntry As ClientEntityInfo, entity As Object)), IDataSpace, CancellationToken)
 - uid: Kephas.Data.Endpoints.PersistChangesHandler.PrePersistChangesAsync*
   name: PrePersistChangesAsync
   href: api/Kephas.Data.Endpoints.PersistChangesHandler.html#Kephas_Data_Endpoints_PersistChangesHandler_PrePersistChangesAsync_
