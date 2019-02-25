@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Version>5.1.0</Version>
+        <Authors>Kephas Software SRL</Authors>
+        <Company>Kephas Software SRL</Company>
+        <Product>Kephas Framework</Product>
+        <AssemblyVersion>5.1.0.0</AssemblyVersion>
+        <FileVersion>5.1.0.0</FileVersion>
+        <Description>Provides the Quartz.NET implementation of task scheduling.</Description>
+        <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
+        <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <PackageTags>kephas framework scheduling quartz</PackageTags>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PackageReleaseNotes>Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</PackageReleaseNotes>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DefineConstants>NETSTANDARD2_0</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
+        <DocumentationFile>bin\Debug\net452\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+        <DocumentationFile>bin\Release\net452\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DefineConstants>NET452</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Quartz" Version="3.0.7" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    </ItemGroup>
+
+</Project>
