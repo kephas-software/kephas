@@ -16,7 +16,6 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Resources;
-    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Base class for find commands.

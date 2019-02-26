@@ -13,7 +13,7 @@ namespace Kephas.Data.Commands
     using System;
 
     /// <summary>
-    /// Encapsulates the result of a find.
+    /// Encapsulates the result of a find command.
     /// </summary>
     public class FindResult : DataCommandResult, IFindResult
     {

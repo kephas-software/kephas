@@ -60,7 +60,7 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Gets the find criteria.
         /// </summary>
-        /// <typeparam name="T">Generic type parameter.</typeparam>
+        /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="findContext">The find context.</param>
         /// <returns>
         /// The find criteria.

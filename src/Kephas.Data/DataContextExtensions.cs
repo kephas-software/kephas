@@ -363,6 +363,57 @@ namespace Kephas.Data
         }
 
         /// <summary>
+        /// Deletes the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically removed from the database without invoking any behavior.
+        /// </remarks>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="bulkDeleteContext">The bulk delete context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        public static async Task<long> BulkDeleteAsync(
+            this IDataContext dataContext,
+            IBulkDeleteContext bulkDeleteContext,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(bulkDeleteContext, nameof(bulkDeleteContext));
+
+            return await BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Deletes the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically removed from the database without invoking any behavior.
+        /// </remarks>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="criteria">The matching criteria for entities to delete.</param>
+        /// <param name="throwIfNotFound">Optional. <c>true</c> to throw if not found.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        public static Task<long> BulkDeleteAsync<T>(
+            this IDataContext dataContext,
+            Expression<Func<T, bool>> criteria,
+            bool throwIfNotFound = true,
+            CancellationToken cancellationToken = default)
+            where T : class
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(criteria, nameof(criteria));
+
+            var purgeContext = new BulkDeleteContext<T>(dataContext, criteria, throwIfNotFound);
+            return BulkDeleteCoreAsync(dataContext, purgeContext, cancellationToken);
+        }
+
+        /// <summary>
         /// Executes the provided command in the data context.
         /// </summary>
         /// <param name="dataContext">The data context.</param>
@@ -464,6 +515,29 @@ namespace Kephas.Data
             var command = (IFindOneCommand)dataContext.CreateCommand(typeof(IFindOneCommand));
             var result = await command.ExecuteAsync(findContext, cancellationToken).PreserveThreadContext();
             return result.Entity;
+        }
+
+        /// <summary>
+        /// Deletes the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically removed from the database without invoking any behavior.
+        /// </remarks>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="bulkDeleteContext">The bulk delete context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        internal static async Task<long> BulkDeleteCoreAsync(
+            this IDataContext dataContext,
+            IBulkDeleteContext bulkDeleteContext,
+            CancellationToken cancellationToken)
+        {
+            var command = (IBulkDeleteCommand)dataContext.CreateCommand(typeof(IBulkDeleteCommand));
+            var result = await command.ExecuteAsync(bulkDeleteContext, cancellationToken).PreserveThreadContext();
+
+            return result.Count;
         }
     }
 }

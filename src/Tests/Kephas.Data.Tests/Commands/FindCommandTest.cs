@@ -14,14 +14,9 @@ namespace Kephas.Data.Tests.Commands
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-    using Kephas.Data.Commands.Factory;
-    using Kephas.Data.Store;
-
-    using NSubstitute;
 
     using NUnit.Framework;
 
