@@ -27,12 +27,16 @@ namespace Kephas.Data.InMemory.Commands
         /// Purges the entities matching the provided criteria and returns the number of purged entities.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="bulkDeleteContext"></param>
         /// <param name="criteria">The criteria for finding the entities to operate on.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the number of purged entities.
         /// </returns>
-        protected override Task<long> BulkDeleteCoreAsync<T>(Expression<Func<T, bool>> criteria, CancellationToken cancellationToken)
+        protected override Task<long> BulkDeleteCoreAsync<T>(
+            IBulkDeleteContext bulkDeleteContext,
+            Expression<Func<T, bool>> criteria,
+            CancellationToken cancellationToken)
         {
             return Task.FromResult(0L);
         }

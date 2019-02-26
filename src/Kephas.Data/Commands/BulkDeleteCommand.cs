@@ -56,7 +56,7 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Purges the entities matching the provided criteria and returns the number of deleted entities.
+        /// Deletes the entities matching the provided criteria and returns the number of affected entities.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="bulkDeleteContext">The bulk delete context.</param>
@@ -82,20 +82,22 @@ namespace Kephas.Data.Commands
                 localCacheCount = toDeleteFromCache.Count;
             }
 
-            var count = await this.BulkDeleteCoreAsync(criteria, cancellationToken).PreserveThreadContext();
+            var count = await this.BulkDeleteCoreAsync(bulkDeleteContext, criteria, cancellationToken).PreserveThreadContext();
             return this.GetBulkOperationResult(bulkDeleteContext, count, localCacheCount, criteria);
         }
 
         /// <summary>
-        /// Purges the entities matching the provided criteria and returns the number of purged entities.
+        /// Deletes the entities matching the provided criteria and returns the number of affected entities.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="bulkDeleteContext">The bulk delete context.</param>
         /// <param name="criteria">The criteria for finding the entities to operate on.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the number of purged entities.
+        /// A promise of the number of deleted entities.
         /// </returns>
         protected virtual Task<long> BulkDeleteCoreAsync<T>(
+            IBulkDeleteContext bulkDeleteContext,
             Expression<Func<T, bool>> criteria,
             CancellationToken cancellationToken)
             where T : class
