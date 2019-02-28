@@ -13,7 +13,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     /// <summary>
     /// A grouped quartz entity base.
     /// </summary>
-    public abstract class GroupedQuartzEntityBase : QuartzEntityBase, IGroupedEntityBase
+    public abstract class GroupedQuartzEntityBase : QuartzEntityBase, IGroupedEntityBase, INamedEntityBase
     {
         /// <summary>
         /// Gets or sets the name.

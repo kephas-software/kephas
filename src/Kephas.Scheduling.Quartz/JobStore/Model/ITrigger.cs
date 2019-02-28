@@ -40,7 +40,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     /// </summary>
     [Abstract]
     [NaturalKey(new[] { nameof(InstanceName), nameof(Group), nameof(Name) })]
-    public interface ITrigger : IGroupedEntityBase
+    public interface ITrigger : IGroupedEntityBase, INamedEntityBase
     {
         JobKey JobKey { get; set; }
 
@@ -53,7 +53,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
         DateTime? PreviousFireTime { get; set; }
 
         //TODO [BsonRepresentation(BsonType.String)]
-        global::Quartz.TriggerState State { get; set; }
+        Model.TriggerState State { get; set; }
 
         //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         DateTime StartTime { get; set; }

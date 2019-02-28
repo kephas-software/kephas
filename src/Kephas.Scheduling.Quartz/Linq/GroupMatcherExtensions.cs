@@ -20,29 +20,35 @@ namespace Kephas.Scheduling.Quartz.Linq
 
     internal static class GroupMatcherExtensions
     {
-        public static Expression<Func<T, bool>> ToFilterExpression<T>(this GroupMatcher<T> matcher, string instanceName)
-            where T : Key<T>, IEntityBase
+        public static Expression<Func<T, bool>> ToFilterExpression<T, TMatcher>(this GroupMatcher<TMatcher> matcher, string instanceName)
+            where TMatcher : Key<TMatcher>
+            where T : IGroupedEntityBase
         {
             if (StringOperator.Equality.Equals(matcher.CompareWithOperator))
             {
                 return e => e.InstanceName == instanceName && e.Group == matcher.CompareToValue;
             }
+
             if (StringOperator.Contains.Equals(matcher.CompareWithOperator))
             {
                 return e => e.InstanceName == instanceName && e.Group.Contains(matcher.CompareToValue);
             }
+
             if (StringOperator.EndsWith.Equals(matcher.CompareWithOperator))
             {
                 return e => e.InstanceName == instanceName && e.Group.EndsWith(matcher.CompareToValue);
             }
+
             if (StringOperator.StartsWith.Equals(matcher.CompareWithOperator))
             {
                 return e => e.InstanceName == instanceName && e.Group.StartsWith(matcher.CompareToValue);
             }
+
             if (StringOperator.Anything.Equals(matcher.CompareWithOperator))
             {
                 return e => e.InstanceName == instanceName;
             }
+
             throw new ArgumentOutOfRangeException("Don't know how to translate " + matcher.CompareWithOperator +
                                                   " into filter expression");
         }

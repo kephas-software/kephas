@@ -22,7 +22,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public DailyTimeIntervalTrigger(IDailyTimeIntervalTrigger trigger, TriggerState state, string instanceName)
+        public DailyTimeIntervalTrigger(IDailyTimeIntervalTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
             this.RepeatCount = trigger.RepeatCount;

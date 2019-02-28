@@ -18,7 +18,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
     internal static class TriggerFactory
     {
-        public static Trigger CreateTrigger(ITrigger trigger, Models.TriggerState state, string instanceName)
+        public static Trigger CreateTrigger(ITrigger trigger, Model.TriggerState state, string instanceName)
         {
             if (trigger is ICronTrigger)
             {

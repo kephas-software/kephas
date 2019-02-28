@@ -27,7 +27,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public FiredTrigger(string firedInstanceId, Trigger trigger, JobDetail jobDetail)
+        public FiredTrigger(string firedInstanceId, Model.ITrigger trigger, JobDetail jobDetail)
         {
             this.Id = new FiredTriggerId(firedInstanceId, trigger.InstanceName);
             this.TriggerKey = trigger.GetTriggerKey();
@@ -38,7 +38,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
             if (jobDetail != null)
             {
-                this.JobKey = jobDetail.Id.GetJobKey();
+                this.JobKey = jobDetail.GetJobKey();
                 this.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
                 this.RequestsRecovery = jobDetail.RequestsRecovery;
             }

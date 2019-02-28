@@ -200,7 +200,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static Task DeletePausedTriggerGroup(this IDataContext dataContext, string instanceName, GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
         {
-            return dataContext.BulkDeleteAsync<IPausedTriggerGroup>(matcher.ToFilterExpression(instanceName), cancellationToken: cancellationToken);
+            return dataContext.BulkDeleteAsync<IPausedTriggerGroup>(matcher.ToFilterExpression<IPausedTriggerGroup, TriggerKey>(instanceName), cancellationToken: cancellationToken);
         }
 
         public static Task DeletePausedTriggerGroup(this IDataContext dataContext, string instanceName, string groupName, CancellationToken cancellationToken = default)

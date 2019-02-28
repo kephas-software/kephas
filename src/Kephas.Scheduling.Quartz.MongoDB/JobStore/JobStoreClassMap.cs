@@ -13,6 +13,10 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
     using System;
     using System.Collections.Generic;
 
+    using global::MongoDB.Bson;
+    using global::MongoDB.Bson.Serialization;
+    using global::MongoDB.Bson.Serialization.Serializers;
+
     using global::Quartz;
     using global::Quartz.Spi.MongoDbJobStore.Serializers;
     using global::Quartz.Util;
@@ -71,8 +75,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             {
                 map.AutoMap();
                 var serializer =
-                    new EnumerableInterfaceImplementerSerializer
-                        <System.Collections.Generic.HashSet<DayOfWeek>, DayOfWeek>(
+                    new EnumerableInterfaceImplementerSerializer<HashSet<DayOfWeek>, DayOfWeek>(
                         new EnumSerializer<DayOfWeek>(BsonType.String));
                 map.MapProperty(trigger => trigger.DaysOfWeek).SetSerializer(serializer);
             });

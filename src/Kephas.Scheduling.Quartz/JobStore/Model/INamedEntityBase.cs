@@ -1,22 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPausedTriggerGroup.cs" company="Kephas Software SRL">
+// <copyright file="INamedEntityBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IPausedTriggerGroup interface.
+//   Declares the INamedEntityBase interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Scheduling.Quartz.JobStore.Model
 {
-    using Kephas.Data.Model.AttributedModel;
-
     /// <summary>
-    /// Interface for paused trigger group.
+    /// Interface for named entity base.
     /// </summary>
-    [NaturalKey(new[] { nameof(InstanceName), nameof(Group) })]
-    public interface IPausedTriggerGroup : IGroupedEntityBase
+    public interface INamedEntityBase : IEntityBase
     {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; set; }
     }
 }

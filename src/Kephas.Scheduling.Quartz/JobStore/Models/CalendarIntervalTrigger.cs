@@ -21,7 +21,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public CalendarIntervalTrigger(ICalendarIntervalTrigger trigger, TriggerState state, string instanceName)
+        public CalendarIntervalTrigger(ICalendarIntervalTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
             this.RepeatIntervalUnit = trigger.RepeatIntervalUnit;

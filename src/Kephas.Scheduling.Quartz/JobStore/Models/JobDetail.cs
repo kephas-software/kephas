@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using Kephas.Scheduling.Quartz.JobStore.Model;
     using Kephas.Scheduling.Quartz.JobStore.Models.Identifiers;
 
-    public class JobDetail : QuartzEntityBase, Model.IJobDetail
+    public class JobDetail : GroupedQuartzEntityBase, Model.IJobDetail
     {
         public JobDetail()
         {
@@ -27,7 +27,9 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public JobDetail(global::Quartz.IJobDetail jobDetail, string instanceName)
         {
-            this.Id = new JobDetailId(jobDetail.Key, instanceName);
+            this.InstanceName = instanceName;
+            this.Name = jobDetail.Key.Name;
+            this.Group = jobDetail.Key.Group;
             this.Description = jobDetail.Description;
             this.JobType = jobDetail.JobType;
             this.JobDataMap = jobDetail.JobDataMap;
@@ -36,8 +38,6 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
             this.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
             this.RequestsRecovery = jobDetail.RequestsRecovery;
         }
-
-        object IIdentifiable.Id => this.Id;
 
         //TODO [BsonId]
         public JobDetailId Id { get; set; }
@@ -61,7 +61,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
             // The missing properties are figured out at runtime from the job type attributes
             return new JobDetailImpl()
             {
-                Key = new JobKey(this.Id.Name, this.Id.Group),
+                Key = new JobKey(this.Name, this.Group),
                 Description = this.Description,
                 JobType = this.JobType,
                 JobDataMap = this.JobDataMap,

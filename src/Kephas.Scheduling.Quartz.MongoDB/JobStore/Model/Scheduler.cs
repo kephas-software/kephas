@@ -12,6 +12,9 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore.Model
 {
     using System;
 
+    using global::MongoDB.Bson;
+    using global::MongoDB.Bson.Serialization.Attributes;
+
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
     /// <summary>

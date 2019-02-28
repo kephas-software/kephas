@@ -27,7 +27,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        protected Trigger(global::Quartz.ITrigger trigger, global::Quartz.TriggerState state, string instanceName)
+        protected Trigger(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
         {
             this.InstanceName = instanceName;
             this.Group = trigger.Key.Group;
@@ -58,7 +58,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public DateTime? PreviousFireTime { get; set; }
 
         //TODO [BsonRepresentation(BsonType.String)]
-        public global::Quartz.TriggerState State { get; set; }
+        public Model.TriggerState State { get; set; }
 
         //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime StartTime { get; set; }

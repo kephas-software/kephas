@@ -24,7 +24,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public SimpleTrigger(ISimpleTrigger trigger, TriggerState state, string instanceName)
+        public SimpleTrigger(ISimpleTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
             this.RepeatCount = trigger.RepeatCount;

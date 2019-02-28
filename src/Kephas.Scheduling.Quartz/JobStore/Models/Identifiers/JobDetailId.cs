@@ -24,10 +24,5 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models.Identifiers
             this.Name = jobKey.Name;
             this.Group = jobKey.Group;
         }
-
-        public JobKey GetJobKey()
-        {
-            return new JobKey(this.Name, this.Group);
-        }
     }
 }

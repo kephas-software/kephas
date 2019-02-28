@@ -16,14 +16,6 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     public interface IGroupedEntityBase : IEntityBase
     {
         /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the group.
         /// </summary>
         /// <value>

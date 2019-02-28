@@ -21,7 +21,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public CronTrigger(ICronTrigger trigger, TriggerState state, string instanceName)
+        public CronTrigger(ICronTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
             this.CronExpression = trigger.CronExpressionString;
