@@ -11,14 +11,14 @@
         <Product>Kephas Framework</Product>
         <AssemblyVersion>5.1.0.0</AssemblyVersion>
         <FileVersion>5.1.0.0</FileVersion>
-        <Description>Provides the Quartz.NET implementation of task scheduling.</Description>
+        <Description>Provides the MongoDB storage for the Quartz.NET implementation of task scheduling.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas framework scheduling quartz</PackageTags>
+        <PackageTags>kephas framework scheduling quartz mongo mongodb</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <NeutralLanguage>en</NeutralLanguage>
@@ -27,22 +27,22 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-        <DocumentationFile>bin\Debug\net452\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net452\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
-        <DocumentationFile>bin\Release\net452\Kephas.Scheduling.Quartz.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net452\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>NET452</DefineConstants>
     </PropertyGroup>
 
@@ -55,16 +55,12 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="JobStore\Util\" />
-        <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Quartz" Version="3.0.7" />
+        <PackageReference Include="MondoDB.Driver.signed" Version="2.4.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
     </ItemGroup>
 
@@ -73,6 +69,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
         <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
         <ProjectReference Include="..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
         <ProjectReference Include="..\Kephas.Scheduling\Kephas.Scheduling.csproj" />
+        <ProjectReference Include="..\Kephas.Scheduling.Quartz\Kephas.Scheduling.Quartz.csproj" />
     </ItemGroup>
 
 </Project>

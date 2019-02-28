@@ -141,11 +141,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Npgsql", "Kephas.Npg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Workflow.Tests", "Tests\Kephas.Workflow.Tests\Kephas.Workflow.Tests.csproj", "{3AD2EBEA-C416-46FD-9B96-6042B17E44DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling", "Kephas.Scheduling\Kephas.Scheduling.csproj", "{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling", "Kephas.Scheduling\Kephas.Scheduling.csproj", "{F395B404-FA5A-47A0-8A59-2CFFE5658D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Tests", "Tests\Kephas.Scheduling.Tests\Kephas.Scheduling.Tests.csproj", "{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Tests", "Tests\Kephas.Scheduling.Tests\Kephas.Scheduling.Tests.csproj", "{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Quartz", "Kephas.Scheduling.Quartz\Kephas.Scheduling.Quartz.csproj", "{31F0B073-E35B-4843-BB23-9470DBBD0407}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz", "Kephas.Scheduling.Quartz\Kephas.Scheduling.Quartz.csproj", "{31F0B073-E35B-4843-BB23-9470DBBD0407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -377,6 +379,10 @@ Global
 		{31F0B073-E35B-4843-BB23-9470DBBD0407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31F0B073-E35B-4843-BB23-9470DBBD0407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31F0B073-E35B-4843-BB23-9470DBBD0407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2AE2964-94D9-4806-B9D1-81365E866930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2AE2964-94D9-4806-B9D1-81365E866930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
