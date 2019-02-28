@@ -77,20 +77,5 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public JobDataMap JobDataMap { get; set; }
 
         public abstract global::Quartz.ITrigger GetTrigger();
-
-        protected void FillTrigger(AbstractTrigger trigger)
-        {
-            trigger.Key = new TriggerKey(this.Name, this.Group);
-            trigger.JobKey = this.JobKey;
-            trigger.CalendarName = this.CalendarName;
-            trigger.Description = this.Description;
-            trigger.JobDataMap = this.JobDataMap;
-            trigger.MisfireInstruction = this.MisfireInstruction;
-            trigger.EndTimeUtc = this.EndTime;
-            trigger.StartTimeUtc = this.StartTime;
-            trigger.Priority = this.Priority;
-            trigger.SetNextFireTimeUtc(this.NextFireTime);
-            trigger.SetPreviousFireTimeUtc(this.PreviousFireTime);
-        }
     }
 }

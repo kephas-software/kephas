@@ -16,6 +16,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
+    using Kephas.Scheduling.Quartz.JobStore.Model;
+
     internal class DailyTimeIntervalTrigger : Trigger
     {
         public DailyTimeIntervalTrigger()
@@ -52,7 +54,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public string TimeZone { get; set; }
 
-        public override ITrigger GetTrigger()
+        public override global::Quartz.ITrigger GetTrigger()
         {
             var trigger = new DailyTimeIntervalTriggerImpl
             {

@@ -27,7 +27,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         {
         }
 
-        public FiredTrigger(string firedInstanceId, Model.ITrigger trigger, JobDetail jobDetail)
+        public FiredTrigger(string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail)
         {
             this.Id = new FiredTriggerId(firedInstanceId, trigger.InstanceName);
             this.TriggerKey = trigger.GetTriggerKey();

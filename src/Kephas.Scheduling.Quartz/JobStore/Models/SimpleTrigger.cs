@@ -15,6 +15,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
+    using Kephas.Scheduling.Quartz.JobStore.Model;
+
     /// <summary>
     /// A simple trigger.
     /// </summary>
@@ -38,7 +40,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public int TimesTriggered { get; set; }
 
-        public override ITrigger GetTrigger()
+        public override global::Quartz.ITrigger GetTrigger()
         {
             var trigger = new SimpleTriggerImpl()
             {

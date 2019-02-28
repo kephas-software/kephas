@@ -13,6 +13,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     using System;
 
     using global::Quartz;
+    using global::Quartz.Impl.Triggers;
 
     using Kephas.Data.Model.AttributedModel;
     using Kephas.Model.AttributedModel;
@@ -79,6 +80,21 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
         public static TriggerKey GetTriggerKey(this ITrigger trigger)
         {
             return new TriggerKey(trigger.Name, trigger.Group);
+        }
+
+        internal static void FillTrigger(this ITrigger trigger, AbstractTrigger quartzTrigger)
+        {
+            quartzTrigger.Key = new TriggerKey(trigger.Name, trigger.Group);
+            quartzTrigger.JobKey = trigger.JobKey;
+            quartzTrigger.CalendarName = trigger.CalendarName;
+            quartzTrigger.Description = trigger.Description;
+            quartzTrigger.JobDataMap = trigger.JobDataMap;
+            quartzTrigger.MisfireInstruction = trigger.MisfireInstruction;
+            quartzTrigger.EndTimeUtc = trigger.EndTime;
+            quartzTrigger.StartTimeUtc = trigger.StartTime;
+            quartzTrigger.Priority = trigger.Priority;
+            quartzTrigger.SetNextFireTimeUtc(trigger.NextFireTime);
+            quartzTrigger.SetPreviousFireTimeUtc(trigger.PreviousFireTime);
         }
     }
 }

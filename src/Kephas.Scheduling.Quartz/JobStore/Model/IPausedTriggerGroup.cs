@@ -10,12 +10,9 @@
 
 namespace Kephas.Scheduling.Quartz.JobStore.Model
 {
-    using Kephas.Data.Model.AttributedModel;
-
     /// <summary>
     /// Interface for paused trigger group.
     /// </summary>
-    [NaturalKey(new[] { nameof(InstanceName), nameof(Group) })]
     public interface IPausedTriggerGroup : IGroupedEntityBase
     {
     }

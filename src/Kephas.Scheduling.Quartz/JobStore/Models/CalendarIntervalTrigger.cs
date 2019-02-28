@@ -15,6 +15,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
+    using Kephas.Scheduling.Quartz.JobStore.Model;
+
     internal class CalendarIntervalTrigger : Trigger
     {
         public CalendarIntervalTrigger()
@@ -45,7 +47,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public bool SkipDayIfHourDoesNotExist { get; set; }
 
-        public override ITrigger GetTrigger()
+        public override global::Quartz.ITrigger GetTrigger()
         {
             var trigger = new CalendarIntervalTriggerImpl()
             {

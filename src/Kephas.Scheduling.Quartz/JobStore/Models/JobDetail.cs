@@ -55,19 +55,5 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public bool ConcurrentExecutionDisallowed { get; set; }
 
         public bool RequestsRecovery { get; set; }
-
-        public global::Quartz.IJobDetail GetJobDetail()
-        {
-            // The missing properties are figured out at runtime from the job type attributes
-            return new JobDetailImpl()
-            {
-                Key = new JobKey(this.Name, this.Group),
-                Description = this.Description,
-                JobType = this.JobType,
-                JobDataMap = this.JobDataMap,
-                Durable = this.Durable,
-                RequestsRecovery = this.RequestsRecovery
-            };
-        }
     }
 }

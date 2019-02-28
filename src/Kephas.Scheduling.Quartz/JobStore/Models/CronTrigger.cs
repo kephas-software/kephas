@@ -15,6 +15,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
+    using Kephas.Scheduling.Quartz.JobStore.Model;
+
     internal class CronTrigger : Trigger
     {
         public CronTrigger()
@@ -32,7 +34,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public string TimeZone { get; set; }
 
-        public override ITrigger GetTrigger()
+        public override global::Quartz.ITrigger GetTrigger()
         {
             var trigger = new CronTriggerImpl()
             {

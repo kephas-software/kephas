@@ -180,7 +180,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                              .Where(g => g.InstanceName == instanceName)
                              .ToListAsync(cancellationToken: cancellationToken)
                              .PreserveThreadContext();
-            return groups.Select(g => g.Group).ToList();
+            return groups.Select(g => g.Group).Distinct().ToList();
         }
 
         public static Task<bool> IsTriggerGroupPaused(this IDataContext dataContext, string instanceName, string group, CancellationToken cancellationToken = default)
@@ -208,6 +208,87 @@ namespace Kephas.Scheduling.Quartz.JobStore
             return dataContext.BulkDeleteAsync<Model.IPausedTriggerGroup>(
                 s => s.InstanceName == instanceName && s.Group == groupName,
                 cancellationToken: cancellationToken);
+        }
+
+        public static async Task<global::Quartz.IJobDetail> GetJobDetail(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
+        {
+            var job = await dataContext.GetJob(instanceName, jobKey, cancellationToken).PreserveThreadContext();
+            return job?.GetJobDetail();
+        }
+
+        public static Task<Model.IJobDetail> GetJob(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
+        {
+            return dataContext.FindOneAsync<Model.IJobDetail>(
+                j => j.InstanceName == instanceName && j.Group == jobKey.Group && j.Name == jobKey.Name,
+                throwIfNotFound: false,
+                cancellationToken: cancellationToken);
+        }
+
+        public static async Task<List<JobKey>> GetJobsKeys(this IDataContext dataContext, string instanceName, GroupMatcher<JobKey> matcher, CancellationToken cancellationToken = default)
+        {
+            var jobs = await dataContext.Query<Model.IJobDetail>()
+                           .Where(matcher.ToFilterExpression<Model.IJobDetail, JobKey>(instanceName))
+                           .ToListAsync(cancellationToken: cancellationToken)
+                           .PreserveThreadContext();
+            return jobs.Select(j => j.GetJobKey()).ToList();
+        }
+
+        public static async Task<IEnumerable<string>> GetJobGroupNames(this IDataContext dataContext, string instanceName, CancellationToken cancellationToken = default)
+        {
+            var jobs = await dataContext.Query<Model.IJobDetail>()
+                           .Where(j => j.InstanceName == instanceName)
+                           .ToListAsync(cancellationToken: cancellationToken)
+                           .PreserveThreadContext();
+            return jobs.Select(j => j.Group).Distinct().ToList();
+        }
+
+        public static Task<long> DeleteJob(this IDataContext dataContext, string instanceName, JobKey key, CancellationToken cancellationToken = default)
+        {
+            return dataContext.BulkDeleteAsync<Model.IJobDetail>(
+                s => s.InstanceName == instanceName && s.Group == key.Group && s.Name == key.Name,
+                cancellationToken: cancellationToken);
+        }
+
+        public static async Task AddJob(this IDataContext dataContext, string instanceName, global::Quartz.IJobDetail jobDetail, CancellationToken cancellationToken = default)
+        {
+            var job = await dataContext.CreateEntityAsync<Model.IJobDetail>(cancellationToken: cancellationToken).PreserveThreadContext();
+            job.InstanceName = instanceName;
+            job.Name = jobDetail.Key.Name;
+            job.Group = jobDetail.Key.Group;
+            job.Description = jobDetail.Description;
+            job.JobType = jobDetail.JobType;
+            job.JobDataMap = jobDetail.JobDataMap;
+            job.Durable = jobDetail.Durable;
+            job.PersistJobDataAfterExecution = jobDetail.PersistJobDataAfterExecution;
+            job.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
+            job.RequestsRecovery = jobDetail.RequestsRecovery;
+
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+        }
+
+        public static async Task<long> UpdateJob(this IDataContext dataContext, string instanceName, global::Quartz.IJobDetail jobDetail, bool upsert, CancellationToken cancellationToken = default)
+        {
+            var job = await dataContext.FindOneAsync<Model.IJobDetail>(
+                j => j.InstanceName == instanceName && j.Group == jobDetail.Key.Group && j.Name == jobDetail.Key.Name,
+                throwIfNotFound: !upsert,
+                cancellationToken).PreserveThreadContext();
+
+            if (job == null)
+            {
+                await dataContext.AddJob(instanceName, jobDetail, cancellationToken).PreserveThreadContext();
+                return 1;
+            }
+
+            job.Description = jobDetail.Description;
+            job.JobType = jobDetail.JobType;
+            job.JobDataMap = jobDetail.JobDataMap;
+            job.Durable = jobDetail.Durable;
+            job.PersistJobDataAfterExecution = jobDetail.PersistJobDataAfterExecution;
+            job.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
+            job.RequestsRecovery = jobDetail.RequestsRecovery;
+
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            return 1;
         }
 
         public static async Task<bool> TryAcquireLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
