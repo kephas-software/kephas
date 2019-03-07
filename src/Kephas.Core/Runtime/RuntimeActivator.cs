@@ -15,7 +15,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Activator based on the runtime type information.
     /// </summary>
-    public class RuntimeActivator : ActivatorBase
+    public sealed class RuntimeActivator : ActivatorBase
     {
         /// <summary>
         /// The static instance of the runtime activator.
