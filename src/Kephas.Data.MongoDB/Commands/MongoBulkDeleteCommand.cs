@@ -21,6 +21,7 @@ namespace Kephas.Data.MongoDB.Commands
     /// <summary>
     /// A MongoDB bulk delete command.
     /// </summary>
+    [DataContextType(typeof(MongoDataContext))]
     public class MongoBulkDeleteCommand : BulkDeleteCommand
     {
         /// <summary>
