@@ -28,7 +28,7 @@ namespace Kephas.Data.Commands
     public class BulkDeleteCommand : BulkOperationCommandBase<IBulkDeleteContext, IBulkDataOperationResult>, IBulkDeleteCommand
     {
         /// <summary>
-        /// Gets the generic method of <see cref="BulkDeleteCoreAsync{T}"/>.
+        /// Gets the generic method of <see cref="BulkDeleteAsync{T}"/>.
         /// </summary>
         private static readonly MethodInfo BulkDeleteAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((BulkDeleteCommand)null).BulkDeleteAsync<string>(default, default));
@@ -47,7 +47,6 @@ namespace Kephas.Data.Commands
             Requires.NotNull(operationContext.DataContext, nameof(operationContext.DataContext));
             Requires.NotNull(operationContext.EntityType, nameof(operationContext.EntityType));
             Requires.NotNull(operationContext.Criteria, nameof(operationContext.Criteria));
-
 
             var opAsync = BulkDeleteAsyncMethod.MakeGenericMethod(operationContext.EntityType);
             var asyncResult = (Task<IBulkDataOperationResult>)opAsync.Call(this, operationContext, cancellationToken);
@@ -103,7 +102,7 @@ namespace Kephas.Data.Commands
             where T : class
         {
             throw new NotSupportedException(
-                "The BulkDeleteCommand.BulkDeleteCoreAsync(criteria, cancellationToken) must be overridden to provide a meaningful execution.");
+                $"The {nameof(BulkDeleteCommand)}.{nameof(this.BulkDeleteCoreAsync)}(context, criteria, cancellationToken) must be overridden to provide a meaningful execution.");
         }
     }
 }

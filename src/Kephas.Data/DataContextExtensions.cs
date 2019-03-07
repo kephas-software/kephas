@@ -409,8 +409,62 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(criteria, nameof(criteria));
 
-            var purgeContext = new BulkDeleteContext<T>(dataContext, criteria, throwIfNotFound);
-            return BulkDeleteCoreAsync(dataContext, purgeContext, cancellationToken);
+            var bulkDeleteContext = new BulkDeleteContext<T>(dataContext, criteria, throwIfNotFound);
+            return BulkDeleteCoreAsync(dataContext, bulkDeleteContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically updated in the database without invoking any behavior.
+        /// </remarks>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="criteria">The matching criteria for entities to delete.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="throwIfNotFound">Optional. <c>true</c> to throw if not found.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        public static Task<long> BulkUpdateAsync<T>(
+            this IDataContext dataContext,
+            Expression<Func<T, bool>> criteria,
+            object values,
+            bool throwIfNotFound = true,
+            CancellationToken cancellationToken = default)
+            where T : class
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(criteria, nameof(criteria));
+            Requires.NotNull(values, nameof(values));
+
+            var bulkUpdateContext = new BulkUpdateContext<T>(dataContext, criteria, values, throwIfNotFound);
+            return BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically updated in the database without invoking any behavior.
+        /// </remarks>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="bulkUpdateContext">The bulk update context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        public static async Task<long> BulkUpdateAsync(
+            this IDataContext dataContext,
+            IBulkUpdateContext bulkUpdateContext,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(bulkUpdateContext, nameof(bulkUpdateContext));
+
+            return await BulkUpdateCoreAsync(dataContext, bulkUpdateContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -536,6 +590,29 @@ namespace Kephas.Data
         {
             var command = (IBulkDeleteCommand)dataContext.CreateCommand(typeof(IBulkDeleteCommand));
             var result = await command.ExecuteAsync(bulkDeleteContext, cancellationToken).PreserveThreadContext();
+
+            return result.Count;
+        }
+
+        /// <summary>
+        /// Updates the entities matching the provided criteria and returns the number of affected entities asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The entities are physically updated in the database without invoking any behavior.
+        /// </remarks>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="bulkUpdateContext">The bulk update context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A promise of the number of affected entities.
+        /// </returns>
+        internal static async Task<long> BulkUpdateCoreAsync(
+            this IDataContext dataContext,
+            IBulkUpdateContext bulkUpdateContext,
+            CancellationToken cancellationToken)
+        {
+            var command = (IBulkUpdateCommand)dataContext.CreateCommand(typeof(IBulkUpdateCommand));
+            var result = await command.ExecuteAsync(bulkUpdateContext, cancellationToken).PreserveThreadContext();
 
             return result.Count;
         }

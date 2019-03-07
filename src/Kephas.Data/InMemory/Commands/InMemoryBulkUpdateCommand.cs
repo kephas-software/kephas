@@ -1,16 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryBulkDeleteCommand.cs" company="Kephas Software SRL">
+// <copyright file="InMemoryBulkUpdateCommand.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the in memory bulk delete command class.
+//   Implements the in memory bulk update command class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.InMemory.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,24 +19,27 @@ namespace Kephas.Data.InMemory.Commands
     using Kephas.Data.Commands;
 
     /// <summary>
-    /// An in memory bulk delete command.
+    /// An in memory bulk update command.
     /// </summary>
     [DataContextType(typeof(InMemoryDataContext))]
-    public class InMemoryBulkDeleteCommand : BulkDeleteCommand
+    public class InMemoryBulkUpdateCommand : BulkUpdateCommand
     {
         /// <summary>
-        /// Deletes the entities matching the provided criteria and returns the number of deleted entities.
+        /// Updates the entities matching the provided criteria and returns the number of affected
+        /// entities.
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="bulkDeleteContext">The bulk delete context.</param>
         /// <param name="criteria">The criteria for finding the entities to operate on.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A promise of the number of deleted entities.
+        /// A promise of the number of updated entities.
         /// </returns>
-        protected override Task<long> BulkDeleteCoreAsync<T>(
-            IBulkDeleteContext bulkDeleteContext,
+        protected override Task<long> BulkUpdateCoreAsync<T>(
+            IBulkUpdateContext bulkDeleteContext,
             Expression<Func<T, bool>> criteria,
+            IDictionary<string, object> values,
             CancellationToken cancellationToken)
         {
             return Task.FromResult(0L);
@@ -54,7 +58,7 @@ namespace Kephas.Data.InMemory.Commands
         /// The bulk operation result.
         /// </returns>
         protected override IBulkDataOperationResult GetBulkOperationResult<T>(
-            IBulkDeleteContext bulkOperationContext,
+            IBulkUpdateContext bulkOperationContext,
             long count,
             long localCacheCount,
             Expression<Func<T, bool>> criteria)
