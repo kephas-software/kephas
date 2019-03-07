@@ -16,27 +16,35 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
     using Kephas.Scheduling.Quartz.JobStore.Models;
 
+    /// <summary>
+    /// A trigger factory.
+    /// </summary>
     internal static class TriggerFactory
     {
+        /// <summary>
+        /// Creates a trigger.
+        /// </summary>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <returns>
+        /// The new trigger.
+        /// </returns>
         public static Trigger CreateTrigger(ITrigger trigger, Model.TriggerState state, string instanceName)
         {
-            if (trigger is ICronTrigger)
+            switch (trigger)
             {
-                return new CronTrigger((ICronTrigger) trigger, state, instanceName);
+                case ICronTrigger cronTrigger:
+                    return new CronTrigger(cronTrigger, state, instanceName);
+                case ISimpleTrigger simpleTrigger:
+                    return new SimpleTrigger(simpleTrigger, state, instanceName);
+                case ICalendarIntervalTrigger intervalTrigger:
+                    return new CalendarIntervalTrigger(intervalTrigger, state, instanceName);
+                case IDailyTimeIntervalTrigger timeIntervalTrigger:
+                    return new DailyTimeIntervalTrigger(timeIntervalTrigger, state, instanceName);
+                default:
+                    throw new NotSupportedException($"Trigger of type {trigger.GetType().FullName} is not supported");
             }
-            if (trigger is ISimpleTrigger)
-            {
-                return new SimpleTrigger((ISimpleTrigger) trigger, state, instanceName);
-            }
-            if (trigger is ICalendarIntervalTrigger)
-            {
-                return new CalendarIntervalTrigger((ICalendarIntervalTrigger) trigger, state, instanceName);
-            }
-            if (trigger is IDailyTimeIntervalTrigger)
-            {
-                return new DailyTimeIntervalTrigger((IDailyTimeIntervalTrigger) trigger, state, instanceName);
-            }
-
-            throw new NotSupportedException($"Trigger of type {trigger.GetType().FullName} is not supported");
         }
-    }}
+    }
+}

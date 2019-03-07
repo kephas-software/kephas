@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling.Quartz.JobStore.Repositories
+namespace Kephas.Scheduling.Quartz.MongoDB.JobStore
 {
     using System;
     using System.Collections.Generic;

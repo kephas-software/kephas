@@ -56,7 +56,6 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
 
     <ItemGroup>
         <Folder Include="JobStore\Util\" />
-        <Folder Include="Properties\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -71,6 +70,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
+        <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
         <ProjectReference Include="..\Kephas.Data.Model\Kephas.Data.Model.csproj" />
         <ProjectReference Include="..\Kephas.Scheduling\Kephas.Scheduling.csproj" />
     </ItemGroup>

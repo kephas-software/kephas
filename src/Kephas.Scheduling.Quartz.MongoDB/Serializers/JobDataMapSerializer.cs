@@ -1,11 +1,23 @@
-﻿using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
-using Quartz.Simpl;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="JobDataMapSerializer.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the job data map serializer class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Quartz.Spi.MongoDbJobStore.Serializers
 {
+    using System;
+
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization;
+    using MongoDB.Bson.Serialization.Serializers;
+
+    using Quartz.Simpl;
+
     internal class JobDataMapSerializer : SerializerBase<JobDataMap>
     {
         private readonly DefaultObjectSerializer _objectSerializer = new DefaultObjectSerializer();

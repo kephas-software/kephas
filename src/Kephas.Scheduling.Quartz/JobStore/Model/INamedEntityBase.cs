@@ -10,9 +10,12 @@
 
 namespace Kephas.Scheduling.Quartz.JobStore.Model
 {
+    using Kephas.Model.AttributedModel;
+
     /// <summary>
     /// Interface for named entity base.
     /// </summary>
+    [Mixin]
     public interface INamedEntityBase : IEntityBase
     {
         /// <summary>

@@ -10,9 +10,12 @@
 
 namespace Kephas.Scheduling.Quartz.JobStore.Model
 {
+    using Kephas.Model.AttributedModel;
+
     /// <summary>
     /// A grouped quartz entity base.
     /// </summary>
+    [ExcludeFromModel]
     public abstract class GroupedQuartzEntityBase : QuartzEntityBase, IGroupedEntityBase, INamedEntityBase
     {
         /// <summary>

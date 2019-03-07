@@ -22,8 +22,20 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore.Model
         public const string TriggerAccess = "TRIGGER_ACCESS";
         public const string StateAccess = "STATE_ACCESS";
 
+        /// <summary>
+        /// Gets or sets the identifier of the instance.
+        /// </summary>
+        /// <value>
+        /// The identifier of the instance.
+        /// </value>
         public string InstanceId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Date/Time of the acquired at.
+        /// </summary>
+        /// <value>
+        /// The acquired at time.
+        /// </value>
         public DateTime AcquiredAt { get; set; }
 
         /// <summary>

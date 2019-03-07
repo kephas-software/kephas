@@ -43,6 +43,8 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </summary>
         private static readonly ILogger Log = typeof(DataContextExtensions).GetLogger();
 
+        #region Calendars
+
         /// <summary>
         /// Adds a calendar.
         /// </summary>
@@ -148,6 +150,20 @@ namespace Kephas.Scheduling.Quartz.JobStore
             return dataContext.BulkDeleteAsync<Model.ICalendar>(c => c.InstanceName == instanceName && c.CalendarName == calendarName, cancellationToken: cancellationToken);
         }
 
+        #endregion
+
+        #region Schedulers
+
+        /// <summary>
+        /// Add a scheduler.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         public static async Task AddScheduler(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
         {
             var scheduler = await dataContext.CreateEntityAsync<Model.IScheduler>(cancellationToken: cancellationToken).PreserveThreadContext();
@@ -159,20 +175,43 @@ namespace Kephas.Scheduling.Quartz.JobStore
             await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
         }
 
+        /// <summary>
+        /// Deletes the specified scheduler.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         public static Task DeleteScheduler(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
         {
             return dataContext.BulkDeleteAsync<Model.IScheduler>(s => s.InstanceName == instanceName && s.InstanceId == instanceId, cancellationToken: cancellationToken);
         }
 
+        /// <summary>
+        /// Update the scheduler state.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         public static async Task UpdateSchedulerState(this IDataContext dataContext, string instanceName, string instanceId, SchedulerState state, CancellationToken cancellationToken = default)
         {
-            // TODO change with BulkUpdate
-            var scheduler = await dataContext.FindOneAsync<Model.IScheduler>(
+            var scheduler = await dataContext.BulkUpdateAsync<Model.IScheduler>(
                                 s => s.InstanceName == instanceName && s.InstanceId == instanceId,
+                                new { State = state },
                                 cancellationToken: cancellationToken).PreserveThreadContext();
-            scheduler.State = state;
-            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
         }
+
+        #endregion
+
+        #region Paused trigger groups
 
         public static async Task<List<string>> GetPausedTriggerGroups(this IDataContext dataContext, string instanceName, CancellationToken cancellationToken = default)
         {
@@ -209,6 +248,170 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 s => s.InstanceName == instanceName && s.Group == groupName,
                 cancellationToken: cancellationToken);
         }
+
+        #endregion
+
+        #region Fired triggers
+
+        /// <summary>
+        /// Adds a fired trigger.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="firedInstanceId">Identifier for the fired instance.</param>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="jobDetail">The job detail.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static async Task AddFiredTrigger(this IDataContext dataContext, string instanceId, string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail, CancellationToken cancellationToken = default)
+        {
+            var firedTrigger = await dataContext.CreateEntityAsync<IFiredTrigger>(cancellationToken: cancellationToken).PreserveThreadContext();
+
+            firedTrigger.FiredInstanceId = firedInstanceId;
+            firedTrigger.UpdateFiredTrigger(trigger, jobDetail);
+
+            firedTrigger.Fired = DateTime.UtcNow;
+            firedTrigger.State = Model.TriggerState.Acquired; // TODO why is this overwritten?
+            firedTrigger.InstanceId = instanceId;
+
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Updates a fired trigger.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="firedInstanceId">Identifier for the fired instance.</param>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="jobDetail">The job detail.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static async Task UpdateFiredTrigger(this IDataContext dataContext, string instanceName, string instanceId, string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail, CancellationToken cancellationToken = default)
+        {
+            var firedTrigger = await dataContext.FindOneAsync<IFiredTrigger>(t => t.InstanceName == instanceName && t.FiredInstanceId == firedInstanceId,cancellationToken: cancellationToken).PreserveThreadContext();
+
+            firedTrigger.UpdateFiredTrigger(trigger, jobDetail);
+
+            firedTrigger.Fired = DateTime.UtcNow;
+            firedTrigger.State = Model.TriggerState.Acquired; // TODO why is this overwritten?
+            firedTrigger.InstanceId = instanceId;
+
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Updates the fired trigger.
+        /// </summary>
+        /// <param name="firedTrigger">The firedTrigger to act on.</param>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="jobDetail">The job detail.</param>
+        /// <returns>
+        /// An IFiredTrigger.
+        /// </returns>
+        public static IFiredTrigger UpdateFiredTrigger(this IFiredTrigger firedTrigger, Model.ITrigger trigger, Model.IJobDetail jobDetail)
+        {
+            firedTrigger.InstanceName = trigger.InstanceName;
+            firedTrigger.TriggerName = trigger.Name;
+            firedTrigger.TriggerGroup = trigger.Group;
+            firedTrigger.Scheduled = trigger.NextFireTime;
+            firedTrigger.Priority = trigger.Priority;
+            firedTrigger.State = trigger.State;
+
+            if (jobDetail != null)
+            {
+                firedTrigger.JobName = jobDetail.Name;
+                firedTrigger.JobGroup = jobDetail.Group;
+                firedTrigger.ConcurrentExecutionDisallowed = jobDetail.ConcurrentExecutionDisallowed;
+                firedTrigger.RequestsRecovery = jobDetail.RequestsRecovery;
+            }
+
+            return firedTrigger;
+        }
+
+        /// <summary>
+        /// Delete the specified fired trigger.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="firedInstanceId">Identifier for the fired instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static async Task DeleteFiredTrigger(this IDataContext dataContext, string instanceName, string firedInstanceId, CancellationToken cancellationToken = default)
+        {
+            await dataContext
+                .BulkDeleteAsync<IFiredTrigger>(
+                    t => t.InstanceName == instanceName && t.FiredInstanceId == firedInstanceId,
+                    cancellationToken: cancellationToken)
+                .PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Delete the fired triggers by instance identifier.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the number of deleted triggers.
+        /// </returns>
+        public static async Task<long> DeleteFiredTriggersByInstanceId(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
+        {
+            var result = await dataContext.BulkDeleteAsync<IFiredTrigger>(
+                                 trigger => trigger.InstanceName == instanceName && trigger.InstanceId == instanceId,
+                                 cancellationToken: cancellationToken)
+                             .PreserveThreadContext();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the fired triggers.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="jobKey">The job key.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the fired triggers.
+        /// </returns>
+        public static Task<IList<IFiredTrigger>> GetFiredTriggers(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
+        {
+            return dataContext
+                .Query<IFiredTrigger>()
+                .Where(trigger => trigger.InstanceName == instanceName && trigger.JobName == jobKey.Name
+                                                                       && trigger.JobGroup == jobKey.Group)
+                .ToListAsync(cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the recoverable fired triggers.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the recoverable fired triggers.
+        /// </returns>
+        public static Task<IList<IFiredTrigger>> GetRecoverableFiredTriggers(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
+        {
+            return dataContext
+                .Query<IFiredTrigger>()
+                .Where(trigger => trigger.InstanceName == instanceName && trigger.InstanceId == instanceId && trigger.RequestsRecovery)
+                .ToListAsync(cancellationToken: cancellationToken);
+        }
+
+        #endregion
+
+        #region Jobs
 
         public static async Task<global::Quartz.IJobDetail> GetJobDetail(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
         {
@@ -291,6 +494,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
             return 1;
         }
 
+        #endregion
+
+        #region Locks
+
         public static async Task<bool> TryAcquireLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
         {
             Log.Trace($"Trying to acquire lock {instanceName}/{lockType} on {instanceId}");
@@ -336,5 +543,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             Log.Trace($"Released lock {instanceName}/{lockType} on {instanceId}");
             return true;
         }
+
+        #endregion
     }
 }

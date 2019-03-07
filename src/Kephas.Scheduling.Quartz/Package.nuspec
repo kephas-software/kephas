@@ -23,6 +23,7 @@
         <dependencies>
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="Kephas.Data" version="$refversion$" />
+            <dependency id="Kephas.Model" version="$refversion$" />
             <dependency id="Kephas.Data.Model" version="$refversion$" />
             <dependency id="Kephas.Scheduling" version="$refversion$" />
             <dependency id="Quartz" version="3.0.7" />

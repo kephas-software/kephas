@@ -1,9 +1,20 @@
-﻿using System.Collections.Generic;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SetSerializer.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the set serializer class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Quartz.Spi.MongoDbJobStore.Serializers
 {
+    using System.Collections.Generic;
+
+    using MongoDB.Bson.Serialization;
+    using MongoDB.Bson.Serialization.Serializers;
+
     internal class SetSerializer<T> : SerializerBase<ISet<T>>
     {
         private readonly IBsonSerializer _serializer;
