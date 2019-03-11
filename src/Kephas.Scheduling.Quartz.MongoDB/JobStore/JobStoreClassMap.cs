@@ -22,6 +22,7 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore
     using global::Quartz.Util;
 
     using Kephas.Scheduling.Quartz.JobStore.Models;
+    using Kephas.Scheduling.Quartz.MongoDB.JobStore.Model;
 
     internal static class JobStoreClassMap
     {

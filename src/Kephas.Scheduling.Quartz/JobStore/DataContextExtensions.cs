@@ -494,6 +494,23 @@ namespace Kephas.Scheduling.Quartz.JobStore
             return 1;
         }
 
+        public static async Task<bool> JobExists(this IDataContext dataContext, string instanceName, JobKey jobKey, CancellationToken cancellationToken = default)
+        {
+            return await dataContext.Query<Model.IJobDetail>()
+                       .Where(j => j.InstanceName == instanceName && j.Name == jobKey.Name && j.Group == jobKey.Group)
+                       .AnyAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+        }
+
+        public static async Task UpdateJobData(this IDataContext dataContext, string instanceName, JobKey jobKey, JobDataMap jobDataMap, CancellationToken cancellationToken = default)
+        {
+            var jobDetail = await dataContext.FindOneAsync<Model.IJobDetail>(
+                    j => j.InstanceName == instanceName && j.Name == jobKey.Name && j.Group == jobKey.Group,
+                    cancellationToken: cancellationToken)
+                .PreserveThreadContext();
+            jobDetail.JobDataMap = jobDataMap;
+            await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+        }
+        
         #endregion
 
         #region Locks

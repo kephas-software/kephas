@@ -59,7 +59,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private LockManager lockManager;
 
-        private JobDetailRepository _jobDetailRepository;
         private TriggerRepository _triggerRepository;
 
         /// <summary>
@@ -207,7 +206,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             this.lockManager = new LockManager(this.InstanceName);
 
-            _jobDetailRepository = new JobDetailRepository(null, InstanceName);
             _triggerRepository = new TriggerRepository(null, InstanceName);
 
             return Task.FromResult(0);
@@ -634,11 +632,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <param name="calName">the identifier to check for</param>
         /// <param name="cancellationToken">The cancellation instruction.</param>
         /// <returns>true if a calendar exists with the given identifier</returns>
-        public Task<bool> CalendarExists(string calName, CancellationToken cancellationToken = default)
+        public async Task<bool> CalendarExists(string calName, CancellationToken cancellationToken = default)
         {
             using (var dataContext = this.dataContextFactory(null))
             {
-                return dataContext.CalendarExists(this.InstanceName, calName);
+                return await dataContext
+                           .CalendarExists(this.InstanceName, calName, cancellationToken: cancellationToken)
+                           .PreserveThreadContext();
             }
         }
 
@@ -653,7 +653,12 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <returns>true if a job exists with the given identifier</returns>
         public async Task<bool> CheckExists(JobKey jobKey, CancellationToken cancellationToken = default)
         {
-            return await _jobDetailRepository.JobExists(jobKey);
+            using (var dataContext = this.dataContextFactory(null))
+            {
+                return await dataContext
+                           .JobExists(this.InstanceName, jobKey, cancellationToken: cancellationToken)
+                           .PreserveThreadContext();
+            }
         }
 
         /// <summary>
@@ -788,7 +793,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <returns></returns>
         public async Task<int> GetNumberOfJobs(CancellationToken cancellationToken = default)
         {
-            return (int)await _jobDetailRepository.GetCount();
+            using (var dataContext = this.dataContextFactory(null))
+            {
+                return await dataContext.Query<Model.IJobDetail>()
+                           .Where(j => j.InstanceName == this.InstanceName)
+                           .CountAsync(cancellationToken)
+                           .PreserveThreadContext();
+            }
         }
 
         /// <summary>
@@ -1625,7 +1636,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             bool replaceExisting,
             CancellationToken cancellationToken)
         {
-            var existingJob = await _jobDetailRepository.JobExists(newJob.Key);
+            var existingJob = await dataContext.JobExists(this.InstanceName, newJob.Key, cancellationToken: cancellationToken).PreserveThreadContext();
 
             if (existingJob)
             {
@@ -2039,7 +2050,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
                 if (jobDetail.PersistJobDataAfterExecution && jobDetail.JobDataMap.Dirty)
                 {
-                    await _jobDetailRepository.UpdateJobData(jobDetail.Key, jobDetail.JobDataMap);
+                    await dataContext.UpdateJobData(this.InstanceName, jobDetail.Key, jobDetail.JobDataMap, cancellationToken: token).PreserveThreadContext();
                 }
             }
             catch (Exception ex)
@@ -2105,10 +2116,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
                      " jobs that were in-progress at the time of the last shut-down.");
 
             foreach (var recoveringJobTrigger in recoveringJobTriggers)
-                if (await _jobDetailRepository.JobExists(recoveringJobTrigger.JobKey))
+            {
+                if (await dataContext.JobExists(this.InstanceName, recoveringJobTrigger.JobKey, cancellationToken: cancellationToken).PreserveThreadContext())
                 {
                     recoveringJobTrigger.ComputeFirstFireTimeUtc(null);
-                    await StoreTriggerInternal(
+                    await this.StoreTriggerInternal(
                         dataContext,
                         recoveringJobTrigger,
                         null,
@@ -2118,6 +2130,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         true,
                         cancellationToken).PreserveThreadContext();
                 }
+            }
 
             this.Log.Info("Recovery complete");
 

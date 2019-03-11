@@ -18,14 +18,25 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
     using global::Quartz;
     using global::Quartz.Impl.Matchers;
 
+    using Kephas.Logging;
     using Kephas.Scheduling.Quartz.JobStore.Models;
     using Kephas.Scheduling.Quartz.JobStore.Models.Identifiers;
 
     //TODO [CollectionName("triggers")]
-    internal class TriggerRepository : BaseRepository<Trigger>
+    internal class TriggerRepository
     {
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger<TriggerRepository> Log { get; set; }
+
+        protected string InstanceName { get; }
+
         public TriggerRepository(IMongoDatabase database, string instanceName, string collectionPrefix = null)
-            : base(database, instanceName)
         {
         }
 
