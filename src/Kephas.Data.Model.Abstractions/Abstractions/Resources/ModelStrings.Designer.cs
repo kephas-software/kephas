@@ -70,11 +70,29 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to ID.
         /// </summary>
         public static string Identifiable_Id_Name {
             get {
                 return ResourceManager.GetString("Identifiable_Id_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Named_Name_Name {
+            get {
+                return ResourceManager.GetString("Named_Name_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        public static string Tagged_Tags_Name {
+            get {
+                return ResourceManager.GetString("Tagged_Tags_Name", resourceCulture);
             }
         }
     }
