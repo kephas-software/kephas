@@ -12,11 +12,11 @@ $packages = @(
 )
 
 foreach ($package in $packages) {
-    $targetAssemblyNet45 = "$targetNugetPath\$package.signed.$version\lib\net45\$package"
+    $targetAssemblyNet45 = "$targetNugetPath\$package.signed.$version\lib\net452\$package"
 	Remove-Item -path "$targetAssemblyNet45.dll"
 	Remove-Item -path "$targetAssemblyNet45.xml"
 	
-	$sourceAssemblyNet45 = ".\$package.$version\lib\net45\$package"
+	$sourceAssemblyNet45 = ".\$package.$version\lib\net452\$package"
 	Copy-Item "$sourceAssemblyNet45.signed.dll" "$targetAssemblyNet45.dll"
 	Copy-Item "$sourceAssemblyNet45.xml" "$targetAssemblyNet45.xml"
 
