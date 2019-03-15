@@ -12,15 +12,19 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 {
     using System;
 
+    using global::MongoDB.Bson.Serialization.Attributes;
+
     using global::Quartz;
-    using global::Quartz.Impl.Triggers;
 
     using Kephas.Data;
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
     [BsonDiscriminator(RootClass = true)]
-    [BsonKnownTypes(typeof (CronTrigger), typeof (SimpleTrigger), typeof (CalendarIntervalTrigger),
-        typeof (DailyTimeIntervalTrigger))]
+    [BsonKnownTypes(
+        typeof(CronTrigger),
+        typeof(SimpleTrigger),
+        typeof(CalendarIntervalTrigger),
+        typeof(DailyTimeIntervalTrigger))]
     public abstract class Trigger : GroupedQuartzEntityBase, Model.ITrigger
     {
         protected Trigger()
@@ -32,7 +36,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
             this.InstanceName = instanceName;
             this.Group = trigger.Key.Group;
             this.Name = trigger.Key.Name;
-            this.JobKey = trigger.JobKey;
+            this.JobName = trigger.JobKey.Name;
+            this.JobGroup = trigger.JobKey.Group;
             this.Description = trigger.Description;
             this.NextFireTime = trigger.GetNextFireTimeUtc()?.UtcDateTime;
             this.PreviousFireTime = trigger.GetPreviousFireTimeUtc()?.UtcDateTime;
@@ -45,9 +50,21 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
             this.JobDataMap = trigger.JobDataMap;
         }
 
-        object IIdentifiable.Id => this.Id;
+        /// <summary>
+        /// Gets or sets the name of the job.
+        /// </summary>
+        /// <value>
+        /// The name of the job.
+        /// </value>
+        public string JobName { get; set; }
 
-        public JobKey JobKey { get; set; }
+        /// <summary>
+        /// Gets or sets the group the job belongs to.
+        /// </summary>
+        /// <value>
+        /// The job group.
+        /// </value>
+        public string JobGroup { get; set; }
 
         public string Description { get; set; }
 

@@ -43,23 +43,38 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     [NaturalKey(new[] { nameof(InstanceName), nameof(Group), nameof(Name) })]
     public interface ITrigger : IGroupedEntityBase, INamedEntityBase
     {
-        JobKey JobKey { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the job.
+        /// </summary>
+        /// <value>
+        /// The name of the job.
+        /// </value>
+        string JobName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the group the job belongs to.
+        /// </summary>
+        /// <value>
+        /// The job group.
+        /// </value>
+        string JobGroup { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         string Description { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         DateTime? NextFireTime { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         DateTime? PreviousFireTime { get; set; }
 
-        //TODO [BsonRepresentation(BsonType.String)]
-        Model.TriggerState State { get; set; }
+        TriggerState State { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         DateTime StartTime { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         DateTime? EndTime { get; set; }
 
         string CalendarName { get; set; }
@@ -75,17 +90,44 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
         global::Quartz.ITrigger GetTrigger();
     }
 
+    /// <summary>
+    /// Extension methods for <see cref="ITrigger"/>.
+    /// </summary>
     public static class TriggerExtensions
     {
+        /// <summary>
+        /// Gets the trigger key.
+        /// </summary>
+        /// <param name="trigger">The trigger to act on.</param>
+        /// <returns>
+        /// The trigger key.
+        /// </returns>
         public static TriggerKey GetTriggerKey(this ITrigger trigger)
         {
             return new TriggerKey(trigger.Name, trigger.Group);
         }
 
+        /// <summary>
+        /// Gets the job key.
+        /// </summary>
+        /// <param name="trigger">The trigger to act on.</param>
+        /// <returns>
+        /// The job key.
+        /// </returns>
+        public static JobKey GetJobKey(this ITrigger trigger)
+        {
+            return new JobKey(trigger.JobName, trigger.JobGroup);
+        }
+
+        /// <summary>
+        /// Fills the native Quartz trigger trigger.
+        /// </summary>
+        /// <param name="trigger">The trigger to act on.</param>
+        /// <param name="quartzTrigger">The quartz trigger.</param>
         internal static void FillTrigger(this ITrigger trigger, AbstractTrigger quartzTrigger)
         {
-            quartzTrigger.Key = new TriggerKey(trigger.Name, trigger.Group);
-            quartzTrigger.JobKey = trigger.JobKey;
+            quartzTrigger.Key = trigger.GetTriggerKey();
+            quartzTrigger.JobKey = trigger.GetJobKey();
             quartzTrigger.CalendarName = trigger.CalendarName;
             quartzTrigger.Description = trigger.Description;
             quartzTrigger.JobDataMap = trigger.JobDataMap;

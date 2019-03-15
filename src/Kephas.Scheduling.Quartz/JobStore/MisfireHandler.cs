@@ -33,7 +33,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             this.Name = $"QuartzScheduler_{jobStore.InstanceName}-{jobStore.InstanceId}_MisfireHandler";
             this.IsBackground = true;
 
-            this.Log = jobStore.LogManager.GetLogger<MisfireHandler>();
+            this.Log = jobStore.LogManager?.GetLogger<MisfireHandler>();
         }
 
         public void Shutdown()

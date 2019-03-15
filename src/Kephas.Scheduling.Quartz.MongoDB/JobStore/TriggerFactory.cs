@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     /// <summary>
     /// A trigger factory.
     /// </summary>
-    internal static class TriggerFactory
+    public class TriggerFactory : ITriggerFactory
     {
         /// <summary>
         /// Creates a trigger.
@@ -30,7 +30,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <returns>
         /// The new trigger.
         /// </returns>
-        public static Trigger CreateTrigger(ITrigger trigger, Model.TriggerState state, string instanceName)
+        Model.ITrigger ITriggerFactory.CreateTrigger(ITrigger trigger, Model.TriggerState state, string instanceName)
         {
             switch (trigger)
             {
