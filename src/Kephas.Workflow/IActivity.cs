@@ -14,6 +14,7 @@ namespace Kephas.Workflow
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Operations;
 
     /// <summary>
     /// An activity is an executable instance which receives a target, arguments, and an executing context upon execution.
@@ -62,7 +63,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The activity state flags.
         /// </value>
-        ActivityState State { get; }
+        OperationState State { get; }
 
         /// <summary>
         /// Executes the activity asynchronously.
