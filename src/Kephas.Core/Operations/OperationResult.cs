@@ -14,6 +14,7 @@ namespace Kephas.Operations
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Runtime.CompilerServices;
 
     using Kephas.Dynamic;
@@ -31,7 +32,7 @@ namespace Kephas.Operations
         /// <summary>
         /// The percent completed.
         /// </summary>
-        private double percentCompleted;
+        private float percentCompleted;
 
         /// <summary>
         /// The elapsed value.
@@ -43,8 +44,8 @@ namespace Kephas.Operations
         /// </summary>
         public OperationResult()
         {
-            this.Exceptions = new ConcurrentBag<Exception>();
-            this.Messages = new ConcurrentBag<IOperationMessage>();
+            this.Exceptions = new ConcurrentCollection<Exception>();
+            this.Messages = new ConcurrentCollection<IOperationMessage>();
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace Kephas.Operations
         /// <value>
         /// The percent completed.
         /// </value>
-        public double PercentCompleted
+        public float PercentCompleted
         {
             get => this.percentCompleted;
             set => this.SetProperty(ref this.percentCompleted, value);
@@ -94,7 +95,7 @@ namespace Kephas.Operations
         /// <value>
         /// The message.
         /// </value>
-        public IProducerConsumerCollection<IOperationMessage> Messages { get; set; }
+        public ICollection<IOperationMessage> Messages { get; set; }
 
         /// <summary>
         /// Gets the exceptions.
@@ -102,7 +103,7 @@ namespace Kephas.Operations
         /// <value>
         /// The exceptions.
         /// </value>
-        public IProducerConsumerCollection<Exception> Exceptions { get; }
+        public ICollection<Exception> Exceptions { get; }
 
         /// <summary>
         /// Called when [property changed].
@@ -130,6 +131,41 @@ namespace Kephas.Operations
 
             field = value;
             this.OnPropertyChanged(name);
+        }
+
+        /// <summary>
+        /// Internal implementation of a concurrent collection.
+        /// </summary>
+        /// <typeparam name="T">The item type.</typeparam>
+        private class ConcurrentCollection<T> : ConcurrentBag<T>, ICollection<T>
+        {
+            /// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</summary>
+            /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only; otherwise, false.</returns>
+            public bool IsReadOnly => false;
+
+            /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
+            /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
+            void ICollection<T>.Clear()
+            {
+                throw new NotSupportedException();
+            }
+
+            /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.</summary>
+            /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+            /// <returns>true if <paramref name="item">item</paramref> is found in the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false.</returns>
+            public bool Contains(T item)
+            {
+                return ((IEnumerable<T>)this).Contains(item);
+            }
+
+            /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
+            /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+            /// <returns>true if <paramref name="item">item</paramref> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"></see>; otherwise, false. This method also returns false if <paramref name="item">item</paramref> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"></see>.</returns>
+            /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
+            bool ICollection<T>.Remove(T item)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 }

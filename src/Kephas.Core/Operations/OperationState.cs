@@ -10,44 +10,52 @@
 
 namespace Kephas.Operations
 {
+    using System;
+
     /// <summary>
     /// The operation state.
     /// </summary>
+    [Flags]
     public enum OperationState
     {
         /// <summary>
-        /// The operation is not started.
+        /// The operation is not yet started.
         /// </summary>
-        NotStarted,
+        NotStarted = 0x0000,
 
         /// <summary>
-        /// The operation is in progress.
+        /// The operation started and is in progress.
         /// </summary>
-        InProgress,
+        InProgress = 0x0001,
 
         /// <summary>
         /// The operation is paused.
         /// </summary>
-        Paused,
+        Paused = 0x0002,
 
         /// <summary>
         /// The operation completed.
         /// </summary>
-        Completed,
-
-        /// <summary>
-        /// The operation was canceled.
-        /// </summary>
-        Canceled,
+        Completed = 0x0010,
 
         /// <summary>
         /// The operation failed.
         /// </summary>
-        Failed,
+        Failed = 0x0100,
+
+        /// <summary>
+        /// The operation was canceled by the user.
+        /// </summary>
+        Canceled = 0x0200,
+
+        /// <summary>
+        /// The operation was aborted.
+        /// </summary>
+        Aborted = 0x0400,
 
         /// <summary>
         /// The operation timed out.
         /// </summary>
-        TimedOut,
+        TimedOut = 0x0800,
     }
 }

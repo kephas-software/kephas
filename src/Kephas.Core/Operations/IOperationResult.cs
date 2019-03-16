@@ -11,7 +11,7 @@
 namespace Kephas.Operations
 {
     using System;
-    using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -41,7 +41,7 @@ namespace Kephas.Operations
         /// <value>
         /// The percent completed.
         /// </value>
-        double PercentCompleted { get; set; }
+        float PercentCompleted { get; set; }
 
         /// <summary>
         /// Gets or sets the elapsed time.
@@ -57,7 +57,7 @@ namespace Kephas.Operations
         /// <value>
         /// The messages.
         /// </value>
-        IProducerConsumerCollection<IOperationMessage> Messages { get; }
+        ICollection<IOperationMessage> Messages { get; }
 
         /// <summary>
         /// Gets the exceptions.
@@ -65,7 +65,7 @@ namespace Kephas.Operations
         /// <value>
         /// The exceptions.
         /// </value>
-        IProducerConsumerCollection<Exception> Exceptions { get; }
+        ICollection<Exception> Exceptions { get; }
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(ex, nameof(ex));
 
-            result.Exceptions.TryAdd(ex);
+            result.Exceptions.Add(ex);
 
             return result;
         }
@@ -108,7 +108,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(message, nameof(message));
 
-            result.Messages.TryAdd(new OperationMessage(message));
+            result.Messages.Add(new OperationMessage(message));
 
             return result;
         }
@@ -128,7 +128,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(message, nameof(message));
 
-            result.Messages.TryAdd(message);
+            result.Messages.Add(message);
 
             return result;
         }
