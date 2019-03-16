@@ -75,7 +75,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the execution result.
         /// </returns>
-        Task<IExpando> ExecuteAsync(
+        Task<object> ExecuteAsync(
             object target,
             IExpando arguments,
             IActivityContext context,
