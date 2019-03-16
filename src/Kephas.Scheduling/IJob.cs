@@ -13,9 +13,10 @@ namespace Kephas.Scheduling
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Operations;
 
     /// <summary>
-    /// Interface for job.
+    /// Contract for automated pieces of work that can be performed at either a particular time, or on a recurring schedule.
     /// </summary>
     public interface IJob : IExpando, IInstance, IDisposable
     {
@@ -26,5 +27,21 @@ namespace Kephas.Scheduling
         /// The arguments.
         /// </value>
         IExpando Arguments { get; }
+
+        /// <summary>
+        /// Gets the job's execution state.
+        /// </summary>
+        /// <value>
+        /// The execution state.
+        /// </value>
+        OperationState State { get; }
+
+        /// <summary>
+        /// Gets the execution result.
+        /// </summary>
+        /// <value>
+        /// The execution result.
+        /// </value>
+        IOperationResult Result { get; }
     }
 }
