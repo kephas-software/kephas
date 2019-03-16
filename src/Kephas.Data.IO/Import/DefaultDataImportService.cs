@@ -187,7 +187,7 @@ namespace Kephas.Data.IO.Import
             /// <summary>
             /// The percent completed.
             /// </summary>
-            private double percentCompleted;
+            private float percentCompleted;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DataSourceImportJob" /> class.
@@ -226,7 +226,7 @@ namespace Kephas.Data.IO.Import
             /// <value>
             /// The percent completed.
             /// </value>
-            public double PercentCompleted
+            public float PercentCompleted
             {
                 get => this.percentCompleted;
                 set => this.SetProperty(ref this.percentCompleted, value);
