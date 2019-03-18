@@ -17,7 +17,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -32,26 +32,26 @@ namespace Kephas.Orchestration.Application
 
         private readonly IAppRuntime appRuntime;
 
-        private readonly IMessageBroker messageBroker;
+        private readonly IAppEventEmitter appEventEmitter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="appEventEmitter">The application event emitter.</param>
         public OrchestrationAppLifecycleBehavior(
             IAppManifest appManifest,
             IAppRuntime appRuntime,
-            IMessageBroker messageBroker)
+            IAppEventEmitter appEventEmitter)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(appEventEmitter, nameof(appEventEmitter));
 
             this.appManifest = appManifest;
             this.appRuntime = appRuntime;
-            this.messageBroker = messageBroker;
+            this.appEventEmitter = appEventEmitter;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Orchestration.Application
             try
             {
                 var appStartedEvent = this.CreateAppStartedEvent();
-                await this.messageBroker.PublishAsync(
+                await this.appEventEmitter.EmitAsync(
                     appStartedEvent,
                     appContext,
                     cancellationToken).PreserveThreadContext();
@@ -102,7 +102,7 @@ namespace Kephas.Orchestration.Application
             var appStoppedEvent = this.CreateAppStoppedEvent();
             try
             {
-                await this.messageBroker.PublishAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
+                await this.appEventEmitter.EmitAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
