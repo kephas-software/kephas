@@ -19,13 +19,13 @@ namespace Kephas.Messaging.Events
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for event hub.
+    /// Contract for the shared application service handling in-process publish/subscribe .
     /// </summary>
     [SharedAppServiceContract]
     public interface IEventHub
     {
         /// <summary>
-        /// Publishes asynchronously the event to its subscribers.
+        /// Asynchronously notifies the event to its subscribers.
         /// </summary>
         /// <param name="event">The event.</param>
         /// <param name="context">The context.</param>
@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task PublishAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default);
+        Task NotifySubscribersAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.

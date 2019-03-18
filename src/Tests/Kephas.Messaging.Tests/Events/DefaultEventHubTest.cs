@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Tests.Events
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
-                await hub.PublishAsync(
+                await hub.NotifySubscribersAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);
@@ -50,7 +50,7 @@ namespace Kephas.Messaging.Tests.Events
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
-                await hub.PublishAsync(
+                await hub.NotifySubscribersAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);
@@ -70,7 +70,7 @@ namespace Kephas.Messaging.Tests.Events
             using (var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++))
             using (var s2 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s2calls++))
             {
-                await hub.PublishAsync(
+                await hub.NotifySubscribersAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);

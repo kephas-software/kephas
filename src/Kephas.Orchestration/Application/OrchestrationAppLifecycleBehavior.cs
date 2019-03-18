@@ -32,26 +32,26 @@ namespace Kephas.Orchestration.Application
 
         private readonly IAppRuntime appRuntime;
 
-        private readonly IAppEventEmitter appEventEmitter;
+        private readonly IEventPublisher eventPublisher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="appEventEmitter">The application event emitter.</param>
+        /// <param name="eventPublisher">The application event publisher.</param>
         public OrchestrationAppLifecycleBehavior(
             IAppManifest appManifest,
             IAppRuntime appRuntime,
-            IAppEventEmitter appEventEmitter)
+            IEventPublisher eventPublisher)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(appEventEmitter, nameof(appEventEmitter));
+            Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
             this.appManifest = appManifest;
             this.appRuntime = appRuntime;
-            this.appEventEmitter = appEventEmitter;
+            this.eventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Orchestration.Application
             try
             {
                 var appStartedEvent = this.CreateAppStartedEvent();
-                await this.appEventEmitter.EmitAsync(
+                await this.eventPublisher.PublishAsync(
                     appStartedEvent,
                     appContext,
                     cancellationToken).PreserveThreadContext();
@@ -102,7 +102,7 @@ namespace Kephas.Orchestration.Application
             var appStoppedEvent = this.CreateAppStoppedEvent();
             try
             {
-                await this.appEventEmitter.EmitAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
+                await this.eventPublisher.PublishAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {

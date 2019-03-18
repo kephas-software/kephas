@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task PublishAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default)
+        public async Task NotifySubscribersAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default)
         {
             IList<EventSubscription> subscriptionsCopy;
             lock (this.subscriptions)

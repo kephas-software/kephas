@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Endpoints
         /// </returns>
         public override async Task<IMessage> ProcessAsync(IEvent message, IMessageProcessingContext context, CancellationToken token)
         {
-            await this.eventHub.PublishAsync(message, context, token).PreserveThreadContext();
+            await this.eventHub.NotifySubscribersAsync(message, context, token).PreserveThreadContext();
 
             return null;
         }
