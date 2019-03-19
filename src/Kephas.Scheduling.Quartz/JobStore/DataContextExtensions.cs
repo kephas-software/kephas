@@ -513,6 +513,46 @@ namespace Kephas.Scheduling.Quartz.JobStore
         
         #endregion
 
+        #region Trigger
+
+        /// <summary>
+        /// Gets the trigger state.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger state.
+        /// </returns>
+        public static async Task<Model.TriggerState> GetTriggerState(this IDataContext dataContext, string instanceName, TriggerKey key, CancellationToken cancellationToken = default)
+        {
+                var trigger = await dataContext.FindOneAsync<Model.ITrigger>(
+                                  t => t.InstanceName == instanceName && t.Name == key.Name && t.Group == key.Group,
+                                  cancellationToken: cancellationToken).PreserveThreadContext();
+                return trigger.State;
+        }
+
+        /// <summary>
+        /// Gets the trigger job data map.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger job data map.
+        /// </returns>
+        public static async Task<JobDataMap> GetTriggerJobDataMap(this IDataContext dataContext, string instanceName, TriggerKey key, CancellationToken cancellationToken = default)
+        {
+            var trigger = await dataContext.FindOneAsync<Model.ITrigger>(
+                              t => t.InstanceName == instanceName && t.Name == key.Name && t.Group == key.Group,
+                              cancellationToken: cancellationToken).PreserveThreadContext();
+            return trigger.JobDataMap;
+        }
+
+        #endregion
+
         #region Locks
 
         public static async Task<bool> TryAcquireLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)

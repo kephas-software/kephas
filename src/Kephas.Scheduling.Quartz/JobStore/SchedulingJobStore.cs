@@ -1795,7 +1795,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task<TriggerFiredBundle> TriggerFiredInternal(IDataContext dataContext, IOperableTrigger trigger, CancellationToken cancellationToken = default)
         {
-            var state = await this.triggerRepository.GetTriggerState(trigger.Key);
+            var state = await dataContext.GetTriggerState(this.InstanceName, trigger.Key, cancellationToken).PreserveThreadContext();
             if (state != Model.TriggerState.Acquired)
             {
                 return null;
@@ -2159,7 +2159,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             var results = (await dataContext.GetRecoverableFiredTriggers(this.InstanceName, this.InstanceId, cancellationToken: cancellationToken).PreserveThreadContext())
                 .Select(async trigger =>
-                    trigger.GetRecoveryTrigger(await this.triggerRepository.GetTriggerJobDataMap(trigger.GetTriggerKey())));
+                    trigger.GetRecoveryTrigger(await dataContext.GetTriggerJobDataMap(this.InstanceName, trigger.GetTriggerKey(), cancellationToken: cancellationToken).PreserveThreadContext()));
             var recoveringJobTriggers = (await Task.WhenAll(results)).ToList();
 
             this.Logger.Info("Recovering " + recoveringJobTriggers.Count +
@@ -2187,10 +2187,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
             var completedTriggers =
                 await this.triggerRepository.GetTriggerKeys(Model.TriggerState.Complete);
             foreach (var completedTrigger in completedTriggers)
+            {
                 await this.RemoveTriggerInternal(dataContext, completedTrigger, cancellationToken: cancellationToken).PreserveThreadContext();
+            }
 
-            this.Logger.Info(string.Format(CultureInfo.InvariantCulture, "Removed {0} 'complete' triggers.",
-                completedTriggers.Count));
+            this.Logger.Info($"Removed {completedTriggers.Count} 'complete' triggers.");
 
             result = await dataContext.DeleteFiredTriggersByInstanceId(
                          this.InstanceName,

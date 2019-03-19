@@ -111,24 +111,9 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             using (var dataContext = this.jobStore.DataContextFactory(null))
             {
                 return await dataContext.FindOneAsync<Model.ITrigger>(
-                           trigger => trigger.InstanceName == this.InstanceName && trigger.Name == key.Name
-                                                                                && trigger.Group == key.Group,
+                           t => t.InstanceName == this.InstanceName && t.Name == key.Name && t.Group == key.Group,
                            cancellationToken: cancellationToken).PreserveThreadContext();
             }
-        }
-
-        public async Task<Model.TriggerState> GetTriggerState(TriggerKey triggerKey)
-        {
-            return await this.Collection.Find(trigger => trigger.Id == new TriggerId(triggerKey, this.InstanceName))
-                .Project(trigger => trigger.State)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<JobDataMap> GetTriggerJobDataMap(TriggerKey triggerKey)
-        {
-            return await this.Collection.Find(trigger => trigger.Id == new TriggerId(triggerKey, this.InstanceName))
-                .Project(trigger => trigger.JobDataMap)
-                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Model.ITrigger>> GetTriggers(string calendarName)
