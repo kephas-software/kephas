@@ -12,7 +12,6 @@ namespace Kephas.Model
 {
     using System;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     using Kephas.Activation;
     using Kephas.Diagnostics.Contracts;
@@ -27,68 +26,109 @@ namespace Kephas.Model
         /// <summary>
         /// The name of the extended model type info property.
         /// </summary>
-        private static readonly string ModelTypeInfoName = "Kephas_" + nameof(ModelTypeInfoName);
+        private static readonly string AbstractTypeInfoName = "Kephas_" + nameof(AbstractTypeInfoName);
 
         /// <summary>
-        /// A Type extension method that converts a type to a model type information.
+        /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>
-        /// An ITypeInfo.
+        /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static ITypeInfo AsModelTypeInfo(this Type type)
+        public static ITypeInfo GetAbstractTypeInfo(this Type type)
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.AsRuntimeTypeInfo().AsModelTypeInfo();
+            return type.AsRuntimeTypeInfo().GetAbstractTypeInfo();
         }
 
         /// <summary>
-        /// A TypeInfo extension method that converts a type to a model type information.
+        /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
         /// <returns>
-        /// An ITypeInfo.
+        /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static ITypeInfo AsModelTypeInfo(this TypeInfo type)
+        public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type)
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.AsRuntimeTypeInfo().AsModelTypeInfo();
-        }
-
-        /// <summary>
-        /// A <see cref="ITypeInfo"/> extension method that converts a type to a model type information.
-        /// </summary>
-        /// <param name="type">The type to act on.</param>
-        /// <returns>
-        /// An ITypeInfo.
-        /// </returns>
-        public static ITypeInfo AsModelTypeInfo(this ITypeInfo type)
-        {
-            Requires.NotNull(type, nameof(type));
-
-            if (!(type[ModelTypeInfoName] is ITypeInfo modelType))
+            if (!(type[AbstractTypeInfoName] is ITypeInfo abstractTypeInfo))
             {
-                var entityFor = type.GetAttribute<ImplementationForAttribute>();
-                modelType = (entityFor != null ? entityFor.AbstractType?.AsRuntimeTypeInfo() : type) ?? type;
-                type[ModelTypeInfoName] = modelType;
+                var implementationFor = type.GetAttribute<ImplementationForAttribute>();
+                abstractTypeInfo = (implementationFor != null ? implementationFor.AbstractType?.AsRuntimeTypeInfo() : type) ?? type;
+                type[AbstractTypeInfoName] = abstractTypeInfo;
             }
 
-            return modelType;
+            return abstractTypeInfo;
         }
 
         /// <summary>
-        /// An object extension method that gets model type information.
+        /// Gets the abstract type for an implementation type.
         /// </summary>
-        /// <param name="obj">The obj to act on.</param>
+        /// <param name="type">The type to act on.</param>
         /// <returns>
-        /// The model type information.
+        /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ITypeInfo GetModelTypeInfo(this object obj)
+        public static Type GetAbstractType(this Type type)
         {
-            return obj?.GetType().AsModelTypeInfo();
+            Requires.NotNull(type, nameof(type));
+
+            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type.AsRuntimeTypeInfo())).Type;
+        }
+
+        /// <summary>
+        /// Gets the abstract type for an implementation type.
+        /// </summary>
+        /// <param name="type">The type to act on.</param>
+        /// <returns>
+        /// The abstract type, or the type itself, if the type is not an implementation type.
+        /// </returns>
+        public static Type GetAbstractType(this ITypeInfo type)
+        {
+            Requires.NotNull(type, nameof(type));
+
+            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type)).Type;
+        }
+
+        /// <summary>
+        /// Gets the abstract type for which this instance is an implementation.
+        /// </summary>
+        /// <param name="obj">The object to act on.</param>
+        /// <returns>
+        /// The abstract type.
+        /// </returns>
+        public static Type GetAbstractType(this object obj)
+        {
+            switch (obj)
+            {
+                case Type typeObj:
+                    return GetAbstractType(typeObj);
+                case ITypeInfo typeInfoInterface:
+                    return GetAbstractType(typeInfoInterface);
+                default:
+                    return obj?.GetType().GetAbstractType();
+            }
+        }
+
+        /// <summary>
+        /// Gets the abstract type for which this instance is an implementation.
+        /// </summary>
+        /// <param name="obj">The object to act on.</param>
+        /// <returns>
+        /// The abstract type.
+        /// </returns>
+        public static ITypeInfo GetAbstractTypeInfo(this object obj)
+        {
+            switch (obj)
+            {
+                case Type typeObj:
+                    return GetAbstractTypeInfo(typeObj);
+                case ITypeInfo typeInfoInterface:
+                    return GetAbstractTypeInfo(typeInfoInterface);
+                default:
+                    return obj?.GetType().GetAbstractTypeInfo();
+            }
         }
     }
 }

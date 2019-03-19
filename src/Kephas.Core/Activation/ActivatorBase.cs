@@ -78,7 +78,7 @@ namespace Kephas.Activation
         {
             var implementationType = this.implementationTypeMap.GetOrAdd(
                 abstractType,
-                _ => this.GetImplementationTypeCore(abstractType, activationContext, false));
+                _ => this.ComputeImplementationType(abstractType, activationContext, false));
 
             if (implementationType == null && throwOnNotFound)
             {
@@ -115,7 +115,7 @@ namespace Kephas.Activation
         }
 
         /// <summary>
-        /// Gets the type implementing the abstract type provided as the parameter.
+        /// Computes the type implementing the abstract type provided as the parameter.
         /// </summary>
         /// <param name="abstractType">Indicates the abstract type.</param>
         /// <param name="activationContext">Context for the activation.</param>
@@ -123,7 +123,7 @@ namespace Kephas.Activation
         /// <returns>
         /// The implementation type for the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        protected virtual ITypeInfo GetImplementationTypeCore(
+        protected virtual ITypeInfo ComputeImplementationType(
             ITypeInfo abstractType,
             IContext activationContext = null,
             bool throwOnNotFound = true)
@@ -131,7 +131,10 @@ namespace Kephas.Activation
             var runtimeTypeInfo = this.TryGetTypeInfo(abstractType);
             if (runtimeTypeInfo.IsAbstract || runtimeTypeInfo.IsInterface)
             {
-                var entityType = this.GetImplementationTypes().FirstOrDefault(ti => ti.Annotations.OfType<ImplementationForAttribute>().Any(a => a.AbstractType == runtimeTypeInfo.AsType()));
+                var runtimeType = runtimeTypeInfo.AsType();
+                var entityType = this.GetImplementationTypes().FirstOrDefault(
+                    ti => ti.Annotations.OfType<ImplementationForAttribute>().Any(
+                        a => a.AbstractType == runtimeType || a.AbstractTypeParts.Contains(runtimeType)));
                 return entityType;
             }
 

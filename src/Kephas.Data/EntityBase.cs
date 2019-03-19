@@ -106,7 +106,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetModelTypeInfo();
+            return this.GetAbstractTypeInfo();
         }
 
         /// <summary>Attempts to set the value with the given key.</summary>

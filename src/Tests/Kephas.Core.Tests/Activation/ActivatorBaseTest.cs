@@ -53,7 +53,7 @@ namespace Kephas.Core.Tests.Activation
                 this.converter = converter;
             }
 
-            protected override ITypeInfo GetImplementationTypeCore(
+            protected override ITypeInfo ComputeImplementationType(
                 ITypeInfo abstractType,
                 IContext activationContext = null,
                 bool throwOnNotFound = true)

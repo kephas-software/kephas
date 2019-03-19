@@ -13,7 +13,6 @@ namespace Kephas.Activation
     using System;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Attribute associating implementations to their abstract model.
@@ -23,30 +22,25 @@ namespace Kephas.Activation
     /// defined typically either as an abstract class or as an interface. This association helps the infrastructure
     /// to find the concrete implementation based only on the abstract type.
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
     public class ImplementationForAttribute : Attribute
     {
+        /// <summary>
+        /// An empty list of types.
+        /// </summary>
+        private static readonly Type[] EmptyTypes = new Type[0];
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ImplementationForAttribute"/> class.
         /// </summary>
         /// <param name="abstractType">The model type associated to the attributed type.</param>
-        public ImplementationForAttribute(Type abstractType)
+        /// <param name="abstractTypeParts">A variable-length parameters list containing parts of the provided abstract type.</param>
+        public ImplementationForAttribute(Type abstractType, params Type[] abstractTypeParts)
         {
             Requires.NotNull(abstractType, nameof(abstractType));
 
             this.AbstractType = abstractType;
-            this.AbstractTypeName = abstractType.GetAssemblyQualifiedShortName();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ImplementationForAttribute"/> class.
-        /// </summary>
-        /// <param name="abstractTypeName">The name of the abstract type associated to the attributed type.</param>
-        public ImplementationForAttribute(string abstractTypeName)
-        {
-            Requires.NotNullOrEmpty(abstractTypeName, nameof(abstractTypeName));
-
-            this.AbstractTypeName = abstractTypeName;
+            this.AbstractTypeParts = abstractTypeParts ?? EmptyTypes;
         }
 
         /// <summary>
@@ -58,11 +52,11 @@ namespace Kephas.Activation
         public Type AbstractType { get; }
 
         /// <summary>
-        /// Gets the name of the abstract type associated to the attributed type.
+        /// Gets the parts of the abstract type.
         /// </summary>
         /// <value>
-        /// The name of the associated abstract type.
+        /// The abstract type parts.
         /// </value>
-        public string AbstractTypeName { get; }
+        public Type[] AbstractTypeParts { get; }
     }
 }
