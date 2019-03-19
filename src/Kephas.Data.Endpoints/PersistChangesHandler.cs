@@ -76,7 +76,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var mappings = new List<(ClientEntityInfo clientEntry, object entity)>();
+            var mappings = new List<(DtoEntityInfo clientEntry, object entity)>();
             var response = new PersistChangesResponseMessage();
 
             if (message.EntityInfos == null || message.EntityInfos.Count == 0)
@@ -116,7 +116,7 @@ namespace Kephas.Data.Endpoints
 
                     // add a response entry in the response
                     var originalId = (clientEntity as IIdentifiable)?.Id;
-                    response.EntityInfos.Add(new ClientEntityInfo
+                    response.EntityInfos.Add(new DtoEntityInfo
                     {
                         ChangeState = clientEntityInfo.ChangeState,
                         Entity = clientEntityInfo.ChangeState == ChangeState.Deleted ? null : clientEntity,
@@ -155,7 +155,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual Task PrePersistChangesAsync(
             PersistChangesResponseMessage response,
-            IList<(ClientEntityInfo clientEntry, object entity)> mappings,
+            IList<(DtoEntityInfo clientEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {
@@ -174,7 +174,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
-            IList<(ClientEntityInfo clientEntry, object entity)> mappings,
+            IList<(DtoEntityInfo clientEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {

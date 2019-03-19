@@ -26,7 +26,7 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The entity infos to persist.
         /// </value>
-        public IList<ClientEntityInfo> EntityInfos { get; set; }
+        public IList<DtoEntityInfo> EntityInfos { get; set; }
     }
 
     /// <summary>

@@ -26,6 +26,6 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The entity infos after a data operation.
         /// </value>
-        IList<ClientEntityInfo> EntityInfos { get; set; }
+        IList<DtoEntityInfo> EntityInfos { get; set; }
     }
 }
