@@ -26,23 +26,23 @@
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Data.Model.xml</DocumentationFile>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Data.Model.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Data.Model.xml</DocumentationFile>
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-        <DocumentationFile>bin\Debug\net45\Kephas.Data.Model.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-        <DocumentationFile>bin\Release\net45\Kephas.Data.Model.xml</DocumentationFile>
         <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
 
