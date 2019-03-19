@@ -118,49 +118,62 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
 
         public async Task<List<Model.ITrigger>> GetTriggers(string calendarName)
         {
-            return await this.Collection.Find(this.FilterBuilder.Where(trigger => trigger.CalendarName == calendarName)).ToListAsync();
+            return null; // TODO return await this.Collection.Find(this.FilterBuilder.Where(trigger => trigger.CalendarName == calendarName)).ToListAsync();
         }
 
         public async Task<List<Model.ITrigger>> GetTriggers(JobKey jobKey)
         {
-            return
-                await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey).ToListAsync();
+            return null; // TODO return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey).ToListAsync();
         }
 
         public async Task<List<TriggerKey>> GetTriggerKeys(GroupMatcher<TriggerKey> matcher)
         {
+            return null;
+            /* TODO
             return await this.Collection.Find(this.FilterBuilder.And(
                 this.FilterBuilder.Eq(trigger => trigger.Id.InstanceName, this.InstanceName),
                 this.FilterBuilder.Regex(trigger => trigger.Id.Group, matcher.ToBsonRegularExpression())))
                 .Project(trigger => trigger.Id.GetTriggerKey())
                 .ToListAsync();
+            */
         }
 
         public async Task<List<TriggerKey>> GetTriggerKeys(Model.TriggerState state)
         {
+            return null;
+            /* TODO
             return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.State == state)
                 .Project(trigger => trigger.Id.GetTriggerKey())
                 .ToListAsync();
+            */
         }
 
         public async Task<List<string>> GetTriggerGroupNames()
         {
+            return null;
+            /* TODO
             return await this.Collection.Distinct(trigger => trigger.Id.Group,
                 trigger => trigger.Id.InstanceName == this.InstanceName)
                 .ToListAsync();
+            */
         }
 
         public async Task<List<string>> GetTriggerGroupNames(GroupMatcher<TriggerKey> matcher)
         {
+            return null;
+            /* TODO
             var regex = matcher.ToBsonRegularExpression().ToRegex();
             return await this.Collection.Distinct(trigger => trigger.Id.Group,
                     trigger => trigger.Id.InstanceName == this.InstanceName && regex.IsMatch(trigger.Id.Group))
                 .ToListAsync();
+            */
         }
 
         public async Task<List<TriggerKey>> GetTriggersToAcquire(DateTimeOffset noLaterThan, DateTimeOffset noEarlierThan,
             int maxCount)
         {
+            return null;
+            /* TODO
             if (maxCount < 1)
             {
                 maxCount = 1;
@@ -182,23 +195,29 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 .Limit(maxCount)
                 .Project(trigger => trigger.Id.GetTriggerKey())
                 .ToListAsync();
+            */
         }
 
         public async Task<long> GetCount()
         {
-            return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName).CountAsync();
+            return 0; // TODO return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName).CountAsync();
         }
 
         public async Task<long> GetCount(JobKey jobKey)
         {
+            return 0;
+            /* TODO
             return
                 await this.Collection.Find(
                     this.FilterBuilder.Where(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey))
                     .CountAsync();
+            */
         }
 
         public async Task<long> GetMisfireCount(DateTime nextFireTime)
         {
+            return 0;
+            /* TODO
             return
                 await this.Collection.Find(
                     trigger =>
@@ -206,85 +225,110 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                         trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy &&
                         trigger.NextFireTime < nextFireTime && trigger.State == Model.TriggerState.Waiting)
                     .CountAsync();
+            */
         }
 
         public async Task AddTrigger(Model.ITrigger trigger)
         {
-            await this.Collection.InsertOneAsync(trigger);
+            return; // TODO await this.Collection.InsertOneAsync(trigger);
         }
 
         public async Task UpdateTrigger(Model.ITrigger trigger)
         {
-            await this.Collection.ReplaceOneAsync(t => t.Id == trigger.Id, trigger);
+            return; // TODO await this.Collection.ReplaceOneAsync(t => t.Id == trigger.Id, trigger);
         }
 
         public async Task<long> UpdateTriggerState(TriggerKey triggerKey, Model.TriggerState state)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateOneAsync(trigger => trigger.Id == new TriggerId(triggerKey, this.InstanceName),
                 this.UpdateBuilder.Set(trigger => trigger.State, state));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> UpdateTriggerState(TriggerKey triggerKey, Model.TriggerState newState, Model.TriggerState oldState)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateOneAsync(
                 trigger => trigger.Id == new TriggerId(triggerKey, this.InstanceName) && trigger.State == oldState,
                 this.UpdateBuilder.Set(trigger => trigger.State, newState));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> UpdateTriggersStates(GroupMatcher<TriggerKey> matcher, Model.TriggerState newState,
             params Model.TriggerState[] oldStates)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateManyAsync(this.FilterBuilder.And(
                 this.FilterBuilder.Eq(trigger => trigger.Id.InstanceName, this.InstanceName),
                 this.FilterBuilder.Regex(trigger => trigger.Id.Group, matcher.ToBsonRegularExpression()),
                 this.FilterBuilder.In(trigger => trigger.State, oldStates)),
                 this.UpdateBuilder.Set(trigger => trigger.State, newState));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> UpdateTriggersStates(JobKey jobKey, Model.TriggerState newState,
             params Model.TriggerState[] oldStates)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateManyAsync(
                 trigger =>
                     trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey &&
                     oldStates.Contains(trigger.State),
                 this.UpdateBuilder.Set(trigger => trigger.State, newState));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> UpdateTriggersStates(JobKey jobKey, Model.TriggerState newState)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateManyAsync(
                 trigger =>
                     trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey,
                 this.UpdateBuilder.Set(trigger => trigger.State, newState));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> UpdateTriggersStates(Model.TriggerState newState, params Model.TriggerState[] oldStates)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.UpdateManyAsync(
                 trigger =>
                     trigger.Id.InstanceName == this.InstanceName && oldStates.Contains(trigger.State),
                 this.UpdateBuilder.Set(trigger => trigger.State, newState));
             return result.ModifiedCount;
+            */
         }
 
         public async Task<long> DeleteTrigger(TriggerKey key)
         {
+            return 0;
+            /* TODO
             var result =
                 await this.Collection.DeleteOneAsync(this.FilterBuilder.Where(trigger => trigger.Id == new TriggerId(key, this.InstanceName)));
             return result.DeletedCount;
+            */
         }
 
         public async Task<long> DeleteTriggers(JobKey jobKey)
         {
+            return 0;
+            /* TODO
             var result = await this.Collection.DeleteManyAsync(
                 this.FilterBuilder.Where(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey));
             return result.DeletedCount;
+            */
         }
 
         /// <summary>
@@ -298,6 +342,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// <returns></returns>
         public bool HasMisfiredTriggers(DateTime nextFireTime, int maxResults, out List<TriggerKey> results)
         {
+            return false; results = null;
+            /* TODO
             var cursor = this.Collection.Find(
                 trigger => trigger.Id.InstanceName == this.InstanceName &&
                            trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy &&
@@ -327,6 +373,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 }
             }
             return hasReachedLimit;
+            */
         }
     }
 }

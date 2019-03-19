@@ -7,9 +7,9 @@
         <RootNamespace>Kephas.Mail</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>5.1.0</Version>
-        <AssemblyVersion>5.1.0.0</AssemblyVersion>
-        <FileVersion>5.1.0.0</FileVersion>
+        <Version>5.2.0</Version>
+        <AssemblyVersion>5.2.0.0</AssemblyVersion>
+        <FileVersion>5.2.0.0</FileVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Authors>Kephas Software SRL</Authors>

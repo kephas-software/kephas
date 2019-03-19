@@ -4,12 +4,12 @@
         <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>5.1.0</Version>
+        <Version>5.2.0</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>5.1.0.0</AssemblyVersion>
-        <FileVersion>5.1.0.0</FileVersion>
+        <AssemblyVersion>5.2.0.0</AssemblyVersion>
+        <FileVersion>5.2.0.0</FileVersion>
         <Description>Provides the infrastructure for executing scripts.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
