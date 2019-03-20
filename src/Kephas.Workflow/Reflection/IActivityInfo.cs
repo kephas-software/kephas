@@ -18,7 +18,7 @@ namespace Kephas.Workflow.Reflection
     using Kephas.Reflection;
 
     /// <summary>
-    /// Primary metadata for an activity.
+    /// Contract interface for activity metadata.
     /// </summary>
     public interface IActivityInfo : ITypeInfo
     {
