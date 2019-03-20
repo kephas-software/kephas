@@ -10,7 +10,9 @@
 
 namespace Kephas.AspNetCore.Services.Composition
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
@@ -82,27 +84,41 @@ namespace Kephas.AspNetCore.Services.Composition
         {
             var ambientServices = registrationContext.AmbientServices;
             var serviceCollection = ambientServices.GetService<IServiceCollection>();
+            var openGenericServiceTypes = new List<Type>();
 
-            foreach (var descriptor in serviceCollection)
+            foreach (var descriptor in serviceCollection.OrderBy(d => !d.ServiceType.IsGenericTypeDefinition))
             {
+                var serviceType = descriptor.ServiceType;
+                if (serviceType.IsGenericTypeDefinition)
+                {
+                    openGenericServiceTypes.Add(serviceType);
+                }
+                else if (serviceType.IsConstructedGenericType)
+                {
+                    if (openGenericServiceTypes.Contains(serviceType))
+                    {
+                        continue;
+                    }
+                }
+
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, descriptor.ImplementationInstance));
+                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, descriptor.ImplementationInstance));
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
-                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, descriptor.ImplementationFactory));
+                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, descriptor.ImplementationFactory));
                 }
                 else
                 {
-                    var instanceType = descriptor.ImplementationType ?? descriptor.ServiceType;
+                    var instanceType = descriptor.ImplementationType ?? serviceType;
                     var lifetime = descriptor.Lifetime == ServiceLifetime.Singleton
                                        ? AppServiceLifetime.Shared
                                        : descriptor.Lifetime == ServiceLifetime.Scoped
                                            ? AppServiceLifetime.ScopeShared
                                            : AppServiceLifetime.Instance;
 
-                    yield return (descriptor.ServiceType?.GetTypeInfo(), new AppServiceInfo(descriptor.ServiceType, instanceType, lifetime));
+                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, instanceType, lifetime));
                 }
             }
         }
