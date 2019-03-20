@@ -26,7 +26,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The message processor.
         /// </value>
-        IWorkflowEngine WorkflowEngine { get; }
+        IWorkflowProcessor WorkflowProcessor { get; }
 
         /// <summary>
         /// Gets or sets the activity being executed.

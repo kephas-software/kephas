@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultWorkflowEngine.cs" company="Kephas Software SRL">
+// <copyright file="DefaultWorkflowProcessor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default workflow engine class.
+//   Implements the default workflow processor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -27,10 +27,10 @@ namespace Kephas.Workflow
     using Kephas.Workflow.Reflection;
 
     /// <summary>
-    /// The default workflow engine.
+    /// The default implementation of the <see cref="IWorkflowProcessor"/> service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultWorkflowEngine : IWorkflowEngine
+    public class DefaultWorkflowProcessor : IWorkflowProcessor
     {
         /// <summary>
         /// The behavior factories.
@@ -38,10 +38,10 @@ namespace Kephas.Workflow
         private readonly ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultWorkflowEngine"/> class.
+        /// Initializes a new instance of the <see cref="DefaultWorkflowProcessor"/> class.
         /// </summary>
         /// <param name="behaviorFactories">The behavior factories.</param>
-        public DefaultWorkflowEngine(ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
+        public DefaultWorkflowProcessor(ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
         {
             this.behaviorFactories = behaviorFactories;
         }
@@ -52,7 +52,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<DefaultWorkflowEngine> Logger { get; set; }
+        public ILogger<DefaultWorkflowProcessor> Logger { get; set; }
 
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.

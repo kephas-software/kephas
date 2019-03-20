@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IWorkflowEngine.cs" company="Kephas Software SRL">
+// <copyright file="IWorkflowProcessor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IWorkflowEngine interface.
+//   Declares the IWorkflowProcessor interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Workflow
     /// Shared application service for executing activities.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IWorkflowEngine
+    public interface IWorkflowProcessor
     {
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.
