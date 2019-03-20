@@ -22,7 +22,7 @@ namespace Kephas.Model.Elements
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Classifier class for application services.
@@ -75,12 +75,45 @@ namespace Kephas.Model.Elements
         public bool AsOpenGeneric => this.appServiceInfo.AsOpenGeneric;
 
         /// <summary>
+        /// Gets the supported metadata attributes.
+        /// </summary>
+        /// <value>
+        /// The metadata attributes.
+        /// </value>
+        /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
+        public Type[] MetadataAttributes => this.appServiceInfo.MetadataAttributes;
+
+        /// <summary>
         /// Gets the type of the contract.
         /// </summary>
         /// <value>
         /// The type of the contract.
         /// </value>
         public Type ContractType { get; private set; }
+
+        /// <summary>
+        /// Gets the service instance.
+        /// </summary>
+        /// <value>
+        /// The service instance.
+        /// </value>
+        public object Instance => this.appServiceInfo.Instance;
+
+        /// <summary>
+        /// Gets the service instance factory.
+        /// </summary>
+        /// <value>
+        /// The service instance factory.
+        /// </value>
+        public Func<ICompositionContext, object> InstanceFactory => this.appServiceInfo.InstanceFactory;
+
+        /// <summary>
+        /// Gets the name of the scope for scoped shared services.
+        /// </summary>
+        /// <value>
+        /// The name of the scope for scoped shared services.
+        /// </value>
+        public string ScopeName => this.appServiceInfo.ScopeName;
 
         /// <summary>
         /// Gets the service lifetime.

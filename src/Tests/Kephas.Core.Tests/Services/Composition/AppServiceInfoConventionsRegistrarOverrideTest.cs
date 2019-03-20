@@ -11,6 +11,7 @@
     using Kephas.Core.Tests.Composition;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
 
     using NUnit.Framework;
 

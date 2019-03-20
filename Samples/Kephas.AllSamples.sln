@@ -19,13 +19,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoleGame", "CustomizeMefCon
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{5D739283-D925-4F6C-B7A2-64459E50405E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleChatApp", "SimpleChatApp", "{9335AC7A-1C21-44AD-8817-C127DEFFD24F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleChatWebApp", "SimpleChatWebApp", "{9335AC7A-1C21-44AD-8817-C127DEFFD24F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRChat.WebApp", "SimpleChatWebApp\SignalRChat.WebApp\SignalRChat.WebApp.csproj", "{9130AC4C-E148-4E97-81AA-4FD834F5DDD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{74A641A7-24A2-4782-A959-F5FAA515C17C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationConsole", "Configuration\ConfigurationConsole\ConfigurationConsole.csproj", "{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationConsole", "Configuration\ConfigurationConsole\ConfigurationConsole.csproj", "{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MetadataWebApp", "MetadataWebApp", "{52C56D45-BA43-4201-BE8C-9EDF9BDD6A13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata.WebApp", "MetadataWebApp\Metadata.WebApp\Metadata.WebApp.csproj", "{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,10 @@ Global
 		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,8 @@ Global
 		{9130AC4C-E148-4E97-81AA-4FD834F5DDD6} = {9335AC7A-1C21-44AD-8817-C127DEFFD24F}
 		{74A641A7-24A2-4782-A959-F5FAA515C17C} = {5323FEF0-0DFC-4881-B57B-BF9024C7BF9B}
 		{53B566C6-5B1F-4521-9EC5-D4BA40F7FE4C} = {74A641A7-24A2-4782-A959-F5FAA515C17C}
+		{52C56D45-BA43-4201-BE8C-9EDF9BDD6A13} = {5D739283-D925-4F6C-B7A2-64459E50405E}
+		{9C0B4C17-9EA6-4EC1-90D6-AD4E4BB55D02} = {52C56D45-BA43-4201-BE8C-9EDF9BDD6A13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B337414D-EBA0-4DCD-9CC5-3F736C99372C}

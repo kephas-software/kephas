@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Services.Reflection
 {
     using System;
 
@@ -88,6 +88,10 @@ namespace Kephas.Services
             this.ContractType = contractType;
             this.InstanceType = serviceInstanceType;
             this.Lifetime = lifetime;
+            if (lifetime == AppServiceLifetime.ScopeShared)
+            {
+                this.ScopeName = CompositionScopeNames.Default;
+            }
         }
 
         /// <summary>

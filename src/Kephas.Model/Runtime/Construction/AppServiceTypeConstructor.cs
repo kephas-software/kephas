@@ -16,8 +16,8 @@ namespace Kephas.Model.Runtime.Construction
     using Kephas.Model.Elements;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// An application service type constructor.
@@ -48,8 +48,14 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override AppServiceType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            var appServiceAttr = runtimeElement.Annotations.OfType<IAppServiceInfo>().Single();
-            var appServiceRuntimeElement = appServiceAttr.ContractType?.AsRuntimeTypeInfo() ?? runtimeElement;
+            var appServiceAttr = runtimeElement.Annotations.OfType<IAppServiceInfo>().SingleOrDefault();
+            if (appServiceAttr == null)
+            {
+                var appServiceInfos = constructionContext.AmbientServices.GetAppServiceInfos();
+                appServiceAttr = appServiceInfos.FirstOrDefault(i => i.contractType == runtimeElement.Type).appServiceInfo;
+            }
+
+            var appServiceRuntimeElement = appServiceAttr?.ContractType?.AsRuntimeTypeInfo() ?? runtimeElement;
 
             return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(constructionContext, appServiceRuntimeElement));
         }

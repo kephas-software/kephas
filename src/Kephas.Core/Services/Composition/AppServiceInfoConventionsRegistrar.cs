@@ -26,6 +26,7 @@ namespace Kephas.Services.Composition
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Base for conventions registrars of application services.
@@ -84,6 +85,8 @@ namespace Kephas.Services.Composition
             {
                 return;
             }
+
+            registrationContext.AmbientServices?.SetAppServiceInfos(appServiceContractsInfos);
 
             var appServiceContracts = appServiceContractsInfos.Select(e => e.contractType).ToList();
 
@@ -159,7 +162,7 @@ namespace Kephas.Services.Composition
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        protected virtual IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
+        protected internal virtual IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceContracts(
             IList<TypeInfo> candidateTypes,
             ICompositionRegistrationContext registrationContext)
         {

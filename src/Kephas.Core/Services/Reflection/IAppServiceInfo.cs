@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services
+namespace Kephas.Services.Reflection
 {
     using System;
     using System.Runtime.CompilerServices;

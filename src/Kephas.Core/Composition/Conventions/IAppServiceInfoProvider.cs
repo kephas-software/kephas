@@ -14,7 +14,7 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Hosting;
-    using Kephas.Services;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Interface for application service information provider.

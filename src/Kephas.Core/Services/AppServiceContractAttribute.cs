@@ -18,6 +18,7 @@ namespace Kephas.Services
 
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Marks an interface to be an application service contract.

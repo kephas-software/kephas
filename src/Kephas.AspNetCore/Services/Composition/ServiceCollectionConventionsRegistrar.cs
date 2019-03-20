@@ -16,9 +16,8 @@ namespace Kephas.AspNetCore.Services.Composition
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
 
     using Microsoft.Extensions.DependencyInjection;
 

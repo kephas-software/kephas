@@ -24,6 +24,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
@@ -51,14 +53,22 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var appRuntime = Substitute.For<IAppRuntime>();
-            appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(AppServicesRegistry).GetTypeInfo().Assembly });
+            var ambientServices = new AmbientServices();
+            var appServicesInfos = new List<(TypeInfo contractType, IAppServiceInfo appServiceInfo)>
+                                       {
+                                           (typeof(int).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(string).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(bool).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
+                                       };
 
-            var registry = new AppServicesRegistry(appRuntime, new DefaultTypeLoader());
+            ambientServices.SetAppServiceInfos(appServicesInfos);
+
+            var registry = new AppServicesRegistry(ambientServices);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
-            Assert.IsTrue(types.All(t => t.GetTypeInfo().GetCustomAttribute<AppServiceContractAttribute>() != null));
+
+            Assert.AreEqual(3, types.Count);
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t)));
         }
     }
 }
