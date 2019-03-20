@@ -147,7 +147,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz", "Kephas.Scheduling.Quartz\Kephas.Scheduling.Quartz.csproj", "{31F0B073-E35B-4843-BB23-9470DBBD0407}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -383,6 +385,10 @@ Global
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2AE2964-94D9-4806-B9D1-81365E866930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -412,6 +418,7 @@ Global
 		{806E17F5-67E7-476D-99EF-B63DCD525278} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3AD2EBEA-C416-46FD-9B96-6042B17E44DF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{92DF9C0F-F886-4066-BAA1-959E6BA804D8} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
