@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Tests.Behaviors
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Messaging.Authorization.Behaviors;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
@@ -58,7 +59,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             var message = new NonFreeMessage();
             Assert.ThrowsAsync<AuthorizationException>(() => behavior.BeforeProcessAsync(
                 message,
-                new MessageProcessingContext(Substitute.For<IMessageProcessor>()),
+                new MessageProcessingContext(Substitute.For<IMessageProcessor, ICompositionContextAware>()),
                 default), "Should be called with gigi!");
         }
 
@@ -78,7 +79,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             var message = new NonFreeMessage();
             await behavior.BeforeProcessAsync(
                 message,
-                new MessageProcessingContext(Substitute.For<IMessageProcessor>()),
+                new MessageProcessingContext(Substitute.For<IMessageProcessor, ICompositionContextAware>()),
                 default);
         }
 
