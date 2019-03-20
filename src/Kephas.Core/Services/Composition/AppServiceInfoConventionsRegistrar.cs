@@ -294,11 +294,30 @@ namespace Kephas.Services.Composition
                 .Append(serviceContract.Name)
                 .Append("': { multi: ")
                 .Append(contractMetadata.AllowMultiple)
-                .Append(", lifetime: ")
-                .Append(contractMetadata.Lifetime);
+                .Append(", lifetime: '").Append(contractMetadata.Lifetime).Append("'");
+
             if (serviceContract.IsGenericTypeDefinition)
             {
                 sb.Append(", asOpenGeneric: ").Append(contractMetadata.AsOpenGeneric);
+            }
+
+            if (contractMetadata.InstanceType != null)
+            {
+                sb.Append(", instanceType: '")
+                    .Append(contractMetadata.InstanceType)
+                    .Append("'");
+            }
+
+            if (contractMetadata.Instance != null)
+            {
+                sb.Append(", instance: '")
+                    .Append(contractMetadata.Instance)
+                    .Append("'");
+            }
+
+            if (contractMetadata.InstanceFactory != null)
+            {
+                sb.Append(", instanceFactory: '(function)'");
             }
 
             sb.Append("}");
@@ -680,6 +699,16 @@ namespace Kephas.Services.Composition
             ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
+
+            if (appServiceInfo.InstanceType != null)
+            {
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches {appServiceInfo.InstanceType}.");
+                }
+
+                return conventions.ForType(appServiceInfo.InstanceType);
+            }
 
             if (serviceContract.IsGenericTypeDefinition)
             {
