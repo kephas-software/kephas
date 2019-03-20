@@ -12,6 +12,7 @@ namespace Kephas.Serialization
 {
     using System;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Services;
@@ -32,7 +33,7 @@ namespace Kephas.Serialization
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">The media type (type implementing <see cref="IMediaType"/>).</param>
         public SerializationContext(ISerializationService serializationService = null, Type mediaType = null)
-            : base(compositionContext: serializationService?.CompositionContext)
+            : base(compositionContext: (serializationService as ICompositionContextAware)?.CompositionContext)
         {
             this.SerializationService = serializationService;
             this.MediaType = mediaType;
@@ -52,7 +53,10 @@ namespace Kephas.Serialization
                 Requires.NotNull(value, nameof(value));
 
                 this.serializationService = value;
-                this.SetCompositionContext(value.CompositionContext);
+                if (value is ICompositionContextAware compositionContextAware)
+                {
+                    this.SetCompositionContext(compositionContextAware.CompositionContext);
+                }
             }
         }
 

@@ -13,7 +13,6 @@ namespace Kephas.Scripting
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -21,7 +20,7 @@ namespace Kephas.Scripting
     /// Shared application service for executing scripts.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IScriptingEngine : ICompositionContextAware
+    public interface IScriptingEngine
     {
         /// <summary>
         /// Executes the provided script asynchronously.

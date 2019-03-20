@@ -12,6 +12,7 @@ namespace Kephas.Messaging
 {
     using System;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -50,7 +51,7 @@ namespace Kephas.Messaging
             IMessageProcessor messageProcessor,
             IMessage message = null,
             IMessageHandler handler = null)
-            : base(messageProcessor?.CompositionContext)
+            : base((messageProcessor as ICompositionContextAware)?.CompositionContext)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 

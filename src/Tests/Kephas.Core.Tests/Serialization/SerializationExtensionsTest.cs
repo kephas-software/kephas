@@ -189,9 +189,9 @@
 
         private ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
+            var serializationService = Substitute.For<ISerializationService, ICompositionContextAware>(/*Behavior.Strict*/);
             var compositionContextMock = Substitute.For<ICompositionContext>();
-            serializationService.CompositionContext.Returns(compositionContextMock);
+            ((ICompositionContextAware)serializationService).CompositionContext.Returns(compositionContextMock);
             serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
                 .Returns(serializer);
             return serializationService;

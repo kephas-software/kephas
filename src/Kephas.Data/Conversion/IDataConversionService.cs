@@ -13,14 +13,13 @@ namespace Kephas.Data.Conversion
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
     /// Application service contract for data conversions.
     /// </summary>
     [SharedAppServiceContract]
-    public interface IDataConversionService : ICompositionContextAware
+    public interface IDataConversionService
     {
         /// <summary>
         /// Converts the source object to the target object asynchronously.

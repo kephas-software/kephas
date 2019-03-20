@@ -10,14 +10,13 @@
 
 namespace Kephas.Serialization
 {
-    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
     /// Contract for serialization services.
     /// </summary>
     [SharedAppServiceContract]
-    public interface ISerializationService : ICompositionContextAware
+    public interface ISerializationService
     {
         /// <summary>
         /// Gets a serializer for the provided context.
