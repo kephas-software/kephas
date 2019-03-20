@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityInfoTest.cs" company="Kephas Software SRL">
+// <copyright file="EntityEntryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the entity information test class.
+//   Implements the entity entry test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ namespace Kephas.Data.Tests.Capabilities
     using NUnit.Framework;
 
     [TestFixture]
-    public class EntityInfoTest
+    public class EntityEntryTest
     {
         [Test]
         public void IsChanged_IInstance_entity()
@@ -34,7 +34,7 @@ namespace Kephas.Data.Tests.Capabilities
             var entity = new DerivedTestEntity();
             entity.Id = Guid.NewGuid();
             entity.Name = "test";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             entity.Name = "another test";
 
@@ -52,7 +52,7 @@ namespace Kephas.Data.Tests.Capabilities
             dynTypeInfo.Properties.Returns(new[] { namePropInfo });
             var entity = new InstanceEntity(dynTypeInfo);
             entity[namePropInfo.Name] = "gigi";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             var originalEntity = entityInfo.OriginalEntity;
             Assert.AreEqual(1, originalEntity.ToDictionary().Keys.Count);
@@ -69,7 +69,7 @@ namespace Kephas.Data.Tests.Capabilities
             var entity = new DerivedTestEntity();
             entity.Id = Guid.NewGuid();
             entity.Name = "test";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             var originalEntity = entityInfo.OriginalEntity;
             Assert.AreEqual(2, originalEntity.ToDictionary().Keys.Count);
@@ -83,7 +83,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var entity = Substitute.For<IIdentifiable>();
             entity.Id.Returns(3);
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.AreEqual(3, entityInfo.EntityId);
         }
@@ -93,7 +93,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             dynamic entity = new Expando();
             entity.Id = "aha";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.AreEqual("aha", entityInfo.EntityId);
         }
@@ -103,7 +103,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var guid = Guid.NewGuid();
             var entity = new TestEntity { Id = guid };
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.AreEqual(guid, entityInfo.EntityId);
         }
@@ -112,7 +112,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void EntityId_entity_without_id()
         {
             var entity = "aha";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.IsNull(entityInfo.EntityId);
         }
@@ -124,7 +124,7 @@ namespace Kephas.Data.Tests.Capabilities
             var entity = Substitute.For<IChangeStateTrackable>();
             entity.ChangeState = Arg.Do<ChangeState>(ci => changeState = ci);
             entity.ChangeState.Returns(ci => changeState);
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.AreEqual(ChangeState.Added, entityInfo.ChangeState);
 
@@ -138,7 +138,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void ChangeState_non_trackable_entity()
         {
             var entity = "abc";
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             Assert.AreEqual(ChangeState.NotChanged, entityInfo.ChangeState);
 
@@ -150,14 +150,14 @@ namespace Kephas.Data.Tests.Capabilities
         [Test]
         public void GetGraphRoot_non_aggregatable()
         {
-            var entityInfo = new EntityInfo("123");
+            var entityInfo = new EntityEntry("123");
             Assert.IsNull(entityInfo.GetGraphRoot());
         }
 
         [Test]
         public async Task GetFlattenedEntityGraphAsync_non_aggregatable()
         {
-            var entityInfo = new EntityInfo("123");
+            var entityInfo = new EntityEntry("123");
             var graph = await entityInfo.GetFlattenedEntityGraphAsync(new GraphOperationContext(Substitute.For<IDataContext>()));
 
             Assert.AreEqual(1, graph.Count());
@@ -167,7 +167,7 @@ namespace Kephas.Data.Tests.Capabilities
         [Test]
         public void GetStructuralEntityGraph_non_aggregatable()
         {
-            var entityInfo = new EntityInfo("123");
+            var entityInfo = new EntityEntry("123");
             var graph = entityInfo.GetStructuralEntityGraph();
 
             Assert.AreEqual(1, graph.Count());
@@ -181,7 +181,7 @@ namespace Kephas.Data.Tests.Capabilities
             var rootEntity = Substitute.For<IAggregatable>();
             entity.GetGraphRoot()
                 .Returns(rootEntity);
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
             Assert.AreSame(rootEntity, entityInfo.GetGraphRoot());
         }
 
@@ -192,7 +192,7 @@ namespace Kephas.Data.Tests.Capabilities
             var rootEntity = Substitute.For<IAggregatable>();
             entity.GetFlattenedEntityGraphAsync(Arg.Any<IGraphOperationContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IEnumerable<object>>(new[] { rootEntity, entity }));
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             var graph = (await entityInfo.GetFlattenedEntityGraphAsync(null, CancellationToken.None)).ToList();
             Assert.AreEqual(2, graph.Count);
@@ -207,7 +207,7 @@ namespace Kephas.Data.Tests.Capabilities
             var rootEntity = Substitute.For<IAggregatable>();
             entity.GetStructuralEntityGraph()
                 .Returns(new[] { rootEntity, entity });
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
 
             var graph = entityInfo.GetStructuralEntityGraph().ToList();
             Assert.AreEqual(2, graph.Count);
@@ -219,7 +219,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void IsNotifyPropertyChangedSensitive()
         {
             var entity = new TestEntity();
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
             entity.Id = Guid.NewGuid();
 
             Assert.AreEqual(ChangeState.Changed, entityInfo.ChangeState);
@@ -230,7 +230,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var originalGuid = Guid.NewGuid();
             var entity = new TestEntity { Id = originalGuid };
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
             var newGuid = Guid.NewGuid();
             entity.Id = newGuid;
 
@@ -245,7 +245,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void DiscardChanges_Added()
         {
             var entity = "123";
-            var entityInfo = new EntityInfo(entity)
+            var entityInfo = new EntityEntry(entity)
                                  {
                                      ChangeState = ChangeState.Added
                                  };
@@ -260,7 +260,7 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var originalGuid = Guid.NewGuid();
             var entity = new TestEntity { Id = originalGuid };
-            var entityInfo = new EntityInfo(entity);
+            var entityInfo = new EntityEntry(entity);
             var newGuid = Guid.NewGuid();
             entity.Id = newGuid;
 
@@ -275,7 +275,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void DiscardChanges_Changed_entity_with_readOnlyProperties()
         {
             var entity = "123";
-            var entityInfo = new EntityInfo(entity) { ChangeState = ChangeState.Changed };
+            var entityInfo = new EntityEntry(entity) { ChangeState = ChangeState.Changed };
 
             entityInfo.DiscardChanges();
 
@@ -286,7 +286,7 @@ namespace Kephas.Data.Tests.Capabilities
         public void DiscardChanges_Deleted()
         {
             var entity = "123";
-            var entityInfo = new EntityInfo(entity)
+            var entityInfo = new EntityEntry(entity)
                                  {
                                      ChangeState = ChangeState.Deleted
                                  };

@@ -178,11 +178,11 @@
   <data name="DataContextBase_CreateCommand_BadCommandType_Exception" xml:space="preserve">
     <value>The command type parameter '{0}' must inherit {1}.</value>
   </data>
-  <data name="DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception" xml:space="preserve">
+  <data name="DataContextCache_KeyAndEntityEntryIdDoNotMatch_Exception" xml:space="preserve">
     <value>The key ('{0}') and then entity info ID ('{1}') do not match.</value>
   </data>
-  <data name="EntityInfo_DataContextAlreadySet_Exception" xml:space="preserve">
-    <value>The data context is already set in the entity information structure, cannot set multiple times.</value>
+  <data name="EntityEntry_DataContextAlreadySet_Exception" xml:space="preserve">
+    <value>The data context is already set in the entity entry structure, cannot set multiple times.</value>
   </data>
   <data name="DataContextQueryableSubstituteTypeConstantHandler_BadQueryProvider_Exception" xml:space="preserve">
     <value>Expected a {0} provider in query {1}.</value>
@@ -190,7 +190,7 @@
   <data name="DataContext_MismatchedDataContextInCommand_Exception" xml:space="preserve">
     <value>The provided command execution context targets a different data context than the one supposed to execute the command.</value>
   </data>
-  <data name="RefBase_GetEntityInfo_Disposed_Exception" xml:space="preserve">
+  <data name="RefBase_GetEntityEntry_Disposed_Exception" xml:space="preserve">
     <value>The entity for reference {0} has been disposed.</value>
   </data>
   <data name="RefBase_GetDataContext_NullDataContext_Exception" xml:space="preserve">
@@ -199,8 +199,8 @@
   <data name="RefBase_GetEntity_Null_Exception" xml:space="preserve">
     <value>The entity for reference {0} could not be retrieved (null reference).</value>
   </data>
-  <data name="RefBase_GetEntityInfo_Null_Exception" xml:space="preserve">
-    <value>The entity information for reference {0} could not be retrieved (null reference).</value>
+  <data name="RefBase_GetEntityEntry_Null_Exception" xml:space="preserve">
+    <value>The entity entry for reference {0} could not be retrieved (null reference).</value>
   </data>
   <data name="CollectionAdapter_CopyTo_NotEnoughElements_Exception" xml:space="preserve">
     <value>Not enough elements after {0} in the destination array.</value>

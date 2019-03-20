@@ -24,12 +24,12 @@ namespace Kephas.Data.Validation
         /// Validates the provided instance asynchronously.
         /// </summary>
         /// <param name="entity">The entity to be validated.</param>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">Context for the validation operation.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
-        Task<IDataValidationResult> ValidateAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
+        Task<IDataValidationResult> ValidateAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

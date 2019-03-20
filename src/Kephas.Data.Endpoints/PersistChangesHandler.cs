@@ -76,19 +76,19 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var mappings = new List<(DtoEntityInfo clientEntry, object entity)>();
+            var mappings = new List<(DtoEntityEntry clientEntry, object entity)>();
             var response = new PersistChangesResponseMessage();
 
-            if (message.EntityInfos == null || message.EntityInfos.Count == 0)
+            if (message.EntityEntries == null || message.EntityEntries.Count == 0)
             {
                 return response;
             }
 
-            var dataSpaceContext = new Context(context).WithInitialData(message.EntityInfos);
+            var dataSpaceContext = new Context(context).WithInitialData(message.EntityEntries);
             using (var dataSpace = this.dataSpaceFactory.CreateExportedValue(dataSpaceContext))
             {
                 // convert to entities
-                foreach (var clientEntityInfo in message.EntityInfos.Where(e => e.Entity != null))
+                foreach (var clientEntityInfo in message.EntityEntries.Where(e => e.Entity != null))
                 {
                     // gets the domain entity and sets the values from the client
                     var clientEntity = clientEntityInfo.Entity;
@@ -105,7 +105,7 @@ namespace Kephas.Data.Endpoints
                         if (clientEntityInfo.ChangeState == ChangeState.Deleted)
                         {
                             var domainDataContext = dataSpace[domainEntityType, context];
-                            var changeStateEntity = domainDataContext.GetEntityInfo(result.Target);
+                            var changeStateEntity = domainDataContext.GetEntityEntry(result.Target);
                             changeStateEntity.ChangeState = ChangeState.Deleted;
                         }
                     }
@@ -116,7 +116,7 @@ namespace Kephas.Data.Endpoints
 
                     // add a response entry in the response
                     var originalId = (clientEntity as IIdentifiable)?.Id;
-                    response.EntityInfos.Add(new DtoEntityInfo
+                    response.EntityEntries.Add(new DtoEntityEntry
                     {
                         ChangeState = clientEntityInfo.ChangeState,
                         Entity = clientEntityInfo.ChangeState == ChangeState.Deleted ? null : clientEntity,
@@ -135,7 +135,7 @@ namespace Kephas.Data.Endpoints
                 await this.PostPersistChangesAsync(response, mappings, dataSpace, cancellationToken: token).PreserveThreadContext();
             }
 
-            foreach (var entry in response.EntityInfos)
+            foreach (var entry in response.EntityEntries)
             {
                 entry.ChangeState = entry.ChangeState == ChangeState.Deleted ? ChangeState.Deleted : ChangeState.NotChanged;
             }
@@ -155,7 +155,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual Task PrePersistChangesAsync(
             PersistChangesResponseMessage response,
-            IList<(DtoEntityInfo clientEntry, object entity)> mappings,
+            IList<(DtoEntityEntry clientEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {
@@ -174,7 +174,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
-            IList<(DtoEntityInfo clientEntry, object entity)> mappings,
+            IList<(DtoEntityEntry clientEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {

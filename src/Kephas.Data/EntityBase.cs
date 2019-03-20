@@ -22,7 +22,7 @@ namespace Kephas.Data
     /// <summary>
     /// An entity base.
     /// </summary>
-    public abstract class EntityBase : Expando, IIdentifiable, IChangeStateTrackable, IInstance, IEntityInfoAware
+    public abstract class EntityBase : Expando, IIdentifiable, IChangeStateTrackable, IInstance, IEntityEntryAware
     {
         /// <summary>
         /// Information describing the type.
@@ -32,7 +32,7 @@ namespace Kephas.Data
         /// <summary>
         /// Information describing the weak entity.
         /// </summary>
-        private WeakReference<IEntityInfo> weakEntityInfo;
+        private WeakReference<IEntityEntry> weakEntityEntry;
 
         /// <summary>
         /// The values.
@@ -77,25 +77,25 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets the associated entity information.
+        /// Gets the associated entity entry.
         /// </summary>
         /// <returns>
-        /// The associated entity information.
+        /// The associated entity entry.
         /// </returns>
-        public IEntityInfo GetEntityInfo()
+        public IEntityEntry GetEntityEntry()
         {
-            IEntityInfo entityInfo = null;
-            this.weakEntityInfo?.TryGetTarget(out entityInfo);
-            return entityInfo;
+            IEntityEntry entityEntry = null;
+            this.weakEntityEntry?.TryGetTarget(out entityEntry);
+            return entityEntry;
         }
 
         /// <summary>
-        /// Sets the associated entity information.
+        /// Sets the associated entity entry.
         /// </summary>
-        /// <param name="entityInfo">Information describing the entity.</param>
-        public void SetEntityInfo(IEntityInfo entityInfo)
+        /// <param name="entityEntry">Information describing the entity.</param>
+        public void SetEntityEntry(IEntityEntry entityEntry)
         {
-            this.weakEntityInfo = new WeakReference<IEntityInfo>(entityInfo);
+            this.weakEntityEntry = new WeakReference<IEntityEntry>(entityEntry);
         }
 
         /// <summary>

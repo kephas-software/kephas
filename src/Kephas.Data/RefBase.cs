@@ -23,7 +23,7 @@ namespace Kephas.Data
     public abstract class RefBase
     {
         /// <summary>
-        /// The container entity information provider.
+        /// The container entity entry provider.
         /// </summary>
         private readonly WeakReference<object> containerEntityRef;
 
@@ -90,7 +90,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual object GetContainerEntity()
         {
-            var entity = this.GetContainerEntityInfo()?.Entity;
+            var entity = this.GetContainerEntityEntry()?.Entity;
             if (entity == null)
             {
                 throw new DataException(string.Format(Strings.RefBase_GetEntity_Null_Exception, this.RefFieldName));
@@ -100,23 +100,23 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets the container entity information.
+        /// Gets the container entity entry.
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown when the entity has been disposed.</exception>
         /// <returns>
-        /// The container entity information.
+        /// The container entity entry.
         /// </returns>
-        protected virtual IEntityInfo GetContainerEntityInfo()
+        protected virtual IEntityEntry GetContainerEntityEntry()
         {
             if (!this.containerEntityRef.TryGetTarget(out var containerEntity))
             {
-                throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.RefBase_GetEntityInfo_Disposed_Exception, this.RefFieldName));
+                throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.RefBase_GetEntityEntry_Disposed_Exception, this.RefFieldName));
             }
 
-            var entityInfo = containerEntity.TryGetAttachedEntityInfo();
+            var entityInfo = containerEntity.TryGetAttachedEntityEntry();
             if (entityInfo == null)
             {
-                throw new DataException(string.Format(Strings.RefBase_GetEntityInfo_Null_Exception, this.RefFieldName));
+                throw new DataException(string.Format(Strings.RefBase_GetEntityEntry_Null_Exception, this.RefFieldName));
             }
 
             return entityInfo;
@@ -125,16 +125,16 @@ namespace Kephas.Data
         /// <summary>
         /// Gets the data context for entity retrieval.
         /// </summary>
-        /// <param name="entityInfo">Information describing the entity.</param>
+        /// <param name="entityEntry">Information describing the entity.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        protected virtual IDataContext GetDataContext(IEntityInfo entityInfo)
+        protected virtual IDataContext GetDataContext(IEntityEntry entityEntry)
         {
-            var dataContext = entityInfo?.DataContext;
+            var dataContext = entityEntry?.DataContext;
             if (dataContext == null)
             {
-                throw new ArgumentNullException($"{nameof(entityInfo)}.{nameof(entityInfo.DataContext)}", string.Format(Strings.RefBase_GetDataContext_NullDataContext_Exception, this.RefFieldName));
+                throw new ArgumentNullException($"{nameof(entityEntry)}.{nameof(entityEntry.DataContext)}", string.Format(Strings.RefBase_GetDataContext_NullDataContext_Exception, this.RefFieldName));
             }
 
             return dataContext;

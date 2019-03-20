@@ -17,30 +17,30 @@ namespace Kephas.Data.Caching
     /// <summary>
     /// Interface for data context cache.
     /// </summary>
-    public interface IDataContextCache : IDictionary<object, IEntityInfo>
+    public interface IDataContextCache : IDictionary<object, IEntityEntry>
     {
         /// <summary>
-        /// Adds an <see cref="IEntityInfo"/> to the <see cref="IDataContextCache" />.
+        /// Adds an <see cref="IEntityEntry"/> to the <see cref="IDataContextCache" />.
         /// </summary>
         /// <param name="value">The object to add.</param>
-        void Add(IEntityInfo value);
+        void Add(IEntityEntry value);
 
         /// <summary>
-        /// Removes an <see cref="IEntityInfo"/> from the <see cref="IDataContextCache" />.
+        /// Removes an <see cref="IEntityEntry"/> from the <see cref="IDataContextCache" />.
         /// </summary>
         /// <param name="value">The object to remove.</param>
         /// <returns>
         /// <c>true</c> if the removal succeeds, <c>false</c> otherwise.
         /// </returns>
-        bool Remove(IEntityInfo value);
+        bool Remove(IEntityEntry value);
 
         /// <summary>
-        /// Gets the entity information associated to the provided entity, or <c>null</c> if none could be found.
+        /// Gets the entity entry associated to the provided entity, or <c>null</c> if none could be found.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The entity information or <c>null</c>.
+        /// The entity entry or <c>null</c>.
         /// </returns>
-        IEntityInfo GetEntityInfo(object entity);
+        IEntityEntry GetEntityEntry(object entity);
     }
 }

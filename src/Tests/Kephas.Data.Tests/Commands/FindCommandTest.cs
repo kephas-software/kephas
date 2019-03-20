@@ -30,11 +30,11 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 2 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 3 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 3 });
             localCache.Add(entityInfo);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2);
@@ -51,7 +51,7 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2, throwIfNotFound: false);
@@ -69,7 +69,7 @@ namespace Kephas.Data.Tests.Commands
 
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2, throwIfNotFound: true);
@@ -83,11 +83,11 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 2 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 2 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
             localCache.Add(entityInfo);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2);

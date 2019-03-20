@@ -24,7 +24,7 @@ namespace Kephas.Data.InMemory.Caching
         /// Initializes a new instance of the <see cref="SharedDataContextCache"/> class.
         /// </summary>
         public SharedDataContextCache()
-            : base(new ConcurrentDictionary<object, IEntityInfo>(), new ConcurrentDictionary<object, IEntityInfo>())
+            : base(new ConcurrentDictionary<object, IEntityEntry>(), new ConcurrentDictionary<object, IEntityEntry>())
         {
         }
     }

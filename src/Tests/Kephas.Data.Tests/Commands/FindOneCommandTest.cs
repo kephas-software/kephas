@@ -29,9 +29,9 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindOneCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Name = "gigi" });
+            var entityInfo = new EntityEntry(new TestEntity { Name = "gigi" });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Name = "belogea" });
+            entityInfo = new EntityEntry(new TestEntity { Name = "belogea" });
             localCache.Add(entityInfo);
 
             var findContext = new FindOneContext<TestEntity>(dataContext, e => e.Name == "belogea");
@@ -48,7 +48,7 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindOneCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Name = "gigi" });
+            var entityInfo = new EntityEntry(new TestEntity { Name = "gigi" });
             localCache.Add(entityInfo);
 
             var findContext = new FindOneContext<TestEntity>(dataContext, e => e.Name == "belogea", throwIfNotFound: false);
@@ -65,7 +65,7 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindOneCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Name = "gigi" });
+            var entityInfo = new EntityEntry(new TestEntity { Name = "gigi" });
             localCache.Add(entityInfo);
 
             var findContext = new FindOneContext<TestEntity>(dataContext, e => e.Name == "belogea", throwIfNotFound: true);
@@ -79,11 +79,11 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindOneCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Name = "gigi" });
+            var entityInfo = new EntityEntry(new TestEntity { Name = "gigi" });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Name = "belogea" });
+            entityInfo = new EntityEntry(new TestEntity { Name = "belogea" });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Name = "belogea" });
+            entityInfo = new EntityEntry(new TestEntity { Name = "belogea" });
             localCache.Add(entityInfo);
 
             var findContext = new FindOneContext<TestEntity>(dataContext, e => e.Name == "belogea");

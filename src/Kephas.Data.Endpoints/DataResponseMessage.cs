@@ -20,11 +20,11 @@ namespace Kephas.Data.Endpoints
     public class DataResponseMessage : IDataResponseMessage
     {
         /// <summary>
-        /// Gets or sets the entity infos after a data operation.
+        /// Gets or sets the entity entries after a data operation.
         /// </summary>
         /// <value>
-        /// The entity infos after a data operation.
+        /// The entity entries after a data operation.
         /// </value>
-        public IList<DtoEntityInfo> EntityInfos { get; set; } = new List<DtoEntityInfo>();
+        public IList<DtoEntityEntry> EntityEntries { get; set; } = new List<DtoEntityEntry>();
     }
 }

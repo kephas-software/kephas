@@ -45,13 +45,13 @@ namespace Kephas.Data
         IDataCommand CreateCommand(Type commandType);
 
         /// <summary>
-        /// Gets the entity extended information.
+        /// Gets the entity entry.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The entity extended information.
+        /// The entity entry.
         /// </returns>
-        IEntityInfo GetEntityInfo(object entity);
+        IEntityEntry GetEntityEntry(object entity);
 
         /// <summary>
         /// Attaches the entity to the data context.
@@ -60,15 +60,15 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        IEntityInfo AttachEntity(object entity);
+        IEntityEntry AttachEntity(object entity);
 
         /// <summary>
         /// Detaches the entity from the data context.
         /// </summary>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        IEntityInfo DetachEntity(IEntityInfo entityInfo);
+        IEntityEntry DetachEntity(IEntityEntry entityEntry);
     }
 }

@@ -115,12 +115,12 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public void DetachEntity_not_own_entity_info()
+        public void DetachEntity_not_own_entity_entry()
         {
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
 
-            var entityInfo = new EntityInfo("hello");
+            var entityInfo = new EntityEntry("hello");
 
             var detachedEntityInfo = dataContext.DetachEntity(entityInfo);
             Assert.IsNull(detachedEntityInfo);

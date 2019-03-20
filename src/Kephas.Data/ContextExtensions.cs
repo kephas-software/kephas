@@ -33,11 +33,11 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="context">The context to act on.</param>
         /// <returns>
-        /// An enumeration of entity information.
+        /// An enumeration of entity entry.
         /// </returns>
-        public static IEnumerable<IChangeStateTrackableEntityInfo> InitialData(this IContext context)
+        public static IEnumerable<IChangeStateTrackableEntityEntry> InitialData(this IContext context)
         {
-            return context?[InitialDataConfigurationName] as IEnumerable<IChangeStateTrackableEntityInfo>;
+            return context?[InitialDataConfigurationName] as IEnumerable<IChangeStateTrackableEntityEntry>;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Kephas.Data
             context[InitialDataConfigurationName] =
                 initialData
                     ?.Where(t => t.entity != null)
-                    .Select(t => new EntityInfo(t.entity) { ChangeState = t.changeState });
+                    .Select(t => new EntityEntry(t.entity) { ChangeState = t.changeState });
             return context;
         }
 
@@ -78,7 +78,7 @@ namespace Kephas.Data
             context[InitialDataConfigurationName] =
                     initialData
                         ?.Where(o => o != null)
-                        .Select(o => new EntityInfo(o));
+                        .Select(o => new EntityEntry(o));
             return context;
         }
 
@@ -91,7 +91,7 @@ namespace Kephas.Data
         /// <returns>
         /// This context.
         /// </returns>
-        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<IChangeStateTrackableEntityInfo> initialData)
+        public static TContext WithInitialData<TContext>(this TContext context, IEnumerable<IChangeStateTrackableEntityEntry> initialData)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));

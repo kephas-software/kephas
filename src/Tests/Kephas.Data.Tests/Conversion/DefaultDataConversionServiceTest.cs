@@ -113,7 +113,7 @@ namespace Kephas.Data.Tests.Conversion
                 Arg.Any<IDataContext>(),
                 typeof(StringBuilder).GetTypeInfo(),
                 Arg.Any<object>(),
-                Arg.Any<IEntityInfo>(),
+                Arg.Any<IEntityEntry>(),
                 Arg.Any<CancellationToken>()).Returns(new StringBuilder());
 
             var service = new DefaultDataConversionService(

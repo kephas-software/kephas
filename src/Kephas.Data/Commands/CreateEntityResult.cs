@@ -23,14 +23,14 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="CreateEntityResult"/> class.
         /// </summary>
         /// <param name="entity">The created entity.</param>
-        /// <param name="entityInfo">Information describing the entity.</param>
+        /// <param name="entityEntry">Information describing the entity.</param>
         /// <param name="message">The message (optional).</param>
         /// <param name="exception">The exception (optional).</param>
-        public CreateEntityResult(object entity, IEntityInfo entityInfo, string message = null, Exception exception = null)
+        public CreateEntityResult(object entity, IEntityEntry entityEntry, string message = null, Exception exception = null)
             : base(message, exception)
         {
             this.Entity = entity;
-            this.EntityInfo = entityInfo;
+            this.EntityEntry = entityEntry;
         }
 
         /// <summary>
@@ -47,6 +47,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// Information describing the entity.
         /// </value>
-        public IEntityInfo EntityInfo { get; }
+        public IEntityEntry EntityEntry { get; }
     }
 }

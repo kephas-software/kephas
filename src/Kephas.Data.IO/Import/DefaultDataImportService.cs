@@ -380,19 +380,19 @@ namespace Kephas.Data.IO.Import
             }
 
             /// <summary>
-            /// Gets the entity information based on a source object.
+            /// Gets the entity entry based on a source object.
             /// </summary>
             /// <param name="source">The source object.</param>
             /// <returns>
-            /// The entity information.
+            /// The entity entry.
             /// </returns>
-            private IEntityInfo AttachSourceEntity(object source)
+            private IEntityEntry AttachSourceEntity(object source)
             {
                 object entity;
                 ChangeState changeState;
-                if (source is IChangeStateTrackableEntityInfo changeStateTrackableEntityInfo)
+                if (source is IChangeStateTrackableEntityEntry changeStateTrackableEntityInfo)
                 {
-                    // the imported entity is already an IEntityInfo wrapper. Adjust only the change state.
+                    // the imported entity is already an IEntityEntry wrapper. Adjust only the change state.
                     entity = changeStateTrackableEntityInfo.Entity;
                     changeState = changeStateTrackableEntityInfo.ChangeState;
                     if (changeState == ChangeState.NotChanged)
@@ -417,14 +417,14 @@ namespace Kephas.Data.IO.Import
             /// <summary>
             /// Converts the entity.
             /// </summary>
-            /// <param name="sourceEntityInfo">The source entity info.</param>
+            /// <param name="sourceEntityEntry">The source entity info.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>
             /// A promise of the imported target entity.
             /// </returns>
-            private async Task<IEntityInfo> ConvertEntityAsync(IEntityInfo sourceEntityInfo, CancellationToken cancellationToken = default)
+            private async Task<IEntityEntry> ConvertEntityAsync(IEntityEntry sourceEntityEntry, CancellationToken cancellationToken = default)
             {
-                var sourceEntity = sourceEntityInfo.Entity;
+                var sourceEntity = sourceEntityEntry.Entity;
                 var conversionContext = new DataConversionContextBuilder(this.dataSpace, this.conversionService)
                     .WithRootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context))
                     .ConversionContext;
@@ -445,9 +445,9 @@ namespace Kephas.Data.IO.Import
                 // * the target entity is not changed - or -
                 // * the source entity indicated deletion.
                 if (targetEntityInfo.ChangeState == ChangeState.NotChanged
-                    || sourceEntityInfo.ChangeState == ChangeState.Deleted)
+                    || sourceEntityEntry.ChangeState == ChangeState.Deleted)
                 {
-                    targetEntityInfo.ChangeState = sourceEntityInfo.ChangeState;
+                    targetEntityInfo.ChangeState = sourceEntityEntry.ChangeState;
                 }
 
                 return targetEntityInfo;

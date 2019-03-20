@@ -30,11 +30,11 @@ namespace Kephas.Data.Tests.InMemory.Commands
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 2 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo(new TestEntity { Id = 3 });
+            entityInfo = new EntityEntry(new TestEntity { Id = 3 });
             localCache.Add(entityInfo);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" });
@@ -54,7 +54,7 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" });
@@ -74,7 +74,7 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityInfo(new TestEntity { Id = 1 });
+            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
             localCache.Add(entityInfo);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" }, throwIfNotFound: true);

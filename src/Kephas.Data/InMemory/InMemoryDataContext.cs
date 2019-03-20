@@ -102,7 +102,7 @@ namespace Kephas.Data.InMemory
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public override IEntityInfo GetEntityInfo(object entity)
+        public override IEntityEntry GetEntityEntry(object entity)
         {
             // do not use here the WorkingCache property, because during initialization
             // the InitializationMonitor is not in the Completed state yet.
@@ -198,7 +198,7 @@ namespace Kephas.Data.InMemory
         /// Initializes the data.
         /// </summary>
         /// <param name="initialData">The initial data.</param>
-        private void InitializeData(IEnumerable<IChangeStateTrackableEntityInfo> initialData)
+        private void InitializeData(IEnumerable<IChangeStateTrackableEntityEntry> initialData)
         {
             if (initialData == null)
             {
@@ -207,7 +207,7 @@ namespace Kephas.Data.InMemory
 
             foreach (var entityInfo in initialData)
             {
-                var ownEntityInfo = this.CreateEntityInfo(entityInfo.Entity, entityInfo.ChangeState);
+                var ownEntityInfo = this.CreateEntityEntry(entityInfo.Entity, entityInfo.ChangeState);
                 this.workingCache[ownEntityInfo.Id] = ownEntityInfo;
             }
         }
@@ -229,13 +229,13 @@ namespace Kephas.Data.InMemory
             {
                 foreach (var entity in (IEnumerable)data)
                 {
-                    var entityInfo = this.CreateEntityInfo(entity);
+                    var entityInfo = this.CreateEntityEntry(entity);
                     this.workingCache.Add(entityInfo);
                 }
             }
             else
             {
-                var entityInfo = this.CreateEntityInfo(data);
+                var entityInfo = this.CreateEntityEntry(data);
                 this.workingCache.Add(entityInfo);
             }
         }

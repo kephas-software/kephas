@@ -53,14 +53,14 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// A list of entity information objects.
+        /// A list of entity entry objects.
         /// </returns>
-        protected virtual IList<IEntityInfo> DetectModifiedEntries(IDiscardChangesContext operationContext)
+        protected virtual IList<IEntityEntry> DetectModifiedEntries(IDiscardChangesContext operationContext)
         {
             var localCache = this.TryGetLocalCache(operationContext.DataContext);
             if (localCache == null)
             {
-                return new List<IEntityInfo>();
+                return new List<IEntityEntry>();
             }
 
             return localCache.Values
@@ -71,21 +71,21 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Queries if the entity is added.
         /// </summary>
-        /// <param name="e">The IEntityInfo to process.</param>
+        /// <param name="e">The IEntityEntry to process.</param>
         /// <returns>
         /// True if added, false if not.
         /// </returns>
-        private bool IsAdded(IEntityInfo e) =>
+        private bool IsAdded(IEntityEntry e) =>
             e.ChangeState == ChangeState.Added || e.ChangeState == ChangeState.AddedOrChanged;
 
         /// <summary>
         /// Queries if 'e' is changed or deleted.
         /// </summary>
-        /// <param name="e">The IEntityInfo to process.</param>
+        /// <param name="e">The IEntityEntry to process.</param>
         /// <returns>
         /// True if changed or deleted, false if not.
         /// </returns>
-        private bool IsChangedOrDeleted(IEntityInfo e) =>
+        private bool IsChangedOrDeleted(IEntityEntry e) =>
             e.ChangeState == ChangeState.Changed || e.ChangeState == ChangeState.Deleted;
     }
 }

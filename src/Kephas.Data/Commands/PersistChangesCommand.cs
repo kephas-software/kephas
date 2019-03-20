@@ -163,7 +163,7 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="changeSet">The change set.</param>
-        protected virtual void AcceptChanges(IPersistChangesContext operationContext, IList<IEntityInfo> changeSet)
+        protected virtual void AcceptChanges(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet)
         {
             var dataContext = operationContext.DataContext;
             foreach (var entityInfo in changeSet)
@@ -188,7 +188,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityInfo> changeSet, CancellationToken cancellationToken)
+        protected virtual async Task ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
             foreach (var entityInfo in changeSet)
             {
@@ -209,7 +209,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityInfo> changeSet, CancellationToken cancellationToken)
+        protected virtual async Task ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
             foreach (var entityInfo in changeSet)
             {
@@ -226,15 +226,15 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// A list of modified <see cref="IEntityInfo"/> objects.
+        /// A list of modified <see cref="IEntityEntry"/> objects.
         /// </returns>
-        protected virtual IList<IEntityInfo> ComputeIterationChangeSet(IPersistChangesContext operationContext)
+        protected virtual IList<IEntityEntry> ComputeIterationChangeSet(IPersistChangesContext operationContext)
         {
             if (operationContext.ChangeSet != null)
             {
                 var dataContext = operationContext.DataContext;
                 var changeSet = operationContext.ChangeSet
-                                    .Select(e => dataContext.GetEntityInfo(e))
+                                    .Select(e => dataContext.GetEntityEntry(e))
                                     .Where(ei => ei != null && ei.ChangeState != ChangeState.NotChanged)
                                     .ToList();
                 return changeSet;
@@ -243,7 +243,7 @@ namespace Kephas.Data.Commands
             var localCache = this.TryGetLocalCache(operationContext.DataContext);
             if (localCache == null)
             {
-                return new List<IEntityInfo>();
+                return new List<IEntityEntry>();
             }
 
             var changes = localCache.Values
@@ -265,7 +265,7 @@ namespace Kephas.Data.Commands
         /// The aggregated number of changes.
         /// </returns>
         protected virtual async Task<int> ValidateAndPersistChangeSetAsync(
-          IList<IEntityInfo> changeSet,
+          IList<IEntityEntry> changeSet,
           int changes,
           IPersistChangesContext operationContext,
           StringBuilder sb,
@@ -309,7 +309,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ValidateChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected virtual async Task ValidateChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             var dataContext = operationContext.DataContext;
             foreach (var entityInfo in changeSet)
@@ -320,7 +320,7 @@ namespace Kephas.Data.Commands
                 {
                     var entityPartInfo = entityPart == entityInfo.Entity
                                              ? entityInfo
-                                             : dataContext.GetEntityInfo(entityPart);
+                                             : dataContext.GetEntityEntry(entityPart);
                     if (entityPartInfo == null)
                     {
                         // TODO localization
@@ -342,7 +342,7 @@ namespace Kephas.Data.Commands
         /// Validates the modified entity asynchronously.
         /// </summary>
         /// <param name="entityPart">The entity part.</param>
-        /// <param name="entityPartInfo">Information describing the entity part.</param>
+        /// <param name="entityPartEntry">Information describing the entity part.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
@@ -350,7 +350,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task<IDataValidationResult> ValidateEntityAsync(
             object entityPart,
-            IEntityInfo entityPartInfo,
+            IEntityEntry entityPartEntry,
             IPersistChangesContext operationContext,
             CancellationToken cancellationToken)
         {
@@ -358,7 +358,7 @@ namespace Kephas.Data.Commands
             var result = new DataValidationResult();
             foreach (var validator in validators)
             {
-                var validatorResult = await validator.ValidateAsync(entityPart, entityPartInfo, operationContext, cancellationToken).PreserveThreadContext();
+                var validatorResult = await validator.ValidateAsync(entityPart, entityPartEntry, operationContext, cancellationToken).PreserveThreadContext();
                 result.Add(validatorResult.ToArray());
             }
 
@@ -369,7 +369,7 @@ namespace Kephas.Data.Commands
         /// Pre processes the change set asynchronously.
         /// </summary>
         /// <remarks>
-        /// By default, it sets the <see cref="IEntityInfo.PrePersistChangeState"/> to be equal to <see cref="IChangeStateTrackable.ChangeState"/>.
+        /// By default, it sets the <see cref="IEntityEntry.PrePersistChangeState"/> to be equal to <see cref="IChangeStateTrackable.ChangeState"/>.
         /// </remarks>
         /// <param name="changeSet">The modified entities.</param>
         /// <param name="operationContext">The data operation context.</param>
@@ -377,7 +377,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task PreProcessChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected virtual Task PreProcessChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             foreach (var entityInfo in changeSet)
             {
@@ -396,7 +396,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual Task PostProcessChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected virtual Task PostProcessChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
@@ -411,7 +411,7 @@ namespace Kephas.Data.Commands
         /// A Task.
         /// </returns>
         protected virtual Task PersistChangeSetAsync(
-            IList<IEntityInfo> changeSet,
+            IList<IEntityEntry> changeSet,
             IPersistChangesContext operationContext,
             CancellationToken cancellationToken)
         {

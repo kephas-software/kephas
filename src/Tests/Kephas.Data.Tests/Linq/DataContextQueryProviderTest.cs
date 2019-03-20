@@ -145,7 +145,7 @@ namespace Kephas.Data.Tests.Linq
             dataContext.AttachEntity(Arg.Any<object>()).Returns(
                 ci =>
                     {
-                        var entityInfo = Substitute.For<IEntityInfo>();
+                        var entityInfo = Substitute.For<IEntityEntry>();
                         entityInfo.Entity.Returns(ci.Arg<object>());
                         return entityInfo;
                     });

@@ -58,37 +58,37 @@ namespace Kephas.Data.Commands
             var entity = this.CreateEntity(operationContext);
 
             var dataContext = operationContext.DataContext;
-            IEntityInfo entityInfo = null;
+            IEntityEntry entityEntry = null;
             try
             {
-                entityInfo = dataContext.AttachEntity(entity);
+                entityEntry = dataContext.AttachEntity(entity);
 
                 // set the change state to Added
-                entityInfo.ChangeState = ChangeState.Added;
+                entityEntry.ChangeState = ChangeState.Added;
 
                 // execute initialization behaviors
                 var initializeBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnInitializeBehavior>(entity);
                 foreach (var initializeBehavior in initializeBehaviors)
                 {
-                    await initializeBehavior.InitializeAsync(entity, entityInfo, operationContext, cancellationToken).PreserveThreadContext();
+                    await initializeBehavior.InitializeAsync(entity, entityEntry, operationContext, cancellationToken).PreserveThreadContext();
                 }
 
                 // prepare the result
-                var result = new CreateEntityResult(entity, entityInfo);
+                var result = new CreateEntityResult(entity, entityEntry);
                 this.PostCreateEntity(operationContext, result);
 
                 // all the changes in the initialization should be reset.
                 // only after this point, the entity may be consider fully initialized.
-                entityInfo.AcceptChanges();
-                entityInfo.ChangeState = ChangeState.Added;
+                entityEntry.AcceptChanges();
+                entityEntry.ChangeState = ChangeState.Added;
 
                 return result;
             }
             catch
             {
-                if (entityInfo != null)
+                if (entityEntry != null)
                 {
-                    dataContext.DetachEntity(entityInfo);
+                    dataContext.DetachEntity(entityEntry);
                 }
 
                 throw;

@@ -29,7 +29,7 @@ namespace Kephas.Data.Tests.Caching
             var cache = new DataContextCache();
 
             var entity = "123";
-            var eInfo = new EntityInfo(entity);
+            var eInfo = new EntityEntry(entity);
             cache[eInfo.Id] = eInfo;
 
             Assert.AreSame(eInfo, cache[eInfo.Id]);
@@ -40,18 +40,18 @@ namespace Kephas.Data.Tests.Caching
         {
             var cache = new DataContextCache();
             Assert.Throws<ArgumentNullException>(() => cache[1] = null);
-            Assert.Throws<ArgumentNullException>(() => cache[null] = Substitute.For<IEntityInfo>());
+            Assert.Throws<ArgumentNullException>(() => cache[null] = Substitute.For<IEntityEntry>());
         }
 
         [Test]
         public void Indexer_set()
         {
-            var items = new Dictionary<object, IEntityInfo>();
-            var mappings = new Dictionary<object, IEntityInfo>();
+            var items = new Dictionary<object, IEntityEntry>();
+            var mappings = new Dictionary<object, IEntityEntry>();
             var cache = new TestDataContextCache(items, mappings);
 
             var entity = "123";
-            var eInfo = new EntityInfo(entity);
+            var eInfo = new EntityEntry(entity);
             cache[eInfo.Id] = eInfo;
 
             Assert.AreSame(eInfo, items[eInfo.Id]);
@@ -64,21 +64,21 @@ namespace Kephas.Data.Tests.Caching
             var cache = new DataContextCache();
 
             var entity = "123";
-            var eInfo = new EntityInfo(entity);
+            var eInfo = new EntityEntry(entity);
             Assert.Throws<ArgumentException>(() => cache[Guid.NewGuid()] = eInfo);
         }
 
         [Test]
         public void Indexer_set_replace()
         {
-            var items = new Dictionary<object, IEntityInfo>();
-            var mappings = new Dictionary<object, IEntityInfo>();
+            var items = new Dictionary<object, IEntityEntry>();
+            var mappings = new Dictionary<object, IEntityEntry>();
             var cache = new TestDataContextCache(items, mappings);
 
             var entity = "123";
             var entityReplace = "234";
-            var eInfo = new EntityInfo(entity);
-            var eReplace = Substitute.For<IEntityInfo>();
+            var eInfo = new EntityEntry(entity);
+            var eReplace = Substitute.For<IEntityEntry>();
             eReplace.Id.Returns(eInfo.Id);
             eReplace.Entity.Returns(entityReplace);
 
@@ -92,7 +92,7 @@ namespace Kephas.Data.Tests.Caching
 
         public class TestDataContextCache : DataContextCache
         {
-            public TestDataContextCache(IDictionary<object, IEntityInfo> items, IDictionary<object, IEntityInfo> mappings)
+            public TestDataContextCache(IDictionary<object, IEntityEntry> items, IDictionary<object, IEntityEntry> mappings)
                 : base(items, mappings)
             {
             }

@@ -53,7 +53,7 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Gets the equality expression for of: t =&gt; t.Id == entityInfo.Id.
+        /// Gets the equality expression for of: t =&gt; t.Id == entityEntry.Id.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="dataContext">Context for the data.</param>

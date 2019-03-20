@@ -149,9 +149,9 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public async Task GetAsync_null_entity_info()
+        public async Task GetAsync_null_entity_entry()
         {
-            var entity = new TestEntity((IEntityInfo)null) { ReferenceId = 100 };
+            var entity = new TestEntity((IEntityEntry)null) { ReferenceId = 100 };
             var r = new Ref<RefEntity>(entity, nameof(TestEntity.ReferenceId));
 
             var exception = Assert.ThrowsAsync<DataException>(() => r.GetAsync(throwIfNotFound: false));
@@ -171,30 +171,30 @@ namespace Kephas.Data.Tests
             return dataContext;
         }
 
-        public class TestEntity : IEntityInfoAware, IIdentifiable
+        public class TestEntity : IEntityEntryAware, IIdentifiable
         {
-            private IEntityInfo entityInfo;
+            private IEntityEntry entityEntry;
 
-            public TestEntity(IEntityInfo entityInfo)
+            public TestEntity(IEntityEntry entityEntry)
             {
-                this.entityInfo = entityInfo;
+                this.entityEntry = entityEntry;
             }
 
             public TestEntity(IDataContext dataContext)
             {
-                this.entityInfo = Substitute.For<IEntityInfo>();
-                this.entityInfo.Entity.Returns(this);
-                this.entityInfo.EntityId.Returns(ci => this.Id);
-                this.entityInfo.DataContext.Returns(ci => dataContext);
+                this.entityEntry = Substitute.For<IEntityEntry>();
+                this.entityEntry.Entity.Returns(this);
+                this.entityEntry.EntityId.Returns(ci => this.Id);
+                this.entityEntry.DataContext.Returns(ci => dataContext);
             }
 
             public object Id { get; set; }
 
             public object ReferenceId { get; set; }
 
-            public IEntityInfo GetEntityInfo() => this.entityInfo;
+            public IEntityEntry GetEntityEntry() => this.entityEntry;
 
-            public void SetEntityInfo(IEntityInfo entityInfo) => this.entityInfo = entityInfo;
+            public void SetEntityEntry(IEntityEntry entityEntry) => this.entityEntry = entityEntry;
         }
 
         public class RefEntity : IIdentifiable

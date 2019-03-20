@@ -33,11 +33,11 @@ namespace Kephas.Data.Tests
             var stringCmd = Substitute.For<ICreateEntityCommand>();
             dataSpace[typeof(string)].CreateCommand(typeof(ICreateEntityCommand)).Returns(stringCmd);
             stringCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
-                .Returns(new CreateEntityResult("created", Substitute.For<IEntityInfo>()));
+                .Returns(new CreateEntityResult("created", Substitute.For<IEntityEntry>()));
             var sbCmd = Substitute.For<ICreateEntityCommand>();
             dataSpace[typeof(StringBuilder)].CreateCommand(typeof(ICreateEntityCommand)).Returns(sbCmd);
             sbCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
-                .Returns(new CreateEntityResult(new StringBuilder("should not get here"), Substitute.For<IEntityInfo>()));
+                .Returns(new CreateEntityResult(new StringBuilder("should not get here"), Substitute.For<IEntityEntry>()));
 
             var newEntity = await dataSpace.CreateEntityAsync<string>();
 

@@ -31,6 +31,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// Information describing the new entity.
         /// </value>
-        IEntityInfo EntityInfo { get; }
+        IEntityEntry EntityEntry { get; }
     }
 }

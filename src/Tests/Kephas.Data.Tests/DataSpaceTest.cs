@@ -174,8 +174,8 @@ namespace Kephas.Data.Tests
             context.WithInitialData(
                 new[]
                     {
-                        new EntityInfo("gigi") { ChangeState = ChangeState.Added },
-                        new EntityInfo(new StringBuilder("belogea")) { ChangeState = ChangeState.Changed }
+                        new EntityEntry("gigi") { ChangeState = ChangeState.Added },
+                        new EntityEntry(new StringBuilder("belogea")) { ChangeState = ChangeState.Changed }
                     });
             var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);

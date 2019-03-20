@@ -1,32 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityInfoAware.cs" company="Kephas Software SRL">
+// <copyright file="IEntityEntryAware.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IEntityInfoAware interface.
+//   Declares the IEntityEntryAware interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Capabilities
 {
     /// <summary>
-    /// Annotates the entities which are aware about there entity information.
+    /// Annotates the entities which are aware about there entity entry.
     /// </summary>
-    public interface IEntityInfoAware
+    public interface IEntityEntryAware
     {
         /// <summary>
-        /// Gets the entity information.
+        /// Gets the entity entry.
         /// </summary>
         /// <returns>
-        /// The entity information.
+        /// The entity entry.
         /// </returns>
-        IEntityInfo GetEntityInfo();
+        IEntityEntry GetEntityEntry();
 
         /// <summary>
-        /// Sets the entity information.
+        /// Sets the entity entry.
         /// </summary>
-        /// <param name="entityInfo">Information describing the entity.</param>
-        void SetEntityInfo(IEntityInfo entityInfo);
+        /// <param name="entityEntry">The entity entry.</param>
+        void SetEntityEntry(IEntityEntry entityEntry);
     }
 }

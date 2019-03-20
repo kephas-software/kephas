@@ -41,7 +41,7 @@ namespace Kephas.Data.Tests.Commands
 
             var result = await cmd.ExecuteAsync(new CreateEntityContext<TestEntity>(dataContext));
             var newEntity = result.Entity;
-            var newEntityInfo = result.EntityInfo;
+            var newEntityInfo = result.EntityEntry;
 
             Assert.IsNotNull(newEntity);
             Assert.IsInstanceOf<TestEntity>(newEntity);
@@ -59,7 +59,7 @@ namespace Kephas.Data.Tests.Commands
             var initCalls = 0;
             var onInitBehavior = Substitute.For<IOnInitializeBehavior>();
             onInitBehavior
-                .InitializeAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
+                .InitializeAsync(Arg.Any<object>(), Arg.Any<IEntityEntry>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
                 .Returns((Task)Task.FromResult(0))
                 .AndDoes(
                     ci =>

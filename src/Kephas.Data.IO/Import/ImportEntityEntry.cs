@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ImportEntityInfo.cs" company="Kephas Software SRL">
+// <copyright file="ImportEntityEntry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the import entity information class.
+//   Implements the import entity entry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Kephas.Data.IO.Import
     /// <summary>
     /// Information about the import entity.
     /// </summary>
-    public class ImportEntityInfo : IChangeStateTrackableEntityInfo
+    public class ImportEntityEntry : IChangeStateTrackableEntityEntry
     {
         /// <summary>
         /// Gets or sets the state of the change.

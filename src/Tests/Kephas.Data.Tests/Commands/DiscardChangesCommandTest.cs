@@ -28,15 +28,15 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = new TestDataContext(localCache: localCache);
             var cmd = new DiscardChangesCommand();
 
-            var entityInfo = new EntityInfo("added") { ChangeState = ChangeState.Added };
+            var entityInfo = new EntityEntry("added") { ChangeState = ChangeState.Added };
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo("addedOrChanged") { ChangeState = ChangeState.AddedOrChanged };
+            entityInfo = new EntityEntry("addedOrChanged") { ChangeState = ChangeState.AddedOrChanged };
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo("changed") { ChangeState = ChangeState.Changed };
+            entityInfo = new EntityEntry("changed") { ChangeState = ChangeState.Changed };
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo("deleted") { ChangeState = ChangeState.Deleted };
+            entityInfo = new EntityEntry("deleted") { ChangeState = ChangeState.Deleted };
             localCache.Add(entityInfo);
-            entityInfo = new EntityInfo("notchanged") { ChangeState = ChangeState.NotChanged };
+            entityInfo = new EntityEntry("notchanged") { ChangeState = ChangeState.NotChanged };
             localCache.Add(entityInfo);
 
             var result = cmd.Execute(new DiscardChangesContext(dataContext));

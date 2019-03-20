@@ -57,7 +57,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override async Task PersistChangeSetAsync(IList<IEntityInfo> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
+        protected override async Task PersistChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             var dataContext = (MongoDataContext)operationContext.DataContext;
             var modifiedMongoDocs =
@@ -97,7 +97,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// </returns>
         protected virtual async Task BulkWriteAsync<T>(
             IPersistChangesContext operationContext,
-            IList<IEntityInfo> changeSet,
+            IList<IEntityEntry> changeSet,
             string collectionName,
             CancellationToken cancellationToken)
             where T : IIdentifiable
@@ -178,7 +178,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// <returns>
         /// The write requests for the bulk operation.
         /// </returns>
-        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityInfo> eligibleChangeSet)
+        private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityEntry> eligibleChangeSet)
         {
             var writeModel = new List<WriteModel<T>>();
             foreach (var entityInfo in eligibleChangeSet)

@@ -91,7 +91,7 @@ namespace Kephas.Data.Tests.Commands
 
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
-            var entityInfos = new IEntityInfo[5];
+            var entityInfos = new IEntityEntry[5];
             (entityInfos[0] = dataContext.AttachEntity("123")).ChangeState = ChangeState.Added;
             (entityInfos[1] = dataContext.AttachEntity("abc")).ChangeState = ChangeState.Changed;
             (entityInfos[2] = dataContext.AttachEntity("-123")).ChangeState = ChangeState.Deleted;
@@ -112,9 +112,9 @@ namespace Kephas.Data.Tests.Commands
         public async Task ExecuteAsync_added_with_behaviors()
         {
             var behavior = Substitute.For<IOnPersistBehavior>();
-            behavior.BeforePersistAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
+            behavior.BeforePersistAsync(Arg.Any<object>(), Arg.Any<IEntityEntry>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
                     .Returns(ci => Task.FromResult(0));
-            behavior.AfterPersistAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
+            behavior.AfterPersistAsync(Arg.Any<object>(), Arg.Any<IEntityEntry>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
                     .Returns(ci => Task.FromResult(0));
             var behaviorProvider = Substitute.For<IDataBehaviorProvider>();
             behaviorProvider.GetDataBehaviors<IOnPersistBehavior>(typeof(string))
@@ -127,8 +127,8 @@ namespace Kephas.Data.Tests.Commands
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
 
-            behavior.Received(1).BeforePersistAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>());
-            behavior.Received(1).AfterPersistAsync(Arg.Any<object>(), Arg.Any<IEntityInfo>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>());
+            behavior.Received(1).BeforePersistAsync(Arg.Any<object>(), Arg.Any<IEntityEntry>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>());
+            behavior.Received(1).AfterPersistAsync(Arg.Any<object>(), Arg.Any<IEntityEntry>(), Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>());
         }
     }
 }

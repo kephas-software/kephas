@@ -39,30 +39,30 @@ namespace Kephas.Data.Behaviors
         /// Callback invoked after upon entity validation.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
         /// An <see cref="IDataValidationResult"/>.
         /// </returns>
-        public override IDataValidationResult Validate(TEntity entity, IEntityInfo entityInfo, IDataOperationContext operationContext)
+        public override IDataValidationResult Validate(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
             Requires.NotNull(entity as object, nameof(entity));
-            Requires.NotNull(entityInfo, nameof(entityInfo));
+            Requires.NotNull(entityEntry, nameof(entityEntry));
 
-            if (entityInfo.ChangeState == ChangeState.Deleted)
+            if (entityEntry.ChangeState == ChangeState.Deleted)
             {
                 return DataValidationResult.Success;
             }
 
             var typeInfo = entity.GetTypeInfo();
-            var validationFn = typeInfo[ValidationFnKey] as Func<object, IEntityInfo, IDataOperationContext, IDataValidationResult>;
+            var validationFn = typeInfo[ValidationFnKey] as Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult>;
             if (validationFn == null)
             {
                 validationFn = this.CreateValidationFn(typeInfo);
                 typeInfo[ValidationFnKey] = validationFn;
             }
 
-            return validationFn(entity, entityInfo, operationContext);
+            return validationFn(entity, entityEntry, operationContext);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The new validation function.
         /// </returns>
-        protected virtual Func<object, IEntityInfo, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
+        protected virtual Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
         {
             var propValidations = new List<Func<object, IDataValidationResultItem>>();
 

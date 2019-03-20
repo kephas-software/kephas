@@ -21,12 +21,12 @@ namespace Kephas.Data.Endpoints
     public class PersistChangesMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets the entity infos to persist.
+        /// Gets or sets the entity entries to persist.
         /// </summary>
         /// <value>
-        /// The entity infos to persist.
+        /// The entity entries to persist.
         /// </value>
-        public IList<DtoEntityInfo> EntityInfos { get; set; }
+        public IList<DtoEntityEntry> EntityEntries { get; set; }
     }
 
     /// <summary>

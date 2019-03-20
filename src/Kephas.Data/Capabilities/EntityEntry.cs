@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityInfo.cs" company="Kephas Software SRL">
+// <copyright file="EntityEntry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the entity information class.
+//   Implements the entity entry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ namespace Kephas.Data.Capabilities
     /// <summary>
     /// Provides extended information about the entity.
     /// </summary>
-    public class EntityInfo : Expando, IEntityInfo
+    public class EntityEntry : Expando, IEntityEntry
     {
         /// <summary>
         /// The changed properties.
@@ -52,10 +52,10 @@ namespace Kephas.Data.Capabilities
         private WeakReference<IDataContext> dataContextRef;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityInfo"/> class.
+        /// Initializes a new instance of the <see cref="EntityEntry"/> class.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        public EntityInfo(object entity)
+        public EntityEntry(object entity)
         {
             Requires.NotNull(entity, nameof(entity));
 
@@ -109,7 +109,7 @@ namespace Kephas.Data.Capabilities
             {
                 if (this.dataContextRef != null)
                 {
-                    throw new InvalidOperationException(Strings.EntityInfo_DataContextAlreadySet_Exception);
+                    throw new InvalidOperationException(Strings.EntityEntry_DataContextAlreadySet_Exception);
                 }
 
                 this.dataContextRef = new WeakReference<IDataContext>(value);
@@ -308,7 +308,7 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="EntityInfo"/> and
+        /// Releases the unmanaged resources used by the <see cref="EntityEntry"/> and
         /// optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>

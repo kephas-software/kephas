@@ -43,7 +43,7 @@ namespace Kephas.Data.IO.Tests.Import
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
 
-            var changedTargetEntities = new List<IEntityInfo>();
+            var changedTargetEntities = new List<IEntityEntry>();
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
@@ -78,7 +78,7 @@ namespace Kephas.Data.IO.Tests.Import
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
 
-            var changedTargetEntities = new List<IEntityInfo>();
+            var changedTargetEntities = new List<IEntityEntry>();
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
@@ -167,7 +167,7 @@ namespace Kephas.Data.IO.Tests.Import
                     });
 
             b.BeforeConvertEntityAsync(
-                Arg.Any<IEntityInfo>(),
+                Arg.Any<IEntityEntry>(),
                 Arg.Any<IDataImportContext>(),
                 Arg.Any<CancellationToken>()).Returns(
                 ci =>
@@ -177,8 +177,8 @@ namespace Kephas.Data.IO.Tests.Import
                     });
 
             b.BeforePersistEntityAsync(
-                Arg.Any<IEntityInfo>(),
-                Arg.Any<IEntityInfo>(),
+                Arg.Any<IEntityEntry>(),
+                Arg.Any<IEntityEntry>(),
                 Arg.Any<IDataImportContext>(),
                 Arg.Any<CancellationToken>()).Returns(
                 ci =>
@@ -189,8 +189,8 @@ namespace Kephas.Data.IO.Tests.Import
 
 
             b.AfterPersistEntityAsync(
-                Arg.Any<IEntityInfo>(),
-                Arg.Any<IEntityInfo>(),
+                Arg.Any<IEntityEntry>(),
+                Arg.Any<IEntityEntry>(),
                 Arg.Any<IDataImportContext>(),
                 Arg.Any<CancellationToken>()).Returns(
                 ci =>
@@ -231,12 +231,12 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var sourceDataContext = Substitute.For<IDataContext>();
             sourceDataContext.AttachEntity(Arg.Any<object>())
-                .Returns(ci => new EntityInfo(ci.Arg<object>()));
+                .Returns(ci => new EntityEntry(ci.Arg<object>()));
 
             return sourceDataContext;
         }
 
-        private IDataContext CreateTargetDataContext(Action<IEntityInfo> attachEntityCallback = null)
+        private IDataContext CreateTargetDataContext(Action<IEntityEntry> attachEntityCallback = null)
         {
             var targetDataContext = Substitute.For<IDataContext>();
             var persistChangesCommand = Substitute.For<IPersistChangesCommand>();
@@ -247,7 +247,7 @@ namespace Kephas.Data.IO.Tests.Import
                 .Returns(
                     ci =>
                         {
-                            var ei = new EntityInfo(ci.Arg<object>());
+                            var ei = new EntityEntry(ci.Arg<object>());
                             attachEntityCallback?.Invoke(ei);
                             return ei;
                         });

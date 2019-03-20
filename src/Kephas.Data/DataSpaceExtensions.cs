@@ -43,20 +43,21 @@ namespace Kephas.Data
 
             return dataSpace[typeof(T)].Query<T>(operationContext);
         }
+
         /// <summary>
-        /// An IDataSpace extension method that gets the entity information.
+        /// An IDataSpace extension method that gets The entity entry.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="dataSpace">The dataSpace to act on.</param>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The entity information.
+        /// The entity entry.
         /// </returns>
-        public static IEntityInfo GetEntityInfo<T>(this IDataSpace dataSpace, T entity)
+        public static IEntityEntry GetEntityEntry<T>(this IDataSpace dataSpace, T entity)
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
-            return dataSpace[typeof(T)].GetEntityInfo(entity);
+            return dataSpace[typeof(T)].GetEntityEntry(entity);
         }
 
         /// <summary>

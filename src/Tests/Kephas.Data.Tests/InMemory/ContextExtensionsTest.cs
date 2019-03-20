@@ -72,14 +72,14 @@ namespace Kephas.Data.Tests.InMemory
         }
 
         [Test]
-        public void SetInitialData_entity_info_enumeration()
+        public void SetInitialData_entity_entry_enumeration()
         {
             var context = new TestContext();
             context.WithInitialData(new[]
                                        {
-                                           new EntityInfo("ana") { ChangeState = ChangeState.Added },
-                                           new EntityInfo("are") { ChangeState = ChangeState.Changed },
-                                           new EntityInfo("mere") { ChangeState = ChangeState.NotChanged },
+                                           new EntityEntry("ana") { ChangeState = ChangeState.Added },
+                                           new EntityEntry("are") { ChangeState = ChangeState.Changed },
+                                           new EntityEntry("mere") { ChangeState = ChangeState.NotChanged },
                                        });
 
             var initialData = context.InitialData();

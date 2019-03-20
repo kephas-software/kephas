@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntityInfo.cs" company="Kephas Software SRL">
+// <copyright file="IEntityEntry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IEntityInfo interface.
+//   Declares the IEntityEntry interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,9 +15,9 @@ namespace Kephas.Data.Capabilities
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Provides extended entity information like the <see cref="ChangeState"/>.
+    /// Provides extended entity entry like the <see cref="ChangeState"/>.
     /// </summary>
-    public interface IEntityInfo : IExpando, IChangeStateTrackableEntityInfo, IIdentifiable, IAggregatable, IDisposable
+    public interface IEntityEntry : IExpando, IChangeStateTrackableEntityEntry, IIdentifiable, IAggregatable, IDisposable
     {
         /// <summary>
         /// Gets a copy of the original entity, before any changes occurred.
@@ -77,29 +77,29 @@ namespace Kephas.Data.Capabilities
     }
 
     /// <summary>
-    /// An entity information extensions.
+    /// Extension methods for <see cref="IEntityEntry"/>.
     /// </summary>
-    public static class EntityInfoExtensions
+    public static class EntityEntryExtensions
     {
         /// <summary>
-        /// Tries to attach the entity information to the given entity.
+        /// Tries to attach the entity entry to the given entity.
         /// </summary>
-        /// <param name="entityInfo">The entityInfo to act on.</param>
+        /// <param name="entityEntry">The entityEntry to act on.</param>
         /// <param name="entity">The entity.</param>
         /// <returns>
         /// <c>true</c> if the attach succeeded, otherwise <c>false</c>.
         /// </returns>
-        public static bool TryAttachToEntity(this IEntityInfo entityInfo, object entity)
+        public static bool TryAttachToEntity(this IEntityEntry entityEntry, object entity)
         {
             // TODO see issue https://github.com/kephas-software/kephas/issues/36
-            if (entityInfo == null || entity == null)
+            if (entityEntry == null || entity == null)
             {
                 return false;
             }
 
-            if (entity is IEntityInfoAware entityInfoAware)
+            if (entity is IEntityEntryAware entityEntryAware)
             {
-                entityInfoAware.SetEntityInfo(entityInfo);
+                entityEntryAware.SetEntityEntry(entityEntry);
                 return true;
             }
 
@@ -107,18 +107,18 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
-        /// Tries to get the attached entity information from the entity.
+        /// Tries to get the attached entity entry from the entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The attached <see cref="IEntityInfo"/>, or <c>null</c>.
+        /// The attached <see cref="IEntityEntry"/>, or <c>null</c>.
         /// </returns>
-        public static IEntityInfo TryGetAttachedEntityInfo(this object entity)
+        public static IEntityEntry TryGetAttachedEntityEntry(this object entity)
         {
             // TODO see issue https://github.com/kephas-software/kephas/issues/36
-            if (entity is IEntityInfoAware entityInfoAware)
+            if (entity is IEntityEntryAware entityEntryAware)
             {
-                return entityInfoAware.GetEntityInfo();
+                return entityEntryAware.GetEntityEntry();
             }
 
             return null;

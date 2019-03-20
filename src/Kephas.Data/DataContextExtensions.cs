@@ -34,12 +34,12 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public static IEntityInfo DetachEntity(this IDataContext dataContext, object entity)
+        public static IEntityEntry DetachEntity(this IDataContext dataContext, object entity)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entity, nameof(entity));
 
-            var entityInfo = dataContext.GetEntityInfo(entity);
+            var entityInfo = dataContext.GetEntityEntry(entity);
             return entityInfo == null ? null : dataContext.DetachEntity(entityInfo);
         }
 

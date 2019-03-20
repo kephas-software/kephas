@@ -26,18 +26,18 @@ namespace Kephas.Data.Caching
         /// <summary>
         /// The items.
         /// </summary>
-        private readonly IDictionary<object, IEntityInfo> items;
+        private readonly IDictionary<object, IEntityEntry> items;
 
         /// <summary>
-        /// The entity information mappings.
+        /// The entity entry mappings.
         /// </summary>
-        private readonly IDictionary<object, IEntityInfo> entityInfoMappings;
+        private readonly IDictionary<object, IEntityEntry> entityEntryMappings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextCache"/> class.
         /// </summary>
         public DataContextCache()
-            : this(new Dictionary<object, IEntityInfo>(), new Dictionary<object, IEntityInfo>())
+            : this(new Dictionary<object, IEntityEntry>(), new Dictionary<object, IEntityEntry>())
         {
         }
 
@@ -45,14 +45,14 @@ namespace Kephas.Data.Caching
         /// Initializes a new instance of the <see cref="DataContextCache"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
-        /// <param name="entityInfoMappings">The entity information mappings.</param>
-        protected DataContextCache(IDictionary<object, IEntityInfo> items, IDictionary<object, IEntityInfo> entityInfoMappings)
+        /// <param name="entityEntryMappings">The entity entry mappings.</param>
+        protected DataContextCache(IDictionary<object, IEntityEntry> items, IDictionary<object, IEntityEntry> entityEntryMappings)
         {
             Requires.NotNull(items, nameof(items));
-            Requires.NotNull(entityInfoMappings, nameof(entityInfoMappings));
+            Requires.NotNull(entityEntryMappings, nameof(entityEntryMappings));
 
             this.items = items;
-            this.entityInfoMappings = entityInfoMappings;
+            this.entityEntryMappings = entityEntryMappings;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise,
         /// <c>false</c>.
         /// </value>
-        bool ICollection<KeyValuePair<object, IEntityInfo>>.IsReadOnly => this.items.IsReadOnly;
+        bool ICollection<KeyValuePair<object, IEntityEntry>>.IsReadOnly => this.items.IsReadOnly;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the
@@ -93,7 +93,7 @@ namespace Kephas.Data.Caching
         /// An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the
         /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </value>
-        public ICollection<IEntityInfo> Values => this.items.Values;
+        public ICollection<IEntityEntry> Values => this.items.Values;
 
         /// <summary>
         /// Gets or sets the element with the specified key.
@@ -102,11 +102,11 @@ namespace Kephas.Data.Caching
         /// <returns>
         /// The element with the specified key.
         /// </returns>
-        public IEntityInfo this[object key]
+        public IEntityEntry this[object key]
         {
             get
             {
-                IEntityInfo value;
+                IEntityEntry value;
                 if (!this.TryGetValue(key, out value))
                 {
                     // TODO localization add a resource
@@ -123,10 +123,10 @@ namespace Kephas.Data.Caching
 
                 if (value.Id != key)
                 {
-                    throw new ArgumentException(string.Format(Strings.DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception, key, value.Id), nameof(value));
+                    throw new ArgumentException(string.Format(Strings.DataContextCache_KeyAndEntityEntryIdDoNotMatch_Exception, key, value.Id), nameof(value));
                 }
 
-                IEntityInfo existingItem;
+                IEntityEntry existingItem;
                 if (this.TryGetValue(key, out existingItem) && existingItem == value)
                 {
                     return;
@@ -153,56 +153,56 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />
         /// contains an element with the specified key; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool TryGetValue(object key, out IEntityInfo value)
+        public virtual bool TryGetValue(object key, out IEntityEntry value)
         {
             return this.items.TryGetValue(key, out value);
         }
 
         /// <summary>
-        /// Adds an <see cref="IEntityInfo"/> to the <see cref="IDataContextCache" />.
+        /// Adds an <see cref="IEntityEntry"/> to the <see cref="IDataContextCache" />.
         /// </summary>
         /// <param name="value">The object to add.</param>
-        public virtual void Add(IEntityInfo value)
+        public virtual void Add(IEntityEntry value)
         {
             Requires.NotNull(value, nameof(value));
 
             this.items.Add(value.Id, value);
-            this.entityInfoMappings.Add(value.Entity, value);
+            this.entityEntryMappings.Add(value.Entity, value);
         }
 
         /// <summary>
-        /// Removes an <see cref="IEntityInfo"/> from the <see cref="IDataContextCache" />.
+        /// Removes an <see cref="IEntityEntry"/> from the <see cref="IDataContextCache" />.
         /// </summary>
         /// <param name="value">The object to remove.</param>
         /// <returns>
         /// <c>true</c> if the removal succeeds, <c>false</c> otherwise.
         /// </returns>
-        public virtual bool Remove(IEntityInfo value)
+        public virtual bool Remove(IEntityEntry value)
         {
             Requires.NotNull(value, nameof(value));
 
             var result = this.items.Remove(value.Id);
             if (result)
             {
-                this.entityInfoMappings.Remove(value.Entity);
+                this.entityEntryMappings.Remove(value.Entity);
             }
 
             return result;
         }
 
         /// <summary>
-        /// Gets the entity information associated to the provided entity, or <c>null</c> if none could be found.
+        /// Gets the entity entry associated to the provided entity, or <c>null</c> if none could be found.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The entity information or <c>null</c>.
+        /// The entity entry or <c>null</c>.
         /// </returns>
-        public virtual IEntityInfo GetEntityInfo(object entity)
+        public virtual IEntityEntry GetEntityEntry(object entity)
         {
-            var entityInfo = entity.TryGetAttachedEntityInfo();
+            var entityInfo = entity.TryGetAttachedEntityEntry();
             if (entityInfo == null)
             {
-                this.entityInfoMappings.TryGetValue(entity, out entityInfo);
+                this.entityEntryMappings.TryGetValue(entity, out entityInfo);
 
                 // cache the entity info for later use in the entity.
                 entityInfo?.TryAttachToEntity(entity);
@@ -230,14 +230,14 @@ namespace Kephas.Data.Caching
         /// <paramref name="key" /> is null.</exception>
         /// <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</exception>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
-        void IDictionary<object, IEntityInfo>.Add(object key, IEntityInfo value)
+        void IDictionary<object, IEntityEntry>.Add(object key, IEntityEntry value)
         {
             Requires.NotNull(key, nameof(key));
             Requires.NotNull(value, nameof(value));
 
             if (value.Id != key)
             {
-                throw new ArgumentException(string.Format(Strings.DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception, key, value.Id), nameof(value));
+                throw new ArgumentException(string.Format(Strings.DataContextCache_KeyAndEntityEntryIdDoNotMatch_Exception, key, value.Id), nameof(value));
             }
 
             this.Add(value);
@@ -254,7 +254,7 @@ namespace Kephas.Data.Caching
         /// </returns>
         public bool Remove(object key)
         {
-            IEntityInfo value;
+            IEntityEntry value;
             if (!this.TryGetValue(key, out value))
             {
                 return false;
@@ -267,7 +267,7 @@ namespace Kephas.Data.Caching
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        void ICollection<KeyValuePair<object, IEntityInfo>>.Add(KeyValuePair<object, IEntityInfo> item)
+        void ICollection<KeyValuePair<object, IEntityEntry>>.Add(KeyValuePair<object, IEntityEntry> item)
         {
             this.Add(item.Value);
         }
@@ -278,7 +278,7 @@ namespace Kephas.Data.Caching
         public virtual void Clear()
         {
             this.items.Clear();
-            this.entityInfoMappings.Clear();
+            this.entityEntryMappings.Clear();
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Kephas.Data.Caching
         /// <c>true</c> if <paramref name="item" /> is found in the
         /// <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>.
         /// </returns>
-        bool ICollection<KeyValuePair<object, IEntityInfo>>.Contains(KeyValuePair<object, IEntityInfo> item) => this.items.Contains(item);
+        bool ICollection<KeyValuePair<object, IEntityEntry>>.Contains(KeyValuePair<object, IEntityEntry> item) => this.items.Contains(item);
 
         /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an
@@ -302,7 +302,7 @@ namespace Kephas.Data.Caching
         ///                     <see cref="T:System.Collections.Generic.ICollection`1" />. The
         ///                     <see cref="T:System.Array" /> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-        public void CopyTo(KeyValuePair<object, IEntityInfo>[] array, int arrayIndex) => this.items.CopyTo(array, arrayIndex);
+        public void CopyTo(KeyValuePair<object, IEntityEntry>[] array, int arrayIndex) => this.items.CopyTo(array, arrayIndex);
 
         /// <summary>
         /// Removes the first occurrence of a specific object from the
@@ -316,7 +316,7 @@ namespace Kephas.Data.Caching
         /// returns <c>false</c> if <paramref name="item" /> is not found in the original
         /// <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        bool ICollection<KeyValuePair<object, IEntityInfo>>.Remove(KeyValuePair<object, IEntityInfo> item)
+        bool ICollection<KeyValuePair<object, IEntityEntry>>.Remove(KeyValuePair<object, IEntityEntry> item)
         {
             return this.Remove(item.Key);
         }
@@ -327,7 +327,7 @@ namespace Kephas.Data.Caching
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<object, IEntityInfo>> GetEnumerator() => this.items.GetEnumerator();
+        public IEnumerator<KeyValuePair<object, IEntityEntry>> GetEnumerator() => this.items.GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through a collection.

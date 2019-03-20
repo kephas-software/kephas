@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DtoEntityInfo.cs" company="Kephas Software SRL">
+// <copyright file="DtoEntityEntry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the client entity information class.
+//   Implements the client entity entry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Kephas.Data.Client.Capabilities
     /// <summary>
     /// DTO holding information about the entity.
     /// </summary>
-    public class DtoEntityInfo : IChangeStateTrackableEntityInfo
+    public class DtoEntityEntry : IChangeStateTrackableEntityEntry
     {
         /// <summary>
         /// Gets or sets the change state of the entity.

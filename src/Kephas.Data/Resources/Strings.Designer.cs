@@ -162,9 +162,9 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The key (&apos;{0}&apos;) and then entity info ID (&apos;{1}&apos;) do not match..
         /// </summary>
-        public static string DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception {
+        public static string DataContextCache_KeyAndEntityEntryIdDoNotMatch_Exception {
             get {
-                return ResourceManager.GetString("DataContextCache_KeyAndEntityInfoIdDoNotMatch_Exception", resourceCulture);
+                return ResourceManager.GetString("DataContextCache_KeyAndEntityEntryIdDoNotMatch_Exception", resourceCulture);
             }
         }
         
@@ -251,11 +251,11 @@ namespace Kephas.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The data context is already set in the entity information structure, cannot set multiple times..
+        ///   Looks up a localized string similar to The data context is already set in the entity entry structure, cannot set multiple times..
         /// </summary>
-        public static string EntityInfo_DataContextAlreadySet_Exception {
+        public static string EntityEntry_DataContextAlreadySet_Exception {
             get {
-                return ResourceManager.GetString("EntityInfo_DataContextAlreadySet_Exception", resourceCulture);
+                return ResourceManager.GetString("EntityEntry_DataContextAlreadySet_Exception", resourceCulture);
             }
         }
         
@@ -325,18 +325,18 @@ namespace Kephas.Data.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The entity for reference {0} has been disposed..
         /// </summary>
-        public static string RefBase_GetEntityInfo_Disposed_Exception {
+        public static string RefBase_GetEntityEntry_Disposed_Exception {
             get {
-                return ResourceManager.GetString("RefBase_GetEntityInfo_Disposed_Exception", resourceCulture);
+                return ResourceManager.GetString("RefBase_GetEntityEntry_Disposed_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The entity information for reference {0} could not be retrieved (null reference)..
+        ///   Looks up a localized string similar to The entity entry for reference {0} could not be retrieved (null reference)..
         /// </summary>
-        public static string RefBase_GetEntityInfo_Null_Exception {
+        public static string RefBase_GetEntityEntry_Null_Exception {
             get {
-                return ResourceManager.GetString("RefBase_GetEntityInfo_Null_Exception", resourceCulture);
+                return ResourceManager.GetString("RefBase_GetEntityEntry_Null_Exception", resourceCulture);
             }
         }
         

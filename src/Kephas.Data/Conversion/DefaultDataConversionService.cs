@@ -248,7 +248,7 @@ namespace Kephas.Data.Conversion
             }
 
             var sourceDataContext = conversionContext.GetDataContext(source);
-            var sourceEntityInfo = sourceDataContext?.GetEntityInfo(source);
+            var sourceEntityInfo = sourceDataContext?.GetEntityEntry(source);
             var sourceId = sourceEntityInfo?.EntityId;
             var sourceChangeState = sourceEntityInfo?.ChangeState;
 
@@ -284,12 +284,12 @@ namespace Kephas.Data.Conversion
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
         /// <param name="sourceEntity">The source entity.</param>
-        /// <param name="sourceEntityInfo">The source entity information.</param>
+        /// <param name="sourceEntityEntry">The source entity entry.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
         /// </returns>
-        protected virtual async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityInfo sourceEntityInfo, CancellationToken cancellationToken)
+        protected virtual async Task<object> TryResolveTargetEntityAsync(IDataContext targetDataContext, TypeInfo targetType, object sourceEntity, IEntityEntry sourceEntityEntry, CancellationToken cancellationToken)
         {
             var sourceType = sourceEntity.GetType().GetTypeInfo();
             var matchingResolversDictionary = this.targetResolversCache.GetOrAdd(sourceType, _ => new ConcurrentDictionary<TypeInfo, IList<IDataConversionTargetResolver>>());
@@ -301,7 +301,7 @@ namespace Kephas.Data.Conversion
                                  targetDataContext,
                                  targetType,
                                  sourceEntity,
-                                 sourceEntityInfo,
+                                 sourceEntityEntry,
                                  cancellationToken).PreserveThreadContext();
                 if (target != null)
                 {

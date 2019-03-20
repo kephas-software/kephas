@@ -85,7 +85,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual INamedServiceProvider GetNamedServiceProvider()
         {
-            var dataContext = this.GetDataContext(this.GetContainerEntityInfo());
+            var dataContext = this.GetDataContext(this.GetContainerEntityEntry());
             var compositionContext = dataContext.CompositionContext;
             return compositionContext.GetExport<INamedServiceProvider>();
         }

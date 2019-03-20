@@ -37,7 +37,7 @@ namespace Kephas.Data.Tests.Commands
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
 
-            var entityInfo = new EntityInfo("123") { ChangeState = ChangeState.Added };
+            var entityInfo = new EntityEntry("123") { ChangeState = ChangeState.Added };
             localCache.Add(entityInfo);
 
             var cmd = new DeleteEntityCommand();
@@ -54,7 +54,7 @@ namespace Kephas.Data.Tests.Commands
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
 
-            var entityInfo = new EntityInfo("123") { ChangeState = ChangeState.NotChanged };
+            var entityInfo = new EntityEntry("123") { ChangeState = ChangeState.NotChanged };
             localCache.Add(entityInfo);
 
             var cmd = new DeleteEntityCommand();

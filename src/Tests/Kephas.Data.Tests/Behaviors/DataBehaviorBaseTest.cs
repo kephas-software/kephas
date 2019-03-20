@@ -39,10 +39,10 @@ namespace Kephas.Data.Tests.Behaviors
 
     public class StringDataBehavior : DataBehaviorBase<string>
     {
-        private readonly Func<string, IEntityInfo, IDataOperationContext, IDataValidationResult> validateFn;
+        private readonly Func<string, IEntityEntry, IDataOperationContext, IDataValidationResult> validateFn;
 
         public StringDataBehavior(
-            Func<string, IEntityInfo, IDataOperationContext, IDataValidationResult> validateFn = null)
+            Func<string, IEntityEntry, IDataOperationContext, IDataValidationResult> validateFn = null)
         {
             this.validateFn = validateFn;
         }
@@ -51,14 +51,14 @@ namespace Kephas.Data.Tests.Behaviors
         /// Callback invoked after upon entity validation.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
         /// An <see cref="IDataValidationResult"/>.
         /// </returns>
-        public override IDataValidationResult Validate(string entity, IEntityInfo entityInfo, IDataOperationContext operationContext)
+        public override IDataValidationResult Validate(string entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
-            return this.validateFn?.Invoke(entity, entityInfo, operationContext) ?? DataValidationResult.Success;
+            return this.validateFn?.Invoke(entity, entityEntry, operationContext) ?? DataValidationResult.Success;
         }
     }
 }

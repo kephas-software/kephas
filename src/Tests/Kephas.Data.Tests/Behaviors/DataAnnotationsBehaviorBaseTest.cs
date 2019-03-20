@@ -32,7 +32,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo);
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityInfo(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
             Assert.AreEqual(1, result.Count());
 
             var validationItem = result.First();
@@ -47,7 +47,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Age = -1 };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityInfo(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
             Assert.AreEqual(1, result.Count());
 
             var validationItem = result.First();
@@ -62,7 +62,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = null, Age = 200 };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityInfo(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
             Assert.AreEqual(2, result.Count());
         }
 
@@ -73,7 +73,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Email = "a-a" };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityInfo(testEntity), null).ToList();
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null).ToList();
             Assert.AreEqual(2, result.Count);
 
             var validationItem = result[0];

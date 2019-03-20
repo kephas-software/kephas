@@ -137,7 +137,7 @@ namespace Kephas.Data.Tests
             var stringCmd = Substitute.For<ICreateEntityCommand>();
             dataContext.CreateCommand(typeof(ICreateEntityCommand)).Returns(stringCmd);
             stringCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
-                .Returns(new CreateEntityResult("created", Substitute.For<IEntityInfo>()));
+                .Returns(new CreateEntityResult("created", Substitute.For<IEntityEntry>()));
 
             var newEntity = await dataContext.CreateEntityAsync<string>();
 

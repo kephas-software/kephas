@@ -156,7 +156,7 @@ namespace Kephas.Data
                 return refEntity;
             }
 
-            var containerEntityInfo = this.GetContainerEntityInfo();
+            var containerEntityInfo = this.GetContainerEntityEntry();
             var dataContext = this.GetDataContext(containerEntityInfo);
 
             var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);

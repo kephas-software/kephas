@@ -24,24 +24,24 @@ namespace Kephas.Data.Behaviors
         /// Callback invoked before an entity is being persisted.
         /// </summary>
         /// <param name="entity">The entity to be persisted.</param>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforePersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
+        Task BeforePersistAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Callback invoked after an entity was persisted.
         /// </summary>
         /// <param name="entity">The entity to be persisted.</param>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterPersistAsync(object entity, IEntityInfo entityInfo, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
+        Task AfterPersistAsync(object entity, IEntityEntry entityEntry, IDataOperationContext operationContext, CancellationToken cancellationToken = default);
     }
 }

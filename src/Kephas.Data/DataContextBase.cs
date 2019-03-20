@@ -190,18 +190,18 @@ namespace Kephas.Data
         /// <remarks>
         /// Note to inheritors: it is a good practice to override this method
         /// and provide a custom implementation, because, by default,
-        /// the framework implementation returns each time a new <see cref="EntityInfo"/>.
+        /// the framework implementation returns each time a new <see cref="EntityEntry"/>.
         /// </remarks>
         /// <param name="entity">The entity.</param>
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public virtual IEntityInfo GetEntityInfo(object entity)
+        public virtual IEntityEntry GetEntityEntry(object entity)
         {
             Requires.NotNull(entity, nameof(entity));
 
             // Try to get the entity info from the local cache.
-            var entityInfo = this.LocalCache.GetEntityInfo(entity);
+            var entityInfo = this.LocalCache.GetEntityEntry(entity);
             return entityInfo;
         }
 
@@ -212,7 +212,7 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public virtual IEntityInfo AttachEntity(object entity)
+        public virtual IEntityEntry AttachEntity(object entity)
         {
             Requires.NotNull(entity, nameof(entity));
 
@@ -222,15 +222,15 @@ namespace Kephas.Data
         /// <summary>
         /// Detaches the entity from the data context.
         /// </summary>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public virtual IEntityInfo DetachEntity(IEntityInfo entityInfo)
+        public virtual IEntityEntry DetachEntity(IEntityEntry entityEntry)
         {
-            Requires.NotNull(entityInfo, nameof(entityInfo));
+            Requires.NotNull(entityEntry, nameof(entityEntry));
 
-            return this.DetachEntityCore(entityInfo, detachEntityGraph: true);
+            return this.DetachEntityCore(entityEntry, detachEntityGraph: true);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets the equality expression for of: t =&gt; t.Id == entityInfo.Id.
+        /// Gets the equality expression for of: t =&gt; t.Id == entityEntry.Id.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="entityId">The entity ID.</param>
@@ -278,16 +278,16 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Creates a new entity information.
+        /// Creates a new entity entry.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <param name="changeState">The entity's change state.</param>
         /// <returns>
-        /// The new entity information.
+        /// The new entity entry.
         /// </returns>
-        protected virtual IEntityInfo CreateEntityInfo(object entity, ChangeState? changeState = null)
+        protected virtual IEntityEntry CreateEntityEntry(object entity, ChangeState? changeState = null)
         {
-            var entityInfo = new EntityInfo(entity) { DataContext = this };
+            var entityInfo = new EntityEntry(entity) { DataContext = this };
             if (changeState != null)
             {
                 entityInfo.ChangeState = changeState.Value;
@@ -315,9 +315,9 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        protected virtual IEntityInfo AttachEntityCore(object entity, bool attachEntityGraph)
+        protected virtual IEntityEntry AttachEntityCore(object entity, bool attachEntityGraph)
         {
-            var entityInfo = this.GetEntityInfo(entity);
+            var entityInfo = this.GetEntityEntry(entity);
             if (entityInfo != null)
             {
                 if (entity != entityInfo.Entity)
@@ -328,7 +328,7 @@ namespace Kephas.Data
                 return entityInfo;
             }
 
-            entityInfo = this.CreateEntityInfo(entity);
+            entityInfo = this.CreateEntityEntry(entity);
             this.LocalCache.Add(entityInfo);
 
             if (attachEntityGraph)
@@ -358,46 +358,46 @@ namespace Kephas.Data
         /// <remarks>
         /// By default, the entity challenger is ignored. A derived class may decide to update the existing entity with refreshed information.
         /// </remarks>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="entityChallenger">The entity challenger.</param>
         /// <param name="attachEntityGraph"><c>true</c> to attach the whole entity graph.</param>
         /// <returns>
-        /// An resolved <see cref="IEntityInfo"/>.
+        /// An resolved <see cref="IEntityEntry"/>.
         /// </returns>
-        protected virtual IEntityInfo ResolveAttachEntityConflict(IEntityInfo entityInfo, object entityChallenger, bool attachEntityGraph)
+        protected virtual IEntityEntry ResolveAttachEntityConflict(IEntityEntry entityEntry, object entityChallenger, bool attachEntityGraph)
         {
-            return entityInfo;
+            return entityEntry;
         }
 
         /// <summary>
         /// Detaches the entity from the data context.
         /// </summary>
-        /// <param name="entityInfo">The entity information.</param>
+        /// <param name="entityEntry">The entity entry.</param>
         /// <param name="detachEntityGraph"><c>true</c> to detach the whole entity graph.</param>
         /// <returns>
         /// The entity extended information, or <c>null</c> if the entity is not attached to this data context.
         /// </returns>
-        protected virtual IEntityInfo DetachEntityCore(IEntityInfo entityInfo, bool detachEntityGraph)
+        protected virtual IEntityEntry DetachEntityCore(IEntityEntry entityEntry, bool detachEntityGraph)
         {
-            if (!this.LocalCache.Remove(entityInfo))
+            if (!this.LocalCache.Remove(entityEntry))
             {
                 return null;
             }
 
             if (detachEntityGraph)
             {
-                var structuralEntityGraph = entityInfo.GetStructuralEntityGraph();
+                var structuralEntityGraph = entityEntry.GetStructuralEntityGraph();
                 if (structuralEntityGraph != null)
                 {
                     foreach (var entityPart in structuralEntityGraph)
                     {
                         // root already detached.
-                        if (entityInfo.Entity == entityPart)
+                        if (entityEntry.Entity == entityPart)
                         {
                             continue;
                         }
 
-                        var partEntityInfo = this.GetEntityInfo(entityPart);
+                        var partEntityInfo = this.GetEntityEntry(entityPart);
                         if (partEntityInfo != null)
                         {
                             this.DetachEntityCore(partEntityInfo, detachEntityGraph: false);
@@ -406,8 +406,8 @@ namespace Kephas.Data
                 }
             }
 
-            entityInfo.Dispose();
-            return entityInfo;
+            entityEntry.Dispose();
+            return entityEntry;
         }
     }
 }

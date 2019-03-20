@@ -47,7 +47,7 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The change set within an iteration.
         /// </value>
-        public IEnumerable<IEntityInfo> IterationChangeSet { get; set; }
+        public IEnumerable<IEntityEntry> IterationChangeSet { get; set; }
 
         /// <summary>
         /// Gets or sets the iteration during persistence workflow.

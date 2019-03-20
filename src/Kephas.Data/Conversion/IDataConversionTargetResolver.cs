@@ -28,7 +28,7 @@ namespace Kephas.Data.Conversion
         /// <param name="targetDataContext">Context for the target data.</param>
         /// <param name="targetType">The type of the target object.</param>
         /// <param name="sourceEntity">The source entity.</param>
-        /// <param name="sourceEntityInfo">The source entity information, if available.</param>
+        /// <param name="sourceEntityEntry">The source entity entry, if available.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the target entity.
@@ -37,7 +37,7 @@ namespace Kephas.Data.Conversion
             IDataContext targetDataContext,
             TypeInfo targetType,
             object sourceEntity,
-            IEntityInfo sourceEntityInfo,
+            IEntityEntry sourceEntityEntry,
             CancellationToken cancellationToken = default);
     }
 

@@ -57,46 +57,46 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Callback invoked before converting the entity to import asynchronously.
         /// </summary>
-        /// <param name="importEntityInfo">Information describing the entity to import.</param>
+        /// <param name="importEntityEntry">Information describing the entity to import.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task BeforeConvertEntityAsync(
-            IEntityInfo importEntityInfo,
+            IEntityEntry importEntityEntry,
             IDataImportContext context,
             CancellationToken cancellationToken);
 
         /// <summary>
         /// Callback invoked before persisting the converted entity asynchronously.
         /// </summary>
-        /// <param name="importEntityInfo">Information describing the entity to import.</param>
-        /// <param name="targetEntityInfo">Information describing the converted entity to persist.</param>
+        /// <param name="importEntityEntry">Information describing the entity to import.</param>
+        /// <param name="targetEntityEntry">Information describing the converted entity to persist.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task BeforePersistEntityAsync(
-            IEntityInfo importEntityInfo,
-            IEntityInfo targetEntityInfo,
+            IEntityEntry importEntityEntry,
+            IEntityEntry targetEntityEntry,
             IDataImportContext context,
             CancellationToken cancellationToken);
 
         /// <summary>
         /// Callback invoked after the converted entity has been persisted asynchronously.
         /// </summary>
-        /// <param name="importEntityInfo">Information describing the entity to import.</param>
-        /// <param name="targetEntityInfo">Information describing the converted entity to persist.</param>
+        /// <param name="importEntityEntry">Information describing the entity to import.</param>
+        /// <param name="targetEntityEntry">Information describing the converted entity to persist.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task AfterPersistEntityAsync(
-            IEntityInfo importEntityInfo,
-            IEntityInfo targetEntityInfo,
+            IEntityEntry importEntityEntry,
+            IEntityEntry targetEntityEntry,
             IDataImportContext context,
             CancellationToken cancellationToken);
     }
