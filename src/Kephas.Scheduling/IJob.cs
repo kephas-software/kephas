@@ -14,11 +14,12 @@ namespace Kephas.Scheduling
 
     using Kephas.Dynamic;
     using Kephas.Operations;
+    using Kephas.Scheduling.Reflection;
 
     /// <summary>
     /// Contract for automated pieces of work that can be performed at either a particular time, or on a recurring schedule.
     /// </summary>
-    public interface IJob : IExpando, IInstance, IDisposable
+    public interface IJob : IExpando, IInstance<IJobInfo>, IDisposable
     {
         /// <summary>
         /// Gets the arguments for the execution.

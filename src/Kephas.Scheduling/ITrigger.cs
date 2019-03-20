@@ -11,11 +11,12 @@
 namespace Kephas.Scheduling
 {
     using Kephas.Dynamic;
+    using Kephas.Scheduling.Reflection;
 
     /// <summary>
     /// Interface for trigger.
     /// </summary>
-    public interface ITrigger : IExpando, IInstance
+    public interface ITrigger : IExpando, IInstance<ITriggerInfo>
     {
     }
 }

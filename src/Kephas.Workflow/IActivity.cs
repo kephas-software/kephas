@@ -15,6 +15,7 @@ namespace Kephas.Workflow
 
     using Kephas.Dynamic;
     using Kephas.Operations;
+    using Kephas.Workflow.Reflection;
 
     /// <summary>
     /// An activity is an executable instance which receives a target, arguments, and an executing context upon execution.
@@ -26,7 +27,7 @@ namespace Kephas.Workflow
     /// and also debuggers may be attached to provide development support.
     /// The state provide the flags during the execution.
     /// </remarks>
-    public interface IActivity : IExpando, IInstance
+    public interface IActivity : IExpando, IInstance<IActivityInfo>
     {
         /// <summary>
         /// Gets the target against which the activity is executed.
