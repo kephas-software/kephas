@@ -143,6 +143,14 @@ namespace Kephas.Services
         object IAppServiceInfo.Instance { get; }
 
         /// <summary>
+        /// Gets the type of the service instance.
+        /// </summary>
+        /// <value>
+        /// The type of the service instance.
+        /// </value>
+        Type IAppServiceInfo.InstanceType { get; }
+
+        /// <summary>
         /// Gets the service instance factory.
         /// </summary>
         /// <value>

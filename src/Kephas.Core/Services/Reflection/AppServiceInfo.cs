@@ -38,10 +38,10 @@ namespace Kephas.Services.Reflection
         {
             Requires.NotNull(contractType, nameof(contractType));
 
-            this.ContractType = contractType;
+            this.SetContractType(contractType);
             this.AllowMultiple = allowMultiple;
             this.AsOpenGeneric = asOpenGeneric;
-            this.Lifetime = lifetime;
+            this.SetLifetime(lifetime);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstance, nameof(serviceInstance));
 
-            this.ContractType = contractType;
+            this.SetContractType(contractType);
             this.Instance = serviceInstance;
-            this.Lifetime = AppServiceLifetime.Shared;
+            this.SetLifetime(AppServiceLifetime.Shared);
         }
 
         /// <summary>
@@ -69,9 +69,9 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstanceFactory, nameof(serviceInstanceFactory));
 
-            this.ContractType = contractType;
+            this.SetContractType(contractType);
             this.InstanceFactory = serviceInstanceFactory;
-            this.Lifetime = AppServiceLifetime.Instance;
+            this.SetLifetime(AppServiceLifetime.Instance);
         }
 
         /// <summary>
@@ -85,13 +85,9 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
 
-            this.ContractType = contractType;
+            this.SetContractType(contractType);
             this.InstanceType = serviceInstanceType;
-            this.Lifetime = lifetime;
-            if (lifetime == AppServiceLifetime.ScopeShared)
-            {
-                this.ScopeName = CompositionScopeNames.Default;
-            }
+            this.SetLifetime(lifetime);
         }
 
         /// <summary>
@@ -106,10 +102,9 @@ namespace Kephas.Services.Reflection
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
             Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
 
-            this.ContractType = contractType;
+            this.SetContractType(contractType);
             this.InstanceType = serviceInstanceType;
-            this.Lifetime = AppServiceLifetime.ScopeShared;
-            this.ScopeName = scopeName;
+            this.SetLifetime(AppServiceLifetime.ScopeShared, scopeName);
         }
 
         /// <summary>
@@ -118,7 +113,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The application service lifetime.
         /// </value>
-        public AppServiceLifetime Lifetime { get; }
+        public AppServiceLifetime Lifetime { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether multiple services for this contract are allowed.
@@ -134,7 +129,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         ///   <c>true</c> if the contract should be exported as an open generic; otherwise, <c>false</c>.
         /// </value>
-        public bool AsOpenGeneric { get; }
+        public bool AsOpenGeneric { get; private set; }
 
         /// <summary>
         /// Gets or sets the supported metadata attributes.
@@ -151,7 +146,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The contract type of the export.
         /// </value>
-        public Type ContractType { get; }
+        public Type ContractType { get; private set; }
 
         /// <summary>
         /// Gets the service instance.
@@ -183,6 +178,24 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The name of the scope for scoped shared services.
         /// </value>
-        public string ScopeName { get; }
+        public string ScopeName { get; private set; }
+
+        private void SetContractType(Type contractType)
+        {
+            this.ContractType = contractType;
+            if (contractType.IsGenericTypeDefinition)
+            {
+                this.AsOpenGeneric = true;
+            }
+        }
+
+        private void SetLifetime(AppServiceLifetime lifetime, string scopeName = null)
+        {
+            this.Lifetime = lifetime;
+            if (lifetime == AppServiceLifetime.ScopeShared)
+            {
+                this.ScopeName = scopeName ?? CompositionScopeNames.Default;
+            }
+        }
     }
 }

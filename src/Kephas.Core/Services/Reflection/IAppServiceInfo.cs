@@ -71,6 +71,14 @@ namespace Kephas.Services.Reflection
         object Instance { get; }
 
         /// <summary>
+        /// Gets the type of the service instance.
+        /// </summary>
+        /// <value>
+        /// The type of the service instance.
+        /// </value>
+        Type InstanceType { get; }
+
+        /// <summary>
         /// Gets the service instance factory.
         /// </summary>
         /// <value>
