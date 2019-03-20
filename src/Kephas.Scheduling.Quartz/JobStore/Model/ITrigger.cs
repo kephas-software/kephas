@@ -124,7 +124,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
         /// </summary>
         /// <param name="trigger">The trigger to act on.</param>
         /// <param name="quartzTrigger">The quartz trigger.</param>
-        internal static void FillTrigger(this ITrigger trigger, AbstractTrigger quartzTrigger)
+        public static void FillTrigger(this ITrigger trigger, AbstractTrigger quartzTrigger)
         {
             quartzTrigger.Key = trigger.GetTriggerKey();
             quartzTrigger.JobKey = trigger.GetJobKey();

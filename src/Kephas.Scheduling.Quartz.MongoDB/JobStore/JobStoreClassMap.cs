@@ -72,6 +72,7 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore
                 map.MapProperty(detail => detail.JobType).SetSerializer(new TypeSerializer());
             });
 
+            /* TODO check DailyTimeIntervalTrigger, seems changed
             BsonClassMap.RegisterClassMap<MisfireInstruction.DailyTimeIntervalTrigger>(map =>
             {
                 map.AutoMap();
@@ -81,7 +82,7 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore
                 map.MapProperty(trigger => trigger.DaysOfWeek).SetSerializer(serializer);
             });
 
-            /* TODO 
+             TODO add this index to the LockCollection
             await this.LockCollection.Indexes.CreateOneAsync(this.IndexBuilder.Ascending(@lock => @lock.AcquiredAt),
                 new CreateIndexOptions() {ExpireAfter = TimeSpan.FromSeconds(30)});
             */
