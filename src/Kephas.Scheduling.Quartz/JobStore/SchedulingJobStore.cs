@@ -934,7 +934,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </summary>
         public async Task<IReadOnlyCollection<string>> GetTriggerGroupNames(CancellationToken cancellationToken = default)
         {
-            return await this.triggerRepository.GetTriggerGroupNames();
+            return (await this.triggerRepository.GetTriggerGroupNames(cancellationToken).PreserveThreadContext()).ToList();
         }
 
         /// <summary>
@@ -1484,7 +1484,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             await this.triggerRepository.UpdateTriggersStates(matcher, Model.TriggerState.PausedBlocked,
                 Model.TriggerState.Blocked);
 
-            var triggerGroups = await this.triggerRepository.GetTriggerGroupNames(matcher);
+            var triggerGroups = await this.triggerRepository.GetTriggerGroupNames(matcher, token).PreserveThreadContext();
 
             // make sure to account for an exact group match for a group that doesn't yet exist
             var op = matcher.CompareWithOperator;
@@ -1504,7 +1504,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task PauseAllInternal(IDataContext dataContext, CancellationToken cancellationToken = default)
         {
-            var groupNames = await this.triggerRepository.GetTriggerGroupNames();
+            var groupNames = await this.triggerRepository.GetTriggerGroupNames(cancellationToken).PreserveThreadContext();
 
             await Task.WhenAll(groupNames.Select(groupName =>
                 this.PauseTriggerGroupInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken))).PreserveThreadContext();
@@ -1639,7 +1639,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         private async Task ResumeAllInternal(IDataContext dataContext, CancellationToken cancellationToken = default)
         {
-            var groupNames = await this.triggerRepository.GetTriggerGroupNames();
+            var groupNames = await this.triggerRepository.GetTriggerGroupNames(cancellationToken).PreserveThreadContext();
             await Task.WhenAll(groupNames.Select(groupName =>
                 this.ResumeTriggersInternal(dataContext, GroupMatcher<TriggerKey>.GroupEquals(groupName), cancellationToken))).PreserveThreadContext();
             await dataContext.DeletePausedTriggerGroup(this.InstanceName, AllGroupsPaused, cancellationToken: cancellationToken).PreserveThreadContext();
@@ -2184,8 +2184,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             this.Logger.Info("Recovery complete");
 
-            var completedTriggers =
-                await this.triggerRepository.GetTriggerKeys(Model.TriggerState.Complete);
+            var completedTriggers = await this.triggerRepository.GetTriggerKeys(Model.TriggerState.Complete, cancellationToken).PreserveThreadContext();
             foreach (var completedTrigger in completedTriggers)
             {
                 await this.RemoveTriggerInternal(dataContext, completedTrigger, cancellationToken: cancellationToken).PreserveThreadContext();

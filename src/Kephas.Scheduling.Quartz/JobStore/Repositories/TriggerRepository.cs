@@ -169,40 +169,70 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 var triggers = await dataContext.Query<Model.ITrigger>()
                     .Where(t => t.InstanceName == this.InstanceName)
                     .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
-                    .ToListAsync().PreserveThreadContext();
+                    .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
                 return triggers.Select(t => t.GetTriggerKey()).ToList();
             }
         }
 
-        public async Task<List<TriggerKey>> GetTriggerKeys(Model.TriggerState state)
+        /// <summary>
+        /// Gets the trigger keys based on the provided state.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger keys.
+        /// </returns>
+        public async Task<List<TriggerKey>> GetTriggerKeys(Model.TriggerState state, CancellationToken cancellationToken = default)
         {
-            return null;
-            /* TODO
-            return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.State == state)
-                .Project(trigger => trigger.Id.GetTriggerKey())
-                .ToListAsync();
-            */
+            using (var dataContext = this.jobStore.DataContextFactory(null))
+            {
+                var triggers = await dataContext.Query<Model.ITrigger>()
+                                   .Where(t => t.InstanceName == this.InstanceName && t.State == state)
+                                   .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                return triggers.Select(t => t.GetTriggerKey()).ToList();
+            }
         }
 
-        public async Task<List<string>> GetTriggerGroupNames()
+        /// <summary>
+        /// Gets trigger group names.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger group names.
+        /// </returns>
+        public async Task<IList<string>> GetTriggerGroupNames(CancellationToken cancellationToken = default)
         {
-            return null;
-            /* TODO
-            return await this.Collection.Distinct(trigger => trigger.Id.Group,
-                trigger => trigger.Id.InstanceName == this.InstanceName)
-                .ToListAsync();
-            */
+            using (var dataContext = this.jobStore.DataContextFactory(null))
+            {
+                var groups = await dataContext.Query<Model.ITrigger>()
+                                 .Where(t => t.InstanceName == this.InstanceName)
+                                 .Select(t => t.Group)
+                                 .Distinct()
+                                 .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                return groups;
+            }
         }
 
-        public async Task<List<string>> GetTriggerGroupNames(GroupMatcher<TriggerKey> matcher)
+        /// <summary>
+        /// Gets trigger group names.
+        /// </summary>
+        /// <param name="matcher">The matcher.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger group names.
+        /// </returns>
+        public async Task<IList<string>> GetTriggerGroupNames(GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
         {
-            return null;
-            /* TODO
-            var regex = matcher.ToBsonRegularExpression().ToRegex();
-            return await this.Collection.Distinct(trigger => trigger.Id.Group,
-                    trigger => trigger.Id.InstanceName == this.InstanceName && regex.IsMatch(trigger.Id.Group))
-                .ToListAsync();
-            */
+            using (var dataContext = this.jobStore.DataContextFactory(null))
+            {
+                var groups = await dataContext.Query<Model.ITrigger>()
+                                   .Where(t => t.InstanceName == this.InstanceName)
+                                   .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
+                                   .Select(t => t.Group)
+                                   .Distinct()
+                                   .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+                return groups;
+            }
         }
 
         public async Task<List<TriggerKey>> GetTriggersToAcquire(DateTimeOffset noLaterThan, DateTimeOffset noEarlierThan,
