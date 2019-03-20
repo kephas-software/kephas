@@ -100,6 +100,14 @@ namespace Kephas.Model.Elements
         public object Instance => this.appServiceInfo.Instance;
 
         /// <summary>
+        /// Gets the type of the service instance.
+        /// </summary>
+        /// <value>
+        /// The type of the service instance.
+        /// </value>
+        public Type InstanceType => this.appServiceInfo.InstanceType;
+
+        /// <summary>
         /// Gets the service instance factory.
         /// </summary>
         /// <value>
