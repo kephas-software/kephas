@@ -30,7 +30,7 @@
         <references>
             <reference file="Kephas.Scheduling.Quartz.MongoDB.dll" />
         </references>
-        <tags>kephas framework scheduling job quartz mongo mongodb</tags>
+        <tags>kephas scheduling job quartz mongo mongodb</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

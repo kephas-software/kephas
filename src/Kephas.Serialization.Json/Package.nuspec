@@ -29,7 +29,7 @@
         <references>
             <reference file="Kephas.Serialization.Json.dll" />
         </references>
-        <tags>kephas framework serialization newtonsoft json</tags>
+        <tags>kephas serialization newtonsoft json</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

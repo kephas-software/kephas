@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.Orchestration.dll" />
         </references>
-        <tags>kephas framework orchestration</tags>
+        <tags>kephas orchestration</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

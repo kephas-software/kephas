@@ -28,7 +28,7 @@
         <references>
             <reference file="Kephas.Scripting.CSharp.dll" />
         </references>
-        <tags>kephas framework scripting csharp</tags>
+        <tags>kephas scripting csharp</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

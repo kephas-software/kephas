@@ -29,7 +29,7 @@
         <references>
             <reference file="Kephas.Serialization.ServiceStack.Text.dll" />
         </references>
-        <tags>kephas framework serialization json xml servicestack</tags>
+        <tags>kephas serialization json xml servicestack</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

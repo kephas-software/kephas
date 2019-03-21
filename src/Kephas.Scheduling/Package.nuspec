@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.Scheduling.dll" />
         </references>
-        <tags>kephas framework scheduling job</tags>
+        <tags>kephas scheduling job</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

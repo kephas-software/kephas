@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.Workflow.dll" />
         </references>
-        <tags>kephas framework workflow activity</tags>
+        <tags>kephas workflow activity</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

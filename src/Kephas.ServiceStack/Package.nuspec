@@ -31,7 +31,7 @@
         <references>
             <reference file="Kephas.ServiceStack.dll" />
         </references>
-        <tags>kephas framework web servicestack</tags>
+        <tags>kephas web servicestack</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
