@@ -7,6 +7,7 @@ $packages = @(
     "Kephas.CodeAnalysis",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Log4Net",
+    "Kephas.Logging.Serilog",
     "Kephas.Composition.Mef",
     "Kephas.Messaging",
     "Kephas.Messaging.Model",
