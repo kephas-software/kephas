@@ -18,7 +18,7 @@ namespace Kephas.Logging.Serilog
     /// <summary>
     /// The Serilog logger adapter.
     /// </summary>
-    public class SerilogLogger : Logging.ILogger
+    public class SerilogLogger : ILogger
     {
         private readonly global::Serilog.ILogger logger;
 
@@ -44,7 +44,14 @@ namespace Kephas.Logging.Serilog
         /// <param name="args">The arguments for the message format.</param>
         public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
-            this.logger.Write(this.ToLogEventLevel(level), exception, messageFormat, args);
+            if (exception == null)
+            {
+                this.logger.Write(this.ToLogEventLevel(level), messageFormat, args);
+            }
+            else
+            {
+                this.logger.Write(this.ToLogEventLevel(level), exception, messageFormat, args);
+            }
         }
 
         /// <summary>
