@@ -201,8 +201,8 @@ namespace Kephas.Data
             Requires.NotNull(entity, nameof(entity));
 
             // Try to get the entity info from the local cache.
-            var entityInfo = this.LocalCache.GetEntityEntry(entity);
-            return entityInfo;
+            var entityEntry = this.LocalCache.GetEntityEntry(entity);
+            return entityEntry;
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>
-        /// The entity extended information.
+        /// The entity entry information.
         /// </returns>
         public virtual IEntityEntry AttachEntity(object entity)
         {
@@ -224,7 +224,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="entityEntry">The entity entry.</param>
         /// <returns>
-        /// The entity extended information.
+        /// The entity entry information.
         /// </returns>
         public virtual IEntityEntry DetachEntity(IEntityEntry entityEntry)
         {
@@ -287,15 +287,15 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityEntry CreateEntityEntry(object entity, ChangeState? changeState = null)
         {
-            var entityInfo = new EntityEntry(entity) { DataContext = this };
+            var entityEntry = new EntityEntry(entity) { DataContext = this };
             if (changeState != null)
             {
-                entityInfo.ChangeState = changeState.Value;
+                entityEntry.ChangeState = changeState.Value;
             }
 
-            entityInfo.TryAttachToEntity(entity);
+            entityEntry.TryAttachToEntity(entity);
 
-            return entityInfo;
+            return entityEntry;
         }
 
         /// <summary>
@@ -317,23 +317,23 @@ namespace Kephas.Data
         /// </returns>
         protected virtual IEntityEntry AttachEntityCore(object entity, bool attachEntityGraph)
         {
-            var entityInfo = this.GetEntityEntry(entity);
-            if (entityInfo != null)
+            var entityEntry = this.GetEntityEntry(entity);
+            if (entityEntry != null)
             {
-                if (entity != entityInfo.Entity)
+                if (entity != entityEntry.Entity)
                 {
-                    return this.ResolveAttachEntityConflict(entityInfo, entity, attachEntityGraph);
+                    return this.ResolveAttachEntityConflict(entityEntry, entity, attachEntityGraph);
                 }
 
-                return entityInfo;
+                return entityEntry;
             }
 
-            entityInfo = this.CreateEntityEntry(entity);
-            this.LocalCache.Add(entityInfo);
+            entityEntry = this.CreateEntityEntry(entity);
+            this.LocalCache.Add(entityEntry);
 
             if (attachEntityGraph)
             {
-                var structuralEntityGraph = entityInfo.GetStructuralEntityGraph();
+                var structuralEntityGraph = entityEntry.GetStructuralEntityGraph();
                 if (structuralEntityGraph != null)
                 {
                     foreach (var entityPart in structuralEntityGraph)
@@ -349,7 +349,7 @@ namespace Kephas.Data
                 }
             }
 
-            return entityInfo;
+            return entityEntry;
         }
 
         /// <summary>
@@ -397,10 +397,10 @@ namespace Kephas.Data
                             continue;
                         }
 
-                        var partEntityInfo = this.GetEntityEntry(entityPart);
-                        if (partEntityInfo != null)
+                        var partEntityEntry = this.GetEntityEntry(entityPart);
+                        if (partEntityEntry != null)
                         {
-                            this.DetachEntityCore(partEntityInfo, detachEntityGraph: false);
+                            this.DetachEntityCore(partEntityEntry, detachEntityGraph: false);
                         }
                     }
                 }

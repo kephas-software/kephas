@@ -32,10 +32,10 @@ namespace Kephas.Data.Tests
             var dataContext = new TestDataContext(localCache: localCache);
 
             var entity = "hello";
-            var entityInfo = dataContext.AttachEntity(entity);
+            var entityEntry = dataContext.AttachEntity(entity);
 
-            var detachedEntityInfo = DataContextExtensions.DetachEntity(dataContext, entity);
-            Assert.AreSame(entityInfo, detachedEntityInfo);
+            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            Assert.AreSame(entityEntry, detachedEntityEntry);
             Assert.AreEqual(0, localCache.Count);
         }
 
@@ -47,8 +47,8 @@ namespace Kephas.Data.Tests
 
             var entity = "hello";
 
-            var detachedEntityInfo = DataContextExtensions.DetachEntity(dataContext, entity);
-            Assert.IsNull(detachedEntityInfo);
+            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            Assert.IsNull(detachedEntityEntry);
         }
 
         [Test]
@@ -60,10 +60,10 @@ namespace Kephas.Data.Tests
             var entity = Substitute.For<IAggregatable>();
             var entityPart = new object();
             entity.GetStructuralEntityGraph().Returns(new[] { entity, entityPart });
-            var entityInfo = dataContext.AttachEntity(entity);
+            var entityEntry = dataContext.AttachEntity(entity);
 
-            var detachedEntityInfo = DataContextExtensions.DetachEntity(dataContext, entity);
-            Assert.AreSame(entityInfo, detachedEntityInfo);
+            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            Assert.AreSame(entityEntry, detachedEntityEntry);
             Assert.AreEqual(0, localCache.Count);
         }
 

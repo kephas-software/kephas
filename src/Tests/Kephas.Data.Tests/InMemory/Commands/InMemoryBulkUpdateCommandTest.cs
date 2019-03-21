@@ -30,12 +30,12 @@ namespace Kephas.Data.Tests.InMemory.Commands
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 3 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 2 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 3 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" });
             var result = await cmd.ExecuteAsync(opContext);
@@ -54,8 +54,8 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" });
             var result = await cmd.ExecuteAsync(opContext);
@@ -74,8 +74,8 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkUpdateCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkUpdateContext<TestEntity>(dataContext, e => e.Id > 1, new { Comment = "updated" }, throwIfNotFound: true);
             Assert.ThrowsAsync<NotFoundDataException>(() => cmd.ExecuteAsync(opContext));

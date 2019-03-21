@@ -30,12 +30,12 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 3 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 2 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 3 });
+            localCache.Add(entityEntry);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2);
             var result = await cmd.ExecuteAsync(findContext);
@@ -51,8 +51,8 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2, throwIfNotFound: false);
             var result = await cmd.ExecuteAsync(findContext);
@@ -69,8 +69,8 @@ namespace Kephas.Data.Tests.Commands
 
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2, throwIfNotFound: true);
             Assert.ThrowsAsync<NotFoundDataException>(() => cmd.ExecuteAsync(findContext));
@@ -83,12 +83,12 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = TestDataContext.InitializeDataContext(localCache: localCache);
             var cmd = new FindCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 2 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 2 });
+            localCache.Add(entityEntry);
 
             var findContext = new FindContext<TestEntity>(dataContext, 2);
             Assert.ThrowsAsync<AmbiguousMatchDataException>(() => cmd.ExecuteAsync(findContext));

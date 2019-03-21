@@ -106,8 +106,8 @@ namespace Kephas.Data.InMemory
         {
             // do not use here the WorkingCache property, because during initialization
             // the InitializationMonitor is not in the Completed state yet.
-            var entityInfo = this.workingCache?.Values.FirstOrDefault(ei => ei.Entity == entity);
-            return entityInfo;
+            var entityEntry = this.workingCache?.Values.FirstOrDefault(ei => ei.Entity == entity);
+            return entityEntry;
         }
 
         /// <summary>
@@ -205,10 +205,10 @@ namespace Kephas.Data.InMemory
                 return;
             }
 
-            foreach (var entityInfo in initialData)
+            foreach (var entityEntry in initialData)
             {
-                var ownEntityInfo = this.CreateEntityEntry(entityInfo.Entity, entityInfo.ChangeState);
-                this.workingCache[ownEntityInfo.Id] = ownEntityInfo;
+                var ownEntityEntry = this.CreateEntityEntry(entityEntry.Entity, entityEntry.ChangeState);
+                this.workingCache[ownEntityEntry.Id] = ownEntityEntry;
             }
         }
 
@@ -229,14 +229,14 @@ namespace Kephas.Data.InMemory
             {
                 foreach (var entity in (IEnumerable)data)
                 {
-                    var entityInfo = this.CreateEntityEntry(entity);
-                    this.workingCache.Add(entityInfo);
+                    var entityEntry = this.CreateEntityEntry(entity);
+                    this.workingCache.Add(entityEntry);
                 }
             }
             else
             {
-                var entityInfo = this.CreateEntityEntry(data);
-                this.workingCache.Add(entityInfo);
+                var entityEntry = this.CreateEntityEntry(data);
+                this.workingCache.Add(entityEntry);
             }
         }
     }

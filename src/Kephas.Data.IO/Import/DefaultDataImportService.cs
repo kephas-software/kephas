@@ -324,8 +324,8 @@ namespace Kephas.Data.IO.Import
             /// </returns>
             private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IOperationResult result, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
             {
-                var importEntityInfos = sourceEntities.Select(this.AttachSourceEntity).ToList();
-                foreach (var importEntityInfo in importEntityInfos)
+                var importEntityEntries = sourceEntities.Select(this.AttachSourceEntity).ToList();
+                foreach (var importEntityEntry in importEntityEntries)
                 {
                     IDataContext targetDataContext = null;
                     try
@@ -334,19 +334,19 @@ namespace Kephas.Data.IO.Import
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in behaviors)
                         {
-                            await behavior.BeforeConvertEntityAsync(importEntityInfo, this.context, cancellationToken)
+                            await behavior.BeforeConvertEntityAsync(importEntityEntry, this.context, cancellationToken)
                                 .PreserveThreadContext();
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        var targetEntry = await this.ConvertEntityAsync(importEntityInfo, cancellationToken).PreserveThreadContext();
+                        var targetEntry = await this.ConvertEntityAsync(importEntityEntry, cancellationToken).PreserveThreadContext();
                         targetDataContext = targetEntry.DataContext ?? this.dataSpace[targetEntry.Entity.GetType()];
 
                         // Persist the converted entity
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in behaviors)
                         {
-                            await behavior.BeforePersistEntityAsync(importEntityInfo, targetEntry, this.context, cancellationToken)
+                            await behavior.BeforePersistEntityAsync(importEntityEntry, targetEntry, this.context, cancellationToken)
                                 .PreserveThreadContext();
                         }
 
@@ -355,14 +355,14 @@ namespace Kephas.Data.IO.Import
                         this.context.PersistChangesContextConfig?.Invoke(persistContext);
                         await targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
 
-                        importEntityInfo.AcceptChanges();
-                        result.MergeMessage(new ImportEntitySuccessfulMessage(importEntityInfo.Entity));
+                        importEntityEntry.AcceptChanges();
+                        result.MergeMessage(new ImportEntitySuccessfulMessage(importEntityEntry.Entity));
 
                         // The converted entity is persisted
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in reversedBehaviors)
                         {
-                            await behavior.AfterPersistEntityAsync(importEntityInfo, targetEntry, this.context, cancellationToken)
+                            await behavior.AfterPersistEntityAsync(importEntityEntry, targetEntry, this.context, cancellationToken)
                                 .PreserveThreadContext();
                         }
                     }
@@ -373,7 +373,7 @@ namespace Kephas.Data.IO.Import
                     }
                     catch (Exception ex)
                     {
-                        result.MergeException(new ImportEntityException(importEntityInfo.Entity, ex));
+                        result.MergeException(new ImportEntityException(importEntityEntry.Entity, ex));
                         targetDataContext?.DiscardChanges();
                     }
                 }
@@ -390,11 +390,11 @@ namespace Kephas.Data.IO.Import
             {
                 object entity;
                 ChangeState changeState;
-                if (source is IChangeStateTrackableEntityEntry changeStateTrackableEntityInfo)
+                if (source is IChangeStateTrackableEntityEntry changeStateTrackableEntityEntry)
                 {
                     // the imported entity is already an IEntityEntry wrapper. Adjust only the change state.
-                    entity = changeStateTrackableEntityInfo.Entity;
-                    changeState = changeStateTrackableEntityInfo.ChangeState;
+                    entity = changeStateTrackableEntityEntry.Entity;
+                    changeState = changeStateTrackableEntityEntry.ChangeState;
                     if (changeState == ChangeState.NotChanged)
                     {
                         changeState = ChangeState.AddedOrChanged;
@@ -408,10 +408,10 @@ namespace Kephas.Data.IO.Import
                 }
 
                 var sourceDataContext = this.dataSpace[entity.GetType(), this.context];
-                var sourceEntityInfo = sourceDataContext.AttachEntity(entity);
-                sourceEntityInfo.ChangeState = changeState;
+                var sourceEntityEntry = sourceDataContext.AttachEntity(entity);
+                sourceEntityEntry.ChangeState = changeState;
 
-                return sourceEntityInfo;
+                return sourceEntityEntry;
             }
 
             /// <summary>
@@ -439,18 +439,18 @@ namespace Kephas.Data.IO.Import
 
                 var targetEntity = conversionResult.Target;
                 var targetDataContext = this.dataSpace[targetEntity.GetType(), this.context];
-                var targetEntityInfo = targetDataContext.AttachEntity(targetEntity);
+                var targetEntityEntry = targetDataContext.AttachEntity(targetEntity);
 
                 // force the change of the entity change state only if
                 // * the target entity is not changed - or -
                 // * the source entity indicated deletion.
-                if (targetEntityInfo.ChangeState == ChangeState.NotChanged
+                if (targetEntityEntry.ChangeState == ChangeState.NotChanged
                     || sourceEntityEntry.ChangeState == ChangeState.Deleted)
                 {
-                    targetEntityInfo.ChangeState = sourceEntityEntry.ChangeState;
+                    targetEntityEntry.ChangeState = sourceEntityEntry.ChangeState;
                 }
 
-                return targetEntityInfo;
+                return targetEntityEntry;
             }
         }
     }

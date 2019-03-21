@@ -39,8 +39,8 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entity, nameof(entity));
 
-            var entityInfo = dataContext.GetEntityEntry(entity);
-            return entityInfo == null ? null : dataContext.DetachEntity(entityInfo);
+            var entityEntry = dataContext.GetEntityEntry(entity);
+            return entityEntry == null ? null : dataContext.DetachEntity(entityEntry);
         }
 
         /// <summary>

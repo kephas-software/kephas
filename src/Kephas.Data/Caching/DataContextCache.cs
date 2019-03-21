@@ -199,16 +199,16 @@ namespace Kephas.Data.Caching
         /// </returns>
         public virtual IEntityEntry GetEntityEntry(object entity)
         {
-            var entityInfo = entity.TryGetAttachedEntityEntry();
-            if (entityInfo == null)
+            var entityEntry = entity.TryGetAttachedEntityEntry();
+            if (entityEntry == null)
             {
-                this.entityEntryMappings.TryGetValue(entity, out entityInfo);
+                this.entityEntryMappings.TryGetValue(entity, out entityEntry);
 
                 // cache the entity info for later use in the entity.
-                entityInfo?.TryAttachToEntity(entity);
+                entityEntry?.TryAttachToEntity(entity);
             }
 
-            return entityInfo;
+            return entityEntry;
         }
 
         /// <summary>

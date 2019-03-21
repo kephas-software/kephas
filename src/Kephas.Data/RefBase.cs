@@ -113,13 +113,13 @@ namespace Kephas.Data
                 throw new ObjectDisposedException(this.GetType().Name, string.Format(Strings.RefBase_GetEntityEntry_Disposed_Exception, this.RefFieldName));
             }
 
-            var entityInfo = containerEntity.TryGetAttachedEntityEntry();
-            if (entityInfo == null)
+            var entityEntry = containerEntity.TryGetAttachedEntityEntry();
+            if (entityEntry == null)
             {
                 throw new DataException(string.Format(Strings.RefBase_GetEntityEntry_Null_Exception, this.RefFieldName));
             }
 
-            return entityInfo;
+            return entityEntry;
         }
 
         /// <summary>

@@ -37,14 +37,14 @@ namespace Kephas.Data.Tests.Commands
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
 
-            var entityInfo = new EntityEntry("123") { ChangeState = ChangeState.Added };
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry("123") { ChangeState = ChangeState.Added };
+            localCache.Add(entityEntry);
 
             var cmd = new DeleteEntityCommand();
             var result = cmd.Execute(new DeleteEntityContext(dataContext, "123"));
 
             Assert.AreSame(DataCommandResult.Success, result);
-            Assert.AreEqual(ChangeState.Deleted, entityInfo.ChangeState);
+            Assert.AreEqual(ChangeState.Deleted, entityEntry.ChangeState);
             Assert.AreEqual(0, localCache.Count);
         }
 
@@ -54,14 +54,14 @@ namespace Kephas.Data.Tests.Commands
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
 
-            var entityInfo = new EntityEntry("123") { ChangeState = ChangeState.NotChanged };
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry("123") { ChangeState = ChangeState.NotChanged };
+            localCache.Add(entityEntry);
 
             var cmd = new DeleteEntityCommand();
             var result = cmd.Execute(new DeleteEntityContext(dataContext, "123"));
 
             Assert.AreSame(DataCommandResult.Success, result);
-            Assert.AreEqual(ChangeState.Deleted, entityInfo.ChangeState);
+            Assert.AreEqual(ChangeState.Deleted, entityEntry.ChangeState);
             Assert.AreEqual(1, localCache.Count);
         }
     }

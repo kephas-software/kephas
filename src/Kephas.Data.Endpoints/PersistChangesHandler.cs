@@ -76,7 +76,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var mappings = new List<(DtoEntityEntry clientEntry, object entity)>();
+            var mappings = new List<(DtoEntityEntry dtoEntry, object entity)>();
             var response = new PersistChangesResponseMessage();
 
             if (message.EntityEntries == null || message.EntityEntries.Count == 0)
@@ -88,21 +88,21 @@ namespace Kephas.Data.Endpoints
             using (var dataSpace = this.dataSpaceFactory.CreateExportedValue(dataSpaceContext))
             {
                 // convert to entities
-                foreach (var clientEntityInfo in message.EntityEntries.Where(e => e.Entity != null))
+                foreach (var dtoEntityEntry in message.EntityEntries.Where(e => e.Entity != null))
                 {
                     // gets the domain entity and sets the values from the client
-                    var clientEntity = clientEntityInfo.Entity;
-                    var clientEntityType = clientEntity.GetType();
-                    var domainEntityType = this.projectedTypeResolver.ResolveProjectedType(clientEntityType);
+                    var dtoEntity = dtoEntityEntry.Entity;
+                    var dtoEntityType = dtoEntity.GetType();
+                    var domainEntityType = this.projectedTypeResolver.ResolveProjectedType(dtoEntityType);
 
-                    if (clientEntityType != domainEntityType)
+                    if (dtoEntityType != domainEntityType)
                     {
                         var conversionContext = new DataConversionContext(this.dataConversionService, dataSpace, rootTargetType: domainEntityType);
-                        var result = await this.dataConversionService.ConvertAsync(clientEntity, (object)null, conversionContext, token).PreserveThreadContext();
-                        mappings.Add((clientEntityInfo, result.Target));
+                        var result = await this.dataConversionService.ConvertAsync(dtoEntity, (object)null, conversionContext, token).PreserveThreadContext();
+                        mappings.Add((dtoEntry: dtoEntityEntry, result.Target));
 
                         // deleted entities are marked as deleted
-                        if (clientEntityInfo.ChangeState == ChangeState.Deleted)
+                        if (dtoEntityEntry.ChangeState == ChangeState.Deleted)
                         {
                             var domainDataContext = dataSpace[domainEntityType, context];
                             var changeStateEntity = domainDataContext.GetEntityEntry(result.Target);
@@ -111,17 +111,17 @@ namespace Kephas.Data.Endpoints
                     }
                     else
                     {
-                        mappings.Add((clientEntityInfo, clientEntity));
+                        mappings.Add((dtoEntry: dtoEntityEntry, clientEntity: dtoEntity));
                     }
 
                     // add a response entry in the response
-                    var originalId = (clientEntity as IIdentifiable)?.Id;
+                    var originalId = (dtoEntity as IIdentifiable)?.Id;
                     response.EntityEntries.Add(new DtoEntityEntry
                     {
-                        ChangeState = clientEntityInfo.ChangeState,
-                        Entity = clientEntityInfo.ChangeState == ChangeState.Deleted ? null : clientEntity,
+                        ChangeState = dtoEntityEntry.ChangeState,
+                        Entity = dtoEntityEntry.ChangeState == ChangeState.Deleted ? null : dtoEntity,
                         OriginalEntityId = originalId,
-                        EntityTypeName = this.GetClientTypeName(clientEntity),
+                        EntityTypeName = this.GetClientTypeName(dtoEntity),
                     });
                 }
 
@@ -174,17 +174,17 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual async Task PostPersistChangesAsync(
             PersistChangesResponseMessage response,
-            IList<(DtoEntityEntry clientEntry, object entity)> mappings,
+            IList<(DtoEntityEntry dtoEntityEntry, object entity)> mappings,
             IDataSpace dataSpace,
             CancellationToken cancellationToken)
         {
             // convert back to client entities
-            foreach (var (clientEntityInfo, entity) in mappings)
+            foreach (var (dtoEntityEntry, entity) in mappings)
             {
-                if (clientEntityInfo.ChangeState != ChangeState.Deleted && clientEntityInfo.Entity != entity)
+                if (dtoEntityEntry.ChangeState != ChangeState.Deleted && dtoEntityEntry.Entity != entity)
                 {
                     var conversionContext = this.CreateDataConversionContextForResponse(dataSpace);
-                    var result = await this.dataConversionService.ConvertAsync(entity, clientEntityInfo.Entity, conversionContext, cancellationToken).PreserveThreadContext();
+                    var result = await this.dataConversionService.ConvertAsync(entity, dtoEntityEntry.Entity, conversionContext, cancellationToken).PreserveThreadContext();
                 }
             }
         }

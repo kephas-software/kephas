@@ -248,9 +248,9 @@ namespace Kephas.Data.Conversion
             }
 
             var sourceDataContext = conversionContext.GetDataContext(source);
-            var sourceEntityInfo = sourceDataContext?.GetEntityEntry(source);
-            var sourceId = sourceEntityInfo?.EntityId;
-            var sourceChangeState = sourceEntityInfo?.ChangeState;
+            var sourceEntityEntry = sourceDataContext?.GetEntityEntry(source);
+            var sourceId = sourceEntityEntry?.EntityId;
+            var sourceChangeState = sourceEntityEntry?.ChangeState;
 
             targetType = conversionContext.RootTargetType?.GetTypeInfo() ?? targetType;
             var targetDataContext = conversionContext.GetDataContext(targetType);
@@ -258,7 +258,7 @@ namespace Kephas.Data.Conversion
                          targetDataContext,
                          targetType,
                          source,
-                         sourceEntityInfo,
+                         sourceEntityEntry,
                          cancellationToken: cancellationToken).PreserveThreadContext();
             if (target != null)
             {

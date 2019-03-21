@@ -28,16 +28,16 @@ namespace Kephas.Data.Tests.Commands
             var dataContext = new TestDataContext(localCache: localCache);
             var cmd = new DiscardChangesCommand();
 
-            var entityInfo = new EntityEntry("added") { ChangeState = ChangeState.Added };
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry("addedOrChanged") { ChangeState = ChangeState.AddedOrChanged };
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry("changed") { ChangeState = ChangeState.Changed };
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry("deleted") { ChangeState = ChangeState.Deleted };
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry("notchanged") { ChangeState = ChangeState.NotChanged };
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry("added") { ChangeState = ChangeState.Added };
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry("addedOrChanged") { ChangeState = ChangeState.AddedOrChanged };
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry("changed") { ChangeState = ChangeState.Changed };
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry("deleted") { ChangeState = ChangeState.Deleted };
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry("notchanged") { ChangeState = ChangeState.NotChanged };
+            localCache.Add(entityEntry);
 
             var result = cmd.Execute(new DiscardChangesContext(dataContext));
             Assert.AreSame(DataCommandResult.Success, result);

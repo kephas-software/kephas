@@ -139,10 +139,10 @@ namespace Kephas.Data
             }
 
             this.ClearDataContextMap();
-            var entityInfos = context?.InitialData();
-            if (entityInfos != null)
+            var entityEntries = context?.InitialData();
+            if (entityEntries != null)
             {
-                this.dataContextMap = entityInfos
+                this.dataContextMap = entityEntries
                                           .GroupBy(e => this.dataStoreProvider.GetDataStoreName(e.Entity.GetType(), this.operationContext), e => e)
                                           .ToDictionary(
                                               g => g.Key,

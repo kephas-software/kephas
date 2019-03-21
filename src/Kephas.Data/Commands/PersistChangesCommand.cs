@@ -166,15 +166,15 @@ namespace Kephas.Data.Commands
         protected virtual void AcceptChanges(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet)
         {
             var dataContext = operationContext.DataContext;
-            foreach (var entityInfo in changeSet)
+            foreach (var entityEntry in changeSet)
             {
-                if (entityInfo.ChangeState != ChangeState.Deleted)
+                if (entityEntry.ChangeState != ChangeState.Deleted)
                 {
-                    entityInfo.AcceptChanges();
+                    entityEntry.AcceptChanges();
                 }
                 else
                 {
-                    dataContext.DetachEntity(entityInfo);
+                    dataContext.DetachEntity(entityEntry);
                 }
             }
         }
@@ -190,12 +190,12 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
-            foreach (var entityInfo in changeSet)
+            foreach (var entityEntry in changeSet)
             {
-                var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityInfo.Entity).Reverse();
+                var reversedBehaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityEntry.Entity).Reverse();
                 foreach (var behavior in reversedBehaviors)
                 {
-                    await behavior.AfterPersistAsync(entityInfo.Entity, entityInfo, operationContext, cancellationToken).PreserveThreadContext();
+                    await behavior.AfterPersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken).PreserveThreadContext();
                 }
             }
         }
@@ -211,12 +211,12 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual async Task ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
-            foreach (var entityInfo in changeSet)
+            foreach (var entityEntry in changeSet)
             {
-                var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityInfo.Entity);
+                var behaviors = this.BehaviorProvider.GetDataBehaviors<IOnPersistBehavior>(entityEntry.Entity);
                 foreach (var behavior in behaviors)
                 {
-                    await behavior.BeforePersistAsync(entityInfo.Entity, entityInfo, operationContext, cancellationToken).PreserveThreadContext();
+                    await behavior.BeforePersistAsync(entityEntry.Entity, entityEntry, operationContext, cancellationToken).PreserveThreadContext();
                 }
             }
         }
@@ -312,14 +312,14 @@ namespace Kephas.Data.Commands
         protected virtual async Task ValidateChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
             var dataContext = operationContext.DataContext;
-            foreach (var entityInfo in changeSet)
+            foreach (var entityEntry in changeSet)
             {
-                var entityGraphParts = entityInfo.GetStructuralEntityGraph() ?? new[] { entityInfo.Entity };
+                var entityGraphParts = entityEntry.GetStructuralEntityGraph() ?? new[] { entityEntry.Entity };
 
                 foreach (var entityPart in entityGraphParts)
                 {
-                    var entityPartInfo = entityPart == entityInfo.Entity
-                                             ? entityInfo
+                    var entityPartInfo = entityPart == entityEntry.Entity
+                                             ? entityEntry
                                              : dataContext.GetEntityEntry(entityPart);
                     if (entityPartInfo == null)
                     {
@@ -379,9 +379,9 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected virtual Task PreProcessChangeSetAsync(IList<IEntityEntry> changeSet, IPersistChangesContext operationContext, CancellationToken cancellationToken)
         {
-            foreach (var entityInfo in changeSet)
+            foreach (var entityEntry in changeSet)
             {
-                entityInfo.PrePersistChangeState = entityInfo.ChangeState;
+                entityEntry.PrePersistChangeState = entityEntry.ChangeState;
             }
 
             return Task.FromResult(0);

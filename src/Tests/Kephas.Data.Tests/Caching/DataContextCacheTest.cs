@@ -59,7 +59,7 @@ namespace Kephas.Data.Tests.Caching
         }
 
         [Test]
-        public void Indexer_set_key_and_entityinfo_id_must_match()
+        public void Indexer_set_key_and_entityentry_id_must_match()
         {
             var cache = new DataContextCache();
 

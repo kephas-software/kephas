@@ -41,15 +41,15 @@ namespace Kephas.Data.Tests.Commands
 
             var result = await cmd.ExecuteAsync(new CreateEntityContext<TestEntity>(dataContext));
             var newEntity = result.Entity;
-            var newEntityInfo = result.EntityEntry;
+            var newEntityEntry = result.EntityEntry;
 
             Assert.IsNotNull(newEntity);
             Assert.IsInstanceOf<TestEntity>(newEntity);
-            Assert.IsNotNull(newEntityInfo);
-            Assert.AreSame(newEntity, newEntityInfo.Entity);
-            Assert.AreEqual(ChangeState.Added, newEntityInfo.ChangeState);
+            Assert.IsNotNull(newEntityEntry);
+            Assert.AreSame(newEntity, newEntityEntry.Entity);
+            Assert.AreEqual(ChangeState.Added, newEntityEntry.ChangeState);
             Assert.AreEqual(1, localCache.Count);
-            Assert.AreSame(newEntityInfo, localCache.First().Value);
+            Assert.AreSame(newEntityEntry, localCache.First().Value);
         }
 
         [Test]

@@ -30,12 +30,12 @@ namespace Kephas.Data.Tests.InMemory.Commands
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
             var cmd = new InMemoryBulkDeleteCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 2 });
-            localCache.Add(entityInfo);
-            entityInfo = new EntityEntry(new TestEntity { Id = 3 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 2 });
+            localCache.Add(entityEntry);
+            entityEntry = new EntityEntry(new TestEntity { Id = 3 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkDeleteContext<TestEntity>(dataContext, e => e.Id > 1);
             var result = await cmd.ExecuteAsync(opContext);
@@ -54,8 +54,8 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkDeleteCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkDeleteContext<TestEntity>(dataContext, e => e.Id > 1);
             var result = await cmd.ExecuteAsync(opContext);
@@ -73,8 +73,8 @@ namespace Kephas.Data.Tests.InMemory.Commands
 
             var cmd = new InMemoryBulkDeleteCommand();
 
-            var entityInfo = new EntityEntry(new TestEntity { Id = 1 });
-            localCache.Add(entityInfo);
+            var entityEntry = new EntityEntry(new TestEntity { Id = 1 });
+            localCache.Add(entityEntry);
 
             var opContext = new BulkDeleteContext<TestEntity>(dataContext, e => e.Id > 1, throwIfNotFound: true);
             Assert.ThrowsAsync<NotFoundDataException>(() => cmd.ExecuteAsync(opContext));

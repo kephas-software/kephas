@@ -181,23 +181,23 @@ namespace Kephas.Data.MongoDB.Commands
         private IList<WriteModel<T>> GetBulkWriteRequests<T>(IPersistChangesContext operationContext, IEnumerable<IEntityEntry> eligibleChangeSet)
         {
             var writeModel = new List<WriteModel<T>>();
-            foreach (var entityInfo in eligibleChangeSet)
+            foreach (var entityEntry in eligibleChangeSet)
             {
-                var changeState = entityInfo.ChangeState;
-                var entity = (T)entityInfo.Entity;
+                var changeState = entityEntry.ChangeState;
+                var entity = (T)entityEntry.Entity;
                 switch (changeState)
                 {
                     case ChangeState.Added:
                         writeModel.Add(new InsertOneModel<T>(entity));
                         break;
                     case ChangeState.AddedOrChanged:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId)), entity) { IsUpsert = true });
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId)), entity) { IsUpsert = true });
                         break;
                     case ChangeState.Changed:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId)), entity));
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId)), entity));
                         break;
                     case ChangeState.Deleted:
-                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityInfo.EntityId))));
+                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId))));
                         break;
                 }
             }

@@ -91,10 +91,10 @@ namespace Kephas.Data.Behaviors
 
             if (propValidations.Count == 0)
             {
-                return (e, entityInfo, context) => DataValidationResult.Success;
+                return (e, entityEntry, context) => DataValidationResult.Success;
             }
 
-            return (e, entityInfo, context) => this.GetDataValidationResult(e, propValidations);
+            return (e, entityEntry, context) => this.GetDataValidationResult(e, propValidations);
         }
 
         /// <summary>

@@ -32,18 +32,18 @@ namespace Kephas.Data.Commands
         {
             var dataContext = operationContext.DataContext;
             var entity = operationContext.Entity;
-            var entityInfo = dataContext.GetEntityEntry(entity);
-            if (entityInfo == null)
+            var entityEntry = dataContext.GetEntityEntry(entity);
+            if (entityEntry == null)
             {
                 throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception);
             }
 
-            if (entityInfo.ChangeState == ChangeState.Added)
+            if (entityEntry.ChangeState == ChangeState.Added)
             {
-                dataContext.DetachEntity(entityInfo);
+                dataContext.DetachEntity(entityEntry);
             }
 
-            entityInfo.ChangeState = ChangeState.Deleted;
+            entityEntry.ChangeState = ChangeState.Deleted;
 
             return DataCommandResult.Success;
         }
