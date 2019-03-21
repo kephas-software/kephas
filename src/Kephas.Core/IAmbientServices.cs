@@ -13,7 +13,6 @@ namespace Kephas
     using System;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -47,14 +46,6 @@ namespace Kephas
         /// The application runtime.
         /// </value>
         IAppRuntime AppRuntime { get; }
-
-        /// <summary>
-        /// Gets the application configuration.
-        /// </summary>
-        /// <value>
-        /// The application configuration.
-        /// </value>
-        IAppConfiguration AppConfiguration { get; }
 
         /// <summary>
         /// Gets the log manager.

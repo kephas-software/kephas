@@ -18,7 +18,7 @@
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas core</PackageTags>
+        <PackageTags>kephas configuration legacy</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <RootNamespace>Kephas</RootNamespace>
@@ -28,7 +28,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </PropertyGroup>
 
     <PropertyGroup>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Core.xml</DocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Configuration.Legacy.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -60,18 +60,12 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
-        <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
-        <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-        <PackageReference Include="System.Reflection" Version="4.3.0" />
-        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-        <PackageReference Include="System.Security.Principal" Version="4.3.0" />
+        <PackageReference Include="System.Dynamic.Runtime" version="4.3.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
         <Reference Include="System" />
-        <Reference Include="System.ComponentModel.DataAnnotations" />
         <Reference Include="System.Configuration" />
         <Reference Include="System.Core" />
         <Reference Include="Microsoft.CSharp" />
@@ -83,18 +77,7 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 
 </Project>

@@ -18,7 +18,6 @@ namespace Kephas.Composition.Hosting
     using System.Text.RegularExpressions;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Collections;
     using Kephas.Composition.Configuration;
     using Kephas.Composition.Conventions;
@@ -67,9 +66,6 @@ namespace Kephas.Composition.Hosting
             this.LogManager = ambientServices.GetService<ILogManager>();
             this.AssertRequiredService(this.LogManager);
 
-            this.AppConfiguration = ambientServices.GetService<IAppConfiguration>();
-            this.AssertRequiredService(this.AppConfiguration);
-
             this.AppRuntime = ambientServices.GetService<IAppRuntime>();
             this.AssertRequiredService(this.AppRuntime);
 
@@ -96,14 +92,6 @@ namespace Kephas.Composition.Hosting
         /// The type loader.
         /// </value>
         public ITypeLoader TypeLoader { get; }
-
-        /// <summary>
-        /// Gets the configuration.
-        /// </summary>
-        /// <value>
-        /// The configuration.
-        /// </value>
-        public IAppConfiguration AppConfiguration { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -496,13 +484,24 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
+        /// Gets the composition settings.
+        /// </summary>
+        /// <returns>
+        /// The composition settings.
+        /// </returns>
+        protected virtual CompositionSettings GetSettings()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Gets the assemblies.
         /// </summary>
         /// <param name="searchPattern">The search pattern.</param>
         /// <returns>The assemblies.</returns>
         private IList<Assembly> GetAssemblies(string searchPattern = null)
         {
-            searchPattern = searchPattern ?? this.AppConfiguration.GetSettings<CompositionSettings>()?.AssemblyFileNamePattern;
+            searchPattern = searchPattern ?? this.GetSettings()?.AssemblyFileNamePattern;
 
             this.Logger.Debug($"{nameof(this.GetAssemblies)}. With assemblies matching pattern '{searchPattern}'.");
 

@@ -11,17 +11,14 @@
 namespace Kephas
 {
     using System;
-    using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Builder for ambient services.
@@ -67,22 +64,6 @@ namespace Kephas
             Requires.NotNull(logManager, nameof(logManager));
 
             this.AmbientServices.RegisterService(logManager);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the application configuration to the ambient services.
-        /// </summary>
-        /// <param name="appConfiguration">The application configuration.</param>
-        /// <returns>
-        /// The ambient services builder.
-        /// </returns>
-        public AmbientServicesBuilder WithAppConfiguration(IAppConfiguration appConfiguration)
-        {
-            Requires.NotNull(appConfiguration, nameof(appConfiguration));
-
-            this.AmbientServices.RegisterService(appConfiguration);
 
             return this;
         }

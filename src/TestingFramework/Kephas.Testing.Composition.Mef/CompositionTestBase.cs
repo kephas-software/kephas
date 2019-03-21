@@ -17,7 +17,6 @@ namespace Kephas.Testing.Composition.Mef
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.ExportProviders;
@@ -43,16 +42,14 @@ namespace Kephas.Testing.Composition.Mef
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppConfiguration appConfiguration = null, IAppRuntime appRuntime = null)
+        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
-            appConfiguration = appConfiguration ?? new DynamicAppConfiguration();
             appRuntime = appRuntime ?? new DefaultAppRuntime();
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .RegisterService(logManager)
-                .RegisterService(appConfiguration)
                 .RegisterService(appRuntime);
             return new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }

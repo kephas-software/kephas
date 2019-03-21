@@ -4,6 +4,7 @@ param (
 
 $packages = @(
     "Kephas.Core",
+    "Kephas.Configuration.Legacy",
     "Kephas.CodeAnalysis",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Log4Net",

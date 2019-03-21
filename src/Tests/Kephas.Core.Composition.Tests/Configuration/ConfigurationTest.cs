@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Configuration
 {
     using System;
 
-    using Kephas.Application.Configuration;
     using Kephas.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Testing.Composition.Mef;
@@ -30,29 +29,6 @@ namespace Kephas.Core.Tests.Configuration
 
             var config = container.GetExport<IConfiguration<TestSettings>>();
             Assert.AreSame(TestConfigurationProvider.Settings, config.Settings);
-        }
-
-        [Test]
-        public void Composition_Configuration_default_provider()
-        {
-            var container = this.CreateContainer();
-
-            var config = container.GetExport<IConfiguration<TestSettings>>();
-            Assert.AreNotSame(TestConfigurationProvider.Settings, config.Settings);
-        }
-
-#if NETCOREAPP2_0
-        [Ignore("Find a way to access the assembly config file.")]
-#endif
-        [Test]
-        public void Composition_Configuration_app_config_provider()
-        {
-            var container = this.CreateContainer();
-            var ambientServices = container.GetExport<IAmbientServices>();
-            ambientServices.RegisterService<IAppConfiguration>(new DefaultAppConfiguration());
-
-            var config = container.GetExport<IConfiguration<TestSettings>>();
-            Assert.AreEqual("hello", config.Settings.Say);
         }
 
         public class TestSettings

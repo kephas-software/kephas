@@ -15,7 +15,6 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
@@ -59,7 +58,6 @@ namespace Kephas
 
             this.RegisterService<IAmbientServices>(this)
                 .RegisterService<ILogManager>(logManager)
-                .RegisterService<IAppConfiguration>(new DynamicAppConfiguration())
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
                 .RegisterService<IAssemblyLoader>(assemblyLoader)
                 .RegisterService<ITypeLoader>(typeLoader)
@@ -116,14 +114,6 @@ namespace Kephas
         /// The application runtime.
         /// </value>
         public IAppRuntime AppRuntime => this.GetService<IAppRuntime>();
-
-        /// <summary>
-        /// Gets the application configuration.
-        /// </summary>
-        /// <value>
-        /// The application configuration.
-        /// </value>
-        public IAppConfiguration AppConfiguration => this.GetService<IAppConfiguration>();
 
         /// <summary>
         /// Gets the log manager.

@@ -17,6 +17,7 @@ function get-packagename([string]$pathname) {
 
 $paths = @(
     "..\Kephas.Core",
+    "..\Kephas.Configuration.Legacy",
     "..\Kephas.Logging.NLog",
     "..\Kephas.Logging.Log4Net",
     "..\Kephas.Logging.Serilog",

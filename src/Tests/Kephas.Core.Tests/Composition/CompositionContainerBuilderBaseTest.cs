@@ -14,14 +14,11 @@ namespace Kephas.Core.Tests.Composition
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-    using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Configuration;
     using Kephas.Logging;
 
     using NSubstitute;
@@ -39,13 +36,11 @@ namespace Kephas.Core.Tests.Composition
         public void Constructor_success()
         {
             var logManager = Substitute.For<ILogManager>();
-            var configuration = Substitute.For<IAppConfiguration>();
-            var platformManager = Substitute.For<IAppRuntime>();
-            var builder = new TestCompositionContainerBuilder(logManager, configuration, platformManager);
+            var appRuntime = Substitute.For<IAppRuntime>();
+            var builder = new TestCompositionContainerBuilder(logManager, appRuntime);
 
             Assert.AreEqual(logManager, builder.LogManager);
-            Assert.AreEqual(configuration, builder.AppConfiguration);
-            Assert.AreEqual(platformManager, builder.AppRuntime);
+            Assert.AreEqual(appRuntime, builder.AppRuntime);
 
             // The IServiceProvider export providers.
             Assert.AreEqual(1, builder.InternalExportProviders.Count);
@@ -78,8 +73,8 @@ namespace Kephas.Core.Tests.Composition
             {
             }
 
-            public TestCompositionContainerBuilder(ILogManager logManager, IAppConfiguration appConfiguration, IAppRuntime appRuntime)
-                : base(new CompositionRegistrationContext(new AmbientServices().RegisterService(logManager).RegisterService(appConfiguration).RegisterService(appRuntime)))
+            public TestCompositionContainerBuilder(ILogManager logManager, IAppRuntime appRuntime)
+                : base(new CompositionRegistrationContext(new AmbientServices().RegisterService(logManager).RegisterService(appRuntime)))
             {
             }
 

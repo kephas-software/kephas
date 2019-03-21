@@ -17,7 +17,6 @@ namespace Kephas.Tests.Composition.Mef
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
@@ -27,7 +26,6 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Logging;
-    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
@@ -57,9 +55,6 @@ namespace Kephas.Tests.Composition.Mef
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
 
-            var configuration = container.GetExport<IAppConfiguration>();
-            Assert.AreEqual(factory.AppConfiguration, configuration);
-
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
         }
@@ -74,9 +69,6 @@ namespace Kephas.Tests.Composition.Mef
 
             var loggerManager = container.GetExport<ILogManager>();
             Assert.AreEqual(factory.LogManager, loggerManager);
-
-            var configuration = container.GetExport<IAppConfiguration>();
-            Assert.AreEqual(factory.AppConfiguration, configuration);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(factory.AppRuntime, platformManager);
@@ -430,12 +422,10 @@ namespace Kephas.Tests.Composition.Mef
         private MefCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
-            var mockConfiguration = Substitute.For<IAppConfiguration>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
             var context = new CompositionRegistrationContext(new AmbientServices()
                                         .RegisterService(mockLoggerManager)
-                                        .RegisterService(mockConfiguration)
                                         .RegisterService(mockPlatformManager));
             config?.Invoke(context);
             var factory = new MefCompositionContainerBuilder(context);
