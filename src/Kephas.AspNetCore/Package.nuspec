@@ -29,7 +29,7 @@
         <references>
             <reference file="Kephas.AspNetCore.dll" />
         </references>
-        <tags>kephas framework asp.net</tags>
+        <tags>kephas asp.net</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

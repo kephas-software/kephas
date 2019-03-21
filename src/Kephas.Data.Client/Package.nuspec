@@ -26,7 +26,7 @@
         <references>
             <reference file="Kephas.Data.Client.dll" />
         </references>
-        <tags>kephas framework data client</tags>
+        <tags>kephas data client</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

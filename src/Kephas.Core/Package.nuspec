@@ -38,7 +38,7 @@
         <references>
             <reference file="Kephas.Core.dll" />
         </references>
-        <tags>kephas framework core</tags>
+        <tags>kephas core</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

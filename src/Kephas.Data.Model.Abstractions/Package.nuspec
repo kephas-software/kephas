@@ -29,7 +29,7 @@
         <references>
             <reference file="Kephas.Data.Model.Abstractions.dll" />
         </references>
-        <tags>kephas framework data model abstractions</tags>
+        <tags>kephas data model abstractions</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

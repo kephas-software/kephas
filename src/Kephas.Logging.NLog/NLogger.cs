@@ -15,7 +15,7 @@ namespace Kephas.Logging.NLog
     using global::NLog;
 
     /// <summary>
-    /// NLog logger.
+    /// The NLog logger adapter.
     /// </summary>
     public class NLogger : Logging.ILogger
     {

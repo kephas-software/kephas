@@ -31,7 +31,7 @@
                 <reference file="Kephas.Composition.Mef.dll" />
             </group>
         </references>
-        <tags>kephas framework composition mef</tags>
+        <tags>kephas composition mef</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

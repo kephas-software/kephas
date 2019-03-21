@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.CodeAnalysis.dll" />
         </references>
-        <tags>kephas framework code analysis</tags>
+        <tags>kephas code analysis</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

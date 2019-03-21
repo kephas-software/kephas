@@ -33,7 +33,7 @@
         <references>
             <reference file="Kephas.Data.dll" />
         </references>
-        <tags>kephas framework data</tags>
+        <tags>kephas data</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

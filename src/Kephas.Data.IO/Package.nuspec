@@ -26,7 +26,7 @@
         <references>
             <reference file="Kephas.Data.IO.dll" />
         </references>
-        <tags>kephas framework data input output import export</tags>
+        <tags>kephas data input output import export</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

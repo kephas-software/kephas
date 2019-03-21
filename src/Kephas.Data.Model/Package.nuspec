@@ -29,7 +29,7 @@
         <references>
             <reference file="Kephas.Data.Model.dll" />
         </references>
-        <tags>kephas framework data model</tags>
+        <tags>kephas data model</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

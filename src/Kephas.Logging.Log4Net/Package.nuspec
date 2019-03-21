@@ -31,7 +31,7 @@
         <references>
             <reference file="Kephas.Logging.Log4net.dll" />
         </references>
-        <tags>kephas framework logging log4net</tags>
+        <tags>kephas logging log4net</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

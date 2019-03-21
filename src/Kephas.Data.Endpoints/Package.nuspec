@@ -28,7 +28,7 @@
         <references>
             <reference file="Kephas.Data.Endpoints.dll" />
         </references>
-        <tags>kephas framework data endpoints</tags>
+        <tags>kephas data endpoints</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

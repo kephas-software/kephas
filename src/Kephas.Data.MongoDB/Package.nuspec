@@ -24,7 +24,7 @@
         <references>
             <reference file="Kephas.Data.MongoDB.dll" />
         </references>
-        <tags>kephas framework data mongo mongodb</tags>
+        <tags>kephas data mongo mongodb</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

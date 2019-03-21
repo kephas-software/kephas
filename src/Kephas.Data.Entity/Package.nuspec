@@ -30,7 +30,7 @@
         <references>
             <reference file="Kephas.Data.Entity.dll" />
         </references>
-        <tags>kephas framework data entity</tags>
+        <tags>kephas data entity</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

@@ -36,7 +36,7 @@
         <references>
             <reference file="Kephas.Logging.NLog.dll" />
         </references>
-        <tags>kephas framework logging nlog</tags>
+        <tags>kephas logging nlog</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

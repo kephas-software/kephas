@@ -19,7 +19,7 @@
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
-        <PackageTags>kephas framework data model abstractions</PackageTags>
+        <PackageTags>kephas data model abstractions</PackageTags>
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
           Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.</PackageReleaseNotes>
