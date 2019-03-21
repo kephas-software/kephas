@@ -31,7 +31,7 @@
         <references>
             <reference file="Kephas.Mail.MailKit.dll" />
         </references>
-        <tags>kephas framework mail mailkit</tags>
+        <tags>kephas mail mailkit</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

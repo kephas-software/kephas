@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.Model.dll" />
         </references>
-        <tags>kephas framework abstract modeling multi-dimensional</tags>
+        <tags>kephas abstract model multi-dimensional</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

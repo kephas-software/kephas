@@ -27,7 +27,7 @@
         <references>
             <reference file="Kephas.Messaging.Azure.ServiceBus.dll" />
         </references>
-        <tags>kephas framework messaging request response service layer azure servicebus</tags>
+        <tags>kephas messaging request response servicelayer events azure servicebus</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

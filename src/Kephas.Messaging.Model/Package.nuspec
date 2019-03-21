@@ -23,7 +23,7 @@
         <references>
             <reference file="Kephas.Messaging.Model.dll" />
         </references>
-        <tags>kephas framework messaging model</tags>
+        <tags>kephas messaging request response servicelayer events model</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

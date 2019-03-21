@@ -24,7 +24,7 @@
         <references>
             <reference file="Kephas.Mail.dll" />
         </references>
-        <tags>kephas framework mail</tags>
+        <tags>kephas mail</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

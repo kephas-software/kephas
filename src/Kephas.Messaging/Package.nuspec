@@ -28,7 +28,7 @@
         <references>
             <reference file="Kephas.Messaging.dll" />
         </references>
-        <tags>kephas framework messaging request response service layer</tags>
+        <tags>kephas messaging request response servicelayer events</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

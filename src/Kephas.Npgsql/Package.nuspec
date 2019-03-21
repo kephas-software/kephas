@@ -32,7 +32,7 @@
         <references>
             <reference file="Kephas.Npgsql.dll" />
         </references>
-        <tags>kephas framework npgsql postgres</tags>
+        <tags>kephas npgsql postgres</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
