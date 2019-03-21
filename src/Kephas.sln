@@ -149,7 +149,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Serilog", "Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj", "{8D30B571-8190-49C4-9A90-55026E82822F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -389,6 +391,10 @@ Global
 		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92DF9C0F-F886-4066-BAA1-959E6BA804D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D30B571-8190-49C4-9A90-55026E82822F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D30B571-8190-49C4-9A90-55026E82822F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D30B571-8190-49C4-9A90-55026E82822F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D30B571-8190-49C4-9A90-55026E82822F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
