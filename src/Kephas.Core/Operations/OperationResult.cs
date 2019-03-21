@@ -137,11 +137,19 @@ namespace Kephas.Operations
         /// Internal implementation of a concurrent collection.
         /// </summary>
         /// <typeparam name="T">The item type.</typeparam>
-        private class ConcurrentCollection<T> : ConcurrentBag<T>, ICollection<T>
+        private class ConcurrentCollection<T> : ConcurrentQueue<T>, ICollection<T>
         {
             /// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</summary>
             /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only; otherwise, false.</returns>
             public bool IsReadOnly => false;
+
+            /// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
+            /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
+            /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
+            public void Add(T item)
+            {
+                this.Enqueue(item);
+            }
 
             /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
             /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
