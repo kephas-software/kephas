@@ -14,6 +14,7 @@ namespace Kephas
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -23,6 +24,14 @@ namespace Kephas
     /// </summary>
     public interface IAmbientServices : IExpando, IServiceProvider
     {
+        /// <summary>
+        /// Gets the configuration store.
+        /// </summary>
+        /// <value>
+        /// The configuration store.
+        /// </value>
+        IConfigurationStore ConfigurationStore { get; }
+
         /// <summary>
         /// Gets the composition container.
         /// </summary>

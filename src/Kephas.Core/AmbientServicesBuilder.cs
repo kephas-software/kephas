@@ -15,6 +15,7 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
+    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -51,6 +52,22 @@ namespace Kephas
         /// The ambient services.
         /// </value>
         public IAmbientServices AmbientServices { get; }
+
+        /// <summary>
+        /// Sets the configuration store to the ambient services.
+        /// </summary>
+        /// <param name="configurationStore">The configuration store.</param>
+        /// <returns>
+        /// The ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithConfigurationStore(IConfigurationStore configurationStore)
+        {
+            Requires.NotNull(configurationStore, nameof(configurationStore));
+
+            this.AmbientServices.RegisterService(configurationStore);
+
+            return this;
+        }
 
         /// <summary>
         /// Sets the log manager to the ambient services.

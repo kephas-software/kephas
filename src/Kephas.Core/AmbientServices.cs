@@ -18,6 +18,7 @@ namespace Kephas
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
+    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -57,6 +58,7 @@ namespace Kephas
             var assemblyLoader = new DefaultAssemblyLoader();
 
             this.RegisterService<IAmbientServices>(this)
+                .RegisterService<IConfigurationStore>(new DefaultConfigurationStore())
                 .RegisterService<ILogManager>(logManager)
                 .RegisterService<ICompositionContext>(new NullCompositionContainer())
                 .RegisterService<IAssemblyLoader>(assemblyLoader)
@@ -90,6 +92,14 @@ namespace Kephas
                 instance = value;
             }
         }
+
+        /// <summary>
+        /// Gets the configuration store.
+        /// </summary>
+        /// <value>
+        /// The configuration store.
+        /// </value>
+        public IConfigurationStore ConfigurationStore => this.GetService<IConfigurationStore>();
 
         /// <summary>
         /// Gets the composition container.
