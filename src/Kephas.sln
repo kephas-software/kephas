@@ -151,11 +151,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Logging.Serilog", "Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj", "{8D30B571-8190-49C4-9A90-55026E82822F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Serilog", "Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj", "{8D30B571-8190-49C4-9A90-55026E82822F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Configuration.Legacy", "Kephas.Configuration.Legacy\Kephas.Configuration.Legacy.csproj", "{87016F79-6EAA-49BB-8C42-E6BCE5A53014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy", "Kephas.Configuration.Legacy\Kephas.Configuration.Legacy.csproj", "{87016F79-6EAA-49BB-8C42-E6BCE5A53014}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Configuration.Legacy.Tests", "Tests\Kephas.Configuration.Legacy.Tests\Kephas.Configuration.Legacy.Tests.csproj", "{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy.Tests", "Tests\Kephas.Configuration.Legacy.Tests\Kephas.Configuration.Legacy.Tests.csproj", "{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -407,6 +409,10 @@ Global
 		{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -438,6 +444,7 @@ Global
 		{3719FB8A-BB9B-402B-BD61-7FE3F7CA7669} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{92DF9C0F-F886-4066-BAA1-959E6BA804D8} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{4795D5B0-995C-4F03-B7B2-E58E6748E7C3} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

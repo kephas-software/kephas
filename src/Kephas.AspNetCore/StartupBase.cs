@@ -18,9 +18,11 @@ namespace Kephas.AspNetCore
     using Kephas.Application;
     using Kephas.AspNetCore.Application;
     using Kephas.AspNetCore.Composition;
+    using Kephas.AspNetCore.Configuration;
     using Kephas.AspNetCore.Hosting;
     using Kephas.AspNetCore.Logging;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
@@ -114,6 +116,7 @@ namespace Kephas.AspNetCore
 
                 this.ambientServices = this.ambientServices ?? AmbientServices.Instance;
                 this.ambientServices.RegisterService(serviceCollection);
+                this.ambientServices.RegisterService<IConfigurationStore>(new AspNetConfigurationStore(this.Configuration));
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
                 var ambientServicesBuilder = new AmbientServicesBuilder(this.ambientServices);
