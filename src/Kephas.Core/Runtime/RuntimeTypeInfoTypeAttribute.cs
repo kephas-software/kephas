@@ -18,7 +18,7 @@ namespace Kephas.Runtime
     /// Attribute indicating the type of runtime type information to use for a specific type. This class cannot be inherited.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
-    public sealed class RuntimeTypeInfoTypeAttribute : Attribute
+    public sealed class RuntimeTypeInfoTypeAttribute : Attribute, IRuntimeTypeInfoProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfoTypeAttribute"/> class.
@@ -42,5 +42,17 @@ namespace Kephas.Runtime
         /// The type of the runtime type information.
         /// </value>
         public Type Type { get; }
+
+        /// <summary>
+        /// Gets the runtime type information type for the provided raw type.
+        /// </summary>
+        /// <param name="type">The raw type.</param>
+        /// <returns>
+        /// The matching runtime type information type.
+        /// </returns>
+        public Type GetRuntimeTypeInfoType(Type type)
+        {
+            return this.Type;
+        }
     }
 }

@@ -495,7 +495,6 @@ namespace Kephas.Core.Tests.Runtime
         {
         }
 
-
         public class TestDerivedClassWithInterfaces : TestClass, IEnumerable<int>
         {
             public IEnumerator<int> GetEnumerator()
@@ -522,6 +521,38 @@ namespace Kephas.Core.Tests.Runtime
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
             public T Value;
         }
+
+        [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
+        public class HasSpecialRuntimeTypeInfo { }
+
+        public class SpecialRuntimeTypeInfo : RuntimeTypeInfo
+        {
+            public SpecialRuntimeTypeInfo(Type type)
+                : base(type)
+            {
+            }
+        }
+
+        [RuntimeTypeInfoType(typeof(BadConstructorRuntimeTypeInfo))]
+        private class HasBadConstructorRuntimeTypeInfo { }
+
+        public class BadConstructorRuntimeTypeInfo : RuntimeTypeInfo
+        {
+            public BadConstructorRuntimeTypeInfo()
+                : base(typeof(int))
+            {
+            }
+        }
+
+        [RuntimeTypeInfoType(typeof(BadImplRuntimeTypeInfo))]
+        private class HasBadImplTypeRuntimeTypeInfo { }
+
+        public class BadImplRuntimeTypeInfo
+        {
+            public BadImplRuntimeTypeInfo(Type t)
+            {
+            }
+        }
     }
 
     namespace GetAttributes
@@ -541,38 +572,5 @@ namespace Kephas.Core.Tests.Runtime
 
         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
         public class NonDerivedInheritableAttribute : Attribute { }
-    }
-
-    [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
-    public class HasSpecialRuntimeTypeInfo { }
-
-    public class SpecialRuntimeTypeInfo : RuntimeTypeInfo
-    {
-        public SpecialRuntimeTypeInfo(Type type)
-            : base(type)
-        {
-        }
-    }
-
-    [RuntimeTypeInfoType(typeof(BadConstructorRuntimeTypeInfo))]
-    public class HasBadConstructorRuntimeTypeInfo { }
-
-    public class BadConstructorRuntimeTypeInfo : RuntimeTypeInfo
-    {
-        public BadConstructorRuntimeTypeInfo()
-        : base(typeof(int))
-        {
-        }
-    }
-
-    [RuntimeTypeInfoType(typeof(BadImplRuntimeTypeInfo))]
-    public class HasBadImplTypeRuntimeTypeInfo { }
-
-
-    public class BadImplRuntimeTypeInfo
-    {
-        public BadImplRuntimeTypeInfo(Type t)
-        {
-        }
     }
 }

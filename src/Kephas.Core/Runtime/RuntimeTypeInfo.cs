@@ -993,15 +993,16 @@ namespace Kephas.Runtime
 
         private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
         {
-            var attr = rawType.GetCustomAttribute<RuntimeTypeInfoTypeAttribute>();
-            if (attr?.Type == null)
+            var attr = rawType.GetCustomAttributes().OfType<IRuntimeTypeInfoProvider>().FirstOrDefault();
+            var typeInfoType = attr?.GetRuntimeTypeInfoType(rawType);
+            if (typeInfoType == null)
             {
                 return new RuntimeTypeInfo(rawType);
             }
 
             try
             {
-                var typeInfo = Activator.CreateInstance(attr.Type, rawType);
+                var typeInfo = Activator.CreateInstance(typeInfoType, rawType);
                 if (typeInfo is IRuntimeTypeInfo runtimeTypeInfo)
                 {
                     return runtimeTypeInfo;
