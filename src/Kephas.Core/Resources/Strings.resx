@@ -306,4 +306,10 @@
   <data name="UnhandledException_Terminating_Message" xml:space="preserve">
     <value>Unhandled exception terminating the process.</value>
   </data>
+  <data name="RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception" xml:space="preserve">
+    <value>The type {0} provided in the [{1}] attribute must implement {2}.</value>
+  </data>
+  <data name="RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception" xml:space="preserve">
+    <value>The type {0} provided in the [{1}] attribute must implement have a public constructor accepting a single type parameter.</value>
+  </data>
 </root>

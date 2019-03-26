@@ -37,7 +37,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides optimized access to methods and properties at runtime.
     /// </summary>
-    public sealed class RuntimeTypeInfo : Expando, IRuntimeTypeInfo
+    public class RuntimeTypeInfo : Expando, IRuntimeTypeInfo
     {
         /// <summary>
         /// The cache of runtime type infos.
@@ -72,7 +72,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The function for creating the type info.
         /// </summary>
-        private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = t => new RuntimeTypeInfo(t);
+        private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = CreateRuntimeTypeInfoCore;
 
         /// <summary>
         /// The fields.
@@ -146,18 +146,18 @@ namespace Kephas.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        internal RuntimeTypeInfo(Type type)
-            : this(type, type.GetTypeInfo())
+        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
+        internal RuntimeTypeInfo(TypeInfo typeInfo)
+            : this(typeInfo.AsType(), typeInfo)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        internal RuntimeTypeInfo(TypeInfo typeInfo)
-            : this(typeInfo.AsType(), typeInfo)
+        /// <param name="type">The type.</param>
+        protected internal RuntimeTypeInfo(Type type)
+            : this(type, type.GetTypeInfo())
         {
         }
 
@@ -963,7 +963,7 @@ namespace Kephas.Runtime
 
             if (constructors.Count == 0)
             {
-                return args => { throw new InvalidOperationException(string.Format(Strings.RuntimeTypeInfo_NoPublicConstructorDefined_Exception, this.Type)); };
+                return args => throw new InvalidOperationException(string.Format(Strings.RuntimeTypeInfo_NoPublicConstructorDefined_Exception, this.Type));
             }
 
             if (constructors.Count > 1)
@@ -989,6 +989,40 @@ namespace Kephas.Runtime
             var lambda = Expression.Lambda(typeof(InstanceActivator), newex, argsParam);
             var activator = (InstanceActivator)lambda.Compile();
             return activator;
+        }
+
+        private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
+        {
+            var attr = rawType.GetCustomAttribute<RuntimeTypeInfoTypeAttribute>();
+            if (attr?.Type == null)
+            {
+                return new RuntimeTypeInfo(rawType);
+            }
+
+            try
+            {
+                var typeInfo = Activator.CreateInstance(attr.Type, rawType);
+                if (typeInfo is IRuntimeTypeInfo runtimeTypeInfo)
+                {
+                    return runtimeTypeInfo;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    string.Format(
+                        Strings.RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception,
+                        rawType,
+                        typeof(RuntimeTypeInfoTypeAttribute)),
+                    ex);
+            }
+
+            throw new InvalidOperationException(
+                string.Format(
+                    Strings.RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception,
+                    rawType,
+                    typeof(RuntimeTypeInfoTypeAttribute),
+                    typeof(IRuntimeTypeInfo)));
         }
     }
 }

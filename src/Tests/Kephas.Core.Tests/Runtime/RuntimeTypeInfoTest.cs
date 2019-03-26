@@ -201,7 +201,7 @@ namespace Kephas.Core.Tests.Runtime
         public void CreateInstance_exception_private_constructor()
         {
             var runtimeTypeInfo = new RuntimeTypeInfo(typeof(TestClassWithConstructor));
-            Assert.Throws<MissingMethodException>(() => runtimeTypeInfo.CreateInstance(new object[] {3, "Hello"}));
+            Assert.Throws<MissingMethodException>(() => runtimeTypeInfo.CreateInstance(new object[] { 3, "Hello" }));
         }
 
         [Test]
@@ -429,6 +429,34 @@ namespace Kephas.Core.Tests.Runtime
             Assert.IsTrue(attrs.OfType<GetAttributes.NonDerivedInheritableAttribute>().Any());
         }
 
+        [Test]
+        public void CreateRuntimeTypeInfo_default()
+        {
+            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(int));
+            Assert.IsInstanceOf<RuntimeTypeInfo>(typeInfo);
+        }
+
+        [Test]
+        public void CreateRuntimeTypeInfo_attributed()
+        {
+            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
+            Assert.IsInstanceOf<SpecialRuntimeTypeInfo>(typeInfo);
+        }
+
+        [Test]
+        public void CreateRuntimeTypeInfo_attributed_invalid_constructor()
+        {
+            Assert.Throws<InvalidOperationException>(
+                () => RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasBadConstructorRuntimeTypeInfo)));
+        }
+
+        [Test]
+        public void CreateRuntimeTypeInfo_attributed_invalid_implementation()
+        {
+            Assert.Throws<InvalidOperationException>(
+                () => RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasBadImplTypeRuntimeTypeInfo)));
+        }
+
         public class TestClass
         {
             public string PublicField;
@@ -513,5 +541,38 @@ namespace Kephas.Core.Tests.Runtime
 
         [AttributeUsage(AttributeTargets.Class, Inherited = false)]
         public class NonDerivedInheritableAttribute : Attribute { }
+    }
+
+    [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
+    public class HasSpecialRuntimeTypeInfo { }
+
+    public class SpecialRuntimeTypeInfo : RuntimeTypeInfo
+    {
+        public SpecialRuntimeTypeInfo(Type type)
+            : base(type)
+        {
+        }
+    }
+
+    [RuntimeTypeInfoType(typeof(BadConstructorRuntimeTypeInfo))]
+    public class HasBadConstructorRuntimeTypeInfo { }
+
+    public class BadConstructorRuntimeTypeInfo : RuntimeTypeInfo
+    {
+        public BadConstructorRuntimeTypeInfo()
+        : base(typeof(int))
+        {
+        }
+    }
+
+    [RuntimeTypeInfoType(typeof(BadImplRuntimeTypeInfo))]
+    public class HasBadImplTypeRuntimeTypeInfo { }
+
+
+    public class BadImplRuntimeTypeInfo
+    {
+        public BadImplRuntimeTypeInfo(Type t)
+        {
+        }
     }
 }

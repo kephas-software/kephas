@@ -539,6 +539,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The type {0} provided in the [{1}] attribute must implement have a public constructor accepting a single type parameter..
+        /// </summary>
+        internal static string RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type {0} provided in the [{1}] attribute must implement {2}..
+        /// </summary>
+        internal static string RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception {
+            get {
+                return ResourceManager.GetString("RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Member {0} not found in {1}..
         /// </summary>
         internal static string RuntimeTypeInfo_MemberNotFound_Exception {
