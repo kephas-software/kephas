@@ -16,6 +16,7 @@ namespace Kephas.Data.Capabilities
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Behaviors;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -119,6 +120,13 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Gets or sets the change state of the entity before persisting to the data store.
         /// </summary>
+        /// <remarks>
+        /// This value is typically used in the post processing part of the persist behavior
+        /// (<see cref="IOnPersistBehavior.AfterPersistAsync"/>) to perform specific tasks 
+        /// depending on the value of <see cref="ChangeState"/> before  persisting to the data store.
+        /// Outside this behavior this value is not reliable, as the behaviors may trigger multiple persist commands
+        /// for an entity and this state is typically the value before the last persist command.
+        /// </remarks>
         /// <value>
         /// The change state.
         /// </value>
