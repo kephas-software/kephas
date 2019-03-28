@@ -18,6 +18,7 @@ namespace Kephas.Core.Tests.Runtime
     using System.Reflection;
 
     using Kephas.Activation;
+    using Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -429,34 +430,6 @@ namespace Kephas.Core.Tests.Runtime
             Assert.IsTrue(attrs.OfType<GetAttributes.NonDerivedInheritableAttribute>().Any());
         }
 
-        [Test]
-        public void CreateRuntimeTypeInfo_default()
-        {
-            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(int));
-            Assert.IsInstanceOf<RuntimeTypeInfo>(typeInfo);
-        }
-
-        [Test]
-        public void CreateRuntimeTypeInfo_attributed()
-        {
-            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
-            Assert.IsInstanceOf<SpecialRuntimeTypeInfo>(typeInfo);
-        }
-
-        [Test]
-        public void CreateRuntimeTypeInfo_attributed_invalid_constructor()
-        {
-            Assert.Throws<InvalidOperationException>(
-                () => RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasBadConstructorRuntimeTypeInfo)));
-        }
-
-        [Test]
-        public void CreateRuntimeTypeInfo_attributed_invalid_implementation()
-        {
-            Assert.Throws<InvalidOperationException>(
-                () => RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasBadImplTypeRuntimeTypeInfo)));
-        }
-
         public class TestClass
         {
             public string PublicField;
@@ -520,38 +493,6 @@ namespace Kephas.Core.Tests.Runtime
         {
             [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Reviewed. Suppression is OK here.")]
             public T Value;
-        }
-
-        [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
-        public class HasSpecialRuntimeTypeInfo { }
-
-        public class SpecialRuntimeTypeInfo : RuntimeTypeInfo
-        {
-            public SpecialRuntimeTypeInfo(Type type)
-                : base(type)
-            {
-            }
-        }
-
-        [RuntimeTypeInfoType(typeof(BadConstructorRuntimeTypeInfo))]
-        private class HasBadConstructorRuntimeTypeInfo { }
-
-        public class BadConstructorRuntimeTypeInfo : RuntimeTypeInfo
-        {
-            public BadConstructorRuntimeTypeInfo()
-                : base(typeof(int))
-            {
-            }
-        }
-
-        [RuntimeTypeInfoType(typeof(BadImplRuntimeTypeInfo))]
-        private class HasBadImplTypeRuntimeTypeInfo { }
-
-        public class BadImplRuntimeTypeInfo
-        {
-            public BadImplRuntimeTypeInfo(Type t)
-            {
-            }
         }
     }
 

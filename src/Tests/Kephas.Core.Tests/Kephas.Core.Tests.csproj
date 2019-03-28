@@ -46,7 +46,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-        <Reference Include="System.ComponentModel.DataAnnotations"/>
+        <Reference Include="System.ComponentModel.DataAnnotations" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">

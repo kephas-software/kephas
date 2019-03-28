@@ -70,6 +70,11 @@ namespace Kephas.Runtime
         private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
 
         /// <summary>
+        /// The factories.
+        /// </summary>
+        private static IList<IRuntimeTypeInfoFactory> factories = new List<IRuntimeTypeInfoFactory>();
+
+        /// <summary>
         /// The function for creating the type info.
         /// </summary>
         private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = CreateRuntimeTypeInfoCore;
@@ -366,6 +371,22 @@ namespace Kephas.Runtime
         /// The runtime methods.
         /// </value>
         public IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods => this.GetMethods();
+
+        /// <summary>
+        /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
+        /// </summary>
+        /// <remarks>
+        /// Factories are called in the inverse order of their addition, meaning that the last added factory
+        /// is invoked first. This is by design, so that the non-framework code has a change to override the
+        /// default behavior.
+        /// </remarks>
+        /// <param name="factory">The factory.</param>
+        public static void RegisterFactory(IRuntimeTypeInfoFactory factory)
+        {
+            Requires.NotNull(factory, nameof(factory));
+
+            factories.Insert(0, factory);
+        }
 
         /// <summary>
         /// Gets the underlying member information.
@@ -993,37 +1014,19 @@ namespace Kephas.Runtime
 
         private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
         {
-            var attr = rawType.GetCustomAttributes().OfType<IRuntimeTypeInfoProvider>().FirstOrDefault();
-            var typeInfoType = attr?.GetRuntimeTypeInfoType(rawType);
-            if (typeInfoType == null)
+            if (factories.Count > 0)
             {
-                return new RuntimeTypeInfo(rawType);
-            }
-
-            try
-            {
-                var typeInfo = Activator.CreateInstance(typeInfoType, rawType);
-                if (typeInfo is IRuntimeTypeInfo runtimeTypeInfo)
+                foreach (var factory in factories)
                 {
-                    return runtimeTypeInfo;
+                    var typeInfo = factory.TryCreateRuntimeTypeInfo(rawType);
+                    if (typeInfo != null)
+                    {
+                        return typeInfo;
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    string.Format(
-                        Strings.RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception,
-                        rawType,
-                        typeof(RuntimeTypeInfoTypeAttribute)),
-                    ex);
-            }
 
-            throw new InvalidOperationException(
-                string.Format(
-                    Strings.RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidType_Exception,
-                    rawType,
-                    typeof(RuntimeTypeInfoTypeAttribute),
-                    typeof(IRuntimeTypeInfo)));
+            return new RuntimeTypeInfo(rawType);
         }
     }
 }

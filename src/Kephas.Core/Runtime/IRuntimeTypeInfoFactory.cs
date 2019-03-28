@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRuntimeTypeInfoProvider.cs" company="Kephas Software SRL">
+// <copyright file="IRuntimeTypeInfoFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IRuntimeTypeInfoProvider interface.
+//   Declares the IRuntimeTypeInfoFactory interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,17 +13,17 @@ namespace Kephas.Runtime
     using System;
 
     /// <summary>
-    /// Interface for runtime type information provider.
+    /// Contract for factories creating <see cref="IRuntimeTypeInfo"/> instances.
     /// </summary>
-    public interface IRuntimeTypeInfoProvider
+    public interface IRuntimeTypeInfoFactory
     {
         /// <summary>
-        /// Gets the runtime type information type for the provided raw type.
+        /// Tries to create the runtime type information type for the provided raw type.
         /// </summary>
         /// <param name="type">The raw type.</param>
         /// <returns>
-        /// The matching runtime type information type.
+        /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        Type GetRuntimeTypeInfoType(Type type);
+        IRuntimeTypeInfo TryCreateRuntimeTypeInfo(Type type);
     }
 }
