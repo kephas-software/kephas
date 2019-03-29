@@ -51,5 +51,12 @@ namespace Kephas.Messaging
         /// The event identifier matching.
         /// </value>
         public MessageIdMatching MessageIdMatching { get; set; }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{this.MessageTypeMatching}/{this.MessageType}:{this.MessageIdMatching}/{this.MessageId}";
+        }
     }
 }

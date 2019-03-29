@@ -22,7 +22,6 @@ namespace Kephas.Messaging
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Services;
     using Kephas.Services.Composition;
