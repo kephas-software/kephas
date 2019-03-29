@@ -91,7 +91,7 @@ namespace Kephas.Dynamic
                 try
                 {
                     this.lockDictionary[key] = true;
-                    value = this.ValueResolver(key);
+                    value = valueResolver(key);
                     this.innerDictionary[key] = value;
                 }
                 finally
