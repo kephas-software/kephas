@@ -14,6 +14,7 @@ namespace Kephas.Workflow.Behaviors.Composition
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -48,6 +49,9 @@ namespace Kephas.Workflow.Behaviors.Composition
         public ActivityBehaviorMetadata(Type activityType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
             : base(processingPriority, overridePriority, optionalService, serviceName)
         {
+            Requires.NotNull(activityType, nameof(activityType));
+
+            this.ActivityType = activityType;
         }
 
         /// <summary>

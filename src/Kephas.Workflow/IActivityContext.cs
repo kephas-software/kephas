@@ -21,10 +21,10 @@ namespace Kephas.Workflow
     public interface IActivityContext : IContext
     {
         /// <summary>
-        /// Gets the message processor.
+        /// Gets the workflow processor.
         /// </summary>
         /// <value>
-        /// The message processor.
+        /// The workflow processor.
         /// </value>
         IWorkflowProcessor WorkflowProcessor { get; }
 
@@ -49,7 +49,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution result.
         /// </value>
-        IExpando Result { get; set; }
+        object Result { get; set; }
 
         /// <summary>
         /// Gets or sets the execution exception.

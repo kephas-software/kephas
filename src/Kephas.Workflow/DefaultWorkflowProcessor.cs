@@ -93,7 +93,48 @@ namespace Kephas.Workflow
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
 
             //...
+            await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
+
+            //...
+
+            //...
+            await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
+
             return null;
+        }
+
+        /// <summary>
+        /// Applies the behaviors invoking the <see cref="IActivityBehavior.BeforeExecuteAsync"/> asynchronously.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="context">The execution context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual async Task ApplyBeforeExecuteBehaviorsAsync(IEnumerable<IActivityBehavior> behaviors, IActivityContext context, CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.BeforeExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Applies the behaviors invoking the <see cref="IActivityBehavior.AfterExecuteAsync"/> asynchronously.
+        /// </summary>
+        /// <param name="behaviors">The behaviors.</param>
+        /// <param name="context">The execution context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual async Task ApplyAfterExecuteBehaviorsAsync(IEnumerable<IActivityBehavior> behaviors, IActivityContext context, CancellationToken cancellationToken)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.AfterExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            }
         }
 
         /// <summary>
