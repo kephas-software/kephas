@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Behavior.Composition
+namespace Kephas.Services.Behaviors.Composition
 {
     using System;
     using System.Collections.Generic;

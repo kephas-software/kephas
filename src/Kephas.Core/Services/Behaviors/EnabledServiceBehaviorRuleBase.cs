@@ -8,9 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Behavior
+namespace Kephas.Services.Behaviors
 {
-    using Kephas.Behavior;
+    using Kephas.Behaviors;
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.

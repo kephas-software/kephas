@@ -15,8 +15,8 @@ namespace Kephas.Core.Tests.Application
 
     using Kephas.Application;
     using Kephas.Application.Composition;
-    using Kephas.Behavior;
-    using Kephas.Services.Behavior;
+    using Kephas.Behaviors;
+    using Kephas.Services.Behaviors;
     using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;

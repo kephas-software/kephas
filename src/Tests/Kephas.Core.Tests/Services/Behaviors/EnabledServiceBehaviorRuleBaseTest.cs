@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services.Behavior
+namespace Kephas.Core.Tests.Services.Behaviors
 {
-    using Kephas.Behavior;
+    using Kephas.Behaviors;
     using Kephas.Composition;
-    using Kephas.Services.Behavior;
+    using Kephas.Services.Behaviors;
 
     using NSubstitute;
 

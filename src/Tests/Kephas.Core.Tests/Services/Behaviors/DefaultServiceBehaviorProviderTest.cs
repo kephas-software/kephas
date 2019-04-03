@@ -8,18 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Services.Behavior
+namespace Kephas.Core.Tests.Services.Behaviors
 {
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Behavior;
+    using Kephas.Behaviors;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Services;
-    using Kephas.Services.Behavior;
-    using Kephas.Services.Behavior.Composition;
+    using Kephas.Services.Behaviors;
+    using Kephas.Services.Behaviors.Composition;
 
     using NSubstitute;
 

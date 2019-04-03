@@ -24,8 +24,8 @@ namespace Kephas.Core.Tests.Application
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Services.Behavior;
-    using Kephas.Services.Behavior.Composition;
+    using Kephas.Services.Behaviors;
+    using Kephas.Services.Behaviors.Composition;
     using Kephas.Services.Composition;
 
     using NSubstitute;

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Behavior
+namespace Kephas.Services.Behaviors
 {
     using System;
     using System.Collections.Concurrent;
@@ -17,7 +17,7 @@ namespace Kephas.Services.Behavior
 
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Behavior.Composition;
+    using Kephas.Services.Behaviors.Composition;
 
     /// <summary>
     /// A default service behavior provider.

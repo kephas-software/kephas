@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behavior
+namespace Kephas.Behaviors
 {
     /// <summary>
     /// Non-generic contract for defining a behavior rule.

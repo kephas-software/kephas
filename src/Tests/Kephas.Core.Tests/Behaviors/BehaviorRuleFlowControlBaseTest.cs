@@ -8,9 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Behavior
+namespace Kephas.Core.Tests.Behaviors
 {
-    using Kephas.Behavior;
+    using Kephas.Behaviors;
     using Kephas.Services;
 
     using NUnit.Framework;

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behavior
+namespace Kephas.Behaviors
 {
     /// <summary>
     /// Base class for behavior rules.

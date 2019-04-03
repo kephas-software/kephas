@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Behavior
+namespace Kephas.Services.Behaviors
 {
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;

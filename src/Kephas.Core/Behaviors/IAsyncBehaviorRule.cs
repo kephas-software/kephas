@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Behavior
+namespace Kephas.Behaviors
 {
     using System.Threading;
     using System.Threading.Tasks;
