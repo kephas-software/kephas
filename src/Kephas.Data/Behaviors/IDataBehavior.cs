@@ -28,7 +28,7 @@ namespace Kephas.Data.Behaviors
     /// Generic application service contract for data behaviors.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    [AppServiceContract(ContractType = typeof(IDataBehavior))]
+    [SharedAppServiceContract(ContractType = typeof(IDataBehavior))]
     public interface IDataBehavior<TEntity> : IDataBehavior
     {
     }
