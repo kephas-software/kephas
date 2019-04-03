@@ -20,7 +20,7 @@ namespace Kephas.AspNetCore.Application
     using Kephas.AspNetCore.Resources;
     using Kephas.Composition;
     using Kephas.Services;
-    using Kephas.Services.Behavior;
+    using Kephas.Services.Behaviors;
     using Kephas.Services.Composition;
 
     /// <summary>
