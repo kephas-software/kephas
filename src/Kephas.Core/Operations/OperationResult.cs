@@ -25,6 +25,11 @@ namespace Kephas.Operations
     public class OperationResult : Expando, IOperationResult
     {
         /// <summary>
+        /// The return value.
+        /// </summary>
+        private object returnValue;
+
+        /// <summary>
         /// The operation state.
         /// </summary>
         private OperationState operationState;
@@ -52,6 +57,18 @@ namespace Kephas.Operations
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets the return value.
+        /// </summary>
+        /// <value>
+        /// The return value.
+        /// </value>
+        public object ReturnValue
+        {
+            get => this.returnValue;
+            set => this.SetProperty(ref this.returnValue, value);
+        }
 
         /// <summary>
         /// Gets or sets the state of the operation.

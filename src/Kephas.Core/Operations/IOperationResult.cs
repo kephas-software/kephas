@@ -28,6 +28,14 @@ namespace Kephas.Operations
     public interface IOperationResult : IExpando, INotifyPropertyChanged
     {
         /// <summary>
+        /// Gets or sets the return value.
+        /// </summary>
+        /// <value>
+        /// The return value.
+        /// </value>
+        object ReturnValue { get; set; }
+
+        /// <summary>
         /// Gets or sets the state of the operation.
         /// </summary>
         /// <value>
