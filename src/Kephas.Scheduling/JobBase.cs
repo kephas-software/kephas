@@ -1,25 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IJob.cs" company="Kephas Software SRL">
+// <copyright file="JobBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IJob interface.
+//   Implements the job base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Scheduling
 {
-    using System;
-
     using Kephas.Scheduling.Reflection;
     using Kephas.Workflow;
 
     /// <summary>
-    /// Contract for automated pieces of work that can be performed at either a particular time, or on a recurring schedule.
+    /// Base implementation of a <see cref="IJob"/>.
     /// </summary>
-    /// <remarks>Jobs are specializations of activities.</remarks>
-    public interface IJob : IActivity, IDisposable
+    public class JobBase : ActivityBase, IJob
     {
         /// <summary>
         /// Gets the type information for this instance.
@@ -27,6 +24,12 @@ namespace Kephas.Scheduling
         /// <returns>
         /// The type information.
         /// </returns>
-        new IJobInfo GetTypeInfo();
+        public new IJobInfo GetTypeInfo() => (IJobInfo)base.GetTypeInfo();
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

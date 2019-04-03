@@ -1,35 +1,46 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IJobInfo.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeJobInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IJobInfo interface.
+//   Implements the runtime job information class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling.Reflection
+namespace Kephas.Scheduling.Runtime
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Scheduling.Reflection;
     using Kephas.Workflow;
-    using Kephas.Workflow.Reflection;
+    using Kephas.Workflow.Runtime;
 
     /// <summary>
-    /// Interface for job information.
+    /// Information about the runtime job.
     /// </summary>
-    public interface IJobInfo : IActivityInfo
+    public class RuntimeJobInfo : RuntimeActivityInfo, IJobInfo
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RuntimeJobInfo"/> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        protected internal RuntimeJobInfo(Type type)
+            : base(type)
+        {
+        }
+
         /// <summary>
         /// Gets the job triggers.
         /// </summary>
         /// <value>
         /// The job triggers.
         /// </value>
-        IEnumerable<ITrigger> Triggers { get; }
+        public IEnumerable<ITrigger> Triggers { get; }
 
         /// <summary>
         /// Executes the job asynchronously.
@@ -41,10 +52,13 @@ namespace Kephas.Scheduling.Reflection
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        Task<object> ExecuteAsync(
+        public async Task<object> ExecuteAsync(
             IJob job,
             IExpando arguments,
             IActivityContext context,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
