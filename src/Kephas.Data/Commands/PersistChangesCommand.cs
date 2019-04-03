@@ -96,13 +96,13 @@ namespace Kephas.Data.Commands
                                     throw ex;
                                 }
 
-                                await this.ExecuteBeforeSaveBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
+                                await this.ApplyBeforePersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
 
                                 changes = await this.ValidateAndPersistChangeSetAsync(iterationChangeSet, changes, operationContext, sb, cancellationToken).PreserveThreadContext();
 
                                 this.AcceptChanges(operationContext, iterationChangeSet);
 
-                                await this.ExecuteAfterSaveBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
+                                await this.ApplyAfterPersistBehaviorsAsync(operationContext, iterationChangeSet, cancellationToken).PreserveThreadContext();
 
                                 // NOTE: after calling after save behaviors, it may happen that new changes occur, so try to save the new changes again.
                                 currentIteration++;
@@ -180,7 +180,7 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Executes the after save behaviors asynchronously.
+        /// Applies the behaviors invoking the <see cref="IOnPersistBehavior.AfterPersistAsync"/> asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context for persisting the changes.</param>
         /// <param name="changeSet">The modified entities.</param>
@@ -188,7 +188,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ExecuteAfterSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
+        protected virtual async Task ApplyAfterPersistBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
             foreach (var entityEntry in changeSet)
             {
@@ -201,7 +201,7 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Executes the before save behaviors asynchronously.
+        /// Applies the behaviors invoking the <see cref="IOnPersistBehavior.BeforePersistAsync"/> asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context for persisting the changes.</param>
         /// <param name="changeSet">The modified entities.</param>
@@ -209,7 +209,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A Task.
         /// </returns>
-        protected virtual async Task ExecuteBeforeSaveBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
+        protected virtual async Task ApplyBeforePersistBehaviorsAsync(IPersistChangesContext operationContext, IList<IEntityEntry> changeSet, CancellationToken cancellationToken)
         {
             foreach (var entityEntry in changeSet)
             {
