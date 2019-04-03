@@ -27,7 +27,7 @@
         {
             var appManifest = new AssemblyAppManifest(typeof(AppManifestBase).Assembly);
             Assert.AreEqual("kephas", appManifest.AppId);
-            Assert.AreEqual(new Version("5.3.0"), appManifest.AppVersion);
+            Assert.AreEqual(new Version("6.0.0"), appManifest.AppVersion);
         }
 
         [Test]
