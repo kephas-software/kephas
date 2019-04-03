@@ -138,10 +138,7 @@ namespace Kephas.Messaging
 
                     try
                     {
-                        foreach (var behavior in behaviors)
-                        {
-                            await behavior.BeforeProcessAsync(context, token).PreserveThreadContext();
-                        }
+                        await this.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token).PreserveThreadContext();
 
                         var response = await messageHandler.ProcessAsync(message, context, token)
                                            .PreserveThreadContext();
@@ -159,10 +156,7 @@ namespace Kephas.Messaging
                         context.Message = message;
                     }
 
-                    foreach (var behavior in reversedBehaviors)
-                    {
-                        await behavior.AfterProcessAsync(context, token).PreserveThreadContext();
-                    }
+                    await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, context, token).PreserveThreadContext();
                 }
             }
 
@@ -179,6 +173,46 @@ namespace Kephas.Messaging
             }
 
             return context.Response;
+        }
+
+        /// <summary>
+        /// Applies the behaviors invoking the <see cref="IMessageProcessingBehavior.AfterProcessAsync"/> asynchronously.
+        /// </summary>
+        /// <param name="reversedBehaviors">The reversed behaviors.</param>
+        /// <param name="context">Context for the message processing.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual async Task ApplyAfterProcessBehaviorsAsync(
+            IEnumerable<IMessageProcessingBehavior> reversedBehaviors,
+            IMessageProcessingContext context,
+            CancellationToken token)
+        {
+            foreach (var behavior in reversedBehaviors)
+            {
+                await behavior.AfterProcessAsync(context, token).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Applies the behaviors invoking the <see cref="IMessageProcessingBehavior.BeforeProcessAsync"/> asynchronously.
+        /// </summary>
+        /// <param name="behaviors">The reversed behaviors.</param>
+        /// <param name="context">Context for the message processing.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual async Task ApplyBeforeProcessBehaviorsAsync(
+            IEnumerable<IMessageProcessingBehavior> behaviors,
+            IMessageProcessingContext context,
+            CancellationToken token)
+        {
+            foreach (var behavior in behaviors)
+            {
+                await behavior.BeforeProcessAsync(context, token).PreserveThreadContext();
+            }
         }
 
         /// <summary>
