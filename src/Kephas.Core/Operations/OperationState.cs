@@ -57,5 +57,10 @@ namespace Kephas.Operations
         /// The operation timed out.
         /// </summary>
         TimedOut = 0x0800,
+
+        /// <summary>
+        /// The operation reported some warnings.
+        /// </summary>
+        Warning = 0x1000,
     }
 }
