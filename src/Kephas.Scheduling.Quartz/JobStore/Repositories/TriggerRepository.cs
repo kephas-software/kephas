@@ -112,10 +112,24 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         {
             using (var dataContext = this.jobStore.DataContextFactory(null))
             {
-                return await dataContext.FindOneAsync<Model.ITrigger>(
-                           t => t.InstanceName == this.InstanceName && t.Name == key.Name && t.Group == key.Group,
-                           cancellationToken: cancellationToken).PreserveThreadContext();
+                return await this.GetTrigger(dataContext, key, cancellationToken).PreserveThreadContext();
             }
+        }
+
+        /// <summary>
+        /// Gets the trigger based on the key.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="key">The trigger key.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the trigger.
+        /// </returns>
+        public Task<Model.ITrigger> GetTrigger(IDataContext dataContext, TriggerKey key, CancellationToken cancellationToken = default)
+        {
+            return dataContext.FindOneAsync<Model.ITrigger>(
+                       t => t.InstanceName == this.InstanceName && t.Name == key.Name && t.Group == key.Group,
+                       cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -139,19 +153,17 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// <summary>
         /// Gets the triggers based on job key.
         /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
         /// <param name="jobKey">The job key.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the triggers.
         /// </returns>
-        public async Task<IList<Model.ITrigger>> GetTriggers(JobKey jobKey, CancellationToken cancellationToken = default)
+        public Task<IList<Model.ITrigger>> GetTriggers(IDataContext dataContext, JobKey jobKey, CancellationToken cancellationToken = default)
         {
-            using (var dataContext = this.jobStore.DataContextFactory(null))
-            {
-                return await dataContext.Query<Model.ITrigger>().Where(
+                return dataContext.Query<Model.ITrigger>().Where(
                                t => t.InstanceName == this.InstanceName && t.JobName == jobKey.Name && t.JobGroup == jobKey.Group)
-                           .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-            }
+                           .ToListAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -196,35 +208,34 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// <summary>
         /// Gets trigger group names.
         /// </summary>
+        /// <param name="dataContext">The data context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the trigger group names.
         /// </returns>
-        public async Task<IList<string>> GetTriggerGroupNames(CancellationToken cancellationToken = default)
+        public async Task<IList<string>> GetTriggerGroupNames(
+            IDataContext dataContext,
+            CancellationToken cancellationToken = default)
         {
-            using (var dataContext = this.jobStore.DataContextFactory(null))
-            {
                 var groups = await dataContext.Query<Model.ITrigger>()
                                  .Where(t => t.InstanceName == this.InstanceName)
                                  .Select(t => t.Group)
                                  .Distinct()
                                  .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
                 return groups;
-            }
         }
 
         /// <summary>
         /// Gets trigger group names.
         /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
         /// <param name="matcher">The matcher.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the trigger group names.
         /// </returns>
-        public async Task<IList<string>> GetTriggerGroupNames(GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
+        public async Task<IList<string>> GetTriggerGroupNames(IDataContext dataContext, GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
         {
-            using (var dataContext = this.jobStore.DataContextFactory(null))
-            {
                 var groups = await dataContext.Query<Model.ITrigger>()
                                    .Where(t => t.InstanceName == this.InstanceName)
                                    .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
@@ -232,14 +243,21 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                    .Distinct()
                                    .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
                 return groups;
-            }
         }
 
-        public async Task<List<TriggerKey>> GetTriggersToAcquire(DateTimeOffset noLaterThan, DateTimeOffset noEarlierThan,
-            int maxCount)
+        /// <summary>
+        /// Gets triggers to acquire.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="noLaterThan">The no later than.</param>
+        /// <param name="noEarlierThan">The no earlier than.</param>
+        /// <param name="maxCount">Number of maximums.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the triggers to acquire.
+        /// </returns>
+        public async Task<List<TriggerKey>> GetTriggersToAcquire(IDataContext dataContext, DateTimeOffset noLaterThan, DateTimeOffset noEarlierThan, int maxCount, CancellationToken cancellationToken = default)
         {
-            return null;
-            /* TODO
             if (maxCount < 1)
             {
                 maxCount = 1;
@@ -248,25 +266,34 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             var noLaterThanDateTime = noLaterThan.UtcDateTime;
             var noEarlierThanDateTime = noEarlierThan.UtcDateTime;
 
-            return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName &&
-                                              trigger.State == Model.TriggerState.Waiting &&
-                                              trigger.NextFireTime <= noLaterThanDateTime &&
-                                              (trigger.MisfireInstruction == -1 ||
-                                               (trigger.MisfireInstruction != -1 &&
-                                                trigger.NextFireTime >= noEarlierThanDateTime)))
-                .Sort(this.SortBuilder.Combine(
-                    this.SortBuilder.Ascending(trigger => trigger.NextFireTime),
-                    this.SortBuilder.Descending(trigger => trigger.Priority)
-                    ))
-                .Limit(maxCount)
-                .Project(trigger => trigger.Id.GetTriggerKey())
-                .ToListAsync();
-            */
+            var triggers = await dataContext.Query<Model.ITrigger>().Where(
+                                   trigger => trigger.InstanceName == this.InstanceName
+                                              && trigger.State == Model.TriggerState.Waiting
+                                              && trigger.NextFireTime <= noLaterThanDateTime
+                                              && (trigger.MisfireInstruction == -1
+                                                  || (trigger.MisfireInstruction != -1
+                                                      && trigger.NextFireTime >= noEarlierThanDateTime)))
+                               .OrderBy(trigger => trigger.NextFireTime)
+                               .ThenByDescending(trigger => trigger.Priority)
+                               .Take(maxCount)
+                               .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+
+            return triggers.Select(trigger => trigger.GetTriggerKey()).ToList();
         }
 
-        public async Task<long> GetCount()
+        /// <summary>
+        /// Gets a count.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the count.
+        /// </returns>
+        public Task<long> GetCount(IDataContext dataContext, CancellationToken cancellationToken = default)
         {
-            return 0; // TODO return await this.Collection.Find(trigger => trigger.Id.InstanceName == this.InstanceName).CountAsync();
+            return dataContext.Query<Model.ITrigger>()
+                .Where(trigger => trigger.InstanceName == this.InstanceName)
+                .LongCountAsync(cancellationToken: cancellationToken);
         }
 
         public async Task<long> GetCount(JobKey jobKey)
@@ -304,7 +331,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             return; // TODO await this.Collection.ReplaceOneAsync(t => t.Id == trigger.Id, trigger);
         }
 
-        public async Task<long> UpdateTriggerState(TriggerKey triggerKey, Model.TriggerState state)
+        public async Task<long> UpdateTriggerState(IDataContext dataContext, TriggerKey triggerKey, Model.TriggerState state, CancellationToken cancellationToken = default)
         {
             return 0;
             /* TODO
