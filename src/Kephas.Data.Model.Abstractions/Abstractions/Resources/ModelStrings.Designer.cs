@@ -61,6 +61,24 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Detailed information about the element..
+        /// </summary>
+        public static string Described_Description_Description {
+            get {
+                return ResourceManager.GetString("Described_Description_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Described_Description_Name {
+            get {
+                return ResourceManager.GetString("Described_Description_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parent.
         /// </summary>
         public static string HierarchyNode_ParentRef_Name {
@@ -75,6 +93,15 @@ namespace Kephas.Data.Model.Abstractions.Resources {
         public static string Identifiable_Id_Name {
             get {
                 return ResourceManager.GetString("Identifiable_Id_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the element..
+        /// </summary>
+        public static string Named_Name_Description {
+            get {
+                return ResourceManager.GetString("Named_Name_Description", resourceCulture);
             }
         }
         

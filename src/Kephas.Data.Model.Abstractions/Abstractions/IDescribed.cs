@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="INamed.cs" company="Kephas Software SRL">
+// <copyright file="IDescribed.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the INamed interface.
+//   Declares the IDescribed interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,19 +16,18 @@ namespace Kephas.Data.Model.Abstractions
     using Kephas.Model.AttributedModel;
 
     /// <summary>
-    /// Mixin providing the <see cref="Name"/> property.
+    /// Mixin providing the <see cref="Description"/> property.
     /// </summary>
     [Mixin]
-    public interface INamed
+    public interface IDescribed
     {
         /// <summary>
-        /// Gets or sets the entity name.
+        /// Gets or sets the description.
         /// </summary>
         /// <value>
-        /// The entity name.
+        /// The description.
         /// </value>
-        [Required(AllowEmptyStrings = false)]
-        [Display(ResourceType = typeof(ModelStrings), Name = "Named_Name_Name", Description = "Named_Name_Description")]
-        string Name { get; set; }
+        [Display(ResourceType = typeof(ModelStrings), Name = "Described_Description_Name", Description = "Described_Description_Description")]
+        string Description { get; set; }
     }
 }
