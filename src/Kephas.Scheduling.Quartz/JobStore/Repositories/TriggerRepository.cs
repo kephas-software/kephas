@@ -161,9 +161,9 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// </returns>
         public Task<IList<Model.ITrigger>> GetTriggers(IDataContext dataContext, JobKey jobKey, CancellationToken cancellationToken = default)
         {
-                return dataContext.Query<Model.ITrigger>().Where(
-                               t => t.InstanceName == this.InstanceName && t.JobName == jobKey.Name && t.JobGroup == jobKey.Group)
-                           .ToListAsync(cancellationToken: cancellationToken);
+            return dataContext.Query<Model.ITrigger>().Where(
+                           t => t.InstanceName == this.InstanceName && t.JobName == jobKey.Name && t.JobGroup == jobKey.Group)
+                       .ToListAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -217,12 +217,12 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             IDataContext dataContext,
             CancellationToken cancellationToken = default)
         {
-                var groups = await dataContext.Query<Model.ITrigger>()
-                                 .Where(t => t.InstanceName == this.InstanceName)
-                                 .Select(t => t.Group)
-                                 .Distinct()
-                                 .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-                return groups;
+            var groups = await dataContext.Query<Model.ITrigger>()
+                             .Where(t => t.InstanceName == this.InstanceName)
+                             .Select(t => t.Group)
+                             .Distinct()
+                             .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            return groups;
         }
 
         /// <summary>
@@ -236,13 +236,13 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// </returns>
         public async Task<IList<string>> GetTriggerGroupNames(IDataContext dataContext, GroupMatcher<TriggerKey> matcher, CancellationToken cancellationToken = default)
         {
-                var groups = await dataContext.Query<Model.ITrigger>()
-                                   .Where(t => t.InstanceName == this.InstanceName)
-                                   .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
-                                   .Select(t => t.Group)
-                                   .Distinct()
-                                   .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-                return groups;
+            var groups = await dataContext.Query<Model.ITrigger>()
+                               .Where(t => t.InstanceName == this.InstanceName)
+                               .Where(matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName))
+                               .Select(t => t.Group)
+                               .Distinct()
+                               .ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            return groups;
         }
 
         /// <summary>
@@ -296,29 +296,38 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                 .LongCountAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<long> GetCount(JobKey jobKey)
+        /// <summary>
+        /// Gets a count.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="jobKey">The job key.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the count.
+        /// </returns>
+        public Task<long> GetCount(IDataContext dataContext, JobKey jobKey, CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            return
-                await this.Collection.Find(
-                    this.FilterBuilder.Where(trigger => trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey))
-                    .CountAsync();
-            */
+            return dataContext.Query<Model.ITrigger>()
+                .Where(trigger => trigger.InstanceName == this.InstanceName && trigger.JobGroup == jobKey.Group && trigger.JobName == jobKey.Name)
+                .LongCountAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<long> GetMisfireCount(DateTime nextFireTime)
+        /// <summary>
+        /// Gets misfire count.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="nextFireTime">.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the misfire count.
+        /// </returns>
+        public Task<long> GetMisfireCount(IDataContext dataContext, DateTime nextFireTime, CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            return
-                await this.Collection.Find(
-                    trigger =>
-                        trigger.Id.InstanceName == this.InstanceName &&
-                        trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy &&
-                        trigger.NextFireTime < nextFireTime && trigger.State == Model.TriggerState.Waiting)
-                    .CountAsync();
-            */
+            return dataContext.Query<Model.ITrigger>()
+                .Where(trigger => trigger.InstanceName == this.InstanceName && trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy
+                                                                            && trigger.NextFireTime < nextFireTime
+                                                                            && trigger.State == Model.TriggerState.Waiting)
+                .LongCountAsync(cancellationToken: cancellationToken);
         }
 
         public async Task AddTrigger(Model.ITrigger trigger)

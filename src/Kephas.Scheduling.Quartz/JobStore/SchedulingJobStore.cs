@@ -1436,7 +1436,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
                 using (var dataContext = this.DataContextFactory(null))
                 {
-                    var misfireCount = await this.triggerRepository.GetMisfireCount(MisfireTime.UtcDateTime);
+                    var misfireCount = await this.triggerRepository.GetMisfireCount(dataContext, this.MisfireTime.UtcDateTime, cancellationToken).PreserveThreadContext();
                     if (misfireCount == 0)
                     {
                         this.Logger.Debug("Found 0 triggers that missed their scheduled fire-time.");
@@ -1589,7 +1589,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (job != null && !job.Durable)
             {
-                if (await this.triggerRepository.GetCount(job.Key) == 0)
+                if (await this.triggerRepository.GetCount(dataContext, job.Key, cancellationToken).PreserveThreadContext() == 0)
                 {
                     if (await this.RemoveJobInternal(dataContext, job.Key, cancellationToken).PreserveThreadContext())
                     {
