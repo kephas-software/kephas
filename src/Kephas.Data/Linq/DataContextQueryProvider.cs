@@ -293,7 +293,7 @@ namespace Kephas.Data.Linq
 
             if (this.IsAttachable(executionResult))
             {
-                return (TResult)this.DataContext.AttachEntity(executionResult).Entity;
+                return (TResult)this.DataContext.Attach(executionResult).Entity;
             }
 
             return executionResult;
@@ -316,7 +316,7 @@ namespace Kephas.Data.Linq
             {
                 if (this.IsAttachable(entity))
                 {
-                    attachedList.Add((T)this.DataContext.AttachEntity(entity).Entity);
+                    attachedList.Add((T)this.DataContext.Attach(entity).Entity);
                 }
                 else
                 {

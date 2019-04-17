@@ -54,9 +54,9 @@ namespace Kephas.Data.Tests.InMemory
             var dataContext = this.CreateInMemoryDataContext();
             dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(string.Empty)));
 
-            dataContext.AttachEntity("mama").ChangeState = ChangeState.Added;
-            dataContext.AttachEntity("papa").ChangeState = ChangeState.Added;
-            dataContext.AttachEntity(1).ChangeState = ChangeState.Added;
+            dataContext.Attach("mama").ChangeState = ChangeState.Added;
+            dataContext.Attach("papa").ChangeState = ChangeState.Added;
+            dataContext.Attach(1).ChangeState = ChangeState.Added;
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -190,7 +190,7 @@ namespace Kephas.Data.Tests.InMemory
             dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration("UseSharedCache=true")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.AttachEntity(sharedItem).ChangeState = ChangeState.Added;
+            dataContext.Attach(sharedItem).ChangeState = ChangeState.Added;
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreSame(sharedItem, sharedItemActual);
@@ -206,7 +206,7 @@ namespace Kephas.Data.Tests.InMemory
             dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration("UseSharedCache=false")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
-            dataContext.AttachEntity(sharedItem).ChangeState = ChangeState.Added;
+            dataContext.Attach(sharedItem).ChangeState = ChangeState.Added;
             var sharedItemActual = dataContext2.Query<IIdentifiable>().FirstOrDefault();
 
             Assert.AreNotSame(sharedItem, sharedItemActual);

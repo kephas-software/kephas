@@ -31,19 +31,22 @@ namespace Kephas.Data.Commands
         public override IDataCommandResult Execute(IDeleteEntityContext operationContext)
         {
             var dataContext = operationContext.DataContext;
-            var entity = operationContext.Entity;
-            var entityEntry = dataContext.GetEntityEntry(entity);
-            if (entityEntry == null)
+            var entities = operationContext.Entities;
+            foreach (var entity in entities)
             {
-                throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception);
-            }
+                var entityEntry = dataContext.GetEntityEntry(entity);
+                if (entityEntry == null)
+                {
+                    throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception);
+                }
 
-            if (entityEntry.ChangeState == ChangeState.Added)
-            {
-                dataContext.DetachEntity(entityEntry);
-            }
+                if (entityEntry.ChangeState == ChangeState.Added)
+                {
+                    dataContext.Detach(entityEntry);
+                }
 
-            entityEntry.ChangeState = ChangeState.Deleted;
+                entityEntry.ChangeState = ChangeState.Deleted;
+            }
 
             return DataCommandResult.Success;
         }

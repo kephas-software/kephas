@@ -35,7 +35,7 @@ namespace Kephas.Data.Tests.Commands
 
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
-            dataContext.AttachEntity("123").ChangeState = ChangeState.Added;
+            dataContext.Attach("123").ChangeState = ChangeState.Added;
 
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
@@ -54,7 +54,7 @@ namespace Kephas.Data.Tests.Commands
 
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
-            dataContext.AttachEntity("123").ChangeState = ChangeState.Changed;
+            dataContext.Attach("123").ChangeState = ChangeState.Changed;
 
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
@@ -73,7 +73,7 @@ namespace Kephas.Data.Tests.Commands
 
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
-            dataContext.AttachEntity("123").ChangeState = ChangeState.Deleted;
+            dataContext.Attach("123").ChangeState = ChangeState.Deleted;
 
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
@@ -92,11 +92,11 @@ namespace Kephas.Data.Tests.Commands
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
             var entityEntries = new IEntityEntry[5];
-            (entityEntries[0] = dataContext.AttachEntity("123")).ChangeState = ChangeState.Added;
-            (entityEntries[1] = dataContext.AttachEntity("abc")).ChangeState = ChangeState.Changed;
-            (entityEntries[2] = dataContext.AttachEntity("-123")).ChangeState = ChangeState.Deleted;
-            (entityEntries[3] = dataContext.AttachEntity("123abc")).ChangeState = ChangeState.AddedOrChanged;
-            (entityEntries[4] = dataContext.AttachEntity("same")).ChangeState = ChangeState.NotChanged;
+            (entityEntries[0] = dataContext.Attach("123")).ChangeState = ChangeState.Added;
+            (entityEntries[1] = dataContext.Attach("abc")).ChangeState = ChangeState.Changed;
+            (entityEntries[2] = dataContext.Attach("-123")).ChangeState = ChangeState.Deleted;
+            (entityEntries[3] = dataContext.Attach("123abc")).ChangeState = ChangeState.AddedOrChanged;
+            (entityEntries[4] = dataContext.Attach("same")).ChangeState = ChangeState.NotChanged;
 
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
@@ -122,7 +122,7 @@ namespace Kephas.Data.Tests.Commands
             var cmd = new PersistChangesCommand(behaviorProvider);
 
             var dataContext = new TestDataContext();
-            dataContext.AttachEntity("123").ChangeState = ChangeState.Added;
+            dataContext.Attach("123").ChangeState = ChangeState.Added;
 
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);

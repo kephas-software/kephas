@@ -61,7 +61,7 @@ namespace Kephas.Data.Commands
             IEntityEntry entityEntry = null;
             try
             {
-                entityEntry = dataContext.AttachEntity(entity);
+                entityEntry = dataContext.Attach(entity);
 
                 // set the change state to Added
                 entityEntry.ChangeState = ChangeState.Added;
@@ -88,7 +88,7 @@ namespace Kephas.Data.Commands
             {
                 if (entityEntry != null)
                 {
-                    dataContext.DetachEntity(entityEntry);
+                    dataContext.Detach(entityEntry);
                 }
 
                 throw;

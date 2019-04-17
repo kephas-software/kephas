@@ -64,5 +64,25 @@ namespace Kephas.Data.Tests.Commands
             Assert.AreEqual(ChangeState.Deleted, entityEntry.ChangeState);
             Assert.AreEqual(1, localCache.Count);
         }
+
+        [Test]
+        public void Execute_delete_multiple_entities()
+        {
+            var localCache = new DataContextCache();
+            var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
+
+            var entityEntryAdded = new EntityEntry("123") { ChangeState = ChangeState.Added };
+            localCache.Add(entityEntryAdded);
+            var entityEntryChanged = new EntityEntry("234") { ChangeState = ChangeState.NotChanged };
+            localCache.Add(entityEntryChanged);
+
+            var cmd = new DeleteEntityCommand();
+            var result = cmd.Execute(new DeleteEntityContext(dataContext, new[] { "123", "234" }));
+
+            Assert.AreSame(DataCommandResult.Success, result);
+            Assert.AreEqual(ChangeState.Deleted, entityEntryAdded.ChangeState);
+            Assert.AreEqual(ChangeState.Deleted, entityEntryChanged.ChangeState);
+            Assert.AreEqual(1, localCache.Count);
+        }
     }
 }

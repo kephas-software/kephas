@@ -56,7 +56,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddCalendar(this IDataContext dataContext, string calendarName, global::Quartz.ICalendar calendar, CancellationToken cancellationToken = default)
         {
-            var entity = await dataContext.CreateEntityAsync<Model.ICalendar>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var entity = await dataContext.CreateAsync<Model.ICalendar>(cancellationToken: cancellationToken).PreserveThreadContext();
             entity.CalendarName = calendarName;
             entity.Content = ObjectSerializer.Serialize(calendar);
             await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
@@ -166,7 +166,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddScheduler(this IDataContext dataContext, string instanceName, string instanceId, CancellationToken cancellationToken = default)
         {
-            var scheduler = await dataContext.CreateEntityAsync<Model.IScheduler>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var scheduler = await dataContext.CreateAsync<Model.IScheduler>(cancellationToken: cancellationToken).PreserveThreadContext();
             scheduler.InstanceName = instanceName;
             scheduler.InstanceId = instanceId;
             scheduler.State = SchedulerState.Started;
@@ -231,7 +231,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static async Task AddPausedTriggerGroup(this IDataContext dataContext, string instanceName, string group, CancellationToken cancellationToken = default)
         {
-            var entity = await dataContext.CreateEntityAsync<IPausedTriggerGroup>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var entity = await dataContext.CreateAsync<IPausedTriggerGroup>(cancellationToken: cancellationToken).PreserveThreadContext();
             entity.InstanceName = instanceName;
             entity.Group = group;
             await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
@@ -267,7 +267,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// </returns>
         public static async Task AddFiredTrigger(this IDataContext dataContext, string instanceId, string firedInstanceId, Model.ITrigger trigger, Model.IJobDetail jobDetail, CancellationToken cancellationToken = default)
         {
-            var firedTrigger = await dataContext.CreateEntityAsync<IFiredTrigger>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var firedTrigger = await dataContext.CreateAsync<IFiredTrigger>(cancellationToken: cancellationToken).PreserveThreadContext();
 
             firedTrigger.FiredInstanceId = firedInstanceId;
             firedTrigger.UpdateFiredTrigger(trigger, jobDetail);
@@ -454,7 +454,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         public static async Task AddJob(this IDataContext dataContext, string instanceName, global::Quartz.IJobDetail jobDetail, CancellationToken cancellationToken = default)
         {
-            var job = await dataContext.CreateEntityAsync<Model.IJobDetail>(cancellationToken: cancellationToken).PreserveThreadContext();
+            var job = await dataContext.CreateAsync<Model.IJobDetail>(cancellationToken: cancellationToken).PreserveThreadContext();
             job.InstanceName = instanceName;
             job.Name = jobDetail.Key.Name;
             job.Group = jobDetail.Key.Group;
@@ -560,7 +560,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             Log.Trace($"Trying to acquire lock {instanceName}/{lockType} on {instanceId}");
             try
             {
-                var entity = await dataContext.CreateEntityAsync<ILock>(cancellationToken: cancellationToken)
+                var entity = await dataContext.CreateAsync<ILock>(cancellationToken: cancellationToken)
                     .PreserveThreadContext();
                 entity.InstanceName = instanceName;
                 entity.LockType = lockType;
@@ -593,7 +593,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                 return false;
             }
 
-            dataContext.DeleteEntity(entity);
+            dataContext.Delete(entity);
 
             await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 

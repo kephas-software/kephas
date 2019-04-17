@@ -27,7 +27,7 @@ namespace Kephas.Data.Tests
     public class DataSpaceExtensionsTest
     {
         [Test]
-        public async Task CreateEntityAsync_delegate_to_data_context()
+        public async Task CreateAsync_delegate_to_data_context()
         {
             var dataSpace = this.CreateTestDataSpace();
             var stringCmd = Substitute.For<ICreateEntityCommand>();
@@ -39,7 +39,7 @@ namespace Kephas.Data.Tests
             sbCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
                 .Returns(new CreateEntityResult(new StringBuilder("should not get here"), Substitute.For<IEntityEntry>()));
 
-            var newEntity = await dataSpace.CreateEntityAsync<string>();
+            var newEntity = await dataSpace.CreateAsync<string>();
 
             Assert.AreEqual("created", newEntity);
 
@@ -48,6 +48,50 @@ namespace Kephas.Data.Tests
 
             stringCmd.Received(1).ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>());
             sbCmd.Received(0).ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public void Delete_delegate_to_data_context()
+        {
+            var dataSpace = this.CreateTestDataSpace();
+            var stringCmd = Substitute.For<IDeleteEntityCommand>();
+            dataSpace[typeof(string)].CreateCommand(typeof(IDeleteEntityCommand)).Returns(stringCmd);
+            stringCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult("deleted"));
+            var sbCmd = Substitute.For<IDeleteEntityCommand>();
+            dataSpace[typeof(StringBuilder)].CreateCommand(typeof(IDeleteEntityCommand)).Returns(sbCmd);
+            sbCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult(new StringBuilder("should not get here").ToString()));
+
+            dataSpace.Delete("gigi");
+
+            dataSpace[typeof(string)].Received(1).CreateCommand(typeof(IDeleteEntityCommand));
+            dataSpace[typeof(StringBuilder)].Received(0).CreateCommand(typeof(IDeleteEntityCommand));
+
+            stringCmd.Received(1).Execute(Arg.Any<IDeleteEntityContext>());
+            sbCmd.Received(0).Execute(Arg.Any<IDeleteEntityContext>());
+        }
+
+        [Test]
+        public void Delete_multiple_delegate_to_data_context()
+        {
+            var dataSpace = this.CreateTestDataSpace();
+            var stringCmd = Substitute.For<IDeleteEntityCommand>();
+            dataSpace[typeof(string)].CreateCommand(typeof(IDeleteEntityCommand)).Returns(stringCmd);
+            stringCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult("deleted"));
+            var sbCmd = Substitute.For<IDeleteEntityCommand>();
+            dataSpace[typeof(StringBuilder)].CreateCommand(typeof(IDeleteEntityCommand)).Returns(sbCmd);
+            sbCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult(new StringBuilder("should not get here").ToString()));
+
+            dataSpace.Delete((IEnumerable<string>)new[] { "gigi" });
+
+            dataSpace[typeof(string)].Received(1).CreateCommand(typeof(IDeleteEntityCommand));
+            dataSpace[typeof(StringBuilder)].Received(0).CreateCommand(typeof(IDeleteEntityCommand));
+
+            stringCmd.Received(1).Execute(Arg.Any<IDeleteEntityContext>());
+            sbCmd.Received(0).Execute(Arg.Any<IDeleteEntityContext>());
         }
 
         [Test]

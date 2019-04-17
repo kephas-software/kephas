@@ -117,7 +117,7 @@ namespace Kephas.Data.Tests.Linq
             var result = ((IEnumerable<IIdentifiable>)provider.Execute(query.Expression)).ToList();
             Assert.AreEqual(2, result.Count);
 
-            dataContext.AttachEntity(Arg.Any<object>()).Received(2);
+            dataContext.Attach(Arg.Any<object>()).Received(2);
         }
 
         [Test]
@@ -135,14 +135,14 @@ namespace Kephas.Data.Tests.Linq
             var result = ((IEnumerable<object>)provider.Execute(query.Expression)).ToList();
             Assert.AreEqual(3, result.Count);
 
-            dataContext.AttachEntity(Arg.Any<object>()).Received(2);
+            dataContext.Attach(Arg.Any<object>()).Received(2);
         }
 
         [Test]
         public void Execute_attaches_identifiable_entities_single_entity()
         {
             var dataContext = Substitute.For<IDataContext>();
-            dataContext.AttachEntity(Arg.Any<object>()).Returns(
+            dataContext.Attach(Arg.Any<object>()).Returns(
                 ci =>
                     {
                         var entityEntry = Substitute.For<IEntityEntry>();
@@ -162,7 +162,7 @@ namespace Kephas.Data.Tests.Linq
             var result = provider.CreateQuery<IIdentifiable>(query.Expression).FirstOrDefault();
             Assert.AreSame(item1, result);
 
-            dataContext.AttachEntity(Arg.Any<object>()).Received(1);
+            dataContext.Attach(Arg.Any<object>()).Received(1);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace Kephas.Data.Tests.Linq
             var result = provider.CreateQuery<object>(query.Expression).FirstOrDefault();
             Assert.AreEqual(1, result);
 
-            dataContext.AttachEntity(Arg.Any<object>()).Received(0);
+            dataContext.Attach(Arg.Any<object>()).Received(0);
         }
 
         [Test]

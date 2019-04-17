@@ -11,6 +11,7 @@
 namespace Kephas.Data.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -26,33 +27,33 @@ namespace Kephas.Data.Tests
     public class DataContextExtensionsTest
     {
         [Test]
-        public void DetachEntity_object()
+        public void Detach_object()
         {
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
 
             var entity = "hello";
-            var entityEntry = dataContext.AttachEntity(entity);
+            var entityEntry = dataContext.Attach(entity);
 
-            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            var detachedEntityEntry = DataContextExtensions.Detach(dataContext, entity);
             Assert.AreSame(entityEntry, detachedEntityEntry);
             Assert.AreEqual(0, localCache.Count);
         }
 
         [Test]
-        public void DetachEntity_not_attached()
+        public void Detach_not_attached()
         {
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
 
             var entity = "hello";
 
-            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            var detachedEntityEntry = DataContextExtensions.Detach(dataContext, entity);
             Assert.IsNull(detachedEntityEntry);
         }
 
         [Test]
-        public void DetachEntity_graph()
+        public void Detach_graph()
         {
             var localCache = new DataContextCache();
             var dataContext = new TestDataContext(localCache: localCache);
@@ -60,9 +61,9 @@ namespace Kephas.Data.Tests
             var entity = Substitute.For<IAggregatable>();
             var entityPart = new object();
             entity.GetStructuralEntityGraph().Returns(new[] { entity, entityPart });
-            var entityEntry = dataContext.AttachEntity(entity);
+            var entityEntry = dataContext.Attach(entity);
 
-            var detachedEntityEntry = DataContextExtensions.DetachEntity(dataContext, entity);
+            var detachedEntityEntry = DataContextExtensions.Detach(dataContext, entity);
             Assert.AreSame(entityEntry, detachedEntityEntry);
             Assert.AreEqual(0, localCache.Count);
         }
@@ -131,7 +132,7 @@ namespace Kephas.Data.Tests
         }
 
         [Test]
-        public async Task CreateEntityAsync_delegate_to_data_context()
+        public async Task CreateAsync_delegate_to_data_context()
         {
             var dataContext = Substitute.For<IDataContext>();
             var stringCmd = Substitute.For<ICreateEntityCommand>();
@@ -139,12 +140,42 @@ namespace Kephas.Data.Tests
             stringCmd.ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>())
                 .Returns(new CreateEntityResult("created", Substitute.For<IEntityEntry>()));
 
-            var newEntity = await dataContext.CreateEntityAsync<string>();
+            var newEntity = await dataContext.CreateAsync<string>();
 
             Assert.AreEqual("created", newEntity);
 
             dataContext.Received(1).CreateCommand(typeof(ICreateEntityCommand));
             stringCmd.Received(1).ExecuteAsync(Arg.Any<ICreateEntityContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public void Delete_delegate_to_data_context()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var stringCmd = Substitute.For<IDeleteEntityCommand>();
+            dataContext.CreateCommand(typeof(IDeleteEntityCommand)).Returns(stringCmd);
+            stringCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult("deleted"));
+
+            dataContext.Delete("gigi");
+
+            dataContext.Received(1).CreateCommand(typeof(IDeleteEntityCommand));
+            stringCmd.Received(1).Execute(Arg.Any<IDeleteEntityContext>());
+        }
+
+        [Test]
+        public void Delete_multiple_delegate_to_data_context()
+        {
+            var dataContext = Substitute.For<IDataContext>();
+            var stringCmd = Substitute.For<IDeleteEntityCommand>();
+            dataContext.CreateCommand(typeof(IDeleteEntityCommand)).Returns(stringCmd);
+            stringCmd.ExecuteAsync(Arg.Any<IDeleteEntityContext>(), Arg.Any<CancellationToken>())
+                .Returns(new DataCommandResult("deleted"));
+
+            dataContext.Delete((IEnumerable<string>)new[] { "gigi" });
+
+            dataContext.Received(1).CreateCommand(typeof(IDeleteEntityCommand));
+            stringCmd.Received(1).Execute(Arg.Any<IDeleteEntityContext>());
         }
 
         [Test]

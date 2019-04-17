@@ -36,7 +36,7 @@ namespace Kephas.Data.Commands
             // remove added entities
             foreach (var addition in modifiedEntries.Where(this.IsAdded))
             {
-                dataContext.DetachEntity(addition);
+                dataContext.Detach(addition);
             }
 
             // undo the changes for changed entitites

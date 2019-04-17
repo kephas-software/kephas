@@ -212,11 +212,11 @@ namespace Kephas.Data
         /// <returns>
         /// The entity entry information.
         /// </returns>
-        public virtual IEntityEntry AttachEntity(object entity)
+        public virtual IEntityEntry Attach(object entity)
         {
             Requires.NotNull(entity, nameof(entity));
 
-            return this.AttachEntityCore(entity, attachEntityGraph: true);
+            return this.AttachCore(entity, attachEntityGraph: true);
         }
 
         /// <summary>
@@ -226,11 +226,11 @@ namespace Kephas.Data
         /// <returns>
         /// The entity entry information.
         /// </returns>
-        public virtual IEntityEntry DetachEntity(IEntityEntry entityEntry)
+        public virtual IEntityEntry Detach(IEntityEntry entityEntry)
         {
             Requires.NotNull(entityEntry, nameof(entityEntry));
 
-            return this.DetachEntityCore(entityEntry, detachEntityGraph: true);
+            return this.DetachCore(entityEntry, detachEntityGraph: true);
         }
 
         /// <summary>
@@ -315,14 +315,14 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        protected virtual IEntityEntry AttachEntityCore(object entity, bool attachEntityGraph)
+        protected virtual IEntityEntry AttachCore(object entity, bool attachEntityGraph)
         {
             var entityEntry = this.GetEntityEntry(entity);
             if (entityEntry != null)
             {
                 if (entity != entityEntry.Entity)
                 {
-                    return this.ResolveAttachEntityConflict(entityEntry, entity, attachEntityGraph);
+                    return this.ResolveAttachConflict(entityEntry, entity, attachEntityGraph);
                 }
 
                 return entityEntry;
@@ -344,7 +344,7 @@ namespace Kephas.Data
                             continue;
                         }
 
-                        this.AttachEntityCore(entityPart, attachEntityGraph: false);
+                        this.AttachCore(entityPart, attachEntityGraph: false);
                     }
                 }
             }
@@ -364,7 +364,7 @@ namespace Kephas.Data
         /// <returns>
         /// An resolved <see cref="IEntityEntry"/>.
         /// </returns>
-        protected virtual IEntityEntry ResolveAttachEntityConflict(IEntityEntry entityEntry, object entityChallenger, bool attachEntityGraph)
+        protected virtual IEntityEntry ResolveAttachConflict(IEntityEntry entityEntry, object entityChallenger, bool attachEntityGraph)
         {
             return entityEntry;
         }
@@ -377,7 +377,7 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information, or <c>null</c> if the entity is not attached to this data context.
         /// </returns>
-        protected virtual IEntityEntry DetachEntityCore(IEntityEntry entityEntry, bool detachEntityGraph)
+        protected virtual IEntityEntry DetachCore(IEntityEntry entityEntry, bool detachEntityGraph)
         {
             if (!this.LocalCache.Remove(entityEntry))
             {
@@ -400,7 +400,7 @@ namespace Kephas.Data
                         var partEntityEntry = this.GetEntityEntry(entityPart);
                         if (partEntityEntry != null)
                         {
-                            this.DetachEntityCore(partEntityEntry, detachEntityGraph: false);
+                            this.DetachCore(partEntityEntry, detachEntityGraph: false);
                         }
                     }
                 }

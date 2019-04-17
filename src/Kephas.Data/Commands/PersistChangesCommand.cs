@@ -174,7 +174,7 @@ namespace Kephas.Data.Commands
                 }
                 else
                 {
-                    dataContext.DetachEntity(entityEntry);
+                    dataContext.Detach(entityEntry);
                 }
             }
         }

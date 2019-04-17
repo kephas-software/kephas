@@ -10,17 +10,19 @@
 
 namespace Kephas.Data.Commands
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Interface for delete entity context.
     /// </summary>
     public interface IDeleteEntityContext : IDataOperationContext
     {
         /// <summary>
-        /// Gets the entity to delete.
+        /// Gets the entities to delete.
         /// </summary>
         /// <value>
-        /// The entity to delete.
+        /// The entities to delete.
         /// </value>
-        object Entity { get; }
+        IEnumerable<object> Entities { get; }
     }
 }

@@ -11,6 +11,7 @@
 namespace Kephas.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -34,13 +35,13 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        public static IEntityEntry DetachEntity(this IDataContext dataContext, object entity)
+        public static IEntityEntry Detach(this IDataContext dataContext, object entity)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(entity, nameof(entity));
 
             var entityEntry = dataContext.GetEntityEntry(entity);
-            return entityEntry == null ? null : dataContext.DetachEntity(entityEntry);
+            return entityEntry == null ? null : dataContext.Detach(entityEntry);
         }
 
         /// <summary>
@@ -68,7 +69,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static Task<object> CreateEntityAsync(
+        public static Task<object> CreateAsync(
             this IDataContext dataContext,
             Type entityType,
             CancellationToken cancellationToken = default)
@@ -78,7 +79,7 @@ namespace Kephas.Data
 
             var operationContext = new CreateEntityContext(dataContext, entityType);
 
-            return CreateEntityCoreAsync(dataContext, operationContext, cancellationToken);
+            return CreateCoreAsync(dataContext, operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static Task<object> CreateEntityAsync(
+        public static Task<object> CreateAsync(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
@@ -98,7 +99,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(operationContext, nameof(operationContext));
 
-            return CreateEntityCoreAsync(dataContext, operationContext, cancellationToken);
+            return CreateCoreAsync(dataContext, operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static async Task<T> CreateEntityAsync<T>(
+        public static async Task<T> CreateAsync<T>(
             this IDataContext dataContext,
             CancellationToken cancellationToken = default)
             where T : class
@@ -118,7 +119,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
 
             var operationContext = new CreateEntityContext<T>(dataContext);
-            return (T)await CreateEntityCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static async Task<T> CreateEntityAsync<T>(
+        public static async Task<T> CreateAsync<T>(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
@@ -140,7 +141,7 @@ namespace Kephas.Data
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(operationContext, nameof(operationContext));
 
-            return (T)await CreateEntityCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await CreateCoreAsync(dataContext, operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -350,15 +351,32 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataContext">The data context.</param>
-        /// <param name="entity">The entity.</param>
-        public static void DeleteEntity<T>(this IDataContext dataContext, T entity)
+        /// <param name="entities">The entities to delete.</param>
+        public static void Delete<T>(this IDataContext dataContext, params T[] entities)
             where T : class
         {
             Requires.NotNull(dataContext, nameof(dataContext));
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(entities, nameof(entities));
 
             var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
-            var deleteContext = new DeleteEntityContext(dataContext, entity);
+            var deleteContext = new DeleteEntityContext(dataContext, entities);
+            command.Execute(deleteContext);
+        }
+
+        /// <summary>
+        /// Marks the provided entities for deletion in the data context.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="entities">The entities to delete.</param>
+        public static void Delete<T>(this IDataContext dataContext, IEnumerable<T> entities)
+            where T : class
+        {
+            Requires.NotNull(dataContext, nameof(dataContext));
+            Requires.NotNull(entities, nameof(entities));
+
+            var command = (IDeleteEntityCommand)dataContext.CreateCommand(typeof(IDeleteEntityCommand));
+            var deleteContext = new DeleteEntityContext(dataContext, entities);
             command.Execute(deleteContext);
         }
 
@@ -523,7 +541,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        internal static async Task<object> CreateEntityCoreAsync(
+        internal static async Task<object> CreateCoreAsync(
             this IDataContext dataContext,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken)

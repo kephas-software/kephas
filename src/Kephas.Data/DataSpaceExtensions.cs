@@ -69,7 +69,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static Task<object> CreateEntityAsync(
+        public static Task<object> CreateAsync(
             this IDataSpace dataSpace,
             Type entityType,
             CancellationToken cancellationToken = default)
@@ -80,7 +80,7 @@ namespace Kephas.Data
             var dataContext = dataSpace[entityType];
             var operationContext = new CreateEntityContext(dataContext, entityType);
 
-            return dataContext.CreateEntityCoreAsync(operationContext, cancellationToken);
+            return dataContext.CreateCoreAsync(operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static Task<object> CreateEntityAsync(
+        public static Task<object> CreateAsync(
             this IDataSpace dataSpace,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
@@ -101,7 +101,7 @@ namespace Kephas.Data
             Requires.NotNull(operationContext, nameof(operationContext));
 
             var dataContext = dataSpace[operationContext.EntityType];
-            return dataContext.CreateEntityCoreAsync(operationContext, cancellationToken);
+            return dataContext.CreateCoreAsync(operationContext, cancellationToken);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static async Task<T> CreateEntityAsync<T>(
+        public static async Task<T> CreateAsync<T>(
             this IDataSpace dataSpace,
             CancellationToken cancellationToken = default)
             where T : class
@@ -122,7 +122,7 @@ namespace Kephas.Data
 
             var dataContext = dataSpace[typeof(T)];
             var operationContext = new CreateEntityContext<T>(dataContext);
-            return (T)await dataContext.CreateEntityCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the created entity.
         /// </returns>
-        public static async Task<T> CreateEntityAsync<T>(
+        public static async Task<T> CreateAsync<T>(
             this IDataSpace dataSpace,
             ICreateEntityContext operationContext,
             CancellationToken cancellationToken = default)
@@ -145,7 +145,7 @@ namespace Kephas.Data
             Requires.NotNull(operationContext, nameof(operationContext));
 
             var dataContext = dataSpace[typeof(T)];
-            return (T)await dataContext.CreateEntityCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
+            return (T)await dataContext.CreateCoreAsync(operationContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -361,15 +361,31 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="dataSpace">The data space to act on.</param>
-        /// <param name="entity">The entity.</param>
-        public static void DeleteEntity<T>(this IDataSpace dataSpace, T entity)
+        /// <param name="entities">The entities to delete.</param>
+        public static void Delete<T>(this IDataSpace dataSpace, params T[] entities)
             where T : class
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
-            Requires.NotNull(entity, nameof(entity));
+            Requires.NotNull(entities, nameof(entities));
 
             var dataContext = dataSpace[typeof(T)];
-            dataContext.DeleteEntity(entity);
+            dataContext.Delete(entities);
+        }
+
+        /// <summary>
+        /// Marks the provided entity for deletion in the data context.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="dataSpace">The data space to act on.</param>
+        /// <param name="entities">The entities to delete.</param>
+        public static void Delete<T>(this IDataSpace dataSpace, IEnumerable<T> entities)
+            where T : class
+        {
+            Requires.NotNull(dataSpace, nameof(dataSpace));
+            Requires.NotNull(entities, nameof(entities));
+
+            var dataContext = dataSpace[typeof(T)];
+            dataContext.Delete(entities);
         }
     }
 }

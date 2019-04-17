@@ -10,6 +10,8 @@
 
 namespace Kephas.Data.Commands
 {
+    using System.Collections.Generic;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -27,7 +29,20 @@ namespace Kephas.Data.Commands
         {
             Requires.NotNull(entity, nameof(entity));
 
-            this.Entity = entity;
+            this.Entities = new[] { entity };
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteEntityContext"/> class.
+        /// </summary>
+        /// <param name="dataContext">The data context.</param>
+        /// <param name="entities">The entities to delete.</param>
+        public DeleteEntityContext(IDataContext dataContext, IEnumerable<object> entities)
+            : base(dataContext)
+        {
+            Requires.NotNull(entities, nameof(entities));
+
+            this.Entities = entities;
         }
 
         /// <summary>
@@ -36,6 +51,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The entity to delete.
         /// </value>
-        public object Entity { get; }
+        public IEnumerable<object> Entities { get; }
     }
 }

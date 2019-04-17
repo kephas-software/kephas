@@ -230,7 +230,7 @@ namespace Kephas.Data.IO.Tests.Import
         private IDataContext CreateSourceDataContext()
         {
             var sourceDataContext = Substitute.For<IDataContext>();
-            sourceDataContext.AttachEntity(Arg.Any<object>())
+            sourceDataContext.Attach(Arg.Any<object>())
                 .Returns(ci => new EntityEntry(ci.Arg<object>()));
 
             return sourceDataContext;
@@ -243,7 +243,7 @@ namespace Kephas.Data.IO.Tests.Import
             targetDataContext.CreateCommand(typeof(IPersistChangesCommand))
                 .Returns(persistChangesCommand);
 
-            targetDataContext.AttachEntity(Arg.Any<object>())
+            targetDataContext.Attach(Arg.Any<object>())
                 .Returns(
                     ci =>
                         {

@@ -60,7 +60,7 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        IEntityEntry AttachEntity(object entity);
+        IEntityEntry Attach(object entity);
 
         /// <summary>
         /// Detaches the entity from the data context.
@@ -69,6 +69,6 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        IEntityEntry DetachEntity(IEntityEntry entityEntry);
+        IEntityEntry Detach(IEntityEntry entityEntry);
     }
 }
