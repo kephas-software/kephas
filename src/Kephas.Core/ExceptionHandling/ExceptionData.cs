@@ -31,20 +31,36 @@ namespace Kephas.ExceptionHandling
         /// Initializes a new instance of the <see cref="ExceptionData"/> class.
         /// </summary>
         /// <param name="exception">The exception.</param>
-        /// <param name="severity">The severity level (optional).</param>
-        public ExceptionData(Exception exception, SeverityLevel severity = SeverityLevel.Error)
+        /// <param name="severity">Optional. The severity level. If this value is set, it overwrites the severity level provided by the exception.</param>
+        public ExceptionData(Exception exception, SeverityLevel? severity = null)
             : this()
         {
             Requires.NotNull(exception, nameof(exception));
 
-            if (exception is ISeverityQualifiedException severityQualifiedException)
+            if (severity == null)
             {
-                severity = severityQualifiedException.Severity;
+                if (exception is ISeverityQualifiedException severityQualifiedException)
+                {
+                    severity = severityQualifiedException.Severity;
+                }
+                else
+                {
+                    severity = SeverityLevel.Error;
+                }
             }
 
+            this.ExceptionType = exception.GetType().FullName;
             this.Message = exception.Message;
-            this.Severity = severity;
+            this.Severity = severity.Value;
         }
+
+        /// <summary>
+        /// Gets or sets the type of the exception.
+        /// </summary>
+        /// <value>
+        /// The type of the exception.
+        /// </value>
+        public string ExceptionType { get; set; }
 
         /// <summary>
         /// Gets or sets the message.
