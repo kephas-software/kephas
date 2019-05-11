@@ -145,5 +145,77 @@
             Assert.IsNull(result);
             Assert.IsFalse(task.IsCompleted);
         }
+
+        [Test]
+        public void AsAsync_action_timeout_10_of_1000()
+        {
+            Assert.ThrowsAsync<TaskTimeoutException>(
+                () => TaskHelper.AsAsync(() => Thread.Sleep(1000), 10));
+        }
+
+        [Test]
+        public void AsAsync_action_timeout_100_of_1000()
+        {
+            Assert.ThrowsAsync<TaskTimeoutException>(
+                () => TaskHelper.AsAsync(() => Thread.Sleep(1000), 100));
+        }
+
+        [Test]
+        public void AsAsync_action_canceled()
+        {
+            using (var cts = new CancellationTokenSource(10))
+            {
+                Assert.ThrowsAsync<TaskCanceledException>(
+                    () => TaskHelper.AsAsync(() => Thread.Sleep(1000), cancellationToken: cts.Token));
+            }
+        }
+
+        [Test]
+        public void AsAsync_func_timeout_10_of_1000()
+        {
+            Task task = null;
+            Assert.ThrowsAsync<TaskTimeoutException>(
+                () => task = TaskHelper.AsAsync(
+                    () =>
+                    {
+                        Thread.Sleep(1000);
+                        return 20;
+                    },
+                    10));
+            Assert.IsInstanceOf<Task<int>>(task);
+        }
+
+        [Test]
+        public void AsAsync_func_timeout_100_of_1000()
+        {
+            Task task = null;
+            Assert.ThrowsAsync<TaskTimeoutException>(
+                () => task = TaskHelper.AsAsync(
+                          () =>
+                              {
+                                  Thread.Sleep(1000);
+                                  return 20;
+                              },
+                          100));
+            Assert.IsInstanceOf<Task<int>>(task);
+        }
+
+        [Test]
+        public void AsAsync_func_canceled()
+        {
+            using (var cts = new CancellationTokenSource(10))
+            {
+                Task task = null;
+                Assert.ThrowsAsync<TaskCanceledException>(
+                    () => task = TaskHelper.AsAsync(
+                        () =>
+                            {
+                                Thread.Sleep(1000);
+                                return 20;
+                            },
+                        cancellationToken: cts.Token));
+                Assert.IsInstanceOf<Task<int>>(task);
+            }
+        }
     }
 }

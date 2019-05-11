@@ -13,6 +13,7 @@ namespace Kephas.Threading.Tasks
     using System;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
@@ -207,6 +208,7 @@ namespace Kephas.Threading.Tasks
             var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
+                EnsureTaskCompletedSuccessfully(task);
                 return;
             }
 
@@ -231,10 +233,230 @@ namespace Kephas.Threading.Tasks
             var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
+                EnsureTaskCompletedSuccessfully(task);
                 return task.Result;
             }
 
             throw new TaskTimeoutException(task);
+        }
+
+        /// <summary>
+        /// Converts the action into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the action
+        /// does not complete in the indicated time or when cancellation is issued,
+        /// the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <param name="action">The action to be executed.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task AsAsync(
+            this Action action,
+            CancellationToken cancellationToken = default)
+        {
+            return AsAsync(
+                action,
+                null,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Converts the action into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the action
+        /// does not complete in the indicated time or when cancellation is issued,
+        /// the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <param name="action">The action to be executed.</param>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task AsAsync(
+            this Action action,
+            int timeout,
+            CancellationToken cancellationToken = default)
+        {
+            return AsAsync(
+                action,
+                TimeSpan.FromMilliseconds(timeout),
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Converts the action into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the action
+        /// does not complete in the indicated time or when cancellation is issued,
+        /// the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <param name="action">The action to be executed.</param>
+        /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static async Task AsAsync(
+            this Action action,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(action, nameof(action));
+
+            var task = Task.Run(action, cancellationToken);
+            var completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            if (completedTask != task)
+            {
+                throw cancellationToken.IsCancellationRequested
+                          ? (Exception)new TaskCanceledException(task)
+                          : new TaskTimeoutException(task);
+            }
+
+            EnsureTaskCompletedSuccessfully(task);
+        }
+
+        /// <summary>
+        /// Converts the function into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the function does not complete in the indicated
+        /// time or when cancellation is issued, the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="func">The function to be executed.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task<T> AsAsync<T>(
+            this Func<T> func,
+            CancellationToken cancellationToken = default)
+        {
+            return AsAsync(
+                func,
+                null,
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Converts the function into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the function does not complete in the indicated
+        /// time or when cancellation is issued, the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="func">The function to be executed.</param>
+        /// <param name="timeout">The timeout in milliseconds.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task<T> AsAsync<T>(
+            this Func<T> func,
+            int timeout,
+            CancellationToken cancellationToken = default)
+        {
+            return AsAsync(
+                func,
+                TimeSpan.FromMilliseconds(timeout),
+                cancellationToken);
+        }
+
+        /// <summary>
+        /// Converts the function into an asynchronous operation.
+        /// </summary>
+        /// <remarks>
+        /// Caution is to be considered because, when the function does not complete in the indicated
+        /// time or when cancellation is issued, the task running the operation does not complete.
+        /// In this case, the running task is returned in the Task property of either the TaskCanceledException
+        /// or TaskTimeoutException.
+        /// </remarks>
+        /// <typeparam name="T">The function return type.</typeparam>
+        /// <param name="func">The function to be executed.</param>
+        /// <param name="timeout">The timeout. If <c>null</c> specified, indefinite wait is considered.</param>
+        /// <param name="cancellationToken">Optional. a token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static async Task<T> AsAsync<T>(
+            this Func<T> func,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(func, nameof(func));
+
+            var task = Task.Run(func, cancellationToken);
+            var completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            if (task == completedTask)
+            {
+                EnsureTaskCompletedSuccessfully(task);
+                return task.Result;
+            }
+
+            throw cancellationToken.IsCancellationRequested
+                      ? (Exception)new TaskCanceledException(task)
+                      : new TaskTimeoutException(task);
+        }
+
+        private static async Task<Task> AsAsync(
+            Task task,
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (task.IsCompleted)
+            {
+                return task;
+            }
+
+            using (var cts = new CancellationTokenSource())
+            using (cancellationToken.Register(() => cts.Cancel()))
+            {
+                var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
+                var completedTask = await Task.WhenAny(task, delayTask).PreserveThreadContext();
+                if (completedTask == task)
+                {
+                    return task;
+                }
+
+                // TODO: the original task will not end.
+                cts.Token.ThrowIfCancellationRequested();
+                return task.IsCompleted ? task : delayTask;
+            }
+        }
+
+        private static void EnsureTaskCompletedSuccessfully(Task task)
+        {
+            if (task.Exception is AggregateException aggException && aggException.InnerExceptions.Count == 1)
+            {
+                throw aggException.InnerExceptions[0];
+            }
+
+            if (task.Exception != null)
+            {
+                throw task.Exception;
+            }
+
+            if (task.IsCanceled)
+            {
+                throw new TaskCanceledException(task);
+            }
         }
     }
 }
