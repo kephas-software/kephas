@@ -208,7 +208,7 @@ namespace Kephas.Threading.Tasks
             var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
-                EnsureTaskCompletedSuccessfully(task);
+                EnsureCompletedSuccessfully(task);
                 return;
             }
 
@@ -233,7 +233,7 @@ namespace Kephas.Threading.Tasks
             var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
             if (completedTask == task)
             {
-                EnsureTaskCompletedSuccessfully(task);
+                EnsureCompletedSuccessfully(task);
                 return task.Result;
             }
 
@@ -324,7 +324,7 @@ namespace Kephas.Threading.Tasks
                           : new TaskTimeoutException(task);
             }
 
-            EnsureTaskCompletedSuccessfully(task);
+            EnsureCompletedSuccessfully(task);
         }
 
         /// <summary>
@@ -406,13 +406,43 @@ namespace Kephas.Threading.Tasks
             var completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
             if (task == completedTask)
             {
-                EnsureTaskCompletedSuccessfully(task);
+                EnsureCompletedSuccessfully(task);
                 return task.Result;
             }
 
             throw cancellationToken.IsCancellationRequested
                       ? (Exception)new TaskCanceledException(task)
                       : new TaskTimeoutException(task);
+        }
+
+        /// <summary>
+        /// Ensures that the task completed successfully.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        public static void EnsureCompletedSuccessfully(this Task task)
+        {
+            Requires.NotNull(task, nameof(task));
+
+            if (!task.IsCompleted)
+            {
+                throw new TaskNotCompletedException(task);
+            }
+
+            var taskException = task.Exception;
+            if (taskException is AggregateException aggException && aggException.InnerExceptions.Count == 1)
+            {
+                throw aggException.InnerExceptions[0];
+            }
+
+            if (taskException != null)
+            {
+                throw taskException;
+            }
+
+            if (task.IsCanceled)
+            {
+                throw new TaskCanceledException(task);
+            }
         }
 
         private static async Task<Task> AsAsync(
@@ -438,24 +468,6 @@ namespace Kephas.Threading.Tasks
                 // TODO: the original task will not end.
                 cts.Token.ThrowIfCancellationRequested();
                 return task.IsCompleted ? task : delayTask;
-            }
-        }
-
-        private static void EnsureTaskCompletedSuccessfully(Task task)
-        {
-            if (task.Exception is AggregateException aggException && aggException.InnerExceptions.Count == 1)
-            {
-                throw aggException.InnerExceptions[0];
-            }
-
-            if (task.Exception != null)
-            {
-                throw task.Exception;
-            }
-
-            if (task.IsCanceled)
-            {
-                throw new TaskCanceledException(task);
             }
         }
     }

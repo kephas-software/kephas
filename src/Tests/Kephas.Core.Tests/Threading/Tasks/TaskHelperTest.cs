@@ -1,9 +1,20 @@
-﻿namespace Kephas.Core.Tests.Threading.Tasks
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TaskHelperTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the task helper test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Core.Tests.Threading.Tasks
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     using NUnit.Framework;
@@ -216,6 +227,52 @@
                         cancellationToken: cts.Token));
                 Assert.IsInstanceOf<Task<int>>(task);
             }
+        }
+
+        [Test]
+        public void EnsureCompletedSuccessfully_throws_if_not_completed()
+        {
+            var completionSource = new TaskCompletionSource<bool>();
+            Assert.Throws<TaskNotCompletedException>(() => TaskHelper.EnsureCompletedSuccessfully(completionSource.Task));
+        }
+
+        [Test]
+        public void EnsureCompletedSuccessfully_throws_TaskCanceledException()
+        {
+            using (var cts = new CancellationTokenSource(10))
+            {
+                var task = Task.Delay(1000, cts.Token);
+                while (!task.IsCompleted)
+                {
+                    Thread.Sleep(50);
+                }
+
+                Assert.Throws<TaskCanceledException>(() => TaskHelper.EnsureCompletedSuccessfully(task));
+            }
+        }
+
+        [Test]
+        public void EnsureCompletedSuccessfully_throws_custom_exception()
+        {
+            var task = Task.Run(() => throw new ServiceException());
+            while (!task.IsCompleted)
+            {
+                Thread.Sleep(50);
+            }
+
+            Assert.Throws<ServiceException>(() => TaskHelper.EnsureCompletedSuccessfully(task));
+        }
+
+        [Test]
+        public void EnsureCompletedSuccessfully_success()
+        {
+            var task = Task.Run(() => true);
+            while (!task.IsCompleted)
+            {
+                Thread.Sleep(50);
+            }
+
+            TaskHelper.EnsureCompletedSuccessfully(task);
         }
     }
 }

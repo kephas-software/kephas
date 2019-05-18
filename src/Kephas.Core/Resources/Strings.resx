@@ -312,4 +312,7 @@
   <data name="RuntimeTypeInfo_CreateRuntimeTypeInfo_InvalidConstructor_Exception" xml:space="preserve">
     <value>The type {0} provided in the [{1}] attribute must implement have a public constructor accepting a single type parameter.</value>
   </data>
+  <data name="TaskNotCompletedException_Message" xml:space="preserve">
+    <value>The task is not completed.</value>
+  </data>
 </root>
