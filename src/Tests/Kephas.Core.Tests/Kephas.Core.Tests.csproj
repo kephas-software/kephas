@@ -12,11 +12,11 @@
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+        <DefineConstants>TRACE;DEBUG;NETCOREAPP2_2</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>NETSTANDARD2_0</DefineConstants>
+        <DefineConstants>NETCOREAPP2_2</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
