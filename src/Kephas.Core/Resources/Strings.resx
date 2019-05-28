@@ -315,4 +315,10 @@
   <data name="TaskNotCompletedException_Message" xml:space="preserve">
     <value>The task is not completed.</value>
   </data>
+  <data name="DuplicateKeyException_Message" xml:space="preserve">
+    <value>An item with the same key is already added.</value>
+  </data>
+  <data name="CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
+    <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
+  </data>
 </root>

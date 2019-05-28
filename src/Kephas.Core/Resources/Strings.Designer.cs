@@ -296,6 +296,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
+        /// </summary>
+        internal static string CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception {
+            get {
+                return ResourceManager.GetString("CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
         /// </summary>
         internal static string ConcurrentCollection_CannotAddItem_Exception {
@@ -427,6 +436,15 @@ namespace Kephas.Resources {
         internal static string DefaultTypeResolver_ResolveTypeCore_Exception {
             get {
                 return ResourceManager.GetString("DefaultTypeResolver_ResolveTypeCore_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An item with the same key is already added..
+        /// </summary>
+        internal static string DuplicateKeyException_Message {
+            get {
+                return ResourceManager.GetString("DuplicateKeyException_Message", resourceCulture);
             }
         }
         
