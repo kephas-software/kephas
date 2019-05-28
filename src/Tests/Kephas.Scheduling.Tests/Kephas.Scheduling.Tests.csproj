@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp2.0;net45</TargetFrameworks>
@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.0'">
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
