@@ -72,7 +72,10 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     </ItemGroup>
 
