@@ -114,6 +114,8 @@ namespace Kephas.Serialization.ServiceStack.Text
             // without knowing the type of the deserialized object.
             JsConfig.TypeAttr = this.TypeAttr;
             JsConfig.IncludeTypeInfo = true;
+            JsConfig.TypeWriter = t => t.FullName;
+            JsConfig.AllowRuntimeType = t => true;
 
             // try to avoid StackOverflow exceptions even if this is not what one
             // would really need, better a normal exception
@@ -130,7 +132,7 @@ namespace Kephas.Serialization.ServiceStack.Text
             JsConfig.ThrowOnDeserializationError = false;
             JsConfig.OnDeserializationError = (instance, type, name, str, exception) =>
             {
-                this.Logger.Error(exception, $"Error on deserializing {instance}, type: {type}, name: {name}, str: {str}.");
+                this.Logger.Error(exception, Strings.DefaultJsonSerializerConfigurator_OnDeserialization_Error, instance, type, name, str);
                 throw exception;
             };
 
@@ -164,7 +166,7 @@ namespace Kephas.Serialization.ServiceStack.Text
                             type = this.TypeResolver.ResolveType(typeName, false);
                             if (type == null)
                             {
-                                this.Logger.Warn($"Could not resolve type {typeName}.");
+                                this.Logger.Warn(Strings.DefaultJsonSerializerConfigurator_TypeFinder_TypeNotResolved, typeName);
                             }
                         }
 
@@ -172,7 +174,7 @@ namespace Kephas.Serialization.ServiceStack.Text
                     }
                     catch (Exception exception)
                     {
-                        this.Logger.Error(exception, $"Errors occurred when trying to resolve type {typeName}.");
+                        this.Logger.Error(exception, Strings.DefaultJsonSerializerConfigurator_TypeFinder_Exception, typeName);
                         throw;
                     }
                 };
