@@ -19,7 +19,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -76,6 +76,33 @@ namespace Kephas.Serialization.ServiceStack.Text.Resources {
             get {
                 return ResourceManager.GetString("DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_OverwriteSkipped_War" +
                         "ning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on deserializing {0}, type: {1}, name: {2}, str: {3}..
+        /// </summary>
+        internal static string DefaultJsonSerializerConfigurator_OnDeserialization_Error {
+            get {
+                return ResourceManager.GetString("DefaultJsonSerializerConfigurator_OnDeserialization_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred when trying to resolve type {0}..
+        /// </summary>
+        internal static string DefaultJsonSerializerConfigurator_TypeFinder_Exception {
+            get {
+                return ResourceManager.GetString("DefaultJsonSerializerConfigurator_TypeFinder_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot resolve type {0}..
+        /// </summary>
+        internal static string DefaultJsonSerializerConfigurator_TypeFinder_TypeNotResolved {
+            get {
+                return ResourceManager.GetString("DefaultJsonSerializerConfigurator_TypeFinder_TypeNotResolved", resourceCulture);
             }
         }
     }
