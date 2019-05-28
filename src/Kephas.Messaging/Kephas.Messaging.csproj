@@ -76,4 +76,19 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

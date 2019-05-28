@@ -12,16 +12,16 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
-    using Kephas.Security;
-    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     /// <summary>
@@ -37,18 +37,15 @@ namespace Kephas.Messaging.Distributed
                 TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary =
                 new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
 
+        private readonly IDictionary<Type, IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> builderMap;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageBrokerBase"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
-        /// <param name="authenticationService">The authentication service.</param>
-        protected MessageBrokerBase(IAppManifest appManifest, IAuthenticationService authenticationService)
+        /// <param name="messageBuilderFactories">The message builder factories.</param>
+        protected MessageBrokerBase(ICollection<IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> messageBuilderFactories)
         {
-            Requires.NotNull(appManifest, nameof(appManifest));
-            Requires.NotNull(authenticationService, nameof(authenticationService));
-
-            this.AppManifest = appManifest;
-            this.AuthenticationService = authenticationService;
+            this.builderMap = messageBuilderFactories.ToPrioritizedDictionary(f => f.Metadata.MessageType);
         }
 
         /// <summary>
@@ -58,22 +55,6 @@ namespace Kephas.Messaging.Distributed
         /// The logger.
         /// </value>
         public ILogger<IMessageBroker> Logger { get; set; }
-
-        /// <summary>
-        /// Gets the application manifest.
-        /// </summary>
-        /// <value>
-        /// The application manifest.
-        /// </value>
-        public IAppManifest AppManifest { get; }
-
-        /// <summary>
-        /// Gets the authentication service.
-        /// </summary>
-        /// <value>
-        /// The authentication service.
-        /// </value>
-        public IAuthenticationService AuthenticationService { get; }
 
         /// <summary>
         /// Dispatches the brokered message asynchronously.
@@ -154,15 +135,36 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Creates a brokered message builder.
         /// </summary>
-        /// <typeparam name="TMessage">Type of the message.</typeparam>
-        /// <param name="context">The sending context (optional).</param>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <typeparam name="TMessage">Type of the brokered message.</typeparam>
+        /// <param name="context">Optional. The sending context.</param>
+        /// <param name="brokeredMessage">Optional. The brokered message. If not set, a new one will be
+        ///                               created.</param>
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>(IContext context = null)
-            where TMessage : BrokeredMessage, new()
+        public IBrokeredMessageBuilder CreateBrokeredMessageBuilder<TMessage>(
+            IContext context = null,
+            TMessage brokeredMessage = default)
+            where TMessage : IBrokeredMessage
         {
-            return new BrokeredMessageBuilder<TMessage>(this.AppManifest, this.AuthenticationService, context);
+            if (this.builderMap.TryGetValue(typeof(TMessage), out var builderFactory))
+            {
+                var builder = builderFactory.CreateExportedValue();
+                if (!Equals(brokeredMessage, default(TMessage)))
+                {
+                    builder.Of(brokeredMessage);
+                }
+
+                if (builder is IInitializable initializableBuilder)
+                {
+                    initializableBuilder.Initialize(context);
+                }
+
+                return builder;
+            }
+
+            throw new InvalidOperationException(string.Format(Strings.MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported, typeof(TMessage)));
         }
 
         /// <summary>
@@ -221,7 +223,7 @@ namespace Kephas.Messaging.Distributed
 
                         if (taskCompletionSource.Task.Status == TaskStatus.WaitingForActivation)
                         {
-                            if (this.messageSyncDictionary.TryRemove(brokeredMessageId, out var _))
+                            if (this.messageSyncDictionary.TryRemove(brokeredMessageId, out _))
                             {
                                 var timeoutException = new TimeoutException(
                                     string.Format(
@@ -248,8 +250,7 @@ namespace Kephas.Messaging.Distributed
         {
             if (!added)
             {
-                // TODO localization
-                this.Logger.Error($"Could not enqueue brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) timeout: {brokeredMessage.Timeout}.");
+                this.Logger.Error(Strings.MessageBrokerBase_LogOnEnqueue_NotAddedError, brokeredMessage.Id, brokeredMessage.Content, brokeredMessage.Timeout);
                 return;
             }
 
@@ -258,8 +259,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            // TODO localization
-            this.Logger.Debug($"Enqueue brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) timeout: {brokeredMessage.Timeout}.");
+            this.Logger.Debug(Strings.MessageBrokerBase_LogOnEnqueue_Success, brokeredMessage.Id, brokeredMessage.Content, brokeredMessage.Timeout);
         }
 
         /// <summary>

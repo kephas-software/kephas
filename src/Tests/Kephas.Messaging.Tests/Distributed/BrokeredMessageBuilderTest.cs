@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void OneWay()
         {
-            var builder = new BrokeredMessageBuilder<BrokeredMessage>(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             var message = builder.OneWay().BrokeredMessage;
 
             Assert.IsTrue(message.IsOneWay);
@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void WithContent()
         {
-            var builder = new BrokeredMessageBuilder<BrokeredMessage>(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             var content = Substitute.For<IMessage>();
             var message = builder.WithContent(content).BrokeredMessage;
 
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Tests.Distributed
             appManifest.AppId.Returns("app-id");
             appManifest.AppInstanceId.Returns("app-instance-id");
 
-            var builder = new BrokeredMessageBuilder<BrokeredMessage>(appManifest, Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(appManifest, Substitute.For<IAuthenticationService>());
             var message = builder.WithSender("123").BrokeredMessage;
 
             Assert.AreEqual("123", message.Sender.EndpointId);

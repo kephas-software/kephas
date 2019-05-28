@@ -162,4 +162,13 @@
   <data name="BrokeredMessageHandler_ProcessOneWay_Canceled" xml:space="preserve">
     <value>The one-way processing was canceled.</value>
   </data>
+  <data name="MessageBrokerBase_LogOnEnqueue_NotAddedError" xml:space="preserve">
+    <value>Could not enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
+  </data>
+  <data name="MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported" xml:space="preserve">
+    <value>Cannot identify a brokered message builder for message type '0'.</value>
+  </data>
+  <data name="MessageBrokerBase_LogOnEnqueue_Success" xml:space="preserve">
+    <value>Enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
+  </data>
 </root>

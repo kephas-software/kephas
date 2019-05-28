@@ -10,11 +10,14 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -22,12 +25,15 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     public static class MessageBrokerExtensions
     {
+        private static readonly MethodInfo CreateMessageBuilderMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => ((IMessageBroker)null).CreateBrokeredMessageBuilder<IBrokeredMessage>((IContext)null, (IBrokeredMessage)null));
+
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
         /// <remarks>
         /// It does not wait for an answer from the subscribers,
-        /// just for the aknowledgement of the message being sent.
+        /// just for the acknowledgement of the message being sent.
         /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
@@ -45,15 +51,14 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
 
-            if (!(@event is IBrokeredMessage brokeredMessage))
-            {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
-                brokeredMessage = brokeredMessageBuilder.WithContent(@event).OneWay().BrokeredMessage;
-            }
-            else
-            {
-                // TODO check the message broker content
-            }
+            var brokeredEvent = @event as IBrokeredMessage;
+            var brokeredMessageBuilder = brokeredEvent == null
+                                             ? messageBroker.CreateBrokeredMessageBuilder(context)
+                                             : messageBroker.CreateBrokeredMessageBuilder(brokeredEvent.GetType(), context, brokeredEvent);
+            var brokeredMessage = brokeredMessageBuilder
+                .WithContent(brokeredEvent == null ? @event : brokeredEvent.Content)
+                .OneWay()
+                .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
@@ -77,18 +82,47 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            if (!(message is IBrokeredMessage brokeredMessage))
-            {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
-                brokeredMessage = brokeredMessageBuilder
-                                    .WithContent(message)
-                                    .BrokeredMessage;
-            }
-            else
-            {
-                // TODO check the message broker content
-                // brokeredMessage.IsOneWay = false
-            }
+            var brokeredMessage = message as IBrokeredMessage;
+            var brokeredMessageBuilder = brokeredMessage == null
+                                             ? messageBroker.CreateBrokeredMessageBuilder(context)
+                                             : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
+            brokeredMessage = brokeredMessageBuilder
+                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .BrokeredMessage;
+
+            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Processes a message asynchronously, waiting for a response from the handler.
+        /// </summary>
+        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="recipient">The recipient.</param>
+        /// <param name="context">Optional. The processing context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token (optional).</param>
+        /// <returns>
+        /// The asynchronous result yielding the response message.
+        /// </returns>
+        public static Task<IMessage> ProcessAsync(
+            this IMessageBroker messageBroker,
+            IMessage message,
+            IEndpoint recipient,
+            IContext context = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(message, nameof(message));
+            Requires.NotNull(recipient, nameof(recipient));
+
+            var brokeredMessage = message as IBrokeredMessage;
+            var brokeredMessageBuilder = brokeredMessage == null
+                                             ? messageBroker.CreateBrokeredMessageBuilder(context)
+                                             : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
+            brokeredMessage = brokeredMessageBuilder
+                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .WithRecipients(recipient)
+                .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
         }
@@ -112,36 +146,59 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(message, nameof(message));
 
-            if (!(message is IBrokeredMessage brokeredMessage))
-            {
-                var brokeredMessageBuilder = messageBroker.CreateBrokeredMessageBuilder(context);
-                brokeredMessage = brokeredMessageBuilder
-                    .WithContent(message)
-                    .OneWay()
-                    .BrokeredMessage;
-            }
-            else
-            {
-                // TODO check the message broker content
-                // brokeredMessage.IsOneWay = true
-            }
+            var brokeredMessage = message as IBrokeredMessage;
+            var brokeredMessageBuilder = brokeredMessage == null
+                                             ? messageBroker.CreateBrokeredMessageBuilder(context)
+                                             : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
+            brokeredMessage = brokeredMessageBuilder
+                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .OneWay()
+                .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Creates a brokered message builder.
+        /// </summary>
+        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageType">Type of the message. It is used to identify the brokered message builder.</param>
+        /// <param name="context">Optional. The sending context.</param>
+        /// <param name="brokeredMessage">Optional. The brokered message.</param>
+        /// <returns>
+        /// The new brokered message builder.
+        /// </returns>
+        public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(
+            this IMessageBroker messageBroker,
+            Type messageType,
+            IContext context = null,
+            IBrokeredMessage brokeredMessage = null)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(messageType, nameof(messageType));
+
+            var createBuilder = CreateMessageBuilderMethod.MakeGenericMethod(messageType);
+            var builder = (IBrokeredMessageBuilder)createBuilder.Call(messageBroker, context, brokeredMessage);
+            return builder;
         }
 
         /// <summary>
         /// Creates a untyped brokered message builder.
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
-        /// <param name="context">The sending context (optional).</param>
+        /// <param name="context">Optional. The sending context.</param>
+        /// <param name="brokeredMessage">Optional. The brokered message.</param>
         /// <returns>
         /// The new untyped brokered message builder.
         /// </returns>
-        public static BrokeredMessageBuilder<BrokeredMessage> CreateBrokeredMessageBuilder(this IMessageBroker messageBroker, IContext context = null)
+        public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(
+            this IMessageBroker messageBroker,
+            IContext context = null,
+            BrokeredMessage brokeredMessage = null)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
 
-            return messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>(context);
+            return messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>(context, brokeredMessage);
         }
     }
 }
