@@ -13,6 +13,7 @@ namespace Kephas.Composition
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.CompilerServices;
 
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
@@ -95,6 +96,7 @@ namespace Kephas.Composition
         /// <returns>
         /// The given data converted to an IDictionary&lt;TKey,TValue&gt;.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IDictionary<TKey, IExportFactory<TService, TServiceMetadata>> ToPrioritizedDictionary<TService, TServiceMetadata, TKey>(
             this IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories,
             Func<IExportFactory<TService, TServiceMetadata>, TKey> keyFunc)
