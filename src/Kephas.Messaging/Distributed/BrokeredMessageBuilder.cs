@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// A brokered message builder.
     /// </summary>
-    public class BrokeredMessageBuilder : IBrokeredMessageBuilder, IInitializable
+    public class BrokeredMessageBuilder : IBrokeredMessageBuilder<BrokeredMessage>, IInitializable
     {
         /// <summary>
         /// The brokered message.
@@ -54,7 +54,15 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The brokered message.
         /// </value>
-        public IBrokeredMessage BrokeredMessage => this.brokeredMessage;
+        IBrokeredMessage IBrokeredMessageBuilder.BrokeredMessage => this.brokeredMessage;
+
+        /// <summary>
+        /// Gets the brokered message.
+        /// </summary>
+        /// <value>
+        /// The brokered message.
+        /// </value>
+        public BrokeredMessage BrokeredMessage => this.brokeredMessage;
 
         /// <summary>
         /// Gets the application manifest.
