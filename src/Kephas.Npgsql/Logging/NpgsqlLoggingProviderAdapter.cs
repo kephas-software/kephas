@@ -10,7 +10,6 @@
 
 namespace Kephas.Npgsql.Logging
 {
-    using Kephas;
     using Kephas.Logging;
 
     using global::Npgsql.Logging;
