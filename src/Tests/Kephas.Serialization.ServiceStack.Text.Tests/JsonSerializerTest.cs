@@ -47,7 +47,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
                           };
             var serializedObj = serializer.Serialize(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n    \"$type\": \"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests\",\r\n    \"name\": \"John Doe\",\r\n    \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                "{\r\n    \"$type\": \"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity\",\r\n    \"name\": \"John Doe\",\r\n    \"personalSite\": \"http://site.com/my-site\"\r\n}"
                     .Replace("\r\n", Environment.NewLine),
                 serializedObj);
         }
@@ -98,7 +98,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n    \"$type\": \"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests\",\r\n    \"name\": \"John Doe\",\r\n    \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                "{\r\n    \"$type\": \"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity\",\r\n    \"name\": \"John Doe\",\r\n    \"personalSite\": \"http://site.com/my-site\"\r\n}"
                     .Replace("\r\n", Environment.NewLine),
                 serializedObj);
         }
@@ -127,7 +127,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""description"":""John Doe""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
         }
 
         [Test]
@@ -225,7 +225,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
             Assert.IsInstanceOf<TestEntity>(obj);
@@ -236,12 +236,12 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             Assert.AreEqual(new Uri("http://site.com/my-site"), testEntity.PersonalSite);
         }
 
-        [Test]
-        public void Deserialize_with_serialized_types()
+        [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}")]
+        [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}")]
+        public void Deserialize_with_serialized_types(string serializedObj)
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = serializer.Deserialize(serializedObj);
 
             Assert.IsInstanceOf<TestEntity>(obj);
@@ -257,7 +257,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""description"":""John Doe""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
             Assert.IsInstanceOf<ExpandoEntity>(obj);
@@ -267,12 +267,12 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             Assert.AreEqual("John Doe", testEntity.Description);
         }
 
-        [Test]
-        public async Task DeserializeAsync_with_in_string_provided_type()
+        [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe""}")]
+        [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe""}")]
+        public async Task DeserializeAsync_with_in_string_provided_type(string serializedObj)
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
             context.MediaType.Returns(typeof(JsonMediaType));
             context.RootObjectType.Returns(typeof(TestEntity));
