@@ -24,7 +24,7 @@ namespace Kephas.Core.Tests.Composition
     public class CompositionHelperTest
     {
         [Test]
-        public void ToDictionary_empty()
+        public void ToPrioritizedDictionary_empty()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>();
 
@@ -34,7 +34,7 @@ namespace Kephas.Core.Tests.Composition
         }
 
         [Test]
-        public void ToDictionary_ordered()
+        public void ToPrioritizedDictionary_ordered()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
                                 {
@@ -60,7 +60,7 @@ namespace Kephas.Core.Tests.Composition
         }
 
         [Test]
-        public void ToDictionary_override_non_deterministic_siblings()
+        public void ToPrioritizedDictionary_override_non_deterministic_siblings()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
                                 {
@@ -98,7 +98,45 @@ namespace Kephas.Core.Tests.Composition
         }
 
         [Test]
-        public void ToDictionary_override_non_deterministic_exception()
+        public void ToPrioritizedDictionary_override_non_deterministic_siblings_with_key_comparer()
+        {
+            var factories = new List<IExportFactory<string, AppServiceMetadata>>()
+                                {
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 2,
+                                            overridePriority: 1,
+                                            serviceName: "One")),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service 2",
+                                        new AppServiceMetadata(
+                                            processingPriority: 2,
+                                            overridePriority: 1,
+                                            serviceName: "oNe")),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "two service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 5,
+                                            overridePriority: 0,
+                                            serviceName: "two")),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service reloaded",
+                                        new AppServiceMetadata(
+                                            processingPriority: 5,
+                                            overridePriority: -1,
+                                            serviceName: "onE")),
+                                };
+
+            var dict = factories.ToPrioritizedDictionary(f => f.Metadata.ServiceName, f => f.CreateExportedValue(), StringComparer.OrdinalIgnoreCase);
+
+            Assert.AreEqual(2, dict.Count);
+            Assert.AreEqual("one service reloaded", dict["one"]);
+            Assert.AreEqual("two service", dict["two"]);
+        }
+
+        [Test]
+        public void ToPrioritizedDictionary_override_non_deterministic_exception()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
                                 {
@@ -126,7 +164,35 @@ namespace Kephas.Core.Tests.Composition
         }
 
         [Test]
-        public void ToDictionary_override_non_sortable_keys()
+        public void ToPrioritizedDictionary_export_factory_override_non_deterministic_exception()
+        {
+            var factories = new List<IExportFactory<string, AppServiceMetadata>>()
+                                {
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 2,
+                                            overridePriority: 1,
+                                            serviceName: "one")),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "two service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 5,
+                                            overridePriority: 0,
+                                            serviceName: "two")),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service reloaded",
+                                        new AppServiceMetadata(
+                                            processingPriority: 2,
+                                            overridePriority: 1,
+                                            serviceName: "one")),
+                                };
+
+            Assert.Throws<DuplicateKeyException>(() => factories.ToPrioritizedDictionary(f => f.Metadata.ServiceName));
+        }
+
+        [Test]
+        public void ToPrioritizedDictionary_override_non_sortable_keys()
         {
             var factories = new List<IExportFactory<string, AppServiceMetadata>>()
                                 {
@@ -155,6 +221,38 @@ namespace Kephas.Core.Tests.Composition
             Assert.AreEqual(2, dict.Count);
             Assert.AreEqual("one service reloaded", dict[typeof(int)]);
             Assert.AreEqual("two service", dict[typeof(string)]);
+        }
+
+        [Test]
+        public void ToPrioritizedDictionary_export_factory_override_non_sortable_keys()
+        {
+            var factories = new List<IExportFactory<string, AppServiceMetadata>>()
+                                {
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 2,
+                                            overridePriority: 1,
+                                            serviceName: "one") { ["Key"] = typeof(int) }),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "two service",
+                                        new AppServiceMetadata(
+                                            processingPriority: 5,
+                                            overridePriority: 0,
+                                            serviceName: "two") { ["Key"] = typeof(string) }),
+                                    new ExportFactory<string, AppServiceMetadata>(
+                                        () => "one service reloaded",
+                                        new AppServiceMetadata(
+                                            processingPriority: 5,
+                                            overridePriority: -1,
+                                            serviceName: "one") { ["Key"] = typeof(int) }),
+                                };
+
+            var dict = factories.ToPrioritizedDictionary(f => (Type)f.Metadata["Key"]);
+
+            Assert.AreEqual(2, dict.Count);
+            Assert.AreEqual("one service reloaded", dict[typeof(int)].CreateExportedValue());
+            Assert.AreEqual("two service", dict[typeof(string)].CreateExportedValue());
         }
     }
 }
