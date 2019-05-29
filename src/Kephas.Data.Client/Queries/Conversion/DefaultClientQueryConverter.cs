@@ -55,7 +55,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <summary>
         /// The expression converters.
         /// </summary>
-        private readonly IDictionary<string, IExpressionConverter> expressionConverters = new Dictionary<string, IExpressionConverter>();
+        private readonly IDictionary<string, IExpressionConverter> expressionConverters;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultClientQueryConverter"/> class.
@@ -75,15 +75,9 @@ namespace Kephas.Data.Client.Queries.Conversion
             this.typeResolver = typeResolver;
             this.projectedTypeResolver = projectedTypeResolver;
 
-            foreach (
-                var converterFactory in
-                converterFactories.OrderBy(c => c.Metadata.Operator).ThenBy(c => c.Metadata.OverridePriority))
-            {
-                if (!this.expressionConverters.ContainsKey(converterFactory.Metadata.Operator))
-                {
-                    this.expressionConverters.Add(converterFactory.Metadata.Operator, converterFactory.CreateExportedValue());
-                }
-            }
+            this.expressionConverters = converterFactories.ToPrioritizedDictionary(
+                f => f.Metadata.Operator,
+                f => f.CreateExportedValue());
         }
 
         /// <summary>
