@@ -21,6 +21,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
+    using Kephas.Serialization.ServiceStack.Text.Reflection;
 
     using NSubstitute;
 
@@ -38,7 +39,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task SerializeAsync()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -53,7 +54,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public void Serialize()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
@@ -68,7 +69,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task SerializeAsync_indented()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
@@ -87,7 +88,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public void Serialize_indented()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
@@ -106,7 +107,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public void Serialize_cyclic()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new CyclicItem();
             var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
@@ -119,7 +120,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task SerializeAsync_Expando()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new ExpandoEntity
             {
@@ -133,7 +134,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task SerializeAsync_expando_list()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
 
             var objList = new List<object>
@@ -160,7 +161,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_expando_list()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
 
             using (var sr = new StringReader(@"[{ ""dynContent"": { ""hi"": ""there"" } }]"))
@@ -178,7 +179,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_untyped()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -193,7 +194,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_dictionary()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
@@ -208,7 +209,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public void Deserialize_dictionary()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
@@ -223,7 +224,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_with_serialized_types()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -240,7 +241,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}")]
         public void Deserialize_with_serialized_types(string serializedObj)
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = serializer.Deserialize(serializedObj);
 
@@ -255,7 +256,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test, Ignore("The deserialization of custom dynamics is still pending...")]
         public async Task DeserializeAsync_with_serialized_types_expando()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -271,7 +272,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [TestCase(@"{""$type"":""Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.ServiceStack.Text.Tests"",""name"":""John Doe""}")]
         public async Task DeserializeAsync_with_in_string_provided_type(string serializedObj)
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var context = Substitute.For<ISerializationContext>();
             context.MediaType.Returns(typeof(JsonMediaType));
@@ -289,7 +290,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_with_runtime_provided_type()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
@@ -322,7 +323,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task DeserializeAsync_expando_property()
         {
-            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new ServiceStackTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
 
             using (var sr = new StringReader(@"{ ""dynContent"": { ""hi"": ""there"" } }"))
