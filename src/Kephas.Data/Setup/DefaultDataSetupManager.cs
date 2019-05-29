@@ -109,7 +109,8 @@ namespace Kephas.Data.Setup
         protected virtual List<IDataInstaller> GetOrderedDataInstallers(IDataSetupContext dataSetupContext)
         {
             var targets = this.GetTargets(dataSetupContext);
-            var dataInstallers = this.dataInstallerFactories.OrderBy(f => f.Metadata.OverridePriority)
+            var dataInstallers = this.dataInstallerFactories
+                .OrderBy(f => f.Metadata.OverridePriority)
                 .ThenBy(f => f.Metadata.ProcessingPriority)
                 .Where(f => targets == null || targets.Contains(f.Metadata.Target)).Select(f => f.CreateExportedValue())
                 .ToList();
