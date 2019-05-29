@@ -176,8 +176,7 @@ namespace Kephas.Core.Tests.Threading.Tasks
         {
             using (var cts = new CancellationTokenSource(10))
             {
-                Assert.ThrowsAsync(
-                    Throws.InstanceOf<OperationCanceledException>(),
+                Assert.ThrowsAsync<TaskCanceledException>(
                     () => TaskHelper.AsAsync(() => Thread.Sleep(1000), cancellationToken: cts.Token));
             }
         }
@@ -218,8 +217,7 @@ namespace Kephas.Core.Tests.Threading.Tasks
             using (var cts = new CancellationTokenSource(10))
             {
                 Task task = null;
-                Assert.ThrowsAsync(
-                    Throws.InstanceOf<OperationCanceledException>(),
+                Assert.ThrowsAsync<TaskCanceledException>(
                     () => (task = TaskHelper.AsAsync(
                         () =>
                             {

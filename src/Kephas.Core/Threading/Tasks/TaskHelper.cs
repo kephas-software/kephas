@@ -316,7 +316,20 @@ namespace Kephas.Threading.Tasks
             Requires.NotNull(action, nameof(action));
 
             var task = Task.Run(action, cancellationToken);
-            var completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            Task completedTask = null;
+            try
+            {
+                completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            }
+            catch (TaskCanceledException)
+            {
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                throw new TaskCanceledException(task);
+            }
+
             if (completedTask != task)
             {
                 throw cancellationToken.IsCancellationRequested
@@ -403,7 +416,20 @@ namespace Kephas.Threading.Tasks
             Requires.NotNull(func, nameof(func));
 
             var task = Task.Run(func, cancellationToken);
-            var completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            Task completedTask = null;
+            try
+            {
+                completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();
+            }
+            catch (TaskCanceledException)
+            {
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                throw new TaskCanceledException(task);
+            }
+
             if (task == completedTask)
             {
                 EnsureCompletedSuccessfully(task);
