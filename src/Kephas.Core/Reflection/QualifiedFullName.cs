@@ -32,11 +32,6 @@ namespace Kephas.Reflection
         private const char GenericClosingBracket = ']';
 
         /// <summary>
-        /// Zero-based index of the type name.
-        /// </summary>
-        private const int TypeNameIndex = 0;
-
-        /// <summary>
         /// Zero-based index of the assembly name.
         /// </summary>
         private const int AssemblyNameIndex = 1;
@@ -78,7 +73,7 @@ namespace Kephas.Reflection
                 return;
             }
 
-            this.AssemblyName = this.GetAssemblyName(trailingParts[1]);
+            this.AssemblyName = this.GetAssemblyName(trailingParts[AssemblyNameIndex]);
         }
 
         /// <summary>
