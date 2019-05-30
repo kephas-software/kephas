@@ -110,7 +110,7 @@ namespace Kephas.Reflection
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, string.Format(Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName));
+                this.Logger.Warn(ex, Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
                 return null;
             }
         }
