@@ -11,15 +11,15 @@
 namespace Kephas.Messaging.Distributed
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed.Composition;
     using Kephas.Messaging.Resources;
-    using Kephas.Security;
-    using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -37,11 +37,10 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessMessageBroker"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
-        /// <param name="authenticationService">The authentication service.</param>
+        /// <param name="messageBuilderFactories">The message builder factories.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor)
-            : base(appManifest, authenticationService)
+        public InProcessMessageBroker(ICollection<IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> messageBuilderFactories, IMessageProcessor messageProcessor)
+            : base(messageBuilderFactories)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 

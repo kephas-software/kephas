@@ -12,7 +12,6 @@ namespace Kephas.Serialization
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Composition;
@@ -29,37 +28,18 @@ namespace Kephas.Serialization
         /// <summary>
         /// The serializer factories.
         /// </summary>
-        private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories = new Dictionary<Type, IExportFactory<ISerializer, SerializerMetadata>>();
+        private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(
-            ICompositionContext compositionContext,
-            ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
-            this.CompositionContext = compositionContext;
-            foreach (var factory in serializerFactories.OrderBy(f => f.Metadata.OverridePriority))
-            {
-                if (!this.serializerFactories.ContainsKey(factory.Metadata.MediaType))
-                {
-                    this.serializerFactories.Add(factory.Metadata.MediaType, factory);
-                }
-            }
+            this.serializerFactories = serializerFactories.ToPrioritizedDictionary(f => f.Metadata.MediaType);
         }
-
-        /// <summary>
-        /// Gets a context for the dependency injection/composition.
-        /// </summary>
-        /// <value>
-        /// The composition context.
-        /// </value>
-        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets a serializer for the provided context.

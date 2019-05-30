@@ -58,6 +58,28 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         [Test]
         [TestCase(arg: new string[] { "I", "saw", "the", "film", "Heidi" })]
         [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
+        public void ConvertQuery_operators_with_override_priority(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var eqConverter = this.EqConverter();
+            var altEqConverter = this.GetExpressionConverter(eqConverter.Metadata.Operator, args => LinqExpression.NotEqual(args[0], args[1]), overridePriority: -100);
+            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { eqConverter, altEqConverter });
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+                            {
+                                EntityType = "item-type",
+                                Filter = new Expression { Op = "=", Args = new List<object> { 1, 2 } }
+                            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
+            var result = queryable.ToList();
+            Assert.AreEqual(data.Length, result.Count);
+        }
+
+        [Test]
+        [TestCase(arg: new string[] { "I", "saw", "the", "film", "Heidi" })]
+        [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
         public void ConvertQuery_member_access(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
@@ -295,12 +317,13 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> GetExpressionConverter(
             string op,
-            Func<IList<LinqExpression>, LinqExpression> conversionFunc)
+            Func<IList<LinqExpression>, LinqExpression> conversionFunc,
+            int overridePriority = 0)
         {
             var converter = Substitute.For<IExpressionConverter>();
             converter.ConvertExpression(Arg.Any<IList<LinqExpression>>(), Arg.Any<Type>(), Arg.Any<ParameterExpression>())
                 .Returns((ci) => conversionFunc(ci.Arg<IList<LinqExpression>>()));
-            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => converter, new ExpressionConverterMetadata(op));
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => converter, new ExpressionConverterMetadata(op, overridePriority: overridePriority));
         }
     }
 }

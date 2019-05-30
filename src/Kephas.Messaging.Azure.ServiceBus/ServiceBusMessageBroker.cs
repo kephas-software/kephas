@@ -10,12 +10,13 @@
 
 namespace Kephas.Messaging.Azure.ServiceBus
 {
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
+    using Kephas.Composition;
     using Kephas.Messaging.Distributed;
-    using Kephas.Security.Authentication;
+    using Kephas.Messaging.Distributed.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -26,10 +27,9 @@ namespace Kephas.Messaging.Azure.ServiceBus
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceBusMessageBroker"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
-        /// <param name="authenticationService">The authentication service.</param>
-        public ServiceBusMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService)
-            : base(appManifest, authenticationService)
+        /// <param name="messageBuilderFactories">The message builder factories.</param>
+        public ServiceBusMessageBroker(ICollection<IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> messageBuilderFactories)
+            : base(messageBuilderFactories)
         {
         }
 

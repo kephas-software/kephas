@@ -121,22 +121,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Handles the unhandled exception event.
-        /// </summary>
-        /// <param name="sender">Source of the event.</param>
-        /// <param name="e">Event information to send to registered event handlers.</param>
-        protected virtual void OnCurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            var messageFormat = e.IsTerminating
-                                    ? Strings.UnhandledException_Terminating_Message
-                                    : Strings.UnhandledException_InProcess_Message;
-            this.Log(
-                LogLevel.Fatal,
-                e.ExceptionObject as Exception,
-                messageFormat);
-        }
-
-        /// <summary>
         /// Shuts down the application asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
@@ -172,6 +156,22 @@ namespace Kephas.Application
                 this.Log(LogLevel.Fatal, shutdownException);
                 throw shutdownException;
             }
+        }
+
+        /// <summary>
+        /// Handles the unhandled exception event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="e">Event information to send to registered event handlers.</param>
+        protected virtual void OnCurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var messageFormat = e.IsTerminating
+                                    ? Strings.UnhandledException_Terminating_Message
+                                    : Strings.UnhandledException_InProcess_Message;
+            this.Log(
+                LogLevel.Fatal,
+                e.ExceptionObject as Exception,
+                messageFormat);
         }
 
         /// <summary>

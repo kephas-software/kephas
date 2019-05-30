@@ -7,6 +7,7 @@
 //   Implements the data exception class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Kephas.Data
 {
     using System;

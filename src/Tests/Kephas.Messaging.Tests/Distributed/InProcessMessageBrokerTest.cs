@@ -17,16 +17,14 @@ namespace Kephas.Messaging.Tests.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
-    using Kephas.Security;
-    using Kephas.Security.Authentication;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
@@ -262,8 +260,8 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             private readonly ISerializationService serializationService;
 
-            public RemoteMessageBroker(IAppManifest appManifest, IAuthenticationService authenticationService, IMessageProcessor messageProcessor, ISerializationService serializationService)
-                : base(appManifest, authenticationService, messageProcessor)
+            public RemoteMessageBroker(ICollection<IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> messageBuilderFactories, IMessageProcessor messageProcessor, ISerializationService serializationService)
+                : base(messageBuilderFactories, messageProcessor)
             {
                 this.serializationService = serializationService;
             }

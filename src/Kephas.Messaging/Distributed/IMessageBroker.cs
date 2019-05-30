@@ -53,12 +53,13 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Creates a brokered message builder.
         /// </summary>
-        /// <typeparam name="TMessage">Type of the message.</typeparam>
-        /// <param name="context">The sending context (optional).</param>
+        /// <typeparam name="TMessage">Type of the brokered message.</typeparam>
+        /// <param name="context">Optional. The sending context.</param>
+        /// <param name="brokeredMessage">Optional. The brokered message. If not set, a new one will be created.</param>
         /// <returns>
         /// The new brokered message builder.
         /// </returns>
-        BrokeredMessageBuilder<TMessage> CreateBrokeredMessageBuilder<TMessage>(IContext context = null)
-            where TMessage : BrokeredMessage, new();
+        IBrokeredMessageBuilder CreateBrokeredMessageBuilder<TMessage>(IContext context = null, TMessage brokeredMessage = default)
+            where TMessage : IBrokeredMessage;
     }
 }

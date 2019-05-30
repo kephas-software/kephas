@@ -4,7 +4,7 @@
         <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Description>Provides means for orchestrating microservices based on the Kephas Framework.</Description>
-        <Version>6.0.0-beta.3</Version>
+        <Version>6.0.0-rc.2</Version>
         <AssemblyVersion>6.0.0.0</AssemblyVersion>
         <FileVersion>6.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
@@ -58,7 +58,10 @@ Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver 
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

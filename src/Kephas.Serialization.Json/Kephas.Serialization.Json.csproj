@@ -12,7 +12,7 @@
         <FileVersion>6.0.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides JSON serialization infrastructure using the Newtonsoft.Json implementation.</Description>
-        <Version>6.0.0-beta.3</Version>
+        <Version>6.0.0-rc.2</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
@@ -63,7 +63,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     </ItemGroup>
 

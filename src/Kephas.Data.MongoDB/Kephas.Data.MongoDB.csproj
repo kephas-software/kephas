@@ -8,7 +8,7 @@
         <RootNamespace>Kephas.Data.MongoDB</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>6.0.0-beta.3</Version>
+        <Version>6.0.0-rc.2</Version>
         <AssemblyVersion>6.0.0.0</AssemblyVersion>
         <FileVersion>6.0.0.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -64,7 +64,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="MongoDB.Bson.signed" Version="2.4.0" />
         <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.4.0" />
         <PackageReference Include="MongoDB.Driver.signed" Version="2.4.0" />

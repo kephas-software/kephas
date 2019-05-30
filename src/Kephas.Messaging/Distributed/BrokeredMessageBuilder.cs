@@ -22,35 +22,25 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// A brokered message builder.
     /// </summary>
-    /// <typeparam name="TMessage">Type of the message.</typeparam>
-    public class BrokeredMessageBuilder<TMessage>
-        where TMessage : BrokeredMessage, new()
+    public class BrokeredMessageBuilder : IBrokeredMessageBuilder<BrokeredMessage>, IInitializable
     {
         /// <summary>
         /// The brokered message.
         /// </summary>
-        private readonly TMessage brokeredMessage;
+        private BrokeredMessage brokeredMessage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BrokeredMessageBuilder{TMessage}"/> class.
+        /// Initializes a new instance of the <see cref="BrokeredMessageBuilder"/> class.
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="authenticationService">The authentication service.</param>
-        /// <param name="context">Optional. The sending context (optional).</param>
-        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService, IContext context = null)
+        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(authenticationService, nameof(authenticationService));
 
             this.AppManifest = appManifest;
             this.AuthenticationService = authenticationService;
-            this.Context = context;
-
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.brokeredMessage = this.CreateBrokeredMessage();
-
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.brokeredMessage.BearerToken = this.GetBearerToken(context);
         }
 
         /// <summary>
@@ -64,7 +54,15 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The brokered message.
         /// </value>
-        public IBrokeredMessage BrokeredMessage => this.brokeredMessage;
+        IBrokeredMessage IBrokeredMessageBuilder.BrokeredMessage => this.brokeredMessage;
+
+        /// <summary>
+        /// Gets the brokered message.
+        /// </summary>
+        /// <value>
+        /// The brokered message.
+        /// </value>
+        public BrokeredMessage BrokeredMessage => this.brokeredMessage;
 
         /// <summary>
         /// Gets the application manifest.
@@ -85,16 +83,49 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The sending context.
         /// </value>
-        public IContext Context { get; }
+        public IContext Context { get; private set; }
+
+        /// <summary>
+        /// Sets the given brokered message for building. Must be set before calling <see cref="Initialize"/>.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public IBrokeredMessageBuilder Of(IBrokeredMessage brokeredMessage)
+        {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
+            if (this.brokeredMessage != null)
+            {
+                throw new InvalidOperationException($"Cannot set the brokered message multiple times or after the initialization.");
+            }
+
+            this.brokeredMessage = (BrokeredMessage)brokeredMessage;
+
+            return this;
+        }
 
         /// <summary>
         /// Sets the content message.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithContent(IMessage message)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithContent(IMessage message)
+        {
+            return this.WithContent(message);
+        }
+
+        /// <summary>
+        /// Sets the content message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithContent(IMessage message)
         {
             if (this.brokeredMessage.ReplyToMessageId == null && message == null)
             {
@@ -111,9 +142,21 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="senderId">The ID of the message sender.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithSender(string senderId)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithSender(string senderId)
+        {
+            return this.WithSender(senderId);
+        }
+
+        /// <summary>
+        /// Sets the sender of the brokered message.
+        /// </summary>
+        /// <param name="senderId">The ID of the message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithSender(string senderId)
         {
             Requires.NotNullOrEmpty(senderId, nameof(senderId));
 
@@ -127,9 +170,21 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="sender">The message sender.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithSender(IEndpoint sender)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithSender(IEndpoint sender)
+        {
+            return this.WithSender(sender);
+        }
+
+        /// <summary>
+        /// Sets the sender of the brokered message.
+        /// </summary>
+        /// <param name="sender">The message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithSender(IEndpoint sender)
         {
             Requires.NotNull(sender, nameof(sender));
 
@@ -143,9 +198,21 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="sender">The message sender.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithSender(Uri sender)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithSender(Uri sender)
+        {
+            return this.WithSender(sender);
+        }
+
+        /// <summary>
+        /// Sets the sender of the brokered message.
+        /// </summary>
+        /// <param name="sender">The message sender.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithSender(Uri sender)
         {
             Requires.NotNull(sender, nameof(sender));
 
@@ -159,9 +226,21 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="recipients">The recipients.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithRecipients(params IEndpoint[] recipients)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithRecipients(params IEndpoint[] recipients)
+        {
+            return this.WithRecipients(recipients);
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="recipients">The recipients.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithRecipients(params IEndpoint[] recipients)
         {
             Requires.NotNullOrEmpty(recipients, nameof(recipients));
 
@@ -175,9 +254,21 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="recipients">The recipients.</param>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> WithRecipients(IEnumerable<IEndpoint> recipients)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.WithRecipients(IEnumerable<IEndpoint> recipients)
+        {
+            return this.WithRecipients(recipients);
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="recipients">The recipients.</param>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder WithRecipients(IEnumerable<IEndpoint> recipients)
         {
             Requires.NotNullOrEmpty(recipients, nameof(recipients));
 
@@ -190,9 +281,20 @@ namespace Kephas.Messaging.Distributed
         /// Makes the communication one way.
         /// </summary>
         /// <returns>
-        /// This <see cref="BrokeredMessageBuilder{TMessage}"/>.
+        /// This <see cref="BrokeredMessageBuilder"/>.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> OneWay()
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.OneWay()
+        {
+            return this.OneWay();
+        }
+
+        /// <summary>
+        /// Makes the communication one way.
+        /// </summary>
+        /// <returns>
+        /// This <see cref="BrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual BrokeredMessageBuilder OneWay()
         {
             this.brokeredMessage.IsOneWay = true;
 
@@ -207,7 +309,20 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A BrokeredMessageBuilder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> Timeout(TimeSpan timeout)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.Timeout(TimeSpan timeout)
+        {
+            return this.Timeout(timeout);
+        }
+
+        /// <summary>
+        /// Sets the timeout when waiting for an answer.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when the timeout is negative.</exception>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public virtual BrokeredMessageBuilder Timeout(TimeSpan timeout)
         {
             if (timeout < TimeSpan.Zero)
             {
@@ -227,7 +342,20 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A BrokeredMessageBuilder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> ReplyTo(string messageId, params IEndpoint[] recipients)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.ReplyTo(string messageId, params IEndpoint[] recipients)
+        {
+            return this.ReplyTo(messageId, recipients);
+        }
+
+        /// <summary>
+        /// Makes the message as a reply to another message.
+        /// </summary>
+        /// <param name="messageId">Identifier for the message.</param>
+        /// <param name="recipients">A variable-length parameters list containing recipients.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public virtual BrokeredMessageBuilder ReplyTo(string messageId, params IEndpoint[] recipients)
         {
             Requires.NotNull(messageId, nameof(messageId));
 
@@ -244,7 +372,19 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A BrokeredMessageBuilder.
         /// </returns>
-        public virtual BrokeredMessageBuilder<TMessage> ReplyTo(IBrokeredMessage message)
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.ReplyTo(IBrokeredMessage message)
+        {
+            return this.ReplyTo(message);
+        }
+
+        /// <summary>
+        /// Makes the message as a reply to another message.
+        /// </summary>
+        /// <param name="message">The message to reply to.</param>
+        /// <returns>
+        /// A BrokeredMessageBuilder.
+        /// </returns>
+        public virtual BrokeredMessageBuilder ReplyTo(IBrokeredMessage message)
         {
             Requires.NotNull(message, nameof(message));
 
@@ -257,17 +397,32 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        public void Initialize(IContext context = null)
+        {
+            this.Context = context;
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.brokeredMessage = this.CreateBrokeredMessage();
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.brokeredMessage.BearerToken = this.GetBearerToken(context);
+        }
+
+        /// <summary>
         /// Creates the brokered message.
         /// </summary>
         /// <returns>
         /// The new brokered message.
         /// </returns>
-        protected virtual TMessage CreateBrokeredMessage()
+        protected virtual BrokeredMessage CreateBrokeredMessage()
         {
-            return new TMessage
+            return new BrokeredMessage
             {
                 Timeout = DefaultTimeout,
-                Sender = this.CreateEndpoint(null)
+                Sender = this.CreateEndpoint(null),
             };
         }
 

@@ -19,10 +19,10 @@ namespace Kephas.Messaging.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Messaging.Resources.Strings", typeof(Strings).Assembly);
@@ -51,7 +51,7 @@ namespace Kephas.Messaging.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply..
         /// </summary>
-        internal static string BrokeredMessageBuilder_ContentNullWhenNotReply_Exception {
+        public static string BrokeredMessageBuilder_ContentNullWhenNotReply_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageBuilder_ContentNullWhenNotReply_Exception", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Cannot specify a negative timeout value..
         /// </summary>
-        internal static string BrokeredMessageBuilder_NonNegativeTimeout_Exception {
+        public static string BrokeredMessageBuilder_NonNegativeTimeout_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageBuilder_NonNegativeTimeout_Exception", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The reply processing was canceled..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessAndReply_Canceled {
+        public static string BrokeredMessageHandler_ProcessAndReply_Canceled {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndReply_Canceled", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The reply processing is faulted..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessAndReply_Exception {
+        public static string BrokeredMessageHandler_ProcessAndReply_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndReply_Exception", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The response processing was canceled..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessAndRespond_Canceled {
+        public static string BrokeredMessageHandler_ProcessAndRespond_Canceled {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndRespond_Canceled", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The response processing is faulted..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessAndRespond_Exception {
+        public static string BrokeredMessageHandler_ProcessAndRespond_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessAndRespond_Exception", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The one-way processing was canceled..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessOneWay_Canceled {
+        public static string BrokeredMessageHandler_ProcessOneWay_Canceled {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessOneWay_Canceled", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The one-way processing is faulted..
         /// </summary>
-        internal static string BrokeredMessageHandler_ProcessOneWay_Exception {
+        public static string BrokeredMessageHandler_ProcessOneWay_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessageHandler_ProcessOneWay_Exception", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Multiple handlers found for the &apos;{0}&apos; message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them..
         /// </summary>
-        internal static string DefaultMessageProcessor_AmbiguousHandler_Exception {
+        public static string DefaultMessageProcessor_AmbiguousHandler_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageProcessor_AmbiguousHandler_Exception", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Could not find a handler for the &apos;{0}&apos; message type..
         /// </summary>
-        internal static string DefaultMessageProcessor_MissingHandler_Exception {
+        public static string DefaultMessageProcessor_MissingHandler_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageProcessor_MissingHandler_Exception", resourceCulture);
             }
@@ -153,16 +153,43 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An error occurred in the message processor. Please check the exception details for more information..
         /// </summary>
-        internal static string InProcessMessageBroker_MessageProcessor_Async_Exception {
+        public static string InProcessMessageBroker_MessageProcessor_Async_Exception {
             get {
                 return ResourceManager.GetString("InProcessMessageBroker_MessageProcessor_Async_Exception", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot identify a brokered message builder for message type &apos;0&apos;..
+        /// </summary>
+        public static string MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not enqueue brokered message (#{0}, {1}) timeout: {2}..
+        /// </summary>
+        public static string MessageBrokerBase_LogOnEnqueue_NotAddedError {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_LogOnEnqueue_NotAddedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enqueue brokered message (#{0}, {1}) timeout: {2}..
+        /// </summary>
+        public static string MessageBrokerBase_LogOnEnqueue_Success {
+            get {
+                return ResourceManager.GetString("MessageBrokerBase_LogOnEnqueue_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received a reply message without the {0} being set. Content: {1}..
         /// </summary>
-        internal static string MessageBrokerBase_MissingReplyToMessageId_Exception {
+        public static string MessageBrokerBase_MissingReplyToMessageId_Exception {
             get {
                 return ResourceManager.GetString("MessageBrokerBase_MissingReplyToMessageId_Exception", resourceCulture);
             }
@@ -171,7 +198,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Received a reply to &apos;{0}&apos; for which the corresponding original message was not found. Possible cause: a timeout may have had interrupted the communication. Content: {1}..
         /// </summary>
-        internal static string MessageBrokerBase_ReplyToMessageNotFound_Exception {
+        public static string MessageBrokerBase_ReplyToMessageNotFound_Exception {
             get {
                 return ResourceManager.GetString("MessageBrokerBase_ReplyToMessageNotFound_Exception", resourceCulture);
             }
@@ -180,7 +207,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The maximum alloted time of {0} expired for {1}..
         /// </summary>
-        internal static string MessageBrokerBase_Timeout_Exception {
+        public static string MessageBrokerBase_Timeout_Exception {
             get {
                 return ResourceManager.GetString("MessageBrokerBase_Timeout_Exception", resourceCulture);
             }
@@ -189,7 +216,7 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;..
         /// </summary>
-        internal static string MessageHandler_BadMessageType_Exception {
+        public static string MessageHandler_BadMessageType_Exception {
             get {
                 return ResourceManager.GetString("MessageHandler_BadMessageType_Exception", resourceCulture);
             }

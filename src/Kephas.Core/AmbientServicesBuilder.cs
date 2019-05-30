@@ -58,7 +58,7 @@ namespace Kephas
         /// </summary>
         /// <param name="configurationStore">The configuration store.</param>
         /// <returns>
-        /// The ambient services builder.
+        /// This ambient services builder.
         /// </returns>
         public AmbientServicesBuilder WithConfigurationStore(IConfigurationStore configurationStore)
         {
@@ -74,7 +74,7 @@ namespace Kephas
         /// </summary>
         /// <param name="logManager">The log manager.</param>
         /// <returns>
-        /// The ambient services builder.
+        /// This ambient services builder.
         /// </returns>
         public AmbientServicesBuilder WithLogManager(ILogManager logManager)
         {
@@ -90,7 +90,7 @@ namespace Kephas
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
-        /// The ambient services builder.
+        /// This ambient services builder.
         /// </returns>
         public AmbientServicesBuilder WithAppRuntime(IAppRuntime appRuntime)
         {
@@ -106,7 +106,7 @@ namespace Kephas
         /// </summary>
         /// <param name="compositionContainer">The composition container.</param>
         /// <returns>
-        /// The ambient services builder.
+        /// This ambient services builder.
         /// </returns>
         public AmbientServicesBuilder WithCompositionContainer(ICompositionContext compositionContainer)
         {
@@ -124,7 +124,7 @@ namespace Kephas
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>
-        /// The provided ambient services builder.
+        /// This ambient services builder.
         /// </returns>
         public AmbientServicesBuilder WithCompositionContainer<TContainerBuilder>(Action<TContainerBuilder> containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
@@ -137,6 +137,42 @@ namespace Kephas
             containerBuilderConfig?.Invoke(containerBuilder);
 
             return this.WithCompositionContainer(containerBuilder.CreateContainer());
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithService<TService>(TService service)
+            where TService : class
+        {
+            Requires.NotNull(service, nameof(service));
+
+            this.AmbientServices.RegisterService(service);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithService<TService>(Func<TService> serviceFactory)
+            where TService : class
+        {
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            this.AmbientServices.RegisterService(serviceFactory);
+
+            return this;
         }
     }
 }

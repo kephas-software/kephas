@@ -19,7 +19,7 @@ namespace Kephas.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -296,6 +296,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot resolve priorities of service &apos;{0}&apos; for two instances: {1} and {2}..
+        /// </summary>
+        internal static string CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception {
+            get {
+                return ResourceManager.GetString("CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not add the item {0} to the concurrent collection..
         /// </summary>
         internal static string ConcurrentCollection_CannotAddItem_Exception {
@@ -427,6 +436,15 @@ namespace Kephas.Resources {
         internal static string DefaultTypeResolver_ResolveTypeCore_Exception {
             get {
                 return ResourceManager.GetString("DefaultTypeResolver_ResolveTypeCore_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An item with the same key is already added..
+        /// </summary>
+        internal static string DuplicateKeyException_Message {
+            get {
+                return ResourceManager.GetString("DuplicateKeyException_Message", resourceCulture);
             }
         }
         
@@ -589,6 +607,15 @@ namespace Kephas.Resources {
         internal static string Serialization_MediaTypeMismatch_Exception {
             get {
                 return ResourceManager.GetString("Serialization_MediaTypeMismatch_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The task is not completed..
+        /// </summary>
+        internal static string TaskNotCompletedException_Message {
+            get {
+                return ResourceManager.GetString("TaskNotCompletedException_Message", resourceCulture);
             }
         }
         

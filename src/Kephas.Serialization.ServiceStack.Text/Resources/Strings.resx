@@ -103,4 +103,13 @@
   <data name="DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_Overwrite_Message" xml:space="preserve">
     <value>JSON serialization already configured, will be overwritten.</value>
   </data>
+  <data name="DefaultJsonSerializerConfigurator_TypeFinder_Exception" xml:space="preserve">
+    <value>Errors occurred when trying to resolve type {0}.</value>
+  </data>
+  <data name="DefaultJsonSerializerConfigurator_TypeFinder_TypeNotResolved" xml:space="preserve">
+    <value>Cannot resolve type {0}.</value>
+  </data>
+  <data name="DefaultJsonSerializerConfigurator_OnDeserialization_Error" xml:space="preserve">
+    <value>Error on deserializing {0}, type: {1}, name: {2}, str: {3}.</value>
+  </data>
 </root>
