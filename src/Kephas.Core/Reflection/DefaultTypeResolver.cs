@@ -12,6 +12,9 @@ namespace Kephas.Reflection
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
@@ -93,10 +96,21 @@ namespace Kephas.Reflection
 
                 if (qualifiedName.AssemblyName == null)
                 {
+                    foreach (var asm in this.GetAllAssemblies())
+                    {
+                        type = asm.GetType(qualifiedName.TypeName, throwOnError: false);
+                        if (type != null)
+                        {
+                            return type;
+                        }
+                    }
+
                     return null;
                 }
 
-                var assembly = this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
+                var assemblyName = qualifiedName.AssemblyName.Name;
+                var assembly = this.GetAllAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName)
+                               ?? this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
                 if (assembly == null)
                 {
                     return null;
@@ -111,6 +125,17 @@ namespace Kephas.Reflection
                 this.Logger.Warn(ex, string.Format(Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName));
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Gets all application assemblies.
+        /// </summary>
+        /// <returns>
+        /// An enumeration of assemblies.
+        /// </returns>
+        protected virtual IEnumerable<Assembly> GetAllAssemblies()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies();
         }
     }
 }

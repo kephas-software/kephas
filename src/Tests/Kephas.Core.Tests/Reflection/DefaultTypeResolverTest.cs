@@ -1,4 +1,14 @@
-﻿namespace Kephas.Core.Tests.Reflection
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultTypeResolverTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the default type resolver test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Core.Tests.Reflection
 {
     using System;
     using System.Text;
