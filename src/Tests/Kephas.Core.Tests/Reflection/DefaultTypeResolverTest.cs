@@ -50,6 +50,34 @@ namespace Kephas.Core.Tests.Reflection
         }
 
         [Test]
+        public void ResolveType_other_assembly_with_assembly_name()
+        {
+            var loader = Substitute.For<IAssemblyLoader>();
+            var resolver = new DefaultTypeResolver(loader);
+            var type = resolver.ResolveType("Kephas.IAmbientServices, Kephas.Core");
+            Assert.AreSame(typeof(IAmbientServices), type);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_without_assembly_name()
+        {
+            var loader = Substitute.For<IAssemblyLoader>();
+            var resolver = new DefaultTypeResolver(loader);
+            var type = resolver.ResolveType("Kephas.Interaction.ISignal");
+            Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_generic_without_assembly_name()
+        {
+            var loader = Substitute.For<IAssemblyLoader>();
+            var resolver = new DefaultTypeResolver(loader);
+            var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]");
+            Assert.AreEqual("IServiceBehaviorContext`1", type.Name);
+            Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
+        }
+
+        [Test]
         public void ResolveType_NotFound_Exception_not_thrown_no_log_if_no_assembly_name()
         {
             var loader = Substitute.For<IAssemblyLoader>();

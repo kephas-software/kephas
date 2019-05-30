@@ -93,31 +93,19 @@ namespace Kephas.Reflection
                 }
 
                 var qualifiedName = new QualifiedFullName(typeName);
-
                 if (qualifiedName.AssemblyName == null)
                 {
-                    foreach (var asm in this.GetAllAssemblies())
-                    {
-                        type = asm.GetType(qualifiedName.TypeName, throwOnError: false);
-                        if (type != null)
-                        {
-                            return type;
-                        }
-                    }
-
-                    return null;
+                    type = this.GetAllAssemblies()
+                        .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
+                        .FirstOrDefault(t => t != null);
+                    return type;
                 }
 
                 var assemblyName = qualifiedName.AssemblyName.Name;
                 var assembly = this.GetAllAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName)
                                ?? this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
-                if (assembly == null)
-                {
-                    return null;
-                }
 
-                type = assembly.GetType(qualifiedName.TypeName);
-
+                type = assembly?.GetType(qualifiedName.TypeName, throwOnError: false);
                 return type;
             }
             catch (Exception ex)
