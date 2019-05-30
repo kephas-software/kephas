@@ -10,6 +10,8 @@
 
 namespace Kephas.Reflection
 {
+    using System;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
@@ -23,6 +25,11 @@ namespace Kephas.Reflection
         /// The type definition seperator.
         /// </summary>
         private const char TypeDefinitionSeperator = ',';
+
+        /// <summary>
+        /// The generic closing bracket.
+        /// </summary>
+        private const char GenericClosingBracket = ']';
 
         /// <summary>
         /// Zero-based index of the type name.
@@ -42,10 +49,36 @@ namespace Kephas.Reflection
         {
             Requires.NotNullOrEmpty(qualifiedFullName, nameof(qualifiedFullName));
 
-            var parts = qualifiedFullName.Split(TypeDefinitionSeperator);
-            this.TypeName = parts[TypeNameIndex].Trim();
-            var assemblyName = (parts.Length > AssemblyNameIndex) ? parts[AssemblyNameIndex].Trim() : null;
-            this.AssemblyName = string.IsNullOrWhiteSpace(assemblyName) ? null : new AssemblyName(assemblyName);
+            var endGenericTypeNameIndex = qualifiedFullName.LastIndexOf(GenericClosingBracket);
+            int typeNameLength;
+            if (endGenericTypeNameIndex > 0)
+            {
+                typeNameLength = endGenericTypeNameIndex + 1;
+            }
+            else
+            {
+                var firstSeparatorIndex = qualifiedFullName.IndexOf(TypeDefinitionSeperator);
+                typeNameLength = firstSeparatorIndex > 0 ? firstSeparatorIndex : qualifiedFullName.Length;
+            }
+
+            if (typeNameLength == qualifiedFullName.Length)
+            {
+                this.TypeName = qualifiedFullName;
+                return;
+            }
+
+            this.TypeName = qualifiedFullName.Substring(0, typeNameLength);
+
+            // the trailing parts contain the assembly name, version, and public key token
+            var trailingParts = qualifiedFullName.Substring(typeNameLength)
+                .Split(TypeDefinitionSeperator);
+
+            if (trailingParts.Length <= AssemblyNameIndex)
+            {
+                return;
+            }
+
+            this.AssemblyName = this.GetAssemblyName(trailingParts[1]);
         }
 
         /// <summary>
@@ -63,5 +96,11 @@ namespace Kephas.Reflection
         /// The name of the assembly.
         /// </value>
         public AssemblyName AssemblyName { get; set; }
+
+        private AssemblyName GetAssemblyName(string rawAssemblyName)
+        {
+            var assemblyName = rawAssemblyName?.Trim();
+            return string.IsNullOrWhiteSpace(assemblyName) ? null : new AssemblyName(assemblyName);
+        }
     }
 }
