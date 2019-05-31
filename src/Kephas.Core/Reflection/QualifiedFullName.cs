@@ -22,9 +22,9 @@ namespace Kephas.Reflection
     internal class QualifiedFullName
     {
         /// <summary>
-        /// The type definition seperator.
+        /// The type definition separator.
         /// </summary>
-        private const char TypeDefinitionSeperator = ',';
+        private const char TypeDefinitionSeparator = ',';
 
         /// <summary>
         /// The generic closing bracket.
@@ -52,7 +52,7 @@ namespace Kephas.Reflection
             }
             else
             {
-                var firstSeparatorIndex = qualifiedFullName.IndexOf(TypeDefinitionSeperator);
+                var firstSeparatorIndex = qualifiedFullName.IndexOf(TypeDefinitionSeparator);
                 typeNameLength = firstSeparatorIndex > 0 ? firstSeparatorIndex : qualifiedFullName.Length;
             }
 
@@ -66,7 +66,7 @@ namespace Kephas.Reflection
 
             // the trailing parts contain the assembly name, version, and public key token
             var trailingParts = qualifiedFullName.Substring(typeNameLength)
-                .Split(TypeDefinitionSeperator);
+                .Split(TypeDefinitionSeparator);
 
             if (trailingParts.Length <= AssemblyNameIndex)
             {
