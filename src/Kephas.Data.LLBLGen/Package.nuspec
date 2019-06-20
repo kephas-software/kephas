@@ -31,8 +31,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net452\Kephas.Data.IO.dll" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.IO.pdb" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.IO.xml" target="lib\net452" />
+        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.dll" target="lib\net452" />
+        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.pdb" target="lib\net452" />
+        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.xml" target="lib\net452" />
     </files>
 </package>
