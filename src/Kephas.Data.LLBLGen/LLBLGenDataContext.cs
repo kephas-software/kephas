@@ -38,7 +38,7 @@ namespace Kephas.Data.LLBLGen
         /// <summary>
         /// The data access adapter factory.
         /// </summary>
-        private readonly ILLBLGenDataAccessAdapterFactory dataAccessAdapterFactory;
+        private readonly IDataAccessAdapterFactory dataAccessAdapterFactory;
 
         /// <summary>
         /// The model type resolver.
@@ -48,7 +48,7 @@ namespace Kephas.Data.LLBLGen
         /// <summary>
         /// The query factory provider.
         /// </summary>
-        private readonly ILLBLGenQueryFactoryProvider queryFactoryProvider;
+        private readonly IQueryFactoryProvider queryFactoryProvider;
 
         /// <summary>
         ///     The data access adapter.
@@ -72,10 +72,10 @@ namespace Kephas.Data.LLBLGen
         public LLBLGenDataContext(
             ICompositionContext compositionContext,
             IDataCommandProvider dataCommandProvider,
-            ILLBLGenDataAccessAdapterFactory dataAccessAdapterFactory,
+            IDataAccessAdapterFactory dataAccessAdapterFactory,
             IModelTypeResolver modelTypeResolver,
             IDataBehaviorProvider dataBehaviorProvider,
-            ILLBLGenQueryFactoryProvider queryFactoryProvider)
+            IQueryFactoryProvider queryFactoryProvider)
             : base(compositionContext, dataCommandProvider, dataBehaviorProvider, localCache: new LLBLGenCache())
         {
             this.dataAccessAdapterFactory = dataAccessAdapterFactory;

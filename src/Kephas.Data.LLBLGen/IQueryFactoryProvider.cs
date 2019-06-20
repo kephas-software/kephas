@@ -1,16 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullLLBLGenQueryFactoryProvider.cs" company="Kephas Software SRL">
+// <copyright file="IQueryFactoryProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 // </copyright>
 // <summary>
-//   Implements the null llbl generate query factory provider class.
+//   Implements the illbl generate query factory provider class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.LLBLGen
 {
-    using System;
-
     using Kephas.Data.LLBLGen.Entities;
     using Kephas.Services;
 
@@ -19,10 +17,10 @@ namespace Kephas.Data.LLBLGen
     using Context = SD.LLBLGen.Pro.ORMSupportClasses.Context;
 
     /// <summary>
-    /// A null llbl generate query factory provider.
+    /// Interface for LLBLGen query factory provider.
     /// </summary>
-    [OverridePriority(Priority.Lowest)]
-    public class NullLLBLGenQueryFactoryProvider : ILLBLGenQueryFactoryProvider
+    [SharedAppServiceContract]
+    public interface IQueryFactoryProvider
     {
         /// <summary>
         /// Creates query factory.
@@ -32,9 +30,6 @@ namespace Kephas.Data.LLBLGen
         /// <returns>
         /// The new query factory.
         /// </returns>
-        public IQueryFactory CreateQueryFactory(DataAccessAdapterBase adapter, Context contextToUse)
-        {
-            throw new NotSupportedException($"Please provide a proper implementation of the {typeof(ILLBLGenQueryFactoryProvider)} service.");
-        }
+        IQueryFactory CreateQueryFactory(DataAccessAdapterBase adapter, Context contextToUse);
     }
 }
