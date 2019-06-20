@@ -100,7 +100,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests.Reflection
 
             var logger = Substitute.For<ILogger<DefaultTypeResolver>>();
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
-                .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(ci.Arg<string>()));
+                .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(string.Format(ci.Arg<string>(), ci.Arg<object[]>()[0])));
 
             var resolver = new ServiceStackTypeResolver(loader) { Logger = logger };
 
