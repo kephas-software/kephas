@@ -14,7 +14,7 @@ namespace Kephas.Data.LLBLGen.Entities
     /// <summary>
     /// Interface for LLBLGen entities.
     /// </summary>
-    public interface ILLBLGenEntity : IEntity2, IIdentifiable
+    public interface ILLBLGenEntity : IEntity2
     {
         /// <summary>
         /// Gets or sets the identifier.
