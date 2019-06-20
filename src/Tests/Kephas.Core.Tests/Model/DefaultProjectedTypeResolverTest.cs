@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Model.Services
+namespace Kephas.Core.Tests.Model
 {
+    using Kephas.Model;
     using Kephas.Model.AttributedModel;
-    using Kephas.Model.Services;
     using Kephas.Reflection;
 
     using NSubstitute;
