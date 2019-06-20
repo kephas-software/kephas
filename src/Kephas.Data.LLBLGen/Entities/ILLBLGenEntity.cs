@@ -22,6 +22,6 @@ namespace Kephas.Data.LLBLGen.Entities
         /// <value>
         /// The identifier.
         /// </value>
-        long Id { get; set; }
+        new long Id { get; set; }
     }
 }
