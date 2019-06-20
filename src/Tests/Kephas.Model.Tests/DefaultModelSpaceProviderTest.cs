@@ -1,4 +1,14 @@
-﻿namespace Kephas.Model.Tests.Services
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultModelSpaceProviderTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the default model space provider test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Model.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -12,7 +22,6 @@
     using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
-    using Kephas.Model.Services;
 
     using NSubstitute;
 

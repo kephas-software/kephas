@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Services
+namespace Kephas.Model
 {
     using System;
     using System.Collections.Generic;
