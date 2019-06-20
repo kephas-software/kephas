@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Data.LLBLGen</id>
+        <version>$version$</version>
+        <title>Kephas.Data.LLBLGen</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>Provides the LLBLGen implementation for data context and associated commands.</description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>Provides the LLBLGen implementation for data context and associated commands.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <dependencies>
+            <dependency id="Kephas.Core" version="$refversion$" />
+            <dependency id="Kephas.Data" version="$refversion$" />
+            <dependency id="SD.LLBLGen.Pro.ORMSupportClasses" version="5.4.0" />
+        </dependencies>
+        <references>
+            <reference file="Kephas.Data.LLBLGen.dll" />
+        </references>
+        <tags>kephas data llblgen</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Data.LLBLGen.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net452\Kephas.Data.IO.dll" target="lib\net452" />
+        <file src="bin\$configuration$\net452\Kephas.Data.IO.pdb" target="lib\net452" />
+        <file src="bin\$configuration$\net452\Kephas.Data.IO.xml" target="lib\net452" />
+    </files>
+</package>

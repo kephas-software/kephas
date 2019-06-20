@@ -18,7 +18,7 @@ namespace Kephas.Data.Endpoints.Tests
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.DataSources;
     using Kephas.Messaging;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Services;
 

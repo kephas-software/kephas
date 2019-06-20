@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
@@ -157,7 +157,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy.Tests", "Tests\Kephas.Configuration.Legacy.Tests\Kephas.Configuration.Legacy.Tests.csproj", "{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.LLBLGen", "Kephas.Data.LLBLGen\Kephas.Data.LLBLGen.csproj", "{922BFA02-87C9-45B0-B212-6C94069D0C97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.LLBLGen.Tests", "Tests\Kephas.Data.LLBLGen.Tests\Kephas.Data.LLBLGen.Tests.csproj", "{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -413,6 +417,14 @@ Global
 		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{922BFA02-87C9-45B0-B212-6C94069D0C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{922BFA02-87C9-45B0-B212-6C94069D0C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{922BFA02-87C9-45B0-B212-6C94069D0C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{922BFA02-87C9-45B0-B212-6C94069D0C97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -445,6 +457,7 @@ Global
 		{92DF9C0F-F886-4066-BAA1-959E6BA804D8} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{4795D5B0-995C-4F03-B7B2-E58E6748E7C3} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

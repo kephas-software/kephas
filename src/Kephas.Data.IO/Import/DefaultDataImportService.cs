@@ -27,7 +27,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;

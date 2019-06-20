@@ -20,7 +20,7 @@ namespace Kephas.Data.Endpoints
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;

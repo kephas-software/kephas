@@ -22,7 +22,7 @@ namespace Kephas.Data.Client.Queries
     using Kephas.Data.Conversion;
     using Kephas.Data.Linq;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

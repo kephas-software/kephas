@@ -21,7 +21,7 @@ namespace Kephas.Data.Client.Tests.Queries
     using Kephas.Data.Client.Queries;
     using Kephas.Data.Client.Queries.Conversion;
     using Kephas.Data.Conversion;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Reflection;
     using Kephas.Services;
 

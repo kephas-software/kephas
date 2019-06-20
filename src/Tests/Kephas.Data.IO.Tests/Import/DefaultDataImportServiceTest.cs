@@ -24,7 +24,7 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Data.Conversion;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Services.Composition;

@@ -21,7 +21,7 @@ namespace Kephas.Data.Endpoints
     using Kephas.Data.Conversion;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
-    using Kephas.Model.Services;
+    using Kephas.Model;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
