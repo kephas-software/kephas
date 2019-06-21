@@ -11,7 +11,7 @@
 namespace Kephas.Data.Capabilities
 {
     /// <summary>
-    /// Annotates the entities which are aware about there entity entry.
+    /// Annotates the entities which are aware about their entity entry.
     /// </summary>
     public interface IEntityEntryAware
     {
