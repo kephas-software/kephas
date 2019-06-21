@@ -21,4 +21,8 @@
         <ProjectReference Include="..\..\Kephas.Data.LLBLGen\Kephas.Data.LLBLGen.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="EntityModel\" />
+    </ItemGroup>
+
 </Project>
