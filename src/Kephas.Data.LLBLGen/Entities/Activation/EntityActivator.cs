@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LLBLGenEntityActivator.cs" company="Kephas Software SRL">
+// <copyright file="EntityActivator.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -17,18 +17,18 @@ namespace Kephas.Data.LLBLGen.Entities.Activation
     /// <summary>
     /// A llbl generate entity activator.
     /// </summary>
-    public class LLBLGenEntityActivator : ActivatorBase, ILLBLGenEntityActivator
+    public class EntityActivator : ActivatorBase, IEntityActivator
     {
         /// <summary>
         /// The model provider.
         /// </summary>
-        private readonly ILLBLGenEntityModelProvider modelProvider;
+        private readonly IEntityModelProvider modelProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LLBLGenEntityActivator"/> class.
+        /// Initializes a new instance of the <see cref="EntityActivator"/> class.
         /// </summary>
         /// <param name="entityModelProvider">The entity model provider.</param>
-        public LLBLGenEntityActivator(ILLBLGenEntityModelProvider entityModelProvider)
+        public EntityActivator(IEntityModelProvider entityModelProvider)
         {
             this.modelProvider = entityModelProvider;
         }

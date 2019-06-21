@@ -38,7 +38,7 @@ namespace Kephas.Data.LLBLGen.Commands
         /// Initializes a new instance of the <see cref="LLBLGenFindCommand"/> class.
         /// </summary>
         /// <param name="entityActivator">The entity activator.</param>
-        public LLBLGenFindCommand(ILLBLGenEntityActivator entityActivator)
+        public LLBLGenFindCommand(IEntityActivator entityActivator)
         {
             this.entityActivator = entityActivator;
         }
@@ -79,15 +79,15 @@ namespace Kephas.Data.LLBLGen.Commands
 
             // not already in cache or new.
             // 1. check whether this is new
-            var cacheEntity = (IEntity2)cache.GetAll(underlyingEntityType.Type).Cast<ILLBLGenEntity>().FirstOrDefault(e => e.Id == id);
+            var cacheEntity = (IEntity2)cache.GetAll(underlyingEntityType.Type).Cast<IEntityBase>().FirstOrDefault(e => e.Id == id);
             if (cacheEntity == null)
             {
-                cacheEntity = (IEntity2)cache.NewEntities.Values.OfType<ILLBLGenEntity>().FirstOrDefault(e => e.Id == id);
+                cacheEntity = (IEntity2)cache.NewEntities.Values.OfType<IEntityBase>().FirstOrDefault(e => e.Id == id);
                 if (cacheEntity == null)
                 {
                     // 2. entity is not new/not already in cache, get it from the database.
                     entity = (IEntity2)underlyingEntityType.CreateInstance();
-                    ((ILLBLGenEntity)entity).Id = id;
+                    ((IEntityBase)entity).Id = id;
                     var success = dataContext.DataAccessAdapter.FetchEntity(entity, cache);
                     if (!success)
                     {

@@ -29,7 +29,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// temporary IDs.
     /// </remarks>
     [ProcessingPriority(Priority.AboveNormal)]
-    public class LLBLGenRefBehavior : DataBehaviorBase<ILLBLGenEntity>
+    public class LLBLGenRefBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>
         /// The reference properties provider.
@@ -52,7 +52,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>A Task.</returns>
         public override async Task BeforePersistAsync(
-            ILLBLGenEntity entity,
+            IEntityBase entity,
             IEntityEntry entityEntry,
             IDataOperationContext operationContext,
             CancellationToken cancellationToken = default)

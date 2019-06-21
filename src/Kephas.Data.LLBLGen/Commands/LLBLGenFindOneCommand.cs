@@ -38,7 +38,7 @@ namespace Kephas.Data.LLBLGen.Commands
         /// Initializes a new instance of the <see cref="LLBLGenFindOneCommand"/> class.
         /// </summary>
         /// <param name="entityActivator">The entity activator.</param>
-        public LLBLGenFindOneCommand(ILLBLGenEntityActivator entityActivator)
+        public LLBLGenFindOneCommand(IEntityActivator entityActivator)
         {
             this.entityActivator = entityActivator;
         }
