@@ -17,7 +17,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
-    internal class CronTrigger : Trigger
+    public class CronTrigger : Trigger
     {
         public CronTrigger()
         {
@@ -26,13 +26,23 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public CronTrigger(ICronTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
-            this.CronExpression = trigger.CronExpressionString;
-            this.TimeZone = trigger.TimeZone.Id;
         }
 
         public string CronExpression { get; set; }
 
         public string TimeZone { get; set; }
+
+        public override void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
+        {
+            if (!(trigger is ICronTrigger cronTrigger))
+            {
+                throw new ArgumentOutOfRangeException(nameof(trigger), $"Instance of type '{typeof(ICronTrigger)}' expected.");
+            }
+
+            base.Initialize(trigger, state, instanceName);
+            this.CronExpression = cronTrigger.CronExpressionString;
+            this.TimeZone = cronTrigger.TimeZone.Id;
+        }
 
         public override global::Quartz.ITrigger GetTrigger()
         {

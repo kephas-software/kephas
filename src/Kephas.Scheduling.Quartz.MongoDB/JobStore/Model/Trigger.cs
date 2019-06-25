@@ -16,6 +16,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
     using global::Quartz;
 
+    using Kephas.Activation;
     using Kephas.Data;
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
@@ -25,6 +26,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         typeof(SimpleTrigger),
         typeof(CalendarIntervalTrigger),
         typeof(DailyTimeIntervalTrigger))]
+    [ImplementationFor(typeof(Model.ITrigger))]
     public abstract class Trigger : GroupedQuartzEntityBase, Model.ITrigger
     {
         protected Trigger()
@@ -33,21 +35,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         protected Trigger(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
         {
-            this.InstanceName = instanceName;
-            this.Group = trigger.Key.Group;
-            this.Name = trigger.Key.Name;
-            this.JobName = trigger.JobKey.Name;
-            this.JobGroup = trigger.JobKey.Group;
-            this.Description = trigger.Description;
-            this.NextFireTime = trigger.GetNextFireTimeUtc()?.UtcDateTime;
-            this.PreviousFireTime = trigger.GetPreviousFireTimeUtc()?.UtcDateTime;
-            this.State = state;
-            this.StartTime = trigger.StartTimeUtc.UtcDateTime;
-            this.EndTime = trigger.EndTimeUtc?.UtcDateTime;
-            this.CalendarName = trigger.CalendarName;
-            this.MisfireInstruction = trigger.MisfireInstruction;
-            this.Priority = trigger.Priority;
-            this.JobDataMap = trigger.JobDataMap;
+            // ReSharper disable once VirtualMemberCallInConstructor
+            this.Initialize(trigger, state, instanceName);
         }
 
         /// <summary>
@@ -92,6 +81,25 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public string Type { get; set; }
 
         public JobDataMap JobDataMap { get; set; }
+
+        public virtual void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
+        {
+            this.InstanceName = instanceName;
+            this.Group = trigger.Key.Group;
+            this.Name = trigger.Key.Name;
+            this.JobName = trigger.JobKey.Name;
+            this.JobGroup = trigger.JobKey.Group;
+            this.Description = trigger.Description;
+            this.NextFireTime = trigger.GetNextFireTimeUtc()?.UtcDateTime;
+            this.PreviousFireTime = trigger.GetPreviousFireTimeUtc()?.UtcDateTime;
+            this.State = state;
+            this.StartTime = trigger.StartTimeUtc.UtcDateTime;
+            this.EndTime = trigger.EndTimeUtc?.UtcDateTime;
+            this.CalendarName = trigger.CalendarName;
+            this.MisfireInstruction = trigger.MisfireInstruction;
+            this.Priority = trigger.Priority;
+            this.JobDataMap = trigger.JobDataMap;
+        }
 
         public abstract global::Quartz.ITrigger GetTrigger();
     }

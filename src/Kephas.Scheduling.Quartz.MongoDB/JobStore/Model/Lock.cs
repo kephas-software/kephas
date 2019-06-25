@@ -12,11 +12,13 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore.Model
 {
     using System;
 
+    using Kephas.Activation;
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
     /// <summary>
     /// A lock entity.
     /// </summary>
+    [ImplementationFor(typeof(ILock))]
     public class Lock : QuartzEntityBase, ILock
     {
         public const string TriggerAccess = "TRIGGER_ACCESS";

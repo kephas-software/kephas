@@ -15,11 +15,13 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore.Model
     using global::MongoDB.Bson;
     using global::MongoDB.Bson.Serialization.Attributes;
 
+    using Kephas.Activation;
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
     /// <summary>
     /// A scheduler.
     /// </summary>
+    [ImplementationFor(typeof(IScheduler))]
     public class Scheduler : QuartzEntityBase, IScheduler
     {
         /// <summary>

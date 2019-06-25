@@ -27,14 +27,6 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public DailyTimeIntervalTrigger(IDailyTimeIntervalTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
-            this.RepeatCount = trigger.RepeatCount;
-            this.RepeatIntervalUnit = trigger.RepeatIntervalUnit;
-            this.RepeatInterval = trigger.RepeatInterval;
-            this.StartTimeOfDay = trigger.StartTimeOfDay;
-            this.EndTimeOfDay = trigger.EndTimeOfDay;
-            this.DaysOfWeek = new HashSet<DayOfWeek>(trigger.DaysOfWeek);
-            this.TimesTriggered = trigger.TimesTriggered;
-            this.TimeZone = trigger.TimeZone.Id;
         }
 
         public int RepeatCount { get; set; }
@@ -53,6 +45,24 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public int TimesTriggered { get; set; }
 
         public string TimeZone { get; set; }
+
+        public override void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
+        {
+            if (!(trigger is IDailyTimeIntervalTrigger dailyTrigger))
+            {
+                throw new ArgumentOutOfRangeException(nameof(trigger), $"Instance of type '{typeof(IDailyTimeIntervalTrigger)}' expected.");
+            }
+
+            base.Initialize(trigger, state, instanceName);
+            this.RepeatCount = dailyTrigger.RepeatCount;
+            this.RepeatIntervalUnit = dailyTrigger.RepeatIntervalUnit;
+            this.RepeatInterval = dailyTrigger.RepeatInterval;
+            this.StartTimeOfDay = dailyTrigger.StartTimeOfDay;
+            this.EndTimeOfDay = dailyTrigger.EndTimeOfDay;
+            this.DaysOfWeek = new HashSet<DayOfWeek>(dailyTrigger.DaysOfWeek);
+            this.TimesTriggered = dailyTrigger.TimesTriggered;
+            this.TimeZone = dailyTrigger.TimeZone.Id;
+        }
 
         public override global::Quartz.ITrigger GetTrigger()
         {

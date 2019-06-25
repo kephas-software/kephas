@@ -87,6 +87,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
 
         JobDataMap JobDataMap { get; set; }
 
+        void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName);
+
         global::Quartz.ITrigger GetTrigger();
     }
 

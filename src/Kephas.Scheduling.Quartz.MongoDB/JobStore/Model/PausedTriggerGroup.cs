@@ -10,11 +10,13 @@
 
 namespace Kephas.Scheduling.Quartz.JobStore.Models
 {
+    using Kephas.Activation;
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
     /// <summary>
     /// A paused trigger group.
     /// </summary>
+    [ImplementationFor(typeof(IPausedTriggerGroup))]
     public class PausedTriggerGroup : QuartzEntityBase, IPausedTriggerGroup
     {
         /// <summary>

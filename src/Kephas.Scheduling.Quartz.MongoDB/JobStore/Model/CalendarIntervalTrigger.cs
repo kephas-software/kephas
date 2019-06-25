@@ -12,12 +12,15 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 {
     using System;
 
+    using global::MongoDB.Bson;
+    using global::MongoDB.Bson.Serialization.Attributes;
+
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
-    internal class CalendarIntervalTrigger : Trigger
+    public class CalendarIntervalTrigger : Trigger
     {
         public CalendarIntervalTrigger()
         {
@@ -26,15 +29,9 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public CalendarIntervalTrigger(ICalendarIntervalTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
-            this.RepeatIntervalUnit = trigger.RepeatIntervalUnit;
-            this.RepeatInterval = trigger.RepeatInterval;
-            this.TimesTriggered = trigger.TimesTriggered;
-            this.TimeZone = trigger.TimeZone.Id;
-            this.PreserveHourOfDayAcrossDaylightSavings = trigger.PreserveHourOfDayAcrossDaylightSavings;
-            this.SkipDayIfHourDoesNotExist = trigger.SkipDayIfHourDoesNotExist;
         }
 
-        //TODO [BsonRepresentation(BsonType.String)]
+        [BsonRepresentation(BsonType.String)]
         public IntervalUnit RepeatIntervalUnit { get; set; }
 
         public int RepeatInterval { get; set; }
@@ -47,6 +44,22 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public bool SkipDayIfHourDoesNotExist { get; set; }
 
+        public override void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
+        {
+            if (!(trigger is ICalendarIntervalTrigger calendarTrigger))
+            {
+                throw new ArgumentOutOfRangeException(nameof(trigger), $"Instance of type '{typeof(ICalendarIntervalTrigger)}' expected.");
+            }
+
+            base.Initialize(trigger, state, instanceName);
+            this.RepeatIntervalUnit = calendarTrigger.RepeatIntervalUnit;
+            this.RepeatInterval = calendarTrigger.RepeatInterval;
+            this.TimesTriggered = calendarTrigger.TimesTriggered;
+            this.TimeZone = calendarTrigger.TimeZone.Id;
+            this.PreserveHourOfDayAcrossDaylightSavings = calendarTrigger.PreserveHourOfDayAcrossDaylightSavings;
+            this.SkipDayIfHourDoesNotExist = calendarTrigger.SkipDayIfHourDoesNotExist;
+        }
+
         public override global::Quartz.ITrigger GetTrigger()
         {
             var trigger = new CalendarIntervalTriggerImpl()
@@ -56,7 +69,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
                 TimesTriggered = this.TimesTriggered,
                 TimeZone = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone),
                 PreserveHourOfDayAcrossDaylightSavings = this.PreserveHourOfDayAcrossDaylightSavings,
-                SkipDayIfHourDoesNotExist = this.SkipDayIfHourDoesNotExist
+                SkipDayIfHourDoesNotExist = this.SkipDayIfHourDoesNotExist,
             };
             this.FillTrigger(trigger);
             return trigger;

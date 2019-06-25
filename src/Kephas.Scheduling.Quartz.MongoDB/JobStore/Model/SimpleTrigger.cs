@@ -29,9 +29,6 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public SimpleTrigger(ISimpleTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {
-            this.RepeatCount = trigger.RepeatCount;
-            this.RepeatInterval = trigger.RepeatInterval;
-            this.TimesTriggered = trigger.TimesTriggered;
         }
 
         public int RepeatCount { get; set; }
@@ -39,6 +36,19 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
         public TimeSpan RepeatInterval { get; set; }
 
         public int TimesTriggered { get; set; }
+
+        public override void Initialize(global::Quartz.ITrigger trigger, Model.TriggerState state, string instanceName)
+        {
+            if (!(trigger is ISimpleTrigger simpleTrigger))
+            {
+                throw new ArgumentOutOfRangeException(nameof(trigger), $"Instance of type '{typeof(ISimpleTrigger)}' expected.");
+            }
+
+            base.Initialize(trigger, state, instanceName);
+            this.RepeatCount = simpleTrigger.RepeatCount;
+            this.RepeatInterval = simpleTrigger.RepeatInterval;
+            this.TimesTriggered = simpleTrigger.TimesTriggered;
+        }
 
         public override global::Quartz.ITrigger GetTrigger()
         {
