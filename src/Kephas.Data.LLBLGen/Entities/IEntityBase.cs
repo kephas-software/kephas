@@ -1,23 +1,27 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILLBLGenEntityActivator.cs" company="Kephas Software SRL">
+// <copyright file="IEntityBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
-//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the illbl generate entity activator class.
+//   Implements the LLBLGen entity class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.LLBLGen.Entities
 {
-    using Kephas.Activation;
-    using Kephas.Services;
+    using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// Interface for LLBLGen entity activator.
+    /// Interface for entities.
     /// </summary>
-    [SharedAppServiceContract]
-    public interface ILLBLGenEntityActivator : IActivator
+    public interface IEntityBase : IEntity2
     {
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        long Id { get; set; }
     }
 }

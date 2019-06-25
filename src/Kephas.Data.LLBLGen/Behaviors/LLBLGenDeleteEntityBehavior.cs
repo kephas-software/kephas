@@ -24,7 +24,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// Should be called after common behaviors.
     /// </remarks>
     [ProcessingPriority(Priority.Lowest)]
-    public class LLBLGenDeleteEntityBehavior : DataBehaviorBase<ILLBLGenEntity>
+    public class LLBLGenDeleteEntityBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>
         /// Callback invoked after an entity has been persisted.
@@ -32,7 +32,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
         /// <param name="entity">The entity.</param>
         /// <param name="entityEntry">The entity information.</param>
         /// <param name="operationContext">The operation context.</param>
-        public override void AfterPersist(ILLBLGenEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
+        public override void AfterPersist(IEntityBase entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
             var dataContext = operationContext.DataContext;
             if (entityEntry.ChangeState == ChangeState.Deleted)

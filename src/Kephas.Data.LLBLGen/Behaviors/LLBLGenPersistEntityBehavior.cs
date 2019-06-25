@@ -24,7 +24,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
     /// Behavior for preparing entities for persistence.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class LLBLGenPersistEntityBehavior : DataBehaviorBase<ILLBLGenEntity>
+    public class LLBLGenPersistEntityBehavior : DataBehaviorBase<IEntityBase>
     {
         /// <summary>
         /// Callback invoked before an entity is being persisted.
@@ -32,7 +32,7 @@ namespace Kephas.Data.LLBLGen.Behaviors
         /// <param name="entity">The entity.</param>
         /// <param name="entityEntry">The entity information.</param>
         /// <param name="operationContext">The operation context.</param>
-        public override void BeforePersist(ILLBLGenEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
+        public override void BeforePersist(IEntityBase entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
         {
             var changeState = entityEntry.ChangeState;
             if (changeState == ChangeState.Deleted)

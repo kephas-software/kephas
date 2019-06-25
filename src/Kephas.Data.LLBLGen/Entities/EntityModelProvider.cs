@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LLBLGenEntityModelProvider.cs" company="Kephas Software SRL">
+// <copyright file="EntityModelProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 // </copyright>
 // <summary>
@@ -20,7 +20,7 @@ namespace Kephas.Data.LLBLGen.Entities
     /// <summary>
     /// A LLBLGen entity model provider.
     /// </summary>
-    public class LLBLGenEntityModelProvider : ILLBLGenEntityModelProvider
+    public class EntityModelProvider : IEntityModelProvider
     {
         /// <summary>
         /// The model type infos.
@@ -28,10 +28,10 @@ namespace Kephas.Data.LLBLGen.Entities
         private readonly List<IRuntimeTypeInfo> modelTypeInfos;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LLBLGenEntityModelProvider"/> class.
+        /// Initializes a new instance of the <see cref="EntityModelProvider"/> class.
         /// </summary>
         /// <param name="entityFactoriesCollection">Collection of entity factories.</param>
-        public LLBLGenEntityModelProvider(ICollection<IExportFactory<IEntityFactory, EntityFactoryMetadata>> entityFactoriesCollection)
+        public EntityModelProvider(ICollection<IExportFactory<IEntityFactory, EntityFactoryMetadata>> entityFactoriesCollection)
         {
             this.modelTypeInfos =
                 entityFactoriesCollection.Select(f => f.Metadata.EntityType.AsRuntimeTypeInfo()).ToList();
