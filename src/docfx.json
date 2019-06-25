@@ -94,6 +94,17 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Data.LLBLGen",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.Data.Model",
                     "exclude": [
                         "**/obj/**",
