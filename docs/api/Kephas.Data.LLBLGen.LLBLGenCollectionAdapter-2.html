@@ -1,0 +1,685 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt;
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2">
+  
+  
+  <h1 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2" class="text-break">Class LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>A LLBLGen collection adapter.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Collections.Generic.ICollection</span>&lt;TEntity&gt;</div>
+    <div><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TEntity&gt;</div>
+    <div><span class="xref">System.Collections.IEnumerable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.html">Kephas.Data.LLBLGen</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.LLBLGen.dll</h6>
+  <h5 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt; : ICollection&lt;TEntity&gt;, IEnumerable&lt;TEntity&gt;, IEnumerable where TEntityImplementation : TEntity</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TEntityImplementation</span></td>
+        <td><p>Type of the entity implementation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TEntity</span></td>
+        <td><p>Type of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2__ctor_Kephas_Data_Capabilities_IEntityEntryAware_System_Collections_Generic_ICollection__0__SD_LLBLGen_Pro_ORMSupportClasses_IRelationPredicateBucket_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.%23ctor(Kephas.Data.Capabilities.IEntityEntryAware%2CSystem.Collections.Generic.ICollection%7B%600%7D%2CSD.LLBLGen.Pro.ORMSupportClasses.IRelationPredicateBucket)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L58">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2__ctor_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.#ctor*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2__ctor_Kephas_Data_Capabilities_IEntityEntryAware_System_Collections_Generic_ICollection__0__SD_LLBLGen_Pro_ORMSupportClasses_IRelationPredicateBucket_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.#ctor(Kephas.Data.Capabilities.IEntityEntryAware,System.Collections.Generic.ICollection{`0},SD.LLBLGen.Pro.ORMSupportClasses.IRelationPredicateBucket)">LLBLGenCollectionAdapter(IEntityEntryAware, ICollection&lt;TEntityImplementation&gt;, IRelationPredicateBucket)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the
+<a class="xref" href="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter-2.html">LLBLGenCollectionAdapter&lt;TEntityImplementation, TEntity&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LLBLGenCollectionAdapter(IEntityEntryAware entity, ICollection&lt;TEntityImplementation&gt; collectionImplementation, IRelationPredicateBucket relation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntryAware.html">IEntityEntryAware</a></td>
+        <td><span class="parametername">entity</span></td>
+        <td><p>The containing entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;TEntityImplementation&gt;</td>
+        <td><span class="parametername">collectionImplementation</span></td>
+        <td><p>The collection implementation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">SD.LLBLGen.Pro.ORMSupportClasses.IRelationPredicateBucket</span></td>
+        <td><span class="parametername">relation</span></td>
+        <td><p>The relation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Count.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L71">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Count_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Count*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Count" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of elements contained in the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The number of elements contained in the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_IsReadOnly.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.IsReadOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L82">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_IsReadOnly_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.IsReadOnly*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_IsReadOnly" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.IsReadOnly">IsReadOnly</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is read-only.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>true if the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is read-only; otherwise, false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Add__1_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.Add(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L102">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Add_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Add*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Add__1_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Add(`1)">Add(TEntity)</h4>
+  <div class="markdown level1 summary"><p>Adds an item to the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(TEntity item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TEntity</span></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to add to the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Clear.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L110">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Clear_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Clear*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Clear" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Clear">Clear()</h4>
+  <div class="markdown level1 summary"><p>Removes all items from the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is read-only. </p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Contains__1_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.Contains(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L119">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Contains_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Contains*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Contains__1_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Contains(`1)">Contains(TEntity)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> contains a specific value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(TEntity item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TEntity</span></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to locate in the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>true if <code data-dev-comment-type="paramref" class="paramref">item</code> is found in the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>; otherwise, false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_GetEnumerator.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L86">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_GetEnumerator_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.GetEnumerator*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_GetEnumerator" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;TEntity&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerator</span>&lt;TEntity&gt;</td>
+        <td><p>An enumerator that can be used to iterate through the collection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Remove__1_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.Remove(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L164">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Remove_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Remove*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_Remove__1_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.Remove(`1)">Remove(TEntity)</h4>
+  <div class="markdown level1 summary"><p>Removes the first occurrence of a specific object from the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(TEntity item)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TEntity</span></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The object to remove from the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>true if <code data-dev-comment-type="paramref" class="paramref">item</code> was successfully removed from the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>; otherwise, false. This method also returns false if <code data-dev-comment-type="paramref" class="paramref">item</code> is not found in the original <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is read-only.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_Generic_ICollection_TEntity__CopyTo__1___System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.System%23Collections%23Generic%23ICollection%7BTEntity%7D%23CopyTo(%601%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L133">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_Generic_ICollection_TEntity__CopyTo_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.System#Collections#Generic#ICollection{TEntity}#CopyTo*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_Generic_ICollection_TEntity__CopyTo__1___System_Int32_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.System#Collections#Generic#ICollection{TEntity}#CopyTo(`1[],System.Int32)">ICollection&lt;TEntity&gt;.CopyTo(TEntity[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Copies the elements of the <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> to an <span class="xref">System.Array</span>, starting at a particular <span class="xref">System.Array</span> index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void ICollection&lt;TEntity&gt;.CopyTo(TEntity[] array, int arrayIndex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TEntity[]</td>
+        <td><span class="parametername">array</span></td>
+        <td><p>The one-dimensional <span class="xref">System.Array</span> that is the destination of the elements copied from <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>. The <span class="xref">System.Array</span> must have zero-based indexing.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">arrayIndex</span></td>
+        <td><p>The zero-based index in <code data-dev-comment-type="paramref" class="paramref">array</code> at which copying begins.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">array</code> is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">arrayIndex</code> is less than 0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>The number of elements in the source <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span> is greater than the available space from <code data-dev-comment-type="paramref" class="paramref">arrayIndex</code> to the end of the destination <code data-dev-comment-type="paramref" class="paramref">array</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L94">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_IEnumerable_GetEnumerator_" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.System#Collections#IEnumerable#GetEnumerator*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2_System_Collections_IEnumerable_GetEnumerator" data-uid="Kephas.Data.LLBLGen.LLBLGenCollectionAdapter`2.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+  <div class="markdown level1 summary"><p>Returns an enumerator that iterates through a collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.IEnumerator</span></td>
+        <td><p>An <span class="xref">System.Collections.IEnumerator</span> object that can be used to iterate through the collection.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Collections.Generic.ICollection&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">System.Collections.IEnumerable</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.EnumerableExtensions.html#Kephas_Collections_EnumerableExtensions_ForEach__1_System_Collections_Generic_IEnumerable___0__System_Action___0__">EnumerableExtensions.ForEach&lt;T&gt;(IEnumerable&lt;T&gt;, Action&lt;T&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenCollectionAdapter_2.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenCollectionAdapter%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenCollectionAdapter.cs/#L28" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

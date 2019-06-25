@@ -160,6 +160,17 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Logging.Serilog",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.Mail",
                     "exclude": [
                         "**/obj/**",

@@ -27,7 +27,7 @@
           "hash": "yOE/JJcBnYKgHETUgm03+A=="
         }
       },
-      "is_incremental": false,
+      "is_incremental": true,
       "version": ""
     },
     {
@@ -48,7 +48,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Activation.ActivatorBase.html",
-          "hash": "gxG3af34cNBk49EF0dJz0w=="
+          "hash": "mqXXSOYLivFPWbzcb0eZMA=="
         }
       },
       "is_incremental": false,
@@ -108,7 +108,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.AmbientServicesBuilder.html",
-          "hash": "zP1IFbeNhVhoTiApcfsqhg=="
+          "hash": "95H8SfiuIHxmVGjd+KZTbQ=="
         }
       },
       "is_incremental": false,
@@ -120,7 +120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.AmbientServicesExtensions.html",
-          "hash": "+21LIp+gxuSDBdvrzQPFuA=="
+          "hash": "qRI4qAkOZA9mhuqCrhShEw=="
         }
       },
       "is_incremental": false,
@@ -300,7 +300,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Application.FeatureInfo.html",
-          "hash": "c4VbAEU5e9vtv0s87gxciw=="
+          "hash": "tWAiJv5ooOkj4frnLojp6Q=="
         }
       },
       "is_incremental": false,
@@ -972,7 +972,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Collections.CollectionExtensions.html",
-          "hash": "rVtdFHozkWdAaTLDtmAEFg=="
+          "hash": "k8WgBKFVgTGvQLM6wgKdtg=="
         }
       },
       "is_incremental": false,
@@ -1128,7 +1128,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Composition.CompositionHelper.html",
-          "hash": "eI+yS1yV+cSYg+tbVV7tcg=="
+          "hash": "03am2hHEtmb+ssr/DtHtjQ=="
         }
       },
       "is_incremental": false,
@@ -1932,7 +1932,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Composition.Mef.Hosting.MefCompositionContainerBuilder.html",
-          "hash": "KZHdGwJpW02d/k7CZCZzlQ=="
+          "hash": "Q8CfJyfjVtgVGBzNE4SHHQ=="
         }
       },
       "is_incremental": false,
@@ -2088,7 +2088,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Composition.Metadata.MetadataExtensions.html",
-          "hash": "H6Yuf77Pp+blI9kt09sh5A=="
+          "hash": "EMYsBsNPG9ahbwxoiDlKQw=="
         }
       },
       "is_incremental": false,
@@ -2952,7 +2952,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.Capabilities.IEntityEntryAware.html",
-          "hash": "hGyR6gMhDGzMCeEl9q0xCw=="
+          "hash": "sXT+UmnaZ24ywqzI3OtDQg=="
         }
       },
       "is_incremental": false,
@@ -2976,7 +2976,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.Capabilities.html",
-          "hash": "GZIN6xWvBEmAPvzia8TQoA=="
+          "hash": "Agt+CGEVgzq8XnPeymRs3g=="
         }
       },
       "is_incremental": false,
@@ -6048,7 +6048,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Behaviors.LLBLGenDeleteEntityBehavior.html",
-          "hash": "skC9WMsyt9BF5oUQViE+7Q=="
+          "hash": "aSUODs5rF2M2qd/+yuEzxg=="
         }
       },
       "is_incremental": false,
@@ -6060,7 +6060,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Behaviors.LLBLGenPersistEntityBehavior.html",
-          "hash": "mGbT4BpCAeqfWrej5QBXJQ=="
+          "hash": "lCslW7Kt8RHEqsPLRq4BAQ=="
         }
       },
       "is_incremental": false,
@@ -6072,7 +6072,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Behaviors.LLBLGenRefBehavior.html",
-          "hash": "hZRspZxXdwBCdv16xAjN0w=="
+          "hash": "XIpMNhLzIU+/geC8sjvthw=="
         }
       },
       "is_incremental": false,
@@ -6120,7 +6120,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Commands.LLBLGenFindCommand.html",
-          "hash": "MsCApIHHJRJ9TJUkrUfZ8w=="
+          "hash": "0ZcesWZfdb8vB2MFMdykyQ=="
         }
       },
       "is_incremental": false,
@@ -6132,7 +6132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Commands.LLBLGenFindOneCommand.html",
-          "hash": "x4Rdh5VoRl3KGkG8ZKJJ+Q=="
+          "hash": "cwepk7moNRmfOSiRUvvpkg=="
         }
       },
       "is_incremental": false,
@@ -6164,11 +6164,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.Activation.LLBLGenEntityActivator.yml",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.Activation.EntityActivator.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Kephas.Data.LLBLGen.Entities.Activation.LLBLGenEntityActivator.html",
-          "hash": "Kk9O5lG9NKxvzKanJkN/FQ=="
+          "relative_path": "api/Kephas.Data.LLBLGen.Entities.Activation.EntityActivator.html",
+          "hash": "9iIlat7psdbJzwSsqWpNKQ=="
         }
       },
       "is_incremental": false,
@@ -6180,7 +6180,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Entities.Activation.html",
-          "hash": "B3KSJAvpRPe1dtfvbvwaEA=="
+          "hash": "YRIb9+FSHQ2vq9d4rPiZNg=="
         }
       },
       "is_incremental": false,
@@ -6212,6 +6212,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.EntityModelProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Data.LLBLGen.Entities.EntityModelProvider.html",
+          "hash": "jXyogGYK9qZ8vwu/mZh3nw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.IEntityActivator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Data.LLBLGen.Entities.IEntityActivator.html",
+          "hash": "3+wBIkWLo5hj7+O2IMd5yg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.IEntityBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Data.LLBLGen.Entities.IEntityBase.html",
+          "hash": "X9xg2fPm+nFEnbsipduRzA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.IEntityFactory-1.yml",
       "output": {
         ".html": {
@@ -6236,35 +6272,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntity.yml",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.IEntityModelProvider.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntity.html",
-          "hash": "gtEKHvKyyZqUFv9t8UsqUA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntityActivator.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntityActivator.html",
-          "hash": "1P/HllnMEvgsfXsvSOOWUw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntityModelProvider.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Kephas.Data.LLBLGen.Entities.ILLBLGenEntityModelProvider.html",
-          "hash": "oRXs2D6ykGICmSgr8T7njw=="
+          "relative_path": "api/Kephas.Data.LLBLGen.Entities.IEntityModelProvider.html",
+          "hash": "0xcTjEzu+A+3o9IarR2NqA=="
         }
       },
       "is_incremental": false,
@@ -6284,23 +6296,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.LLBLGenEntityModelProvider.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Kephas.Data.LLBLGen.Entities.LLBLGenEntityModelProvider.html",
-          "hash": "E7tQ10Tqwk38T6eGkH6ILA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Kephas.Data.LLBLGen.Entities.yml",
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.Entities.html",
-          "hash": "AbkPkyvqLmNVvhxrw7uZcw=="
+          "hash": "GvkYGpC9WHk0SXqpWJ9DgQ=="
         }
       },
       "is_incremental": false,
@@ -6356,6 +6356,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.LLBLGenCollectionAdapter-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Data.LLBLGen.LLBLGenCollectionAdapter-2.html",
+          "hash": "JMWeDkwotoqeiZLQoiG64Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Kephas.Data.LLBLGen.LLBLGenDataContext.yml",
       "output": {
         ".html": {
@@ -6385,6 +6397,18 @@
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.LLBLGenQueryProvider.html",
           "hash": "2eSWARk8ebS39ZpG7B2iNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Data.LLBLGen.LLBLGenRef-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Data.LLBLGen.LLBLGenRef-1.html",
+          "hash": "8xtsNWY5MgX+glYaQBWIfQ=="
         }
       },
       "is_incremental": false,
@@ -6444,7 +6468,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.LLBLGen.html",
-          "hash": "TGC7jnvZsVcTZwFamiZSHA=="
+          "hash": "JvzoZGzvhIsjEU2eiwlfOw=="
         }
       },
       "is_incremental": false,
@@ -7284,7 +7308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Data.Ref-1.html",
-          "hash": "TAzUjaikMb3v/k8bMB1g2g=="
+          "hash": "Qd9l3t1ALQmCh5ARRVv5bA=="
         }
       },
       "is_incremental": false,
@@ -7740,7 +7764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Diagnostics.Contracts.Requires.html",
-          "hash": "yjNyTT5NmC1N/tWP97n90w=="
+          "hash": "mFqG9OWv7oISkSAodmEnrw=="
         }
       },
       "is_incremental": false,
@@ -7848,7 +7872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Dynamic.ExpandoExtensions.html",
-          "hash": "Za7Nc0D2Z5lAqjSxSaI+mg=="
+          "hash": "BymW8TUHwLmUM000zPKglg=="
         }
       },
       "is_incremental": false,
@@ -8148,7 +8172,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Graphs.GraphExtensions.html",
-          "hash": "+W2md7CxvSffezndJfYZ4g=="
+          "hash": "AE0S6e4FmwSS+ZUzZ92Vow=="
         }
       },
       "is_incremental": false,
@@ -8617,6 +8641,54 @@
         ".html": {
           "relative_path": "api/Kephas.Logging.NullLogManager.html",
           "hash": "Mqh+X1sTN+FrLinTlnbfKQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Logging.Serilog.SerilogAmbientServicesBuilderExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Logging.Serilog.SerilogAmbientServicesBuilderExtensions.html",
+          "hash": "u5BqgAnwGgdFaMT/HK2yjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Logging.Serilog.SerilogLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Logging.Serilog.SerilogLogger.html",
+          "hash": "YCK++ZkBaKl6i7s62SZjpQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Logging.Serilog.SerilogManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Logging.Serilog.SerilogManager.html",
+          "hash": "pjg0yh3tJKjX+FDx9eETLw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Kephas.Logging.Serilog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Kephas.Logging.Serilog.html",
+          "hash": "wEriCpzXYmMmaxUxB2IsHg=="
         }
       },
       "is_incremental": false,
@@ -9420,7 +9492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Messaging.Distributed.IMessageBroker.html",
-          "hash": "jtS9uQq28ZIipEFr8zBrog=="
+          "hash": "V92HBtxkD3mgVGFPnOplFQ=="
         }
       },
       "is_incremental": false,
@@ -9444,7 +9516,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Messaging.Distributed.MessageBrokerBase.html",
-          "hash": "iKXwaQrPqLRZvASygolsyA=="
+          "hash": "irsagAtpbFEZZlUDX23hVg=="
         }
       },
       "is_incremental": false,
@@ -9528,7 +9600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Messaging.Events.AppEventEmitterExtensions.html",
-          "hash": "dg5LCBZHMV+DXNbR2juECQ=="
+          "hash": "AWDY3Cf45PXfsOWPrZPzCw=="
         }
       },
       "is_incremental": false,
@@ -9552,7 +9624,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Messaging.Events.EventHubExtensions.html",
-          "hash": "msnJgHrkZ1yz+ulEqRIjXA=="
+          "hash": "xYvi7HrqY1JF8bKO5YFC4g=="
         }
       },
       "is_incremental": false,
@@ -10776,7 +10848,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Model.Elements.Annotations.AttributeAnnotation-1.html",
-          "hash": "ycjMzUU+VKpjOhcyMkJA/g=="
+          "hash": "yRtYdLU/bIB8XbechA8wRA=="
         }
       },
       "is_incremental": false,
@@ -10932,7 +11004,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Model.Elements.NamedElementBase-1.html",
-          "hash": "QVdnL1dCfaZRaELbfsl0rw=="
+          "hash": "OxIUjy7sRSfayplhK9qfxw=="
         }
       },
       "is_incremental": false,
@@ -11376,7 +11448,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Model.Runtime.Configuration.RuntimeModelElementConfiguratorBase-3.html",
-          "hash": "mjAaumOFj3+jSMZLXoZMgg=="
+          "hash": "ZHrcsamnJXwz4cQO5N3tXg=="
         }
       },
       "is_incremental": false,
@@ -11496,7 +11568,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Model.Runtime.Construction.Builders.NamedElementBuilderBase-4.html",
-          "hash": "YAU9JrIhGjctY+GbK7BJlQ=="
+          "hash": "6T/KvVMz2ldOOnRDmVrL4A=="
         }
       },
       "is_incremental": false,
@@ -12288,7 +12360,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Operations.OperationResultExtensions.html",
-          "hash": "JA/T/it1OaIeYHNMkFf9WQ=="
+          "hash": "7gWagecEic80NAJ5OwyH2A=="
         }
       },
       "is_incremental": false,
@@ -12564,7 +12636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Reflection.Dynamic.DynamicElementInfo.html",
-          "hash": "cA/bHCLMIuyEEEdbHxSMLQ=="
+          "hash": "4tbe9lgs6+c50FX3bE7cIg=="
         }
       },
       "is_incremental": false,
@@ -12936,7 +13008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.AttributeProviderExtensions.html",
-          "hash": "RJ9zpCGtIdgJKh0TZZcj9g=="
+          "hash": "5HKJGh3DFbzMoX3GwVzjwQ=="
         }
       },
       "is_incremental": false,
@@ -12948,7 +13020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.IAttributeProvider.html",
-          "hash": "GM9D+au0QG6h+4cos/de/g=="
+          "hash": "EBa09OsDDn0gkD9NmVVIoA=="
         }
       },
       "is_incremental": false,
@@ -13068,7 +13140,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimeAssemblyInfo.html",
-          "hash": "ZeXw+iN0e+AcHhcMPegLtA=="
+          "hash": "ixlFEcj9jGLgdQn5+1i2Tg=="
         }
       },
       "is_incremental": false,
@@ -13092,7 +13164,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimeFieldInfo.html",
-          "hash": "S3bsRcFUKeIL6ZTKLkmleQ=="
+          "hash": "b/k27W8dQ9pA1aZ0zfHjFw=="
         }
       },
       "is_incremental": false,
@@ -13104,7 +13176,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimeMethodInfo.html",
-          "hash": "KE0mWnIhUnTfbvpcv6g1SA=="
+          "hash": "w3w1dzqJH9e/5E3n6jubhQ=="
         }
       },
       "is_incremental": false,
@@ -13116,7 +13188,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimeParameterInfo.html",
-          "hash": "jPdczSgsBdfvBB7CdFiKkg=="
+          "hash": "4xV7F/FJxYhHLTLFMBgYOw=="
         }
       },
       "is_incremental": false,
@@ -13140,7 +13212,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimePropertyInfo.html",
-          "hash": "ldJVYyttRhHlfFrYwaEM6g=="
+          "hash": "i+aFtEj8gTx3ZG457ww3yw=="
         }
       },
       "is_incremental": false,
@@ -13152,7 +13224,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Runtime.RuntimeTypeInfo.html",
-          "hash": "ClhQrUDbyYeA+xSz2ZOnSw=="
+          "hash": "RyuxcjUI65Ddm8BrpOM4/w=="
         }
       },
       "is_incremental": false,
@@ -14124,7 +14196,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Serialization.SerializationContext.html",
-          "hash": "c4bwFI/4gz88LVHZpz1vlA=="
+          "hash": "yipbFns0KK0Z5QZdPZ4d6A=="
         }
       },
       "is_incremental": false,
@@ -14136,7 +14208,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Serialization.SerializationExtensions.html",
-          "hash": "ToQNNmknrTXFBmGOYkSmVw=="
+          "hash": "fjzdZmnTKrJFcTg6/4HuZw=="
         }
       },
       "is_incremental": false,
@@ -14676,7 +14748,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Services.Behaviors.DefaultServiceBehaviorProvider.html",
-          "hash": "KGD5lauLtXvp9WO70cnOiQ=="
+          "hash": "fO/sVbJbosrCoJPMXbYJHA=="
         }
       },
       "is_incremental": false,
@@ -14748,7 +14820,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Services.Behaviors.IServiceBehaviorProvider.html",
-          "hash": "cItnDzec7IzhCkcSU8OyUw=="
+          "hash": "ngx/v2Xc2EKBXHMiprkExQ=="
         }
       },
       "is_incremental": false,
@@ -14796,7 +14868,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Services.Composition.AppServiceMetadata.html",
-          "hash": "TFhuOnv19jLuJzoVyxxM1g=="
+          "hash": "k1yXtYNgdtuUnVA+mbZwCg=="
         }
       },
       "is_incremental": false,
@@ -14832,7 +14904,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Kephas.Services.ContextExtensions.html",
-          "hash": "kN8D3hMa8wi9kMO/3BFHMQ=="
+          "hash": "KQdRq5dCRvHITYGjrxLWDQ=="
         }
       },
       "is_incremental": false,
@@ -15708,7 +15780,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "aHBqPgaAm4KbAxJIsz3PJg=="
+          "hash": "uJ0vuTbHG/lSc6c9L0qCMw=="
         }
       },
       "is_incremental": false,
@@ -15730,31 +15802,29 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": false,
-        "details": "Cannot build incrementally because docfx version changed from 2.40.11.0 to 2.43.2.0.",
+        "can_incremental": true,
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0,
-        "full_build_reason_code": "DocfxVersionChanged"
+        "skipped_file_count": 0
       },
       "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 2,
+          "skipped_file_count": 2
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 1312,
+          "skipped_file_count": 751
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1306,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 2,
           "skipped_file_count": 0
         }
       }

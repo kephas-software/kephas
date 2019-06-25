@@ -226,6 +226,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void Publish&lt;TEvent&gt;(this IEventPublisher eventPublisher, IContext context = null)
+
     where TEvent : IEvent, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -357,6 +358,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task PublishAsync&lt;TEvent&gt;(this IEventPublisher eventPublisher, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))
+
     where TEvent : IEvent, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
