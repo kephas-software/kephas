@@ -175,6 +175,7 @@ entities.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Task&lt;long&gt; BulkUpdateCoreAsync&lt;T&gt;(IBulkUpdateContext bulkDeleteContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, IDictionary&lt;string, object&gt; values, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -262,6 +263,7 @@ entities.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override IBulkDataOperationResult GetBulkOperationResult&lt;T&gt;(IBulkUpdateContext bulkOperationContext, long count, long localCacheCount, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

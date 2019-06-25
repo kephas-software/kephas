@@ -250,6 +250,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual TOperationResult GetBulkOperationResult&lt;T&gt;(TOperationContext bulkOperationContext, long count, long localCacheCount, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -423,6 +424,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Expression&lt;Func&lt;T, bool&gt;&gt; GetMatchingCriteria&lt;T&gt;(TOperationContext bulkOperationContext)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
